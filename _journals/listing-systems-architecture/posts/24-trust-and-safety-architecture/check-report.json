@@ -1,0 +1,625 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/24-trust-and-safety-architecture/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/24-trust-and-safety-architecture/index.md",
+  "spec_sha": "928becf3f610b130",
+  "draft_sha": "d4019e2adeb0eda4",
+  "run_at": "2026-11-12T22:09:11+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: five T&S functions, shared vs local parts, and propagating one enforcement decision",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stakes: trust drives liquidity, and the DSA makes decisions regulator-auditable",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architectural stakes: T&S spans every context, so it needs one decision record and propagation path",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: separate functions joined by one record, enforcement done only when propagated, measure harm not activity",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: moderation as afterthought, ghost inventory, set-and-forget AI",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "T&S grows piecemeal into incompatible stacks that cannot say what was removed and whether it disappeared",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Chapter thesis: T&S as a platform capability of separate functions, full propagation, harm metrics, shared machinery with local policy",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap of the chapter's sections and evidence sources",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Scope boundaries: fraud, identity and regulation belong to other chapters; Veldmark is the running example",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link ¶1",
+      "summary": "Phishing-link incident at Tradeyard NL handled in seven minutes",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link ¶2",
+      "summary": "Wider review exposes gaps: no cross-brand block list, slow rule rollout, separate stacks per brand",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link ¶3",
+      "summary": "Introducing Aisha's inventory of the group's T&S stacks and the statement of reasons",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link ¶4",
+      "summary": "Totals of fragmentation and Tradeyard's automation and review volumes",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link ¶5",
+      "summary": "Ingrid's question: which parts of T&S are shared platform and which stay local",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶1",
+      "summary": "T&S must be split into functions that change and fail differently",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶2",
+      "summary": "Measurement and transparency as a cross-cutting sixth concern",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶3",
+      "summary": "Definitions of policy, moderation pipeline, enforcement action, case and T&S metrics",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶4",
+      "summary": "Decisions cover both listings and actors, linked in the decision record",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶5",
+      "summary": "Policies should be versioned data that everything references",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶6",
+      "summary": "Benefits of policy-as-data: citable versions, country overlays, separate legal and engineering review",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: The Five Functions of Trust and Safety ¶7",
+      "summary": "Decisions must remain explainable under the policy version in force at the time",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶1",
+      "summary": "Reference architecture from public building blocks, with the decision service as sole writer of decisions",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶2",
+      "summary": "What public sources document: Adevinta shared moderation and OCR, OLX chat moderation, Meta Sigma fast rules, Stripe rule operations",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶3",
+      "summary": "The synchronous gate: fast, cheap checks inside the user action",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶4",
+      "summary": "The asynchronous path: slower detectors that can act on live listings",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶5",
+      "summary": "Placing checks in sync vs async is a risk decision; publication pipeline owns the wider path",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶6",
+      "summary": "Pre- and post-moderation are ends of a spectrum, run together",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶7",
+      "summary": "Risk-tiered moderation by category, seller trust and listing score",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶8",
+      "summary": "Public cases: Which? edit test shows re-moderating edits / leboncoin case shows the stated mode must match reality",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶9",
+      "summary": "Three reasons for human review and the queue design each needs",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶10",
+      "summary": "Consistent review outcomes should become rules, and overturned rules should return to review",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶11",
+      "summary": "Random sampling gives a detector-independent prevalence estimate",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶12",
+      "summary": "Evidence that LLMs entered production moderation: OLX and Llama Guard",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Moderation Pipeline and Its Components ¶13",
+      "summary": "Four rules for using LLMs: grey zone only, policy agility, deterministic floors, drafts not decisions",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶1",
+      "summary": "Graduated ladder of enforcement actions beyond removal",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶2",
+      "summary": "Demotion is a DSA moderation decision, so ranking down-ranking belongs behind the decision service",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶3",
+      "summary": "Removal is incomplete until every system holding a copy applies it",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶4",
+      "summary": "Enforcement events with idempotent consumers, acknowledgement monitoring and lift events restoring ranking",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶5",
+      "summary": "Ghost inventory from stale digests; enforcement should ride the unpublish mechanism with stricter budgets",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Enforcement Actions and Their Propagation ¶6",
+      "summary": "Counterparty warnings were target design; in reality contacted sellers were not warned",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶1",
+      "summary": "Violations also arrive through reports, rights holders, authorities, banks and trusted flaggers",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶2",
+      "summary": "DSA notice requirements make a notice an entity with a lifecycle",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶3",
+      "summary": "Case management features that drive reviewer productivity",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶4",
+      "summary": "DSA Article 20 complaint system requirements",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶5",
+      "summary": "Appeal rules: new linked decision, retained evidence, reversals as labels",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶6",
+      "summary": "DSA statements of reasons and Transparency Database volumes require automation",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Intake, Cases and Appeals ¶7",
+      "summary": "Tradeyard's statement volume shows the decision record is the upstream design, regulatory output a view",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Measuring Trust and Safety ¶1",
+      "summary": "Activity metrics mislead; harm, speed and accuracy metrics replace them",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Measuring Trust and Safety ¶2",
+      "summary": "Compute metrics from decision records and samples, reported per policy and detector",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Measuring Trust and Safety ¶3",
+      "summary": "Veldmark's sample found prevalence three times the assumed level, concentrated in two gaps",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Measuring Trust and Safety ¶4",
+      "summary": "Tradeyard's weekly queue numbers as design targets",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Measuring Trust and Safety ¶5",
+      "summary": "Redeploying moderators to sampling and appeals and sources of higher automation",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "One Platform for Four Brands: What to Share ¶1",
+      "summary": "Share platforms, not products: each brand is a tenant of the shared T&S platform",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "One Platform for Four Brands: What to Share ¶2",
+      "summary": "Cross-brand signal sharing is limited by data protection to hashed identifiers",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "One Platform for Four Brands: What to Share ¶3",
+      "summary": "Keybridge is kept outside the tenancy with explicit data boundaries",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Vertical detectors and policies must be first-class tenant content; verticals compared",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Outsource review capacity but keep decision records, policies and labels in-house",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Moderation delay costs liquidity, so use risk tiers with time budgets",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Ten failure modes of trust and safety platforms",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "T&S sharing pays early but over-centralizing policy destroys value; decisions and owners",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Roadmap trends: T&S needs an event backbone, regulation adds outputs, adversaries learn the platform",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Board metric: sampled fraud prevalence by brand plus time to action",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions for architects",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "From Platform to Adversary ¶1",
+      "summary": "Synthesis: one decision record answers the opening question, replaying the incident on the shared platform",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "From Platform to Adversary ¶2",
+      "summary": "Hand-off to the fraud prevention chapter on adaptive adversaries",
+      "matched_spec_paragraph": "p60"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 60 aligned units' reverse-outline summaries state the controlling idea of the spec paragraph they align to, in spec order; the five callouts match no spec paragraph and are expected.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only Architecture ¶8 was flagged two_ideas. Its two cases (Which? edits, leboncoin) sit under one lead sentence, 'Two public cases show why the mode matters', and the spec's p23 declares exactly that two-lesson controlling idea, so the unit holds one controlling idea with two supports.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit supports one of S1-S6 or the scene/intro/conclusion framing; the Keybridge paragraph (p50) and failure mode 10 are spec-declared.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table is introduced and followed by its reading (inventory -> totals; functions; policy record -> three consequences; components; modes -> risk tiers; ladder -> fifth column; consumers -> event pattern; notice fields; metrics -> two practices; targets -> p46; share table -> constraint; verticals; trade-offs; decisions). Figures carry explanatory captions and are referred to in text; quotations and statistics (Adevinta, Which?, Transparency Database 4.4 billion / 41%) are interpreted. The unexplained '9 counterparties' and the headcount drop are recorded under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "Enforcement Actions and Their Propagation ¶5",
+      "quote": "The failure mode is **Ghost Inventory** caused by enforcement.",
+      "finding": "Declared contrast: 'The event pattern' -> 'What happens without it' (controlling idea: 'Without propagation, enforcement causes Ghost Inventory'). The sentence drops 'without propagation' and attributes Ghost Inventory to enforcement itself, so the contrast with the event pattern is not expressed and the cause is misstated; flow reader A (A3) noticed the same wording.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "1. **Moderation only at creation.** Edits, price changes and new photos are not re-scored",
+      "finding": "Declared a contrast sentence at the start of the section ('How to choose well among the alternatives' -> 'How trust and safety goes wrong'). The section opens directly with item 1 of the list; no prose picks up the trade-offs or states the contrast, and the controlling idea's 'each break one part of the design' is also never said.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "1. Which component writes moderation decisions, and how many other services restrict content without going through it?",
+      "finding": "Declared a sequence sentence at the start of the section ('The decisions and indicators' -> 'Questions that check them in a review'). The section opens directly with question 1; only the heading carries the boundary, and nothing ties the questions to the Chief Architect's decisions and indicators.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared boundaries (intro p02-p04, the scene, concepts, architecture, enforcement, intake, measuring, sharing, verticals, trade-offs phrase in the options table, CA view, conclusion and its paragraphs) are expressed at the start of the unit as declared.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: The Five Functions of Trust and Safety ¶4",
+      "quote": "The functions also separate the **listing view** from the **actor view**.",
+      "finding": "Both flow readers could not see how this paragraph connects to the five functions and terms around it and read it as an aside ending on a bounded-contexts note. The spec's order (functions, terms, actor view, policy) is fine; the opening verb 'separate' obscures the declared elaboration (decisions about items -> decisions about actors, linked by the decision record).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Architecture: The Moderation Pipeline and Its Components ¶2",
+      "quote": "The table is a reference design, so the public record behind it matters.",
+      "finding": "Both readers independently reported that the 'In practice: what is publicly documented' subsection interrupts the walk from the component table into the subsections that explain the components, and both proposed moving it after 'LLMs in the pipeline' (or folding its bullets into the subsections). Both still understood why it is there ('It is in place, but it interrupts'; 'It is not confusing'). The placement is the spec's own decision (flow rationale: public evidence 'right after the component table'), so the difficulty comes from the order, not the prose.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B4 (A5 here)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Enforcement Actions and Their Propagation ¶5",
+      "quote": "Femke's bike was marked sold at 18:10 on Monday 8 March and removed from search at 18:11, yet the next morning's alert digest, assembled at 17:30 from an earlier snapshot, still featured it.",
+      "finding": "Both readers had to re-read the timeline: a 'next morning' digest 'assembled at 17:30' reads as after the 18:10 sale until the reader infers 17:30 on Monday. The prose obscures the point (a digest built before the sale shipped after it).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B5 (A3 here)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Enforcement Actions and Their Propagation ¶6",
+      "quote": "Figure 4's step that warns the **9 counterparties**, the sellers the account had already reached, is the target design, not what happened in March 2027.",
+      "finding": "Both readers stopped at '9 counterparties': the number appears for the first time (only in the figure), and the scene gave '37 similar messages' withheld from other sellers, with no statement of how many sellers the account had already contacted. The relation between the 9 reached and the 37 withheld is never made.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B6 (A2 here)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Measuring Trust and Safety ¶5",
+      "quote": "The design did not aim to remove moderators; the review headcount follows the review volume.",
+      "finding": "Both readers read this as contradicting the table just above (Tradeyard moderators 158 -> about 135) and had to reconcile it themselves: the text names the 15 moved to sampling and appeals but never says that the remaining drop of about 23 follows from review volume falling from about 138,000 to 96,000.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B7 (A4 here)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "10. **Badges that outlive the account's integrity.** A verified badge stays on an account after it is taken over, and makes the takeover more effective.",
+      "finding": "Both readers found failure mode 10 out of place: unlike items 1-9 it recaps nothing the chapter built (verified badges and account takeover are not discussed in the body). The item is mandated by the spec's p54 controlling idea, and no spec paragraph develops badges or takeover, so the gap is in the spec (either drop the item or give it a basis in the body).",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B10 (A10 here)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "Architecture: The Moderation Pipeline and Its Components ¶9",
+      "quote": "**Regulated queues** (appeals, notices from trusted flaggers, the organizations a regulator gives priority status, and authority orders)",
+      "finding": "Flow reader A (A1): the inline gloss of trusted flaggers reads as a fourth list item; trusted flaggers are defined again in Notice and action.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "Architecture: The Moderation Pipeline and Its Components ¶8",
+      "quote": "Two public cases show why the mode matters.",
+      "finding": "Flow reader A (A7): the lead-in promises evidence about the mode, but the Which? case is about re-moderating edits and leboncoin about describing the mode honestly.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: The Moderation Pipeline and Its Components ¶1",
+      "quote": "(the enforcement ladder, in the next section)",
+      "finding": "Flow reader A (A8): 'the next section' is ambiguous; the next subsection is the gate, and the ladder comes under a later ## heading.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: The Moderation Pipeline and Its Components ¶1",
+      "quote": "The reference architecture below is assembled from public building blocks:",
+      "finding": "Flow reader B (B3): the paragraph packs five sources, a disclaimer, the single-writer rule and a forward pointer before the figure; the reader had to re-read to separate provenance from the design rule.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "It defines the five functions and policies as data, lays out the moderation pipeline (its components and the public evidence behind them, two speeds, moderation modes, human review, LLMs), and follows one enforcement decision to every system that must obey it.",
+      "finding": "Flow reader B (B1): the roadmap's nested lists required a re-read and repeat what the callouts already preview (reader A noted the density but judged it readable).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Measuring Trust and Safety ¶4",
+      "quote": "| Median time to action on fraud reports | 3 h 10 min | under 30 min |",
+      "finding": "Flow reader B (B8): the scene called seven minutes from report to suspension fast, and the baseline median here is over three hours; the text never says the incident was better than the median.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Platform to Adversary ¶1",
+      "quote": "the rule reached Belgium days later and Poland, Portugal and Motorvane never.",
+      "finding": "Flow reader A (A11): Motorvane's gap in the scene was the unseen phone number, not the rule; grouping it under 'the rule ... never' blurs that.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given at or before first substantive use: policy as a versioned record, moderation pipeline, enforcement action, case (Concepts terms); pre- and post-moderation (Moderation modes); prevalence and overturn rate (random sample paragraph, metrics table); trusted flagger (glossed at first use, defined in Notice and action); DSA Arts. 16, 17, 20, 21, 22, 24(5) each explained. Names flow reader B found unintroduced (Common Ground, the architecture advice forum, Keybridge) are on already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a concrete history (keyword filter, review queue, report button) and a pointed question; no dictionary definition, sweeping generalisation or announcement.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "No 'in conclusion' restatement or new unrelated claim; the closing answers the opening question, replays the incident and hands off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Synthesis: 'The platform answers it from one record' (what/why/where/how much harm); so-what: 'Such a group answers a regulator, a wrongly blocked seller and its board from the same data; a group of queues answers each with a new project.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to 'what did we remove last month, why, and did it actually disappear?' and replays 7 March 2027 on the shared platform (POL-FRAUD-PAYLINK, one runtime, sellers warned, hashed phone on Motorvane's block list).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The opening-only reader predicted, in order, the incident and four stacks, the five functions and policies as data, the pipeline (components with public evidence, two speeds, modes, human review, LLMs), enforcement propagation, intake/cases/appeals/statements of reasons, metrics, sharing and verticals, then trade-offs, failure modes, CA view and questions; evidence: DSA, Meta, Stripe, OLX, Adevinta, two dated public cases and fictional Veldmark. This matches every roadmap promise; the opening names the cases only as 'two dated public cases', so the reader could not name Which? and leboncoin, which the opening does not claim to do.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer gives EnforcementApplied from the decision service, idempotent apply and acknowledgement, alerts dropping queued notifications and excluding the listing from digests, recommendation eviction, payment hold/freeze per policy, a propagation monitor to the last acknowledgement with 'enforced' separate from 'decided', and demotion as an Article 17 restriction routed through the decision service with a decision record and statement of reasons.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer rejects both rules, sets the mode per risk tier from category risk, seller trust and listing score, with the synchronous gate and asynchronous re-scoring (book vs. first rental), time budgets per tier with the GMs, re-moderation of material edits (Which? December 2024) and a truthful description of the mode (leboncoin, Paris court, 2015).",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer lists the shared machinery (decision service and record, enforcement events and monitor, case tooling, evidence store, statement-of-reasons service, rule runtime and lifecycle, registry with local content, base models), hashed block lists only with DPO approval (purpose, two-year retention, DPIA) and no raw messages, the per-brand overlays, thresholds, reviewers and vertical detectors, and sampled prevalence of fraudulent listings by brand with trend next to time to action on fraud reports instead of removals.",
+      "severity": "minor"
+    }
+  ]
+}

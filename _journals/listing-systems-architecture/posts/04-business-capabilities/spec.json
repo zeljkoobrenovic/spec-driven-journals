@@ -1,0 +1,1795 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "business-capabilities",
+  "journal": "listing-systems-architecture",
+  "part": "part-1",
+  "title": "Map What the Marketplace Does Before What Runs It",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted, revised 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json; supporting claims C1 to C6 are written here. The conclusion's synthesis paragraph (p62) and the roadmap in p02 are new, required by the outcome spec.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between capability, value stream, product and system.",
+        "A three-level marketplace capability map with ten level-1 areas, its four value streams, and heat-mapping on differentiation, maturity and duplication."
+      ],
+      "believe": [
+        "Duplication alone proves nothing; the decision to share is made per capability, often at level 3, between shared machinery and local content."
+      ],
+      "can_do": [
+        "Answer 'what do we pay for several times?' with a verdict per capability: consolidate, split, decide commercially or keep as a deliberate duplicate."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, platform and product leaders preparing a consolidation or platform program, and integration leads after an acquisition.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "From earlier chapters: liquidity and its per-cell metrics, the business-model ladder, the industry's waves and reading a group's systems as sediment.",
+        "From the preface: Veldmark, its four brands, its cast and the Common Ground program; the fifteen failure-pattern names."
+      ],
+      "does_not_know": [
+        "Business-architecture vocabulary: capability, value stream, capability map levels, heat map.",
+        "The TOGAF and OMG business-architecture sources, and core domain charts.",
+        "Domain-driven design's bounded contexts (named here, taught in the next chapter)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a duplicated capability that differentiates one brand, the reader decides with the heat map rather than by duplication.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Three brands each run their own search, and search scores high on differentiation in one of them. Using only this chapter: should the group merge them, and how do you decide?",
+        "expected": "Not on duplication alone: score differentiation, maturity and duplication separately and split search at level 3. Share the generic engine and indexing where it fits, keep relevance local where it differentiates (Veldmark kept Motorvane on its own engine until a 2029 review), and check which value stream search is the bottleneck of."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Veldmark's question of what it pays for four times; capability, value stream, product and system; a three-level capability map; value streams; heat-mapping on three scores; the public record; Veldmark's five overlaps, commercial clash and deliberate duplicate; vertical differences, ways to build a map, failure modes and the Chief Architect's view. Evidence: practitioner sources and fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given two brands that sell to the same professional customers in one country, the reader says why a shared platform does not resolve the overlap and who decides it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Two of a group's brands sell packages to the same car dealers in one country, with two sales teams, two price lists and two feeds. Using only this chapter: can a shared platform resolve this overlap, and who should decide it?",
+        "expected": "No: it is a commercial overlap, a conflict between two go-to-market strategies, not a duplicated system. It is a portfolio decision for group leadership (at Veldmark, the Group CEO with the country general manager), with a technical option attached, such as one dealer feed endpoint feeding both brands."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given four marketplace names, the reader classifies each as a capability, a value stream, a product or a system and says why.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter, classify each of these as a business capability, a value stream, a product or a system, and say why: (a) 'the Solr cluster', (b) 'Saved searches and alerts', (c) 'the Motorvane Premium dealer package', (d) 'search-to-contact'.",
+        "expected": "(a) a system: software that implements part of a capability and will be replaced; (b) a capability: what the business must be able to do, independent of how; (c) a product: a packaged offer a customer buys; (d) a value stream: the end-to-end stages that deliver an outcome (a contact) to a buyer."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do we describe a marketplace's capabilities independently of the systems that implement them, and use that description to decide what a group shares?",
+    "claim": "A multi-brand group should decide what to share on a three-level map of what its marketplaces do, independent of systems and teams, cross-mapped to the value streams that produce liquidity and scored separately for differentiation, maturity and duplication; duplication alone proves nothing, because a duplicated capability that differentiates a vertical should stay local, and most answers come from splitting a capability at level 3 into shared machinery and local content.",
+    "disputed_by": "The view that consolidation starts from a systems inventory and that every capability the group runs more than once should be merged onto one implementation for synergy.",
+    "so_what": "A Chief Architect who accepts this answers a board's 'what do we pay for four times?' with a verdict per capability and reorders the program by the bottlenecks of value streams; Veldmark moved shared trust and safety ahead of media this way.",
+    "how_why": "Systems differ by brand while capabilities mostly do not: the Rotterdam bike passed through different systems in each brand but needed nearly the same capabilities. Veldmark's inventory of 412 applications could not say whether dealer packages and agency subscriptions were one capability; the heat map found five overlaps, of which identity and analytics were consolidations while trust and safety, search and the product catalog split at level 3, and one commercial overlap in Poland that no platform resolves.",
+    "supporting_claims": [
+      {
+        "id": "C1",
+        "claim": "Systems differ by brand while capabilities mostly do not, so a business capability, defined apart from value streams, products, systems and processes, is the unit on which brands can be compared."
+      },
+      {
+        "id": "C2",
+        "claim": "One three-level map with ten level-1 areas serves every vertical, and level 3 is where a capability splits into generic machinery and vertical content."
+      },
+      {
+        "id": "C3",
+        "claim": "Capabilities matter through the value streams that produce liquidity: cross-mapping locates each problem in a capability and shows the shared bottlenecks where investment should go."
+      },
+      {
+        "id": "C4",
+        "claim": "Differentiation, maturity and duplication must be scored separately and with evidence, because duplication alone proves nothing: a duplicated capability that differentiates stays local, and some duplicates are kept on purpose."
+      },
+      {
+        "id": "C5",
+        "claim": "Applied at Veldmark, the method confirmed the five known overlaps but turned three of them into level-3 splits, found a commercial overlap and a deliberate duplicate that no platform program would find, and reordered Common Ground."
+      },
+      {
+        "id": "C6",
+        "claim": "The map pays only as a governed practice: built from a reference model tested by value streams, decomposed only where verdicts differ, owned and versioned, scored with dated evidence, tied to money and used at every acquisition."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the group a system-independent description of what it does and a method to decide, capability by capability, what to share.",
+    "supports": [
+      "P1-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "public record and Veldmark worked example: the method is stated, then tested against documented cases and the fictional group"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "vertical differences, trade-offs, failure modes, Chief Architect's view and questions: the book's standard closing sections"
+      }
+    ],
+    "rationale": "Each section uses what the one before supplied. The scene poses the question and the argument in one listing; the definitions supply the unit (capability) the argument needs; the map is built from that unit; value streams need the map's capabilities to cross-map; the heat map scores the map's capabilities, and its verdicts are read against the stream bottlenecks in the worked example; the public record and Veldmark's worked example then test those verdicts, the record first because it shows the reasoning but no map, and Veldmark second because it shows a full map. Vertical differences come directly after the worked example because they explain two of its verdicts and return to the map's one-skeleton claim with the scores now known. The trade-offs, failure modes and governance look back on a method the reader has now seen applied; placed earlier, the stopping rule and the verdict-based failures would refer to verdicts not yet defined."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "What do we pay for several times, and what makes us money? (the CFO's and investor's question in WHY THE BUSINESS CARES, which Veldmark's Group CEO puts to Ingrid as 'what exactly do we pay for four times?')"
+    },
+    "bridge": {
+      "from_reader_world": "The previous chapter showed how a group comes to run several brands on stacks from different waves; a group about to decide what to share has systems inventories and program lists, not a description of what its marketplaces do.",
+      "to_topic": "That description is a capability map, the one page on which a general manager, a CFO, a platform lead and an acquirer's integration team mean the same thing by the same box."
+    },
+    "thesis_statement": {
+      "text": "Decide what to share on a three-level map of what the marketplaces do, cross-mapped to value streams and scored separately for differentiation, maturity and duplication; duplication alone proves nothing, and most answers split a capability at level 3 into shared machinery and local content.",
+      "placement": "KEY POINTS callout (all three bullets); restated in the scene's last paragraph (p07) and in the heat-map verdicts (p33)."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p02, which lists the sections in order and names what later chapters own.",
+      "promises": [
+        {
+          "promise": "Pose Veldmark's question: what does the group pay for four times?",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define capability, value stream, product and system.",
+          "kept_in": [
+            "terms"
+          ]
+        },
+        {
+          "promise": "Build a three-level map with ten level-1 areas.",
+          "kept_in": [
+            "map"
+          ]
+        },
+        {
+          "promise": "Cross-map it to four value streams.",
+          "kept_in": [
+            "value-streams"
+          ]
+        },
+        {
+          "promise": "Heat-map it on differentiation, maturity and duplication, without the reflex that every duplicate should be merged.",
+          "kept_in": [
+            "heat-map"
+          ]
+        },
+        {
+          "promise": "Check the method against the public record.",
+          "kept_in": [
+            "public-record"
+          ]
+        },
+        {
+          "promise": "Follow Veldmark to five overlaps, one commercial clash and one deliberate duplicate.",
+          "kept_in": [
+            "worked-example"
+          ]
+        },
+        {
+          "promise": "Show where verticals differ on the one map.",
+          "kept_in": [
+            "verticals"
+          ]
+        },
+        {
+          "promise": "Close with ways to build a map, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "failure-modes",
+            "chief-architect",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A group that runs several brands on stacks from different waves needs, before it can decide what to share, a description of what its marketplaces do that survives the next reorganization and replatforming; that description is a capability map, and a well-made one is the only page on which a general manager, a CFO, a platform lead and an integration team mean the same thing by the same box.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The previous chapter's finding that groups run several brands on stacks from different waves.",
+            "shows": "Sets the problem the history left open: the systems explain the past, not what to share."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter opens with a board asking what the group pays for four times, defines four confused terms, builds a three-level map, cross-maps it to four value streams, heat-maps it on three scores, checks the method against the public record, follows Veldmark's mapping, shows where verticals differ on the map, and closes with ways to build a map, failure modes, the Chief Architect's view and questions to ask; it leaves decomposition, the vertical analysis and consolidation to later chapters.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The sections in order, and the later chapters that own bounded contexts, vertical requirements and platform consolidation.",
+            "shows": "Lets a reader of the opening predict the chapter and see its edges."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The need for a capability map.",
+          "introduces": "The steps the chapter takes to build and use one.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The running example is Veldmark, the book's fictional group, whose new Group Chief Architect is asked in March 2027 what the group pays for four times and uses a capability map to answer and to test the €140 million program approved before she arrived.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The method the chapter will build.",
+          "introduces": "The fictional group and the question it will be tested on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: What Do We Pay for Four Times?",
+      "controlling_idea": "Veldmark's program list and systems inventory cannot say what the group pays for four times, while one Rotterdam listing shows that brands differ in systems but share capabilities.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Poses the board's question and shows, with one listing, why it must be answered at the level of capabilities."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "From the program Ingrid inherits, to the question it cannot answer, to one listing that shows why, to the general argument. The argument stated before the bike would be an assertion; the bike stated before the question would have nothing to test."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The need for a description independent of systems.",
+        "introduces": "The concrete situation that needs one: Veldmark's board question.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "On 9 March 2027, five weeks into the job, Ingrid inherits Common Ground: a €140 million program to 2030 that lists platforms to share and promises €38 million a year in lower run costs.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Common Ground: €140 million over 2027–2030, retire Yardstick by end of 2029, cut run costs by €38 million a year by 2030; the list of nine platforms to share.",
+              "shows": "The program already decided what to build before anyone mapped what the business does.",
+              "source": "scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "The Group CEO's question, what the group pays for four times and which of those make money, is answered neither by the program list, which names platforms, nor by the 412-application inventory, which cannot say whether two brands' paid packages are the same capability.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Henrik de Boer's question from the private-equity owner; Mateus Carvalho's inventory of 412 applications; 'Motorvane dealer packages' versus 'Hearthly agency subscriptions'.",
+              "shows": "Shows that neither a list of platforms nor a list of systems can count what the business does several times.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The program's list of platforms.",
+            "introduces": "The question that list cannot answer, and the inventory that cannot answer it either.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "In her first workshop Ingrid asks which systems the Rotterdam city bike passed through, which differs for every brand, and which capabilities it needed, which is nearly identical for all four.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The €240 Rotterdam city bike: published six minutes after submission, 312 saved searches matched, first contact, a phishing message posing as a Safe Deal payment link, all within half an hour.",
+              "shows": "One listing exercises many capabilities; asked by system the brands differ, asked by capability they agree.",
+              "source": "scenario-ledger.md, worked example 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The question neither list answers.",
+            "introduces": "A single listing used to test the two ways of describing the group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Systems differ by brand while capabilities mostly do not, so comparing brands and deciding what to share has to happen at the capability level.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: four differently shaped system landscapes connected to one shared row of identical capability tiles.",
+              "shows": "Shows the argument in one picture: different systems, the same capabilities."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The workshop's two answers.",
+            "introduces": "The chapter's argument drawn from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "terms",
+      "heading": "Capability, Value Stream, Product, System",
+      "controlling_idea": "Capability, value stream, product, system and process answer different questions, live for different times and have different owners, and only a map of capabilities that is stable, implementation-free and comparable can answer the board's question.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Defines the unit of comparison the thesis relies on and separates it from the terms it is confused with."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The four terms are defined one after another, capability first because the rest are defined against it; the comparison table follows the last definition; the properties follow because they are the test of a good capability, and the answer to Ingrid's question comes last because it needs all of them."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The argument that brands are compared on capabilities.",
+        "introduces": "Precise definitions of capability and the terms it is confused with.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Four terms do most of the work, and confusing them produces most bad maps; a fifth, process, matters mainly as what a capability map should not turn into.",
+          "function": "transition"
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "A business capability is what the business does, independent of how, where and by whom, as TOGAF defines it; content moderation is a capability, the Solr cluster is not.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The Open Group, TOGAF Series Guide: Business Capabilities, Version 2 (2022), paraphrased: a particular ability that a business may possess or exchange to achieve a specific purpose.",
+              "shows": "Grounds the definition in the standard the reader may already use."
+            },
+            {
+              "kind": "example",
+              "what": "Content moderation, Saved searches and alerts, Entitlements and quotas versus the Solr cluster, the Trust team, Yardstick's ad-insertion module.",
+              "shows": "Shows the line between what the business does and what or who does it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four terms.",
+            "introduces": "The first, and the one the chapter is about.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A value stream is the end-to-end sequence of stages that delivers an outcome, commonly cross-mapped to the capabilities each stage needs; in a marketplace the main ones are the journeys that create liquidity.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OMG Business Architecture Working Group (2012), as quoted by Wikipedia: 'the Value Stream view defines the end-to-end set of activities that deliver value to external and internal stakeholders'.",
+              "shows": "Gives the business-architecture source for the term and for cross-mapping."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Capability.",
+            "introduces": "Value stream.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A product is a packaged offer that a customer uses or buys, composing many capabilities, while a capability serves many products.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Tradeyard for iOS', 'Motorvane Dealer Hub', the 'Top listing' bump.",
+              "shows": "Shows offers, not abilities."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Value stream.",
+            "introduces": "Product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "A system is software that implements part of one or more capabilities and is replaced long before the capability it serves, which outlives every other term.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Yardstick, the Motorvane listing service, Hearthly's OpenSearch cluster.",
+              "shows": "Shows the most brand-specific term."
+            },
+            {
+              "kind": "table",
+              "what": "Table: term, question it answers, lifetime (capability decades, system 3–15 years, process months), marketplace example, owner.",
+              "shows": "Shows why capability is the stable unit: it outlives the others and has a business owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Product.",
+            "introduces": "System, and the five terms compared.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "Three properties make a capability map useful, and each is easy to break: it is stable, implementation-free and comparable across brands.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Duplicate and entity resolution existed when Hearthly removed duplicates by hand and will exist when a model does it; 'Salesforce CRM' versus 'Professional account management'.",
+              "shows": "Gives a test for each property."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The definitions.",
+            "introduces": "What a map of capabilities must preserve to be useful.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A capability map is the business-side half of a bargain software architects already know: Lewis and Fowler align services to business capabilities, and Conway shows teams shape designs, so the capabilities must be named before teams and services align to them, which is also why only the map, not the 412-application inventory, can answer Ingrid's question.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Lewis and Fowler (2014): microservices 'organized around business capability'; Conway (1968): organizations are 'constrained to produce designs which are copies of the communication structures of these organizations'.",
+              "shows": "Shows that aligning software and teams to capabilities is established practice, which needs the capabilities named first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three properties.",
+            "introduces": "Why only a map with them answers the board's question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "heading": "A Three-Level Capability Map for Listing Marketplaces",
+      "controlling_idea": "A reusable marketplace map has ten level-1 areas and 54 level-2 capabilities, and its level 3 is where a capability splits into generic machinery and vertical content, which is why one skeleton serves every vertical.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "Gives the map itself and shows, at level 3 and across two reference models, that machinery is shared and content is specific."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From level 1 to level 2 to the placements in it, then to level 3, its examples and its pattern; the cross-vertical evidence comes last because it relies on the machinery-and-content pattern to explain why one skeleton suffices."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The definitions and the three properties.",
+        "introduces": "A map built to them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "The map's ten level-1 areas follow the flow of a listing marketplace from supply to transaction, with trust, monetization, professional services, data and platform cutting across it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the ten level-1 areas, five on the liquidity flow and five across it.",
+              "shows": "Shows the top of the map at a glance."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Level 2 breaks each area into capabilities a business owner recognizes and that can be compared across brands; Veldmark's map has 54.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: ten level-1 areas, their level-2 capabilities, and what each area is for.",
+              "shows": "Gives the reusable map a reader can adapt."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ten areas.",
+            "introduces": "The capabilities inside each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "Four placement choices will be challenged, so the map records the reason for each: taxonomy under Listing Management, identity split between Trust and Platform, Professional Services as its own area, and Transactions kept even where small.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The reasons for each placement and the chapters that own the detail.",
+              "shows": "Shows that placements are decisions with reasons, not taste."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The level-2 table.",
+            "introduces": "The placements in it that readers will dispute.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Level 3 is where a capability splits into parts that behave differently, and it is written only where a decision is pending; Veldmark has 212 level-3 capabilities.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Levels 1 and 2.",
+            "introduces": "Level 3, and when to write it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Two level-2 capabilities, search and filtering and entitlements and quotas, show that level 3 separates generic engine parts from vertical or commercial parts.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: level-3 capabilities of Search and filtering and of Entitlements and quotas, with why the split matters.",
+              "shows": "Shows the engine and ledger as generic, relevance and package definitions as brand-specific."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Level 3 in general.",
+            "introduces": "Two concrete splits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The pattern recurs across the map: the machinery is generic and the content is specific, so a level-2 capability that several brands run and that also sets one of them apart gives no clear answer about sharing until level 3 splits it into a shared part and a local part.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Search engine versus relevance; entitlement ledger versus package design; moderation pipeline versus policy; taxonomy service versus category trees.",
+              "shows": "Shows the same split in four capabilities."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: one shared machine with brand cartridges for relevance, packages, policy and category trees.",
+              "shows": "Shows shared machinery with local content."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two splits.",
+            "introduces": "The general pattern and what it does to heat-map verdicts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Two generic reference models, one for general listings and one for real estate, share the same 88 capabilities, of which only nine are genuinely different in the same slot.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Author's Productscape reference models: identical 88 capabilities in five root groups; about two-thirds identical in meaning, roughly a dozen renamed, nine different (protected payment versus mortgage financing, and others).",
+              "shows": "Shows that verticals share one skeleton; they describe no real company.",
+              "source": "_research/productscape-digest.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Machinery shared, content specific.",
+            "introduces": "Evidence that one map serves different verticals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "A marketplace capability map generalizes across verticals by renaming and re-weighting, not by new top-level structure, which is why Veldmark keeps one map for four brands and vertical differences show up in level-3 capabilities, scores and descriptions.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The reference models' overlap.",
+            "introduces": "The lesson for a multi-vertical group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "value-streams",
+      "heading": "Value Streams: Where Capabilities Meet Outcomes",
+      "controlling_idea": "Cross-mapping the four marketplace value streams to capabilities turns a vague complaint into a located one and shows the shared bottlenecks where investment pays most.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Ties capabilities to the liquidity outcomes that justify investing in them."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim that capabilities matter through streams, then the four streams, then one stream drawn and its problems located, then the second use across streams, then the cautions that keep both uses honest."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "A map that names what the business does.",
+        "introduces": "Why that matters: the outcomes those capabilities produce.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "A capability map becomes useful only when cross-mapped to the value streams that produce liquidity, and four streams cover most of a group's value: list-to-sell, search-to-contact, lead-to-deal and pro onboarding.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: the four streams with stages, outcome metrics and main customer.",
+              "shows": "Defines each stream by the outcome the business measures."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The cross-map names the capabilities each stage needs, as list-to-sell for the Rotterdam city bike shows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: list-to-sell for the €240 Rotterdam bike, cross-mapped to level-2 capabilities, with the six-minute delay in moderation and indexing and the Ghost Inventory hand-off.",
+              "shows": "Shows one stream located on the map."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four streams.",
+            "introduces": "One of them drawn for the bike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "Each of the bike's three problems sits in a specific capability: the six-minute delay in moderation and indexing, the phishing message in fraud scoring applied to messaging, and the sold bike in the alert digest in the hand-off between lifecycle and alerts.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Six minutes to searchable; phishing message delivered at 20:11 from a domain registered that day; sold at 18:10 Monday, removed from search at 18:11, still in the next morning's digest.",
+              "shows": "Shows a stream-level complaint resolved into capability-level causes.",
+              "source": "scenario-ledger.md, worked example 1"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The bike's stream on the map.",
+            "introduces": "Where each of its problems is located.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The second use of the cross-map is to find shared bottlenecks: at Veldmark, fraud and risk scoring sits in the critical stage of three streams, a stronger case for a shared trust-and-safety platform than 'we have four stacks'.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: seven level-2 capabilities against the four streams, with the binding constraints in bold (fraud and risk scoring bold in list-to-sell, search-to-contact and pro onboarding).",
+              "shows": "Shows one capability recurring as a bottleneck across streams."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first use: locating one stream's problems.",
+            "introduces": "The second use: capabilities that bind several streams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The bold cells are where Veldmark's 2027 evidence placed each stream's binding constraint, and the table is a working tool redrawn when a constraint moves.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The bottleneck table.",
+            "introduces": "How to read it and how long it stays true.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "Two cautions keep value streams honest: measure stream outcomes rather than capability activity, and map jobs to streams before streams to capabilities.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Listings ingested per day' versus 'share of dealer listings searchable within ten minutes of a feed update'; one of the author's two reference models, in parts tool-generated, that mapped jobs straight to capabilities, so every capability served every customer.",
+              "shows": "Shows each caution's failure.",
+              "source": "_research/productscape-digest.md (traceability gap)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The cross-map's two uses.",
+            "introduces": "The two ways it is commonly misused.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "heat-map",
+      "heading": "Heat-Mapping: Differentiation, Maturity, Duplication",
+      "controlling_idea": "A heat map scores differentiation, maturity and duplication separately and with evidence, and the three scores together yield verdicts in which duplication alone decides nothing and some duplicates are kept on purpose.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Gives the method that turns the map into verdicts and makes the thesis's central claim operational."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The need for three scores, then each score, then the verdicts they produce, then the verdict maps forget, then the rules that keep the scores honest. The rules come last because they apply to all three scores and the verdicts built on them."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The map and its value streams.",
+        "introduces": "The scores that turn them into decisions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "A heat map colors the map by scores, and a multi-brand group needs three dimensions scored separately.",
+          "function": "definition"
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Differentiation asks how much a capability makes customers choose us in this vertical, and product and commercial leaders, not engineers, score it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "DDD Crew, Core Domain Charts: business differentiation is 'provided by product managers or business stakeholders', while engineers judge model complexity.",
+              "shows": "Supports separating who scores differentiation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three dimensions.",
+            "introduces": "The first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Maturity asks how well the capability works today against what the business needs, scored with evidence on a five-point scale per implementation.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: scores 1 (absent or manual) to 5 (leading), with the evidence that justifies each.",
+              "shows": "Makes maturity scores checkable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Differentiation.",
+            "introduces": "Maturity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Duplication counts separate implementations; it is the easiest score to collect, which is why it dominates badly made heat maps.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Maturity.",
+            "introduces": "Duplication, and its danger.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The three scores combine into a small number of verdicts, from consolidate to split at level 3 to keep separate on purpose.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Verdict table: differentiation × maturity × duplication → consolidate, promote the strongest, buy or keep, split at level 3, invest locally, protect, keep separate on purpose.",
+              "shows": "Shows that high duplication leads to different verdicts depending on the other two scores."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three scores.",
+            "introduces": "What they decide together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Some duplication is a design decision: Veldmark keeps Keybridge's listing distribution and Hearthly's feed ingestion apart on purpose, because merging them would destroy the neutrality Keybridge's business depends on.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Keybridge, the acquired agent CRM that publishes to Hearthly's competitors; March 2027 decision that it stays a neutral SaaS and Hearthly may not use its agency data for ranking or sales targeting.",
+              "shows": "Shows a duplicate that a duplication-only score would wrongly consolidate.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The verdict table's last row.",
+            "introduces": "Why maps forget it, with Veldmark's case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "A heat map is only as good as its evidence, so scores carry named evidence and a date, are made per implementation before aggregating, and come from separate scorers.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Maturity 2: 138,000 listings a week go to human review, queue p95 four minutes' versus 'the team feels it is weak'; an average that hides a strong Tradeyard NL and an absent Keybridge implementation.",
+              "shows": "Shows what valid and invalid evidence look like."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The verdicts.",
+            "introduces": "What makes them trustworthy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "public-record",
+      "heading": "In Practice: What the Public Record Shows",
+      "controlling_idea": "No group has published its capability map, but dated public sources show the reasoning such maps support and its limits: consolidating generic capabilities, the gap between overlapping needs and a shared product, monetization as a differentiator and describing the business before deciding what runs it.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Tests the method's verdicts against what real marketplace groups have documented."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Grouped by the lesson each source carries: consolidating generic capabilities, the limit of overlap scores, differentiating monetization content, and the order of description before decomposition, which hands over to the worked example's order of work."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The heat-map method and its verdicts.",
+        "introduces": "Documented public cases where similar reasoning was applied.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "No marketplace group has published its capability map, but the public record shows the reasoning maps are used for and its limits.",
+          "function": "context"
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Adevinta consolidated about ten duplicated experimentation tools towards one platform, and its 2023 report names cloud, data, chat and moderation as consolidated enabling capabilities, the kind a heat map scores as generic.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Tech Blog (2024), 'From ten to one': 'Every team had its own tool for A/B testing...'; 22 marketplaces in 2021; scoring matrix with a three-to-five-year horizon.",
+              "shows": "Shows a low-differentiation, high-duplication capability consolidated, and that it took years.",
+              "source": "Adevinta, 2024"
+            },
+            {
+              "kind": "quotation",
+              "what": "Adevinta Annual Report 2023 (2024): 'consolidating enabling capabilities such as cloud and data, and overarching elements such as chat and moderation'.",
+              "shows": "Shows which capabilities a group treats as generic.",
+              "source": "Adevinta, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The record's reasoning.",
+            "introduces": "A first documented case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Adevinta's 2023 plan for a unified generalist platform, citing overlapping customer needs, was followed after the 2024 take-private by a decentralised operating model, which shows that an overlap score measures similarity of needs, not the cost of sharing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Annual Report 2023 (2024): 'a pronounced overlap in customer needs'; 'into a unified global platform'. Aurelia UK Feederco Ltd, Strategic Report 2025 (2026): 'a decentralised, standalone operating model'.",
+              "shows": "Shows capital strategy turning a shared platform from synergy into separation cost.",
+              "source": "Adevinta 2024; Aurelia UK Feederco 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Consolidation of generic capabilities.",
+            "introduces": "A bolder overlap-driven step and its reversal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Rightmove's and Autotrader's results show product and pricing as revenue levers, from which I infer that package design and pricing is a differentiating level-3 capability while the entitlement ledger is generic.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Rightmove 2025 results (2026): 62% of agency ARPA growth from product; Auto Trader FY26 results (2026): the 1 April 2025 pricing and product event.",
+              "shows": "Supports the machinery/content split in monetization, labeled as inference.",
+              "source": "Rightmove 2026; Auto Trader 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Adevinta's lessons on generic capabilities and overlap.",
+            "introduces": "A case where the differentiating content is commercial.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Vinted identified almost 300 domains over at least two years before decomposing its monolith, showing the order the chapter argues for: describe what the business does before deciding what runs it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Vinted Engineering (2026): 'Our first step wasn't to break the monolith apart. It was to understand it.'; 'identified almost 300' domains; 'guided how we restructured teams'.",
+              "shows": "Shows business description preceding technical decomposition.",
+              "source": "Vinted, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Evidence on what to share.",
+            "introduces": "Evidence on the order of the work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked-example",
+      "heading": "Veldmark Worked Example: Five Overlaps, One Commercial Clash, One Deliberate Duplicate",
+      "controlling_idea": "In three weeks Veldmark's map confirmed the five overlaps the board knew, turned three of them into level-3 splits, added a commercial overlap and a deliberate duplicate, and moved shared trust and safety ahead of media.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Shows the whole method applied, with the verdicts the thesis predicts."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The three weeks in order, then their output table, then its reading, then the change to the program, then the one-page deliverable. Each step uses the previous one's output."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The public record, which shows the reasoning but no map.",
+        "introduces": "A full map, scored and read, in the fictional group.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Ingrid runs the mapping in three weeks of March 2027: draft the map without the inventory, map 412 applications to capabilities, then score with separate scorers.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Seven labels changed in week 1; 371 of 412 applications mapped cleanly, Yardstick alone to 23 capabilities; Noor Hassan's product leads, engineering leads and architecture as scorers; Olivier Petit's revenue attribution.",
+              "shows": "Shows the method's steps run with real roles.",
+              "source": "scenario-ledger.md, business-capabilities line"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: value streams explain why capabilities matter; systems and teams map to capabilities.",
+              "shows": "Shows the layering used."
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The heat map's decisive rows list implementations, differentiation, dated maturity per implementation and the verdict for each capability.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Heat-map table: identity, trust and safety, search, catalog and entitlements, analytics, media, taxonomy, ranking, ML, Poland professional sales, feed ingestion and distribution, each with scores and verdict.",
+              "shows": "Gives the evidence behind every finding that follows.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three weeks.",
+            "introduces": "Their output.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "The five overlaps matched the board's 'four of everything', but the map changed three answers to splits and added a commercial overlap and a deliberate duplicate that no platform program would have found.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Identity and analytics consolidate (Veldmark ID approved June 2027; govern the three definitions of a contact first); trust and safety, search and catalog split (shared OpenSearch for Tradeyard and Hearthly from September 2027, Motorvane on Elasticsearch until a 2029 review; 'share the model, not the packages'); Poland dealer clash as a portfolio decision for Henrik de Boer and Katarzyna Nowak; Keybridge kept with a reason and review date.",
+              "shows": "Shows each verdict type of the method occurring in practice.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The heat-map rows.",
+            "introduces": "What reading them changed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The map also changed Common Ground's sequence: media, expensive but not broken, moved behind trust and safety, which was immature in three places and a bottleneck of three streams.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Shared trust-and-safety platform live for Tradeyard NL and BE in November 2027; media after the five overlaps.",
+              "shows": "Shows the value-stream bottleneck reordering investment.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The verdicts per capability.",
+            "introduces": "Their effect on the program's order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The output on 31 March 2027 was one page without a target architecture, and that page is what made the later design arguable.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The findings and the new sequence.",
+            "introduces": "The deliverable and what it was not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Two of Veldmark's verdicts turned on the vertical, and such verdicts can be predicted before scoring, because each vertical weights the shared skeleton differently and adds a few level-3 capabilities.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C2",
+          "C4"
+        ],
+        "how": "Shows where verticals differ on one map and how that changes scores."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The general vertical profile first, then the two Veldmark verdicts it explains; the Veldmark paragraph needs the table's weighting to make sense."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Veldmark's verdicts, two of which turned on the vertical, and the map section's claim that one skeleton serves every vertical.",
+        "introduces": "Where verticals differ on that one skeleton, and the two Veldmark outcomes it explains.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Results that turn on the vertical, a verdict and a score at Veldmark, can be predicted, because each vertical weights the shared skeleton differently and adds a few level-3 capabilities of its own.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table: most differentiating areas, vertical-only level-3 capabilities, supply shape, transactions and where money is mapped, for general classifieds, real estate, automotive and jobs and recommerce.",
+              "shows": "Shows vertical differences as weights and level-3 additions, not new structure."
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "At Veldmark this explains why the two valuation models stay local on a shared ML platform and why Hearthly's feed ingestion scores higher on differentiation than Tradeyard's.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Valuo and Motorvane's market-value model in one level-2 capability; 84% of Hearthly listings via feeds from about 160 software vendors.",
+              "shows": "Shows vertical weighting changing a verdict.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The vertical table.",
+            "introduces": "The verdict and the score it explains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs: Ways to Build a Capability Map",
+      "controlling_idea": "Of four ways to start a map, a reference model tested and weighted by value streams works best for a group, and a capability is decomposed one level further only when its parts would get different verdicts.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Gives the reader the choices behind building the map and the stopping rule for its depth."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four starting points compared, then the combination chosen, then the second trade-off on depth, which needs the levels and verdicts already shown."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The finished Veldmark map and its vertical weightings.",
+        "introduces": "The choices behind building any map.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "There are four common starting points, reference model, systems inventory, value stream and org chart, and the choice shapes what the map can answer.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Trade-off table: how each approach works, strengths, weaknesses, when it is right.",
+              "shows": "Shows why systems-first and org-first produce inventories and org charts."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Veldmark combined the reference model and the value streams and used the systems inventory only as a mapping step.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Veldmark's combination of the first and third approaches.",
+              "shows": "Shows the recommended combination in use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four approaches.",
+            "introduces": "The one Veldmark chose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Granularity is the second trade-off: each level serves a different audience, and a capability is decomposed one level further only when its parts would get different verdicts.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Search splits at level 3 because engine and relevance get different verdicts; Notifications does not.",
+              "shows": "Shows the stopping rule applied."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first trade-off: where to start.",
+            "introduces": "The second: how deep to go.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Capability maps fail in eight recurring ways, each of which turns the map back into an inventory, an org chart or a one-off document.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "C6",
+          "C4"
+        ],
+        "how": "Names what breaks the method so the reader can avoid it."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "In the order the method introduced its parts: naming (inventory, org chart), then depth (levels came before scores), then scoring, then the relationships drawn between capabilities and the evidence behind scores, then failures of use and record keeping, which only matter once a map exists."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How to build and weight the map.",
+        "introduces": "How maps commonly go wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Capability names that are system names make the map a copy of the inventory; the test is whether the capability would survive the replacement of every system that implements it.",
+          "function": "analysis"
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "A map with a box per department changes at every reorganization, so ownership belongs in a separate table.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "A map disguised as the inventory.",
+            "introduces": "A map disguised as the org chart.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Mapping everything to level 4 takes months and is out of date on delivery.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Naming failures.",
+            "introduces": "A depth failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "A heat map scored only on duplication merges differentiating capabilities and starts The Forced Fit.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A depth failure.",
+            "introduces": "A scoring failure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Generated or uniform dependencies between capabilities hide the real ones, so keep only relationships that shape ownership, data, reliability, releases or incidents.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Failures of the map's boxes and scores.",
+            "introduces": "A failure of the lines drawn between the boxes.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Scores with decimals and no evidence, the failure the heat map's first evidence rule guards against, look measured and invite false confidence.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "False dependencies.",
+            "introduces": "False precision.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "A map made once for a kick-off goes stale; it pays only with an owner, a version and a review cycle.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Failures of the map's content.",
+            "introduces": "A failure of its use.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "If the reason for a deliberate duplicate such as Keybridge is not written on the map, the next efficiency program will try to merge it.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A map not maintained.",
+            "introduces": "A decision not recorded.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale the capability map is a governance instrument: the Chief Architect owns its vocabulary, separates the scorers, defaults to splitting, ties it to money and uses it at every acquisition.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Turns the method into the decisions a Chief Architect owns."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The ways maps fail.",
+        "introduces": "The governance that prevents them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "form": "list",
+          "controlling_idea": "Five decisions follow from treating the map as a governance instrument: own the vocabulary, separate the scorers, default to 'share the machinery, keep the content', tie the map to money and use it at every acquisition.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Veldmark's €38 million run-cost target became credible only when allocated to capabilities; Tool 1 in the toolkit.",
+              "shows": "Shows the money link in practice.",
+              "source": "scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Over time, watch the number of deliberate duplicates, the share of capabilities with an owner and dated evidence, and whether teams and contexts align to the map.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The five decisions.",
+            "introduces": "What to watch after making them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Nine questions let a reader test a group's capability map in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Gives the reader the method as questions to take into a review."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The same points as questions for a review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "Nine questions test a group's map: names that survive system replacement, shared meaning across brands, binding constraints, traceable scores, level-3 splits, deliberate duplicates, commercial overlaps, cost and revenue, and readiness for the next acquisition.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Capabilities to Contexts",
+    "synthesis": "The answer to 'what do we pay for four times?' is not a count of systems but a verdict per capability, and the verdict needs all three instruments together: the map makes brands comparable, the value streams say where a duplicate hurts liquidity, and the separate scores say whether to merge, split or keep it.",
+    "so_what": "A Chief Architect who answers the board this way can defend the program's order with evidence, and can say which duplicates to keep, which to split and which overlaps are not platform questions at all.",
+    "callback": {
+      "to": "Henrik de Boer's question 'what exactly do we pay for four times?' and the Rotterdam city bike in the opening scene.",
+      "how": "The conclusion answers the question with Veldmark's verdicts and recalls that the bike needed the same capabilities in every brand."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Answer the board's question with a verdict per capability, then take the map to the next step: bounded contexts."
+    },
+    "hand_off": {
+      "to": "bounded-contexts",
+      "relationship": "sequence",
+      "carries_over": "The capability map, which says what the group does and where it does it several times but is not a design.",
+      "introduces": "The next step from map to design: bounded contexts, their owners and the relationships between them, using the capabilities as candidate contexts."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The method, its application and its governance.",
+      "introduces": "The answer to the opening question.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p62",
+        "controlling_idea": "The Group CEO's (Henrik de Boer's) question is answered not by a count of systems but by a verdict per capability, which needs the map, the value streams and the three scores together, as Veldmark's two consolidations, three splits, commercial clash and kept duplicate show.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p63",
+        "controlling_idea": "The map says what the group does and where it does it several times, but not where one model of a listing ends, who owns it or how parts talk; that is a decomposition question for bounded contexts.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the map answers.",
+          "introduces": "What it does not, and the next chapter that does.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Software decomposition, context maps and aggregates.",
+      "covered_in": [
+        "bounded-contexts"
+      ]
+    },
+    {
+      "topic": "The business-model taxonomy (classifieds, lead generation, transactional).",
+      "covered_in": [
+        "marketplace-taxonomy"
+      ]
+    },
+    {
+      "topic": "Liquidity metric definitions.",
+      "covered_in": [
+        "liquidity-and-network-effects"
+      ]
+    },
+    {
+      "topic": "The full shared-versus-specific vertical analysis.",
+      "covered_in": [
+        "vertical-requirements"
+      ]
+    },
+    {
+      "topic": "Consolidation sequencing after acquisitions.",
+      "covered_in": [
+        "platform-consolidation"
+      ]
+    },
+    {
+      "topic": "Team design.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Made level 3 the place where verdicts are decided ('share the machinery, keep the content') rather than treating level-2 heat-map colors as final, because duplicated-and-differentiating cells otherwise lead nowhere."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Defined the five Veldmark overlaps as the ledger's 'four of everything' (identity, trust and safety, search, product catalog, data) so the chapter confirms, then refines, what the board already knew; added the Poland dealer clash as a commercial overlap and Keybridge as a deliberate duplicate to show what platform-only maps miss."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Productscape reference models' shared 88-capability skeleton as evidence that one map serves all verticals, labeled as the author's generic models, not company fact."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Rejected an org-first or systems-inventory-first mapping method as the recommended approach; both are presented in the trade-off table.",
+      "rejected": [
+        "Org-first mapping",
+        "Systems-inventory-first mapping"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the five-term table, the three-level map, the value-stream cross-map, the heat-map scales and verdict table, the dated public examples, and the trade-off/vertical/failure/Chief-Architect inventory were inventories of contents and are dropped as criteria (their contents are now paragraph evidence; dating of sources stays governed by the style guide). The Veldmark-findings criterion is replaced by AC-1 (journal spec) and the minor AC-4 (commercial overlap); the term-distinction criterion becomes the minor AC-5. AC-4 and AC-5 are added by this post spec at severity minor. No word limit was set by spec.md; length.max_words is the published prose length (7,079 words by check_draft.py, which counts callouts and tables) plus 5%, 7,430.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims C1 to C6 written here (the journal spec gives none for this post), one per step of the argument: unit of comparison, the map and its level 3, value streams, the three scores, the Veldmark application, the governed practice."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes) taken: Failure Modes reordered so the level-4 failure (depth) precedes the duplication-only failure (scoring), matching the order the method introduces levels and scores; transitions p53 to p55 rewritten; the section and post-level rationales corrected (the heat map scores the map; its verdicts are read against stream bottlenecks in the worked example); p02 roadmap now names the opening question and Questions to Ask; p20 glosses 'duplicated and differentiating' as a forward pointer to the heat map; p62 names the Group CEO before using his name.",
+      "rejected": [
+        "Merging Vertical Differences into the map section (the book's chapter shape keeps it as its own section).",
+        "Moving the level-3 depth rule from p18 to p48.",
+        "Holding back Keybridge (p34) and the trust-and-safety bottleneck (p26) until the worked example."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-1 draft check, failures at fault in the spec: (1) Vertical Differences moved from after the trade-offs to directly after the worked example (both flow readers could not say why it sat after the trade-offs; it explains two worked-example verdicts and continues the one-skeleton claim); transitions into verticals and trade-offs rewritten; roadmap promise and p02 reordered. (2) p14 rewritten as one idea (the map as the business-side half of the capability-alignment bargain, which is why only it answers Ingrid). (3) p20 no longer uses a heat-map verdict before heat maps are taught. (4) p56 and p58 now name the heat-map rule and the Keybridge case they recall, so the repetition reads as a callback.",
+      "rejected": [
+        "Merging Vertical Differences into the map section (the chapter shape keeps it as its own section).",
+        "Cutting p56 and p58 (failure modes are the book's standard checklist)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-2 draft check, failures at fault in the spec: (1) p12 rewritten as one idea (a system is replaced long before the capability it serves; the table is its evidence). (2) Vertical Differences kept after the worked example (moving it before the heat map would put Veldmark verdicts before scoring), but its controlling idea and p49 now say why it sits there: verdicts that turn on the vertical can be predicted before scoring.",
+      "rejected": [
+        "Moving Vertical Differences next to 'One skeleton, many verticals' (p50 would then cite heat-map scores before the heat map)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a synthesis paragraph (p62) to the conclusion that answers the opening question and calls back to it; the published conclusion was a hand-off only. Rewrote p02 into a roadmap that names every section in order, and p03 to state Veldmark's question.",
+      "rejected": [
+        "Keeping the one-paragraph hand-off as the whole conclusion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: fraud and risk scoring is now bold in the list-to-sell cell (message scams) of the bottleneck table, so the table agrees with p26 ('critical stage of three streams'), with p44 ('bottleneck stage of three value streams') and with the chapter's evidence (the phishing message in problem 2; ledger: ~41,000 payment-link phishing reports NL+BE in 2026). Text kept; table changed.",
+      "rejected": [
+        "Rewording p26 to 'critical in three, binding in two' (would contradict p44 and the bike's phishing problem)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "'Generated capability/reference model I reviewed' (p28, p35, p55) now explained at first use as one of the author's two Productscape reference models, in parts generated by a tool rather than written by hand (per _research/productscape-digest.md: traceability gap, synthetic-looking KPIs, uniform generated dependencies); p35 and p55 refer back to 'the tool-generated parts' of those models. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Terms section: p08 now announces process as a fifth term that matters as what a map should not turn into; p12's clumsy clause rewritten ('The table below sets all five terms side by side, and the capability outlives every other one'). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Restored the published sentence 'The test: could the capability survive the replacement of every system that implements it today?' to the inventory failure mode (p51), cut in round 3 for length (rule: published text is not cut). length.max_words raised from 7,430 to 7,500 (under 10%) to pay for it and the glosses above; draft is 7,473 words."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor p49/p50 finding fixed: p49 now says two heat-map results turned on the vertical, a verdict and a score, and p50 names each ('The verdict:', 'The score:')."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims C1 to C6 and the minor criteria AC-4 and AC-5 accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric and reader reorder suggestions not taken, keeping the published text and the order already decided (rule: ambiguous items keep published text), 2026-11-12: merging Vertical Differences into the map or the worked example; moving In Practice after the worked example (the record shows reasoning without a map and the worked example adds the map, as the section rationale says); making Keybridge (p34) and the shared bottleneck (p26) generic (Veldmark details are published and stay); presenting the 54 and 212 counts as outputs of the worked example; dropping the depth clause from p18; folding p27 into p26.",
+      "rejected": [
+        "Each reorder listed, as no draft-check result put it at fault in the spec with two readers agreeing."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes not acted on in the post spec (the thesis is copied from the journal spec); a how_why rewording is proposed to the orchestrator for journal-spec.json. AC-2's expected order in journal-spec.json predates the round-1 move of Vertical Differences before the trade-offs; replacement text proposed to the orchestrator. The post spec's AC-2 copy is left equal to the journal spec until then."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over source questions closed by keeping the published text: the TOGAF definition stays a labeled paraphrase (guide behind a login); the OMG value-stream sentence stays quoted via Wikipedia with that attribution; whether the toolkit's capability-map template reproduces all 54 level-2 capabilities belongs to the toolkit post's spec, not this chapter."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis and role."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark",
+      "contributed": "Veldmark brands, Common Ground and cast."
+    },
+    {
+      "kind": "internal",
+      "ref": "marketplace-taxonomy, liquidity-and-network-effects, industry-evolution",
+      "contributed": "Business models, liquidity metrics and the history this chapter builds on."
+    },
+    {
+      "kind": "internal",
+      "ref": "bounded-contexts",
+      "contributed": "The next chapter, which turns the map into a decomposition."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/productscape-digest.md, _research/brief-monetization-economics.md, _research/brief-adevinta.md, _research/brief-platform-data-ml.md, _research/scenario-ledger.md",
+      "contributed": "Reference capability models, value streams and review lessons; public evidence; Veldmark facts."
+    },
+    {
+      "kind": "external",
+      "ref": "The Open Group, TOGAF Series Guide: Business Capabilities, Version 2 (2022)",
+      "contributed": "Capability concept."
+    },
+    {
+      "kind": "external",
+      "ref": "Lewis and Fowler, 'Microservices' (2014); Conway, 'How Do Committees Invent?' (1968)",
+      "contributed": "Capability-aligned services and Conway's law."
+    },
+    {
+      "kind": "external",
+      "ref": "DDD Crew, Core Domain Charts (n.d.)",
+      "contributed": "Separating differentiation from complexity, scored by different people."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Report 2023 (2024); Adevinta Tech Blog (2024); Aurelia UK Feederco Ltd Strategic Report 2025 (2026); Rightmove 2025 results (2026); Auto Trader FY26 results (2026); Vinted Engineering (2026)",
+      "contributed": "Dated public evidence for the In Practice section."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: TOGAF definition paraphrased, OMG value-stream quote verified via its Wikipedia citation, Strategic Report 2025 dated 2026 and linked, toolkit link added. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 6 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,921 to 5,853 prose words; lead rewritten to place the chapter in Part I; internal 'digest' references replaced with first-person reference-model wording; question and teaser first sentences turned into claims. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "index.md revised to the spec over three draft-check rounds: roadmap p02, Veldmark question in p03, synthesis paragraph p62, Vertical Differences moved after the worked example, failure modes p53/p54 swapped, transitions and glosses (Safe Deal, Productscape, know-your-business, 'four of everything', the 19:42 listing time) added. Round 1 ESCALATE (spec faults), round 2 ESCALATE (spec faults), round 3 ESCALATE (budget); closing wording fixes applied after round 3. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 2 of the draft check: p12, the verticals section idea and p49 revised; draft fixes to p14, p21, p25, p05/p43 ('four of everything' set up in the scene), p47 and p59. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 1 of the draft check: Vertical Differences moved after the worked example; p14, p20, p56, p58 and transitions into verticals and trade-offs revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric applied: failure modes p53/p54 swapped, roadmap and rationales revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: bottleneck table bolds message scams; 'generated model' explained; fifth term announced; the cut 'The test:' sentence restored; p49/p50 verdict and score named; max_words 7,500; open questions closed. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7500
+  }
+}

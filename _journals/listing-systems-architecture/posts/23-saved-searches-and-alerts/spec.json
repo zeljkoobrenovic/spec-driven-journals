@@ -1,0 +1,1894 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "saved-searches-and-alerts",
+  "journal": "listing-systems-architecture",
+  "part": "part-4",
+  "title": "Tell Me When It Appears: Saved Searches and Alerts",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-4, the thesis and the role are copied unchanged from the saved-searches-and-alerts entry in journal-spec.json; the conclusion realises Part IV's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part V's transition_in. Units added by this conversion: the roadmap paragraph p04 and two conclusion paragraphs.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Saved searches as persisted, normalized queries with an owner, a notification policy and a lifecycle; percolation versus batch re-querying; alert fan-out with deduplication, quotas and bursts.",
+        "The rule of notifying on entering the match set, send-time re-checks for digests, the alert metrics (latency, alert-to-contact, ghost-alert, unsubscribe and dormant rates), the risk gate in front of the matcher, saved-search migration through taxonomy changes, and consent and retention."
+      ],
+      "believe": [
+        "Alerts are a liquidity lever and a trust surface at once: they shorten time to contact and amplify whatever they carry, fraud included.",
+        "A saved search is user data that must survive taxonomy changes and model upgrades, and alerts are judged by contacts, never by sends."
+      ],
+      "can_do": [
+        "Size a matcher by candidates per event and choose between percolation and re-querying for a latency target.",
+        "Design the saved-search service, notification orchestrator, risk gate and migration plan for a group, and put any widening of saved-search semantics through capacity review."
+      ]
+    },
+    "audience": {
+      "who": "Chief architects, search and platform leads, notification and CRM engineering leads, and product directors of classifieds, property and automotive marketplaces.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines, messaging infrastructure and Kubernetes (the book's baseline).",
+        "From earlier chapters: the listing aggregate and its events, the event-driven listing stream, the publication pipeline and what 'searchable' means, the taxonomy and attribute dictionary, entity resolution and canonical properties, the search architecture and search contract, query understanding, ranking, recommendations and the status read model, and map-search's geo query compiler, drawn polygons and isochrones.",
+        "Veldmark, its brands and cast, Common Ground, Yardstick, Safe Deal, Femke's bike, the Essen Golf, the Lyon apartment, and the failure-pattern names."
+      ],
+      "does_not_know": [
+        "Saved search, percolation and alert fan-out as this chapter defines them; the match set, the entry/exit rule and the match ledger.",
+        "Percolator constraints, candidate selection, Lucene monitor and Vespa predicate fields.",
+        "Provider quotas, mail sender rules, one-click unsubscribe and the ePrivacy question for alerts."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a cron-based alert system with stale digests and a fraud wave carried by alerts, the reader states the target design and its metrics.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your instant alerts run as a ten-minute cron job with a 23-minute p95 on Sunday evenings; digests assembled in the afternoon still advertise listings sold that evening; and a wave of fake rentals reached tens of thousands of renters through alerts before takedown. Using only this chapter: what do you build, and how do you know it works?",
+        "expected": "A saved-search service storing normalized queries as system of record, with percolator indices rebuilt from it, matching each new or changed listing from the event stream (reverse search) and alerting only when a listing enters a match set; a notification orchestrator with caps, quiet hours and deduplication; send-time availability re-checks for digests and retraction of removed listings from pending notifications; a risk gate owned by trust and safety that keeps risky listings not alertable until reviewed, with a stricter threshold in rentals and a short hold for new accounts' first listings. Measure alert latency from searchable to provider (for example 5 minutes p95), alert-to-contact rate, ghost-alert rate, unsubscribes and dormant share, not alerts sent."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Femke's bike, 312 saved searches and Tradeyard's ten-minute cron; saved searches, match sets and alerts; percolation versus re-querying; a saved-search store with rebuildable percolators; fan-out; channels and digests; sizing the matcher for Veldmark; alerts as a liquidity lever; the risk gate; saved searches through taxonomy changes; consent and retention; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions; then the hand-off to trust. Evidence: published designs of Rightmove and Homegate (percolators), engine documentation, trade press and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The chapter's last section performs the part's closing: it shows how the six surfaces fit together, answers the part opening's three questions for discovery as a whole and hands off to Part V through the risk alerts carry.",
+        "check": "conclusion_calls_back_to_introduction",
+        "method": "rubric",
+        "severity": "major"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do you notify millions of users within minutes when a matching listing appears?",
+    "claim": "Saved searches should be a system of record of normalized queries, in the same format as the search API and the geo query compiler, from which percolator indices are rebuilt; every new or changed listing is matched against them as reverse search, and an alert fires only when a listing enters a match set and passes a risk gate owned by trust and safety, with a send-time re-check for anything delivered later than it was computed and a match ledger that survives taxonomy migrations; and the service is held to latency (5 minutes p95 from searchable to provider at Veldmark), alert-to-contact and ghost-alert targets, not to the number of alerts sent.",
+    "disputed_by": "The common practice of running alerts as a periodic cron job that re-queries recent listings against saved searches in a relational table, assembling digests hours before they are sent, counting notifications sent as success, and dropping or resetting saved searches when the taxonomy changes.",
+    "so_what": "A Chief Architect who accepts this makes the saved-search store, matcher, notification orchestrator and consent policy group platforms while brands keep alert content and design, reports alert latency and ghost-alert rate weekly as platform SLOs, puts every widening of saved-search semantics through capacity review, makes saved-search migration part of every taxonomy and gazetteer change, and lets trust and safety govern alertability as a derived listing state.",
+    "how_why": "Femke's €240 bike matched 312 saved searches and drew its first contact from an alert seven minutes after it became searchable, yet 214 digest e-mails assembled from a replica at 17:30 still featured it at 07:00 after its sale; Tradeyard's ten-minute cron ran at a 23-minute p95 on Sunday evenings and about 4% of digest items were no longer available. Matching is costly by candidates per event, not by events: at a peak of 80 events per second and 50,000 candidates each the percolator evaluates up to 4 million stored queries per second, which dormancy pausing and place pre-filters reduce. And 180 fake Eixample rentals produced about 41,000 alerts and about €71,000 in losses before takedown, which is why risky listings stay not alertable until a review clears them.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A saved search is a stored, normalized, versioned query with an owner, a notification policy and a lifecycle, kept as personal data in a saved-search store of record in the same format as the search API and the geo query compiler, from which percolator indices are rebuilt."
+      },
+      {
+        "id": "S2",
+        "claim": "Instant alerts at scale need reverse search on the listing event stream, percolation with candidate selection by category and place, because matching costs by candidates per event; batch re-query serves digests and reconciliation only."
+      },
+      {
+        "id": "S3",
+        "claim": "An alert fires only when a listing enters a saved search's match set, a listing that leaves it is retracted, a match ledger deduplicates across channels and time, and anything delivered later than it was computed re-checks availability at send time."
+      },
+      {
+        "id": "S4",
+        "claim": "Fan-out, channels and consent are part of the design: delivery is sized for hot listings and bounded by provider quotas, user attention and mail reputation, its order is a fairness decision, and unsubscribe, push permission and retention are group policy enforced by the orchestrator."
+      },
+      {
+        "id": "S5",
+        "claim": "Alerts are a liquidity lever and a trust surface at once: they are judged on latency, alert-to-contact and ghost-alert rates rather than sends, and a risk gate owned by trust and safety keeps risky listings not alertable until cleared."
+      },
+      {
+        "id": "S6",
+        "claim": "Saved searches outlive the taxonomy and gazetteer, so every reference-data change migrates them, preserving recall, rebuilding percolators in a parallel run and never resetting the match ledger."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns a search into standing demand that reuses every earlier surface, and performs the part's closing: discovery now reaches motivated buyers within minutes, which is why trust must gate it.",
+    "supports": [
+      "P4-6"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "concepts to worked-example: each section uses the vocabulary or component the previous one established (match set, then matching, then the components, then fan-out from the orchestrator, then digests over the channels, then the sizing of that matcher and fan-out)"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "liquidity, risk-gate, taxonomy, consent: four properties of alerts beyond delivery (lever, amplifier, long-lived data, regulated messages)"
+      }
+    ],
+    "rationale": "The scene states the problem with numbers (a cron job, snapshot digests, a 23-minute p95 against a 5-minute target); the concepts give the words the answer needs; the two ways to match decide the core mechanism; the architecture assembles it and replays the bike; fan-out and channels follow the matches out to the user. Liquidity comes before the risk gate because the gate is the same speed turned against buyers; the taxonomy and consent sections follow because they govern the saved search over its lifetime rather than at the moment of matching. The worked example sizes the matcher and fan-out right after the delivery sections that complete the design, so the reader does not jump back from the legal material to the matcher; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions judge it. Putting the architecture before matching would name percolator projections before the reader knows why percolation wins; putting the risk gate before liquidity would present the amplifier before the speed it amplifies. Fan-out precedes channels because the channel choice and digest rules answer the limits fan-out meets; taxonomy precedes consent because migration keeps the saved search alive, and consent and retention then decide how long it may live and what it may send. The migration from the cron job sits in the Chief Architect's View, beside the decisions it carries out, not under the sizing heading."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "\"Tell me when a city bike under €300 appears within 10 km of Rotterdam\", \"a T3 in this polygon in Lyon under €400,000\", \"a Golf from 2019 or later with less than 60,000 km\": the same question asked continuously, about what is listed after the buyer searched."
+    },
+    "bridge": {
+      "from_reader_world": "The earlier Part IV chapters help a buyer find what is listed at the moment they search, including the area drawn on a map.",
+      "to_topic": "Saving the search turns that moment of intent into standing demand and obliges the marketplace to notify the buyer within minutes, across 46 million saved searches at Veldmark."
+    },
+    "thesis_statement": {
+      "text": "A saved search is a stored, normalized query matched by reverse search against every new or changed listing; alerts fire on entry into the match set, re-check availability at send time, and are judged by contacts rather than sends, with the risk gate, consent rules and caps designed in from the start.",
+      "placement": "KEY POINTS callout (three bullets); p02 states that the alert system is only as correct as the systems it joins."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Show the problem at Veldmark: Femke's bike, Tradeyard's cron job and the 5-minute target.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define saved searches, match sets and watchers.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Compare percolation with batch re-querying.",
+          "kept_in": [
+            "matching"
+          ]
+        },
+        {
+          "promise": "Propose the target architecture and follow matches through fan-out and channels.",
+          "kept_in": [
+            "architecture",
+            "fan-out",
+            "channels"
+          ]
+        },
+        {
+          "promise": "Size the matcher for Veldmark.",
+          "kept_in": [
+            "worked-example"
+          ]
+        },
+        {
+          "promise": "Treat alerts as a liquidity lever, a fraud amplifier behind a risk gate, and user data that outlives taxonomy changes and obeys consent rules.",
+          "kept_in": [
+            "liquidity",
+            "risk-gate",
+            "taxonomy",
+            "consent"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A saved search asks the question of earlier Part IV chapters continuously, covering what is listed after the buyer searched, so saving it turns a moment of intent into standing demand and obliges the marketplace to notify the buyer quickly enough to matter.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Three saved searches: a city bike under €300 within 10 km of Rotterdam; a T3 in a drawn polygon in Lyon under €400,000; a Golf from 2019 or later with under 60,000 km.",
+            "shows": "A saved search is an ordinary search asked over time, across all three verticals, including the drawn areas of map-search."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "At Veldmark the obligation covers 46 million active saved searches and about 38 million alert notifications a day, and alerts are where the event stream, taxonomy, search platform, trust gate and channels meet, so the alert system is only as correct as the weakest of them.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "46 million active saved searches; about 38 million alert notifications a day by push and e-mail.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "The scale makes every new listing, price cut and reactivation a matching candidate against all of them."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The marketplace's obligation to notify.",
+          "introduces": "Veldmark's size of that obligation and the systems it depends on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns three terms, saved search, percolation and alert fan-out, and builds on the chapters that own the engine, the event stream, searchability and drawn areas, while ranking and recommendations use its signals and Part V begins at its risk gate.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The systems alerts depend on.",
+          "introduces": "The terms this chapter owns and the chapters it builds on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter moves from Femke's bike and Tradeyard's cron job through the concepts, the two ways to match, the target architecture, fan-out, channels and the sizing of Veldmark's matcher, then treats alerts as a liquidity lever, a fraud amplifier, user data that must outlive taxonomy changes and messages under consent rules, and names trade-offs, vertical differences, failure modes, the Chief Architect's view and questions before closing Part IV.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The terms and dependencies.",
+          "introduces": "The order in which the chapter uses them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron",
+      "controlling_idea": "Tradeyard's alerts are fast by luck and wrong by design: a cron job and a snapshot digest turned a bike's 312 matches into seven-minute pushes and 214 stale e-mails, against a group target of 5 minutes p95.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Gives the case every later section is tested on: a cron-based matcher, a snapshot digest and a latency target."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The obligation and the roadmap.",
+        "introduces": "The case that shows the obligation failing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The bike's Sunday, then Tuesday's digests, then the jobs behind both, then the numbers and the target; the question comes last because it names every problem the scene has shown."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Femke's €240 city bike, searchable at 19:48 on Sunday 7 March 2027, matched 312 saved searches and drew its first contact from an alert seven minutes later.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listed 19:42 CET, searchable 19:48 (the six-minute baseline), 312 saved searches matched, first contact 19:55 from an alert, 14 conversations in 24 hours, sold Monday for €225 through Safe Deal, marked sold 18:10, removed from search 18:11.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Alerts bring the first buyer within minutes, and removal from search works within a minute."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "On Tuesday at 07:00, 214 digest e-mails still featured the sold bike because the digest was assembled from a replica at 17:30 on Monday and sent without a re-check.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "214 digests; three recipients ask whether the bike is still available; candidate list assembled at 17:30 Monday from a read replica of Yardstick and sent thirteen and a half hours later.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "A snapshot delivered later than it was computed produces Ghost Inventory."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The fast alert and the prompt removal from search.",
+            "introduces": "The digest that was not told.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "list",
+          "controlling_idea": "Tradeyard runs alerts as two Yardstick jobs, a ten-minute cron that matches new listings against saved searches in MySQL and a daily digest (a scheduled message collecting a saved search's matches since the last one) that re-runs saved searches against Solr, and the bike's quick push was luck.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 2,300 listings per Sunday-evening run; category-and-province index in MySQL plus PHP filters; the bike picked up by the 19:50 run and 312 pushes sent 19:51–19:53; a listing searchable at 19:51 waits until 20:00.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The latency is the batch interval, not a design property."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The stale digests.",
+            "introduces": "The two jobs that produce both the fast push and the stale digest.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Veldmark's 2027 baseline puts numbers on the problem: 46 million saved searches, 38 million notifications a day, a 23-minute p95 on Sunday evenings, about 4% stale digest items and about 38% of saved searches never opened in a year.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Baseline table: saved searches by brand (31, 8, 7 million); notifications by channel (22, 14, 2 million); latency median 7 minutes, p95 23 minutes; about 4% stale digest items; about 38% dormant.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The bike is typical: latency, staleness and dormancy are measured problems at group scale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Tradeyard's two jobs.",
+            "introduces": "The group-wide numbers they produce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The Common Ground target is an instant alert at the provider within 5 minutes p95 of the listing becoming searchable, in every brand by the end of 2028, which with the 90-second publication target means about six and a half minutes from publish to buyer.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Target agreed with Noor Hassan; 90-second publication target from publication-pipeline.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The target is a promise measured end to end."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The 23-minute p95 baseline.",
+            "introduces": "The target that replaces it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Ingrid frames the question: how to match every new and changed listing against 46 million stored queries and notify the right people within minutes without spam, ghost or fake alerts, or broken saved searches when the taxonomy changes.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The baseline and the target.",
+            "introduces": "The question the rest of the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Saved Searches, Match Sets and Alerts",
+      "controlling_idea": "A saved search is a stored query with a contract, alerts are about changes to its match set, and watching one listing is a different subscription with its own rules.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Defines the four parts of a saved search, the match set and its entry/exit rule, and watchers, which the architecture implements."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Ingrid's question.",
+        "introduces": "The vocabulary needed to answer it, starting with what a saved search is.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the whole saved search to its parts (query, lifecycle, personal data), then to what it matches over time and the rule on that, then to the narrower subscription to one listing and its gaming rule. Watchers come last because their price-drop alerts are defined against the match-set rule."
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "A saved search has four parts, query, owner and identity, notification policy and lifecycle, and confusing them causes most alert bugs.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table of the four parts with a Tradeyard NL example: city bikes within 10 km of postcode area 3011 under €300; one iOS device and one e-mail; push instantly, digest at 07:00, quiet 23:00–07:00; created January 2026 on taxonomy version 2026.4.",
+              "shows": "Each part changes for different reasons and has a different owner."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The query part must be stored in normalized, versioned form, the same intermediate representation the search API and the geo query compiler use, because URLs and engine query strings change with every redesign and engine migration.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The query part.",
+            "introduces": "How it must be stored.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Figure 1 shows the lifecycle of a saved search, in which dormancy and migration are states with owners rather than cleanup scripts.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the saved-search lifecycle (created, opened, matched, paused, dormant, expired, migrated).",
+              "shows": "Dormancy and migration each get an owner, a user notice and a measurable backlog."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lifecycle part.",
+            "introduces": "Its states, drawn.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A saved search is personal data governed by the GDPR, because it says where someone wants to live, what they can afford or what they want to buy.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The productscape model's capability 'Saved Search / Alerts' and its data asset kept 'until user deletion or inactivity threshold'.",
+              "source": "Productscape domain models (author's sibling repository)",
+              "shows": "Retention by inactivity is the domain model's default, not an invention of this chapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lifecycle's dormancy and expiry states.",
+            "introduces": "Why the lifecycle is a legal matter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "form": "list",
+          "controlling_idea": "Alerts are about changes to a saved search's match set, the live alertable listings that satisfy it now, and a listing event can make a listing enter, stay in or leave that set.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What a saved search is.",
+            "introduces": "What it matches over time: the match set.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The design rule is notify on entry, retract on exit, ignore the rest, which needs the listing's previous state for matching and a match ledger for deduplication.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the match set as an enclosure; entering listings ring a bell, changes inside are ignored, leaving listings pull back pending notifications.",
+              "shows": "Entry and exit are the only alert-worthy events, and exit cancels what is pending."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three things an event can do to the match set.",
+            "introduces": "The rule that follows and what implementing it requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "A watcher subscribes to one listing rather than a query, so one price cut on the Essen Golf alerts its 1,180 watchers and newly matches about 640 saved searches.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Autohaus Ruhrblick cuts a 2021 Golf 1.5 TSI from €21,900 to €21,400 on Thursday 22 April 2027; one PriceChanged event produces price-drop alerts to 1,180 watchers and new-match alerts to about 640 Motorvane saved searches with limits between €21,400 and €21,899.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "One event feeds two subscription types, and for the second the listing enters the match set."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The match set of a saved search.",
+            "introduces": "Watching a single listing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Price-drop alerts invite gaming, so a minimum drop and a weekly cap per watcher keep them meaningful.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A €10 cut every three days would alert every three days; a 2% minimum and one alert per listing per watcher per week stop it; the Golf's €500 cut is 2.3% and passes.",
+              "shows": "The rule filters noise without hiding real price drops."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Price-drop alerts to watchers.",
+            "introduces": "How sellers can game them and the rule against it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "matching",
+      "heading": "Two Ways to Match: Percolate or Re-query",
+      "controlling_idea": "At Veldmark's scale instant alerts need percolation with candidate selection by category and place; batch re-query is fast enough only for digests, and a structured matcher trades fidelity for speed.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Compares the matching options with arithmetic and documented practice, and locates the cost in candidates per event."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The match set and the entry rule.",
+        "introduces": "How a platform finds which saved searches a listing enters.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim first, then the arithmetic against re-query, then percolation and its documented use and constraints, then where its cost lies, then the alternative that trades fidelity; the structured matcher comes last because its weakness is measured against the engine semantics just described."
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "At Veldmark's scale instant alerts need percolation; batch re-query is fast enough only for digests.",
+          "function": "claim"
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Batch re-query reuses the engine exactly but costs in proportion to saved searches and is as slow as its interval, so for Tradeyard's 31 million saved searches every five minutes it would need about 100,000 queries a second, three times the group's search peak.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "31 million saved searches re-run every five minutes ≈ 100,000 queries per second against a whole-group peak of 31,000.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Batch re-query is a digest strategy at this scale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The claim.",
+            "introduces": "The first option and why it fails for instant alerts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Percolation inverts the problem: listings are submitted against indexed queries, its cost scales with events times candidates, and its latency is per event.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: one query against many listings versus one listing against 46 million stored queries.",
+              "shows": "Alerts are reverse search."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Batch re-query's cost and latency.",
+            "introduces": "The inverted approach.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "Property portals document percolation for alerts: Rightmove named percolator-based instant alerts as a priority of its 2014 move to Elasticsearch, and Homegate percolates each new property against a search alert index.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic case study on Rightmove (2025, describing 2014); Elastic blog with Homegate (2024-04-29).",
+              "source": "Elastic, 2025; Elastic blog, 2024",
+              "shows": "The approach is in production at portals, with the caveat that Rightmove's current design is not public."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Percolation in principle.",
+            "introduces": "Documented use at portals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Elastic's documentation, which applies to OpenSearch, sets four architectural constraints: the percolator index is coupled to the listing mapping, it must be reindexed and so is a projection, analysis can dominate cost, and some queries are unsupported or fetch stale data.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic percolator documentation (n.d.) and OpenSearch percolator field type (n.d.).",
+              "source": "Elastic, n.d.; OpenSearch, n.d.",
+              "shows": "The constraints make the percolator index a rebuildable projection of a saved-search store."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Use at portals.",
+            "introduces": "The engine constraints that shape the architecture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The fourth constraint means a percolated saved search that references a stored drawn shape keeps the old shape until it is re-indexed.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Point 4: data fetched at index time can go stale.",
+            "introduces": "Its consequence for map-search's drawn polygons.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Other engines offer the same capability: Lucene's monitor module with a presearcher, and Vespa's predicate fields, whose documentation names saved searches.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Apache Lucene monitor package (module from Luwak, Lucene 8.2, 2019); Vespa predicate fields documentation (n.d.).",
+              "source": "Apache Lucene; Vespa",
+              "shows": "Percolation is a general capability, not an Elasticsearch feature."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Elasticsearch and OpenSearch percolators.",
+            "introduces": "The same capability in Lucene and Vespa.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "Percolation wins or loses on candidate selection, which at Veldmark partitions indices by brand, country and category and pre-filters stored queries by category, place cells and price band before testing keywords last.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Engines that can percolate.",
+            "introduces": "What makes percolation affordable at scale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "For Femke's bike the pre-filter did almost all the work, cutting about 1.9 million saved searches in the partition to about 58,000 candidates and 312 matches.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "NL city-bikes partition ≈ 1.9 million; place pre-filter ≈ 58,000; full test 312 (illustrative).",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The pre-filter, not the full test, decides the cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The candidate-selection design.",
+            "introduces": "Its effect on the bike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "A structured matcher skips the engine and is fast and cheap for browse-shaped searches, but it reimplements search semantics, so every difference becomes an alert that disagrees with the site.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Tradeyard's Yardstick cron job is a primitive structured matcher in MySQL and PHP; differences such as how 10 km is measured or how keywords are tokenized.",
+              "shows": "The fidelity cost is concrete."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Percolation in the search engine.",
+            "introduces": "The alternative that leaves the engine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: A Saved-Search Store with Rebuildable Percolators",
+      "controlling_idea": "The target design keeps saved searches in a store of record with percolators as rebuildable projections, gates listings before matching, and gives an orchestrator deduplication, policy and the send-time check.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Assembles the concepts and the matching choice into components with owners, and replays the bike on them."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Percolation with candidate selection, and its constraint that a percolator index is a projection.",
+        "introduces": "The architecture built on those conclusions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: saved-search store as system of record, percolator projections, risk gate, matcher, orchestrator with deduplication and send-time check, channel workers, engagement feedback.",
+              "shows": "The store of record and the rebuildable projections are separate components."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "form": "list",
+          "controlling_idea": "Eight components divide the work, from the saved-search service as system of record and its rebuildable percolator projections to the matcher, retraction handler, risk gate, orchestrator, channel workers and engagement feedback.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A saved search that exists only in a percolator index is Search as System of Record in miniature.",
+              "shows": "Names the failure the store prevents."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The figure.",
+            "introduces": "Each component's responsibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Matching is a hybrid: percolation for instant alerts and digests built from the match ledger and re-checked at send time, with batch re-query kept as a reconciliation job.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The components.",
+            "introduces": "How they divide matching between channels.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Figure 5 replays Femke's listing on the Common Ground design.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: 312 matches become 289 instant pushes, 14 deferred to digests, 9 suppressed as duplicates; the sale retracts the bike from pending digests.",
+              "shows": "The design handles both the burst and the sale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The hybrid design.",
+            "introduces": "The bike on it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The ledger and the caps decide what each of the 312 matches becomes: nine duplicates suppressed, fourteen deferred to the digest and 289 pushes within seconds.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Nine users with two overlapping saved searches; fourteen at their evening cap; 289 pushes (illustrative).",
+              "shows": "Deduplication and caps act per user, not per saved search."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The figure's numbers.",
+            "introduces": "Which mechanism produces each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fan-out",
+      "heading": "Fan-out: Hot Listings, Quotas and Bursts",
+      "controlling_idea": "Fan-out is sized for the tail of the match distribution and bounded by provider quotas, user attention and mail reputation, and its order is a fairness decision.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows that delivery has its own limits and a policy question, so it belongs in the design."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The orchestrator and channel workers of the architecture.",
+        "introduces": "What happens when a match becomes thousands of sends.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "Fan-out must be sized for the tail, because some listings match tens of thousands of saved searches, and queues must absorb the burst.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A cheap two-room flat in a capital, an underpriced popular car, a new iPhone at half price.",
+              "shows": "Hot listings are ordinary, not exceptional."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Three layers of limits shape the design: provider quotas, user attention and mail reputation.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Firebase Cloud Messaging quotas (600,000 messages per minute per project; 20-message burst per device refilling every three minutes; 240 per minute and 5,000 per hour per Android device); Gmail sender rules from 1 February 2024 (over 5,000 a day, SPF, DKIM, DMARC, spam rate below 0.30%, one-click unsubscribe); RFC 8058 (2017).",
+              "source": "Firebase, n.d.; Google Workspace Admin Help, n.d.; IETF, 2017",
+              "shows": "Each limit is documented and each needs a design answer: separate quotas, caps and quiet hours, separate sending domains."
+            },
+            {
+              "kind": "statistic",
+              "what": "Veldmark's 22 million pushes a day ≈ 15,000 a minute.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Average load is far below quota; peaks and shared campaigns are the risk."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Sizing for the tail.",
+            "introduces": "The limits the burst meets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "At 14 million alert e-mails a day, mail is a system with its own engineering, as leboncoin's move of about 12 million transactional e-mails a day to PowerMTA shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "leboncoin tech blog, 2026-06-03: about 12 million transactional e-mails a day moved from 20 Postfix servers to PowerMTA on AWS.",
+              "source": "leboncoin tech blog, 2026",
+              "shows": "A comparable marketplace treats mail as engineered infrastructure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Mail reputation.",
+            "introduces": "The scale of mail infrastructure at a comparable marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The order of a large fan-out decides who gets the viewing, so it should be randomized within the latency target and any paid change to it decided as policy.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "40,000 people alerted to the same flat; creation order favours old accounts, database order is arbitrary; a paid early alert is a ranking decision in disguise.",
+              "shows": "Order is a fairness and transparency question like ranking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The capacity limits of fan-out.",
+            "introduces": "Its fairness.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "Channels, Digests and Relevance",
+      "controlling_idea": "Each channel suits a different urgency, digests need retraction and a send-time check, and relevance within alerts is where alerts meet ranking.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Turns the entry/exit rule into digest requirements and links alerts to ranking."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Fan-out's decision of who is notified and when.",
+        "introduces": "What each channel is for and how digests stay correct.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37a",
+          "controlling_idea": "Once fan-out has decided who is notified and when, each match needs a channel, and push, e-mail, the in-app inbox and SMS each suit a different urgency.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Channel table: push (seconds; Android 13 POST_NOTIFICATIONS permission; iOS authorization), e-mail, in-app inbox, SMS and messaging apps.",
+              "source": "Android Developers, n.d.",
+              "shows": "Digests belong to e-mail and overflow; instant alerts to push."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "A digest trades speed for attention, and the bike shows it needs retraction of items that left the match set and a send-time availability check as the safety net, which together bring the 4% stale rate to near zero.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's e-mail and overflow rows.",
+            "introduces": "The digest, the channel that trades speed for attention, and what keeps it correct.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Alert relevance is not binary, so items within a digest are ordered by the site's ranking minus paid boosts plus a penalty for seen items, and clear duplicates are suppressed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Digest correctness.",
+            "introduces": "Digest quality.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked-example",
+      "heading": "Worked Example: Sizing the Matcher for Veldmark",
+      "controlling_idea": "Matching at Veldmark is expensive because of candidates per event, not events, and its demand comes from brand decisions while its capacity sits on the shared platform.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Applies the matching and fan-out design to Veldmark's volumes right after it is described."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The matching, architecture, fan-out and channel design just described.",
+        "introduces": "Veldmark's numbers run through it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Veldmark's alert-relevant event rate is modest, about 14 per second on average and 60–80 at peak.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 2.75 million new listings a week (Tradeyard 2.3 million, Motorvane 210,000, Hearthly 240,000) ≈ 4.5 per second; three times that with other events.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Events are not the cost."
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "At 80 events a second and 50,000 candidates each the percolator evaluates up to 4 million stored queries a second, so reducing candidates is the cheapest lever.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "80 × 50,000 = 4 million; dormancy removes about a third; finer place pre-filters remove more.",
+              "shows": "Candidates per event drive the cluster size."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The modest event rate.",
+            "introduces": "The cost of candidates per event.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Fan-out averages about 440 notifications a second with bursts of tens of thousands, so queues absorb bursts and the latency target applies to their drain time.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "38 million notifications a day ≈ 440 per second; Sunday peaks perhaps five times higher.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The target is measured on drain time."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Matching cost.",
+            "introduces": "Delivery load.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Matching capacity sits in the search platform's budget but its demand comes from brand features, so any widening of saved-search semantics goes through capacity review.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The sizing.",
+            "introduces": "Who pays and who decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "liquidity",
+      "heading": "Alerts as a Liquidity Lever",
+      "controlling_idea": "Alerts shorten the time from supply to demand on both sides of the market, so they are measured by latency, contacts and ghost alerts, never by sends.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Establishes the liquidity half of 'lever and trust surface' and the metrics that judge alerts."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The cost of matching and delivering alerts at Veldmark's scale.",
+        "introduces": "What that cost buys: speed, a lever on liquidity.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Alerts shorten the time from supply appearing to demand responding, which the buyer journey in the productscape model names as the differentiator.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Alert speed is the differentiator: for in-demand local goods the first buyer to message usually wins, so minutes matter'; pains 'alerts after the item is sold' and 'batching or delayed indexing means the alert arrives hours late'.",
+              "source": "Productscape domain models",
+              "shows": "Speed and staleness are the buyer's own measures."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The lever works on both sides: the bike's first contact came from an alert seven minutes after it was searchable, and fast first contacts make private sellers list again.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "First contact 19:55 from an alert.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The buyer side gets speed; the seller side gets a reason to return."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The buyer's view.",
+            "introduces": "Both sides of the market.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Six metrics measure the lever, led by alert latency and alert-to-contact rate.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Alert latency, alert-to-contact rate, saved-search activation, ghost-alert rate, unsubscribe and complaint rates, dormant share, with definitions and reasons.",
+              "shows": "Each metric measures an outcome or a cost, none a volume."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Alerts as a lever.",
+            "introduces": "How to measure it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Alerts sent is deliberately absent, because a system rewarded for sends widens matching and lowers thresholds until users unsubscribe.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The six metrics.",
+            "introduces": "The metric left out and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "risk-gate",
+      "heading": "The Risk Gate: Alerts Amplify Whatever They Carry",
+      "controlling_idea": "Because alerts amplify whatever they carry, a risk gate owned by trust and safety must keep risky listings not alertable until cleared, with holds targeted rather than general.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Establishes the trust half of 'lever and trust surface' and the gate in front of the matcher."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Alerts as a liquidity lever.",
+        "introduces": "The same speed delivered to a fraudster.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "An alert system is an amplifier that puts a new listing in front of the most motivated buyers within minutes, which is exactly what a scammer wants.",
+          "function": "claim"
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The Barcelona ring's 180 fake rentals produced about 41,000 alert notifications and about €71,000 of losses before takedown.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "July 2027, 26 accounts, 180 listings in Eixample with stolen photos about 35% below market, deposits by bank transfer; 63 people lost about €71,000; about 41,000 alerts, mostly pushes.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The renters most likely to pay quickly are those with alerts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Alerts as an amplifier.",
+            "introduces": "A fraud wave it amplified.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The design consequence is a risk gate in front of the matcher, owned by trust and safety.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: a risk gate stopping a fake rental before the alert amplifier.",
+              "shows": "Listings above an alerting threshold stay not alertable until cleared."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The fraud wave.",
+            "introduces": "The gate it requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "form": "list",
+          "controlling_idea": "The gate makes alertability a derived listing state with a stricter threshold in high-stakes categories, retracts taken-down listings like sales, may send safety notices by policy, and holds new accounts' first listings for minutes.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The gate.",
+            "introduces": "Its four rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Every minute of hold costs honest sellers speed, so holds must be targeted by risk and category, measured and reviewed with the brands.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The hold rule.",
+            "introduces": "Its cost to honest sellers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "taxonomy",
+      "heading": "Saved Searches Outlive the Taxonomy",
+      "controlling_idea": "Saved searches outlive the reference data they are written against, so taxonomy and gazetteer changes migrate them, preserving recall and the match ledger.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows the migration plan that keeps saved searches as user data through change."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Risks at the moment of matching.",
+        "introduces": "A risk over the saved search's lifetime: changing reference data.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Saved searches outlive the category tree, attribute dictionary, gazetteer and shapes they reference, so they are user data to migrate, not drop.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The rule, stated as the book's own: saved searches are user data; migrate them, don't drop them. It originates in the book's listing-data research notes, which readers never see, so the prose does not cite them.",
+              "shows": "The rule stands on its own and frames the migration plan that follows."
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Veldmark's bikes split on 1 November 2027 rewrites about 1.3 million saved searches by versioning references, rewriting deterministically, preserving recall on splits, rebuilding percolators in parallel and never resetting the match ledger.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bike listings move from 19 country leaves into the canonical bike leaves; about 1.3 million saved searches across four countries; five-step plan.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Migration is a plan with a parallel run, not a script."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The migrate-don't-drop rule.",
+            "introduces": "The bikes split.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Place references, drawn polygons and commute searches follow the same pattern, and commute searches store their parameters and recompute the isochrone.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Category migration.",
+            "introduces": "Place, polygon and commute migration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consent",
+      "heading": "Consent, Unsubscribe and Retention",
+      "controlling_idea": "Alerts sit on a legal boundary that differs by country, so the group sets principles for message classification, unsubscribe, push permission, retention and inference.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Puts consent and retention into the design as group policy enforced by the orchestrator."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Saved searches as user data over time.",
+        "introduces": "The legal rules on that data and on the messages it triggers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "form": "list",
+          "controlling_idea": "Veldmark's Data Protection Officer sets five principles: alerts are service messages until paid content enters them, unsubscribe is one-click and precise, push permission is asked at save time, dormant saved searches are paused and deleted, and saved searches stay out of ad targeting without consent.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Article 13 of the ePrivacy Directive 2002/58/EC as amended in 2009; RFC 8058; Gmail rules.",
+              "source": "EUR-Lex; IETF, 2017",
+              "shows": "The legal basis differs per member state, so the chapter states Veldmark's policy."
+            },
+            {
+              "kind": "statistic",
+              "what": "Pause after 12 months without an opened alert, delete six months later; dormancy pauses about 38% of Tradeyard's saved searches and removes about a third of percolation candidates.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Retention also cuts matching cost."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Speed trades against safety and attention, so each protective mechanism should be a configurable policy per brand and category, measured against alert-to-contact rate.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Sets the chapter's choices side by side with when each option fits."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design, its sizing and its policies for liquidity, risk, taxonomy and consent.",
+        "introduces": "Its decisions as options.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "controlling_idea": "Every protective mechanism delays some alerts and every speed mechanism adds noise and risk, so each is a policy per brand and category measured against alert-to-contact rate.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven decisions with two options each: matching, engine, digest content, storage, triggers, fan-out order, risk gate.",
+              "shows": "Most choices depend on scale and category, two are never at scale."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in saved-search shape, speed sensitivity, channels, duplicates, fraud and taxonomy churn, which changes how alerts are tuned.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Shows how the same design is tuned per vertical, and where it depends on other chapters."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Trade-offs within one design.",
+        "introduces": "How verticals shift them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "Real-estate alerts go per canonical property, and automotive retractions arrive as late as the dealer feed, which the send-time check cannot see.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vertical table for Tradeyard, Hearthly, Motorvane and jobs across seven dimensions.",
+              "shows": "Tuning differs by vertical."
+            },
+            {
+              "kind": "scenario",
+              "what": "Three agencies list the Lyon apartment in May 2027; the Golf sold on 29 April and the feed reported it 26 hours later.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Two vertical cases where alerts depend on entity resolution and listing ingestion."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Ten failure modes show the design's rules broken one at a time.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Each failure mode is the absence of one rule."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design as intended.",
+        "introduces": "How it fails.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "form": "list",
+          "controlling_idea": "Ten failure modes, from snapshot digests and engine-stored saved searches to measuring sends, each name a rule of the design that was skipped.",
+          "function": "counterargument"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Saved searches and alerts are a shared platform with brand-owned content, governed by seven decisions with named owners, reached by a market-by-market migration from the cron job, and watched for natural-language saved searches.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the design into ownership and governance decisions for the group."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design, its options and its failures.",
+        "introduces": "What the Chief Architect decides.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "controlling_idea": "At group level alerts are a clear case of sharing platforms, not products: the store, matcher, orchestrator, channel workers and policy engine are shared, while content and presentation stay with brands.",
+          "function": "claim"
+        },
+        {
+          "id": "p62",
+          "form": "list",
+          "controlling_idea": "Seven decisions assign owners: the saved-search service to the search platform, one orchestrator to platform engineering, alertability to trust and safety, consent to the DPO, latency and ghost-alert SLOs, migration in taxonomy changes, and paid influence to product and regulatory leads.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The shared platform.",
+            "introduces": "The decisions that make it real.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Veldmark moves off the cron job by running the new matcher in comparison mode from Q4 2027 and taking over market by market as Tradeyard's search leaves Yardstick, finishing in Q4 2028, while Motorvane keeps Elasticsearch percolators but adopts the group service and orchestrator.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Event stream live 1 July 2027; comparison mode Q4 2027; Portugal first in Q2 2028; Belgium and the Netherlands last; Motorvane's engine until the 2029 review.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The transition follows the Yardstick exit plan."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The decisions for the target platform.",
+            "introduces": "How Veldmark gets there from the cron job.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Natural-language saved searches must compile to the same normalized form and be pinned at save time, or alerts will change meaning when the model is upgraded.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The Title Report (2023): Zillow natural-language searches can be saved for alerts; Zillow has not published how.",
+              "source": "The Title Report, 2023",
+              "shows": "The capability is arriving; the stability problem is the architect's."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The decisions and the migration path that carries them out by 2028.",
+            "introduces": "What to watch over the longer term.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions take the chapter's design into a review of one's own alert system.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Each question tests one claim against the reader's own systems."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that apply them in a review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p64",
+          "form": "list",
+          "controlling_idea": "Ten questions, from where saved searches are recorded to which metric the alerts team optimizes, take the design into a review.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Discovery to Trust",
+    "synthesis": "Alerts use every surface before them (the normalized query of the search contract and the geo query compiler, percolators on the shared search platform, the status read model that recommendations re-read, contact-based measurement from ranking), so Part IV's six chapters make discovery one pipeline in which every surface forgets a sold listing quickly, names who decided the order and is judged by the contacts it produces.",
+    "so_what": "Discovery now puts a new listing in front of its most motivated buyers within minutes, which is worth as much to a fraudster as to an honest seller; the speed Part IV builds is safe only behind a risk gate and decisions every surface obeys.",
+    "callback": {
+      "to": "The Part IV opening's three questions (is this listing still available, who decided its position, did it lead to a contact), and this chapter's opening scene of Femke's bike.",
+      "how": "The reader can now answer the three questions for discovery as a whole, and sees the bike's seven-minute first contact as the speed that also carried the Eixample fake rentals."
+    },
+    "takeaway": {
+      "type": "broader_implications",
+      "content": "Alerts amplify whatever they carry, as the 180 fake Eixample rentals and their 41,000 alerts showed; Part V begins with trust-and-safety-architecture, which builds the trust platform whose decisions publication, search and alerts must obey."
+    },
+    "hand_off": {
+      "to": "part-5",
+      "relationship": "cause_effect",
+      "carries_over": "Part IV's discovery surfaces, which put a new listing in front of its most motivated buyers within minutes, and saved-searches-and-alerts' closing warning that alerts amplify whatever they carry, as the 180 fake Eixample rentals and their 41,000 alerts showed.",
+      "introduces": "The risk that contact between strangers carries, and the trust platform whose decisions publication, search, alerts and messaging must obey."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "This chapter's design and its questions, and the five Part IV chapters before it.",
+      "introduces": "What alerts show about Part IV as a whole.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p65",
+        "controlling_idea": "The chapter's design (a store of record of normalized queries, rebuildable percolators, entry-only alerts with a send-time re-check, a ledger that survives migrations, judged by latency, contacts and ghost alerts) uses every earlier Part IV surface, so the six chapters together make discovery one pipeline that answers the part's three questions once: the listing stream and status read model say whether a listing is still available, a versioned policy with named owners decides its position, and contacts judge every change.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The normalized query of the search contract and the geo query compiler; percolators on the shared search platform; the status read model that recommendations re-read and the send-time check re-reads; contact-based measurement from ranking.",
+            "shows": "Alerts consume what each earlier chapter built, which is what makes the six surfaces one pipeline."
+          }
+        ]
+      },
+      {
+        "id": "p66",
+        "controlling_idea": "That pipeline now puts a new listing in front of its most motivated buyers within minutes, as it did for Femke's bike, and that speed is worth as much to a fraudster as to an honest seller, so it is safe only behind a risk gate and decisions every surface obeys.",
+        "function": "cause_effect",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The bike's first contact seven minutes after it was searchable; the 180 fake Eixample rentals and their about 41,000 alerts.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "The same speed serves the honest seller and the fraud ring."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One pipeline that reaches buyers within minutes.",
+          "introduces": "What that speed carries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p67",
+        "controlling_idea": "Alerts bring buyers back to listings that are fresh and real, and whether they are real is Part V's work, which begins with trust and safety as a system rather than a queue.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Speed that is safe only behind trust decisions.",
+          "introduces": "Part V and its first chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Search engine choice, index design and reindexing.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "Listing event contract, outbox and ordering.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Publication SLA and unpublish propagation in general.",
+      "covered_in": [
+        "publication-pipeline"
+      ]
+    },
+    {
+      "topic": "Map, polygon and commute query semantics.",
+      "covered_in": [
+        "map-search"
+      ]
+    },
+    {
+      "topic": "Messaging notifications and lead routing.",
+      "covered_in": [
+        "messaging-and-leads"
+      ]
+    },
+    {
+      "topic": "Fraud detection models; legal details per market.",
+      "covered_in": [
+        "fraud-prevention",
+        "marketplace-regulation"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No classifieds operator (Marktplaats, Kleinanzeigen, leboncoin, OLX) has published its alert matching or fan-out design in the sources found; the architecture is labeled as the author's reference design. (Carried over from spec.md.)",
+    "The REA Group percolation talk could not be read; it is not cited. (Carried over from spec.md.)",
+    "Whether user-requested alert e-mails count as direct marketing under national ePrivacy implementations is a legal judgement per market; the chapter states Veldmark's policy and does not generalize it. (Carried over from spec.md.)",
+    "spec.md listed checklist, summary, dialog and comics as unchecked modality boxes; none of those files exists, so modalities is empty.",
+    "Thesis rubric (2026-11-12, pass with notes; thesis copied from the journal spec, so not acted on): the claim packs about six positions into one sentence; supporting claims S1 (personal data, versioned, lifecycle), S3 (retraction, cross-channel deduplication), S4 (fan-out, quotas, fairness, consent) and S5 ('liquidity lever') add points the claim does not state, though all are in the journal spec's intent outcome.",
+    "Flow rubric (2026-11-12, sound with notes). Taken: the roadmap now names trade-offs, vertical differences, failure modes and questions; the conclusion's first paragraph restates the chapter's own answer before widening to Part IV; the bike replay points to the attention caps under fan-out; the flow rationale says why fan-out precedes channels and taxonomy precedes consent. Not taken: the architecture names the risk gate before the risk-gate section argues for it (the published component list already says 'The gate is described below'); the architecture's hybrid paragraph and the channels section both state the digest's send-time check (kept: the channels section ties it to the digest's requirements); 'policy engine' in the Chief Architect's view is not one of the eight named components; 'ghost alert' is defined only by the ghost-alert-rate metric row; Trade-offs could be folded into the Chief Architect's view (kept: house chapter shape); sections after channels declare no internal flow.",
+    "Flow rubric rerun after the reorder (2026-11-12, sound with notes). Taken: the rationale no longer says the worked example comes 'immediately after' the matcher. Not taken: the risk gate (architecture) and the frequency caps (bike replay) are still used before their own sections, now with in-place pointers; fan-out sizing (worked example) could move to the end of Fan-out; the first conclusion paragraph joins the chapter's synthesis and Part IV's (the spec idea p65 joins them on purpose); the conclusion does not restate the 23-minute-against-5-minute gap or the opening's 'standing demand'."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around the match-set entry/exit rule and the send-time check, because the canonical Ghost Inventory example (the bike's stale digests) is the clearest teaching case and both rules generalize."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended a hybrid (percolation for instant alerts, ledger-based digests, batch re-query as reconciliation) over pure batch, with explicit arithmetic, rather than presenting the options as equal."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Included the risk gate and fan-out ordering as design topics because alerts amplify fraud and decide who wins scarce listings; both are governance questions for the Chief Architect."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the legal section to principles with Veldmark's policy, pointing to the regulation chapter, because the ePrivacy classification differs by member state."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) so a reader of the opening can predict the sections (AC-2).",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names the mechanisms but not the sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from one paragraph to three (synthesis with the callback to Part IV's three questions, so-what with the callback to the bike and the Eixample ring, hand-off) to carry Part IV's closing, as the journal spec requires; 'Questions to Ask' is specified as the last body section. The published two sentences are kept as the hand-off paragraph.",
+      "rejected": [
+        "Putting Part IV's closing in the Chief Architect's View."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's success criteria were inventories (definitions present, three diagrams, tables present, every company claim dated); they are replaced by the journal spec's four outcome criteria, which cover the same ground as reader outcomes (AC-1 the design and its metrics, AC-2 the opening, AC-3 the outline, AC-4 the closing). No post-level criterion was added.",
+      "rejected": [
+        "Carrying the inventory criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit set to the published draft's length plus 5% (7,780 words by check_draft's count, which includes callouts and tables, so 8,169), because spec.md set no limit.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order of sections and paragraphs kept as published after the flow rubric (sound with notes); its notes were addressed by wording, not by moves.",
+      "rejected": [
+        "Moving the channels section's digest argument into the architecture section.",
+        "Folding Trade-offs into the Chief Architect's View."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 2 (two corroborated flow failures at fault in the spec), moved the Worked Example section from after Consent to after Channels, and moved its migration paragraph (p57) into the Chief Architect's View after the decisions list; rewrote the transitions into Worked Example, Alerts as a Liquidity Lever, Trade-offs, p57 and p63, and the roadmap. Intent, thesis, role and the journal spec's criteria unchanged.",
+      "rejected": [
+        "Moving the Risk Gate section next to the Architecture (it would put the amplifier before the speed it amplifies).",
+        "Keeping the order and escalating to the author."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation item 1: added a lead-in paragraph p37a ('Once fan-out has decided who is notified and when, each match still needs a channel, and each channel suits a different urgency:') that carries the channel table, so the Channels section no longer opens on a bare table; p38 now carries an elaboration transition from the table to the digest. Resolved accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Attaching the table to p38 by moving p38's prose above the table (it would define digests before showing the channels)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation item 2: 'The listing-data brief puts the rule simply' became 'The rule is simple'; the published rule text ('saved searches are user data; migrate them, don't drop them') is unchanged, only the attribution to an internal research document readers never meet is dropped. Resolved accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Keeping the attribution and introducing the brief (it is not part of the book)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation item 3 (minor): the definition of a digest ('a scheduled message that collects matches since the last digest') moved from the Channels section into the scene's description of Tradeyard's digest job (p07), before the architecture reasons about digests; the Channels paragraph now starts 'Digests trade speed for attention'. Resolved accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Adding a second definition in Concepts."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "length.max_words raised from 8,169 to 8,200 (+0.4%, within the 10% allowed by the delegation) to make room for the p37a lead-in; no published fact, figure, name, link or the 38% dormancy sentence was cut. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Trimming published text to make room."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, Part IV's closing and Part V's transition_in."
+    },
+    {
+      "kind": "internal",
+      "ref": "event-driven-listings, listing-aggregate, publication-pipeline",
+      "contributed": "Event names, the bike's digest timeline, derived alertability. (Carried over from spec.md.)"
+    },
+    {
+      "kind": "internal",
+      "ref": "map-search, location-and-geo, categories-and-taxonomies, entity-resolution, trust-and-safety-architecture, ranking",
+      "contributed": "Drawn areas, geo cells, the bikes split, canonical properties, the risk gate's owner, digest ordering. (Carried over from spec.md.)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-search-discovery.md Part 11; _research/productscape-digest.md; _research/scenario-ledger.md",
+      "contributed": "Research, the productscape quotations and every Veldmark figure."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic Rightmove case study (2025); Homegate on Elastic's blog (2024); leboncoin tech blog post on PowerMTA (2026); The Title Report on Zillow (2023)",
+      "contributed": "Documented percolation at portals, mail infrastructure scale, natural-language saved searches."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic and OpenSearch percolator documentation; Lucene monitor; Vespa predicate fields; Firebase quotas; Android notification permission; Gmail sender guidelines; RFC 8058; Directive 2002/58/EC",
+      "contributed": "Engine constraints, provider limits and legal rules."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: lead-in p37a for the channel table, internal brief attribution dropped, digest defined in the scene, max_words 8,200. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1-3 (REVISE, ESCALATE on spec order, ESCALATE on draft); spec order changed after round 2 (logged in decision_log); close-out fixes after round 3 recorded in open_questions. check-report.json is stale against the close-out edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Order changed after draft check round 2: Worked Example moved after Channels; the migration paragraph moved to the Chief Architect's View. Units p53-p56, p57, p58 and p63 redrafted at their boundaries; flow rubric rerun."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from the published index.md); added roadmap paragraph p04 and two conclusion paragraphs to carry Part IV's closing; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 4 kept attempt 3 with two known differences from the source. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 7,317 → 7,335 prose words; opening places the chapter after Part IV's find-what-exists chapters and points to part-5; match-set heading renamed; 9 paragraph openings state their point. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Architecture heading now names the design (a saved-search store with rebuildable percolators). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 3 headings aligned with the book's shared section names, glossary terms and source-group structure. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: hand-off to part-5, Tradeyard transition aligned with the Yardstick exit plan, baseline labels fixed, leboncoin source linked, acronyms expanded, ePrivacy Art. 13 verified. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8200
+  }
+}

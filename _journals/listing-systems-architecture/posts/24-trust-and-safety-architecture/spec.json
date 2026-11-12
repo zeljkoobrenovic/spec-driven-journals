@@ -1,0 +1,1903 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "trust-and-safety-architecture",
+  "journal": "listing-systems-architecture",
+  "part": "part-5",
+  "title": "Trust and Safety as a Platform",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the trust-and-safety-architecture entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p03 and the synthesis paragraph p59.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The five functions of trust and safety (policy, detection, decision, enforcement, review and redress) plus measurement, the speed at which each changes and how each fails; policies as versioned reference data.",
+        "The moderation pipeline: synchronous gate and asynchronous path, risk-tiered moderation modes, human review queues and the random sample, LLMs for the grey zone; the enforcement ladder and its propagation to every consumer; notice and action, case management, appeals and statements of reasons as a by-product.",
+        "The trust-and-safety metrics (prevalence, time to action, precision, recall, overturn rate, report rate, reviewer agreement) and how each misleads."
+      ],
+      "believe": [
+        "A removal is not finished when the listing's status changes; it is finished when the last consumer has acknowledged it.",
+        "Trust and safety pays to share across brands from the first year, but only the machinery, evidence and lawful signals; policy judgement stays local."
+      ],
+      "can_do": [
+        "Draw the trust-and-safety components and their interfaces, with one decision service as the only writer of decision records.",
+        "Defend a risk-tiered moderation design instead of a choice between pre- and post-moderation, and say what must happen in every system when a listing or account is restricted.",
+        "Decide which trust-and-safety components a group shares and which each brand keeps."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an incomplete removal and an undeclared demotion practice, the reader names what is missing and what the design does.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A fraudulent listing removed at 09:00 still appears in a 10:00 alert digest and in a similar-items carousel, its seller's open payout goes out, and the ranking team has been quietly demoting suspected scams for months. Using only this chapter: what is missing, and what does the design do?",
+        "expected": "Enforcement is an EnforcementApplied event from the decision service that every consumer applies idempotently and acknowledges: alerts drop queued notifications and exclude the listing from digests, recommendations evict it, payments hold or freeze per policy; a propagation monitor tracks time to the last acknowledgement, and the removal is not done until then. Demotion is a restriction under Article 17 of the DSA, so it must go through the decision service with a decision record and a statement of reasons."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The four-stacks history and the question 'what did we remove, why, and did it disappear'; the Veldmark phishing incident and the group's four stacks; the five functions and policies as data; the moderation pipeline with the public practice behind it, modes, human review and LLMs; enforcement and its propagation; intake, cases, appeals and statements of reasons; metrics; what a group shares and how verticals differ; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: the DSA, public engineering sources (Meta's Sigma, Stripe Radar, OLX), the Which? 2024 test, the 2015 leboncoin ruling and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposal to choose between pre- and post-moderation for the whole marketplace, the reader replaces it with risk tiers and names the two public cases that show why.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Your product director wants one rule for the whole marketplace: either every listing is checked before it goes live, or everything goes live at once and is checked afterwards. Using only this chapter: what do you propose instead, and which public cases support it?",
+        "expected": "Neither: set the moderation mode per risk tier from the category's risk, the seller's trust level and the listing's risk score, with a synchronous gate for every action and slower checks on an asynchronous path (a cheap book goes live on the gate, a new account's first rental waits for image and duplicate checks), and time budgets per tier agreed with the general managers. Treat every material edit as a new submission, because in the Which? 2024 test edited scam ads passed review in minutes; and describe the mode truthfully, because in 2015 a Paris court found leboncoin guilty of misleading practices for claiming all ads were validated."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a proposal to centralize moderators under one group policy and report removals to the board, the reader says what the group shares, what stays with each brand, who decides on cross-brand signals and what to report instead.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A group of four marketplace brands proposes to merge all moderators into one central team with one policy, and to report the number of listings removed to the board each month. Using only this chapter: what would you share, what would you keep per brand, who decides which signals cross brands, and what would you report instead?",
+        "expected": "Share the machinery: decision service and decision record, enforcement events and propagation monitor, case tooling, evidence store, statement-of-reasons service, rule runtime and lifecycle, the policy registry with local content, base models; share hashed block lists only where the Data Protection Officer approves them (purpose, retention, impact assessment), never raw message content. Keep per brand: policy overlays, thresholds and risk appetite, reviewers with language skills, vertical detectors. Report sampled prevalence of fraudulent listings by brand with its trend, next to time to action on fraud reports, not removal counts."
+      }
+    ],
+    "audience": {
+      "who": "Chief architects of marketplace groups, heads of trust and safety and their engineering leads, and principal engineers who own insertion, search, messaging, alerts or ranking and need to know where those systems meet moderation.",
+      "already_knows": [
+        "What an API, a database, an event stream, a rules engine, an ML classifier and an LLM are.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane, Hearthly and Keybridge, the cast (Ingrid Halvorsen, Aisha Rahman, Lucía Ortega), the Common Ground program and the architecture advice forum, Yardstick, Tradeyard Safe Deal, the Rotterdam city bike, bounded contexts, the listing lifecycle with its enforcement overlay, the publication pipeline, the event backbone, Part IV's search, recommendations and alerts, and the failure patterns Ghost Inventory, Moderation as an Afterthought and Set-and-Forget AI.",
+        "From the part introduction: trust as a platform capability and Veldmark's four trust-and-safety stacks."
+      ],
+      "does_not_know": [
+        "Trust-and-safety vocabulary: policy (as a versioned record), moderation pipeline, enforcement action, case, pre- and post-moderation, prevalence, overturn rate, trusted flagger.",
+        "The DSA articles on notice and action (16), statements of reasons (17), internal complaints (20), out-of-court settlement (21), trusted flaggers (22) and the Transparency Database (24(5))."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How should trust and safety be architected across listings, users, messages and transactions?",
+    "claim": "Trust and safety should be built as five separately owned functions (policy, detection, decision, enforcement, review and redress) plus measurement, joined by one decision record that a single decision service writes: policies are versioned reference data that every rule, model, reviewer guideline and notice cites; the moderation mode is set per risk tier of category, seller and listing rather than chosen once; an enforcement action, demotion included, is done only when every consumer (search, alerts, recommendations, messaging, SEO pages, ads, payments, partner feeds) has acknowledged its EnforcementApplied event; the platform is judged on sampled prevalence, time to action, precision and appeal overturn rate rather than removal counts; and a group shares this machinery and lawful hashed block lists while each brand keeps its policy overlays, thresholds, reviewers and vertical detectors.",
+    "disputed_by": "The common view that trust and safety is an operations function: a review queue attached to insertion, staffed per brand or outsourced, measured by items reviewed and listings removed, with a removal finished once the listing's status changes, and with sharing across a group meaning centralized moderators and one policy.",
+    "so_what": "A Chief Architect who accepts this makes the decision record schema and the single-writer rule a group decision, sets propagation targets per consumer and watches p95 and worst case, lets the Data Protection Officer decide which signals cross brands, leaves risk tiers and thresholds to marketplace general managers within group guardrails, and puts sampled prevalence of fraudulent listings by brand, next to time to action on fraud reports, in front of the board.",
+    "how_why": "On 7 March 2027 Tradeyard NL suspended a phishing account seven minutes after Femke's report, yet its phone number also had a Motorvane account no one could see, Tradeyard Belgium received the new rule on Wednesday, Poland and Portugal never did, and the sellers it had already contacted got no warning: four stacks with 210 moderators, three appeal processes and five ways of producing statements of reasons could not share a signal. A blind sample of 4,000 Tradeyard NL listings a week found about 0.6% violating policy against the 0.2% removal counts suggested. The shared platform, live for Tradeyard NL and BE in November 2027, targets 96% automation from 94%, a median time to action on fraud reports under 30 minutes from 3 hours 10 minutes, and an alert when the overturn rate of a policy exceeds 10%.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Trust and safety is five functions (policy, detection, decision, enforcement, review and redress) plus measurement, built as separate components joined by one decision record that only the decision service writes, with policies as versioned reference data that every rule, model, guideline and notice cites."
+      },
+      {
+        "id": "S2",
+        "claim": "The moderation mode is set per risk tier of category, seller and listing, using a synchronous gate and an asynchronous path, human queues designed for the grey zone, labels and legal duties, and LLMs only in the grey zone, rather than chosen once between pre- and post-moderation."
+      },
+      {
+        "id": "S3",
+        "claim": "An enforcement action, demotion included, is a rung on a ladder chosen by the decision service and is done only when every consumer holding a copy has applied and acknowledged its EnforcementApplied event."
+      },
+      {
+        "id": "S4",
+        "claim": "Notices, cases, appeals and statements of reasons are entities linked to decision records, so redress and regulatory output are views of the record rather than separate projects."
+      },
+      {
+        "id": "S5",
+        "claim": "The platform is judged on sampled prevalence, time to action to the last acknowledgement, precision and appeal overturn rate, computed from decision records and samples per policy and detector, not on removal counts or queue sizes."
+      },
+      {
+        "id": "S6",
+        "claim": "A group shares the machinery, the evidence and the hashed signals its Data Protection Officer approves, while each brand keeps its policy overlays, thresholds, reviewers and vertical detectors."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Builds the platform the rest of the part plugs into, the decision service, decision record, enforcement propagation, appeals and metrics, and sets out which of it a group shares.",
+    "supports": [
+      "P5-1",
+      "P5-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses the problem (four stacks that cannot share a signal and Ingrid's question which parts are one platform); sharing answers it after the body has built the parts"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "architecture, enforcement, intake and measuring follow one decision through its life: detected and decided, enforced everywhere, contested and reported, then counted"
+      }
+    ],
+    "rationale": "The scene ends on Ingrid's question, which parts of trust and safety are one platform and which stay four, and the body supplies, in order, what that answer needs. The five functions and policies as data come first because every later component is named by the function it serves and cites a policy version. The pipeline then shows how detection and decision work, with the public evidence (Sigma, Stripe Radar, OLX, Adevinta's shared OCR service) right after the component table, because it anchors the reference design the section labels as an inference; enforcement follows because it acts on what the decision service decided; intake, cases and appeals come next because an appeal reverses an enforced decision and a statement of reasons describes one; measurement comes after them because its figures are computed from decision records, samples and overturns. The sharing decision comes after measurement because it can only be argued once every shared component has been introduced; vertical differences follow it directly because they justify its local side (thresholds, policy overlays, vertical detectors). Trade-offs, failure modes, the Chief Architect's view and questions apply the whole design, so they come last."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "A keyword filter after the first spam wave, a review queue after the first press story, a report button after the first regulator letter: ten years later a group has four moderation stacks that cannot share a signal, and nobody can answer what did we remove last month, why, and did it actually disappear?"
+    },
+    "bridge": {
+      "from_reader_world": "Architects who built Part IV's search, recommendations and alerts to put a listing in front of buyers within seconds.",
+      "to_topic": "Each of those surfaces must also obey a removal, so trust and safety has to be architected as a platform that reaches all of them, not a queue beside insertion."
+    },
+    "thesis_statement": {
+      "text": "Treat trust and safety as a platform capability: five functions built as separate components joined by one decision record, enforcement done only when every system holding a copy has applied it, metrics of harm rather than activity, and shared machinery with local policy.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02; the scene's last paragraph (p09) poses the question the body answers."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03, which lists the sections in order and names the kinds of evidence.",
+      "promises": [
+        {
+          "promise": "Veldmark's phishing incident and its four trust-and-safety stacks.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The five functions and policies as versioned data.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The moderation pipeline: its components and the public evidence behind them, gate and asynchronous path, moderation modes, human review and LLMs.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Enforcement and its propagation to every consumer.",
+          "kept_in": [
+            "enforcement"
+          ]
+        },
+        {
+          "promise": "Intake, cases, appeals and statements of reasons.",
+          "kept_in": [
+            "intake"
+          ]
+        },
+        {
+          "promise": "Measurement of harm, with Veldmark's numbers.",
+          "kept_in": [
+            "measuring"
+          ]
+        },
+        {
+          "promise": "What a group shares, what stays local, and how verticals differ.",
+          "kept_in": [
+            "sharing",
+            "verticals"
+          ]
+        },
+        {
+          "promise": "Trade-offs, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Most marketplaces build trust and safety in the order problems appear and attach each piece to the nearest system, so a decade later a group has four moderation stacks that cannot share a signal and cannot say what it removed, why, and whether the removal took effect.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A keyword filter after the first spam wave, a review queue after the first press story, a report button after the first regulator letter.",
+            "shows": "The pieces arrive one incident at a time, which is how four unconnected stacks come about."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Poses the problem the platform design solves."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Because every Part IV surface that shows a listing must also obey its removal, this chapter treats trust and safety as a platform capability: five functions built as separate components and joined by one decision record, enforcement that is done only when every system holding a copy has applied it, metrics of harm rather than activity, and a split that shares the machinery across brands and keeps policy local.",
+        "function": "claim",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "States the thesis in the introduction."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Four stacks that cannot answer what was removed and whether it disappeared.",
+          "introduces": "The chapter's answer: trust and safety as a platform capability.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from Veldmark's phishing incident and its four stacks, defines the five functions and policies as data, lays out the moderation pipeline with its public evidence, follows enforcement to every consumer, then covers intake, cases and appeals, measurement and what a group shares, and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions, drawing on the DSA, public engineering sources, two dated public cases and the fictional Veldmark.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces every section and the kinds of evidence."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The platform the chapter argues for.",
+          "introduces": "The order in which the chapter builds it and the evidence it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Fraud, identity and the legal detail of regulation have their own chapters; this one builds the platform they plug into, with Veldmark, the fictional group the book follows, as the running example.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "fraud-prevention owns risk scoring, fraud signals and step-up friction; identity-and-verification owns identity levels; marketplace-regulation owns the DSA's legal detail; meet-veldmark introduces the running example.",
+            "shows": "Sets the chapter's boundaries so the reader knows what is pointed to rather than taught."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Places the platform beneath the part's other chapters."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the chapter covers.",
+          "introduces": "What it leaves to the neighbouring chapters, and the running example.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Four Stacks and One Phishing Link",
+      "controlling_idea": "A fast suspension inside one brand hid a group that could not share a signal, a rule or a process, which raises the question of which parts of trust and safety are one platform.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Shows the cost of separate stacks and poses the sharing question."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Veldmark as the running example.",
+        "introduces": "The 7 March 2027 phishing incident.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On 7 March 2027 Tradeyard NL suspended a phishing account seven minutes after Femke reported its fake Safe Deal payment link, which is fast by the standards of most classifieds platforms.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Fake Safe Deal link at 20:11 for Femke's €240 bike, delivered because no rule checked domain age; reported 20:19; suspended 20:26; a new rule withheld 37 similar messages.",
+              "shows": "Inside one brand the response worked, which sets up the contrast with the group view.",
+              "source": "scenario-ledger.md, Rotterdam city bike"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Seen from the group, the same incident showed four stacks that could not share a signal: the phone number had a Motorvane account no one could see, Belgium got the rule only on Wednesday, Poland and Portugal never got it, and Hearthly ran its own tools.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Ingrid's 16 March question to Aisha; Motorvane account three weeks earlier; Yardstick deploys twice a week; PL/PT outsourced keyword lists; Hearthly's in-house rules and Casavista's review tool.",
+              "shows": "Each gap is a missing shared signal, rule path or tool.",
+              "source": "scenario-ledger.md, trust-and-safety-architecture additions"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The seven-minute suspension inside Tradeyard NL.",
+            "introduces": "What happened outside Tradeyard NL.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Aisha's one-slide inventory shows each brand with its own detection, human review, policies, appeals and way of producing the DSA statement of reasons, the notice owed to a user whose content is restricted.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Brand-by-brand table of detection, review, policies, appeals and DSA statements of reasons.",
+              "shows": "The split runs through every function, not only detection."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The gaps the incident exposed.",
+            "introduces": "The full inventory of the group's stacks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Added up, the group ran 210 moderators, four definitions of a prohibited item, three appeal processes and five ways of producing a statement of reasons, while Tradeyard alone sent about 138,000 listings a week to human review.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "210 moderators; 94% of Tradeyard's new-listing decisions automated; about 138,000 a week, 6% of 2.3 million, to review.",
+              "shows": "Gives the scale the shared platform must serve and the duplication it removes.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The inventory table.",
+            "introduces": "Its totals, and the definition of a statement of reasons.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Ingrid's question was not whether to centralize moderators but which parts of trust and safety are one platform and which must stay four; the rest of the chapter is the answer the advice forum adopted in mid-2027.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shared T&S platform live for Tradeyard NL and BE in November 2027.",
+              "shows": "Dates the answer the chapter describes.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Four of everything.",
+            "introduces": "The question the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: The Five Functions of Trust and Safety",
+      "controlling_idea": "Trust and safety splits into five functions plus measurement, defined by what each decides, how fast it changes and how it fails, and policies are the versioned reference data every function cites.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the functions and the policy record the architecture is built from."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The functions are named first, then the working terms, then the first function's record in detail; the policy record names detectors and actions only by the function they serve, which is all the reader has at this point, and sections 3 and 4 develop them. Placed after the pipeline, the policy record would arrive after components that already cite it."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's question which parts are one platform.",
+        "introduces": "Splitting trust and safety into functions, the prerequisite for answering it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Trust and safety is easier to architect once it is split into five functions (policy, detection, decision, enforcement, review and redress) that change at different speeds and fail in different ways.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Function table: question, speed of change, typical failure.",
+              "shows": "Each function has its own pace and failure, so each needs its own component and owner."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: five gears joined by one record ribbon.",
+              "shows": "The functions are joined by one decision record and watched by measurement."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Measurement and transparency is a sixth concern that runs across all five functions.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The five functions.",
+            "introduces": "The concern that spans them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "Five working terms are used throughout the chapter: policy, moderation pipeline, enforcement action, case and T&S metrics, three of which the chapter owns.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'No live animals in Tradeyard PT except through registered breeders' is a policy, a keyword list is not; a ring of 26 accounts is one case, not 180 tickets.",
+              "shows": "The examples separate each term from what it is often confused with."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The functions.",
+            "introduces": "The terms the rest of the chapter uses for their parts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The functions decide on actors as well as listings, and the decision record links the two views; Trust is its own bounded context in which a listing is a subject under evaluation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A weapon or a discriminatory rental ad violates on its own; a fraud ring or a takeover account is a problem even when every listing looks clean.",
+              "shows": "Shows why decisions must cover both views."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Decisions about items.",
+            "introduces": "Decisions about actors.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The most underrated design decision is to treat policies as data: a registry of versioned policy records that rules, models, reviewer guidelines, notices and reports all point to.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Veldmark's POL-FRAUD-PAYLINK v3 record: scope, statement, ground, DSA category, detectors, allowed actions, guideline, user-facing reason, owner.",
+              "shows": "A policy record is concrete enough to cite, localize and review."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The five functions and their terms.",
+            "introduces": "The first function, policy, built as data.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Policies as data let a decision cite policy ID and version, let countries add overlays without forking the platform, and move legal review into the registry.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The policy record.",
+            "introduces": "Three consequences of keeping policies as data.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "As with category trees, a decision must stay explainable under the policy version in force when it was taken.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "categories-and-taxonomies treats category trees as versioned reference data.",
+              "shows": "The same versioning reasoning applies, with the added duty of explaining past decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Versioned policy records.",
+            "introduces": "The parallel with category trees and the duty it adds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Moderation Pipeline and Its Components",
+      "controlling_idea": "The moderation pipeline is a set of components around one decision service, run at two speeds whose split, together with the moderation mode, human queues and LLM use, is set by risk, and anchored in what the public record documents.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Gives the components and sets the moderation mode by risk tier."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p18 to p20: the gate a listing meets first, then the asynchronous path after it"
+          }
+        ],
+        "rationale": "The whole component set first, with the public evidence that anchors it as a reference design directly after the component table, then the two speeds a listing meets, the risk decision that splits them and the range of modes it produces, then human review, sampling and LLMs, which act on what the automated path leaves uncertain. Placed before the components, the modes would describe paths the reader cannot locate. The public evidence sits under its own subheading next to the reference-design statement it supports; at the end of the section, after the LLM rules, both flow readers of round 3 read it as an appendix."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The five functions.",
+        "introduces": "The components that implement them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "The reference architecture, assembled from public building blocks and labeled as an inference, makes one decision service the only writer of decision records, with every other component feeding it or deriving from its records.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Meta's Sigma (2015), Stripe Radar's rule operations, OLX's chat moderation, the DSA, the Ofcom-commissioned report (July 2026).",
+              "shows": "The design is assembled from public evidence, not a description of any company."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: detection and review feed one decision service.",
+              "shows": "All outputs derive from decision records."
+            },
+            {
+              "kind": "table",
+              "what": "Component table: responsibility and key interface of eleven components.",
+              "shows": "Each function has a component with a defined interface."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "form": "list",
+          "controlling_idea": "Classifieds companies publish little about trust and safety, but what they publish shows shared moderation in a portfolio, shared models, real-time chat moderation, rules deployed in minutes and rule operations, enough to anchor the design but not to describe any company.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Annual Report 2023 (April 2024): chat and moderation among the first consolidated capabilities.",
+              "shows": "A multi-country group shared moderation early."
+            },
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog (March 2023): central Text in Image OCR service, 100 million to 330 million requests a month.",
+              "shows": "A shared detector with many tenants."
+            },
+            {
+              "kind": "source",
+              "what": "OLX Group (January 2026): real-time chat moderation and image blocking.",
+              "shows": "Chat moderation in production."
+            },
+            {
+              "kind": "source",
+              "what": "Engineering at Meta (2015): Sigma, rules hot-swapped at over a million requests a second.",
+              "shows": "A rule should reach production in minutes, which Tradeyard Belgium lacked when the rule took until Wednesday."
+            },
+            {
+              "kind": "source",
+              "what": "Stripe Radar documentation (n.d.): backtesting, shadow mode, rollout, audit.",
+              "shows": "Rule lifecycle transfers to moderation."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout on Adevinta-group job postings (2025–2026).",
+              "shows": "Labels the shared-platform reading as inference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The reference design, labeled as an inference, and its component table.",
+            "introduces": "The public record that anchors it, and its limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S6"
+            ],
+            "how": "Grounds the shared-platform design in dated public sources and labels the inference."
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The synchronous gate sits inside the user's action with a budget of a few hundred milliseconds, so it can afford only rules, block-list lookups and a cheap model, and answers allow, hold or reject.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The components and the public evidence behind them.",
+            "introduces": "The first component a listing meets, the gate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The asynchronous path runs slower detectors on events after the action and can still demote, hold or remove a listing that is already live.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The gate's fast, cheap checks.",
+            "introduces": "The slower checks after the action.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Which checks run in which path is a risk decision, not a technical one: a cheap book can go live on the gate, while a rental in a fake-rental city should wait for image and duplicate checks.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A €15 children's book versus a rental flat in a city with a fake-rental problem.",
+              "shows": "The harm of exposure, not the technology, decides the path."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: two lanes, the book goes live, the rental waits.",
+              "shows": "The same split drawn as a road."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Two paths with different speeds.",
+            "introduces": "What decides which check runs where.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Pre-moderation and post-moderation are the ends of a spectrum, and large platforms run several points on it at once.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four modes compared on time to live, exposure, cost and fit.",
+              "shows": "Each mode trades exposure against cost and speed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The risk decision about paths.",
+            "introduces": "The full range of moderation modes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The design that works is risk-tiered: the mode depends on the category's risk, the seller's trust level and the listing's risk score.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A verified dealer's car from a DMS feed goes live on the gate; a new account's first rental waits for the full check.",
+              "shows": "Shows two tiers side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The spectrum of modes.",
+            "introduces": "Choosing the mode per risk tier.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Two public cases show why the mode matters: edits must be re-moderated as new submissions, and the terms must describe the mode the platform actually runs.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Which? December 2024 test: edited scam ads passed review in minutes; one Facebook ad live almost 48 hours.",
+              "shows": "Re-scoring only at creation lets edited scams through.",
+              "source": "Which?, 2024"
+            },
+            {
+              "kind": "case",
+              "what": "December 2015 Paris ruling against leboncoin for claiming all ads were validated; hosting status confirmed.",
+              "shows": "The moderation mode is a factual claim the marketing must match.",
+              "source": "Clubic, 2015"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Risk-tiered modes.",
+            "introduces": "Public cases that show the cost of getting the mode wrong.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "list",
+          "controlling_idea": "Human review exists for three reasons, the grey zone, labels and the law, and each calls for a different queue design.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A suspected fake rental with ten contacts in its first hour outranks a possibly miscategorized sofa.",
+              "shows": "Grey-zone queues are ordered by expected harm times uncertainty."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Automated modes.",
+            "introduces": "Where human judgement sits in the pipeline.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A review queue that almost always ends in the same outcome should become an automated rule, and a rule reviewers would often overturn should go back to the queue.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Stripe Radar documentation (n.d.).",
+              "shows": "A payments rule that transfers to moderation.",
+              "source": "Stripe"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Queue designs.",
+            "introduces": "When work moves between queues and rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The random sample gives the only trust-and-safety number that does not depend on what the detectors already catch.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Integrity Institute for Ofcom (July 2026): review randomly sampled ad impressions and most-viewed ads to estimate prevalence.",
+              "shows": "An external recommendation for sampling, which classifieds translate into stratified blind samples of listings and messages."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Queues fed by detectors.",
+            "introduces": "A queue fed by random sampling.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "LLMs entered production moderation between 2024 and 2026, and the thin public classifieds evidence shows real-time chat image checks and policy taxonomies supplied as prompts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX Group January 2026 post on generative-AI image blocking in chats.",
+              "shows": "LLM-era moderation is in production at a classifieds group."
+            },
+            {
+              "kind": "source",
+              "what": "Llama Guard, Inan et al., December 2023.",
+              "shows": "A policy taxonomy can be given to a model as a prompt rather than retrained."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Human review and sampling.",
+            "introduces": "The newest detector type.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "My rule for LLMs in a moderation pipeline has four parts: grey zone only, policy agility as the main value, deterministic floors stay, and drafts rather than decisions where the law needs a human.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Tradeyard's 2.3 million new listings a week; DSA complaints must not be decided solely by automated means.",
+              "shows": "Cost and law set where LLMs fit."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What LLMs can do.",
+            "introduces": "Where the author would place them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "enforcement",
+      "heading": "Enforcement Actions and Their Propagation",
+      "controlling_idea": "An enforcement action is a rung on a ladder that includes demotion, and it is done only when every consumer that holds a copy has applied and acknowledged it.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Argues the propagation half of the thesis."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "First the range of actions, including demotion, then where any action must take effect, the event that makes it happen, and the failure when it does not, ending on the Veldmark incident."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The pipeline, in which the decision service decides.",
+        "introduces": "The actions it takes and how they reach every system.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Removal is one rung of a ladder of actions the decision service chooses from, and often not the right one.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Integrity Institute for Ofcom (2026): graduated ladder from nudge to suspension; payment freezes need a higher evidentiary threshold.",
+              "shows": "External backing for a graduated ladder."
+            },
+            {
+              "kind": "table",
+              "what": "Eight-rung ladder: action, target, trigger, whether a statement of reasons is needed.",
+              "shows": "Most rungs restrict a user and need a statement of reasons."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Because Article 17 of the DSA covers demotion, a ranking system that quietly pushes suspected scams down is taking a moderation decision, so trust-based down-ranking belongs behind the decision service.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Transparency Database value DECISION_VISIBILITY_CONTENT_DEMOTED.",
+              "shows": "The regulator's own schema treats demotion as a decision.",
+              "source": "European Commission, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The statement-of-reasons column of the ladder.",
+            "introduces": "Its surprise for ranking teams: demotion counts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A removal is not finished when the listing's status changes, because search, alerts, recommendations, messaging, SEO pages, ads, payments, partner feeds and analytics each hold their own copy.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Consumer table: what each holds and what enforcement must do there.",
+              "shows": "Each consumer needs its own action, from 410 pages to payout holds."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which action is chosen.",
+            "introduces": "Where the chosen action must take effect.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Enforcement should be an EnforcementApplied event that every consumer applies idempotently and acknowledges, with a propagation monitor and an EnforcementLifted event that restores ranking state on reversal; payment holds are designed in Part VI.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "event-driven-listings' pattern for listing state changes; transactions-and-payments for Safe Deal holds and payout freezes.",
+              "shows": "Reuses a known event pattern and points to the chapter that designs the payment side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Many copies that must each obey.",
+            "introduces": "The event pattern that makes them obey and proves it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Without propagation, enforcement causes Ghost Inventory, and a fraudulent listing in a digest after removal sends buyers to a scammer under the platform's brand, so enforcement should ride the unpublish mechanism with higher priority.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Femke's bike, sold 18:10 and out of search 18:11 on 8 March, still in the next morning's digest.",
+              "shows": "The benign ledger case shows the same gap a fraudulent listing would use.",
+              "source": "scenario-ledger.md"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: one decision fans out to every consumer, each acknowledges.",
+              "shows": "Propagation can be proven per consumer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The event pattern.",
+            "introduces": "What happens without it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Figure 4's counterparty warning is the target design: on 7 March 2027 the sellers the account had already contacted were not warned.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Two sellers learned the next day from Femke's warning in a neighborhood chat group.",
+              "shows": "Shows the missing messaging consumer in the real incident.",
+              "source": "index.md local detail"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The target design in Figure 4.",
+            "introduces": "What actually happened in March 2027.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "intake",
+      "heading": "Intake, Cases and Appeals",
+      "controlling_idea": "Notices, cases, appeals and statements of reasons are entities linked to decision records, so redress and regulatory output follow from the record instead of being built as separate projects.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Argues that review and redress hang off the decision record."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Follows a complaint from arrival as a notice, to a case, to a decision that can be appealed, to the statement of reasons that reports it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Decisions driven by detection.",
+        "introduces": "The other ways violations arrive.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "Detection is only one way violations arrive: users, rights holders, authorities, banks and trusted flaggers send notices too.",
+          "function": "description"
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Because Article 16 of the DSA sets what a notice must contain and what the platform must do with it, a notice is an entity with a lifecycle, not an e-mail in a support inbox.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DSA Art. 16 (notice contents, confirmation, timely decision, outcome, disclosure of automation) and Art. 22 (trusted flaggers).",
+              "shows": "The law defines the fields and steps."
+            },
+            {
+              "kind": "table",
+              "what": "Notice fields and why the architecture needs each.",
+              "shows": "Turns the legal duties into a data model."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The intake channels.",
+            "introduces": "What the law requires of a notice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Case management wins or loses reviewers' productivity through ordinary features: grouping, evidence views, cross-brand history where lawful, reason templates, timers and quality sampling.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: case lifecycle with Decided and Enforced as separate states and appeals as new decisions.",
+              "shows": "A decision is not in effect until it has propagated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Notices arriving.",
+            "introduces": "The case they become.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Article 20 of the DSA requires a free electronic complaint system for at least six months after a decision, decided under qualified staff and not solely by automated means.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DSA Arts. 20 and 21.",
+              "shows": "Sets the legal frame for appeals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decided cases.",
+            "introduces": "How users contest them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "Three rules follow: an appeal creates a new decision linked to the original, evidence must outlive the complaint window, and reversals are the best labels the platform gets.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The legal duties of Article 20.",
+            "introduces": "The architectural rules they imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Every restriction needs a statement of reasons to the user and a copy without personal data in the DSA Transparency Database, which shows the scale involved.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 4.4 billion statements from 375 platforms in the 180 days to 19 October 2026; 41% fully automated.",
+              "shows": "The volume is far beyond hand-written notices.",
+              "source": "DSA Transparency Database, accessed 19 October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Appeals against decisions.",
+            "introduces": "The notice every restricting decision produces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "At Tradeyard NL's volume statements of reasons can only be generated from a decision record, so the record is the upstream design and the regulatory output is a view of it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 1.9% of about 1.05 million new Dutch listings a week removed: about 20,000 statements a week from listing removals alone; Veldmark had five exporters.",
+              "shows": "Hand-writing or per-brand exporters do not scale.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The EU-wide volume.",
+            "introduces": "Tradeyard NL's own volume.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "measuring",
+      "heading": "Measuring Trust and Safety",
+      "controlling_idea": "The platform is judged on harm, speed and accuracy measured from samples and decision records, not on activity, and Veldmark's sample shows how far activity numbers can mislead.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Argues the measurement claim with definitions and Veldmark's numbers."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim and the metric definitions come first, then the practices that make them trustworthy, then Veldmark's numbers as evidence and the reasoning behind its targets. With Veldmark's 0.6% first, the reader would meet prevalence before it is defined."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The decision record as the source of regulatory output.",
+        "introduces": "Metrics as its other output, and how they are usually built wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Activity numbers say how busy the team is, not whether the marketplace is safe, so the platform needs metrics of harm, speed and accuracy, each with its own way of misleading.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A model that misses a new scam reduces removals and queue sizes at once.",
+              "shows": "Activity metrics can improve while harm grows."
+            },
+            {
+              "kind": "table",
+              "what": "Prevalence, exposure-weighted prevalence, time to action, precision, recall, overturn rate, report rate, reviewer agreement: definition, what it tells, how it misleads.",
+              "shows": "Defines each metric and its trap."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The numbers are trustworthy only when computed from decision records and samples rather than operational logs, and reported per policy and per detector.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Precision 96%' hiding a phishing rule at 99.5% and a counterfeit rule at 70%.",
+              "shows": "Shows why aggregates mislead."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Metrics that can mislead.",
+            "introduces": "Two practices that make them trustworthy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Veldmark's first blind sample found about three times the prevalence that removal counts suggested, mostly in harms the detectors could not see.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "April 2027: 4,000 Tradeyard NL listings a week, 20 strata; about 0.6% violating against 0.2% assumed; phone-repair services and contact details in images.",
+              "shows": "The sample measures what detectors miss.",
+              "source": "scenario-ledger.md"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: dashboard 0.2% against sample 0.6%.",
+              "shows": "Activity versus harm."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Metrics defined in general.",
+            "introduces": "Veldmark's first measurement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Tradeyard's weekly queue numbers set the shared platform's design targets for end of 2028.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2.3M to about 2.4M listings; 94% to 96% automated; about 138,000 to about 96,000 reviews; 158 moderators, all on review queues, to about 135 (about 120 on review queues, 96,000 at about 800 each, and about 15 on sampling and appeals); median time to action on fraud reports 3 h 10 min to under 30 min; overturn rate measured per policy with an alert above 10%.",
+              "shows": "Turns the metrics into targets.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The baseline measurement.",
+            "introduces": "The targets set from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The design moved moderators to sampling and appeals rather than removing them, and expected the automation gain from three sources.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 15 moderators moved; sources: queues turned into rules, an OCR detector for contact details in images, actor-level decisions on rings.",
+              "shows": "Explains how the targets were to be reached."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The targets table.",
+            "introduces": "What the targets meant for people and where the gain comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "One Platform for Four Brands: What to Share",
+      "controlling_idea": "A group shares the trust-and-safety machinery and evidence, shares signals only where its Data Protection Officer approves them, and keeps policy content, thresholds, reviewers and vertical detectors with each brand.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Answers Ingrid's question."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The parts of the platform and their numbers, built since Ingrid's question.",
+        "introduces": "The answer to her question: what the group shares and what stays with each brand.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "Veldmark's rule of sharing platforms, not products, splits trust and safety into machinery the group shares and policy judgement each brand keeps as a tenant of the shared platform.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve components with share, share where lawful, share the registry, or local, and the reasoning.",
+              "shows": "Applies the principle component by component."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Sharing signals across brands is a data protection question before it is an engineering one, and Veldmark's architecture enforces the line its Data Protection Officer drew.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Lucía Ortega approved a shared list of hashed phones, e-mails, IBANs and device identifiers of accounts terminated for fraud, with purpose, two-year retention and an impact assessment; not raw content or behavior.",
+              "shows": "Shows what can cross brands and how the store design holds the line.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The share table.",
+            "introduces": "The constraint the table hides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Keybridge is deliberately not a tenant, because a neutral SaaS business inside the group needs an explicit data boundary, which Figure 7's tenancy split shows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark's March 2027 commitment not to use Keybridge agency data for Hearthly's advantage.",
+              "shows": "Explains why decisions on Keybridge-originated listings stay Hearthly's.",
+              "source": "scenario-ledger.md"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 7: tenancy split, machinery shared, overlays and detectors per tenant, Keybridge not a tenant.",
+              "shows": "The split drawn as tenants."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The tenancy split and the line on what may cross brands.",
+            "introduces": "The one Veldmark business kept outside the split altogether.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Harms, control points and detectors differ by vertical, so a group platform must accept vertical detectors and policies as tenant content.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Shows why some parts stay local."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The local side of Figure 7's tenancy split: policy overlays, vertical detectors and thresholds.",
+        "introduces": "How brands differ where their verticals differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The vertical table explains why vertical detectors and policies must be first-class tenant content: Hearthly's key detector is stolen-photo matching and Motorvane's key control is dealer verification.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General, real estate, automotive and jobs: harms, supply mix, control point, pre-moderation tolerance, vertical policy, typical detector.",
+              "shows": "Each vertical has its own harms and controls."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each choice of where to build trust and safety and where to put human judgement has a cost, and the group keeps its records and sets time budgets per risk tier.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S6"
+        ],
+        "how": "Compares the alternatives to the chosen design."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's chosen split, shared machinery with local policy and vertical content.",
+        "introduces": "The alternatives it was chosen over, and where human judgement goes.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "A vendor can supply review capacity but not the records the platform learns from, so the decision record, policy registry and labels stay in-house.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per-brand stacks, shared platform with local policy, fully central, vendor platform: strengths, weaknesses, right when.",
+              "shows": "Shows when each option fits."
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Moderation costs liquidity, so the answer is risk tiers with explicit time budgets per tier, reviewed with the general managers who carry the liquidity targets.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "More pre-moderation, more automation, LLMs in the grey zone, more sampling: benefit and cost.",
+              "shows": "Every place for human judgement has a price."
+            },
+            {
+              "kind": "reasoning",
+              "what": "liquidity-and-network-effects: a listing's first hours matter most.",
+              "shows": "Waiting time is lost liquidity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where to build trust and safety.",
+            "introduces": "Where to put human judgement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Ten recurring failure modes show how trust and safety goes wrong when the chapter's separations are missing.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns each claim into a failure to watch for."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How to choose well among the alternatives.",
+        "introduces": "How trust and safety goes wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "form": "list",
+          "controlling_idea": "Ten failure modes, from moderation only at creation to badges that outlive an account's integrity, each break one part of the design.",
+          "function": "description"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Sharing pays from the first year but centralizing judgement destroys value, so the Chief Architect assigns each decision an owner, watches long-term trends and reports harm to the board.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the design into decisions, owners and a board metric."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The design and its failures.",
+        "introduces": "Who decides what at group level.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "Trust and safety is one of the few capabilities where sharing pays from the first year and centralizing too much destroys value, so each decision needs a named owner and an indicator.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven decisions with who decides and what to watch.",
+              "shows": "Assigns owners and indicators."
+            }
+          ]
+        },
+        {
+          "id": "p56",
+          "form": "list",
+          "controlling_idea": "Three long-term trends belong on the roadmap: trust and safety consumes every event, regulation adds outputs, and adversaries learn the platform.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark's event backbone (July 2027) came before the shared T&S platform (November 2027).",
+              "shows": "Shows the dependency on the event backbone.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions to make now.",
+            "introduces": "The trends to plan for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "The board metric is sampled prevalence of fraudulent listings by brand with its trend, next to time to action on fraud reports.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Decisions and trends.",
+            "introduces": "The one pair of numbers for the board.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions test a trust-and-safety design against the chapter's claims.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns each claim into a question for a design review."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The decisions and indicators.",
+        "introduces": "Questions that check them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Ten questions check a trust-and-safety design, from which component writes decisions to whether labels survive a change of review vendor.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Platform to Adversary",
+    "synthesis": "The question the chapter opened with, what did we remove, why, and did it disappear, is answered by one record: the decision record says what and why under which policy version, the acknowledgements say where it took effect, the sample says how much harm remains, and sharing that record and its machinery is what lets a signal from one brand protect another while policy stays local.",
+    "so_what": "A group that builds the record and the propagation path can answer a regulator, a wrongly blocked seller and its own board from the same data; a group of queues answers each with a new project.",
+    "callback": {
+      "to": "The opening question (what did we remove last month, why, and did it actually disappear) and the 7 March phishing account with its unseen Motorvane twin.",
+      "how": "Under the shared platform the suspension is one decision record citing a policy version, its rule reaches every Tradeyard country through one runtime, the counterparties are warned, and the terminated account's hashed phone number reaches Motorvane through the shared block list."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Make the decision record and the single-writer rule a group decision, emit enforcement as acknowledged events, measure sampled prevalence, and share machinery while keeping policy local."
+    },
+    "hand_off": {
+      "to": "fraud-prevention",
+      "relationship": "problem_solution",
+      "carries_over": "Trust-and-safety-architecture's platform, which deliberately left detection as a slot that detectors plug into, and its closing point that the most demanding detectors face people who study the platform and adapt within days.",
+      "introduces": "That adversary and the detector built for it: the classifieds threat model, fraud signals, the risk scoring service with actor-level scoring, step-up friction and the Barcelona fake-rental ring."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the four stacks to the review questions.",
+      "introduces": "The answer to the opening question.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p59",
+        "controlling_idea": "The opening question has one answer: a decision record written by one service, acknowledged by every consumer and measured by sampling, shared across brands as machinery while policy stays local, which would have turned the 7 March incident into one decision that reached every country and brand.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The 7 March account, its Motorvane registration, the Wednesday rule in Belgium and the unwarned counterparties, replayed under the shared design.",
+            "shows": "The callback shows each gap closed by a part of the design."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Shows how the sections fit together."
+        }
+      },
+      {
+        "id": "p60",
+        "controlling_idea": "The platform deliberately left detection as a slot, and the most demanding detectors face people who study the platform and adapt within days, which is the adversary the next chapter takes up.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Hands off to fraud-prevention."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The platform with detection as a slot.",
+          "introduces": "The adversary and the detector built for it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Fraud typology, risk scoring, fraud signals and step-up friction.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    },
+    {
+      "topic": "Identity levels, KYB and verified badges.",
+      "covered_in": [
+        "identity-and-verification"
+      ]
+    },
+    {
+      "topic": "Legal detail of the DSA, DAC7, the UK Online Safety Act and vertical regulation, and Veldmark's statement-of-reasons pipeline.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "Message storage and conversation design.",
+      "covered_in": [
+        "messaging-and-leads"
+      ]
+    },
+    {
+      "topic": "The end-to-end publication path and freshness targets.",
+      "covered_in": [
+        "publication-pipeline"
+      ]
+    },
+    {
+      "topic": "Ranking mechanics.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Safe Deal payment holds, payout freezes and the transaction platform that applies them.",
+      "covered_in": [
+        "transactions-and-payments"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No classifieds company has published a T&S architecture; revisit the 'In practice' section if Adevinta, OLX or Vinted publish one. (Carried over from spec.md.)",
+    "Whether the shared hashed block list across brands survives a full DPIA in every Veldmark country is asserted in the story, not analyzed; identity-and-verification or marketplace-regulation may need to pick this up. (Carried over from spec.md.)",
+    "Known differences between generated figures and their mermaid sources (Figure 2: case management drawn inside the Detection panel; Figure 7: three arrows end at the wrong box) are recorded in the 2026-10-20 changelog entry and not fixed. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'): moved the '### In practice: what is publicly documented' subsection (p47) from the end of the architecture section to directly after the component table (p17), where both round-3 flow readers independently wanted it; rewrote p47's opening sentence and transition, p18's transition, the enforcement section's transition and the roadmap (p03 and its promises).",
+      "rejected": [
+        "Keeping it as the closing subsection after the LLM rules, which both readers read as an appendix.",
+        "Dropping the subsection, which would cut published citations."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moved Vertical Differences to follow the sharing section directly, as both round-3 flow readers asked, and gave it an opening sentence that picks up the local side of Figure 7's tenancy split; Trade-offs now follows Vertical Differences. Updated the section transitions, the post flow rationale and the roadmap. AC-2's expected answer, copied from the journal spec, still lists public practice after metrics and vertical differences after trade-offs; the replacement text was handed to the orchestrator (the post spec may not alter it).",
+      "rejected": [
+        "Folding the vertical table into the sharing section, a larger change than the readers asked for."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Tradeyard moderator target: the ledger gives only 'about 15 moderators moved to sampling and appeals'; the 120 is 96,000 reviews a week at about 800 per moderator, so the 15 are in addition to the 120. The targets row now reads 158 (all on review queues) to about 135 (about 120 on review queues, about 15 on sampling and appeals), and p46 says the review headcount follows the review volume. Reported to the orchestrator as a ledger ruling.",
+      "rejected": [
+        "Reading the 15 as inside the 120, which would leave about 105 reviewers for 96,000 reviews, contradicting the reviews-per-moderator row."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft fixes for the round-3 findings: p34 now opens from Figure 4's warning step and names the 9 counterparties in the text; LLM rule 4 points to Article 20 under Appeals and redress; the In practice callback names the Wednesday delay instead of 7 March; the bike digest wording follows the ledger (next morning's digest assembled at 17:30); the event backbone is introduced as the group event backbone live in July 2027; the IN THIS CHAPTER callout says five functions plus measurement; trusted flaggers and the Transparency Database are glossed at first use; 'tenant' is defined at the start of the sharing section; the Keybridge paragraph opens on the tenancy split; the metrics table is introduced as the harm, speed and accuracy metrics; the component table points to the enforcement ladder in the next section. Raised length.max_words from 8,237 to 8,400 (2%) for these additions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric note ('five functions' counts review and redress as one; the claim bundles six sub-claims): accepted under the author's delegation, 2026-11-12; the thesis is copied from the journal spec and stays unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes of 2026-11-12 (merge p20 into p22, trim p46, merge p34 into p33, keep public evidence in one place, introduce Keybridge in the scene, argue the closing sections' order): accepted under the author's delegation, 2026-11-12, as notes only; the order changes the readers converged on were made, the rest keep the published text."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "DSA quotation check: closed; the 2026-10-19 review verified Arts. 16, 17, 20 and 24(5) against the Official Journal, as the Sources entry records. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 2 (both flow readers: as its own section between pipeline and enforcement, In Practice still broke the decision-to-enforcement line; judged a spec fault), folded the In Practice section into the architecture section as its closing subsection (### In practice: what is publicly documented), paragraph p47 unchanged; moved Figure 7 after the Keybridge paragraph it illustrates. The book's chapter shape names 'In practice' as its own section; the author may prefer to restore it.",
+      "rejected": [
+        "Keeping In Practice as a separate section in any position.",
+        "Splitting its bullets across the architecture subsections where each source is first cited, which would move published text further."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 1 (both flow readers could not place 'In Practice' between measurement and sharing; judged a spec fault), moved the In Practice section to follow the architecture section, whose reference design it anchors; rewrote the transitions into practice, enforcement and sharing and the roadmap (p03 and its promises).",
+      "rejected": [
+        "Folding the public evidence into the sharing section, which would drop the house 'In practice' heading and leave the Sigma, Radar and OLX evidence far from the design it supports."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote the spec.md success criteria as reader outcomes: the moderation-mode criterion became AC-4 and the share-versus-local and metrics criteria became AC-5 (both minor, added for this post). Dropped as inventories: the component diagram, the propagation sequence diagram, the tables list, the ten review questions and the dated-sources criterion (dated sources stay governed by the style guide).",
+      "rejected": [
+        "Carrying the success criteria over unchanged.",
+        "A separate cold-reader criterion for the metrics table."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p03) and a synthesis paragraph (p59) that the published text lacked, so the introduction announces every section and the conclusion returns to the opening question instead of only handing off."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a forward pointer to transactions-and-payments where enforcement reaches payments, as the journal spec's Part V flow note asks."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around five functions rather than around the pipeline alone, because the decision record and enforcement propagation are where multi-brand platforms fail, and a pipeline-only framing hides them."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the 7 March 2027 city bike phishing incident as the opening scene, but from the group's viewpoint (what happened outside Tradeyard NL), leaving the message mechanics to messaging-and-leads and the fraud detection to fraud-prevention."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the Barcelona fake-rental ring out of this chapter so fraud-prevention can use it as its main worked example."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Presented the architecture as a labeled reference inference built from Sigma, Stripe Radar, OLX, Adevinta and DSA requirements, rather than as any company's design, because no classifieds T&S architecture is publicly documented."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of fraud-prevention; the Part V flow note asking for a forward pointer to Part VI payments."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-trust-safety-regulation.md",
+      "contributed": "Moderation modes, pipeline anatomy, DSA obligations, Transparency Database schema, enforcement ladder."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-adevinta.md",
+      "contributed": "Chat and moderation as early global components; the OCR service."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Veldmark volumes, moderation numbers, city bike timeline, Common Ground decisions."
+    },
+    {
+      "kind": "internal",
+      "ref": "publication-pipeline, event-driven-listings, ranking, marketplace-regulation, transactions-and-payments",
+      "contributed": "Neighbouring owners linked from the chapter."
+    },
+    {
+      "kind": "external",
+      "ref": "Which?, Scam ads slipping through the net too easily (2024)",
+      "contributed": "Edits passing review."
+    },
+    {
+      "kind": "external",
+      "ref": "Clubic, leboncoin ruling (2015)",
+      "contributed": "Moderation claims and hosting status."
+    },
+    {
+      "kind": "external",
+      "ref": "Integrity Institute for Ofcom, Fraudulent advertising and account integrity (2026)",
+      "contributed": "Enforcement ladder, prevalence sampling."
+    },
+    {
+      "kind": "external",
+      "ref": "Stripe Radar documentation (n.d.) and Meta's Sigma post (2015)",
+      "contributed": "Rule lifecycle and rules as code."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Group (2026) and Adevinta (2023, 2024)",
+      "contributed": "Public classifieds moderation evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "DSA Articles 16, 17, 20, 21, 22 and 24, and the Transparency Database documentation",
+      "contributed": "Legal duties and schema values."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: In practice moved to follow the component table; Vertical Differences moved next to the sharing section; moderator target stated as about 135 (120 on review, 15 on sampling and appeals); Figure 4 counterparty paragraph, Article 20 pointer and minor round-3 findings fixed; max_words 8,237 to 8,400. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 3 (escalate): cheap fixes without another round: Keybridge glossed, 'tenant' and 'enforcement ladder' pointed, the 37-messages sentence dropped from p34, a sentence introducing the metrics table; p50's transition updated for Figure 7's new place. The check report is stale against these edits. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2: In Practice folded into Architecture as a subsection; Figure 7 moved after the Keybridge paragraph; DSA expanded at first use; statement of reasons defined before the scene table; shorter roadmap; conclusion sentence on 7 March corrected to match the scene. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1: moved In Practice after Architecture; rewrote affected transitions and the roadmap; draft fixes for the single-writer statement, the design-target lead-in, the sharing and vertical openers, and glosses (DMS, KYB, 180 listings, the nine counterparties). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from index.md); added roadmap and synthesis units and a forward pointer to transactions-and-payments; flow rubric notes applied to the declared flows (architecture now large_to_small; rationales say what breaks); status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass (6,077 to 6,077 prose words; lead ties the chapter to Part IV and opens Part V); cross-chapter consistency sweep (3 headings aligned); 4 mermaid diagrams replaced with generated illustrations (figure numbers and captions unchanged; known differences for Figures 2 and 7 listed in open questions). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass (Ingrid joined five weeks before 7 March; DSA Arts. 16, 17, 20 and 24(5) verified against the Official Journal; Transparency Database demotion value corrected); 3 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8400
+  }
+}

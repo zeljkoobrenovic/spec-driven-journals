@@ -1,0 +1,1665 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-aviv",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "AVIV Group: Building a European Real-Estate Platform from Acquisitions",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four journal acceptance criteria, the thesis and the role are copied unchanged from the case-aviv entry in journal-spec.json. A roadmap paragraph (p04) and a conclusion section (p55, p56; p56 is the published closing paragraph moved under its own heading) were added.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "AVIV's four dated phases: assembling national portals (SeLoger 2010, Immoweb 2012, Immowelt and Immonet combined 2015, Logic-Immo 2018, Yad2, Meilleurs Agents 2019), moving up the seller funnel (Meilleurs Agents, the Ultimmo professional offer in November 2022, SeLoger opened to private sellers in 2023, commission-share seller leads), the 2021 integration intent, and the 2025 carve-out under KKR and CPP Investments with local autonomy and group functions.",
+        "Why real estate resists one platform (national feed formats, disclosures, address systems, agent software and pricing norms) and how thin AVIV's public record is: no engineering blog, talks or public code, so no AVIV system can be described."
+      ],
+      "believe": [
+        "In real estate a group platform stops well short of the product, at the professional edge where the agent's software, the feed format, the disclosure rules and the pricing meet.",
+        "An integration goal needs a written layer-by-layer scope before it is staffed."
+      ],
+      "can_do": [
+        "Draw the shared boundary of a multi-country property group by capability, saying what to share as platform, what as method, and what to keep local."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups with property portals in several countries, and engineering leaders weighing a group platform after acquisitions.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision.",
+        "Part IX's evidence rules, from part-9, and the earlier cases' reading of shared layers.",
+        "Global components, tenancy and consolidation sequencing, from multi-country-platforms and platform-consolidation; real estate's national requirements, from vertical-requirements; multi-homing, from liquidity-and-network-effects."
+      ],
+      "does_not_know": [
+        "AVIV's corporate history, owners and brands (SeLoger, Logic-Immo, Meilleurs Agents, Immoweb, Immowelt, Immonet, Yad2).",
+        "French real-estate terms: the agency mandate, DPE energy disclosures, DVF open transaction data, notary transaction records.",
+        "OpenImmo, the German real-estate feed standard."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a proposal for one platform across two countries' property portals, the reader uses AVIV's record to say which layers to share, which to keep local and what the decision record must state.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A property group running portals in two countries proposes a single platform for both, to be extended to future acquisitions. Using only this chapter: what does AVIV's dated record show about such a goal, which layers would you share, which keep local, and what must the decision record state?",
+        "expected": "AVIV's CEO announced in August 2021 the aim of 'aligning our tech roadmap across the organization to create a European real estate marketplace', with no published scope; by December 2025 the new Immowelt head described local autonomy with group-level functions 'where they create clear advantages'. Share infrastructure, data, identity tooling and engines, and valuation and ranking methods as group science; keep feed adapters, disclosure validation, professional products and lead routing local. The decision record states which layers are shared, which local, the markets in each stage, an exit criterion per stage, and the evidence that would change the split."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+        "expected": "One question (how much of a property portal can be shared across countries); evidence that is thin and corporate (corporate history, regulators' decisions, trade-press interviews, product announcements; no engineering material), enough to show the strategy's direction and the funnel it served but not to describe any system; the argument that national ingestion, disclosures, addresses, agent software and pricing make a group platform stop short of the product; a comparison applying that boundary to Veldmark's Hearthly."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every statement about AVIV's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how AVIV builds or runs a system without a dated source, or a company fact with no source and year?",
+        "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+      },
+      {
+        "id": "AC-5",
+        "statement": "The text attributes each statement of intent and outcome to its speaker: the 2021 goal is quoted as AVIV's CEO said it, and the phrase 'fully integrated platform' is shown to be the interviewer's, not AVIV's.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the chapter quote the 2021 CEO statement exactly ('...to create a European real estate marketplace'), avoid calling AVIV's goal 'unified', and make clear that 'fully integrated platform' comes from the interviewer's question in December 2025?",
+        "expected": "Yes: the 2021 line is quoted in full in the timeline and Phase 3; 'unified' is not used for AVIV's goal; the timeline, 'What was not said' and the reversal section each attribute 'fully integrated platform' to the interviewer."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How much of a property portal can a group share across countries, as AVIV's acquisitions, 2021 integration intent and 2025 turn to local autonomy show it from the outside?",
+    "claim": "AVIV's documented integration moves were commercial and data-driven, not a shared listing platform: it shared valuation science and a bundled professional offer to capture sellers early and route them to paying agents, and its 2021 goal of 'a European real estate marketplace', never scoped in public, gave way by December 2025 to local autonomy with group functions 'where they create clear advantages'; the record therefore places a property group's shared boundary at infrastructure, data, engines and methods, short of the professional edge where national feed formats, disclosure rules, agent software and pricing norms meet, and it shows that an integration goal without a written scope cannot be changed cheaply.",
+    "disputed_by": "The view that national property portals are similar enough (listings, search, agents, leads) for a group to run them on one European product platform, and that AVIV's 2025 reversal reflects its new owners' preferences rather than the vertical's limits.",
+    "so_what": "A Chief Architect of a multi-country property group shares infrastructure, data, identity tooling and engines without hesitation, shares valuation and ranking methods as group science, and keeps feed adapters, disclosure validation, professional products and lead routing local; requires a layer-by-layer scope, markets per stage and an exit criterion per stage before staffing any integration goal; governs valuation as a supply product with an owner and published accuracy definitions; and builds the attribution chain behind commission-share revenue as local, consented and auditable work.",
+    "how_why": "Axel Springer bought SeLoger (2010), 80% of Immoweb (2012), Immowelt combined with Immonet (2015, cleared by the Bundeskartellamt as Germany's second and third portals) and Logic-Immo (cleared in 2018), with Yad2 and Meilleurs Agents (bought for €200 million in September 2019 to 'widen the value chain'). Its integration moves were Ultimmo, one professional offer across SeLoger, Logic-Immo and Meilleurs Agents (November 2022), the 2023 opening of SeLoger to private sellers and seller leads monetized through commission share; Immowelt and Immonet still ran side by side nine years after combining. The 2021 CEO statement and the 2025 interview are the only public statements of intent and outcome; the phrase 'fully integrated platform' is the interviewer's. The carve-out became effective in April 2025 and a sale of Yad2 was signed in December 2025. AVIV publishes no engineering material, so the boundary is traced from strategy, not systems.",
+    "supporting_claims": [
+      {
+        "id": "V1",
+        "claim": "AVIV is a portfolio of national portals bought one at a time as whole businesses, and its public record is corporate, not technical, so every statement about its systems is either dated evidence or a labeled inference, and the open questions are listed rather than filled."
+      },
+      {
+        "id": "V2",
+        "claim": "Real estate's national structure (agencies multi-homing through their own software, national feed formats, disclosures, address and property data, and pricing norms) puts the professional edge beyond the reach of a group platform."
+      },
+      {
+        "id": "V3",
+        "claim": "AVIV's documented integration moves were commercial and data-driven: valuation science, a bundled professional offer within France and the opening of SeLoger to private sellers served one seller funnel, monetized locally through commission share, with no shared listing platform in the record."
+      },
+      {
+        "id": "V4",
+        "claim": "The 2021 goal of 'a European real estate marketplace' was never scoped in public and gave way by December 2025 to local autonomy with group functions 'where they create clear advantages', a reversal whose size and cause the record does not show."
+      },
+      {
+        "id": "V5",
+        "claim": "The record places a property group's shared boundary at infrastructure, data, engines and methods, short of the professional edge, and shows that an integration goal needs a written layer-by-layer scope before it is staffed."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Traces from the outside where a property group's shared boundary sits, and shows an integration goal of unpublished scope giving way to local autonomy.",
+    "supports": [
+      "P9-1",
+      "P9-4",
+      "P9-5"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "resists to evidence-stops: cross-phase views (by national requirement, by asset type, by option, by risk, by gap)"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "chief-architect to questions: rules from the record, their test against the book and Veldmark, and questions for the reader's group"
+      }
+    ],
+    "rationale": "Reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference, and AVIV's evidence is thinner than any other case's. The four phases run in time order because the case's lesson is a sequence: portals bought whole, a funnel shared commercially, an integration goal announced, then reversed; read out of order, the 2025 reversal would have no goal to reverse. The cross-phase views come only after all four phases because each one (the national requirements, the asset types, the trade-offs); the two readings of the record (by country, by asset type) come before the options they add up to uses facts from every phase; the evidence limits close that group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come last because they apply what the record has shown (decision of 2026-10-19: four dated phases, because the evidence documents strategy direction, not systems). The phases overlap in time (the 2021 goal falls inside the 2019–2023 funnel phase): they are ordered by the start of each strand, so the funnel's products are read whole before the goal that ran beside them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "Axel Springer bought national property portals one at a time (SeLoger in France, Immoweb in Belgium, Immowelt in Germany, Logic-Immo in France again) with an Israeli horizontal site, Yad2, and a French valuation business, Meilleurs Agents, gave them a common name and a common technology leadership, and in 2021 announced the goal of a European real-estate marketplace."
+    },
+    "bridge": {
+      "from_reader_world": "A Chief Architect of a group that has bought property portals in several countries and is asked whether they should run on one platform.",
+      "to_topic": "AVIV made that move in public, so its record can be read for how much of a property portal a group can share across countries, even though AVIV has published almost nothing about its systems."
+    },
+    "thesis_statement": {
+      "text": "In real estate, ingestion formats, mandatory disclosures, address systems, agent software and monetization norms are national, so a group platform has to stop well short of the product; AVIV's documented moves (shared valuation science, a bundled professional offer, then local autonomy with group functions) trace that boundary from the outside.",
+      "placement": "KEY POINTS bullets 2 and 3 and paragraph p03."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, after the argument.",
+      "promises": [
+        {
+          "promise": "Set the reading rules and the limits of the evidence, then give the dated timeline.",
+          "kept_in": [
+            "how-to-read",
+            "timeline"
+          ]
+        },
+        {
+          "promise": "Follow AVIV's four phases in order: assembling national portals, moving up the seller funnel, the integration intent, and separation and local autonomy.",
+          "kept_in": [
+            "phase-1",
+            "phase-2",
+            "phase-3",
+            "phase-4"
+          ]
+        },
+        {
+          "promise": "Look across the phases: why real estate resists one platform, the differences between asset types, the trade-offs, the failure modes and where the public evidence stops.",
+          "kept_in": [
+            "resists",
+            "verticals",
+            "trade-offs",
+            "failure-modes",
+            "evidence-stops"
+          ]
+        },
+        {
+          "promise": "End with my decision rules, a comparison with the book's patterns and with Veldmark's Hearthly, and questions to ask of your own group.",
+          "kept_in": [
+            "chief-architect",
+            "comparison",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "AVIV Group neither built its platform nor bought marketplaces that already shared one: Axel Springer bought national property portals one at a time, gave them a common name and technology leadership and in 2021 set a European goal, which makes the case a test of how much of a property portal can be shared across countries.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "SeLoger (France), Immoweb (Belgium), Immowelt (Germany), Logic-Immo (France), Yad2 (Israel) and Meilleurs Agents (France) bought one at a time; the 2021 goal of a European real-estate marketplace.",
+            "source": "Timeline sources",
+            "shows": "Shows a group assembled from separate national businesses and then asked to work as one."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The evidence is thin and corporate, enough to show the direction of AVIV's strategy and the funnel it served but not to describe a single system.",
+        "function": "explanation",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "AVIV's GitHub organization has no public repositories, its Medium publication had no posts when fetched in October 2026, and no conference talk by AVIV engineers was found; what exists is corporate history, regulatory decisions, trade-press interviews and product announcements.",
+            "source": "AVIV GitHub and Medium feed (accessed October 2026)",
+            "shows": "Shows why the case can trace strategy but not systems."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "A group whose integration question is worth testing.",
+          "introduces": "How little evidence there is to test it with.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The record tests the book's argument that in real estate national ingestion formats, disclosures, address systems, agent software and monetization norms stop a group platform well short of the product, and AVIV's documented moves trace that boundary from the outside.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Evidence enough to show direction, not systems.",
+          "introduces": "The argument that evidence tests and the boundary it traces.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter sets the reading rules and a dated timeline, follows AVIV's four phases in order, looks across them (why real estate resists one platform, asset types, the trade-offs, failure modes and where the evidence stops), and ends with the author's rules, a comparison that applies the same boundary to Veldmark's Hearthly, and questions to ask, and a closing.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The boundary the record traces.",
+          "introduces": "The route through the chapter, ending with the boundary applied to Hearthly.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Case",
+      "controlling_idea": "The case keeps documented fact, the author's reading and labeled inference apart, and AVIV's evidence is thinner than any earlier case's, so weak signals are named and not used.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "V1"
+        ],
+        "how": "Sets the evidence rules and says how thin the record is before any fact is used."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the rules every Part IX case follows, to how far this case's evidence reaches, to the signals deliberately left out, to the one fictional element and where it appears. The rules come first because the limits are stated in their terms."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction's promise of reading rules and the limits of the evidence.",
+        "introduces": "The rules themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Part IX cases separate three kinds of statement: a documented fact carries its source and year, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and a reference-architecture inference appears only in a labeled callout and never describes how AVIV is built.",
+          "function": "definition"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "AVIV's evidence limits are tighter than Adevinta's, because AVIV has never been listed and publishes no financial breakdown, so most evidence comes from two trade publications, owners' releases and competition authorities.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "A segment inside Axel Springer (delisted 2020) before 2025 and a privately held joint venture since April 2025; AVIV 'does not publish' a financial breakdown.",
+              "source": "Online Marketplaces, July 2023; KKR, 2025",
+              "shows": "Shows why there are no filings to read and which sources remain."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The rules every Part IX case follows.",
+            "introduces": "How much tighter AVIV's limits are than Adevinta's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Three kinds of weak signal (job advertisements seen only as search snippets, a tech-stack aggregator's profile and former employees' CVs) were found and deliberately not used as fact, because they say nothing about architecture.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The sources the case relies on.",
+            "introduces": "The sources it found and set aside.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Veldmark appears only in the final comparison (one earlier sentence points ahead to it), and Hearthly's overlap with AVIV's French business is a teaching device, not a disguised description of AVIV or SeLoger.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The real-world evidence and its limits.",
+            "introduces": "The one fictional element and where it appears.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "Timeline: AVIV in Dated Events",
+      "controlling_idea": "AVIV's record from 2010 to December 2025 is a dated sequence of acquisitions, competition clearances, seller-funnel products, an integration goal, a carve-out and a reversal.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V1",
+          "V4"
+        ],
+        "how": "Gives every later phase its dated anchor."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The rule that every fact carries its source and year.",
+        "introduces": "The dated events themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "The timeline dates each event by its cited release, decision or article, with ownership and portfolio facts as of October 2026.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline from the September 2010 SeLoger offer through Immoweb (2012), Yad2 (2014), the 2015 Immowelt–Immonet combination and its clearance, Logic-Immo (2018), Meilleurs Agents (2019), the August 2021 CTO appointment and CEO quote, Ultimmo (2022), the 2023 hiring plan and private-seller opening, the 2024 Realo deal, AVIV Germany rename and split signing, the 2025 CEO change, effective carve-out, Yad2 sale signing and the 4 December 2025 Mseka interview.",
+              "source": "Tradingsat 2010; FrenchWeb 2012, 2019; Immowelt 2015; Bundeskartellamt 2015; Autorité de la concurrence 2018; MySweetImmo 2019–2023; Online Marketplaces 2021–2025; Axel Springer/CPP Investments 2024; KKR 2025; Globes 2025",
+              "shows": "Shows the sequence the four phases follow, each event with its source."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: the record moves from separate portals to a shared commercial and data layer, a stated group technology goal, and back to local businesses with selected group functions; only the second step is documented in product detail.",
+              "shows": "Places the corrected combination in the movement the four phases trace."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-1",
+      "heading": "Phase 1: Assembling National Portals (2010–2019)",
+      "controlling_idea": "AVIV was assembled as a holding of national leaders, each bought whole, in markets where, as the regulators described them, agencies multi-home and portals do not own their supply.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V1",
+          "V2"
+        ],
+        "how": "Shows the portfolio bought whole and the market structure that keeps the supply edge national."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Three subsections: what was bought, what the regulators saw about those markets, and the two same-country pairs. The regulators come before the pairs because their description of multi-homing agencies explains why two portals in one country still face the same feed vendors. The correction of the German pair's merger date closes the last subsection, next to the 2015 combination and the pair it concerns."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The dated timeline.",
+        "introduces": "The first phase, 2010 to 2019, read in detail.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Every AVIV portal was bought as a working business with its own customers, brand and technology.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Deals through Axel Springer and Axel Springer Digital Classifieds (General Atlantic 15% in 2015; its exit not dated in the sources found); SeLoger listed in 2010, Immoweb family-founded in 1996, Immowelt and Immonet Germany's second and third portals, Logic-Immo with print magazines, Yad2 Israel's horizontal leader, Meilleurs Agents a ten-year-old valuation start-up.",
+              "source": "Immowelt release, 2015; timeline sources",
+              "shows": "Shows that each portal arrived complete, with its own stack."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "No acquisition announcement found describes a technology integration plan, and my reading is that the group was built as a holding of national leaders kept whole because their value was local.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The 2015 Immowelt–Immonet release: shareholdings, leadership, two sites and broker-software products (estateOffice, estatePro), nothing about merging platforms.",
+              "source": "Immowelt press release, 2015",
+              "shows": "Shows a typical announcement silent on technology integration."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Portals bought as working businesses.",
+            "introduces": "What the announcements said, and did not say, about integrating them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Two competition decisions give the clearest public description of how these markets work, and both bear on architecture.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A holding whose value was local.",
+            "introduces": "The regulators' description of those local markets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The Bundeskartellamt cleared the 2015 Immowelt–Immonet combination as liquidity aggregation against the leader, not as cost synergy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "With the merger 'customers will have another large portal' (Andreas Mundt); providers and seekers drift to the leader where many small portals compete.",
+              "source": "Bundeskartellamt, April 2015",
+              "shows": "Shows the regulator reasoning from network effects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Two decisions that describe the markets.",
+            "introduces": "The German decision.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The Autorité de la concurrence cleared Logic-Immo's acquisition in 2018 because French agencies multi-home and would move listings to other portals, mainly leboncoin.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "First in-depth review of a merger between two online platforms; agencies facing a price rise would shift to other portals, mainly leboncoin; the rise of Bien'ici, created on the property industry's initiative.",
+              "source": "Autorité de la concurrence, February 2018",
+              "shows": "Shows the regulator counting on agencies listing on several portals at once."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The German decision's network-effect reasoning.",
+            "introduces": "The French decision and multi-homing agencies.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "My reading is that a French or German portal does not own its supply: the agency's software holds the mandate and pushes the same listing to several portals, so a group that owns two portals in one country still runs two ingestion edges facing the same vendors.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2 (reference illustration, not AVIV's systems): the agency's software pushes the same listing to several portals.",
+              "shows": "Shows every portal competing for the same feed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Agencies that multi-home, as both regulators describe.",
+            "introduces": "What that means for a portal's systems.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "AVIV kept both its same-country pairs as separate brands for years, and whether they share anything below the brand is not public.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Immonet in the July 2023 brand list and run by AVIV Germany in February 2024; SeLoger and Logic-Immo sharing a corporate brand from 2019 and a professional offer from 2022.",
+              "source": "Online Marketplaces, 2023 and 2024; MySweetImmo, 2019 and 2022",
+              "shows": "Shows two brands per country kept side by side."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: the cheapest integration of two same-country portals is usually below the brand (one ingestion pipeline, media store and agency account system under two front ends); whether AVIV did this is not public.",
+              "shows": "Shows what an architect assessing such a group has to ask, without describing AVIV."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A group with two portals in one country.",
+            "introduces": "AVIV's two same-country pairs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17a",
+          "controlling_idea": "One date for the German pair needs correcting: the book's research checked a claim that Immowelt and Immonet merged in 2023, but they were combined as companies in 2015, and no public source documents a platform merger or a shutdown of immonet.",
+          "function": "refutation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The 2015 release describes a holding and two sites (Nuremberg and Hamburg) and says nothing about merging technology; both brands were still operated by AVIV Germany in February 2024.",
+              "source": "Immowelt press release, 2015; Online Marketplaces, 2024",
+              "shows": "Shows that a corporate combination is not evidence of a platform merger."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Immowelt and Immonet kept as brands and still run by AVIV Germany in February 2024, and the question of what they share below the brand.",
+            "introduces": "The correction of a 2023 merger date the book's research checked, and what the record does not show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "heading": "Phase 2: Moving Up the Seller Funnel (2019–2023)",
+      "controlling_idea": "AVIV's best-documented moves shared valuation science and a professional offer within France to capture future sellers and route them to paying agents, a funnel monetized locally through commission share.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V3"
+        ],
+        "how": "Documents the commercial and data-driven integration moves and shows them local by market."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p18–p22 valuation (2008 method, 2019 purchase, 2022 team, then my reading); p23–p25 Ultimmo (the October 2022 plan, the November launch, my reading); p26–p27 the private-seller opening and its revenue model"
+          }
+        ],
+        "rationale": "The French moves come in the order they were made (valuation bought in 2019, the professional offer in 2022, private sellers in 2023), each building on the one before; the revenue model closes the French funnel. Without the reading of valuation as a supply product (p22) before it, Ultimmo's seller detection would read as an arbitrary feature."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "A holding of national portals kept whole.",
+        "introduces": "The moves that did cross brands, from 2019.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Valuation is AVIV's best-documented business, because it was a product, not a platform.",
+          "function": "claim"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "In 2008 Meilleurs Agents' method combined notary records since 1990, partner agencies' recent sales, an algorithm that re-indexes past transactions and a price per square meter the user adjusts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'les informations enregistrées par les notaires depuis 1990' plus real-time partner sales, re-indexing and user adjustment for condition, exposure, layout and extras.",
+              "source": "FrenchWeb, 2008",
+              "shows": "Shows the valuation as a method built on local data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Valuation as a documented product.",
+            "introduces": "Its original method.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The 2019 purchase carries the earliest public statement of something AVIV meant to share across countries, and it was a capability, valuation science, not a system.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Bought in September 2019 for €200 million; Axel Springer wanted to widen its French portals' value chain and share Meilleurs Agents' valuation expertise with its foreign sites.",
+              "source": "FrenchWeb, 2019",
+              "shows": "Shows the first sharing intent aimed at a method."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: one method travels to three kitchens, each using its own local data.",
+              "shows": "Shows that the method can travel while each country's model trains on its own transaction data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The 2008 method built on local data.",
+            "introduces": "The 2019 purchase and the intent to share that method across countries.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "By 2022 Meilleurs Agents reported a 45-person data team and a self-reported 6% median error for 2021, with no independent audit or methodology note found.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Thomas Lefevre: 'it is not complicated to make an estimation tool. What is complicated, however, is to make a fair estimate'; 'the median estimate error of our valuations against final transaction value in 2021 was just 6%'.",
+              "source": "Online Marketplaces, June 2022",
+              "shows": "Shows the investment in valuation science, with the accuracy figure marked as self-reported."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The 2019 intent to share valuation science.",
+            "introduces": "What that science looked like in 2022: the team and its self-reported accuracy.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "My reading is that the valuation tool is a supply-acquisition product: it reaches a likely seller months before they choose an agent, and that moment can be sold to agents as a seller lead.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The same logic as Rightmove's Online Agent Valuation and Zillow's Zestimate, compared in case-property-portals; the modeling side in ml-platform.",
+              "shows": "Places AVIV's valuation in a pattern other portals share."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Valuation science the group meant to share and kept investing in.",
+            "introduces": "What that capability does for supply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "In October 2022 Franck Le Tendre described combining SeLoger's relationship with professionals and Meilleurs Agents' mandate acquisition, with the prospecting map already rolled out across the group's entities.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Le Tendre interview.",
+              "source": "MySweetImmo, October 2022",
+              "shows": "Shows the offer's purpose stated by AVIV France before launch."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Valuation as a way to reach sellers.",
+            "introduces": "AVIV France's plan to combine that with SeLoger's relationship with professionals.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "In November 2022 AVIV launched Ultimmo, one professional offer across SeLoger, Logic-Immo and Meilleurs Agents that bundles visibility with seller detection among buyer contacts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "More than one million visits a day across the three brands, 630,000 sellers identified each month, two sales in three beginning on a group platform; features from listing distribution to an estimation tool and a prospecting map; Caroline Evans de Gantès: 'Les professionnels ne sont plus seulement en demande de mandats'.",
+              "source": "MySweetImmo, November 2022",
+              "shows": "Shows a commercial bundle built on shared seller data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The plan to combine the two brands' strengths, described in October 2022.",
+            "introduces": "The offer launched a month later.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Ultimmo is the only cross-brand integration in AVIV's public record described at the level of features, and it is commercial: in my reading its features need shared data and a shared professional account, but nothing says they required a shared listing or search platform.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The plan and the offer that carried it out.",
+            "introduces": "What kind of integration it is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "In late June 2023 SeLoger opened free sale listings to private sellers to capture undecided sellers and direct them to professionals, a move that angered many agents.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Le Tendre: professionals' share flat for 15 to 20 years, about a third of sellers who try alone give up, 'notre objectif est de capter ces indécis et de les diriger vers des professionnels'; 800 people on innovation; about 6,000 private sale listings at the end of September 2023 against just under a million professional listings.",
+              "source": "MySweetImmo, October 2023",
+              "shows": "Shows the funnel's widest entry point and its cost in agent trust."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "An offer that sells seller prospects to agents.",
+            "introduces": "A new entry point for sellers in 2023.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "AVIV France monetizes the seller leads through a commission-share model, so the funnel's revenue event happens outside the portal, in a local transaction.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Seller leads monetized 'through a commission-share model'.",
+              "source": "Online Marketplaces, March 2023",
+              "shows": "Shows how the funnel earns."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the seller funnel drawn from the public product descriptions (2019–2023), not AVIV's systems; every entry point produces a seller lead.",
+              "shows": "Shows the moves of phase 2 as one funnel."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: a commission-share model needs a lead ledger, homeowner consent and reconciliation against closings, and is local by nature.",
+              "shows": "Shows why the attribution chain cannot be a group listing feature, without describing AVIV."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A funnel that routes sellers to agents.",
+            "introduces": "The revenue model behind it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "heading": "Phase 3: The Integration Intent (2021–2024)",
+      "controlling_idea": "The integration phase is documented only as statements of intent, with leadership and hiring behind them and no published scope.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V4"
+        ],
+        "how": "Shows the 2021 goal and its unknown scope."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "What was said, then what was not said, then my reading of the gap; the reading needs both before it."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The French funnel built from 2019 to 2023.",
+        "introduces": "The group technology goal, set in 2021 while that funnel was being built and documented only as intent.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "The integration phase began in 2021, while the French funnel was still being built, and is documented almost entirely by statements of intent: the 2021 CTO appointment and CEO goal, the 2023 hiring plan, the 2024 German rename and the 2024 signing release.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Ait Voncke: 'we are aligning our tech roadmap across the organization to create a European real estate marketplace', announcing Brent McLean (ex-eBay Classifieds Group and Domain) as CTO.",
+              "source": "Online Marketplaces, 2021",
+              "shows": "Shows the goal in the CEO's exact words."
+            },
+            {
+              "kind": "fact",
+              "what": "300 technology, product and data hires planned for 2023 and 'write the future of real estate'; Felix Kusch on 'the know-how and innovative strength of an international tech company' (2024); 'significant platform and technology investments over the past five years' (2024).",
+              "source": "Online Marketplaces, 2023 and 2024; Axel Springer/CPP Investments, 2024",
+              "shows": "Shows leadership, hiring and investment behind the goal."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "No public source describes what the European marketplace or the 'fully integrated platform' was meant to contain, and the latter phrase comes from an interviewer, not from AVIV.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "No source describes a shared listing service, search engine, agent tools, billing or infrastructure, a portal moving onto a group platform, a migration milestone or a cost; 'fully integrated platform' appears in the interviewer's question of December 2025.",
+              "source": "Online Marketplaces, December 2025; the book's research",
+              "shows": "Shows that the goal's scope is absent from the public record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What was said.",
+            "introduces": "What was not said.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "My reading is that the integration intent is a direction of travel of unknown scope, so the book draws lessons only from the sequence and the market structure, not from an assumed architecture.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A goal with no published scope.",
+            "introduces": "How the book treats it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "heading": "Phase 4: Separation and Local Autonomy (2025)",
+      "controlling_idea": "Under new owners in 2025 AVIV sold its most separable asset and, in an executive's words, moved to local autonomy with group functions, visible in each market's own adjacencies, a reversal whose size and cause the record does not show.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V2",
+          "V4",
+          "V5"
+        ],
+        "how": "Documents the reversal and reads its stated end state as shared core, local edge."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Ownership change, then the first portfolio move, then the executive's statement of the new model and what it looks like market by market, then my reading of all of it; the reading weighs timing, so the facts come first, and the German adjacencies come after the interview because they quote it."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "An integration goal of unknown scope.",
+        "introduces": "What happened to it in 2025.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "The split became effective on 29 April 2025, making AVIV an independent joint venture majority-owned by KKR and CPP Investments, and its CEO changed the same spring.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'independent joint venture companies with KKR and CPP Investments as majority owners', Axel Springer holding 'ten percent in both classifieds companies', AS Classifieds GmbH led by Julian Deutz; the businesses 'will continue to independently pursue their respective growth strategies'.",
+              "source": "KKR, 2025; Axel Springer/CPP Investments, 2024",
+              "shows": "Shows the ownership change that frames the reversal."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The first visible portfolio move under the new owners was the signed sale of the most separable asset, Yad2, to Apax Partners for about $950 million in December 2025.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "KKR named as seller, with full control of Yad2 from March 2025 through the carve-out; whether Yad2 still sat inside AVIV is not clear; real estate 56% of Yad2's projected 2025 revenue.",
+              "source": "Online Marketplaces, December 2025",
+              "shows": "Shows a horizontal, non-European asset separated first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "New owners from April 2025.",
+            "introduces": "Their first visible portfolio move.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The December 2025 interview with Immowelt's new head records the reversal: the interviewer's question describes AVIV rowing back on a fully integrated platform, and Theo Mseka describes strengthened local autonomy plus group-level functions 'where they create clear advantages'.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'We recently saw AVIV Group row back on its plans for a fully integrated platform for all its European portals' (interviewer); 'AVIV has strengthened the autonomy of its local businesses'; 'we continue to operate group-level functions where they create clear advantages'; 'sometimes local and sometimes cross-group'; 'run at their own pace'.",
+              "source": "Online Marketplaces, December 2025",
+              "shows": "Shows the outcome in an executive's words, with the reversal phrase attributed to the interviewer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ownership and portfolio facts of 2025.",
+            "introduces": "The clearest statement of the model that followed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Local autonomy is visible market by market: each market built its own adjacencies around its own transaction, valuation and commission share in France, tax and financing services in Germany, valuation data in Belgium.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Theo Mseka: 'the subscription model remains the core model in the German market today'; AI features including 'a tool for creating high-quality property descriptions'; Kaufpreis-Aufteilung.com, nutzungsdauer.com and BauDarlehen24 bought in 2025. The dated January 2025 report in the timeline records two of the 2025 deals, majority stakes in tax-depreciation services.",
+              "source": "Online Marketplaces, December 2025",
+              "shows": "Shows Germany building around its own transaction and pricing model."
+            },
+            {
+              "kind": "fact",
+              "what": "Immoweb agreed to buy Realo, which also sells 'data as a service' and valuations, in January 2024.",
+              "source": "Online Marketplaces, 2024",
+              "shows": "Shows Belgium building around valuation data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Mseka's account of strengthened local autonomy, in the same interview.",
+            "introduces": "What local autonomy looks like market by market, in Germany and Belgium.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "My reading has three conditional parts: the reversal is real but its size is unknown, its timing coincides with the ownership change with no documented link, and its stated end state is the shared core, local edge model.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The interview's statement of the new model and its market-by-market adjacencies.",
+            "introduces": "What can and cannot be read from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "resists",
+      "heading": "Why Real Estate Resists One Platform",
+      "controlling_idea": "National supply software, ingestion standards, disclosures, monetization and property data, documented outside AVIV, explain why a property group's platform stops short of the professional edge.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "V2"
+        ],
+        "how": "Explains the record by the vertical's national structure, from sources outside AVIV."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The national dimensions and their table, then where the table's entries come from, then the one public hint of a common ingestion choice and the labeled reference architecture it leads to. Read in another order, the OpenImmo membership would be judged before the reader knows ingestion standards are national, and the table's judgement entries could be mistaken for AVIV statements."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "A stated end state of local autonomy with group functions, read across the four phases.",
+        "introduces": "The vertical's national structure that explains it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "National supply software, ingestion standards, disclosures, monetization and property data explain AVIV's record, and they are documented outside AVIV.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "France, Germany and Belgium compared on supply source, ingestion standard, mandatory disclosures, main monetization and property data, with what a group platform must absorb.",
+              "shows": "Shows each dimension differing by country."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The table's entries come from public pages and interviews, except the France ingestion row, the Germany address entry and the unverified disclosure entries, which are the book's judgement, not AVIV statements.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Service-Public.fr on DPE (January 2026); OpenImmo e.V. (October 2026); Mseka interview (2025); FrenchWeb (2008); Immoweb–Realo (2024).",
+              "shows": "Shows which entries are documented and which are judgement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table.",
+            "introduces": "Where its entries come from.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "OpenImmo is a German standard, yet AVIV is its French member: the only public sign that AVIV has looked at a common ingestion format beyond Germany, with nothing found about how it uses it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "OpenImmo e.V. lists AVIV Group as its member from France.",
+              "source": "OpenImmo e.V. (accessed October 2026)",
+              "shows": "Shows the one public hint of a cross-border ingestion choice."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: a federated multi-country property group puts landing zones, security, identity tooling, the data platform and ML tooling at group level, offers a shared ingestion engine and core schema extended per country, may share a search engine with local ranking, shares valuation methods, and keeps monetization, billing, agent CRM and professional tools local.",
+              "shows": "Shows where a group platform would end, without describing AVIV."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: a labeled reference architecture, not AVIV's: shared core of infrastructure, data, identity, engines and methods; local edge of everything an agent, regulator or homeowner sees.",
+              "shows": "Draws the shared core and local edge."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "National ingestion standards.",
+            "introduces": "A German standard with AVIV as its French member, AVIV's one public link to a common format.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in the Record",
+      "controlling_idea": "AVIV's asset types behaved differently: property portals kept the edge local, valuation services shared methods, brokerages raised trust limits on data, and the horizontal asset was separated first.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "V2",
+          "V3"
+        ],
+        "how": "Shows that what can be shared depends on the asset type, and that agent trust limits data sharing."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The record read by national dimension, ending in a shared core and a local edge.",
+        "introduces": "The same record read by asset type.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "Read by asset type rather than by country, AVIV's record shows a real-estate group with one horizontal asset whose asset types behaved differently.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Agency-supplied portals, valuation and seller-lead services, hybrid brokerage (Homeday, Housell) and horizontal classifieds (Yad2), each with what the record shows and its implication.",
+              "shows": "Shows the feed edge least shareable, methods most, and the least aligned asset separated first."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "A portal group that owns brokerages or routes private sellers to agents holds data its agency customers would not want a competitor to see, which is one reason seller-lead and agent data stay inside the local business; the final comparison takes up the same problem for Veldmark's Keybridge.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Hybrid brokerages in the portfolio.",
+            "introduces": "The neutrality problem they create, with a pointer to the final comparison, where the same problem arises for Veldmark's Keybridge.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs the Case Illustrates",
+      "controlling_idea": "AVIV's record draws its shared/local line through the capability map, not between countries: methods, data science and infrastructure can be shared; the agent-facing product, the feed edge and monetization stay local.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "V3",
+          "V5"
+        ],
+        "how": "Compares the options the record shows and draws the boundary by capability."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The record read by country and by asset type.",
+        "introduces": "The options it shows side by side, which are not stages of one ladder.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "The options AVIV's record shows are not a ladder, none being a later stage of another: the line the record draws runs through the capability map, sharing methods, data science and infrastructure and keeping the agent-facing product, the feed edge and monetization local.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five options (keep acquired portals whole; share a capability, not a system; bundle the professional offer within a country; integrate into one European platform; local autonomy with group functions), each with what AVIV's record shows and when it is right or fails.",
+              "shows": "Shows each option tied to a dated move or statement."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes the Record Exposes",
+      "controlling_idea": "The record exposes five risks: an integration goal with no published scope, duplication behind two same-country brands, valuation treated as a feature, funnel moves that anger the supply side, and group functions defined after the fact.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "V4",
+          "V5"
+        ],
+        "how": "Turns the record into risks a group can check for."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "What the record shows by asset type and by option.",
+        "introduces": "The risks it exposes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Read by option and by asset type, the record exposes five failure modes, each tied to a dated move: scope never published, two of everything behind two brands, valuation filed as a feature, funnel moves that anger agents, and group functions defined after the fact.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "evidence-stops",
+      "heading": "Where the Public Evidence Stops",
+      "controlling_idea": "The questions that matter most to an architect, about the integrated platform, group functions, shared stacks, ingestion, valuation and attribution, are answered by no public source, and two facts are volatile.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "V1"
+        ],
+        "how": "Lists the gaps rather than filling them."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the record exposes.",
+        "introduces": "What it cannot answer.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "Eight questions that matter to an architect are not answered by any public source, and the chapter does not fill them with inference.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight questions (the integrated platform, the remaining group functions, shared stacks behind same-country brands, ingestion, valuation method, commission-share attribution, what engineers run, Housell, Homeday and Zumper) with what is public and what is not.",
+              "shows": "Shows exactly where the record stops."
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Two facts are volatile as of October 2026, the closing of the Yad2 sale and the status of immonet as a separate brand, and readers should check both.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Questions no source answers.",
+            "introduces": "Facts that may change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "From a record of strategy rather than systems, the author draws five rules for where a property group's platform boundary sits and how to commit to it.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "V5"
+        ],
+        "how": "States the boundary and the scope rule as the author's recommendations."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The boundary rule first, then the scope that commits to it, then the two capabilities that cross it (valuation, attribution), then the handover rule that applies to every group function; each later rule assumes the boundary."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "What the record shows and where it stops.",
+        "introduces": "What the author takes from it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "What I take from AVIV is less about systems, which are not public, than about where the boundary of a property group's platform sits.",
+          "function": "transition"
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Draw the shared boundary by capability and expect it to stop short of the agent, at the professional edge where the agent's software, the feed format, the disclosure rules and the pricing meet.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Where the boundary sits.",
+            "introduces": "The rule that draws it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Write down a layer-by-layer scope, the markets in each stage and an exit criterion per stage for any integration goal before staffing it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A boundary drawn by capability.",
+            "introduces": "Committing to it in writing before staffing.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Treat valuation as a supply product with its own owner, accuracy definitions, data-rights checks and a line between an estimate that informs and one that commits money.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A shared boundary that keeps methods central.",
+            "introduces": "The method that drives supply, valuation.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Keep the attribution chain behind commission-share revenue local and explicit, designed as legal, auditable work rather than bolted onto a listing service.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Valuation governed as a product.",
+            "introduces": "The revenue chain that follows the seller lead.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Design every group function to be handed over, tenant-scoped from its first release, because a business can be sold within months of a carve-out.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Yad2's sale was signed about seven months after the carve-out became effective.",
+              "source": "KKR, 2025; Online Marketplaces, December 2025",
+              "shows": "Shows how soon a group function may have to leave with a business."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Functions kept local or shared by design.",
+            "introduces": "Shared functions that may have to leave with a business.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "heading": "Comparing the Case to the Book's Patterns and to Veldmark",
+      "controlling_idea": "AVIV's record supports the book's real-estate patterns and is consistent with its multi-country ones, and applied to Veldmark it supports sharing engines and methods under Hearthly while rejecting a single product platform until the Spanish market is profiled.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "V5"
+        ],
+        "how": "Tests the boundary against the book's claims and applies it to the running example."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The book's patterns first, then Veldmark's four parallel choices, then one worked decision; each step narrows from the book to one proposal. The worked decision needs the four choices before it, and the Veldmark choices are read against the patterns' verdicts; reversed, the advice would rest on unexplained parallels."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The author's rules.",
+        "introduces": "Their test against the book's patterns and Veldmark's choices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "The author's rules rest on a record of strategy, and that record, set against the book's patterns, supports the real-estate, valuation, feed-contract and funnel-metric claims and is only consistent with the multi-country and consolidation claims.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six book patterns (vertical-requirements, multi-country-platforms, platform-consolidation, ml-platform and monetization-models, listing-ingestion, liquidity-and-network-effects) with AVIV's record and a verdict.",
+              "shows": "Shows which patterns the record supports and which it only fails to contradict."
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Veldmark's Hearthly, a real-estate portal in France and Spain whose group follows 'share platforms, not products', faces four choices that AVIV's record sharpens, each named and glossed before the table tests it.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly: France (acquired 2023) and Spain (acquired 2025), €395 million 2026 revenue, 84% of listings via feeds from about 160 vendors, Valuo trained on DVF and Hearthly listing data; four choices (Supply Contract v1, Hearthly's applications on Google Cloud through 2028 while its search moves to the group's shared OpenSearch platform on AWS by end of 2028, the Valuo commission-share pilot in Lyon in 2028, Keybridge neutrality) against AVIV parallels.",
+              "source": "Scenario ledger",
+              "shows": "Shows the case's boundary applied to the fictional group's decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The real record tested against the book.",
+            "introduces": "The fictional group, labeled as such.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Faced with a proposed single Hearthly platform for France and Spain, I would approve the parts that pass the clear-advantage test and reject a single product platform until the Spanish market is profiled, with a decision record that states which layers are shared and what would change the split.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Claire Fontaine's 2027 proposal; Hearthly France de-duplicates 1.9 million listings into about 1.12 million properties (1.7 per property); Hearthly Spain rebranded only in 2026; Valuo Spain planned for 2028; advice to Ingrid Halvorsen.",
+              "source": "Scenario ledger",
+              "shows": "Shows the French side of the proposal mature and measured and the Spanish side not yet profiled, which is why the single product platform waits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four choices the case sharpens.",
+            "introduces": "The 2021 question put to Hearthly as a worked decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Nine questions let a reader test their own group's shared boundary, integration scope, valuation governance, attribution and separability.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "V5"
+        ],
+        "how": "Turns the boundary and the scope rule into questions for the reader's group."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "A decision record that states the shared and local layers.",
+        "introduces": "The questions that record must answer in the reader's own group.",
+        "form": "word",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "form": "list",
+          "controlling_idea": "Nine questions turn the case's lessons into checks on a group's own capabilities, supply edge, disclosures, valuation, commission share, duplicated brands, integration scope, agent trust and separability.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From AVIV to the Property Portals",
+    "synthesis": "Read in order, the four phases and the cross-phase views answer the chapter's question with one boundary seen twice: what AVIV shared in public (valuation science, a professional offer within one country, group functions 'where they create clear advantages') is what travels without touching the agent, and the 2021 goal and the 2025 shift are that boundary first announced without a written scope and then corrected in an interview.",
+    "so_what": "A Chief Architect who writes the boundary down layer by layer before staffing an integration goal can move it later without a write-off; one who does not inherits AVIV's position, a goal that could be reversed but never evaluated.",
+    "callback": {
+      "to": "The hook: national portals bought one at a time, given a common name and technology leadership, and asked in 2021 to become one European marketplace.",
+      "how": "The reader can now say which parts of those portals the record shows being shared (methods, a commercial offer, group functions) and which stayed national (the feed edge, disclosures, agent products and monetization)."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Draw the shared boundary by capability and write its scope down before staffing; read case-property-portals next for what one portal's supply, properties and valuation models demand."
+    },
+    "hand_off": {
+      "to": "case-property-portals",
+      "relationship": "elaboration",
+      "carries_over": "AVIV's closing: how little of a property portal travels across borders, seen from the outside.",
+      "introduces": "The question underneath AVIV's: what licensed supply, durable properties and valuation models demand of one portal, read through the portals that publish the most about their economics and engineering."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole case, from the phases to the questions.",
+      "introduces": "What the four phases add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p55",
+        "controlling_idea": "My reading is that the four phases show the same boundary in two ways, in what AVIV shared and in how its goal changed from an unscoped 2021 goal to the 2025 correction, and a group that writes that boundary down layer by layer before staffing an integration goal can move it later without a write-off.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "V3",
+            "V4",
+            "V5"
+          ],
+          "how": "Synthesizes the chapter and calls back to the hook."
+        }
+      },
+      {
+        "id": "p56",
+        "controlling_idea": "AVIV shows from the outside how little of a property portal travels across borders, and case-property-portals takes up the question underneath it: what licensed supply, durable properties and valuation models demand of one portal, read through the portals that publish the most.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "V2"
+          ],
+          "how": "Hands off to case-property-portals."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "A boundary that stops at the professional edge.",
+          "introduces": "What lies on the other side of it, inside one portal.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A company profile, valuation or investment view; no judgement on the owners' decisions."
+    },
+    {
+      "topic": "Re-teaching tenancy models, consolidation sequencing, vertical physics, ingestion contracts, duplicate handling or AVM governance.",
+      "covered_in": [
+        "multi-country-platforms",
+        "platform-consolidation",
+        "vertical-requirements",
+        "listing-ingestion",
+        "entity-resolution",
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Zillow, Rightmove, Idealista or REA, and Adevinta's real-estate assets.",
+      "covered_in": [
+        "case-property-portals",
+        "case-adevinta"
+      ]
+    },
+    {
+      "topic": "AVIV's stacks, search, ingestion or valuation models, for which no first-party evidence exists."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "For the author (AC-4, published facts kept as published because no source on the page supports them and none may be added or cut): AVIV as a segment inside Axel Springer, which 'delisted in 2020' (How to Read; the research brief has April 2020 only from unfetched search results); Immoweb founded 1996, Logic-Immo's print magazines and Yad2 as Israel's horizontal leader (Phase 1); the 2018 founding, now sourced as 'Company profiles (search snippets, unverified)'.",
+    "For the author, from the thesis rubric: the thesis's last clause, that an integration goal without a written scope 'cannot be changed cheaply', is not established by the record (AVIV changed course and no cost is public), though the page does not contradict it. The thesis is copied from the journal spec and was left unchanged; the conclusion states the point as my reading.",
+    "Unverifiable portfolio facts to recheck (not page faults): what the 2021 'European real estate marketplace' contained and which group functions remain; closing of the Yad2 sale to Apax; status of immonet, Housell, Homeday and the Zumper stake; whether AVIV uses OpenImmo or a common format for French or Belgian ingestion."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: supporting claims V1 to V5 written from the thesis; the comparison table's verdicts left as published; the structural flow-rubric notes not taken (merging Trade-offs, the p39/p46 boundary overlap, framing line p45, Failure Modes placement, forward references in the outline), since the draft checks that followed did not corroborate them; the round-3 close-out fixes (Trade-offs lead-in, interviewer attribution in the patterns table, callback sentence, shorter roadmap)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated spec fault (flow, round 3): the 2023-merger correction moved from the timeline (old p10) to the end of Phase 1's 'Two portals in one country' (now p17a), next to the 2015 combination and the German pair, as both flow readers suggested; it opens 'One date for the German pair needs correcting'. Figure 1 now follows the timeline table (p09's evidence). Timeline and Phase 1 ideas and Phase 1's flow rationale updated; no journal-spec criterion depends on the old place.",
+      "rejected": [
+        "Dropping the correction, which is a published fact."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated draft faults (flow, round 3) fixed in their units: p08 now says one sentence in Vertical Differences points ahead to the final comparison; p11 notes General Atlantic's exit is not dated in the sources found (no date added); p52 names and glosses the four Veldmark choices before the table; the Hearthly row now reads per the ledger ('Hearthly stays on Google Cloud through 2028'; shared search on OpenSearch (Amazon OpenSearch Service) for Hearthly by end of 2028; Hearthly 'calls the platform cross-cloud until it leaves Google Cloud')."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Internal inconsistencies resolved toward the dated timeline (rule 3): 'Immoweb bought Realo' is now 'agreed to buy' (timeline, January 2024); 'owners who had just sold Yad2' is now 'had just signed a separate sale of Yad2' (sale signed December 2025, no closing found); Mseka's three 2025 purchases kept as quoted, with a clause that the dated January 2025 report in the timeline records two of them, majority stakes in tax-depreciation services. No company, date or figure changed."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "AC-4 items: the Ultimmo sentence on shared data is now marked 'in my reading'; the national table's source note now lists Belgium's supply source and France's agency subscriptions as the book's judgement; the 2018 founding's source cell now says 'unverified'. The remaining unsourced published facts are kept as published and listed in open_questions for the author. Minor fix: 'adjacencies' glossed as services next to the listing."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised from 6851 to 7,050 (+2.9%, within the 10% allowed) for the Veldmark lead-in, the Hearthly row and the timeline reconciliations; no published fact cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate on two corroborated spec faults): 'Vertical Differences in the Record' moved before 'Trade-offs the Case Illustrates', so the two readings of the record (by country, by asset type) precede the options they add up to; ids renumbered (verticals now p39–p40, trade-offs p41). The Keybridge sentence is now a pointer to the final comparison, and p08's idea notes that one earlier sentence points ahead. Draft faults of round 2 fixed in the named units: the OpenImmo contrast, the failure-modes lead-in, the 'not a ladder' gloss, the comparison lead-in and the synthesis's first sentence.",
+      "rejected": [
+        "Merging Vertical Differences into 'Why Real Estate Resists One Platform', which would add a table and a list to an assertion-evidence-reasoning section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate on one spec fault): the Germany and Belgium paragraph, which quotes Mseka's December 2025 interview and 2025 acquisitions, moved from Phase 2 (2019–2023) to Phase 4 after that interview (now p34), so the phases keep their time frames; old p29–p34 are now p28–p33. Phase 2's idea and flow, Phase 3's transition and the reading list's transition rewritten. Also, from the round-1 draft faults: the timeline correction now says what it corrects (a claim the book's research checked), and lead-in sentences carry the declared transitions into Trade-offs, Vertical Differences, Failure Modes and the patterns table.",
+      "rejected": [
+        "Moving the paragraph to 'Why Real Estate Resists One Platform', which would break that section's assertion-evidence-reasoning order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so max_words is the published prose length by check_draft's count (6,525) plus 5%, 6,851."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims V1 to V5 written here from the thesis (the journal spec gives none for this post): the portfolio and its corporate record, the vertical's national structure, the commercial and data-driven funnel, the unscoped goal and its reversal, and the boundary with the scope rule. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved the 2019 Meilleurs Agents purchase (now p20, with Figure 3) before the 2022 data-team paragraph (now p21) so the valuation story runs in date order; the roadmap (p04) names every cross-phase section; the conclusion's synthesis carries the so-what; reasons added to two section flows. No fact moved out of its paragraph or cut. Second flow rubric (sound with notes): Le Tendre's October 2022 paragraph (now p23) moved before the November 2022 Ultimmo launch (now p24); reasons added on overlapping phases and on phase 2's order.",
+      "rejected": [
+        "The structural merges listed in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04), into which the published sentence about the Veldmark comparison moved from p03, and a conclusion section 'From AVIV to the Property Portals' with a synthesis paragraph (p55, labeled as my reading) and the published closing paragraph (p56) extended with the question case-property-portals takes up, as the journal spec's hand-off declares. No company fact was added.",
+      "rejected": [
+        "Leaving the hand-off as the last paragraph of Questions to Ask, with no synthesis or callback."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md: the timeline, inference-labeling and evidence-stops criteria are covered by the journal's AC-4 and AC-1/AC-2; the exact-quotation criterion is rewritten as AC-5 (minor, rubric); the inventory criteria (a seller-funnel figure, two tables, two mermaid diagrams, 6–10 questions, grouped sources) are dropped as inventories.",
+      "rejected": [
+        "Carrying the inventory criteria over as written."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities left empty: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the case as four dated phases (assembly, seller funnel, integration intent, separation), because the evidence documents strategy direction, not systems."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the regulators' decisions (Bundeskartellamt 2015, Autorité de la concurrence 2018) as the main public description of market structure; they are primary sources where AVIV is silent."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Quoted the 2021 CEO line in full ('…to create a European real estate marketplace') and avoided the word 'unified', which no AVIV source uses; attributed 'fully integrated platform' to the interviewer."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Veldmark comparison built on ledger facts only (Supply Contract v1, Valuo commission-share pilot, Keybridge neutrality, Hearthly duplicates); no new canonical facts added to the ledger."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "vertical-requirements, multi-country-platforms, platform-consolidation, listing-ingestion, ml-platform, monetization-models, liquidity-and-network-effects, case-adevinta, case-property-portals",
+      "contributed": "Patterns and neighbouring cases."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md",
+      "contributed": "Hearthly, Valuo, Keybridge and Common Ground facts."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-real-estate-portals.md Part A (and C.4, C.7, Part D)",
+      "contributed": "Evidence base."
+    },
+    {
+      "kind": "external",
+      "ref": "Immowelt press release (2015); Bundeskartellamt (2015); Autorité de la concurrence (2018)",
+      "contributed": "Combination structure and the regulators' description of the markets (re-verified 19 October 2026)."
+    },
+    {
+      "kind": "external",
+      "ref": "Axel Springer/KKR/CPP Investments signing release (2024); KKR effective-structure release (2025)",
+      "contributed": "Ownership change and carve-out."
+    },
+    {
+      "kind": "external",
+      "ref": "Online Marketplaces articles 2021–2025 (McLean, AVIV France hiring, H1 2023, AVIV Germany, Realo, CEO change, Yad2, Mseka interview)",
+      "contributed": "Intent, portfolio, adjacencies and the 2025 reversal."
+    },
+    {
+      "kind": "external",
+      "ref": "MySweetImmo (2022 Ultimmo; 2022 and 2023 Le Tendre interviews); FrenchWeb (2008, 2012, 2019); Tradingsat (2010)",
+      "contributed": "Seller funnel, valuation method and acquisition facts."
+    },
+    {
+      "kind": "external",
+      "ref": "OpenImmo e.V. (accessed 2026); AVIV GitHub and Medium feed (accessed 2026, empty)",
+      "contributed": "Ingestion standard and the absence of engineering material."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: 2023-merger correction moved into Phase 1 (p17a); Veldmark choices introduced before the table; Hearthly cloud/search row per the ledger; Realo, Yad2 and the German purchases reconciled with the timeline; inferences marked; max_words 7,050. Draft check round 4 follows."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): sections and paragraphs reconstructed from the published text; roadmap paragraph and a two-paragraph conclusion added; spec.md removed. Flow rubric (sound with notes): 2019 purchase moved before the 2022 data-team paragraph. Second rubric: Le Tendre's October 2022 paragraph moved before the Ultimmo launch. Round 1 of the draft check: Germany and Belgium paragraph moved into Phase 4; ids renumbered. Round 2: Vertical Differences moved before Trade-offs; ids renumbered. Round 3: escalate; four cheap close-out fixes, report stale."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 4 differs from its source (invented title; missing label 'classified as likely sellers')."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "'The final section' now points to the Veldmark comparison near the end; trade-offs heading capitalized as in the 45 chapters."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,480 → 5,434 prose words; outline unchanged; opening names the Hearthly comparison; point-first openers; duplicate 300-hire mention and meta sentences cut."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: re-verified 12 load-bearing claims; corrected the Bundeskartellamt quote and the 2023 'write the future' quote, added the KKR-control caveat on the Yad2 sale, expanded DPE/DVF, timetoread updated."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 7050
+  }
+}

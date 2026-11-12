@@ -1,0 +1,1712 @@
+{
+ "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "normalization-and-enrichment",
+ "journal": "listing-systems-architecture",
+ "part": "part-3",
+ "title": "From Raw Supply to Usable Listings: Normalization and Enrichment",
+ "status": "draft",
+ "revised": "2026-11-12",
+ "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the normalization-and-enrichment entry in journal-spec.json. Three units were added to the published text: a roadmap paragraph in the introduction (p04), a lead-in to the trade-offs table (p42) and two closing paragraphs before the hand-off (p60, p61).",
+ "intent": {
+  "outcome": {
+   "know": [
+    "The difference between normalization (a stated value in canonical form, meaning unchanged) and enrichment (facts nobody stated, from registries, models and platform computations), and the ten deterministic normalization steps.",
+    "The provenance record and its seven source classes, and the real cost drivers of enrichment at classifieds volume: re-processing, evaluation and human review."
+   ],
+   "believe": [
+    "A derived value must never silently overwrite an asserted one, and who wins between seller, feed, registry and model is a product and legal decision per attribute, not an engineering default."
+   ],
+   "can_do": [
+    "Specify a provenance record and a per-attribute precedence policy, and design an enrichment pipeline whose steps are idempotent, versioned and replayable.",
+    "Decide which enrichers a group shares across brands and which stay in the verticals, and plan a quarter's re-processing budget."
+   ]
+  },
+  "audience": {
+   "who": "Chief and principal architects, data and ML leads, and listing-data owners in classifieds, real-estate and automotive marketplaces.",
+   "already_knows": [
+    "APIs, databases, event streams, search engines and Kubernetes (the book's baseline), data pipelines and the basics of machine learning.",
+    "Part II's listing model: the listing aggregate, the canonical category tree, the attribute dictionary and compiled category schemas, the media pipeline and the location model.",
+    "Part III so far: the ingestion channels, feed contracts, the partner's run report and the one write path into the listing service.",
+    "Veldmark, its brands (Tradeyard, Motorvane, Hearthly, Keybridge), its cast and the fifteen failure-pattern names."
+   ],
+   "does_not_know": [
+    "Normalization, enrichment and attribute provenance as this chapter defines them.",
+    "VIN decoding, German type-approval codes (HSN/TSN) and licensed vehicle-specification data.",
+    "French reference data: DVF transaction data, the DPE energy certificate and the Base Adresse Nationale.",
+    "OCR (optical character recognition) as a moderation and enrichment service."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a corrected decoder release, the reader re-runs enrichment without overwriting values dealers fixed by hand, and says what made that possible.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "Your VIN-decoder supplier ships corrected data for a popular engine family. Some dealers had fixed the decoded power value by hand on their listings. Using only this chapter: how do you apply the correction, and what must already be in place?",
+    "expected": "Each value carries provenance (source class, process and version, confidence, time) with the original kept next to the canonical value. The precedence policy in the attribute dictionary says registry values do not overwrite asserted seller or feed values, so dealer-fixed values stay and the new decode is kept as an alternative. The decoder is a versioned, idempotent enricher; the re-run selects affected listings by fingerprint, active listings first, inside a planned re-processing budget, behind an evaluation gate, and writes back to the system of record rather than only to the search index."
+   },
+   {
+    "id": "AC-2",
+    "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "April 2027 at Veldmark: 23% of bike listings with a frame size, the Essen Golf's 31 decoded attributes and the question of who said each value; normalization versus enrichment, canonical and original values, provenance; ten normalization steps; registry decoding and model-based enrichment; a replayable pipeline with versioned enrichers, quality scores and human correction; the Golf value by value, the bike extraction, the Lyon flat's disclosures and translation; the cost of enrichment; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: public company engineering sources, standards and regulation, research, and the fictional Veldmark."
+   },
+   {
+    "id": "AC-3",
+    "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   },
+   {
+    "id": "AC-4",
+    "statement": "Given a model's value that contradicts a legally required disclosure, the reader says what the platform does with each value and why.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "An agency lists a flat in France with energy class D. Your image-and-text model predicts class C, and the agency supplied the energy certificate's number. Using only this chapter: what does the platform show, what does it do with the model's value and the certificate, and why?",
+    "expected": "The platform shows the agency's stated class D: the energy class is a legally required disclosure the advertiser must state, so enrichment verifies it against the energy-certificate register using the certificate number and flags a mismatch back to the agency; it never replaces the value or fills it from a model. The model's value is not shown as the disclosure."
+   },
+   {
+    "id": "AC-5",
+    "statement": "Given a quarter with several schema changes and model releases, the reader names the cost drivers in order of size and the ways to contain them.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "This quarter your group plans a category split, a schema change and a new extraction-model version, each touching about 13 million live listings. Using only this chapter: which costs should the plan include, which is likely the largest, and how do you keep them down?",
+    "expected": "Model calls per backfill are the smallest item (roughly €5,000 per pass over 13.2 million listings in the illustrative model), but each change can need a backfill, so re-processing multiplies them; evaluation of each release on gold samples costs reviewer time (about 33 hours for 2,000 listings); human review of uncertain values is usually the largest variable cost (about 270 reviewer-hours a week). Contain them with prioritized backfills (active listings first), input fingerprints that skip unaffected listings, small or self-hosted models, and a quarterly plan of backfills with compute and review cost."
+   }
+  ]
+ },
+ "thesis": {
+  "question": "How do you turn heterogeneous input into consistent, enriched listings?",
+  "claim": "Normalization and enrichment are different operations that one pipeline must keep apart in the record: every value is stored in its dictionary's canonical form next to the original as received, with provenance saying who stated or derived it, by which process and version, with what confidence; precedence between seller, feed, registry and model is a per-attribute policy in the attribute dictionary that never lets a derived value silently overwrite an asserted one; and enrichment runs as a versioned, replayable pipeline of idempotent steps that writes back to the listing's system of record, budgeted for re-processing and human review, which cost more than the model calls.",
+  "disputed_by": "The common practice of cleaning values in place on import, writing derived values into the same attribute columns as seller statements (or only into the search index), letting the most recent writer win, and budgeting machine-learning enrichment by the price per model call.",
+  "so_what": "A Chief Architect who accepts this makes provenance a group standard before the pipelines multiply (Veldmark adopts one vocabulary in October 2027), shares generic enrichers (geocoding, translation, image classification, a model gateway) while keeping VIN decoding and energy-certificate checks in the verticals, puts every enricher including rule tables under model governance, and plans each quarter's backfills with their compute and reviewer cost.",
+  "how_why": "Yardstick had no place to store a value the seller had not typed, so extracting the missing frame sizes (23% coverage on bike listings) would have made model output look like seller statements. Motorvane found cars rated against the wrong engine variant because a decoder value had replaced a dealer value, and could not re-run corrected decoding without overwriting dealers' fixes because nothing recorded which value came from where. In the Veldmark cost model, one backfill of Tradeyard's 13.2 million live listings costs roughly €5,000 in model calls, while reviewing uncertain values takes about 270 reviewer-hours a week.",
+  "supporting_claims": [
+   {
+    "id": "N1",
+    "claim": "Normalization (a stated value put in canonical form, meaning unchanged) and enrichment (a fact nobody stated) are different operations with different owners, tests and rules for being overwritten."
+   },
+   {
+    "id": "N2",
+    "claim": "Every attribute value is stored in canonical form next to the original as received, with a provenance record of who stated or derived it, by which process and version, with what confidence and when."
+   },
+   {
+    "id": "N3",
+    "claim": "Precedence between seller, feed, registry and model is a per-attribute policy in the attribute dictionary that keeps every source's value and never lets a derived value silently overwrite an asserted one; legally required disclosures are verified, never derived."
+   },
+   {
+    "id": "N4",
+    "claim": "Enrichment runs as a pipeline of versioned, idempotent steps that writes back to the listing's system of record, releases new versions behind evaluation gates and can be replayed or rolled back value by value."
+   },
+   {
+    "id": "N5",
+    "claim": "At classifieds volume, re-processing, evaluation and human review cost more than the model calls, so they are planned and budgeted like migrations."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Turns accepted records into comparable, trustworthy values with recorded origins, which entity resolution matches on and search filters on.",
+  "supports": [
+   "P3-2"
+  ]
+ },
+ "flow": {
+  "pattern": "prerequisite_order",
+  "additional_patterns": [
+   {
+    "pattern": "problem_solution",
+    "applies_to": "scene to architecture: the two Veldmark failures first, then the vocabulary, operations and pipeline that resolve them"
+   },
+   {
+    "pattern": "small_to_large",
+    "applies_to": "in-practice to questions: worked cases, then cost, then the decisions a group faces"
+   }
+  ],
+  "rationale": "The chapter follows the book's chapter shape and each section supplies what the next needs. The scene comes first so the reader holds the two failures (a model value with nowhere to live, a decoder value that overwrote a dealer's) that every later rule answers. The concepts section defines normalization, enrichment, canonical and original values and provenance before the normalization steps and enrichers use those words. Normalization comes before enrichment because enrichers read normalized values. The architecture follows both, because its rules (write-back, idempotency keys, precedence, release gates) govern the steps just described. The worked cases then apply the rules to the Golf, the bikes, the Lyon flat and Tradeyard Belgium, and the cost section prices the pipeline only once the reader has seen what re-processing and review are. Trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions draw on all of it. Moving the architecture before the concepts would use provenance and precedence before they are defined; moving the cost before the cases would quote backfill and review figures for a pipeline the reader has not yet seen run."
+ },
+ "introduction": {
+  "hook": {
+   "type": "intriguing_example",
+   "content": "A dealer management system writes \"48.000 km\" with a German thousands separator, a Portuguese private seller types \"bicicleta de cidade 28''\" into the title and nothing into the attributes, a French agency's software sends an address without coordinates, and a feed describes a car by its VIN and little else; all of these records were accepted by ingestion."
+  },
+  "bridge": {
+   "from_reader_world": "The records that the previous chapter's channels accepted through one write path, including the Essen Golf that arrived through its dealer's feed.",
+   "to_topic": "Accepted is not usable: search, ranking, alerts, trust rules and analytics need the same fact in the same form, and the platform must know which values the seller said and which it derived."
+  },
+  "thesis_statement": {
+   "text": "Normalize every value into one canonical form while keeping what was said, record the provenance of every value and decide precedence per attribute so a derived value never silently overwrites an asserted one, and run enrichment as a versioned, replayable pipeline that writes back to the system of record, budgeted for re-processing and review rather than model calls.",
+   "placement": "KEY POINTS callout (all three bullets); p02 names the three terms the claim rests on."
+  },
+  "roadmap": {
+   "placement": "IN THIS CHAPTER callout and paragraph p04, which lists the sections in order and names the kinds of evidence.",
+   "promises": [
+    {
+     "promise": "Start at Veldmark in April 2027 with bike listings missing frame sizes and a Golf whose decoded values nobody could trace.",
+     "kept_in": [
+      "scene"
+     ]
+    },
+    {
+     "promise": "Define normalization, enrichment, canonical and original values and the provenance record.",
+     "kept_in": [
+      "concepts"
+     ]
+    },
+    {
+     "promise": "List the ten deterministic normalization steps.",
+     "kept_in": [
+      "normalization"
+     ]
+    },
+    {
+     "promise": "Describe registry decoding and the public evidence on model-based enrichment.",
+     "kept_in": [
+      "enrichment"
+     ]
+    },
+    {
+     "promise": "Design a replayable pipeline that writes back, with versioned enrichers, quality scores and human correction.",
+     "kept_in": [
+      "architecture"
+     ]
+    },
+    {
+     "promise": "Follow the Golf value by value, the bike extraction, the Lyon flat's disclosures and Tradeyard Belgium's translation.",
+     "kept_in": [
+      "in-practice"
+     ]
+    },
+    {
+     "promise": "Price enrichment at classifieds volume.",
+     "kept_in": [
+      "cost"
+     ]
+    },
+    {
+     "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+     "kept_in": [
+      "trade-offs",
+      "verticals",
+      "failure-modes",
+      "ca-view",
+      "questions"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "A listing accepted at the ingestion boundary is not yet usable, because search, ranking, alerts, trust rules and analytics need the same fact in the same form, and this chapter is the link in Part III's supply chain that records where every value came from.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "example",
+      "what": "\"48.000 km\" from a DMS with a German thousands separator; \"bicicleta de cidade 28''\" typed into a title with no attributes; an address without coordinates from a French agency's software; a car described only by its VIN.",
+      "shows": "Accepted records arrive in many forms, and no consumer should have to parse a seller's text to get a fact."
+     }
+    ]
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "The chapter owns three terms: normalization turns a received value into the dictionary's canonical form without changing its meaning, enrichment adds facts the seller did not state, and attribute provenance records where each value came from, when, by which process and version and with what confidence.",
+    "function": "definition",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The need for the same fact in the same form and for knowing where values came from.",
+     "introduces": "The three terms that name those needs.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "Neighboring chapters own the channels, the dictionary, geocoding, images, duplicates and model governance; this chapter owns the pipeline that applies them to a listing and the provenance that makes the result trustworthy, and its canonical values feed entity resolution and search.",
+    "function": "context",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "The three terms this chapter owns.",
+     "introduces": "What the neighbors own, and what depends on this chapter's output.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "The chapter starts from two Veldmark problems in April 2027 (bike listings without frame sizes and the Essen Golf), then defines its terms, describes the normalization steps and the enrichers, designs the pipeline, works through four cases, prices the work and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask, drawing on public engineering sources, standards, registries and the fictional Veldmark.",
+    "function": "transition",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The sections in order: the scene; the concepts; the ten normalization steps; registry and model-based enrichment; the replayable pipeline with versioned enrichers, quality scores and human correction; the Golf, the bikes, the Lyon flat and Tradeyard Belgium; the cost; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions.",
+      "shows": "Lets a reader of the opening predict the chapter's sections and the kinds of evidence."
+     }
+    ],
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's scope.",
+     "introduces": "The order in which it covers that scope, and Veldmark as the source of the worked examples.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "scene",
+   "heading": "Setting the Scene at Veldmark: Which of These Values Did Anybody Say?",
+   "controlling_idea": "In April 2027 two Veldmark problems, missing bike attributes with nowhere to store a derived value and decoder values that overwrote dealers' values untraceably, reduced to one question: for each value, who said it, what was done to it and may it be changed?",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "N2",
+     "N3"
+    ],
+    "how": "Shows the two failures that provenance and per-attribute precedence prevent."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The roadmap's first item: two Veldmark problems in April 2027.",
+    "introduces": "The bike filters, the Essen Golf and Ingrid's question.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The product review, then the same week's Motorvane example, then the slide that joins them. The question only makes sense after both examples."
+   },
+   "paragraphs": [
+    {
+     "id": "p05",
+     "controlling_idea": "Tradeyard Netherlands wanted to extract missing bike attributes with a language model, but Yardstick had no place to store a value the seller had not typed.",
+     "function": "example",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "About 23% of live bike listings carried a frame size and fewer than half said whether the bike had electric assist; Priya Raman proposed model extraction; Daan Visser pointed out that anything written into Yardstick's attribute columns would look like a seller statement.",
+       "source": "scenario-ledger.md (normalization-and-enrichment; editor line on bike coverage)",
+       "shows": "Without a place for derived values, enrichment would make model output indistinguishable from seller statements."
+      }
+     ]
+    },
+    {
+     "id": "p06",
+     "controlling_idea": "At Motorvane, the Essen Golf showed decoding filling 31 attributes, and older listings showed decoder values that had silently replaced dealer values, so a supplier's correction could not be applied without overwriting dealers' fixes because nothing recorded where values came from.",
+     "function": "example",
+     "organization": "narration",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The 2021 Volkswagen Golf 1.5 TSI from Autohaus Ruhrblick, arrived 14 April 2027; VIN decoding filled 31 attributes; rated 'good price' against €22,800 for its €21,900 asking price; older listings rated against the wrong engine variant.",
+       "source": "scenario-ledger.md, Essen Golf",
+       "shows": "A derived value overwriting an asserted one causes wrong ratings and blocks safe re-processing."
+      }
+     ],
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "A derived value with no recorded origin, at Tradeyard.",
+      "introduces": "The same gap at Motorvane, where it had already done harm.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p07",
+     "controlling_idea": "Ingrid Halvorsen reduced both examples to one question, whether the group knows for each value who said it, what was done to it and whether it may be changed, and the chapter is the design that answers yes.",
+     "function": "claim",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The Tradeyard and Motorvane examples.",
+      "introduces": "The single question they share, which the rest of the chapter answers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "concepts",
+   "heading": "Concepts: Canonical Values, Derived Facts and Their Origins",
+   "controlling_idea": "Normalization and enrichment are different operations, each value is kept in canonical and original form, and a provenance record with a closed set of source classes says where each value came from.",
+   "function": "definition",
+   "advances_thesis": {
+    "supports": [
+     "N1",
+     "N2"
+    ],
+    "how": "Defines the distinction and the record the thesis depends on."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "Ingrid's question about who said each value.",
+    "introduces": "The vocabulary needed to answer it.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "prerequisite_order",
+    "rationale": "The distinction first, then the two stored forms of a value, then the provenance record, then its source classes, then where the record lives. Each step uses the term defined before it."
+   },
+   "paragraphs": [
+    {
+     "id": "p08",
+     "controlling_idea": "Normalization and enrichment have different owners, tests and rules for being overwritten, because a normalized value is still the seller's statement and an enriched one is the platform's assertion.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Normalization versus enrichment: what it does, example ('48.000 km' to 48,000 km; VIN to body type HATCHBACK), whether meaning changes, determinism, provenance, failure mode.",
+       "shows": "The two operations differ on every property that governs overwriting and testing."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: a seller's value translated into a canonical tag beside a registry lookup that adds tags nobody typed.",
+       "shows": "Shows the meaning-preserving and meaning-adding operations side by side."
+      }
+     ]
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "Each attribute value is stored twice, as a canonical value for every system that compares or computes and as the original value with unit and locale for display, audit and re-normalization.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Schema.org QuantitativeValue with UN/CEFACT unit codes KMT and SMI; Google Merchant Center prices as a number plus an ISO 4217 code.",
+       "source": "schema.org Vehicle, V30.1, 2026; Google Merchant Center, n.d.",
+       "shows": "Standard codes exist for the canonical form, so the dictionary need not invent its own."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "A normalized value that is still the seller's statement.",
+      "introduces": "The two forms in which every value is kept.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "Provenance is a small record attached to every attribute value, giving source, asserting party, process and version, confidence, alternatives, status and time; the Golf's power, where the decoder returned two candidates and the dealer's value matched one, shows why it needs more than a source.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "example",
+       "what": "The Golf's power explained before the record: the VIN decoder returned two candidates, 96 and 110 kW (two derivatives of the model), and the dealer's 96 kW matches one, so the conflict is resolved; then the record of vehicle.power_kw: canonical 96, original '96 kW' (de-DE), partner_feed via TSP-031, normalizer units@2027.03, registry alternatives 96 and 110 from licensed-vin@2027.04, with forward pointers to the registry section and the Golf case.",
+       "source": "Veldmark illustration",
+       "shows": "Shows that the record holds both the asserted value and the derived alternatives."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The canonical and original values.",
+      "introduces": "The record that says where each came from.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p11",
+     "controlling_idea": "Provenance uses seven source classes that should be a closed vocabulary across the group, each with its own default trust.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "seller, partner_feed, registry, catalog, model, moderator, platform, with meaning, typical examples and default trust.",
+       "shows": "Gives the reader the vocabulary a precedence policy is written in."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The source field of the record.",
+      "introduces": "The closed set of values it may take.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "The listing aggregate holds the values with provenance and the attribute dictionary says per attribute which sources are allowed and how conflicts resolve, while this chapter's pipeline produces the records.",
+     "function": "context",
+     "transition_in": {
+      "relationship": "place",
+      "carries_over": "The provenance record and its source classes.",
+      "introduces": "Where the record lives and who sets the precedence rules.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "normalization",
+   "heading": "Normalization: Ten Deterministic Steps",
+   "controlling_idea": "A multi-country listing platform needs ten small, deterministic normalization steps, each versioned, flagging rather than guessing, with owned mapping tables.",
+   "function": "process",
+   "advances_thesis": {
+    "supports": [
+     "N1",
+     "N2"
+    ],
+    "how": "Shows normalization as meaning-preserving, deterministic and replayable, with the original kept."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "Normalization as defined in the concepts.",
+    "introduces": "The concrete steps it consists of.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p13",
+     "controlling_idea": "In my judgement any listing platform operating in several European countries needs the same ten normalization steps, each with a failure it prevents and a rule.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Encoding, text, numbers and locale, units, enumerations, named entities, dates and times, prices and currency, addresses, phone numbers and contact data, with what goes wrong and the rule.",
+       "shows": "Each step is a small deterministic rule, so the whole can be versioned and replayed."
+      },
+      {
+       "kind": "fact",
+       "what": "Vinted: about 2,000,000 unique brand values restricted to about 40,000 verified brands, cutting P99 facet latency by about 15 ms.",
+       "source": "Vinted Engineering, 2023",
+       "shows": "Entity normalization against a verified dictionary pays off in search."
+      },
+      {
+       "kind": "fact",
+       "what": "mobile.de: ISO 8601 date-times in the Europe/Berlin offset and yyyyMM first registration; libpostal 99.45% full-parse accuracy, 60+ languages, about 1.8 GB model; Base Adresse Nationale under Etalab 2.0.",
+       "source": "mobile.de Seller-API, n.d.; libpostal, n.d.; adresse.data.gouv.fr, n.d.",
+       "shows": "Real formats and tools behind the date and address rules."
+      }
+     ]
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "Three design rules apply to every step: normalizers are versioned code with test suites, failure to normalize is a flag rather than a guess, and mapping tables are data with owners.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The ten steps.",
+      "introduces": "The rules that apply across all of them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "enrichment",
+   "heading": "Enrichment: Facts Nobody Typed",
+   "controlling_idea": "Enrichment adds facts nobody typed, from registries where they exist and from models otherwise, and the public evidence says models should propose values against a schema passed in, be validated and be released behind measured gates.",
+   "function": "description",
+   "advances_thesis": {
+    "supports": [
+     "N1",
+     "N4"
+    ],
+    "how": "Shows enrichment as meaning-adding and versioned, and gathers the evidence for gated, schema-driven model enrichment."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Normalization, which never changes meaning.",
+    "introduces": "Enrichment, which adds facts.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The four jobs and the list of enrichers first, then registries (vehicles, then what they teach, then real estate), then models. Registries come before models because where the truth exists elsewhere, decoding beats extraction."
+   },
+   "paragraphs": [
+    {
+     "id": "p15",
+     "controlling_idea": "Enrichment adds facts sellers cannot know, fills attributes sellers did not provide, adds platform-computed signals and prepares the listing for other languages and systems.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Ten enrichments grouped by the four jobs in a Job column (facts sellers cannot know: registry decoding, geocoding, property and regulatory data; attributes sellers did not provide: category prediction, text and image extraction; platform-computed signals: market value, quality scores; other languages and systems: translation, embeddings), with inputs, outputs, source class and owner.",
+       "shows": "Each enrichment has a source class and an owner, which the pipeline and precedence policy rely on."
+      }
+     ]
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "Where a registry exists, decoding beats extraction from text, and vehicle marketplaces decode VINs and type-approval codes against public or licensed specification data.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "NHTSA vPIC: batches of up to 50 VINs, partial VINs with '*', downloadable databases; mobile.de Seller-API: hsn, tsn and schwackeCode from Eurotax/Schwacke; Autotrader UK: taxonomy to derivative, valuations keyed on derivative ID, first registration and mileage.",
+       "source": "NHTSA vPIC API, n.d.; mobile.de Seller-API manual, n.d.; Autotrader developer portal, n.d.",
+       "shows": "Authoritative specification data exists for vehicles and is used by real marketplaces."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Registry decoding, the first enrichment in the table.",
+      "introduces": "Vehicle registries and decoders.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "controlling_idea": "Decoders return families of candidates as well as exact answers and change with the supplier's releases, so each decoded value must record its decoder and data version.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Decoding against licensed data.",
+      "introduces": "The two lessons decoders teach the pipeline.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p18",
+     "controlling_idea": "Real estate has registries too, but authoritative does not mean clean, so provenance must say which register and extract a value came from.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "DVF transaction register, last five years, updated in April and October; ADEME DPE dataset of existing dwellings since July 2021, updated weekly, about 15.8 million records as of October 2026, raw diagnostician input ADEME does not correct.",
+       "source": "data.gouv.fr, last updated 2026; ADEME open data, 2026",
+       "shows": "Even official registers carry uncorrected data, so the source must be recorded."
+      }
+     ],
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "Vehicle registries.",
+      "introduces": "Property registries and their limits.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "form": "list",
+     "controlling_idea": "The public evidence on model-based enrichment points one way: propose values against a schema passed in, validate the output, gate releases on measured precision, and keep the big model offline and the small model online; two further cases add that enrichers depend on each other and that large receivers classify for themselves.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "case",
+       "what": "Mercari title suggestions (2023), dynamic attributes with a fine-tuned 2B model (2024) and re-categorization estimated at USD 1 million and 1.9 years (2024); Etsy's reported 31% to 91% coverage via a third-party summary (2025); Adevinta OCR at 330 million requests a month (2023); mobile.de price rating recalculated when images arrive (n.d.); Google Merchant Center's automatic categories (n.d.).",
+       "source": "Mercari Engineering 2023, 2024; ZenML LLMOps Database 2025; Adevinta Tech Blog 2023; mobile.de n.d.; Google Merchant Center n.d.",
+       "shows": "Each case shows one part of the pattern and says which: schema at request time, validation, gates, cost of brute force, a specialized model online beating a general external API (Adevinta), dependency between enrichers, receivers classifying for themselves."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Registries, where the truth exists elsewhere.",
+      "introduces": "Models, used where it does not.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "architecture",
+   "heading": "Architecture: A Replayable Pipeline That Writes Back",
+   "controlling_idea": "Enrichment runs as a loop around the listing service whose rules (write-back, idempotency keys, declared dependencies, no silent overwrites, a small blocking set) make it replayable, with versioned releases, quality scores and human correction loops around it.",
+   "function": "process",
+   "advances_thesis": {
+    "supports": [
+     "N3",
+     "N4"
+    ],
+    "how": "Specifies the pipeline the thesis calls for and the precedence rule it enforces."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "Many enrichers, registry and model, each with its own version.",
+    "introduces": "The pipeline that runs them safely.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "prerequisite_order",
+    "rationale": "The five rules first, because releases, quality scores and correction loops all assume write-back and per-value provenance. Releases follow the rules they extend to re-processing; quality scores summarize what the pipeline produces; correction loops close the loop with human labels."
+   },
+   "paragraphs": [
+    {
+     "id": "p20",
+     "controlling_idea": "Enrichers write back to the listing's system of record through an ApplyEnrichment command checked against the listing version, and never only into the search index.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 2: the enrichment pipeline as a loop around the listing service, read models rebuilt from the listing, suggestions to sellers becoming labels.",
+       "shows": "Shows that enrichment results enter the listing like any other write."
+      }
+     ]
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "Each enrichment step is a pure function with an idempotency key built from listing ID, input fingerprint, enricher ID and version and reference-data version, so it re-runs only when its inputs change.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Rule 1.",
+      "introduces": "Rule 2.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p22",
+     "controlling_idea": "Enrichers declare dependencies, and the orchestrator re-runs the affected subgraph when an input changes.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Steps that re-run when their inputs change.",
+      "introduces": "The order between steps.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Derived values never silently overwrite asserted ones: the dictionary's precedence policy decides what is used, the listing keeps every source's value, and a retired suggestion remains as a training label.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Rules about running steps.",
+      "introduces": "The rule about whose value wins.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p24",
+     "controlling_idea": "Some steps block publication but most do not, and each has a degraded mode.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Normalization of required attributes, category, vehicle decode, geocoding (blocking or usually blocking); extraction, translation, embeddings, quality score, price rating (not blocking), with why and degraded mode.",
+       "shows": "Only values that drive validation, privacy or fees must exist before publication."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Rules about how steps run and write.",
+      "introduces": "When they must finish.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "The blocking set must fit the publication budget, so a synchronous language-model call on the insertion path is costly.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Tradeyard's publication target of 90 seconds at p95, owned by the publication-pipeline chapter.",
+       "source": "scenario-ledger.md",
+       "shows": "The budget limits what can block."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The blocking steps.",
+      "introduces": "The time budget they must fit.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "An enricher changes when its code, its reference data or the schema it fills changes, and each change raises the question of which existing listings to re-process, in what order and with what protection.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 3: releasing an enricher like a schema migration: shadow test against labels, prioritized backfill through the same write path, churn monitoring, value-level rollback.",
+       "shows": "Shows the release process that answers the question."
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "A running pipeline.",
+      "introduces": "What happens when one of its enrichers changes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p27",
+     "controlling_idea": "The release gate works when value churn is measured against the evaluation's prediction and rollback is a data operation made possible by per-value versions.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Etsy's reported practice of halting production runs when precision or recall drifts from a baseline.",
+       "source": "ZenML LLMOps Database summary of Etsy Code as Craft, 2025",
+       "shows": "A public precedent for the gate."
+      },
+      {
+       "kind": "example",
+       "what": "A new version changing 4% of values where evaluation predicted 1%.",
+       "shows": "Churn reveals a difference between the sample and production."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The release process in Figure 3.",
+      "introduces": "The two details that make its gate work.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p28",
+     "controlling_idea": "In my judgement a listing quality score should be built from four measurable dimensions defined per category schema: completeness, validity, consistency and confidence.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "The four dimensions with definition and example signal (23 of 26 recommended used-car attributes; stated power matching the decoded derivative; seller-confirmed versus model-only values).",
+       "shows": "The score measures usability from provenance-aware facts."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Enrichers that change values across the stock.",
+      "introduces": "A measure of how usable the result is.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "The quality score feeds seller nudges, moderation sampling and ranking, and it must not reward listings for values a model guessed.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The four dimensions.",
+      "introduces": "What the score is used for and its one trap.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p30",
+     "form": "list",
+     "controlling_idea": "Every human decision about a value is a label, and the pipeline should collect them deliberately from sellers, moderators, buyers and professionals.",
+     "function": "process",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Kleinanzeigen's photo-based assistant lets sellers accept suggestions fully, partially or not at all.",
+       "source": "mobiFlip, 2025",
+       "shows": "Seller choices on suggestions are a real, recordable label source."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Values a model guessed.",
+      "introduces": "Values people confirm or correct.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p31",
+     "controlling_idea": "Label quality is the hidden risk, and a small, regularly refreshed gold sample labeled by trained reviewers calibrates the rest.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The label sources.",
+      "introduces": "Why they are noisy and what calibrates them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "in-practice",
+   "heading": "In Practice: The Essen Golf and Three Other Cases",
+   "controlling_idea": "Four Veldmark cases show the rules at work: provenance resolves the Golf's power conflict, model provenance lets the bike extraction fill values safely, legally required disclosures are verified rather than derived, and translation is enrichment like any other.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "N2",
+     "N3",
+     "N4"
+    ],
+    "how": "Applies provenance, precedence and the pipeline to four concrete listings."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The pipeline's rules.",
+    "introduces": "An announcement of four cases, then the Golf from the scene followed value by value.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "The Golf first because the scene opened with it (p06) and it exercises normalization, decoding and precedence; then the bikes (model extraction, the scene's other problem), the Lyon flat (disclosures, with the general rule in its own paragraph) and Belgium (translation), each adding one rule the Golf does not show."
+   },
+   "paragraphs": [
+    {
+     "id": "p32",
+     "controlling_idea": "Following the Golf's values from the DMS feed to the listing shows which were normalized from the dealer's statement and which were added by decoding and valuation.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Make, model, engine and trim, power, first registration, mileage, price, color, equipment, 26 further decoded values (31 in all), location and market value (€22,800, 'good price', re-run on 22 April at €21,400), with raw value, canonical value, source class and action.",
+       "source": "scenario-ledger.md, Essen Golf; ledger listing-ingestion line on feed timing",
+       "shows": "Shows each value with its source class and the operation applied."
+      }
+     ]
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "Enrichment raised the Golf from 9 to 23 of 26 recommended attributes and put it into the body-type, transmission and fuel filters most buyers use.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "14 of 14 required and 9 of 26 recommended attributes before; 23 of 26 after.",
+       "source": "scenario-ledger.md, Essen Golf enrichment",
+       "shows": "Completeness determines whether filtering buyers see the listing."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The values decoding added.",
+      "introduces": "What they changed for buyers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "The power value shows the failure provenance prevents: with both decoder candidates stored and a policy that the consistent dealer value wins, the rating reads the right derivative and a later decode updates only cars without a dealer value.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 4: the Golf with source tags; the dealer's 96 kW resolves the conflict between candidates 96 and 110 kW, with the other kept.",
+       "shows": "Shows precedence and kept alternatives on one value."
+      }
+     ],
+     "transition_in": {
+      "relationship": "emphasis",
+      "carries_over": "The Golf's table, where power had two decoder candidates.",
+      "introduces": "The failure that row prevents.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p35",
+     "form": "list",
+     "controlling_idea": "Tradeyard's bike-extraction pilot followed the public pattern: a self-hosted small model given the schema keys at request time, validation against the schema, suggestions for new listings and model provenance for live ones, gated on a gold sample.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "June to September 2027 on Tradeyard Netherlands; first three photos classified for bike type and electric assist; gold sample of 2,000 listings; 93% precision on frame size and 97% on electric assist.",
+       "source": "scenario-ledger.md, bike-extraction pilot",
+       "shows": "The design applies the Mercari and Etsy patterns with provenance."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Registry enrichment on the Golf.",
+      "introduces": "Model enrichment on Tradeyard's bikes, the scene's first problem.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "The pilot raised frame-size coverage from 23% to 71% and made the November bikes split possible.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Coverage 23% to 71%; sellers accepted 64% of suggestions and edited another 11%; e-bike flag and bike type fed the re-categorization job.",
+       "source": "scenario-ledger.md, bike-extraction pilot and editor line",
+       "shows": "Model enrichment with provenance delivered the values the split needed."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The pilot's design.",
+      "introduces": "Its results.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "Enrichment normalized the Lyon flat's three addresses and assigned its area, but verified rather than derived its energy class, because the class is a disclosure the advertiser must state.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "68 m² three-room flat in Lyon 7e at €389,000, energy class D, listed in May 2027 by three agencies via two software vendors and Keybridge; addresses normalized against the Base Adresse Nationale; Valuo estimate €372,000–€401,000, trained on DVF prices.",
+       "source": "scenario-ledger.md, Lyon apartment and normalization-and-enrichment line",
+       "shows": "Shows enrichment that fills discovery values and verifies a legal one."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Values the platform may fill.",
+      "introduces": "A value it must not fill.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p38",
+     "controlling_idea": "Enrichment may fill attributes that serve discovery but must not invent values the law requires the advertiser to state; those are verified, flagged and reported back.",
+     "function": "claim",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The Lyon energy class.",
+      "introduces": "The general rule for mandated disclosures.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p39",
+     "controlling_idea": "At Tradeyard Belgium machine translation is stored, labeled and regenerated like any enrichment, while attribute values need no translation because they are dictionary IDs.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Dutch- and French-speaking buyers on one marketplace; translation stored with model provenance and version, indexed for cross-language search, labeled 'automatically translated' with a link to the original.",
+       "source": "Veldmark illustration",
+       "shows": "Translation follows the same provenance and replay rules."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Model and registry enrichment in the earlier cases.",
+      "introduces": "Translation as one more enrichment.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cost",
+   "heading": "The Cost of Enrichment at Scale",
+   "controlling_idea": "At classifieds volume, model calls are the smallest cost of enrichment; re-processing multiplies cost and people (evaluation and review) are the main cost.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "N5"
+    ],
+    "how": "Prices the pipeline and shows where the cost lies."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "The four cases, scaled up to the whole stock.",
+    "introduces": "What it costs.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p40",
+     "controlling_idea": "A rough Veldmark cost model, with illustrative prices, shows that calls times price per call is usually the smallest number on the enrichment bill.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Text extraction on 2.3M new listings and about 0.9M edits a week (about €1,300 a week); one backfill of 13.2M listings (about €5,000 per pass); evaluation per release (about 33 reviewer-hours for 2,000 listings); human review of 1% of 3.2M weekly runs (about 270 reviewer-hours a week); image enrichment within about €3.1M a year.",
+       "source": "Veldmark illustration; scenario-ledger.md live listings and ml-platform lines",
+       "shows": "Model cost per pass is small next to recurring review and evaluation."
+      }
+     ]
+    },
+    {
+     "id": "p41",
+     "controlling_idea": "Three conclusions follow: per-call model cost is rarely the constraint, re-processing is the multiplier, and people are the main cost.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Mercari's USD 1 million estimate for brute-forcing a large API model over more than 3 billion items, answered with a cheaper architecture.",
+       "source": "Mercari Engineering, 2024",
+       "shows": "Model cost is an architecture choice, not a fixed constraint."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The cost table.",
+      "introduces": "What it means for planning.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "trade-offs",
+   "heading": "Trade-offs",
+   "controlling_idea": "Seven design choices remain open in any enrichment pipeline, and for each the chapter's cases say when each option is right.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "N3",
+     "N4"
+    ],
+    "how": "Sets the thesis's choices (system of record, precedence, suggestion versus auto-apply, shared versus vertical) against their alternatives."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The rules, the cases and the cost.",
+    "introduces": "The choices left to each marketplace.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p42",
+     "controlling_idea": "The rules still leave seven choices to each marketplace, and each has a case where the other option is right.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Where enrichment runs, where derived values live, model type, application, timing, ownership across the group, conflict policy, each with two options and when each is right.",
+       "shows": "Gives the reader the decision for each choice and the conditions that change it."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "verticals",
+   "heading": "Vertical Differences",
+   "controlling_idea": "Verticals differ in their main normalization problem, strongest enrichment, authoritative data and protected disclosures, and seller presence decides whether suggestions can work.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "N3"
+    ],
+    "how": "Shows how precedence and suggestion-versus-apply change with the vertical."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Choices that hold within any marketplace.",
+    "introduces": "How they differ by vertical.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p42a",
+     "controlling_idea": "The trade-offs are choices any marketplace makes, but how they come out differs by vertical, in the main normalization problem, strongest enrichment, authoritative data, protected disclosures, model risk and seller presence.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "General classifieds, real estate, automotive and jobs compared on main normalization problem, strongest enrichment, authoritative data, values that must not be derived, biggest model risk and seller presence.",
+       "shows": "The last row is the one that changes the pipeline's behavior."
+      }
+     ]
+    },
+    {
+     "id": "p43",
+     "controlling_idea": "Seller presence decides whether suggestions work: where the seller is in the insertion flow they confirm suggestions, and in feed-driven verticals the value is applied as derived or reported back to the partner.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The table's dimensions, of which seller presence is the last.",
+      "introduces": "Why seller presence changes the pipeline's behavior.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "failure-modes",
+   "heading": "Failure Modes",
+   "controlling_idea": "Eight failure modes follow from breaking the chapter's rules, each with the rule that prevents it.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "N2",
+     "N3",
+     "N4",
+     "N5"
+    ],
+    "how": "Shows what happens when each part of the thesis is missing."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The design and its choices.",
+    "introduces": "What goes wrong without them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "A lead paragraph names the eight failures as what happens when the rules are broken. Then provenance failures first (mixed values, re-runs over corrections, index-only values), then normalization failures (misparses), then model, mapping and disclosure failures, then cost. Each is one paragraph led by its bold name."
+   },
+   "paragraphs": [
+    {
+     "id": "p43a",
+     "controlling_idea": "The design works only while its rules are kept; without them enrichment fails in eight recurring ways, each with the rule that prevents it.",
+     "function": "transition"
+    },
+    {
+     "id": "p44",
+     "controlling_idea": "Once derived values are indistinguishable from asserted ones they cannot be separated, and every later decision is made blind.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The eight failures announced.",
+      "introduces": "The first, mixed derived and asserted values.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p45",
+     "controlling_idea": "A new decoder or model version that writes every value it computes overwrites the corrections of sellers and moderators unless precedence and per-value provenance stop it.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Mixed values.",
+      "introduces": "What a re-run does to them.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "Enrichment written only into the index vanishes at the next reindex and cannot be shown or audited.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Values lost to a re-run.",
+      "introduces": "Values lost to a reindex.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p47",
+     "controlling_idea": "Silent misparses, such as 48,000 km read as 48 km, need a plausibility check from the dictionary on every numeric normalizer.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Provenance failures.",
+      "introduces": "A normalization failure.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "An extraction model released without a labeled sample, threshold and churn monitoring writes its error rate into millions of listings.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "A rule-based failure.",
+      "introduces": "A model failure.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p49",
+     "controlling_idea": "Alias tables that force unknown values into the nearest known one turn a mapping gap into wrong data.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Ungated models.",
+      "introduces": "Ungoverned mapping tables.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p50",
+     "controlling_idea": "A platform that corrects or fills a legally required disclosure publishes a statement the advertiser did not make.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Wrong data from mappings.",
+      "introduces": "Wrong data in a legal disclosure.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p51",
+     "controlling_idea": "Several full backfills in one quarter can exhaust its inference and review budget unless backfills are planned like migrations.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Failures of data.",
+      "introduces": "A failure of budget.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ca-view",
+   "heading": "The Chief Architect's View",
+   "controlling_idea": "A Chief Architect makes provenance a group standard, shares generic enrichers while keeping domain ones local, governs every enricher, puts precedence in the dictionary, budgets re-processing and measures enrichment by liquidity.",
+   "function": "recommendation",
+   "advances_thesis": {
+    "supports": [
+     "N2",
+     "N3",
+     "N4",
+     "N5"
+    ],
+    "how": "Turns each supporting claim into a group decision."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "The failure modes.",
+    "introduces": "The decisions that prevent them at group level.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "flow": {
+    "pattern": "order_of_importance",
+    "rationale": "A lead paragraph says the failures are prevented by group decisions. Then provenance first because every other decision depends on it; then the share line, governance and precedence; then budget and measurement; then what to watch."
+   },
+   "paragraphs": [
+    {
+     "id": "p51a",
+     "controlling_idea": "The failures are prevented more reliably by decisions taken once for the whole group than by each team's care, and six such decisions follow.",
+     "function": "transition"
+    },
+    {
+     "id": "p52",
+     "controlling_idea": "Make provenance a group standard before the pipelines multiply, as Veldmark did in October 2027.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "One provenance vocabulary (seven source classes plus process, version, confidence and time) adopted in October 2027 with the taxonomy and attribute service.",
+       "source": "scenario-ledger.md, group provenance vocabulary",
+       "shows": "A standard set early avoids retrofitting four listing stores."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The six decisions announced.",
+      "introduces": "The first, provenance as a group standard.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p53",
+     "controlling_idea": "Share generic enrichers and keep domain enrichers in the verticals, the same line as for ingestion.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "A group standard.",
+      "introduces": "Which enrichers the group shares.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p54",
+     "controlling_idea": "Put every enricher, rule tables included, under model governance with an owner, version, evaluation set, gate and dashboard.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Who owns which enricher.",
+      "introduces": "How each is governed.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p55",
+     "controlling_idea": "Decide precedence per attribute in the attribute dictionary, as a product and legal decision the pipeline enforces.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Governed enrichers.",
+      "introduces": "The policy over their outputs.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p56",
+     "controlling_idea": "Budget re-processing explicitly each quarter, because an unplanned backfill waits for capacity.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "The bikes split was planned with its backfill; the Motorvane decoder correction was not and waited three months.",
+       "source": "Veldmark illustration",
+       "shows": "Planning decides whether a correction ships."
+      }
+     ],
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Policy.",
+      "introduces": "Budget.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p57",
+     "controlling_idea": "Treat enrichment as a supply-side liquidity lever and measure it by filtered-search coverage and contact rates.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Cost.",
+      "introduces": "Value.",
+      "form": "word",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p58",
+     "controlling_idea": "The numbers to watch are coverage, model-only share, gold-sample precision, value churn, suggestion rejection, disputes and the unknown-value queues.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The six decisions.",
+      "introduces": "The measures that show whether they hold.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "questions",
+   "heading": "Questions to Ask",
+   "controlling_idea": "Ten review questions test whether a marketplace's pipeline records provenance, keeps originals, writes back, enforces precedence, fits the publication budget, re-processes safely, protects disclosures, collects labels, budgets backfills and draws the share line by meaning.",
+   "function": "recommendation",
+   "advances_thesis": {
+    "supports": [
+     "N2",
+     "N3",
+     "N4",
+     "N5"
+    ],
+    "how": "Turns the thesis into checks a reader can run."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The Chief Architect's decisions.",
+    "introduces": "Questions that test them in a review.",
+    "form": "phrase",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p59",
+     "form": "list",
+     "controlling_idea": "Ten questions test a pipeline against the chapter's rules, from provenance for any value to how the share line between brands is drawn.",
+     "function": "recommendation"
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "From Clean Records to Duplicates",
+  "synthesis": "Keeping the original, recording provenance and deciding precedence per attribute only work together: the original makes normalization replayable, provenance makes precedence enforceable, and precedence makes re-running enrichment safe. Remove any one and the Golf's decoder correction cannot be applied without trampling dealers' fixes.",
+  "so_what": "The order of work for a group is the vocabulary and the policy first, before the enrichers multiply, then re-processing and review planned as a recurring budget line rather than a one-off project.",
+  "callback": {
+   "to": "Ingrid Halvorsen's question in the scene: for each value, do we know who said it, what we did to it and whether we may change it?",
+   "how": "The Golf, the bikes and the Lyon flat now answer yes, value by value."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Fix the provenance vocabulary and the precedence policy before adding enrichers, and plan each quarter's backfills with their review cost."
+  },
+  "hand_off": {
+   "to": "entity-resolution",
+   "relationship": "cause_effect",
+   "carries_over": "The canonical addresses, decoded VINs and image hashes that normalization and enrichment produce.",
+   "introduces": "The problem those comparable values expose, that several listings describe the same flat or car, and the capability that decides when listings are one thing and what each audience sees."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The whole chapter, from the scene to the review questions.",
+   "introduces": "The answer to Ingrid's question and what it requires.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p60",
+    "controlling_idea": "Ingrid's question now has the answer yes: every value on the Golf, the bikes and the Lyon flat says who stated or derived it, by which process and version, and whether it may change.",
+    "function": "synthesis"
+   },
+   {
+    "id": "p61",
+    "controlling_idea": "The original value, provenance and per-attribute precedence work only together, so a group fixes the vocabulary and the policy before its enrichers multiply and budgets re-processing and review as a recurring cost.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The answer to Ingrid's question.",
+     "introduces": "Why it takes all three parts, and what a group does first.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p62",
+    "controlling_idea": "A normalized, enriched listing can be compared with others, which exposes the next problem, several listings describing the same flat or car, and entity resolution takes the canonical addresses and decoded VINs produced here, with the media pipeline's image hashes, to decide when listings are one thing.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "Comparable canonical values.",
+     "introduces": "The duplicates they expose.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "Channels, feed contracts and reconciliation.",
+   "covered_in": [
+    "listing-ingestion"
+   ]
+  },
+  {
+   "topic": "The attribute dictionary, category schemas and their compatibility rules.",
+   "covered_in": [
+    "attribute-schemas"
+   ]
+  },
+  {
+   "topic": "Category migrations.",
+   "covered_in": [
+    "categories-and-taxonomies"
+   ]
+  },
+  {
+   "topic": "Geocoding providers, geo indexes and location precision.",
+   "covered_in": [
+    "location-and-geo"
+   ]
+  },
+  {
+   "topic": "Image processing and perceptual hashing.",
+   "covered_in": [
+    "media-pipeline"
+   ]
+  },
+  {
+   "topic": "Duplicate detection and canonical entities.",
+   "covered_in": [
+    "entity-resolution"
+   ]
+  },
+  {
+   "topic": "Model training, serving, the AVM and model governance in depth.",
+   "covered_in": [
+    "ml-platform"
+   ]
+  },
+  {
+   "topic": "The AI listing assistant as a product.",
+   "covered_in": [
+    "ai-in-listing-systems"
+   ]
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "Etsy's primary post blocked automated access; the 31% to 91% coverage figure rests on a third-party summary and should be checked in a browser before print. (Carried over from spec.md.)",
+  "No European marketplace has published its VIN-decoding supplier relationships or license terms; the chapter names none for Veldmark and none for real companies. (Carried over from spec.md.)",
+  "Whether the ADEME DPE dataset can be matched reliably to listings by certificate number was not verified; the chapter presents the check as a Veldmark design, not as the documented practice of any real portal. (Carried over from spec.md.)",
+  "Cost figures are illustrative and must not be read as provider prices. (Carried over from spec.md.)"
+ ],
+ "decision_log": [
+  {
+   "date": "2026-10-19",
+   "decision": "Separated normalization (meaning-preserving) from enrichment (meaning-adding) as the chapter's first concept, because the two need different provenance, tests and overwrite rules."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Reused the Essen Golf and its power-variant conflict from attribute-schemas as the main worked example, and showed it value by value, to make provenance concrete without contradicting the ledger (31 decoded attributes, €22,800 estimate, 'good price')."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Added a Tradeyard NL bike-extraction pilot (June to September 2027) to connect enrichment to the ledger's 1 November 2027 bikes split, and a Lyon example to state the rule that legal disclosures are verified, not derived."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Framed cost around re-processing, evaluation and human review rather than per-call price, following the Mercari evidence; all prices labeled illustrative."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Converted spec.md to spec.json. Success criteria: the provenance-and-precedence, write-back loop and release-process criteria are tested by the journal spec's AC-1; the disclosure rule is rewritten as reader outcome AC-4 and the cost criterion as AC-5, both added here at severity minor; the normalization-vs-enrichment criterion is covered by the journal outcome and AC-1; the ten-steps list, the Golf trace and the dated-sources criteria (inventories of contents or house style) are dropped. Word limit: spec.md set none, so length.max_words is the published prose length (7,033 words by check_draft's count) plus 5%.",
+   "rejected": [
+    "Keeping the inventory criteria as human-checked items.",
+    "A cold-reader criterion for the Golf trace (covered by AC-1 and the reverse outline)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Added three kinds of unit the published text lacked: a roadmap paragraph (p04) so the opening predicts the sections, as the journal spec's AC-2 requires; a lead-in (p42) because the trade-offs section was a bare table with no unit; and a callback and synthesis (p60, p61) before the hand-off, because the published closing was a hand-off only, with no synthesis, so-what or callback."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 1 (ESCALATE on one spec fault): the flow rubric's merge of the Lyon example and its general rule into p37 made a paragraph with two ideas, so p37 and p38 are separate again, as published. The in-practice heading is renamed 'In Practice: The Essen Golf and Three Other Cases' because both flow readers found the bikes, Lyon and Belgium cases misfiled under a Golf-only heading; its transition now announces the four cases.",
+   "rejected": [
+    "Keeping the merge and moving the rule to the failure modes.",
+    "Giving the three other cases their own second-level section (would add a section the journal's chapter shape does not have)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 2 (REVISE): transitions into the failure modes and the Chief Architect's view are carried by a closing sentence of the previous unit (placement end_of_previous), so the bold lead of the first failure and the first recommendation stay at the start of their paragraphs; the architecture section's transition is a lead sentence in p20. Every addition in rounds 1 and 2 was offset by cuts to the units added in this pass, to stay within the 7,385-word limit."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Round-3 escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12. (1) The two bridge sentences that closed Vertical Differences and the last failure mode are removed from those paragraphs; each next section now opens with a one-sentence-pair lead paragraph (p43a for Failure Modes, p51a for the Chief Architect's View), and both section transitions move from end_of_previous to start_of_this. p44 and p52 get word transitions from their lead.",
+   "rejected": [
+    "Dropping the bridges (leaves both sections without the declared contrast and problem-solution transitions).",
+    "A lead sentence before the first bold label inside p44 and p52 (flagged in round 2)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Enrichment table (p15): the ten rows are regrouped by the four jobs p15 names, with a Job column; the jobs are listed in table order (facts sellers cannot know first, so registry decoding stays the first row and p16's transition holds). No row, cell or source was cut."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Provenance record (p10): the 96/110 kW conflict and 'consistent with derivative' are now explained before the record (the decoder returned two candidates for the 1.5 TSI's two power outputs; the dealer's value matches one), with forward pointers to the registry section and the Golf case. The record stays in Concepts because Concepts must define the record before the source classes; the explanation, not the example, moved ahead."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Vertical Differences gets a lead paragraph (p42a) that states the contrast with the trade-offs and carries the table; p43 (seller presence) follows it as before. The Adevinta OCR bullet now ends with what its figures show (a specialized model online beating a general external API on accuracy, speed and cost), within what the cited post reports; the model-evidence lead announces the mobile.de and Google cases as two further lessons."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "length.max_words raised from 7,385 to 7,700 (+4.3%, within the 10% allowed) for the lead paragraphs, the provenance explanation, the table's Job column and the Adevinta sentence; no published fact, citation or Veldmark detail was cut."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Minor round-3 findings, kept as published under the author's delegation, 2026-11-12: the Golf case keeps no ### subheading (adding one would split p32); the 22 April valuation re-run keeps no outcome, because the ledger records the price cut but no rating after it; Quality scores stay under Architecture, as the spec places them. The flow rubric's notes (2026-11-12, sound with notes) are accepted under the author's delegation, 2026-11-12: Taken: the scene's Motorvane paragraph (p06) now names the Essen Golf in its controlling idea (the prose already did); p04's idea lists every closing section (the prose already did); the hand-off now credits image hashes to media-pipeline. Not taken: merging the Lyon paragraph with its general rule (tried, then reverted after draft-check round 1 found two ideas in one paragraph); merging p24 (blocking-steps table) with p25 (publication budget), because a paragraph cannot follow a table inside one unit; trimming the Chief Architect's points 4 and 5 (p55, p56), which restate p23 and the cost section, because they are the author's recommendations and the house chapter shape repeats them as decisions."
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_journals/listing-systems-architecture/journal-spec.json",
+   "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and entity-resolution's transition_in."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-listing-data-ingestion.md Parts 3, 7, 8 and 11",
+   "contributed": "Units, addresses, ML and LLM extraction evidence, quality dimensions."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-automotive.md Part A.7",
+   "contributed": "VIN decoding, vehicle taxonomies, price rating."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-platform-data-ml.md Parts 10 and 11",
+   "contributed": "Adevinta OCR, category prediction, GenAI listing creation."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md, _research/consistency-issues.md",
+   "contributed": "Golf, Lyon apartment, bikes split and pilot, provenance vocabulary, ML-platform figures (Valuo trains on DVF; image inference cost); rulings on bike coverage (23%)."
+  },
+  {
+   "kind": "internal",
+   "ref": "listing-aggregate, attribute-schemas, listing-ingestion",
+   "contributed": "Provenance inside the aggregate; dictionary precedence; record arrival."
+  },
+  {
+   "kind": "external",
+   "ref": "Mercari Engineering (2023, 2024)",
+   "contributed": "LLM extraction, dynamic attributes, re-categorization cost."
+  },
+  {
+   "kind": "external",
+   "ref": "Adevinta Tech Blog (2023)",
+   "contributed": "OCR service at scale."
+  },
+  {
+   "kind": "external",
+   "ref": "NHTSA vPIC; DGFiP DVF; ADEME DPE open data; Base Adresse Nationale",
+   "contributed": "Registries and reference data."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Resolved the round-3 escalation under the author's delegation: bridges moved into lead paragraphs of Failure Modes and the Chief Architect's View, enrichment table grouped by job, provenance conflict explained before the record, Vertical Differences lead, Adevinta figures explained; max_words 7,700. (AI-mediated session)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Converted spec.md to spec.json (outcome-spec pipeline); added a roadmap paragraph, a trade-offs lead-in and a closing synthesis to the article; renamed the in-practice heading; draft-check revisions to transitions and to figures readers could not trace. (AI-mediated session) Three draft-check rounds (ESCALATE, REVISE, ESCALATE); remaining points in open_questions."
+  },
+  {
+   "date": "2026-10-21",
+   "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-20",
+   "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged). (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-20",
+   "change": "Sharpening pass: 5,458 to 5,477 prose words; 1 heading renamed; opening ties the chapter to Part III's supply chain; model-evidence pattern moved ahead of its examples. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-20",
+   "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-19",
+   "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-19",
+   "change": "Editorial review pass: expanded DMS, VIN and OCR on first use, clarified the 31-attribute count, American spelling. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-19",
+   "change": "Initial spec and article. (AI-mediated session)"
+  }
+ ],
+ "length": {
+  "max_words": 7700
+ }
+}

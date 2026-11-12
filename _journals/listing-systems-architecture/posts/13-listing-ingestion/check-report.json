@@ -1,0 +1,1591 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/13-listing-ingestion/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/13-listing-ingestion/index.md",
+  "spec_sha": "77e9ea750d128c21",
+  "draft_sha": "8b611cfe8fad3399",
+  "run_at": "2026-11-12T21:50:46+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Preview of the chapter's doors, Golf case and design rules",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business cost of broken feeds and abandoned insertion flows",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Without explicit contracts the platform's copy drifts from reality",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: one write path, contract beyond schema, built-in reconciliation",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Feed Roulette, Ghost Inventory, Seeing Double",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Supply enters through many doors, each growing its own listing idea",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Ingestion as first link of Part III's supply chain / definitions of channel, feed contract, delta and snapshot",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "What neighboring chapters own instead of ingestion",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶1",
+      "summary": "Truncated vendor files unpublish 38,400 Motorvane listings",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶2",
+      "summary": "Hearthly's ghost listings and Tradeyard's inconsistent validators share the root",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶3",
+      "summary": "Ingrid's three-part question: contract, truth owner, drift detection",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶1",
+      "summary": "Where the truth lives decides whether ingestion is validation or copy alignment",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶2",
+      "summary": "Scraping and syndication excluded from the channel set",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶3",
+      "summary": "Full snapshot semantics: absence means removal, self-healing but risky",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶4",
+      "summary": "Delta feeds are efficient but drift without self-healing",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶5",
+      "summary": "Incremental changes plus periodic full reconciliation, as public specs show",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶6",
+      "summary": "Feed contract covers far more than schema",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Doors, Contracts and the Truth Outside ¶7",
+      "summary": "Feed contract as product artifact where marketplaces compete for dealers",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Public Contracts: What Real Marketplaces Publish ¶1",
+      "summary": "Public partner contracts as evidence of operator lessons",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Public Contracts: What Real Marketplaces Publish ¶2",
+      "summary": "Partner's own key is the listing's identity at the boundary",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Public Contracts: What Real Marketplaces Publish ¶3",
+      "summary": "Idempotent retry-safe creates / per-listing request serialization",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Public Contracts: What Real Marketplaces Publish ¶4",
+      "summary": "Tenancy separating integration principal from seller",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Public Contracts: What Real Marketplaces Publish ¶5",
+      "summary": "Validation rules carry policy and regulatory compliance",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶1",
+      "summary": "Channel sets transport and rhythm, one write path sets meaning",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶2",
+      "summary": "Channel-neutral ingestion record as key abstraction",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶3",
+      "summary": "Three kinds of key and confusion between them",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶4",
+      "summary": "External-key mapping belongs to the listing and survives removal",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶5",
+      "summary": "No standard idempotency header; define your own, Stripe as model",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶6",
+      "summary": "Same seller via two channels merged into one listing",
+      "matched_spec_paragraph": "p25a"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶7",
+      "summary": "Rules for ordering out-of-order updates",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶8",
+      "summary": "Field ownership among feed, seller and platform",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶9",
+      "summary": "Reconciler turns a snapshot run into a per-seller diff",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶10",
+      "summary": "Mass-change guard holds suspicious snapshot runs",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶11",
+      "summary": "Scheduled reconciliation for delta channels",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶12",
+      "summary": "Good error reporting and feedback to partners",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶13",
+      "summary": "Back-pressure, fairness, quotas and effect-based priority",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶14",
+      "summary": "Media handled by reference; go-live-before-images decision",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶15",
+      "summary": "Insertion flow as a conversion funnel with typical pains",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶16",
+      "summary": "Measure published-and-contacted, not form completion",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Architecture: Many Doors, One Write Path ¶17",
+      "summary": "Insertion flow built as a channel on the same path",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶1",
+      "summary": "Motorvane's feed volumes and snapshot rhythm",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶2",
+      "summary": "Content-hash change detection drops most unchanged records",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶3",
+      "summary": "Essen Golf created through one daily snapshot run",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶4",
+      "summary": "Leads the Golf draws, which ghosts waste",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶5",
+      "summary": "Price cut reaches Motorvane six hours later",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶6",
+      "summary": "Sold Golf stays listed 26 hours due to unchosen snapshot SLA",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶7",
+      "summary": "Hybrid contract with fast status deltas as the fix",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf Comes In Through a Feed ¶8",
+      "summary": "Hearthly's 160 vendors vary widely, so contracts must be measured per vendor",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Seven design choices and their conditions",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Slow-changing standards argue for adapters",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "How verticals differ in ingestion",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Real-estate embargo and visibility flags as record data",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶3",
+      "summary": "Jobs feeds must express expiry",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶4",
+      "summary": "EU DSA trader traceability gates feed listings",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Failures come from skipped rules",
+      "matched_spec_paragraph": "p51a"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "Snapshot absence trusted without a guard",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Delta channels without reconciliation accumulate ghosts",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Importer-held key mapping creates duplicates on resend",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Same seller across channels not recognized",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Different validators behind different doors",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Errors surfacing only through support tickets",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Failure Modes ¶8",
+      "summary": "Partner bugs charged to the platform's error budget",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Failure Modes ¶9",
+      "summary": "Surprise breaking changes; phase in requirements with notice",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Failure Modes ¶10",
+      "summary": "Legally required fields left optional in the feed",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Ingestion at group scale is a set of operated contracts",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Share the Supply Contract, keep importers local",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Removal latency as a contracted, measured number",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Partner feed health as a shared commercial metric",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Assign ownership of each door and certify vendors",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Govern contract changes like an API program",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶7",
+      "summary": "Group's own vendor Keybridge held to the same contract",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶8",
+      "summary": "Keep the ingestion record log as evidence",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶9",
+      "summary": "Metrics to watch for ingestion health",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Review questions derived from the decisions",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "From Accepted to Usable ¶1",
+      "summary": "Incidents were missing contract clauses, now enforced",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "From Accepted to Usable ¶2",
+      "summary": "Accepted records not yet usable; hand-off to normalization",
+      "matched_spec_paragraph": "p71"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 74 paragraph-unit summaries match the controlling idea of their aligned spec paragraph, in spec order; the 5 callout entries are front matter with no spec paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Boundary plus its three defining terms is the single controlling idea the spec declares for p02; the definitions describe the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶3",
+      "finding": "Retry-safe creates and per-listing serialization are both presented as one lesson from the mobile.de contract, as spec p18 declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0",
+      "finding": "Every unit in 'Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared' supports S2, S4; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1",
+      "finding": "Every unit in 'Concepts: Doors, Contracts and the Truth Outside' supports S1, S2; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2",
+      "finding": "Every unit in 'The Public Contracts: What Real Marketplaces Publish' supports S2, S3; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3",
+      "finding": "Every unit in 'Architecture: Many Doors, One Write Path' supports S3, S4; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4",
+      "finding": "Every unit in 'In Practice: The Essen Golf Comes In Through a Feed' supports S3, S4; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5",
+      "finding": "Every unit in 'Trade-offs' supports S3, S5; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6",
+      "finding": "Every unit in 'Vertical Differences' supports S1, S2; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7",
+      "finding": "Every unit in 'Failure Modes' supports S2, S3, S4, S5; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8",
+      "finding": "Every unit in 'The Chief Architect's View' supports S5, S4; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9",
+      "finding": "Every unit in 'Questions to Ask' supports S1, S2, S3, S4, S5; no orphan paragraphs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "finding": "Intro units set up the boundary and roadmap for the thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "finding": "Conclusion synthesizes S2-S4 and hands off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶1",
+      "finding": "Channel table: text states where the truth lives decides the design; the last column shows it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶5",
+      "finding": "Figure 1 caption states both failure shapes and the remedy; RTDF and RESO quotations are explained as the combined pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶6",
+      "finding": "Contract-clause table introduced with \"Each failure in the scene is a missing clause below\"; each row says what goes wrong.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶7",
+      "finding": "Productscape measures and the Bundeskartellamt finding are tied to the bold conclusion that the feed is where a marketplace competes (route crowded, see flow).",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶1",
+      "finding": "Public-contracts table is introduced as evidence and its four lessons are drawn out in p17-p20.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶2",
+      "finding": "Agent_Ref and seller-inventory-key quotations explained as the external key making a resend an update.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶3",
+      "finding": "X-Mobile-Insertion-Request-Id and no-parallel-requests facts explained as retry safety and serialization.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶4",
+      "finding": "Rightmove network/branch and mobile.de access rules explained as principal-vs-seller tenancy.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶5",
+      "finding": "Autotrader errors and Rightmove schema versions explained as a compliance surface.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶1",
+      "finding": "Figure 2 caption and components table: each component has one job and one must-not, stated in the lead-in.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶3",
+      "finding": "Keys table explained by the three rules that follow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶5",
+      "finding": "IETF draft and Stripe semantics explained (no standard; Stripe as a model).",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶8",
+      "finding": "Field-ownership table and Figure 3 caption show the lock holding the noon price cut.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶9",
+      "finding": "Figure 4 caption states where the guard intervenes.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶12",
+      "finding": "Rightmove warning, RFC 9457, eBay tasks and Adevinta case each followed by what it shows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶13",
+      "finding": "Reputation scoring and the Motorvane quota case each say what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/13",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶14",
+      "finding": "Rightmove/mobile.de media models explained as keeping image work out of ingestion.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/16",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶17",
+      "finding": "OLX Web Locks and eBay/Kleinanzeigen assistance each explained.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶1",
+      "finding": "Supply-mix statistics explained: snapshot volume driven by stock size.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶3",
+      "finding": "Golf run table introduced with \"each component doing its job on one run\".",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶4",
+      "finding": "Lead counts explained as what a ghost wastes.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶8",
+      "finding": "Vendor classes explained as why the contract must be measured per vendor.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Trade-off table introduced: each option right under stated conditions.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "OpenImmo/Rightmove facts explained as the case for adapters.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Vertical table introduced by the four dimensions it compares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "NAR policy explained as a compliance control.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Vertical Differences ¶3",
+      "finding": "Google quotation explained as a search-engine risk.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Vertical Differences ¶4",
+      "finding": "DSA Article 30 explained as a blocking ingestion rule.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Partner-ecosystem case explained as why one group importer fails.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "mobile.de onboarding requirement explained as gating access on accountability.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶1",
+      "finding": "example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶2",
+      "finding": "similarity expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared ¶3",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶1",
+      "finding": "problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶2",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶3",
+      "quote": "A **full snapshot** feed sends the partner's complete current inventory each time.",
+      "finding": "Declared elaboration from 'channels whose truth lives outside' to the first way a partner sends that truth; the paragraph opens a new topic after the scraping/syndication paragraph and nothing links it back to channels whose truth lives outside (only the subheading marks the shift).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶4",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶5",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶6",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶7",
+      "finding": "emphasis expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶1",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶2",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶3",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶4",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "The Public Contracts: What Real Marketplaces Publish ¶5",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶1",
+      "finding": "problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶2",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶3",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶4",
+      "finding": "cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶5",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶6",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶7",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶8",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶9",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶10",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶11",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶12",
+      "quote": "Partners experience a marketplace through its error reports.",
+      "finding": "Declared sequence carrying 'changes computed, held or applied' into how partners learn the outcome; the opening sentence does not refer to the run's computed or held changes, so the step in the life of a run is not expressed (subheading only).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶13",
+      "quote": "Feed traffic is spiky in a way user traffic is not",
+      "finding": "Declared additional_support from errors flowing back to load flowing in; the opening sentence makes no link to the error reports just discussed, so the boundary reads as a topic jump marked only by the subheading.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/13",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶14",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/14",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶15",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/15",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶16",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/16",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶17",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶1",
+      "finding": "example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶2",
+      "finding": "cause_effect expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶3",
+      "finding": "example expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶4",
+      "finding": "time expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶5",
+      "finding": "time expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶6",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶7",
+      "finding": "problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶8",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "elaboration expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Vertical Differences ¶3",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Vertical Differences ¶4",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Failure Modes ¶2",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Failure Modes ¶3",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Failure Modes ¶4",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Failure Modes ¶5",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Failure Modes ¶6",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/6",
+      "draft_locus": "Failure Modes ¶7",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/7",
+      "draft_locus": "Failure Modes ¶8",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/8",
+      "draft_locus": "Failure Modes ¶9",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/9",
+      "draft_locus": "Failure Modes ¶10",
+      "finding": "additional_support expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "problem_solution expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "The Chief Architect's View ¶6",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "The Chief Architect's View ¶7",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "The Chief Architect's View ¶8",
+      "finding": "sequence expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/8",
+      "draft_locus": "The Chief Architect's View ¶9",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Accepted to Usable ¶1",
+      "finding": "conclusion_summary expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Accepted to Usable ¶2",
+      "finding": "contrast expressed at the boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "finding": "Both readers describe problem -> vocabulary -> evidence -> design -> test -> judgement, matching problem_solution with prerequisite_order and assertion_evidence_reasoning; both found the roadmap predicts the order and found the chapter easy to follow overall.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶3",
+      "quote": "a `Submit` command with the external key as idempotency key",
+      "finding": "flowA: 'contradicts the three-keys table separating external key and request idempotency key; nothing explains.' The Golf run table uses the external key as the request idempotency key, the confusion the identity section says causes most duplicate bugs; it undercuts the can_do outcome of separating the three keys.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 4; flowB item 9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Doors, Contracts and the Truth Outside ¶7",
+      "quote": "the Productscape model this book started from (the author's domain model) counts \"partner integration reliability\"",
+      "finding": "flowB: 'paragraph jumps from product artifact to internal model to German competition ruling; re-read; bold conclusion clear but route crowded.' flowA: 'unclear what it is or why authority' and the jump to the merger ruling followed only once the bold sentence landed. The spec's order is fine; the paragraph packs an unexplained internal source and a regulator ruling before stating why they matter.",
+      "fault": "draft",
+      "corroborated_by": "flowA items 3 and 10; flowB item 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶8",
+      "quote": "Compliance varies that much by vendor, so the contract must be explicit and measured per vendor.",
+      "finding": "flowB: 'roadmap says Hearthly's 160 vendors test the design, but it only describes vendor classes, never walks the design through Hearthly's ghost problem; feels unfinished.' The roadmap (spec p04) promises a test of the design, but spec p44's controlling idea only describes vendor classes; the gap is in the spec.",
+      "fault": "spec",
+      "corroborated_by": "flowA item 6; flowB item 14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/14",
+      "draft_locus": "Architecture: Many Doors, One Write Path ¶15",
+      "quote": "The first door in the channel table runs on the same path.",
+      "finding": "flowB: 'insertion flow returns after feed subsections; first two paragraphs product funnel metrics inside Architecture felt out of place; only third paragraph ties back.' The spec deliberately orders funnel (p34) and metric (p36) before the architectural list (p35); both readers lost the reason the subsection belongs in Architecture until p35.",
+      "fault": "spec",
+      "corroborated_by": "flowA item 9; flowB item 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The verticals differ in which door dominates, where the truth lives, what anchors identity and how hard removal presses.",
+      "finding": "flowA: 'could not tell why after Trade-offs rather than before; reads as an add-on.' The spec's flow rationale groups the closing judgement sections but gives no reason for Verticals after Trade-offs. flowB found either order acceptable.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶1",
+      "quote": "a minority send deltas through the Seller API during the day",
+      "finding": "flowB: 'Motorvane's Seller API easily mistaken for mobile.de's Seller-API.' The chapter cites mobile.de's Seller-API at length, then names Motorvane's own API identically without marking it as Motorvane's.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is defined or glossed at or near first use: ingestion channel, feed contract, snapshot, delta (p02); DMS (p08), transfer service provider (p05), MLS and IDX, OpenImmo, RESO, RTDF; mass-change guard (p29), scheduled reconciliation (p30), ingestion record (Figure 2 caption, p22), field ownership and locks (p27); PKCE, DVLA, NAR delayed marketing, DSA Article 30. Veldmark brands, cast and Common Ground are on already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "In Practice: The Essen Golf Comes In Through a Feed ¶8",
+      "quote": "supplied the three listings of the Lyon apartment in May 2027",
+      "finding": "'The Lyon apartment' is referred to as a known case, but it is on neither already_knows nor introduced in this chapter; both flow readers reported it as an event never introduced.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 5; flowB item 13",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on five concrete doors, then definitions, neighbors and a specific roadmap; no dictionary, throat-clearing or vague-importance opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Closes with a synthesis that reinterprets the incidents as missing clauses and a concrete hand-off; no restating summary or new-topic ending.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Accepted to Usable ¶1",
+      "finding": "p70 reframes all four incidents as unwritten clauses and the controls as those clauses in running form, and says the question can be answered per door before the next incident.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Accepted to Usable ¶1",
+      "finding": "Calls back to 'the doors of this chapter's opening' and Ingrid's question.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted every roadmap section in order (incident, concepts, public contracts, architecture with keys/guard/reconciliation/errors/back-pressure/insertion flow, Golf and Hearthly, trade-offs, verticals, failure modes, CA view, questions) and the evidence mix of fictional Veldmark plus published partner contracts.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader gives the per-seller guard with size-scaled thresholds, held runs reported and confirmed or superseded, the surviving key mapping, absence semantics, a numeric removal SLA via status deltas within 15 minutes, stable-code run reports and weekly reconciliation against live external keys. Omits field ownership and the single idempotent command keyed by the partner reference, both peripheral to this probe's scenario; the core of the expected answer is present.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader answers all three parts as expected: mapping as listing data surviving removal, the three keys with scope and purpose, and the 26-hour SLA by construction with the hybrid-contract fix.",
+      "severity": "minor"
+    }
+  ]
+}

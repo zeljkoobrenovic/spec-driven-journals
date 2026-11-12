@@ -1,0 +1,1987 @@
+{
+ "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "case-property-portals",
+ "journal": "listing-systems-architecture",
+ "part": "part-9",
+ "title": "Zillow, Rightmove, Idealista and REA: What Property Portals Teach",
+ "status": "draft",
+ "revised": "2026-11-12",
+ "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four acceptance criteria, the thesis and the role are copied unchanged from the case-property-portals entry in journal-spec.json; the supporting claims and audience are this spec's own. Added by this conversion: a route sentence in p02 so the roadmap announces every section, and a conclusion section (p59 new synthesis; p60 the published closing paragraph moved under its own heading, with the hand-off's dealer-software clause).",
+ "intent": {
+  "outcome": {
+   "know": [
+    "Zillow Offers in Zillow's own words: the Zestimate made an initial cash offer in 23 markets in February 2021, and the November 2021 wind-down after it was 'unable to accurately forecast future home prices at different times in both directions'.",
+    "Four economic engines: Rightmove per advertiser (£1,621 a month on average in 2025), REA per listing through vendor-paid depth, Zillow per lead through share of voice or a fee at closing; and why values across these rows cannot be compared.",
+    "Supply licensed from MLSs and agents (Zillow's data licenses that may restrict 'the training of models', its 2025 listing policy, lawsuit and March 2026 change), Rightmove's published feed contract, Idealista's duplicate clustering, and how little is public about REA's and Idealista's engineering."
+   ],
+   "believe": [
+    "A model's governance follows the decision it drives, and moving it from informing to committing money is a governance event.",
+    "License terms, embargoes and agent relations belong in the architecture as data and controls."
+   ],
+   "can_do": [
+    "Name the questions a commit-tier use of a valuation model must answer that a present-value back-test does not.",
+    "Choose the monetization core (contracts and quotas, per-listing orders, lead routing with attribution) for a portal's unit of charge."
+   ]
+  },
+  "audience": {
+   "who": "Chief and enterprise architects, ML and data leads, and engineering directors of real-estate portals and of groups that own them, deciding how valuation models, licensed supply and monetization should shape a portal's systems.",
+   "already_knows": [
+    "What an API, a database, an event stream, a search engine and Kubernetes are; what an automated valuation model (AVM) and a listing feed are in general.",
+    "Part IX's evidence rules (documented fact, the author's reading, labeled inference), from part-9, and the previous case, case-aviv.",
+    "From earlier chapters: the decision tiers inform, order, gate and commit (ml-platform); the property and listing model and duplicate clustering (entity-resolution); feed contracts with idempotency keys and snapshot reconciliation (listing-ingestion); monetization models and the unit of charge (monetization-models, products-and-entitlements); percolator-based alerts (saved-searches-and-alerts).",
+    "Veldmark (fictional), Hearthly, Valuo, Keybridge, Ingrid Halvorsen and the Lyon apartment, from meet-veldmark and earlier chapters."
+   ],
+   "does_not_know": [
+    "The four portals' histories, products and published figures; the Zestimate; iBuying and Zillow Offers.",
+    "US listing institutions: the multiple listing service (MLS), Internet Data Exchange (IDX), NAR's listing options and the 2024 settlement.",
+    "Company-specific terms: share of voice, pay-at-close (Zillow Preferred), REA's Buy yield and Premiere+, Rightmove's ARPA and RTDF, Homes.com's listing-agent lead model."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a proposal to turn a portal's valuation estimate into cash offers, the reader uses Zillow's dated record to say what changes and which questions must be answered before launch.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A property portal's estimate has a low median error on homes currently listed. Its product team proposes offering homeowners cash at 94% of the estimate and reselling the homes. Using only this chapter: what does Zillow's record show, what changes about the model, and what must be answered before launch?",
+    "expected": "Zillow made the Zestimate an initial cash offer in 23 markets in February 2021 and in November 2021 was winding Zillow Offers down, 'unable to accurately forecast future home prices at different times in both directions'. The model is moved from describing present values (inform tier) to pricing purchases resold months later (commit tier), which needs a decision record signed outside the model team and its own validation: the price after the holding period, the error on the owners who would accept the offer (selection), and a capital limit on how many homes can be carried. The on-market error says little about off-market error."
+   },
+   {
+    "id": "AC-2",
+    "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+    "expected": "Three properties of property portals (supply from an external system of record, the property as a durable entity, data that tempts the portal up the value chain) tested against decision tiers, the property model and feed contracts; four portals read for what each charges for, where its supply comes from, what its models may decide and what it published about its systems; evidence that is uneven (Zillow and Rightmove detailed, REA financial only, Idealista very little), with section depth following the evidence; a comparison with Veldmark's Hearthly."
+   },
+   {
+    "id": "AC-3",
+    "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   },
+   {
+    "id": "AC-4",
+    "statement": "Every statement about Zillow, Rightmove, REA or Idealista's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+    "check": "custom",
+    "method": "rubric",
+    "severity": "major",
+    "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how Zillow, Rightmove, REA or Idealista builds or runs a system without a dated source, or a company fact with no source and year?",
+    "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+   }
+  ]
+ },
+ "thesis": {
+  "question": "What do licensed supply, durable properties, valuation models and the unit of charge demand of a property portal's architecture, as Zillow, Rightmove, REA and Idealista document them, and where does their evidence stop?",
+  "claim": "The property portals' record shows that what a portal's models may decide, where its supply comes from, what its durable entity is and what it charges for shape its architecture more than its technology choices do: Zillow moved the Zestimate from informing to committing capital in February 2021 and wound Zillow Offers down that November with no visible validation for the new use, so models must be governed by the decision they drive; supply is licensed from MLSs and agents who also feed rivals, so license, embargo and training terms must travel with every listing as data; a home is listed, sold, let and valued many times, so the property, not the listing, must be the durable entity that valuations, price history and duplicate clusters hang off; and Rightmove's per-advertiser, REA's per-listing and Zillow's per-lead charging each need a different monetization core. The evidence stops at REA's engineering and almost everything technical about Idealista.",
+  "disputed_by": "The technology-first view that a portal's architecture is mainly its search, data and cloud stack; with it, the views that a valuation model good enough to show homeowners is good enough to price purchases, that data licenses and agent relations are contract matters for the legal and sales teams rather than architecture, that the listing is the natural unit of a portal's data, and that one monetization platform fits any portal whatever it charges for.",
+  "so_what": "A Chief Architect registers models by the decision they drive and blocks a launch that changes a model's tier without a decision record signed outside the model team; carries each listing's license, embargo, attribution and training-eligibility terms from ingestion to search, syndication, AI-assistant feeds and training pipelines; designs the catalog and entitlement core so that listing-level orders and lead-level attribution are possible; makes the property, not the listing, the durable entity; and measures AI assistants as a lead channel by experiment on leads.",
+  "how_why": "Zillow made the Zestimate an initial cash offer in 23 markets in February 2021 and in November 2021 was winding Zillow Offers down, writing that it had been 'unable to accurately forecast future home prices at different times in both directions'; the model had not got worse, it had been moved from describing present values to pricing purchases resold months later. Zillow's 10-K warns that MLS and data licenses may restrict 'the training of models', and its 2025 listing policy started a lawsuit before it changed the policy in March 2026. Rightmove charged £1,621 per advertiser a month on average in 2025 and publishes a feed contract with an idempotency key and snapshot reconciliation for lost deletes; REA sells vendor-paid depth per listing; Zillow charges per lead, with attribution over up to two years; Zillow's living database, REA's 5.2 million owner-tracked properties and Idealista's 2021 duplicate-control tool, which clusters listings of one home rather than deleting them, are all property-first assets. REA's engineering and nearly everything technical about Idealista are not public.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "Zillow moved the Zestimate from informing homeowners to opening a purchase of their homes in February 2021 and was winding Zillow Offers down by November 2021, in its own words unable to forecast future home prices, with no validation for the new use visible in the public record; so a model is governed by the decision it drives, and a change of tier is a governance event."
+   },
+   {
+    "id": "S2",
+    "claim": "A property portal's supply is licensed from MLSs and agents who also feed rival portals (Zillow's MLS dependence and training-use risk factor, its 2025 listing-access dispute, NAR's visibility options, Rightmove's published feed contract), so license, embargo, attribution and training terms must travel with every listing as data and controls."
+   },
+   {
+    "id": "S3",
+    "claim": "A home is listed, sold, let and valued many times, so the property, not the listing, is the durable entity that valuations, price history, owner tracking and duplicate clusters hang off, as Zillow's living database, REA's owner-tracked properties and Idealista's duplicate clusters show."
+   },
+   {
+    "id": "S4",
+    "claim": "What a portal charges for (Rightmove per advertiser, REA per listing through vendor-paid depth, Zillow per lead, Homes.com's listing-agent leads) decides the core of its monetization architecture (contracts and quotas, per-listing orders, or lead routing with attribution), and new channels such as AI assistants are measured as lead channels within that core."
+   },
+   {
+    "id": "S5",
+    "claim": "The public evidence is uneven, detailed for Zillow and Rightmove, financial only for REA and almost absent for Idealista, so every company fact is dated and sourced, every inference about internals is labeled, and the case states where the record stops instead of filling the gap."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Shows the vertical lessons of real estate in the public record: model governance by decision tier, licensed supply carried as data, and the unit of charge shaping the monetization core.",
+  "supports": [
+   "P9-4",
+   "P9-5"
+  ]
+ },
+ "flow": {
+  "pattern": "grouping",
+  "additional_patterns": [
+   {
+    "pattern": "order_of_importance",
+    "applies_to": "zillow to idealista: the four portals in descending depth of public evidence, then costar as a counterpoint"
+   },
+   {
+    "pattern": "problem_solution",
+    "applies_to": "chief-architect to verticals: rules from the record, their test against the book and Veldmark, questions for the reader's portal, then the same concerns in other verticals, which leads into the automotive hand-off"
+   }
+  ],
+  "rationale": "The reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference. The economic engines come before the company sections because the unit of charge is the lens each company section uses, and the engines section ends on Zillow buying the house, which the Zillow section opens. The companies are grouped one per section in descending depth of evidence (Zillow, Rightmove, REA, Idealista), so the reader meets the fullest record first and watches the evidence thin to nothing, which is the limit the case reports; CoStar follows as a counterpoint because its lead model contrasts with Zillow's, already explained. The cross-case views (a labeled reference architecture, trade-offs, failure modes) come only after all companies because each uses facts from several, and the evidence limits close that group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come next because they apply what the record has shown. The vertical comparison comes last, after the questions about one vertical, because it looks outward and its commit-tier row and pointer lead into the hand-off to case-automotive; between trade-offs and failure modes it interrupted the synthesis (both draft-check readers, rounds 1 and 2). A company section after the cross-case views would supply evidence after the synthesis that uses it."
+ },
+ "introduction": {
+  "hook": {
+   "type": "direct_statement",
+   "content": "Property portals look like simple listing businesses: agents pay to advertise homes, buyers and renters search for free, and the leader in each country takes most of the profit. Underneath, they carry three traits: the listing usually comes from an external system of record, the property outlives every listing of it, and the portal's data tempts it up the value chain, in Zillow's case into buying homes."
+  },
+  "bridge": {
+   "from_reader_world": "AVIV's case asked, from the outside, how much of a property portal a group can share across countries.",
+   "to_topic": "The question underneath it is what licensed supply, durable properties and valuation models demand of one portal, read through the portals that publish the most about their economics and engineering."
+  },
+  "thesis_statement": {
+   "text": "What a portal's models may decide, where its supply comes from, what its durable entity is and what it charges for shape its architecture more than its technology stack does; the evidence stops at REA's engineering and almost everything technical about Idealista.",
+   "placement": "KEY POINTS callout (all three bullets), the excerpt, and paragraphs p01-p02."
+  },
+  "roadmap": {
+   "placement": "IN THIS CHAPTER callout and paragraph p02, which names the four questions asked of each portal, the unevenness of the evidence and the route through the chapter.",
+   "promises": [
+    {
+     "promise": "Set the reading rules for fact, reading and inference, and give the dated timeline.",
+     "kept_in": [
+      "how-to-read",
+      "timeline"
+     ]
+    },
+    {
+     "promise": "Compare what each portal charges for.",
+     "kept_in": [
+      "engines"
+     ]
+    },
+    {
+     "promise": "Read Zillow, Rightmove, REA and Idealista in turn, with depth following the evidence, and CoStar as a counterpoint.",
+     "kept_in": [
+      "zillow",
+      "rightmove",
+      "rea",
+      "idealista",
+      "costar"
+     ]
+    },
+    {
+     "promise": "Look across the cases: a labeled reference architecture, trade-offs, failure modes and where the evidence stops.",
+     "kept_in": [
+      "reference-architecture",
+      "trade-offs",
+      "failure-modes",
+      "evidence-stops"
+     ]
+    },
+    {
+     "promise": "End with the author's decision rules, a comparison with the book's patterns and with Veldmark's Hearthly, questions to ask, and real estate set against other verticals.",
+     "kept_in": [
+      "chief-architect",
+      "comparison",
+      "questions",
+      "verticals"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "Property portals carry three traits the rest of the book treats as hard cases (supply from an external system of record, the property as a durable entity, and data good enough to tempt the portal up the value chain), so this case asks, beneath AVIV's question, what they demand of one portal and tests the decision tiers, the property model and the feed contracts against the record.",
+    "function": "claim",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The MLS in the US and agency CRMs elsewhere as systems of record; a property listed, sold, let and valued many times; valuation, mortgages, agent software and, at Zillow, buying homes.",
+      "shows": "Names the three properties the case tests and the three earlier answers (ml-platform, entity-resolution, listing-ingestion) they test."
+     }
+    ],
+    "advances_thesis": {
+     "supports": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "how": "States the three properties and the patterns they test."
+    }
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "The case reads four portals by what each charges for, where its supply comes from, what its models may decide and what it has published about its systems, and because the evidence is uneven (Zillow and Rightmove detailed, REA financial only, Idealista very little), the depth of each section follows the evidence, along a route that names every section: the reading rules and a dated timeline, what each portal charges for, Zillow, Rightmove, REA and Idealista in that order with CoStar as a counterpoint, the cross-case views (reference architecture, trade-offs, failure modes, evidence limits), and the author's rules, the Veldmark comparison, questions to ask and the comparison with other verticals.",
+    "function": "transition",
+    "advances_thesis": {
+     "supports": [
+      "S4",
+      "S5"
+     ],
+     "how": "Announces the lens of the unit of charge and the limits of the evidence."
+    },
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The three properties and the question beneath AVIV's.",
+     "introduces": "The four questions asked of each portal, the unevenness of the evidence and the route.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "how-to-read",
+   "heading": "How to Read This Case",
+   "controlling_idea": "Every statement in the case is a dated fact, the author's reading or a labeled inference, and the reader must know which, how old the engineering evidence is, and that Veldmark appears only in the final comparison.",
+   "function": "context",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Sets the labeling rules and the age and volatility of the evidence before any fact is used."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The three labels first because every later sentence carries one; then the two cautions about the evidence they label; then the one place fiction enters, so the reader knows the fictional comparison is set apart. The cautions before the labels would qualify evidence the reader has no rules for yet."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The four questions and the uneven evidence.",
+    "introduces": "The rules for reading that evidence.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p03",
+     "controlling_idea": "Part IX cases follow stricter rules than earlier chapters: a documented fact carries its source and publication year in the sentence, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and a reference-architecture inference sits in a callout labeled INFERENCE, NOT DOCUMENTED.",
+     "function": "definition"
+    },
+    {
+     "id": "p04",
+     "controlling_idea": "Two cautions apply throughout: the engineering material is old or vendor-written and may describe replaced systems, and several facts (litigation, CoStar's plans for Domain, Idealista's ownership) are volatile as of October 2026 and should be checked before use.",
+     "function": "context",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Zillow posts from 2020-2021, a 2015-era REA session and a 2025 Elastic case study on Rightmove; litigation against Rightmove and around Zillow, CoStar's plans for Domain, Idealista's ownership after the 2024 deal.",
+       "shows": "Shows which evidence is dated and which facts may have moved."
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The three labels.",
+      "introduces": "The two limits on the evidence the labels apply to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p05",
+     "controlling_idea": "Veldmark, the book's fictional marketplace group, appears only in the final comparison, and its real-estate portal Hearthly is a composite of industry patterns, not a disguised description of any portal in the case.",
+     "function": "context",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Real, dated and volatile evidence.",
+      "introduces": "The one fictional element and where it is kept.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "timeline",
+   "heading": "Timeline: Property Portals in Dated Events",
+   "controlling_idea": "The dated record runs from the Zestimate's launch in 2006 through Zillow Offers' February 2021 offer and November 2021 wind-down to the supply disputes, cloud completion and AI products of 2025-2026, with each event tied to its source type.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S5"
+    ],
+    "how": "Puts every company fact the case uses on one dated line with its source type."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "The reading rules.",
+    "introduces": "The dated events those rules apply to.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p06",
+     "controlling_idea": "The timeline's dates are those of the cited filings, releases and reports, with ownership and litigation as of October 2026, and in order they show valuation moving from informing consumers to committing capital and back, while control of supply and AI assistants become the current pressures.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Nineteen dated events from February 2006 (Zestimate launch) to 6 August 2026 (REA FY26), each with a source type.",
+       "shows": "Gives the reader one dated sequence to place every later fact in.",
+       "source": "Timeline sources as cited in the table"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1, the arc of the public record.",
+       "shows": "Shows valuation moving from informing to committing capital and back, and the two current pressures: who controls supply and how AI assistants reach listings."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "engines",
+   "heading": "Four Portals, Four Economic Engines",
+   "controlling_idea": "The four portals charge for different units (Rightmove per advertiser, REA per listing, Zillow per lead, Homes.com for listing-agent leads), each unit needs a different monetization core, and in the author's reading the unit also explains each portal's appetite for valuation.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Establishes the unit of charge as the lens the company sections use."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The comparison table first so the reader sees the denominators side by side; then the published words behind each engine; then the author's reading that connects the engines to valuation, which needs both. The reading before the evidence would be an unsupported claim."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The dated events.",
+    "introduces": "What each portal charges for, the first of the four questions.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p07",
+     "controlling_idea": "The portals (plus CoStar's Homes.com, named as a counterpoint until its own section) report different unit KPIs, and the choice of denominator reveals the business model, though the figures cannot be compared across rows because currencies, periods and definitions differ.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Rightmove ARPA £1,621 a month (2025); REA Buy yield +13% on flat listings (year to June 2026); Zillow residential revenue per visit $0.178 (2025); Idealista not disclosed; Homes.com with no KPI, listing-agent advertising on a 'your-listing your lead basis'; with what the architecture must hold for each.",
+       "shows": "Shows a different denominator and a different core for each portal, and the warning against comparing values across rows.",
+       "source": "Rightmove FY2025 results (2026); REA FY26 (2026); Zillow 10-K for 2025 (2026); CoStar 10-K for 2025 (2026)"
+      }
+     ]
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "In their own published words, Rightmove's engine is a subscription with a commitment plus overage, REA's is per-listing depth paid largely by vendors, and Zillow's is lead generation by share of voice or a fee at closing within about two years.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Rightmove: 'more than 50% of independent agents purchased incremental product above their package commitment', 62% of agency ARPA growth from product. REA: Buy yield rose on 'a 7% average Premiere+ price rise, growth in add-on products, higher subscription revenues and increased depth penetration'; Campaign Agent provides 'vendor paid advertising finance solutions'. Zillow: connections 'in proportion to their share of voice'; Zillow Preferred agents pay 'when a real estate transaction is closed with one of the leads, generally within two years', accounted for as variable consideration.",
+       "shows": "Grounds each engine in the company's own words.",
+       "source": "Rightmove FY2025 results (2026); REA FY26 results (2026); Zillow 10-K for 2025 (2026)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: the unit a portal charges for determines the core of its monetization architecture.",
+       "shows": "Shows contracts and quotas, per-listing orders, and allocation and attribution as the three cores."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The denominators in the table.",
+      "introduces": "The published words behind each engine.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "In the author's reading, the engines also explain each portal's appetite for valuation: Rightmove and REA sell seller leads and report them growing, valuation in property is a supply-acquisition product that reaches the homeowner when a listing is born, and Zillow took the insight one step further and bought the house.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Rightmove's AI-enabled Online Agent Valuation supported 'c.50% total increase in unique valuation leads to estate agents' in H1 2026; REA reported a 22% increase in seller leads for fiscal 2026.",
+       "shows": "Shows both subscription and depth portals using valuation to acquire supply.",
+       "source": "Rightmove H1 2026 results (2026); REA FY26 results (2026)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Three engines and their published mechanics.",
+      "introduces": "What the engines imply for valuation, leading into Zillow.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "zillow",
+   "heading": "Zillow: When the Estimate Started to Commit",
+   "controlling_idea": "Zillow's record documents an information-tier model promoted to commit capital and wound down within nine months, the lead business and licensed supply that remained, and how little of its current engineering is public.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S3",
+     "S4",
+     "S5"
+    ],
+    "how": "The best-documented case: model governance, licensed supply, the property-first entity, the per-lead engine and the limits of engineering evidence."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+     {
+      "pattern": "grouping",
+      "applies_to": "p21-p25: supply terms, then engineering evidence"
+     }
+    ],
+    "rationale": "The Zestimate as information product (p10-p13) comes before its use as an offer (p14-p15), the wind-down (p16-p17) and the lessons (p18), because each lesson compares the two uses; the post-Offers business (p19), with the buyer-agreement rule that changed its lead flow, follows in time. Supply terms (p21-p23) and engineering evidence (p24-p25) are grouped after the story because they describe the current business, and the engineering limits come last so the section ends where the record stops. The lessons before the wind-down quotes would rest on nothing."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The engines, ending with Zillow buying the house.",
+    "introduces": "Zillow's record in full, starting from the estimate it bought with.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p10",
+     "controlling_idea": "Zillow's Zestimate is a long-running information product whose published accuracy is a 6.9% median off-market error at the 2021 neural launch and, in the 2025 annual report, 1.8% for homes listed for sale and 7.2% for off-market homes, over a living database of about 173 million homes.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Launched 2006 as a free AVM estimate; June 2021 neural version, 6.9% median error on more than 104 million off-market homes (Online Marketplaces, 2021), replacing roughly 1,000 market-specific algorithms (The Batch, 2021); 2025 10-K: 'our patented proprietary automated valuation model', 1.8% on-market, 7.2% off-market, 'our living database of approximately 173 million U.S. homes'.",
+       "shows": "Gives the documented accuracy of the model before and after it was used to make offers.",
+       "source": "Online Marketplaces (2021); The Batch (2021); Zillow 10-K for 2025 (2026)"
+      }
+     ]
+    },
+    {
+     "id": "p11",
+     "controlling_idea": "The on-market figure measures an easier test, because a model that sees the asking price is mostly predicting the gap between asking and selling price, so the off-market figure is closer to the AVM's real performance.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The two published error figures.",
+      "introduces": "Why they measure different things.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "The rise from 6.9% (2021) to 7.2% (2025) in off-market error should not be read as regression, because the public sources do not say whether methodology, market volatility or the measured population changed.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The off-market figure as the better measure.",
+      "introduces": "A caution against reading the two off-market figures as a trend.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "The living database shows a property-first data model, in which the home is the durable entity and listings are events on it.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "User-generated updates to tens of millions of property records in the living database.",
+       "shows": "Shows the home, not the listing, as the entity data accumulates on.",
+       "source": "Zillow 10-K for 2025 (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S3"
+      ],
+      "how": "Documents a property-first entity at Zillow."
+     },
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The accuracy figures over 173 million homes.",
+      "introduces": "What the database itself shows about the data model.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "On 25 February 2021 the Zestimate became an initial cash offer for eligible homes in 23 Zillow Offers markets, with an inspection and adjusted final offer after acceptance and an accuracy claim measured on homeowners who declined.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "CNN: the Zestimate 'will now represent an initial cash offer from the company to buy the property', 'in 23 markets to start'; 'a Zillow employee inspects the home, provides a list of needed repairs and an adjusted final offer'; COO: the gap for declining homeowners was 'typically less than 1%'. Zillow Offers had launched in 2018.",
+       "shows": "Documents the moment the model began opening purchases.",
+       "source": "CNN Newsource via KVIA (2021)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The Zestimate as an information product.",
+      "introduces": "Its February 2021 use as an opening offer.",
+      "form": "phrase",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "That announcement is the documented moment an inform-tier model became the opening price of a commit-tier decision, and the accuracy figure that accompanied it said nothing about the homes Zillow bought.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 3: the same estimate on a sign and on a purchase contract.",
+       "shows": "Shows that the outcome of a purchase depends on a resale price months later, which present-value accuracy never measured."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The launch and its accuracy claim.",
+      "introduces": "What the launch changed, in the terms of ml-platform's decision tiers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "On 2 November 2021 Zillow's board decided to wind down Zillow Offers, citing pricing unpredictability and capacity, with a $304.4 million third-quarter write-down, further expected charges and a workforce reduction of about 25%.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'the Board of Directors of Zillow Group made the determination to wind down Zillow Offers operations', citing 'home pricing unpredictability, capacity constraints and other operational challenges'; '$304.4 million' write-down; 'approximately $240 million to $265 million' expected in Q4 plus $175-230 million of other charges; about 25% workforce reduction; inventory sales through 2022.",
+       "shows": "Documents the outcome of the commit-tier use in Zillow's filing.",
+       "source": "Zillow 8-K (2021)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The February 2021 offer.",
+      "introduces": "The November 2021 wind-down.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p17",
+     "form": "list",
+     "controlling_idea": "The shareholder letter published the same day is unusually direct about the causes and about what Zillow kept: forecasting future prices, risk and volatility, capacity planning, low conversion of sellers and the size of the inventory, with the Zestimate kept as foundational to the top of the funnel.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'We have been unable to accurately forecast future home prices at different times in both directions'; unit economics 'swinging approximately 1,200 basis points from Q2'; 'too risky, too volatile...'; 'significant capacity and demand planning challenges'; 'convert only about 10% of the serious sellers'; '9,790 homes in inventory and 8,172 homes under contract'; the Zestimate as foundational to the top-of-funnel strategy.",
+       "shows": "Gives Zillow's own account of why the use failed, in its words.",
+       "source": "Zillow Q3 2021 shareholder letter (2021)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The 8-K's decision and charges.",
+      "introduces": "The letter's explanation of the causes.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p18",
+     "form": "list",
+     "controlling_idea": "In the author's reading the record supports five lessons: the binding problem was the forward forecast, error turns asymmetric under selection, operational capacity couples to model error, accuracy was reported on the wrong population, and exposure grew faster than evidence; a reference validation regime, labeled as inference, follows from them.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "reasoning",
+       "what": "Five numbered lessons tied to the letter's words ('future home prices', the 10% conversion, 'capacity and demand planning challenges', 'typically less than 1%' on declined offers, almost 18,000 homes in inventory or under contract).",
+       "shows": "Turns Zillow's statements into the questions a commit-tier use must answer.",
+       "source": "Author's interpretation of the 8-K and letter (2021)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 4: why a commit-tier use needs its own validation.",
+       "shows": "Shows selection biasing the accepted homes and the outcome depending on a future price."
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE, NOT DOCUMENTED callout: a five-part validation regime (resale back-tests, error on the accepted population, capital limits, capacity as a pricing input, an owner outside the model team), with credit risk as the closer analogy.",
+       "shows": "Gives the reference design the lessons imply, labeled as not describing Zillow."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Zillow's own statements of cause.",
+      "introduces": "The lessons the author draws from them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "After Offers Zillow kept the Zestimate and the top of the seller funnel and rebuilt around agent leads, Enhanced Markets and owned agent tools; its buyer-lead flow now carries NAR's written buyer agreement before touring; and a pay-at-close model implies an attribution pipeline that, in a labeled inference, owning the agent's CRM shortens.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Residential revenue 66% of total; Premier Agent pricing models; Zillow Preferred as 'the next chapter for our Flex program'; Enhanced Markets; Follow Up Boss, dotloop, ShowingTime and Zillow Showcase.",
+       "shows": "Shows where Zillow went after the wind-down: lead generation with agent software.",
+       "source": "Zillow 10-K for 2025 (2026)"
+      },
+      {
+       "kind": "fact",
+       "what": "Since the 2024 NAR settlement, buyers must sign a written agreement before touring with an agent, an agreement step in any portal's tour-request flow.",
+       "shows": "Shows an industry rule changing the lead flow a per-lead core must carry.",
+       "source": "NAR settlement FAQs (2024)"
+      },
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE, NOT DOCUMENTED callout: stable lead identity, deduplication, assignment, CRM synchronization, matching to transactions for up to two years, and revenue estimates trued up on outcomes.",
+       "shows": "Shows what a per-lead unit of charge demands of the architecture, labeled as not describing Zillow."
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "Shows the lead-based engine and the attribution core it implies."
+     },
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The wind-down and its lessons.",
+      "introduces": "What Zillow kept and rebuilt afterwards.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "Zillow's supply is licensed through brokerages, aggregators and MLSs whose rules it must follow, and its risk factors warn that licenses may restrict 'the training of models', so a listing license now governs machine learning, not only display.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Listings through 'relationships with real estate brokerages, real estate listing aggregators, MLSs'; data uses that could be limited 'including the training of models, generation of predictive or derivative outputs'.",
+       "shows": "Shows supply terms reaching into ML pipelines.",
+       "source": "Zillow 10-K for 2025 (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S2"
+      ],
+      "how": "Documents licensed supply and the training-use term."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Zillow's lead flow, its agent tools and the buyer-agreement rule it must follow.",
+      "introduces": "The supply those leads depend on, which Zillow does not own.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p22",
+     "controlling_idea": "The 2025-2026 listing-access dispute shows the same dependence from the other side: Zillow's Listing Access Standards drew a Compass lawsuit, a denied preliminary injunction, a March 2026 policy change and Compass's dismissal, while government and competitor complaints remain listed.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Standards excluding homes 'marketed publicly for more than 24 hours' before MLS submission; Compass sued June 2025; injunction denied 6 February 2026 (procedural, not on the merits); 19 March 2026 change and dismissal without prejudice the next day; 10-K names the FTC, state attorneys general, Compass and CoStar.",
+       "shows": "Shows that access rules provoke litigation and can change within months.",
+       "source": "Online Marketplaces (2026); The Mortgage Point (2026); Zillow 10-K for 2025 (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S2"
+      ],
+      "how": "Shows supply access as a contested, changing term."
+     },
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "Zillow's dependence on licensed supply.",
+      "introduces": "The same dependence seen in a dispute over access.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Industry rules add visibility terms of their own, so one listing record can carry an MLS embargo, a brokerage's marketing plan and a portal's access rule at once, which ingestion must carry as data.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "NAR's 'Multiple Listing Options for Sellers', effective 25 March 2025: 'office exclusive' and 'delayed marketing' listings with IDX and syndication held back.",
+       "shows": "Adds an industry-level visibility term.",
+       "source": "NAR policy pages (n.d., effective 2025)"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 5: a listing card carrying tags for display, delay, training and marketing plan.",
+       "shows": "Shows ingestion keeping every term attached to the listing."
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S2"
+      ],
+      "how": "Shows several terms attached to one record."
+     },
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Zillow's own access rule.",
+      "introduces": "Industry rules that add further visibility terms.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p24",
+     "controlling_idea": "The Zillow engineering posts the author could read date from 2020-2021 and document guided search, Kafka adoption and floor-plan ML serving, each tied to an earlier chapter's pattern, but may describe replaced systems.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Guided Search (September 2020, nearly 50 filters, 200+ attributes, 33% lift); How to Pitch Kafka (August 2020, Terraform-provisioned topics with ownership, schema and privacy metadata); floor-plan ML serving (November 2020, Step Functions and SageMaker batch jobs).",
+       "shows": "Shows real-estate schema richness, topic metadata as governance and inference attached to the media lifecycle.",
+       "source": "Zillow Tech Hub on Medium (2020-2021)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Shows what engineering evidence exists and its age."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Zillow's documented supply and visibility terms.",
+      "introduces": "What Zillow has published about its engineering.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "Zillow's search engine, its natural-language search architecture and the neural Zestimate's serving design are not public in any source the author could retrieve.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Natural-language search launched 2023 and extended in September 2024 to commute, affordability and schools.",
+       "shows": "Shows the product is documented while its architecture is not.",
+       "source": "HousingWire (2024)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "States where Zillow's engineering record stops."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The three documented posts.",
+      "introduces": "What remains unpublished.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rightmove",
+   "heading": "Rightmove: A Subscription Machine with a Published Feed Contract",
+   "controlling_idea": "Rightmove documents a per-advertiser subscription engine, the most detailed public feed contract of any portal, a five-year cloud migration and an AI product turn, with vendor material for search and a collective claim whose theory is not public.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S4",
+     "S5"
+    ],
+    "how": "Documents the subscription engine, the published supply contract and the limits of the engineering evidence."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "Economics first, because the subscription engine is what the section's title names and what the feed's paid products serve; then supply (the feed contract and the author's reading of it), then the systems that serve listings (search, geography, the cloud platform), then the AI products built on that platform, and last the legal risk, which is volatile and outside the architecture. The feed reading before the economics would explain an entitlement the reader cannot place."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Zillow's per-lead engine and the limits of its engineering record.",
+    "introduces": "A per-advertiser engine that publishes its feed contract.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p26",
+     "controlling_idea": "Rightmove is the best-documented portal economically, a subscription business with a 70% underlying margin, over 90% agency retention and mostly direct traffic, and in the author's reading direct traffic is the margin.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "2025: revenue £425.1 million, 70% underlying operating margin, ARPA £1,621 a month across 19,272 advertisers, retention above 90%, Optimiser Edge 35% penetration among independents. H1 2026: '90% Comscore; 75% SimilarWeb/Sensor Tower' share of time, 'over 85% of traffic direct and organic', revenue £225.8 million (+7%), ARPA £1,726.",
+       "shows": "Shows a subscription engine whose audience is not bought, and that audience panels disagree by 15 points.",
+       "source": "Rightmove FY2025 results (2026); Rightmove H1 2026 results (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "Documents the per-advertiser engine."
+     }
+    },
+    {
+     "id": "p27",
+     "controlling_idea": "Rightmove's Real Time Datafeed specification is the most detailed public ingestion contract in the book's research, and it also carries paid products through the feed.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "RTDF v1.4.1 (last updated November 2023): network and branch IDs with sales and lettings channels, client certificates, the agent's Agent_Ref as key, media by URL with change detection, GetBranchPropertyList snapshot for properties 'still live on Rightmove which should have been removed', regulatory fields added in 2022 and 2023, AddPremiumListing and AddFeaturedProperty.",
+       "shows": "Shows a schema, an idempotency key, tenancy and reconciliation of lost deletes, and upsells in the same feed.",
+       "source": "Rightmove RTDF specification (2023)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S2"
+      ],
+      "how": "Documents a published contract for licensed agent supply."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Rightmove's economics.",
+      "introduces": "The contract its agents' software writes listings through.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p28",
+     "controlling_idea": "In the author's reading, when upsells travel through the same feed as listings an agent's software can buy visibility without anyone opening the portal, so the ingestion path, not a checkout, must apply the entitlement.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 6: listings and premium tokens in one feed, with an unused checkout.",
+       "shows": "Shows the entitlement applied on the ingestion path."
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S4",
+       "S2"
+      ],
+      "how": "Connects the feed contract to the monetization core."
+     },
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Paid products in the feed.",
+      "introduces": "What that means for where entitlements are applied.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "A 2025 Elastic vendor story documents Rightmove's 2014 move to Elasticsearch, with map-centric results and percolator-based instant alerts, which is the building block saved-searches-and-alerts generalizes.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'rich, map-centric results' and 'instant property alerts, made possible by Elasticsearch's percolators'; vector search for suggestions; plans to derive attributes from photos.",
+       "shows": "Documents the alert mechanism while marking the source as vendor marketing.",
+       "source": "Elastic (2025)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Shows vendor-written engineering evidence and its limits."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The feed that brings listings in.",
+      "introduces": "The search and alerts that serve them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p30",
+     "controlling_idea": "A TravelTime vendor case study shows the routing vendor's pricing model, a fixed annual license with unlimited requests, becoming a design constraint for Rightmove's travel-time feature.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "'My Places' travel-time feature on TravelTime's API, chosen partly for a fixed annual license with unlimited requests.",
+       "shows": "Shows a vendor's pricing shaping a design choice.",
+       "source": "TravelTime (n.d.)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Shows an undated vendor fact and the design point it carries."
+     },
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Search and alerts on Elasticsearch.",
+      "introduces": "A geographic feature built on a vendor's API.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p31",
+     "controlling_idea": "Rightmove's move to Google Cloud ran from the December 2021 announcement to '100% of applications are in the cloud' on 31 July 2026, ending with more than 5 PB on a unified data platform.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Dec 2021: 'a number of its systems' from multi-data-center to Google Cloud, starting with GKE; 180 million visits a month; busiest minute '8:48 pm on Wednesday'. Feb 2026: '4 petabytes', 'c.200 proprietary models', more than 6,000 releases in 2025. 31 Jul 2026: '100% of applications are in the cloud ... >5 petabytes ... 99.99% uptime'; headcount +37 to 935.",
+       "shows": "Gives the start, the scale and the completion of the migration.",
+       "source": "Google Cloud (2021); Rightmove FY2025 results (2026); Rightmove H1 2026 results (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Documents the dated migration."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Search and geographic features.",
+      "introduces": "The platform underneath them and its migration.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p32",
+     "controlling_idea": "In the author's reading the migration took about five years from announcement to completion and finished with the data platform, not with compute, while its sequence, data-center closure and cost are not public.",
+     "function": "analysis",
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Draws what the record supports and states what it does not."
+     },
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The migration's dated milestones.",
+      "introduces": "What they do and do not show.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "Rightmove's 2026 disclosures put AI at the center of its product story, but engagement figures from self-selected early users are not causal estimates.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Ask Rightmove'; AI Search Assistant 'c.40% uplift in average time on site, and roughly double the propensity to send leads'; 46 strategic AI initiatives (31 in December 2025); 'fully AI-enabled' platform; a planned app in ChatGPT; 2026 margin guided to 67% 'reflecting this period of investment'.",
+       "shows": "Shows AI framed as product and lead channel, and the investment it costs.",
+       "source": "Rightmove H1 2026 results (2026); Rightmove FY2025 results (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "Shows AI assistants arriving as a lead channel that must be measured by experiment."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The completed cloud platform.",
+      "introduces": "The AI products Rightmove builds on it.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p34",
+     "controlling_idea": "A collective claim of up to £1.56 billion against Rightmove was filed in April 2026, with certification scheduled for November 2026, and the fetched text does not identify the class or its theory.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'seeks damages of up to £1.56 billion'; Rightmove considers it 'without merit'.",
+       "shows": "Records the claim without guessing its theory.",
+       "source": "Rightmove H1 2026 results (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Reports a volatile fact and where its evidence stops."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "AI as the growth story.",
+      "introduces": "A legal risk in the same results.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rea",
+   "heading": "REA Group: Selling Depth per Listing",
+   "controlling_idea": "REA documents a per-listing depth model in rich financial disclosures, and almost nothing current about its engineering.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S4",
+     "S5"
+    ],
+    "how": "The clean per-listing case, the owner-tracked property asset and a thin engineering record."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The FY26 facts first, then the author's reading of them as a depth model, then the engineering gap, so the section moves from what is documented to where it stops, as the case's evidence does. The gap before the facts would leave the reader no measure of what is missing; the reading before the facts would be unsupported."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Rightmove's per-advertiser subscription.",
+    "introduces": "A portal that charges per listing.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p35",
+     "form": "list",
+     "controlling_idea": "REA's fiscal 2026 release documents a property group whose residential revenue grew 12% with flat listings, with large audiences, owner-tracked properties, growing seller leads and AI products.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "Portfolio: realestate.com.au, realcommercial.com.au, property.com.au, PropTrack, Mortgage Choice, Campaign Agent, Realtair, 20% of Move. Revenue A$1,793 million (+7%), 66% margin; residential A$1,290 million (+12%), Buy yield +13% on flat listings; FY27 'low double-digit' yield growth on 'an 8% Premiere+ price rise'; 12.7 million monthly visitors, 146.4 million visits; 5.2 million 'unique properties tracked by their owner'; seller leads +22%; AI Assistant, Campaign Assist, Planitar.",
+       "shows": "Gives the figures the depth-model reading rests on.",
+       "source": "REA FY26 results (2026)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "Documents the per-listing engine's results."
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "In the author's reading REA is the cleanest documented per-listing depth model, so its architecture must treat the depth tier as a per-listing order that can be upgraded, vendor-financed and attributed, and its owner-tracked properties are the same property-first asset as Zillow's living database.",
+     "function": "analysis",
+     "advances_thesis": {
+      "supports": [
+       "S4",
+       "S3"
+      ],
+      "how": "Derives the per-listing core and the property-first asset."
+     },
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Revenue up 12% on flat listings.",
+      "introduces": "Why that implies per-listing orders in the architecture.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "REA's engineering evidence is thin and dated, a 2015-era Elasticsearch migration and an unread 2022 event listing, and the author will not pad it.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "rea-group.com refused automated fetches; undated Elastic event page (2015 Elastic{ON} Tour Sydney by URL): 'has been slowly migrating its search function to Elasticsearch', 'thousands of simultaneous updates', more than 100 queries per second; Elastic Community 2022 event on percolation against millions of saved searches (redirected, not read).",
+       "shows": "Shows the only engineering sources and why they cannot describe REA's current systems.",
+       "source": "Elastic (n.d.); Elastic Community (2022)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "States where REA's record stops."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Rich financial and product disclosure.",
+      "introduces": "The absence of current engineering evidence.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "idealista",
+   "heading": "Idealista: What Little Is Public",
+   "controlling_idea": "Idealista's public record is an ownership deal and one product fact about duplicates, and nothing technical, so the case makes no statement about its systems.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S5"
+    ],
+    "how": "The duplicate-clustering fact and the explicit end of the evidence."
+   },
+   "flow": {
+    "pattern": "order_of_importance",
+    "rationale": "Ownership first because it is what is best reported, then the one product fact, then the explicit statement that the evidence ends, which closes the run of company sections in descending order of evidence. The end-of-evidence statement placed earlier would leave the duplicate fact looking like an afterthought rather than the one documented exception."
+   },
+   "transition_in": {
+    "relationship": "sequence",
+    "carries_over": "REA's thin engineering record.",
+    "introduces": "The portal with the least public evidence.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p38",
+     "controlling_idea": "Idealista's best-reported fact is Cinven's June 2024 purchase of 70%, at a valuation reports state differently, while no revenue, margin or audience figures are public.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Leading portal in Spain and Portugal, challenger in Italy (trade press); 28 June 2024 deal reported at €2.9 billion, Online Marketplaces reporting a little over €3 billion and Bloomberg €2.9 billion; more than double EQT's €1.3 billion in September 2020; EQT kept 18%; Jesús Encinar continued to lead.",
+       "shows": "Shows the deal with its reporting differences kept visible.",
+       "source": "Online Marketplaces (2024)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "Records a hedged deal fact and the absence of financials."
+     }
+    },
+    {
+     "id": "p39",
+     "controlling_idea": "Idealista's April 2021 duplicate-control feature groups ads for the same property across agencies and portals, treating legitimate duplicates as a cluster to present rather than abuse to remove.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Groups ads 'listed by multiple agencies or individuals on idealista and other portals'; notifies agents of price changes, removals and new duplicates; 'updated daily'; agents see duplicates only of their own properties. Also a Search API for approved partners.",
+       "shows": "Shows a property-first design choice in a portal's product.",
+       "source": "Online Marketplaces (2021); idealista developers (n.d.)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S3"
+      ],
+      "how": "Documents duplicate clustering around the property."
+     },
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Ownership facts with no financials.",
+      "introduces": "The one useful product fact.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p40",
+     "controlling_idea": "That is where Idealista's evidence ends: no engineering blog, talk or filing describes its search, ingestion, data platform or ranking, so any statement about how it builds its systems would be invention.",
+     "function": "claim",
+     "advances_thesis": {
+      "supports": [
+       "S5"
+      ],
+      "how": "States the limit and refuses to fill it."
+     },
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The deal and the duplicate tool.",
+      "introduces": "The explicit end of the evidence.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "costar",
+   "heading": "CoStar: A Curated-Data Counterpoint",
+   "controlling_idea": "CoStar reached property marketplaces from curated commercial data, and its Homes.com competes on whom the lead belongs to, which shows up in the architecture as a lead-routing rule aimed at the agents who control supply.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S2",
+     "S4"
+    ],
+    "how": "Contrasts lead ownership with Zillow's and ties it to agents' control of supply."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Four portals read in descending order of evidence.",
+    "introduces": "A company that reached the market from the other direction.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p41",
+     "controlling_idea": "CoStar gathers data by research and field teams and runs Homes.com on a listing-agent lead model, completing Matterport and Domain in 2025 and calling itself 'the agent's ally'.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Researchers by phone, e-mail, field inspection, public records and news; field teams with Matterport tours; direct feeds; Homes.com on a 'your-listing your lead basis', powered by 'Homes AI'; Matterport completed 28 February 2025, Domain 27 August 2025; Andy Florance: 'We are the agent's ally, and we will never operate at their expense'.",
+       "shows": "Documents a curated-data business and its lead positioning.",
+       "source": "CoStar 10-K for 2025 (2026); CoStar release (2025)"
+      }
+     ]
+    },
+    {
+     "id": "p42",
+     "controlling_idea": "In the author's reading CoStar is a curated data business with a marketplace on top, and the difference from Zillow over whom the lead belongs to is commercial but appears in the architecture as a lead-routing rule aimed at the agents who control supply.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "CoStar's data collection and lead model.",
+      "introduces": "What the lead model means architecturally, against Zillow's.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "reference-architecture",
+   "heading": "A Reference Architecture for a Property Portal",
+   "controlling_idea": "Since no company has published a whole-system view, a labeled inference connects the documented pieces into five load-bearing parts: licensed-supply ingestion, a property registry, valuation models registered by decision tier, a monetization core shaped by the unit of charge, and agent workflow surfaces.",
+   "function": "synthesis",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "Assembles the case's lessons into one labeled design."
+   },
+   "transition_in": {
+    "relationship": "conclusion_summary",
+    "carries_over": "The five company sections and their documented pieces.",
+    "introduces": "A synthesis across them, labeled as inference.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p43",
+     "controlling_idea": "None of the companies has published a whole-system view, so the synthesis connecting the documented pieces is labeled as inference.",
+     "function": "transition",
+     "evidence": [
+      {
+       "kind": "reasoning",
+       "what": "INFERENCE, NOT DOCUMENTED callout: five parts (licensed-supply ingestion with license, embargo and attribution metadata and snapshot reconciliation; a property registry with listings, sales, rentals and valuations as events; valuation models registered by decision tier; a monetization core by unit of charge; agent workflow surfaces feeding outcomes back).",
+       "shows": "Gives the composite design, explicitly not describing any of the five companies."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 7: a reference architecture inferred from the public record.",
+       "shows": "Shows the property registry as the durable entity, license terms flowing to training and commit-tier valuation behind a separate validation path."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "trade-offs",
+   "heading": "Trade-offs the Cases Illustrate",
+   "controlling_idea": "The cases set four choices side by side (unit of charge, use of valuation, supply posture, lead ownership), and because Rightmove and REA report the two highest margins with almost opposite pricing units, the rows are not a scorecard: the architecture follows the unit of charge and the profit follows the audience position.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S4",
+     "S1",
+     "S2"
+    ],
+    "how": "States when each option is right and warns against reading the table as a ranking."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The reference architecture's five parts.",
+    "introduces": "The choices a portal makes within them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p44",
+     "controlling_idea": "The reference architecture leaves four choices and the cases show both sides of each, but Rightmove and REA, with almost opposite pricing units, report the two highest margins in the case, so the trade-off rows are not a scorecard: the architecture follows the unit of charge and the profit follows the audience position.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Four rows: unit of charge, use of valuation, supply posture and lead ownership, each with options A and B, what the record shows and when A is right.",
+       "shows": "Sets out the choices the cases illustrate, which the paragraph then warns against ranking."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "failure-modes",
+   "heading": "Failure Modes the Record Exposes",
+   "controlling_idea": "The record exposes five failure modes for any marketplace: changing a model's decision tier by product launch, treating a forecasting product as an estimating one, monitoring the model but not the operations it drives, treating supply as owned, and reporting engagement as impact.",
+   "function": "analysis",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S4"
+    ],
+    "how": "Names the failures each lesson guards against."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Trade-offs that say what to choose.",
+    "introduces": "Five failure modes that say what to avoid.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p45",
+     "form": "list",
+     "controlling_idea": "Where the trade-offs say what to choose, five failure modes say what to avoid in any marketplace, each stated in general terms: a tier change by product launch, a forecasting product treated as an estimating one, a model monitored without the operations it drives (Zillow is the documented instance of these three, whose lessons are drawn above), supply treated as owned, and early engagement figures reported as impact.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "reasoning",
+       "what": "February 2021 offer and the declined-offer accuracy claim; the letter's 'future home prices' and 'capacity and demand planning challenges'; license changes, access-rule litigation and agents redirecting stock; Rightmove's 'roughly double the propensity to send leads'.",
+       "shows": "Ties each failure mode to a fact already shown in the case.",
+       "source": "Sources as cited in earlier sections"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "evidence-stops",
+   "heading": "Where the Public Evidence Stops",
+   "controlling_idea": "For each case, the record answers some architecture questions and leaves others open, and several facts remain open as of October 2026.",
+   "function": "evidence",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Lists the unanswered questions instead of filling them."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Failure modes resting on what the record shows.",
+    "introduces": "What the record does not show, case by case.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p46",
+     "controlling_idea": "The table collects, case by case, what the record does not show, gathering the limits each section stated (for most portals the economics are public and the systems are not); beyond the limits already stated section by section (Zillow Offers pricing, the Zestimate's serving, pay-at-close attribution, Rightmove's migration and search, REA's and Idealista's systems), the class and theory of the Rightmove collective claim, the remaining government complaints against Zillow and CoStar's plans for Domain's platform are also open as of October 2026.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Seven questions with what is public and what is not: Zillow Offers pricing and limits, the neural Zestimate today, pay-at-close attribution, Rightmove's migration sequence, Rightmove search today, REA's platform, Idealista's systems.",
+       "shows": "Shows the gap for each case explicitly."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "chief-architect",
+   "heading": "The Chief Architect's View",
+   "controlling_idea": "The cases yield five decision rules (govern models by decision, treat supply terms as architecture, design for the unit of charge, make the property the durable entity, measure AI assistants as a lead channel) and a short list of group-level indicators.",
+   "function": "recommendation",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "States the author's rules, labeled as judgement."
+   },
+   "flow": {
+    "pattern": "order_of_importance",
+    "rationale": "The model-governance rule first because Zillow Offers is the case's costliest documented failure; supply terms next because they constrain everything downstream including training; the monetization core and the durable entity follow; the AI channel last as the newest; the indicators close the section because they watch all five rules. Supply terms after the monetization rule would hide that training eligibility is a supply term before it is a product decision; indicators before the rules would measure rules not yet stated."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "What the record shows and where it stops.",
+    "introduces": "The author's rules for acting on it.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p47",
+     "controlling_idea": "The first of the author's five decision rules is to register models by the decision they drive and make tier changes a governance event, so that a launch changing a model's tier cannot ship without a decision record signed outside the model team.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S1"
+      ],
+      "how": "The model-governance rule."
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "Treat supply terms as architecture: every listing carries its license, embargo, attribution and training-eligibility terms from ingestion to every consumer, as Zillow's training-use risk factor warns.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S2"
+      ],
+      "how": "The supply-terms rule."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Model governance.",
+      "introduces": "The rule for licensed supply.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p49",
+     "controlling_idea": "Design the monetization core for the unit of charge you have and keep the next one possible, because a shared catalog and entitlement model can carry subscription, depth and lead models only if listing-level orders and lead-level attribution are designed in from the start.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "The monetization rule."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Supply terms.",
+      "introduces": "The rule for the unit of charge.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p50",
+     "controlling_idea": "Make the property, not the listing, the durable entity, on which valuation, seller leads, price history and duplicate presentation hang.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S3"
+      ],
+      "how": "The entity rule."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The monetization core.",
+      "introduces": "The rule for the durable entity.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p51",
+     "controlling_idea": "Measure AI assistants as a lead channel, with the same attribution, experiment discipline and ranking rules as any other channel.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S4"
+      ],
+      "how": "The AI-channel rule."
+     },
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "The durable entity.",
+      "introduces": "The rule for the newest channel.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p52",
+     "controlling_idea": "At group level the author would watch tier changes, license-metadata completeness, supply share by source and agency, the on-market to off-market error ratio and realized loss against limit for any commit-tier use.",
+     "function": "recommendation",
+     "advances_thesis": {
+      "supports": [
+       "S1",
+       "S2"
+      ],
+      "how": "Turns the rules into indicators."
+     },
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five rules.",
+      "introduces": "What to watch to know they hold.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "comparison",
+   "heading": "Comparing the Cases to the Book's Patterns and to Veldmark",
+   "controlling_idea": "The property-portal record supports the book's patterns on decision tiers, the property model and feed contracts, does not contradict those on licensed supply as data and the unit of charge (untested, per Part IX), and tests Hearthly's 2027 decisions, which the Lyon apartment shows in one listing.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S3",
+     "S4"
+    ],
+    "how": "Applies the case to the book's patterns and to the fictional Veldmark."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The book's patterns first, then Veldmark's decisions that apply them, then one listing that makes the tier difference concrete. The Lyon apartment first would show a decision whose rule the reader has not yet seen tested."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "The author's five rules.",
+    "introduces": "How the book's patterns and Veldmark's decisions fare against the record.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p53",
+     "controlling_idea": "The record supports three of the five book patterns it tests, the decision-tier pattern most strongly, by a failure; for license rules as data and the unit of charge it documents the pressure but not the systems, so those are marked not contradicted (untested).",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Five patterns (decision tiers, property and listing separately, versioned reconciled feed contracts, license and visibility rules as data, unit of charge) with the record and a verdict each.",
+       "shows": "Shows which record tests each pattern."
+      }
+     ]
+    },
+    {
+     "id": "p54",
+     "controlling_idea": "Hearthly's 2027 decisions (declining Hearthly Direct, reporting Valuo's errors separately, the commission-share pilot, agency subscriptions, Keybridge neutrality, Supply Contract v1 and property clustering) each have a parallel in the record that confirms or conditions them.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "Hearthly Direct at 94% of the Valuo estimate, declined; Valuo 7.4% off-market and 2.3% on-market (October 2027), trained on DVF prices; commission-share pilot in the Lyon metropolitan area in 2028 with consent; agency subscriptions €270 million (2026), ARPA about €616; Keybridge neutrality; Supply Contract v1 (September 2027) and the Lyon apartment's three agency listings clustered. The Lyon apartment is glossed at the table as the book's example flat in Lyon 7e, described below.",
+       "shows": "Sets each fictional decision against a documented parallel.",
+       "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "The book's patterns as the record tests them.",
+      "introduces": "Veldmark's Hearthly decisions against the same record.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p55",
+     "controlling_idea": "The Lyon apartment shows the difference between the tiers in one listing: its Valuo interval supports an 'in line' badge, but as a commit-tier output it would have to answer questions about holding-period price, error on accepting owners and capital exposure that a present-value back-test does not.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "scenario",
+       "what": "68 m² T3 in Lyon 7e listed at €389,000; Valuo 80% interval €372,000-€401,000; 94% of midpoint about €363,000; Valuo's €40 million data and lead revenue; Ingrid Halvorsen declined Hearthly Direct (ml-platform).",
+       "shows": "Shows the commit-tier questions on one fictional listing.",
+       "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+      }
+     ],
+     "advances_thesis": {
+      "supports": [
+       "S1"
+      ],
+      "how": "Makes the tier difference concrete."
+     },
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Hearthly's decisions in a table.",
+      "introduces": "One listing that shows the tier difference.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "questions",
+   "heading": "Questions to Ask",
+   "controlling_idea": "Eight questions let a reader test their own portal against the case: commit-tier models, tier changes, error reporting, license terms, supply share, the unit of charge, delete reconciliation and AI-channel measurement.",
+   "function": "recommendation",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S4"
+    ],
+    "how": "Turns the case into questions for the reader's own portal."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "The case applied to Veldmark.",
+    "introduces": "The same tests applied to the reader's portal.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p56",
+     "form": "list",
+     "controlling_idea": "After the comparison tested Veldmark against the record, eight questions apply the same tests to the reader's own portal, from which models drive commit-tier decisions to how AI-assistant channels are measured.",
+     "function": "recommendation"
+    }
+   ]
+  },
+  {
+   "id": "verticals",
+   "heading": "Vertical Differences in the Record",
+   "controlling_idea": "Compared with automotive and general classifieds, real estate differs in its external system of record, its durable property entity, valuation's role and its license constraints, and its commit-tier failure is the row other verticals should study.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S1",
+     "S2",
+     "S3"
+    ],
+    "how": "Places the property lessons against other verticals and leads to the automotive hand-off."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The questions, all about one vertical.",
+    "introduces": "The same concerns across automotive and general classifieds, ending on the automotive case.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p57",
+     "controlling_idea": "Every question above concerns one vertical; set against automotive and general classifieds, real estate differs on every concern, and its commit-tier row is the one other verticals should study, because instant-offer and car-retail businesses carry the same structural risk as Zillow Offers whenever a marketplace prices an asset it will hold and resell.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Five concerns (system of record, durable entity, valuation's role, license constraints, commit-tier failure) for real estate, automotive and general classifieds.",
+       "shows": "Shows where real estate differs and which failure travels across verticals."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "From Property Portals to Automotive",
+  "synthesis": "The three traits the case opened with are three ways a portal depends on what it does not control: agents' supply, a home that outlives every listing, and a future price. Each becomes something the architecture must carry explicitly: license terms on the listing, the property as the durable entity, and the decision tier on the model. The unit of charge then decides which core carries the money.",
+  "so_what": "A Chief Architect reviewing a property portal looks first at its contracts, its entity model and its model register, not its stack, because those are where the documented successes and the costliest documented failure sit.",
+  "callback": {
+   "to": "The introduction's three traits of property portals (external system of record, durable property, data that tempts the portal up the value chain).",
+   "how": "The reader can now say what each property demands of the architecture and which company's record shows it."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "Ask of any portal proposal what the model will decide, whose terms the supply carries, what entity the data hangs off and what the portal charges for; then read case-automotive for the same questions where supply is written by dealer software."
+  },
+  "hand_off": {
+   "to": "case-automotive",
+   "relationship": "similarity",
+   "carries_over": "The property portals' closing: a listing business sitting on valuable data and a professional supply base it does not control.",
+   "introduces": "The same questions in a vertical where the durable entity is the vehicle, the professional is a dealer and supply is written by dealer software, not licensed from agents."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The whole case, ending on the commit-tier risk that crosses verticals.",
+   "introduces": "What the three traits of the opening add up to.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p58",
+    "controlling_idea": "In the author's reading the three traits the case opened with are three ways a portal depends on what it does not control (agents' supply, a home that outlives its listings, and data that tempts the portal into decisions that depend on a future price), and each becomes something the architecture must carry explicitly: license terms on the listing, the property as the durable entity and the decision tier on the model, with the unit of charge deciding the monetization core.",
+    "function": "synthesis",
+    "advances_thesis": {
+     "supports": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "how": "Synthesizes the case, calls back to the introduction and says where a review of a portal should start."
+    }
+   },
+   {
+    "id": "p59",
+    "controlling_idea": "Property portals show a listing business sitting on valuable data and a professional supply base it does not control, and case-automotive follows the same questions into a vertical where the durable entity is the vehicle, the professional is a dealer and supply is written by dealer software rather than licensed from agents.",
+    "function": "transition",
+    "advances_thesis": {
+     "supports": [
+      "S2"
+     ],
+     "how": "Hands off to case-automotive."
+    },
+    "transition_in": {
+     "relationship": "similarity",
+     "carries_over": "Dependence on what the portal does not control.",
+     "introduces": "The same questions in automotive.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "A company profile or an investment view; no verdict on the pending litigation."
+  },
+  {
+   "topic": "Re-teaching the feed contract.",
+   "covered_in": [
+    "listing-ingestion"
+   ]
+  },
+  {
+   "topic": "Re-teaching entity resolution.",
+   "covered_in": [
+    "entity-resolution"
+   ]
+  },
+  {
+   "topic": "Re-teaching decision tiers.",
+   "covered_in": [
+    "ml-platform"
+   ]
+  },
+  {
+   "topic": "Re-teaching monetization mechanics.",
+   "covered_in": [
+    "monetization-models",
+    "products-and-entitlements"
+   ]
+  },
+  {
+   "topic": "AVIV Group.",
+   "covered_in": [
+    "case-aviv"
+   ]
+  },
+  {
+   "topic": "Automotive portals.",
+   "covered_in": [
+    "case-automotive"
+   ]
+  },
+  {
+   "topic": "REA's or Idealista's current systems, for which no public evidence was found."
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "REA's engineering blog (rea-group.com) refused automated fetches; a reviewer with a browser should check for current architecture posts. (Carried over from spec.md.)",
+  "Idealista's revenue, margin and closing date of the 2024 Cinven deal are not confirmed from a primary source. (Carried over from spec.md.)",
+  "The class and theory of the Rightmove collective claim (certification hearing November 2026). (Carried over from spec.md.)",
+  "Whether Zillow ever published the pricing and exposure controls of Zillow Offers. (Carried over from spec.md.)",
+  "Status of the remaining FTC and state complaints named in Zillow's 2025 annual report. (Carried over from spec.md.)"
+ ],
+ "decision_log": [
+  {
+   "date": "2026-10-19",
+   "decision": "Led with the Zillow Offers episode and added the February 2021 Zestimate-as-offer launch (verified via CNN Newsource) as the documented tier change, which earlier chapters did not cite."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Organized the comparison around the unit of charge rather than technology stacks, because the filings document economics far better than engineering."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Kept Idealista and REA sections short and explicit about gaps rather than padding with inference; used CoStar only as a lead-ownership counterpoint."
+  },
+  {
+   "date": "2026-10-19",
+   "decision": "Reworded Zillow's training-use risk factor to the 10-K's text ('including the training of models'), which differs from the research brief's paraphrase. No new ledger facts added."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Converted spec.md to spec.json. Success criteria: the timeline/source-year, Zillow Offers coverage, unit-of-charge table and diagram, inference-callout, evidence-gaps, trade-off/vertical tables and diagrams, final-comparison and questions/sources criteria were inventories of contents; they are replaced by the journal spec's AC-1 to AC-4 (pricing a cash-offer proposal from Zillow's record, predicting the chapter from its opening, the reverse outline, and the fact/inference labeling rubric, which absorbs the inference-callout and source-year criteria). No criteria were added.",
+   "rejected": [
+    "Carrying the success criteria over as written (inventories)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Word limit: spec.md set none, so max_words is the published prose length by check_draft's count (7,669) plus 5%, 8,052."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Supporting claims S1 to S5 written here from the thesis (the journal spec gives none for this post): model governance by decision, licensed supply as data, the property as durable entity, the unit of charge and the monetization core, and the limits of the evidence. For the author to confirm."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Added a route sentence to p02 so the roadmap announces every section, and a conclusion section 'From Property Portals to Automotive' with a synthesis paragraph (p59, labeled as the author's reading) and the published closing paragraph (p60) moved under it and extended with the clause the next post's transition_in declares (supply written by dealer software, not licensed from agents). No company fact was added.",
+   "rejected": [
+    "Leaving the hand-off as the last paragraph of Questions to Ask, with no synthesis or callback."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 1 (ESCALATE: two spec-faulted results on p23, the NAR buyer-agreement paragraph, which traced to no supporting claim and sat out of place in the supply-terms group, reported by both flow readers). Spec changed as the brief allows: p23 moved from after p22 to after p19 (Zillow's lead flow and agent tools), now supporting S4; transitions of p23, p20 and p24 rewritten; the Zillow section's flow rationale updated. Intent, thesis, role and the journal spec's criteria unchanged; no fact changed.",
+   "rejected": [
+    "Cutting p23, which would cut a published, sourced fact."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 1 draft fixes, units named by failed results only: glosses for depth tiers, vendor, share of voice (key points), commit-tier (failure-patterns callout), Buy yield (timeline), NAR (p23), Premier Agent and Zillow Preferred (p19), DVF, Valuo, Keybridge and T3 (p56, p57); 'three properties' renamed 'three traits' (p01, p59) to avoid the clash with property as a home; p13's property-first data model marked as the author's reading; timeline 'Encyclopedia (secondary)' named as 'Wikipedia (secondary), n.d.' (the source already in Sources and Evidence); lead sentences for p44, p45, p47 (now before their tables), p46, p58; p55 states its idea; the trade-offs column renamed 'When each option is right'. No figure, date, name or company statement changed."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 2 (ESCALATE: one spec-faulted, corroborated result, both readers again unclear why Vertical Differences sat between trade-offs and failure modes). Spec changed as the brief allows: the verticals section moved after Questions to Ask, just before the conclusion, since its commit-tier row and case-automotive pointer lead into the hand-off; transitions of failure-modes, verticals and the conclusion rewritten; roadmap promises and post-level flow rationale updated. Intent, thesis, role and the journal spec's criteria unchanged; no fact changed.",
+   "rejected": [
+    "Folding the verticals table into the conclusion, which would put evidence in the conclusion."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Draft check round 2 draft fixes: trade-offs lead now picks up the reference architecture; failure-modes lead maps items 1-3 to Set-and-Forget AI and names Seeing Double and Feed Roulette as counter-examples; 'Flex program' glossed as Zillow Preferred's predecessor (read from the 10-K quote 'the next chapter for our Flex program'); 'scenario ledger' replaced by 'the book's fictional Veldmark record'; engines lead names Homes.com as a counterpoint; 'regime above' points to the Zillow section; Valuo's €40 million marked as Hearthly's 2026 figure (ledger: Hearthly revenue, Valuo data and leads €40M); Compass glossed as a brokerage in the timeline (as the Zillow section states); conclusion synthesis tightened. Other own additions trimmed to stay within 8,052 words. No figure, date, name or company statement changed."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Close after round 3 (cheap fixes, no further round): 'Direct traffic is the margin' and the engines table's 'What the architecture must hold' column labeled as the author's reading (AC-4); 'The fetched text' changed to 'The published results'; the Premier Agent / Zillow Preferred / Flex sentence untangled; the failure-modes opener simplified (no pattern names; p45's idea changed to match). The round-3 check report is stale after these edits. No figure, date, name or company statement changed."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Thesis rubric (fresh agent, thesis object only): pass on all four tests; its gap note is in open_questions."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Flow rubric (sound with notes): the roadmap paragraph p02 now names every section in its controlling idea; the one-sentence announcement of five rules is folded into the first rule (p48 into p49); p47's idea no longer refers to 'seven questions' the reader has not met; the rea, idealista and chief-architect rationales now say what a different order would break; the conclusion (p59) maps 'data that tempts the portal up the value chain' to decisions that depend on a future price and points to the questions. No fact moved or cut.",
+   "rejected": [
+    "The structural moves and merges listed in open_questions."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Paragraph ids renumbered in reading order after the round-2 moves (flow rubric note); ids named in earlier decision-log and open-question entries are the ids before renumbering: p23->p20, p20->p21, p21->p22, p22->p23, p46->p45, p47->p46, p49->p47, p50->p48, p51->p49, p52->p50, p53->p51, p54->p52, p55->p53, p56->p54, p57->p55, p58->p56, p45->p57, p59->p58, p60->p59."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Escalation resolved under the author's delegation (\"auto resolve all ESCALATE topics\"): (1) NAR buyer-agreement paragraph (p20), read as out of place in both the supply group and as a standalone after Zillow's lead flow: folded into p19, where it explains a change to the buyer-lead flow; p20 removed from the spec, p21's transition and the Zillow flow rationale updated; the sentence, its fact and its citation kept. (2) Failure modes 1-3 recast as failure modes in general terms, each naming Zillow as the documented instance and pointing back to its lessons; every fact kept (February 2021, 23 markets, declined offers, 'future home prices', 'capacity and demand planning challenges', physical work queues). (3) The Lyon apartment glossed at the Hearthly table. (4) Patterns table: under Part IX claim P9-5, 'license and visibility rules as data' and 'unit of charge' relabeled 'Not contradicted (untested)', since the record documents the terms and the pricing units but not how any portal carries or builds for them (the core-systems column is the author's reading); property model (Idealista's documented grouping of listings by property, REA's owner-tracked properties) and feed contracts (Rightmove's published RTDF) stay Supported as documented; the lead sentence now says three of five. (5) Minor: the letter list's lead now says 'and about what Zillow kept', so the last bullet fits. length.max_words raised from 8,052 to 8,857 (rule 2, +10%).",
+   "rejected": [
+    "Cutting the NAR paragraph, a published, sourced fact.",
+    "Moving it back beside NAR's listing-options paragraph, where round-1 readers found it out of place."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Kept, under rule 8 of the author's delegation: the reference architecture stays one labeled INFERENCE unit (p43), since splitting its five parts into units or merging the section into trade-offs changes published structure with no clearly better option; the cross-case one-paragraph sections and the evidence-limits paragraph stay as published; p26 stays. The thesis-rubric note (no supporting claim argues 'more than its technology choices do') is not acted on: the thesis is copied from the journal spec and the page does not contradict it. Modalities: none planned; spec.md's unchecked checklist, summary, dialog and comics boxes are not carried forward, so modalities stays empty. Supporting claims S1-S5 confirmed against the revised sections; the agent-written claims, glosses and renamed headings of earlier passes are accepted under the author's delegation, 2026-11-12. Round-3 minor findings not changed: 16,385 branches vs 19,272 advertisers (different published denominators, both as sourced), the introduction's 'three earlier answers' vs five patterns (published wording), 'audience position' (published wording)."
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_journals/listing-systems-architecture/journal-spec.json",
+   "contributed": "Intent outcome, acceptance criteria AC-1 to AC-4, thesis, role, case-aviv's closing for the opening and case-automotive's transition_in for the hand-off."
+  },
+  {
+   "kind": "internal",
+   "ref": "ml-platform, entity-resolution, listing-ingestion, monetization-models, products-and-entitlements, marketplace-regulation, saved-searches-and-alerts, modernization-and-migration, ai-in-listing-systems",
+   "contributed": "Patterns the case tests. (Carried over from spec.md.)"
+  },
+  {
+   "kind": "internal",
+   "ref": "meet-veldmark and _research/scenario-ledger.md",
+   "contributed": "Hearthly and Valuo decisions used in the comparison. (Carried over from spec.md.)"
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-real-estate-portals.md (Parts B and C), brief-monetization-economics.md, brief-search-discovery.md, brief-platform-data-ml.md",
+   "contributed": "Research behind the company sections. (Carried over from spec.md.)"
+  },
+  {
+   "kind": "external",
+   "ref": "Zillow 8-K and Q3 2021 shareholder letter (2021); Zillow 10-K for 2025 (2026); CNN Newsource on Zestimate offers (2021)",
+   "contributed": "The Zillow Offers record, Zestimate accuracy, licensed supply and the lead business. Re-verified 19 October 2026."
+  },
+  {
+   "kind": "external",
+   "ref": "Rightmove FY2025 (2026) and H1 2026 results (2026); Rightmove RTDF specification v1.4.1 (2023)",
+   "contributed": "Subscription economics, the feed contract, cloud migration and AI products. Re-verified 19 October 2026."
+  },
+  {
+   "kind": "external",
+   "ref": "REA Group FY26 ASX announcement (2026)",
+   "contributed": "Per-listing depth economics and owner-tracked properties."
+  },
+  {
+   "kind": "external",
+   "ref": "Online Marketplaces on the Cinven-Idealista deal (2024), Idealista duplicate control (2021) and the Compass ruling (2026); The Mortgage Point on Compass's dismissal (2026)",
+   "contributed": "Idealista facts and the listing-access dispute."
+  },
+  {
+   "kind": "external",
+   "ref": "CoStar 10-K for 2025 (2026)",
+   "contributed": "The curated-data counterpoint and Homes.com's lead model."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Escalation resolved under the author's delegation: NAR paragraph folded into p19; failure modes 1-3 recast in general terms; Lyon apartment glossed in the Hearthly table; two pattern verdicts relabeled 'Not contradicted (untested)' per P9-5; max_words 8,857. (AI-mediated session)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Close after draft-check round 3 (ESCALATE): AC-4 labels, Premier Agent sentence, failure-modes opener; p45 idea updated. Check report stale. (AI-mediated session)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "After draft-check round 2: Vertical Differences moved after Questions to Ask; failure-modes and verticals transitions, roadmap and flow rationale updated. (AI-mediated session)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "After draft-check round 1: p23 (NAR buyer agreement) moved into Zillow's lead flow after p19; section and paragraph ideas of trade-offs, verticals, failure modes, evidence limits, comparison and questions updated to their new lead sentences; 'three properties' renamed 'three traits'. (AI-mediated session)"
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-21",
+   "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-20",
+   "change": "Sharpening pass (6,800 to 6,867 prose words; opening ties the case to case-aviv and Part IX; 3 headings renamed); trade-offs heading capitalized; 'the final section' pointer fixed; 4 mermaid diagrams replaced with generated illustrations. (AI-mediated session)"
+  },
+  {
+   "date": "2026-10-19",
+   "change": "Initial spec and article; editorial review pass re-verifying 12 load-bearing claims; 3 inline illustrations added. (AI-mediated session)"
+  }
+ ],
+ "length": {
+  "max_words": 8857
+ }
+}

@@ -1,0 +1,1812 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "fraud-prevention",
+  "journal": "listing-systems-architecture",
+  "part": "part-5",
+  "title": "Scams, Fakes and Account Takeovers: Fraud Prevention for Listings",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three journal acceptance criteria, the thesis and the role are copied unchanged from the fraud-prevention entry in journal-spec.json. Two units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2) and a synthesis paragraph before the hand-off (p58).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The classifieds threat model: authorized push payment fraud that is set up on the platform and closes off it, a fraud typology with dated public evidence, and a signal taxonomy judged by availability, cost of evasion and cost to genuine users.",
+        "The risk scoring service: real-time and streaming paths, a feature store only when real-time behavioral features need one, rules and models with a backtest-shadow-rollout lifecycle, the identity graph and actor-level scoring.",
+        "Step-up friction and its cost model, message-level fraud controls, late and biased labels, adversarial adaptation, and collaboration with banks and police."
+      ],
+      "believe": [
+        "A fake listing looks plausible one at a time; the fraud is visible when listings, accounts, devices, payment accounts and photos are linked and scored together.",
+        "Blocking everything suspicious costs liquidity; friction in proportion to risk, at a threshold chosen by cost, costs genuine users little and fraudsters a lot."
+      ],
+      "can_do": [
+        "Design a risk scoring service that insertion, messaging, login and payout call, with actor-level scoring and a rule lifecycle.",
+        "Choose a friction threshold from an explicit cost model and name who owns each input.",
+        "Say which components would have turned the Barcelona ring's day-one signals into day-one action."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given the first evening of a fake-rental ring, the reader names what should happen and when.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A new account posts a flat at 35% below comparable rents with a photo that matches another agency's listing; that evening two more new accounts on the same device post similar flats. Your photo matches go to a 'possible duplicates' queue and price anomalies to a separate low-priority queue. Using only this chapter: what should happen, and when?",
+        "expected": "A photo match with an unrelated, non-agency seller is a fraud signal sent to risk scoring, not a duplicate; one listing risk score combines photo reuse, price, account age and lister verification; the identity graph links the accounts through the shared device at creation and cluster risk raises every member's score; reviewers get one case for the cluster; the remaining listings are held at the gate that evening; analysts write and shadow-test a combined rule in hours."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The off-platform nature of classifieds fraud and the three terms the chapter owns (fraud signal, risk score, step-up friction); the Barcelona ring; the threat model and typology; vertical differences; signals including duplicate photos; the risk scoring service with real-time and batch paths, rules and models, actor scoring; step-up friction with a threshold example; messaging controls; labels and adaptation; banks and police; back to Barcelona; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: UK Finance, OLX, Which?, Meta, Stripe Radar and Airbnb public sources, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a friction's illustrative inputs, the reader picks the cost-minimizing threshold and says who owns each input.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Your marketplace is choosing the score threshold above which new accounts must verify a phone number. Using only this chapter: how should the threshold be chosen, which inputs does that need, and who should own or measure each input?",
+        "expected": "By minimizing an explicit weekly cost: fraud not stopped times harm per fraud account plus genuine accounts lost times the value of a lost genuine account; the inputs are the fraud volume reaching the trigger, the share of fraud stopped, the genuine abandonment rate and the two costs; the cost of a lost genuine user is a business input owned by the marketplace general manager, abandonment is measured by experiment, and the threshold is revisited when fraud adapts."
+      }
+    ],
+    "audience": {
+      "who": "Heads of trust and safety, fraud and data science leads, principal engineers on insertion, messaging and identity, and chief architects deciding what to share across brands.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes; ML and streaming basics.",
+        "From earlier chapters: the failure patterns, the publication pipeline, entity resolution and multi-agency duplicates, perceptual hashing as a media capability, attribute schemas, Veldmark's brands, cast and the 7 March 2027 phishing incident.",
+        "From trust-and-safety-architecture: the five functions, the decision service and decision record, enforcement propagation, the evidence store, random-sample prevalence measurement and statements of reasons."
+      ],
+      "does_not_know": [
+        "Authorized push payment (APP) fraud and money mules.",
+        "Perceptual hashing limits, the identity graph as a fraud structure, actor-level scoring.",
+        "Friction economics: choosing a threshold from a cost model.",
+        "Point-in-time correctness of features and the backtest-shadow-rollout rule lifecycle.",
+        "Verification of Payee."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do marketplaces detect and stop fraud, from fake listings to payment scams?",
+    "claim": "Because classifieds fraud is mostly authorized push payment fraud that closes off the platform, by bank transfer after a conversation, a marketplace should stop it at the setup: one risk scoring service, called by insertion, messaging, login and payout within the latency of the action, combines weak signals (reused photos, prices far below market, new accounts, shared devices and IBANs) and scores actors linked in an identity graph as well as items; combined rules are backtested and shadowed before rollout; risk is answered with step-up friction at the threshold an explicit cost model chooses, with the cost of a lost genuine user owned by the general manager; links and payment requests in messages are checked before delivery; and labels from victims, banks, reviewers and appeals reach the models within days.",
+    "disputed_by": "The view that classifieds fraud is the payment provider's and the bank's problem, or that the answer is a better classifier judging each listing on its own, with suspicious items blocked outright and fraud queues worked in the order reports arrive.",
+    "so_what": "A Chief Architect who accepts this builds one risk scoring service with a contract for every caller instead of scoring in each team, puts the identity graph and its cross-brand data flows under the Data Protection Officer's approval, buys signals but owns decisions and labels, has general managers own the cost of a lost genuine user, and tracks time from first fraudulent listing to cluster takedown in hours rather than days.",
+    "how_why": "The Barcelona ring's signals existed on day one: photo matches to unrelated sellers were queued as possible duplicates, prices about 35% below market sat in a separate low-priority queue, and the 26 accounts looked unrelated, so 180 fake rentals ran from 1 to 13 July 2027 and 63 people lost about €71,000, most of it paid between 5 and 12 July. A rule combining a photo match with an unrelated seller, rent at least 25% below the district estimate, an account younger than 30 days and a lister that is not a verified agency stopped the ring in an afternoon, twelve days in. Tradeyard's first-contact friction shows the threshold arithmetic: a message-risk threshold of 0.5 gave a weekly cost of about €171,500 against €360,000 with no friction, lower than both the stricter 0.7 and the looser 0.3.",
+    "supporting_claims": [
+      {
+        "id": "F1",
+        "claim": "Classifieds fraud is mostly authorized push payment fraud set up on the platform and closed off it by bank transfer, so the controls that work act before the payment: on who lists, what messages carry and how the money side is reached through banks."
+      },
+      {
+        "id": "F2",
+        "claim": "Signals that are weak on their own (reused photos, prices far below market, new accounts, shared devices and IBANs) become decisive when combined, and a photo match between unrelated sellers is a fraud signal, not a duplicate."
+      },
+      {
+        "id": "F3",
+        "claim": "One risk scoring service, called by insertion, messaging, login and payout within the latency of the action, reads precomputed features and scores actors linked in an identity graph as well as items."
+      },
+      {
+        "id": "F4",
+        "claim": "Rules give the fast response and models the durable one; both are backtested and shadowed before rollout, and labels from reviewers, victims, banks and appeals must reach them within days because organized fraud adapts within days."
+      },
+      {
+        "id": "F5",
+        "claim": "Risk is answered with step-up friction rather than blocks, at a threshold an explicit cost model chooses, with the cost of a lost genuine user owned by the business."
+      },
+      {
+        "id": "F6",
+        "claim": "A group shares the scoring service, identity graph, hashed block lists and label store within data-protection limits, buys signals and owns decisions and labels, and measures time to cluster takedown in hours."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Fills the platform's detection slot with the most demanding detector, risk scoring of actors against adaptive adversaries, and makes the case for scoring and labels shared across brands.",
+    "supports": [
+      "P5-3",
+      "P5-2"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "large_to_small",
+        "applies_to": "threat model, vertical differences, signals and architecture: the whole threat and how it varies by vertical, then the signals, then the service that combines them"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs to questions: the book's reference sections"
+      }
+    ],
+    "rationale": "The Barcelona scene poses the problem: signals on day one, action on day twelve. The threat model says why controls sit before the payment, vertical differences show how the threat and where the money moves vary by vertical, and the signals section names what the controls can observe; the risk scoring service then combines those signals, so it must follow them. Friction and messaging controls say what to do with a score, labels and bank collaboration keep the scores current, and only then can Barcelona be answered component by component. The reference sections test and govern the design. Putting the architecture before the signals would leave the service combining things the reader has not met; putting Barcelona's answer earlier would leave half its table unexplained."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A listing marketplace is a machine for getting strangers to trust each other enough to meet, call or pay. Fraud exploits exactly that."
+    },
+    "bridge": {
+      "from_reader_world": "Trust-and-safety-architecture's platform, which left detection as a slot that detectors plug into, and the adversaries who study the platform and adapt within days.",
+      "to_topic": "Fraud that borrows the platform's trust, moves the victim off the platform to pay, and has to be caught at the setup."
+    },
+    "thesis_statement": {
+      "text": "Classifieds fraud is set up on the platform and closes off it, so it is stopped before the payment by one risk scoring service that combines weak signals and scores actors linked in a graph, answers risk with friction at a cost-chosen threshold, checks messages before delivery and learns from labels within days.",
+      "placement": "KEY POINTS callout (all three bullets); paragraphs p01 and p02 state that the scam is set up on the platform and must be caught there."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "The Barcelona fake-rental ring.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The threat model, how it differs by vertical, and the signals that expose fraud.",
+          "kept_in": [
+            "threat-model",
+            "verticals",
+            "signals"
+          ]
+        },
+        {
+          "promise": "The risk scoring service.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Step-up friction and fraud controls in messaging.",
+          "kept_in": [
+            "friction",
+            "messaging"
+          ]
+        },
+        {
+          "promise": "Feedback loops and labels, and collaboration with banks and police.",
+          "kept_in": [
+            "labels",
+            "banks"
+          ]
+        },
+        {
+          "promise": "The return to Barcelona.",
+          "kept_in": [
+            "back-to-barcelona"
+          ]
+        },
+        {
+          "promise": "Trade-offs, failure modes, the Chief Architect's view and questions.",
+          "kept_in": [
+            "trade-offs",
+            "failure-modes",
+            "chief-architect",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A listing marketplace gets strangers to trust each other enough to meet, call or pay, and fraud borrows that trust to start a conversation and then moves the victim somewhere the platform cannot see, so most of the loss happens off the platform although the scam is set up on it.",
+        "function": "context",
+        "organization": "illustration"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter is about catching the setup, and it owns three terms: a fraud signal (an observable property that changes the probability of fraud), a risk score (a calibrated estimate of that probability for one action) and step-up friction (an extra check in proportion to risk that genuine users pass and fraudsters do not).",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The scam is set up on the platform and closes off it.",
+          "introduces": "Catching the setup, and the three terms the chapter owns for doing so.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Trust-and-safety-architecture built the decision service and left detection as a slot; this chapter fills it with the most demanding detector, aimed at people who study the platform and adapt within days, hands its strongest friction to identity-and-verification, leaves payment-side fraud to transactions-and-payments in Part VI, and uses the fictional Veldmark as its running example.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The three terms the chapter owns.",
+          "introduces": "Where the chapter sits in Part V: the slot the previous chapter left for detection, the adversary this detector faces, and what neighbouring chapters own.",
+          "form": "paragraph",
+          "placement": "both"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter opens with the Barcelona ring, then sets out the threat model and how it differs by vertical, the signals, the risk scoring service, step-up friction, fraud controls in messaging, feedback loops and labels, and collaboration with banks and police, returns to Barcelona, and closes with trade-offs, failure modes, the Chief Architect's view and questions, on public evidence and the fictional Veldmark.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The chapter's sections in order and the kinds of evidence (UK Finance, OLX, Which?, Meta, Stripe and Airbnb public sources; the fictional Veldmark).",
+            "shows": "Lets a reader of the opening predict the chapter."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's place in Part V and its running example.",
+          "introduces": "The order in which the chapter answers its question and the kinds of evidence it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring",
+      "controlling_idea": "In July 2027 a fake-rental ring on Hearthly Spain ran for twelve days although its signals fired on day one, because nothing turned those signals into one decision; that poses the chapter's question with Veldmark's numbers.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "F2",
+          "F3"
+        ],
+        "how": "Shows on one dated case that weak signals existed early and failed only because they were never combined or linked to actors."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The ring in the order it happened: the listings, the losses, why the signals failed, the manual takedown, then the question the review asked."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The setup the chapter will catch, and the order it will go in.",
+        "introduces": "A dated Veldmark case where the setup was visible and was not caught.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "From Thursday 1 July 2027, 26 new accounts on Hearthly Spain published 180 rental listings in Barcelona's Eixample at about 35% below comparable rents, with photos copied from real agencies' listings and a landlord abroad who asked for a deposit by bank transfer.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "First listing Thu 1 July 2027; 26 accounts, 180 listings over twelve days, about 35% below comparable rents; photos copied from live agency listings; landlord abroad, no viewing, deposit by bank transfer.",
+              "shows": "Sets out the ring's mechanism in the terms the typology later uses.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line; Hearthly brand line"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "By the takedown on Tuesday 13 July, 63 people had lost about €71,000, roughly €1,130 each and mostly one month's rent paid as a deposit, from about 4,700 contacts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "63 victims, about €71,000, about €1,130 each, about 4,700 contacts, listings down Tue 13 July.",
+              "shows": "Puts a size on the harm that the chapter's design must reduce.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The ring's twelve days of listings.",
+            "introduces": "What it cost by the day the listings came down.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "list",
+          "controlling_idea": "The detectors did not miss the ring: perceptual-hash matches and rent anomalies fired from day one, and what failed was everything between the signals and a decision, because the signals went to separate queues, reviewers saw listings rather than actors, no identity graph linked the accounts, and the first victim report went to support.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Hash index matched the first stolen photos within minutes on 1 July; rent-anomaly check flagged most listings; photo match went to a general 'possible duplicate' queue and the rent anomaly to a low-priority 'price check' queue; 11 photo-match items closed as legitimate duplicates; 26 accounts on five devices and four mule bank accounts, none proving more than an e-mail address; first victim report on Fri 9 July routed to support.",
+              "shows": "Each failure is a missing combination or link, not a missing detector.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line; consistency issue 20 (e-mail only)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: three signals flowing into three walled-off trays with nothing combining them.",
+              "shows": "Shows the separation of signals at a glance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The harm the ring caused.",
+            "introduces": "That the signals existed from the first day and the failure lay between signal and decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "An analyst linked all 26 accounts by hand in an afternoon on 12 July, and a combined rule took everything down by 16:40 on 13 July, while Hearthly Spain, the former Casavista, was not yet on the shared trust-and-safety platform.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Analyst noticed on Mon 12 July that three victim reports named photo-flagged listings; combined rule live Tue morning; all 180 listings and accounts down by 16:40; shared platform live for Tradeyard NL and BE in November 2027. Hearthly Spain is the former Casavista, acquired 2025 and rebranded 2026.",
+              "shows": "Shows that combining the existing signals was enough, and how late it came.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line; [trust-and-safety-architecture] design line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The four gaps between signal and decision.",
+            "introduces": "How the ring was finally stopped, by hand, twelve days in.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Ingrid's question in the review, what it would have taken to act on day one when the signals were there on day one, is the question the rest of the chapter answers with actor scoring, an identity graph, rules and models, graduated friction and fast feedback loops.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Signals present from day one, action only on day twelve.",
+            "introduces": "The question the chapter answers and the components of the answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "threat-model",
+      "heading": "The Threat Model: What Classifieds Fraud Looks Like",
+      "controlling_idea": "Classifieds fraud is mostly authorized push payment fraud that the platform cannot see or reverse, so its controls sit before the payment, and a typology names where each kind of fraud can be stopped.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "F1"
+        ],
+        "how": "Establishes that fraud closes off the platform, which places the controls before the payment."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Define the dominant fraud, show its size, draw the consequence for where controls sit, then map the fraud types to those controls."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Ingrid's question about acting on day one.",
+        "introduces": "The general threat that Barcelona is one instance of.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Because most classifieds platforms are lead-generation businesses whose payments move elsewhere, the dominant fraud is authorized push payment (APP) fraud, in which the victim willingly sends a bank transfer to someone who is not who they claim to be.",
+          "function": "definition"
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "UK Finance's 2026 report shows purchase scams are the most common kind of APP fraud, low in value and largely reimbursed by banks, which is why banks now ask for seller verification and secure payment protections on marketplaces.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "175,809 purchase-scam cases in 2025, £118.1 million lost, 71% of APP scam cases, average £671, 78% of losses returned; quotation on persuading victims to pay by bank transfer; the ask to 'mandate seller verification and secure payment protections'; a lobbying position, not law, as of October 2026.",
+              "shows": "Shows the fraud is common, bank-transfer based and now pushes cost and demands back to platforms.",
+              "source": "UK Finance, Annual Fraud Report 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "APP fraud as the dominant classifieds fraud.",
+            "introduces": "Public figures for its size and the banks' policy ask.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The architectural consequence is that a classifieds platform's controls are mostly pre-payment: who can list, what can be listed, what can be said and linked in messages, and how strongly buyers are steered to protected payment.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Fraud that closes by bank transfer the platform cannot see.",
+            "introduces": "Where the controls must therefore sit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "A typology of classifieds fraud, with each type's strongest signals and main control point, is sharpened by three public observations: images carry much chat fraud, scammers edit ads after approval, and fraud is run industrially.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Typology: advance payment, payment-link phishing, fake rentals, vehicle deposit scams, triangulation, overpayment, account takeover, fake sellers and shops, counterfeit and prohibited goods, each with mechanism, signals and control point.",
+              "shows": "Maps each fraud type to the point where it can be stopped."
+            },
+            {
+              "kind": "statistic",
+              "what": "OLX, January 2026: fraudulent images about 30% of fraud cases in Poland; QR-code detection at 80% precision.",
+              "shows": "Images are a major fraud channel.",
+              "source": "OLX Group, 2026"
+            },
+            {
+              "kind": "case",
+              "what": "Which?, December 2024: edited scam ads passed Gumtree review in minutes.",
+              "shows": "Checks at creation alone are evaded by edits.",
+              "source": "Which?, 2024"
+            },
+            {
+              "kind": "statistic",
+              "what": "Meta, November 2024: more than two million accounts linked to scam centers removed.",
+              "shows": "Fraud is organized and adapts within days, faster than a twice-weekly rules update.",
+              "source": "Meta, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Controls that sit before the payment.",
+            "introduces": "The fraud types those controls face and the evidence about how they operate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Fraud differs by vertical in type, loss, signal and natural friction, and where the money moves decides the link between fraud and transactions.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "F1"
+        ],
+        "how": "Shows that moving money onto the platform changes the threat model rather than ending it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The fraud typology and the pre-payment controls it implies.",
+        "introduces": "How fraud type, loss, signal, natural friction and where the money moves differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Where the money moves explains the strategic link between fraud and transactions: protected on-platform payment turns unrecoverable APP fraud into a mediated dispute but creates a new surface, phishing that imitates the platform's payment product, so launching it changes the threat model rather than ending it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs, recommerce with payments: dominant fraud, loss per victim, strongest signal, natural friction, where the money moves.",
+              "shows": "Compares verticals on the dimensions that matter for fraud."
+            },
+            {
+              "kind": "case",
+              "what": "Femke's fake Safe Deal link.",
+              "shows": "Shows the new surface protected payment creates."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "signals",
+      "heading": "Fraud Signals",
+      "controlling_idea": "Fraud signals are judged by availability at decision time, cost of evasion and cost to genuine users; price and the graph are the hardest to fake, and a photo match is a fraud signal only when the policy looks at who the two sellers are.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "F2"
+        ],
+        "how": "Shows which weak signals exist and why combining them, with seller context, is what exposes a ring."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "All signal families and the tests for them, then the two hardest to fake, then the case, then the strongest single signal (image reuse) in detail: detector, its limits, and the policy that gives a match its meaning."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The strongest signals named for each fraud type in the typology and for each vertical.",
+        "introduces": "The signals themselves, judged on when they are available and what they cost to evade.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "A fraud signal is useful only if it is available at decision time, costly for the fraudster to change and cheap for genuine users, and the signal families for listings can be judged on those terms.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine signal families (device and client, network, account and identity, behavior and velocity, content, price, media reuse, graph, external) with examples, when each is available and the fraudster's cost to evade it.",
+              "shows": "Lets the reader compare signals on the three tests rather than list them."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Price and the graph deserve special attention because they are hard to fake: a fake bargain needs a low price, so a market-value model doubles as a fraud feature, and a ring must reuse devices, phones, bank accounts and photos to stay profitable.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane's market-value model rates the Essen Golf at €22,800 against €21,900 asked, and could flag a 2021 Golf at €12,000.",
+              "shows": "A model built for buyers already serves fraud detection.",
+              "source": "Scenario ledger, situation 2"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The signal families judged by cost of evasion.",
+            "introduces": "The two signals that are hardest to evade.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The Barcelona ring illustrates both: its prices were about 35% below market, computable only from structured attributes, and its 26 accounts shared five devices and four IBANs, so no single account was alarming while the cluster was unmistakable.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "About 35% below market; 26 accounts, five devices, four IBANs.",
+              "shows": "Shows the weak-alone, decisive-together pattern on the chapter's case.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Price and graph as the hardest signals.",
+            "introduces": "Both signals in the Barcelona ring.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Image reuse is the strongest single signal against fake rentals and cloned listings, and the best public classifieds design for it is OLX's duplicate-listing detection described at PyCon DE 2019.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Grigorev, PyCon DE 2019: candidates by category, city, seller, IP, device and image hashes; a pairwise classifier on price, location, title and image similarity; hashes then embeddings in Elasticsearch; about ten million listings a day; cropping, rotation and flipping defeat simple hashes.",
+              "shows": "Gives a sound, documented shape for duplicate detection, dated as old.",
+              "source": "PyCon DE, 2019"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Photos as one of the ring's shared resources.",
+            "introduces": "Image reuse as a signal and a documented design for detecting it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A platform needs both a hash for cheap exact and near-exact matches and an embedding for crops and edits, because perceptual hashes such as Meta's PDQ document their own limits.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "PDQ documentation: a suggested match threshold, a quality score below which hashes are discarded, no guaranteed invariance to rotation or flips.",
+              "shows": "A hash alone misses edited copies.",
+              "source": "Meta ThreatExchange, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The OLX design and its note that edits defeat simple hashes.",
+            "introduces": "Why a platform needs both a hash and an embedding.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The Barcelona lesson is about policy, not the detector: the same photos mean a repost, a multi-agency listing or a theft depending on who posted them, so a photo match between unrelated sellers must go to fraud scoring with the seller context, never to a deduplication queue on its own.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Eleven photo-match items closed as legitimate duplicates in Barcelona; entity-resolution's same point from the clustering side.",
+              "shows": "Shows the cost of routing a match without seller context.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The detector that finds matching photos.",
+            "introduces": "The policy that decides what a match means.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Risk Scoring Service",
+      "controlling_idea": "One risk scoring service answers 'how risky is this action, by this actor, right now?' for every caller, reading precomputed features in real time, combining rules and models under a backtest-shadow-rollout lifecycle, and scoring actors linked in an identity graph as well as items.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "F3",
+          "F4"
+        ],
+        "how": "Designs the service that combines the signals and the lifecycle that keeps its rules and models current."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "problem_solution",
+            "applies_to": "p26-p27: the rule that stopped the ring, then the model that replaced it"
+          }
+        ],
+        "rationale": "The service and its provenance first, then its paths and the feature store that feeds them, then the rules and models that consume features and their lifecycle with the Barcelona rule, then the unit of scoring and the identity graph with its limits. Rules and models come before the identity graph because the graph is the source of the features that let them score actors."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Signals that are weak alone and a match whose meaning depends on the sellers.",
+        "introduces": "The service that combines signals with their context within the latency of an action.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "controlling_idea": "A risk scoring service answers one question for many callers (insertion and edit, message send, login and recovery, contact reveal and, where the marketplace handles payments, payout release) and returns scores, reasons and recommended friction to the decision service rather than deciding enforcement itself.",
+          "function": "definition"
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The design is a reference-architecture inference from public adjacent systems, because no classifieds company has published a fraud-scoring architecture in this form.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Meta's Sigma, Stripe Radar's rule operations, Uber's 2017 feature store, Mercari's 2026 risk-based authentication.",
+              "shows": "Names the adjacent public systems the inference is built from."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the risk scoring service with real-time path, streaming and batch jobs, and labels returning.",
+              "shows": "Shows the components and their paths in one view."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What the service does for its callers.",
+            "introduces": "Where the design comes from and how far it can be trusted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The real-time path has a budget of tens of milliseconds inside a user's action, so it reads features that streaming and batch jobs have already computed, and each kind of work runs where its latency allows.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Work by place and latency: block-list lookups and simple rules, model inference (real-time); velocity counters and incremental graph updates (streaming); image matches (asynchronous); community detection and training (batch).",
+              "shows": "Assigns each job to a path by its latency."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The design as a whole.",
+            "introduces": "Its first split: what runs on the request and what runs before it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "A feature store is justified once real-time behavioral features drive decisions, which fraud is the use case that brings about, and its essential property is point-in-time correctness.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Uber's 2017 Michelangelo: precomputed online features, the same pipelines for training and serving, predictions logged and joined with outcomes.",
+              "shows": "The standard public reference for a feature store.",
+              "source": "Uber Engineering, 2017"
+            },
+            {
+              "kind": "reasoning",
+              "what": "No classifieds company has documented one; many classifieds models use attributes the listing already holds; fraud features are behavioral, cross-entity and time-sensitive.",
+              "shows": "Explains why the store is conditional and why fraud tips the decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Features precomputed by streaming and batch jobs.",
+            "introduces": "The component that serves them consistently, and when it is worth building.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Rules and models are not alternatives but do different jobs: rules handle known patterns fast and fail by rot, models combine weak signals and fail by drift.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Rules versus models: best at, time to deploy, explainability, failure mode, adversarial behavior.",
+              "shows": "Shows the two as complementary, each with its own failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where features come from.",
+            "introduces": "What consumes them: rules and models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The operating model that works is Stripe Radar's documented rule lifecycle (backtest, shadow mode at 0% traffic, gradual rollout, audit trail), with Meta's Sigma adding policies as code deployed continuously.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Stripe Radar docs (n.d.): conditions on attributes including model scores, backtesting, shadow mode, gradual rollout, audit.",
+              "shows": "A documented, public rule lifecycle.",
+              "source": "Stripe, n.d."
+            },
+            {
+              "kind": "source",
+              "what": "Engineering at Meta, 2015: Sigma, policies as code hot-swapped into production.",
+              "shows": "Adds continuous deployment of rules.",
+              "source": "Meta, 2015"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Rules as the fast tool.",
+            "introduces": "The lifecycle that keeps rules fast without making them dangerous.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The Barcelona combined rule shows what a rule is for: written in an afternoon, it held every listing of a young, unverified account whose photos matched an unrelated seller and whose rent was at least 25% below the district estimate.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Photo match to an unrelated seller and rent at least 25% below the district estimate and account younger than 30 days and lister not a verified agency, so hold all the account's listings and open one case for the cluster.",
+              "shows": "A combined rule is the fast response to a new pattern.",
+              "source": "Journal spec how_why; scenario ledger Barcelona line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule lifecycle.",
+            "introduces": "The rule that actually stopped Barcelona.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "A model trained on the ring and on about 2,000 earlier fake-rental listings replaced the rule six weeks later, because the next ring would change its discount and account age: rules are the fast response and models the durable one.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Model trained on the 180 listings and about 2,000 fake-rental listings removed over the previous year; replaced the rule six weeks later; next ring expected at 20% discounts with older accounts.",
+              "shows": "Shows the rule's limit and the model's durability.",
+              "source": "Chapter-local scenario detail, not in the ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The rule that stopped the ring.",
+            "introduces": "Why a model replaced it and what that says about rules and models together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The deepest design choice is the unit of scoring: organized fraud is an actor problem, because a ring's listings are designed to pass item checks and its infrastructure is not.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Rules and models scoring what they are given.",
+            "introduces": "What they should score: the actor as well as the item.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "The identity graph links accounts through shared devices, phone numbers, e-mail patterns, payment accounts, IP ranges, image hashes and near-identical text, and is used to propagate known fraud, detect rings and scope enforcement to the whole cluster.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: clean listings in the item view against a cluster of 26 accounts on five devices and four bank accounts in the actor view.",
+              "shows": "Shows why the ring is invisible per item and obvious per actor."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The actor as the unit of scoring.",
+            "introduces": "The structure that makes actors visible: the identity graph and its three uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The graph has two hard constraints: shared attributes are not proof, so graph features raise scores and widen cases but do not terminate accounts alone, and the graph is personal data, so at Veldmark only hashed identifiers of fraud-terminated accounts cross brands.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Shared cross-brand block list of hashed identifiers of fraud-terminated accounts, two-year retention approved by Lucía Ortega under a fraud-prevention legitimate interest; each brand's graph of ordinary accounts stays in the brand.",
+              "shows": "Shows the data-protection boundary on group sharing.",
+              "source": "Scenario ledger, cast line (Lucía Ortega)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the identity graph can do.",
+            "introduces": "The limits on what it may do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "friction",
+      "heading": "Step-Up Friction",
+      "controlling_idea": "Risk is better answered with step-up friction than with blocks, and the threshold at which to apply it comes from an explicit cost model whose inputs the business owns.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F5"
+        ],
+        "how": "Turns a score into graduated friction and shows the threshold arithmetic."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Why blocks fail, the documented alternative, the ladder of frictions and its evidence, then a worked threshold that shows who owns the inputs."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "A risk score and the decision service it feeds.",
+        "introduces": "What to do with a score short of a block.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Blocking is a blunt answer to a probability that loses genuine customers, so step-up friction asks for evidence a genuine user can give quickly and a fraudster cannot, or only at a cost that ruins the scam.",
+          "function": "claim"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Airbnb described this in 2018 as targeted friction, choosing the threshold by minimizing a loss that weighs genuine users' abandonment against fraud prevented, and measuring each friction's cost by A/B tests.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "InfoQ, 2018, summarizing Airbnb: micro-authorizations, 3-D Secure, billing-statement verification; loss-based threshold; A/B testing on low-risk users.",
+              "shows": "A public precedent for cost-based thresholds; the method outlasts the eight-year-old system.",
+              "source": "InfoQ, 2018"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Friction in place of blocks.",
+            "introduces": "A documented case of friction chosen by cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A friction ladder for a listing marketplace runs from in-context warnings to protected payment only, each rung defeating a different fraud at a different cost to genuine users.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Warning, delay, limits, phone verification, strong authentication, identity or business verification, protected payment only: what each defeats, its cost to genuine users, its typical trigger.",
+              "shows": "Lets the reader match friction to risk."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Friction as a general method.",
+            "introduces": "The rungs available to a listing marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Two 2026 public sources support the ladder's upper rungs: Mercari's passkeys and risk-based authentication, and the Ofcom-commissioned expert report on delays and verification friction.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Mercari, July 2026: where passkeys were required, 'large-scale phishing financial damages have been effectively zero'; risk-based authentication on session and account posture.",
+              "shows": "Strong authentication defeats phishing-based takeover.",
+              "source": "Mercari Engineering, 2026"
+            },
+            {
+              "kind": "quotation",
+              "what": "Integrity Institute for Ofcom, July 2026: 'creating delays between creating an account and reaching a large audience'; verification friction 'directly disrupts' repeat bad actors.",
+              "shows": "Delays and verification disrupt repeat fraud.",
+              "source": "Integrity Institute for Ofcom, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The ladder's upper rungs.",
+            "introduces": "Public evidence that they work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Tradeyard's December 2027 first-contact friction poses the threshold question with illustrative assumptions from a two-week shadow evaluation: about 2,000 fraud accounts a week, 85% stopped, 8% of genuine accounts lost, €180 of harm per fraud account and €25 per lost genuine account.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "New accounts sending more than five first contacts in an hour must verify a phone number if message risk is above a threshold; assumptions labelled illustrative.",
+              "shows": "Sets up a concrete choice with named inputs.",
+              "source": "Scenario ledger, [fraud-prevention] first-contact friction line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Friction chosen by cost in principle.",
+            "introduces": "A Veldmark friction whose threshold has to be chosen.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The cost model puts the optimum at a score of 0.5, neither the most aggressive nor the most permissive threshold, and the lesson is that the cost of a lost genuine user is a business input the general manager owns, abandonment is measured by experiment, and the threshold moves when fraud adapts.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Weekly cost by threshold: none €360,000; 0.3 €201,000; 0.5 €171,500; 0.7 €209,160; formula (2,000 − fraud stopped) × €180 + genuine lost × €25.",
+              "shows": "Shows the minimum at 0.5 and that it depends on business-owned inputs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The friction and its assumptions.",
+            "introduces": "The threshold the arithmetic picks and what the arithmetic teaches.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "messaging",
+      "heading": "Fraud Controls in Messaging",
+      "controlling_idea": "Most classifieds scams close in the conversation, so links, payment requests and off-platform moves must be checked before a message is delivered.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F1",
+          "F5"
+        ],
+        "how": "Places a pre-payment control in the channel where scams close."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Why the conversation is the control point, the Veldmark case of scanning too late, the design that fixes it, then the legal limits on the design."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Friction that acts before an action completes.",
+        "introduces": "The same before-the-action control applied to sending a message, the action where most scams close.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Most classifieds scams close in the conversation, so fraud controls have to act before a message is delivered, inside the conversation model that messaging-and-leads owns.",
+          "function": "claim"
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Tradeyard shows the cost of scanning too late: on 7 March 2027 a fake Safe Deal payment link reached Femke because its domain had been registered that day and no rule checked domain age.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "About 11 million messages a day and about 41,000 NL and BE payment-link phishing reports in 2026; Femke's €240 city bike; suspension seven minutes after her report; a new rule withheld 37 similar messages.",
+              "shows": "Fast response after delivery is still too late.",
+              "source": "Scenario ledger, situation 1 and Tradeyard removals line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Controls before delivery.",
+            "introduces": "A Veldmark message that was delivered and should not have been.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "A reference design for message-level fraud controls extracts identifiers from every message and image, checks links, withholds before delivery when confident, warns in context when not, scores the whole conversation and masks off-platform contact details for new accounts.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX Group 2026 (blocking suspicious chat images before delivery); ITWeb 2018 on OLX South Africa (safety tips on payment keywords and off-platform moves).",
+              "shows": "Public precedents for withholding and warning.",
+              "source": "OLX Group, 2026; ITWeb, 2018"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the 7 March message scored before delivery, the domain check decisive, the message withheld and a case opened.",
+              "shows": "Applies the design to the Veldmark case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "A phishing link delivered because no rule checked it.",
+            "introduces": "The steps that would have stopped it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Scanning private messages for fraud has a legal side under the GDPR, ePrivacy and the DSA, which Veldmark meets by documenting the purpose, running an impact assessment, disclosing the scanning and keeping content only as long as the case needs.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark documents fraud prevention as the purpose, runs a DPIA, discloses automated scanning in its terms, limits retention.",
+              "shows": "Shows the design can stay within data-protection law; legal analysis is left to marketplace-regulation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the message gate does.",
+            "introduces": "The legal limits on doing it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "labels",
+      "heading": "Feedback Loops and Labels",
+      "controlling_idea": "A fraud model is only as current as its labels, which are late, biased and incomplete, so the loop needs a random sample, late labels joined to features as they were, shadow testing, rule monitoring and defenses against probing.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F4"
+        ],
+        "how": "Shows how labels from victims, banks, reviewers and appeals reach the models within days and how the gate resists adaptation."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The label problem, the practices that address it, then the adversary who adapts to the loop."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Controls at insertion, friction and messaging that produce decisions.",
+        "introduces": "How the outcomes of those decisions return as labels.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Fraud labels are late, biased and incomplete, and each source confirms something different with its own delay and bias.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Label sources: reviewer decisions, user reports, victim loss reports, bank and police reports, chargebacks, appeal reversals, random-sample review, with what each confirms, its delay and its bias.",
+              "shows": "Shows why no single source can train a model on its own."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the feedback loop with sources, random sample and shadow mode.",
+              "shows": "Shows the loop as one picture."
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Four practices keep the loop honest: correct selection bias with a blind random sample, treat late labels as first-class by joining them to point-in-time features, shadow every rule and model before enforcement, and monitor rules for rot with an owner and expiry.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Stripe Radar docs on shadow mode and rule metrics.",
+              "shows": "A public basis for shadowing and rule monitoring.",
+              "source": "Stripe, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Labels that are late and biased.",
+            "introduces": "The practices that correct for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "Fraudsters probe the gate, as Which?'s testers did by changing devices and editing approved ads, so the gate re-scores every material edit, does not leak thresholds in rejections and rate-limits retries per identity cluster.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Which?, 2024: testers changed devices, Wi-Fi networks and identities and edited approved ads into scam ads.",
+              "shows": "Shows adaptation that the three rules answer.",
+              "source": "Which?, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A loop that learns from labels.",
+            "introduces": "An adversary who learns from the gate's rejections.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "banks",
+      "heading": "Collaboration with Banks and Police",
+      "controlling_idea": "A platform sees the setup and a bank sees the money, so exchanging identifiers with banks and evidence packages with police is one of the few controls on the money side of fraud the platform cannot see.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F1",
+          "F4"
+        ],
+        "how": "Extends pre-payment controls to the money side and adds bank and police reports as labels and signals."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "Bank and police reports as the latest and sparsest labels.",
+        "introduces": "The banks and police as partners who see what the platform cannot.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Neither platform nor bank can stop APP fraud alone: bank-side Verification of Payee does not stop a mule's real account, identifiers exchanged both ways are fraud signals for each side, and police need evidence packages from the evidence store.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "EU Instant Payments Regulation: euro-area payment service providers offer Verification of Payee since 9 October 2025.",
+              "shows": "A bank-side check exists and has a gap that mule accounts exploit.",
+              "source": "McCann FitzGerald, 2025"
+            },
+            {
+              "kind": "case",
+              "what": "Barcelona's four IBANs belonged to recruited mules, so a name check would have matched.",
+              "shows": "Applies the gap to the chapter's case.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "After Barcelona, Veldmark set up a bank liaison function with two Spanish and three Dutch banks that feeds reported mule IBANs, hashed, into the shared block list, a control slow to set up and cheap to run.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bank liaison for Hearthly Spain and Tradeyard; two Spanish and three Dutch banks; hashed mule IBANs in the shared block list hold messages and listings asking for payment to them.",
+              "shows": "Shows the exchange in operation.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Identifier exchange as a principle.",
+            "introduces": "Veldmark's bank liaison function.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "back-to-barcelona",
+      "heading": "Back to Barcelona: What Day-One Action Would Have Required",
+      "controlling_idea": "Each Barcelona failure maps to a missing capability the chapter has designed, and with them the ring would have been held at the gate on its first evening.",
+      "function": "synthesis",
+      "advances_thesis": {
+        "supports": [
+          "F2",
+          "F3",
+          "F4"
+        ],
+        "how": "Applies the design to the opening case, component by component."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The full design: signals, scoring service, friction, messaging controls, labels and bank exchange.",
+        "introduces": "The design applied to the opening case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Ingrid's question can now be answered component by component: each thing that happened in Barcelona maps to a missing capability and its target design.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Photo matches as duplicates, separate price queue, unrelated-looking accounts, listing-at-a-time review, victim report to support, twelve days to a combined rule, each with missing capability and target design.",
+              "shows": "Ties every failure to a component the chapter designed."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "With those components the cluster would plausibly have formed on the first evening and the remaining listings been held at the gate, which matters because most of the €71,000 was paid between 5 and 12 July; Hearthly Spain's move to the shared platform was brought forward to the first quarter of 2028.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Plausible timeline: first five or six listings live on 1 July, cluster formed that evening through a shared device; most losses paid 5 to 12 July; move to the shared platform brought forward to Q1 2028.",
+              "shows": "Shows the design would have prevented most of the loss.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The missing capabilities.",
+            "introduces": "What having them would have changed, and what Veldmark did.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The main trade-offs are build, buy or share; friction against liquidity; and real-time against batch detection, and each has a defensible default.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "F5",
+          "F6"
+        ],
+        "how": "Gives the conditions under which each choice holds and the author's recommendation."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Three independent trade-offs, from what to own, to what friction costs, to when detection runs."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The design applied to Barcelona.",
+        "introduces": "The choices the design forces and their alternatives.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "For a group, the right sourcing is a hybrid: buy hard-to-build signals such as device intelligence and domain reputation, and own the decisions, the identity graph and the label store as the platform's memory of its adversaries.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per-brand in-house, shared group platform (Veldmark's choice), commercial vendor, hybrid: strengths, weaknesses, when right.",
+              "shows": "Compares the sourcing options before the recommendation."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Every friction costs liquidity somewhere, so the defensible position is targeted friction by risk tier with abandonment measured by experiment and thresholds reviewed with the general managers who own liquidity targets.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Held listings are not searchable; verification loses some sellers; masked numbers slow contacts; liquidity-and-network-effects on why the first hours matter.",
+              "shows": "Names the liquidity costs the position must manage."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the platform builds or buys.",
+            "introduces": "What its frictions cost the marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Most platforms need a real-time gate plus asynchronous scoring, with risk tiers deciding which items wait for the asynchronous result, as a new unverified private landlord in Barcelona should have.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Everything real-time, real-time gate plus asynchronous scoring, batch only: benefit and cost.",
+              "shows": "Shows why the middle option wins."
+            },
+            {
+              "kind": "case",
+              "what": "A rental from a new, unverified private account in Barcelona should have waited.",
+              "shows": "Applies the tiering rule to the chapter's case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Friction against liquidity.",
+            "introduces": "The timing trade-off: real-time against batch detection.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Ten failure modes, from signals without combination to late labels dropped, are the ways a fraud stack fails in practice.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "how": "Restates each rule as the failure that follows from breaking it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The trade-offs and their defaults.",
+        "introduces": "The ways fraud stacks commonly fail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "form": "list",
+          "controlling_idea": "Ten failure modes recur: signals without combination, item-only scoring, duplicates and fraud in one queue, messages scanned after delivery, models on last year's fraud, rules without owners, blocking instead of friction, badges that survive takeover, thresholds leaked in rejections and late labels dropped.",
+          "function": "description"
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "A marketplace group's scale is an advantage against fraud only if the architecture shares the identity graph, block lists and label store, assigns each decision an owner and tracks time to cluster takedown in hours.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F6"
+        ],
+        "how": "Sets out the group decisions, owners and measures that make shared fraud scoring work."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The reason group scale matters, the decisions that realize it, the measures that check it, then the long-term view."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The ten ways a fraud stack fails.",
+        "introduces": "The group decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Fraud prevention is where group scale is a genuine advantage, because a ring that hits one brand tries the next, and a shared identity graph, block lists and label store let the group learn once instead of four times.",
+          "function": "claim"
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Seven decisions belong on the architecture agenda, each with an owner and something to watch, from a single scoring service with a contract for all callers to bank and law-enforcement exchange.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Decision, who decides, what to watch: single scoring service, actor scoring with data-protection boundaries, rule lifecycle, friction thresholds, label pipeline, buy versus build, bank and police exchange.",
+              "shows": "Assigns ownership and a signal to watch for each decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Group scale as an advantage.",
+            "introduces": "The decisions that make it one, and who owns them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Three numbers belong on the group dashboard, and the second, time from first fraudulent listing to cluster takedown, is the one Barcelona exposed at about twelve and a half days when the target is hours.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Sampled prevalence of fraudulent listings by brand; time from first fraudulent listing to cluster takedown; victim-reported losses per million contacts; Barcelona at about twelve and a half days.",
+              "shows": "Gives the group a measure that the design should move from days to hours.",
+              "source": "Scenario ledger, situation 4 and the [fraud-prevention] Barcelona ring timeline line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions and their owners.",
+            "introduces": "The measures that show whether they work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "As generative AI makes fraud and detection cheaper alike, the defense does not change: a platform that combines signals, scores actors, applies proportional friction and learns within days absorbs new attack tools, and one that relies on any single detector does not.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Today's measures.",
+            "introduces": "The long-term shift and what stays the same.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader test their own fraud stack against the chapter's rules in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "F6"
+        ],
+        "how": "Turns each rule into a question."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions and measures.",
+        "introduces": "Questions to take into a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "form": "list",
+          "controlling_idea": "Ten questions cover which actions are scored, where photo matches go, linking at creation, time to a shadow-tested rule, pre-delivery message checks, threshold ownership, label delay, vendor portability, badges on takeover and time to cluster takedown.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Risk to Identity",
+    "synthesis": "Every part of the design answers Ingrid's day-one question from a different side: the platform cannot see the payment, so it must act on the setup, and the setup becomes visible only when weak signals about one actor are combined; the identity graph links them, the risk score weighs them, friction makes the score cost the fraudster rather than the genuine user, and labels keep the weights current.",
+    "so_what": "That is why time from first fraudulent listing to cluster takedown can be hours rather than twelve and a half days, and why the strongest friction left to apply is a check on who the actor is.",
+    "callback": {
+      "to": "The opening paragraph: fraud borrows the trust strangers place in the platform, and the platform is where the scam is set up even though the money leaves it; and Ingrid's question about acting on day one.",
+      "how": "The conclusion says what catching the setup takes now that each component is known, and answers the day-one question in one sentence."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Route every signal to one risk scoring service that scores actors as well as items, and measure time from first fraudulent listing to cluster takedown."
+    },
+    "hand_off": {
+      "to": "identity-and-verification",
+      "relationship": "cause_effect",
+      "carries_over": "Fraud-prevention's finding that every risk score is indirect evidence about who is on the other side, and that its strongest and most expensive frictions are identity checks.",
+      "introduces": "Therefore the identity question itself: how much a marketplace should know about its users, how it verifies it, what a badge promises, and how one identity serves a group of brands."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and the whole chapter.",
+      "introduces": "What the chapter's parts add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p58",
+        "controlling_idea": "The day-one question has one answer seen from every section: the platform cannot see the payment, so it acts on the setup, which is visible only when weak signals about one actor are combined by the identity graph, weighed by the risk score, turned into friction that costs the fraudster and kept current by labels, and that is what brings cluster takedown from days to hours.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p59",
+        "controlling_idea": "Fraud prevention keeps returning to who is on the other side, because a risk score is indirect evidence and its strongest frictions are identity checks, so identity-and-verification takes up how much a marketplace should know about its users, how it verifies it and what a badge promises.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Combining evidence about the actor as the core of the design.",
+          "introduces": "The identity question, in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The moderation pipeline, decision service, enforcement propagation, appeals and trust-and-safety metrics.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    },
+    {
+      "topic": "Identity levels, KYB, passkey rollout and verified badges in depth.",
+      "covered_in": [
+        "identity-and-verification"
+      ]
+    },
+    {
+      "topic": "The legal analysis of message scanning, the DSA and the UK Online Safety Act.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "Payment-side fraud in transactional flows and buyer protection design.",
+      "covered_in": [
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "Perceptual hashing as an image capability.",
+      "covered_in": [
+        "media-pipeline"
+      ]
+    },
+    {
+      "topic": "Clustering of legitimate duplicates.",
+      "covered_in": [
+        "entity-resolution"
+      ]
+    },
+    {
+      "topic": "The feature store and model governance as platform components.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The Airbnb targeted-friction evidence comes from a 2018 InfoQ summary; the original Medium post was not fetched (Medium returns 403). Verify against the original before print. (Carried over from spec.md.)",
+    "No classifieds fraud-scoring architecture is publicly documented. Revisit if Vinted's Trust & Safety streaming talk or Adevinta material becomes fetchable. (Carried over from spec.md.)",
+    "The friction cost model's inputs (€180 harm per fraud account, €25 per lost genuine account, 8% abandonment) are illustrative; a later edition could use published abandonment data if any exists. (Carried over from spec.md.)",
+    "The Verification of Payee non-euro-area date is reported inconsistently by secondary sources; only the euro-area date is used. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Framed Barcelona as 'signals existed, decisions failed' rather than 'detection failed', to agree with the ledger and with entity-resolution, which says the hash index caught the ring, and because the decision gap is the more useful lesson. (Carried over from spec.md.)",
+      "rejected": [
+        "Barcelona as a detection failure."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the 7 March 2027 city bike phishing as a secondary example limited to message-gate design, leaving its conversation to messaging-and-leads and its enforcement propagation to trust-and-safety-architecture. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended 'buy signals, own decisions and labels' instead of a pure build or buy answer, because label portability is the long-term asset. (Carried over from spec.md.)",
+      "rejected": [
+        "Pure build.",
+        "Pure buy."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used a worked threshold table instead of abstract ROC discussion, so readers see that the optimum depends on business-owned cost inputs. (Carried over from spec.md.)",
+      "rejected": [
+        "Abstract ROC discussion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md rewritten as reader outcomes: the term-ownership, typology, signal-taxonomy, component-diagram, rules-and-models and friction criteria are covered by the journal's AC-1 to AC-3 and the added AC-4; the Barcelona-ledger agreement is kept as a contract rule (canonical facts) rather than a criterion; the inventory criterion (messaging controls, label table, trade-offs, ten questions) is dropped as an inventory."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added AC-4 (minor): a cold reader chooses a friction threshold from the cost model and names who owns each input, because the journal's can_do outcome on thresholds has no criterion of its own."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) and a synthesis paragraph (p58) to the published text, as the recommendations and other converted chapters did, so the introduction predicts the sections and the conclusion synthesizes and calls back before the hand-off."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2: the transitions into Trade-offs and Vertical Differences are placed at the end of the previous section (end_of_previous), because both sections open with a table and a lead-in sentence there would add a unit; Failure Modes and Questions to Ask get one-line lead-ins joined to their lists.",
+      "rejected": [
+        "New lead-in units before the two tables, which would add spec paragraphs and words beyond the limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Following the Part V flow rubric in the journal spec: 'identity graph' is glossed at first use in the scene and defined in p29 as accounts linked through shared devices, phones, payment accounts and image hashes, distinct from identity-and-verification's claims; the payout caller in p20 gets a forward pointer to transactions-and-payments in Part VI."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (round 3): moved the Casavista sentence out of the scene's first paragraph (p05) into p08, where it explains why Hearthly Spain was not on the shared platform; the fact is kept unchanged. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (round 3): rewrote the bridge into Fraud Controls in Messaging (p37) so the declared similarity is shown: friction acts before an action completes, and sending a message is the action where most scams close, so message controls act before delivery. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (round 3): both round-3 flow readers would place Vertical Differences after the threat model; the section was moved there (rule: make the move readers converged on). Its lead-in now carries over the typology; Fraud Signals opens from both tables; the Trade-offs bridge sentence 'Each choice also varies by vertical' was removed; Failure Modes now follows Trade-offs; the Femke reference in p51 names her as a Tradeyard seller in March 2027 with a forward pointer to the messaging section; roadmap (p04 and promises) and flow updated. AC-2's expected answer, copied from the journal spec, still lists vertical differences after trade-offs; the replacement text was reported to the orchestrator for the journal spec and this spec together, because the validator requires them to be equal. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Keeping the order and lengthening the Trade-offs bridge, which both readers' placement argued against."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Raised length.max_words from 7,746 to 7,950 (+2.6%, within the 10% allowance) for the new bridges into Vertical Differences, Fraud Signals and Messaging. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept the chapter-local detail that the model replacing the Barcelona rule was trained on the ring's 180 listings and about 2,000 earlier fake-rental listings, six weeks later, with 20% discounts expected next; reported to the orchestrator as a ledger addition. The text now says analysts expected the next ring's 20% discounts (round-3 minor finding). accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric note: the Trade-offs paragraphs p49 and p50 and the shadow practice in p42 partly restate earlier paragraphs; kept as published, because the reference sections restate by design. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken: verified badges first appear in failure mode 8 and question 9 (identity-and-verification owns badges); Vertical Differences has one prose paragraph with the comparison carried by its table. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 minor findings: T&S expanded at first use (p35) and 'Marketplace GMs' written out in the Chief Architect's table; the remaining single-reader points (why the third account forms the cluster, 'the gate', badge suspension, the Intake routing row, the order of the duplicate-photos subsection, the four systems named in p21) are left as published. accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, the incoming transition and the hand-off relationship; the Part V note on defining the identity graph and pointing forward to Part VI."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/25-fraud-prevention/spec.md (accepted 2026-10-21)",
+      "contributed": "Audience, non-goals, open questions, decision log, sources and changelog."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-trust-safety-regulation.md",
+      "contributed": "Typology, UK Finance data, OLX evidence, Grigorev pipeline, PDQ, messaging design, Mercari, friction evidence, feedback loops."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md",
+      "contributed": "Feature store evidence (Uber 2017), absence of classifieds feature-store documentation, price model as fraud feature."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Barcelona ring, city bike phishing, Tradeyard messaging and phishing report volumes, first-contact friction, bank liaison."
+    },
+    {
+      "kind": "internal",
+      "ref": "trust-and-safety-architecture, entity-resolution, attribute-schemas",
+      "contributed": "Neighbouring chapters kept consistent."
+    },
+    {
+      "kind": "external",
+      "ref": "UK Finance, Annual Fraud Report 2026; OLX Group (2026); ITWeb (2018); PyCon DE (2019); Mercari (2026); Meta (2015, 2024); Stripe Radar docs (n.d.); InfoQ on Airbnb (2018); Uber (2017); PDQ (n.d.); McCann FitzGerald on Verification of Payee (2025); Integrity Institute for Ofcom (2026); Which? (2024)",
+      "contributed": "The dated public evidence the chapter cites."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: stated that the Barcelona ring's 26 accounts had proved only an e-mail address, matching identity-and-verification; UK Finance, OLX and Mercari figures spot-checked. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 3 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,991 to 6,044 prose words; lead now ties the chapter to Part V and to the trust-and-safety and identity chapters; 'Messaging-Based Scams' renamed 'Fraud Controls in Messaging'; five paragraphs restructured so their point comes first; no spec criteria changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json, reconstructed paragraph by paragraph from the published text; thesis rubric pass; flow rubric sound with notes, order kept; transitions into Trade-offs and Vertical Differences moved to end_of_previous after draft-check round 2; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check: round 1 REVISE (13 pass, 26 fail), round 2 REVISE (16 pass, 15 fail), round 3 ESCALATE (13 pass, 16 fail; 6 blocking, all fault draft); three cheap fixes applied after round 3 without a re-check, so check-report.json is stale; remaining items in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: Casavista sentence moved to p08, Messaging bridge rewritten, Vertical Differences moved after the threat model (roadmap, flow and transitions updated; AC-2 expected edit pending in the journal spec), max_words raised to 7,950, cheap minor fixes; open questions reduced to the four carried over from spec.md. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7950
+  }
+}

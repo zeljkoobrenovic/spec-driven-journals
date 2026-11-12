@@ -1,0 +1,2282 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "search-architecture",
+  "journal": "listing-systems-architecture",
+  "part": "part-4",
+  "title": "Search Architecture for Listings: Indices, Freshness and Scale",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the search-architecture entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04), a paragraph introducing the Trade-offs table, and a synthesis paragraph before the hand-off.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Why listing search behaves like a high-write operational store: short-lived documents, mostly text-free browse queries, and writes dominated by price, status, bump and counter changes.",
+        "The listing search document and its promotion rule for typed versus flattened attributes, the three questions that decide index topology, the write path (external versioning, update-storm lanes, separate removal latency), the read path (facets on their own path, caching, latency budgets), alias reindexing and capacity planning for evening peaks."
+      ],
+      "believe": [
+        "An index that cannot be rebuilt from the event stream and system of record has quietly become the database.",
+        "A stable search contract in front of the engine matters more than the choice of engine."
+      ],
+      "can_do": [
+        "Design a listing search document and an indexing path with a listing-owned version, a removal lane and an index share of the publication budget.",
+        "Plan a zero-downtime reindex with a live stream and a rebuild drill, and judge an engine choice by workload fit and migration cost rather than benchmarks."
+      ]
+    },
+    "audience": {
+      "who": "Chief and principal architects, search platform leads and engineering directors of classifieds, real-estate and automotive marketplaces, including those running several engines after acquisitions.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; Elasticsearch, Solr and Kafka in general; percentiles such as p95 and p99.",
+        "From earlier chapters: the listing aggregate and its events (listing-aggregate); categories and the attribute dictionary (categories-and-taxonomies, attribute-schemas); normalization and entity resolution; the publication pipeline, its 90-second target and removal propagation (publication-pipeline); Veldmark, its brands, cast and Common Ground (meet-veldmark); the failure-pattern names (where-listing-systems-go-wrong); Femke's bike; the Part IV claim that every discovery surface is a read model (part-4)."
+      ],
+      "does_not_know": [
+        "Search document, index alias, browse query, facet, insertion and removal latency, update storm, reindexing, search contract, rebuild drill, promotion rule.",
+        "Refresh and soft-commit semantics, searcher cache warming, external versioning, mapping limits, nested and flattened fields, Vespa attribute fields.",
+        "Read models and CQRS in general (listing-data-management) and the event contract (event-driven-listings), which are named here and defined in their chapters."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a peak-hour brown-out and a proposal to pick a new engine by benchmark, the reader names the causes and what to decide before the engine.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your search p99 jumps from 400 ms to 7 seconds for 48 minutes on a Sunday evening while a weekly full reindex runs into the live collection and a TV campaign lifts traffic. Afterwards, the team proposes choosing a new engine by benchmark. Using only this chapter: why did it happen, and what do you decide first?",
+        "expected": "Three individually harmless causes combined: traffic above the usual peak, a reindex writing into the live collection and frequent commits that cleared the filter and result caches the browse traffic depended on. Reindex into a new index behind an alias, replay the stream, swap, and keep maintenance away from the peak planned with marketing. Before any engine change, put product applications behind a platform-owned search contract, build documents only from the event stream and system of record with a listing-owned version, prove the rebuild with a regular drill and set removal latency as its own objective; then the engine is an adapter decision judged by workload fit."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The Tradeyard brown-out and three engines at Veldmark; what a listing search layer is; the index as a rebuildable read model; the search document, topology, write path with update storms and removal, read path with facets and caching, reindexing, capacity for evening peaks; engine choice last; Veldmark's September 2027 decision, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: public engineering posts (Vinted above all), engine documentation and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a marketplace's attribute keys, the reader decides which become typed index fields, who decides, and why the rest are not mapped one by one.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Your marketplace has 3,900 attribute keys, most used on a tiny share of listings, and a team wants each mapped as its own typed field. Using only this chapter: what do you do instead, who decides which keys get typed fields, and why?",
+        "expected": "Use a promotion rule: only attributes the category schema marks as filter, facet or sort keys become typed fields; the rest go into one flattened field, searchable by exact value only. The attribute dictionary (attribute schemas) holds the flag, so promotion is a reviewed schema change, not an engineer's choice. Mapping every key breaks the engine's mapping limit (1,000 fields by default in Elasticsearch) and costs memory, merge time and cluster state; nested key-value objects multiply hidden documents. Values reaching the index must be normalized dictionary values."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a sold listing that reappears in results, the reader names the write-path causes and the controls that prevent it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A listing marked sold reappears in search results minutes later, and a related sold listing waited behind a dealer's bulk price run before disappearing. Using only this chapter: what went wrong in the indexing path, and what do you change?",
+        "expected": "A late update (such as a price change) was applied after the 'sold' delete without versioning, bringing the listing back; every write, deletes included, needs an external version from a sequence owned by the listing (not a Kafka offset, which breaks when partitions change). Removals must go on a priority lane ahead of bulk and fan-out updates, bulk feeds rate-limited in their own lane, with removal latency measured per operation as its own objective (10 seconds p95 at Veldmark) and a read-path status recheck on the results page."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do you build search for millions of short-lived listings with rich filters?",
+    "claim": "Listing search should be built as a read model that can be thrown away: every document comes from the listing event stream and the system of record under a listing-owned version, a quarterly drill proves the index can be rebuilt, only attributes the schema marks as filter, facet or sort keys become typed fields, removals take a priority lane with their own objective (10 seconds p95 at Veldmark against 15 seconds for insertion), counters stay off the document, facets run on their own path, reindexing goes through aliases away from the peak, and product applications call a platform-owned search contract, so the engine behind it becomes a replaceable adapter.",
+    "disputed_by": "The common view that engine choice is the main search decision, settled by benchmarks, and that the index may hold whatever fields teams find convenient, be reindexed in place when the office is quiet and be called directly by product applications, with removal treated as one more update.",
+    "so_what": "A Chief Architect who accepts this lets the platform team own engine, clusters, indexer framework, contract and capacity while marketplaces own schemas, analyzers and ranking; runs two engines during a migration behind one API; and watches freshness percentiles per operation, index fields without a source, cache hit ratios at peak and cost per thousand searches, revisiting the engine on a fixed cycle with shadow traffic.",
+    "how_why": "Listing search is a high-write store whose queries are mostly filters. Tradeyard NL's brown-out on 17 January 2027 (p99 from about 400 ms to about 7 seconds for 48 minutes, about 9% of searches failed) came from a Sunday-evening reindex committing into the live collection and clearing the caches browse traffic needed, at 30% above the usual peak; 6.4 million of about 9 million daily document writes were view counters that passed through no event stream; and only about 610 of Tradeyard's 3,900 attribute keys could become typed fields without exploding the mapping. Veldmark's 14 September 2027 decision therefore moves every application to Listing Search API v1 before any engine changes, so Motorvane's 2029 engine review becomes an adapter change.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Listing search is a high-write operational store whose queries are mostly filters: documents live for days, most queries carry no text, most writes change price, status, bump time or counters, and it is judged on how fast a new listing appears and a sold one disappears, so it must be designed for browse traffic, facets and update storms rather than for text relevance alone."
+      },
+      {
+        "id": "S2",
+        "claim": "The index is a read model that can be thrown away: every document is built only from the listing event stream, the system of record and reference read models under a listing-owned version, and a quarterly rebuild drill proves the index can be rebuilt, because an index field with no source turns the index into the database."
+      },
+      {
+        "id": "S3",
+        "claim": "Only attributes the schema marks as filter, facet or sort keys become typed index fields; the long tail goes into one flattened field, and the attribute dictionary, not an engineer, decides the promotion."
+      },
+      {
+        "id": "S4",
+        "claim": "The write path separates writes by kind: removals take a priority lane with their own objective (10 seconds p95 at Veldmark against 15 seconds for insertion), high-churn counters stay off the document, updates are coalesced and bulk feeds are rate-limited, and freshness is measured per operation."
+      },
+      {
+        "id": "S5",
+        "claim": "The read path and operations protect the evening peak: facets run on their own path, every cache has a known invalidation, one latency budget is divided between the steps, topology and shards are sized per partition, reindexing goes through aliases away from the peak, and capacity is planned with the marketing calendar."
+      },
+      {
+        "id": "S6",
+        "claim": "Product applications call a platform-owned search contract in marketplace terms, so the engine behind it becomes a replaceable adapter judged by workload fit, team and cloud rather than by benchmarks, and two engines can run side by side during a migration."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Defines the busiest discovery read model, its document, indexing path, removal lane and contract, on which every later Part IV surface runs.",
+    "supports": [
+      "P4-1"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "large_to_small",
+        "applies_to": "architecture to capacity: the whole layer, then its document, topology, write path, read path, reindexing and capacity"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, vertical differences, failure modes, the Chief Architect's view and questions: closing judgements on a design already shown"
+      }
+    ],
+    "rationale": "The scene poses Ingrid's three questions; the concepts supply the vocabulary; the architecture fixes the principle (a rebuildable read model behind a contract) that every later section applies. The document comes before topology because indices hold documents; the write path follows because versions and lanes act on documents; the read path follows because caches and facets depend on refresh behaviour; reindexing needs versioned writes and aliases; capacity needs the request multiplier the read path explains. Engine choice comes last among the design sections because its criteria (partial updates, facet maturity, schema change) refer to all of them, and Veldmark's decision then applies the criteria. Putting the engine first would invite the benchmark comparison the thesis rejects before the reader knows what the engine must support."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A listing search engine looks like web search and behaves like a high-write operational store: most of its queries contain no text, and it is judged on how fast a new listing appears and how fast a sold one disappears."
+    },
+    "bridge": {
+      "from_reader_world": "Part III ended with a listing the publication pipeline declares searchable within a freshness target, and the Part IV introduction claimed that every discovery surface is a read model of the listing stream.",
+      "to_topic": "The search index is the first and busiest of those read models, so how it is built decides whether the rest of Part IV can work."
+    },
+    "thesis_statement": {
+      "text": "The search index is a read model that can be thrown away and rebuilt: build every document from the event stream and system of record under a listing-owned version, design for browse, facets and update storms, measure removal separately, and put a stable contract in front of whatever engine you run.",
+      "placement": "KEY POINTS callout (all three bullets) and p03."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and p04.",
+      "promises": [
+        {
+          "promise": "Veldmark's three engines and the Sunday-evening brown-out.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The terms of a listing search layer.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The index as a rebuildable read model.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "The structure: search document, topology, write and read paths, reindexing and capacity.",
+          "kept_in": [
+            "document",
+            "topology",
+            "write-path",
+            "read-path",
+            "reindexing",
+            "capacity"
+          ]
+        },
+        {
+          "promise": "Engine choice last.",
+          "kept_in": [
+            "engine"
+          ]
+        },
+        {
+          "promise": "Veldmark's September 2027 decision.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part IV argues that every discovery surface is a read model of the listing stream that must forget a sold listing faster than it learns a new one; the search index is the first and busiest of those read models, and the later Part IV chapters run on the document, contract and indexing path this chapter defines.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Part III ended with a listing the publication pipeline declares searchable within a freshness target; query understanding, ranking, map search and saved searches each query the same index or contract.",
+            "shows": "Places the chapter as the base layer the rest of the part depends on."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S6"
+          ],
+          "how": "Frames the index as a read model and names the contract and indexing path the later chapters reuse."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "A listing search engine looks like web search but behaves like a high-write operational store: its documents live for days, most queries carry no text, most writes change fields unrelated to text, and it is judged on two freshness numbers.",
+        "function": "claim",
+        "organization": "description",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A buyer picks a category, a city and a price band and scrolls; a price cut, a paid bump, a 'reserved' flag or a seller suspension fanning out to thousands of listings changes the document.",
+            "shows": "Shows why text relevance is not the design centre."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "States the workload the chapter designs for."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The search index as the busiest discovery read model.",
+          "introduces": "What makes that read model different from web search.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter rests on one principle, that the search index is a read model that can be thrown away and rebuilt and must never become the only place where something is true, and every later design choice follows from it.",
+        "function": "claim",
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "States the principle the thesis builds on, with a pointer to listing-data-management."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "A high-write store with short-lived documents that is judged on freshness.",
+          "introduces": "The principle that governs how such a store is built.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts with Veldmark's three engines and a Sunday-evening brown-out, defines the terms and lays out the index as a rebuildable read model, then covers its structure (the search document, topology, the write path, the read path with facets and caching, reindexing and capacity), puts engine choice last, and ends with Veldmark's September 2027 decision, trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions, with public engineering accounts (Vinted's above all), engine documentation and the fictional Veldmark as evidence.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The principle.",
+          "introduces": "The order in which the chapter applies it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Three Engines and a Sunday Evening",
+      "controlling_idea": "Veldmark's three engines, the 17 January 2027 brown-out and Tradeyard's six-minute insertion latency pose the chapter's question as Ingrid frames it: what must be true of any index, what is shared across brands, and what may stay different.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5",
+          "S6"
+        ],
+        "how": "Shows a brown-out caused by how the index was run at the peak and a freshness gap, neither of which an engine choice answers."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item.",
+        "introduces": "Veldmark, named as fictional, and its search estate in 2027.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The estate first, then the January brown-out, then the slower freshness problem the same review listed, shown on a March listing, then Ingrid's arrival and her three questions, which only make sense once both problems are on the table."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Veldmark entered 2027 with three search engines across its brands, serving 17.25 million live listings at about 9,000 queries per second on average and 31,000 at the Sunday-evening peak, about 70% of it Tradeyard's.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard: Solr 8 self-hosted next to Yardstick for NL, BE and PT, Elasticsearch 7 for PL; Motorvane: Elasticsearch 8 on Elastic Cloud; Hearthly: self-managed OpenSearch on GKE; 17.25M listings; 9,000 and 31,000 queries/s; Tradeyard ~70%.",
+              "shows": "Gives the estate a multi-brand group inherits.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "On Sunday 17 January 2027 Tradeyard NL's search browned out for 48 minutes because three causes that were harmless alone coincided: campaign traffic 30% above the usual peak, a weekly reindex committing into the live collection, and commits that cleared the caches browse traffic depended on.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "20:35 CET; p99 from ~400 ms to ~7 s for 48 minutes; ~9% of searches failed; post-incident review by Tomasz Wiśniewski with Daan Visser's Yardstick team.",
+              "shows": "Shows a failure caused by how the index was operated, not by the engine's speed.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "quotation",
+              "what": "Solr: caches 'are cleared after a commit and usually need to be re-populated before their benefit can be seen again'.",
+              "shows": "Explains the mechanism that turned the reindex into an outage.",
+              "source": "Apache Solr Reference Guide, n.d."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: three harmless causes merging at the Sunday peak.",
+              "shows": "Makes the coincidence of causes visible."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The estate.",
+            "introduces": "The incident that made the case for change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The same review found a slower problem: a new Tradeyard listing took six minutes p95 to become searchable, partly because Yardstick's indexer committed on a timer, and Common Ground set a 90-second target for 2028.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's Rotterdam bike, €240, listed Sunday 7 March 2027 19:42, searchable 19:48; moderation queue owned by publication-pipeline; Common Ground €140M; 90 s p95 by end of 2028.",
+              "shows": "Shows insertion latency as the second problem the index must answer.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The brown-out.",
+            "introduces": "A second, slower problem from the same review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Ingrid Halvorsen arrived in February 2027 facing not 'which engine is best?' but three questions every multi-brand group meets: what must be true of any index, what should be shared across brands and what may stay different, which the 14 September 2027 decision answered.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Two problems in one search estate.",
+            "introduces": "The questions they pose and the decision that answers them, the thread of the chapter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: What a Listing Search Layer Is",
+      "controlling_idea": "Nine terms define a listing search layer, from the search document to the search contract, and each carries a design consequence the later sections use.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "Defines the vocabulary the thesis is stated in: browse queries, filters, facets, two freshness latencies, update storms, aliases, reindexing and the contract."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The three questions and the brown-out.",
+        "introduces": "The vocabulary needed to answer them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The document and index come first because every other term refers to them; the alias follows because reindexing needs it; browse, filtering and facets explain the read workload; freshness and update storms explain the write workload; reindexing and the contract close the list because they rely on the alias and on the read and write paths."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A search document is one listing denormalized and shaped for queries, and an index is a named set of documents with one mapping and one layout of shards and replicas.",
+          "function": "definition"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "An index alias is a stable name in front of physical indices, so clients never see the index being replaced, and in Elasticsearch an alias swap is atomic.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The alias 'never points to both' targets during the swap.",
+              "shows": "Shows that a swap can replace an index without a gap.",
+              "source": "Elastic documentation, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The physical index.",
+            "introduces": "The name that lets it be replaced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Listing search is dominated by browse queries, filters with no free text, which behave differently enough from text queries that Vinted gave them their own index in 2021.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted split 'browsing queries (filters without search text)' onto a dedicated index with no analyzed text fields.",
+              "shows": "Shows the browse workload is distinct in practice.",
+              "source": "Vinted Engineering, 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Documents and indices.",
+            "introduces": "The two kinds of query run against them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "A filter decides whether a document matches and can be cached as a bit set, while scoring orders the matches, so mostly-filter listing queries stay cheap until a per-user element enters them.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Browse queries.",
+            "introduces": "Why filters make them cheap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Facets are the counts per value shown beside results, computed over the whole match set, which often makes them the most expensive part of a results request.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Cheap, cacheable filters.",
+            "introduces": "The expensive part of the same request.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Freshness is two latencies, insertion and removal, and this chapter owns the index's share of the end-to-end SLA that publication-pipeline owns.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The read workload.",
+            "introduces": "The two write-side numbers search is judged on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "An update storm is a burst of document updates caused by something other than seller edits of content, such as bulk price changes, seller-level fan-out, bump campaigns or counters.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Insertion and removal latency.",
+            "introduces": "What competes with them for the write path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Reindexing rebuilds an index's documents into a new physical index and switches readers to it, and even a capacity change can force one because shard counts are fixed at creation.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "In Elasticsearch, `number_of_shards` 'can only be set at index creation time'.",
+              "shows": "Shows why reindexing is routine, not exceptional.",
+              "source": "Elastic documentation, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Writes to a live index.",
+            "introduces": "Rebuilding an index as a whole.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The search contract is the API product applications call in marketplace terms, translated by engine adapters, which Vinted credits with letting it change engines without changing product applications.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted's 2024 account of its Vespa migration credits a 'search contract' in a Go gateway.",
+              "shows": "Shows the contract works as the seam the thesis claims.",
+              "source": "Vinted Engineering, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The index and how it is rebuilt.",
+            "introduces": "The interface in front of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Index as a Rebuildable Read Model",
+      "controlling_idea": "The search layer is a write path and a read path meeting at the engine, and three boundary rules (no field without a source, a read-path recheck of what is expensive to get wrong, a contract in marketplace terms) matter more than its components.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S6"
+        ],
+        "how": "Draws the reference architecture in which the index is rebuildable and the engine sits behind a contract."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The terms.",
+        "introduces": "How the components they name fit together.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The two paths and the diagram first, then the ownership table, then the three rules that decide where each component's responsibility ends; the rules mean nothing before the components are known, because each rule says where a component's responsibility ends."
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "A listing search layer has a write path that turns listing changes into documents and a read path that turns requests into engine queries, meeting at the engine, and the reference architecture shown is the author's design, not any company's system.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: documents built only from the event stream and reference data, the contract hiding the engine, facets on a separate path.",
+              "shows": "Shows the read-model architecture in one picture."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Each component owns some things and must not own others, and the 'must not own' column is where indices turn into databases; hydration, the step that loads display data for returned listings, is one of them.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven components (system of record, event stream, indexer, denormalization read models, engine, search API, hydration) with what each owns and must not own.",
+              "shows": "Makes the boundaries explicit and checkable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two paths.",
+            "introduces": "The components on them and what each must not own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Of three boundary rules that matter more than the components, the first is that nothing enters the index that cannot be rebuilt from the stream and reference data, which turns a rebuild into a normal consumer workload, as Vinted's 2023 pipeline showed.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "After moving to CDC into Kafka and Flink with Redis denormalization reads, 'reindexing' became publishing messages to a Kafka topic.",
+              "shows": "Shows rebuildability made operational.",
+              "source": "Vinted Engineering, 2023"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "States the rebuildability rule."
+          },
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The component table.",
+            "introduces": "The boundary rules that matter more than the components, starting with the first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Second, the read path rechecks status on the 20 to 50 listings of a results page, closing the lag no indexer can close for a listing taken down a second ago, which is the author's recommendation rather than a documented practice.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Backs removal correctness on the read side."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rebuildability rule.",
+            "introduces": "The second rule, on the read side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Third, the contract speaks marketplace terms and adapters translate them into engine syntax, which lets a group run two engines during a migration and keeps engine syntax out of hundreds of call sites.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Category `bikes/e-bikes`, `frame_size` in [M, L], within 15 km, profile `tradeyard-default`, translated to Solr, Elasticsearch, OpenSearch or Vespa.",
+              "shows": "Shows what a marketplace-term request looks like."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "States the contract rule."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second rule.",
+            "introduces": "The third rule, on the product side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "document",
+      "heading": "Designing the Listing Search Document",
+      "controlling_idea": "The listing search document is one denormalized document per listing whose fields are grouped by source and change rate, and whose attributes are promoted to typed fields only when the schema marks them as filter, facet or sort keys.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S1"
+        ],
+        "how": "Designs the document for filters and facets and ties typed fields to the attribute dictionary."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The indexer that builds documents.",
+        "introduces": "What one document holds.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole document first, then its field groups, then the hardest group, attributes: the problem, the three designs, the promotion rule and the upstream normalization it needs. The promotion rule placed before the three designs would read as an arbitrary policy rather than a choice between known costs."
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "The standard pattern is one document per listing, denormalized at write time, because nested and parent-child relations are much slower to query.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'nested can make queries several times slower'.",
+              "shows": "Supports denormalizing instead of joining.",
+              "source": "Elastic documentation, n.d."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The design decision is how to group fields by source and change rate, because the change rate decides how each group is treated in the index.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eleven field groups (identity, lifecycle, taxonomy, filterable and long-tail attributes, price, location, text, ranking features, monetization flags, embeddings) with examples, source, change rate and index treatment.",
+              "shows": "Shows that high-churn groups such as ranking features need different treatment from text."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One document per listing.",
+            "introduces": "How its fields are grouped.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Attributes are the hardest part, because mapping each of Tradeyard's 3,900 keys as a typed field would break the engine's mapping limits and cost memory, merge time and cluster state.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "3,900 keys across four country taxonomies, 41% used on fewer than 0.1% of listings.",
+              "shows": "Shows the long tail is real.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "quotation",
+              "what": "Elasticsearch caps mapped fields at 1,000 by default 'to prevent mappings and searches from becoming too large'.",
+              "shows": "Shows the guard rail a naive mapping hits.",
+              "source": "Elastic documentation, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The field groups.",
+            "introduces": "The group that is hardest to map.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "There are three designs for attributes, typed fields, nested key-value objects and a flattened field, each with a known cost.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Nested queries are 'typically expensive'; a listing with 30 attributes becomes 31 Lucene documents.",
+              "shows": "Shows the cost of the nested design.",
+              "source": "Elastic documentation, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The mapping problem.",
+            "introduces": "The three ways to solve it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The workable design is a promotion rule: an attribute becomes a typed field only when the category schema marks it as a filter, facet or sort key, so promotion is a reviewed schema change, and about 610 of Tradeyard's 3,900 keys were promoted.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark's group attribute service, live October 2027, publishes the flag; about 610 keys promoted in the first schema version.",
+              "shows": "Shows the rule's scale at Tradeyard.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: a dictionary-driven gate sorting a small flagged share into typed fields and the long tail into one flattened field.",
+              "shows": "Makes the rule visible."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "States the promotion rule."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Three designs with known costs.",
+            "introduces": "The rule that combines two of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The index must see only dictionary values, because free-string attributes split one brand into several facet values, and normalization belongs upstream.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Vinted cut brand cardinality from about 2,000,000 values to 40,000 and facet p99 by about 15 ms.",
+              "shows": "Shows normalized values pay off at query time.",
+              "source": "Vinted Engineering, 2023"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Keeps the promotion rule honest by keeping unnormalized values out."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The promotion rule.",
+            "introduces": "The condition it depends on: normalized values.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "topology",
+      "heading": "Index Topology: How to Partition",
+      "controlling_idea": "Index topology is settled by three questions (does a query cross the boundary, do analyzers differ, does one partition dominate load), which for a multi-country group usually gives one index per brand and country with language fields, and shard counts sized per partition.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Sizes and isolates partitions for the load they carry."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "One document per listing.",
+        "introduces": "How documents are grouped into indices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The options with documented examples first, then the three questions that choose among them, then Belgium as the case that tests the language question, then shard sizing inside the chosen indices; shards cannot be sized before the partitions they split are fixed."
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Index topology decides how many indices exist, what each contains and how they are laid out, and the public record shows most options in use, several of them at Vinted.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six partitioning keys (country or brand, language, workload, time, vertical, one global cluster) with dated Vinted examples, strengths and costs.",
+              "shows": "Shows each option has a documented use and a cost.",
+              "source": "Vinted Engineering, 2021–2026"
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Three questions settle most topology choices, and for a multi-country group the answer is typically one index per brand and country, with per-language fields where a country is multilingual, on shared clusters.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Six options with costs.",
+            "introduces": "The questions that choose among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Belgium shows why a multilingual country needs language fields, not language indices: one index with per-language title fields and a language detector at ingest keeps one inventory and correct analysis.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Belgium serves Dutch and French speakers with one inventory; `title_nl` and `title_fr` fields with their own analyzers.",
+              "shows": "Tests the analyzer question on a real case.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The language question.",
+            "introduces": "A country where it decides the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Shard sizing is a capacity decision made from document counts, update rates and query rates per partition, not a default.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted's 2017 hot nodes from uneven placement.",
+              "shows": "Shows the cost of default shard plans.",
+              "source": "Vinted Engineering, 2017"
+            },
+            {
+              "kind": "scenario",
+              "what": "Tradeyard PT 1.1M listings against NL 6.1M.",
+              "shows": "Shows partitions of one brand differ enough to need different plans.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which indices exist.",
+            "introduces": "How each is split into shards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "write-path",
+      "heading": "The Write Path: Near-Real-Time Indexing and Update Storms",
+      "controlling_idea": "The write path makes documents visible through refreshes that trade freshness against query cost, keeps them in order with a listing-owned version, tames update storms with lanes that put removals first, and measures freshness on every write.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S2"
+        ],
+        "how": "Builds the indexing path with a listing-owned version, a removal lane and per-operation freshness."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The document and its indices.",
+        "introduces": "How changes reach them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Visibility mechanics first, because ordering, storms and measurement all depend on what a refresh costs; ordering before storms, because the lanes rely on versioned writes; measurement last, because it checks the whole path."
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "In Lucene-based engines a document becomes searchable at a refresh or soft commit, and the engines' own defaults and guidance show that the interval is a choice.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elasticsearch refreshes every second, only for indices searched in the last 30 seconds; Solr advises 'as long an interval as your application can tolerate', often 15–60 seconds.",
+              "shows": "Shows the interval is a tunable trade-off.",
+              "source": "Elastic documentation, n.d.; Apache Solr Reference Guide, n.d."
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Every refresh costs merges and, in Solr, cold caches, so high-traffic sites lengthen the interval and must buy freshness elsewhere, with in-place updates or a read-path recheck.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted ran Elasticsearch with a 300-second refresh interval before moving to Vespa.",
+              "shows": "Shows how far a large site pushes the interval.",
+              "source": "Vinted Engineering, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Refresh as the visibility mechanism.",
+            "introduces": "What each refresh costs, and the consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Updates for one listing must apply in order and replays must be harmless, which external versioning with a sequence owned by the listing aggregate guarantees, whereas Kafka offsets broke when Vinted changed the partition count.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted used Kafka offsets as external versions in 2021; a partition-count change broke per-listing ordering.",
+              "shows": "Shows why the version must belong to the listing.",
+              "source": "Vinted Engineering, 2021"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Makes the listing-owned version the basis of a safe write path and rebuild."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "When writes become visible.",
+            "introduces": "The order in which they must be applied.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "A delete needs a version too, because an unversioned late update after a 'sold' event brings the listing back, a common and hard-to-test cause of Ghost Inventory.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Versioned writes.",
+            "introduces": "Deletes as writes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Listing documents change mostly for reasons unrelated to text, and in Lucene engines each partial update re-indexes the whole document, while Vespa, an engine outside the Lucene family met again under engine choice, updates fields it keeps in memory in place.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "4,000 dealer price cuts at 09:00; a seller with 900 listings suspended; a bump campaign; a rating change.",
+              "shows": "Shows what an update storm looks like."
+            },
+            {
+              "kind": "source",
+              "what": "Elastic's update API gets, changes and re-indexes the document; Vespa names 'real-time inventory and price changes' and counters as uses of partial updates.",
+              "shows": "Shows the engine-level cost difference.",
+              "source": "Elastic documentation, n.d.; Vespa documentation, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Ordering of individual writes.",
+            "introduces": "Bursts of writes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "Five mitigations recur whatever the engine, offered as the author's recommendations: keep counters off the document, coalesce per listing, treat seller-level changes as fan-out jobs, give bulk feeds their own lane, and put removals first.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "States the lanes and the removal priority."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The cost of update storms.",
+            "introduces": "The mitigations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Tradeyard's 2027 indexer broke most of these rules: about 6.4 million of its 9 million daily document writes were view counters that passed through no event stream, and removing them was the cheapest performance fix of the year.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 9M daily document writes, about 6.4M view-counter updates; ranking used a daily aggregate anyway.",
+              "shows": "Shows the size of the counter problem.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: lanes with removals first, bulk feeds rate-limited and counters diverted.",
+              "shows": "Makes the lanes visible."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The five mitigations.",
+            "introduces": "A system that violated them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Freshness drifts unless the indexer measures it per operation on every write and a synthetic probe publishes, finds, removes and searches for a test listing every minute per market.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Vinted's 4.64 seconds p99 from Flink to Vespa.",
+              "shows": "Gives a published reference number.",
+              "source": "Vinted Engineering, 2024"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Measures insertion and removal separately."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Lanes and mitigations.",
+            "introduces": "How to know the path still meets its targets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "read-path",
+      "heading": "The Read Path: Facets, Caching and Latency Budgets",
+      "controlling_idea": "On the read path facets run on their own path, each of four caches has its own invalidation, and one latency budget divided between the steps settles what a request can afford.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S1"
+        ],
+        "how": "Designs the read side for browse and facet traffic at the peak."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The write path.",
+        "introduces": "The read path, where the cost is facets and caches.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Facets, caches and the budget are three controls on one request; facets come first because they are the most expensive part of a request and the filter caching they rely on was defined among the concepts; the cache table follows and generalizes it to all four caches; the budget comes last because it allocates time to the steps already described, and before them it would divide time among steps the reader has not met."
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Facets cost in proportion to result counts, and Vinted's 2023 account shows that putting them on their own path made item search faster at a modest CPU cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "One request per multi-select facet; separation cost ~20% more CPU and made item search ~71 ms faster; ~50% facet cache hit ratio; collection capped at 100,000 per shard with '500+' displayed; facet p99 ~120 ms.",
+              "shows": "Supports a separate facet path.",
+              "source": "Vinted Engineering, 2023"
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Five facet lessons carry over to any engine: approximate counts are a product decision, cap cardinality, cache on normalized filter keys, pre-bucket ranges and serve facets on a separate request.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Vinted's figures.",
+            "introduces": "The lessons that follow from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A listing search stack usually has four caches, each with its own invalidation story.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Engine filter caches, engine request caches, application facet and result cache, CDN or page cache: what each holds, what invalidates it and its risk.",
+              "shows": "Shows where staleness and cold caches come from, including the Solr behaviour behind the brown-out."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Facets.",
+            "introduces": "The caches that serve them and the results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Application caches are where freshness and cost collide, and the status recheck makes a 60-second cache on popular browse pages acceptable.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Four caches.",
+            "introduces": "The one where freshness is traded against cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Every step of a results request spends part of one latency budget, illustrated by Veldmark's p99 targets for the shared search API, which are not an industry standard.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Parsing 10 ms, query understanding 25 ms, items query 150 ms, re-ranking 40 ms, hydration and recheck 25 ms, facets 200 ms in parallel; result list 250 ms p99.",
+              "shows": "Shows how to divide one budget.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Caches.",
+            "introduces": "The time budget the whole request must fit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The budget settles arguments, because a proposed 80 ms step such as a cross-encoder re-ranker forces the question of what it displaces.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The budget table.",
+            "introduces": "What the budget is for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reindexing",
+      "heading": "Zero-Downtime Reindexing",
+      "controlling_idea": "Reindexing is routine, an alias swap with a live stream made safe by versioned writes, throttled backfills away from the peak, validation, rollback and automation, and the same capability is the quarterly drill that proves the index is not a system of record.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Turns the alias swap into a safe routine and the rebuild drill into the proof of rebuildability."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The read and write paths of a running index.",
+        "introduces": "Replacing the index under them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Why reindexing is routine first, then the practices that make it safe, then the drill that reuses it as a test; the drill needs the practices to be safe to run every quarter."
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Mapping, analyzer, shard and engine changes each need a reindex, and the baseline procedure is an alias swap whose correctness risk lies in the live update stream.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: backfill and live updates both write with the listing's sequence as version; the swap follows only after counts, samples and shadow queries agree.",
+              "shows": "Shows why arrival order does not matter."
+            }
+          ]
+        },
+        {
+          "id": "p48",
+          "form": "list",
+          "controlling_idea": "Five practices separate a boring reindex from an incident: version every write, throttle the backfill and never run it at peak, validate before the swap, keep the old index for rollback and automate it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's January brown-out was a reindex into the live collection at the weekly peak.",
+              "shows": "Shows the cost of breaking the second practice.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "quotation",
+              "what": "Vinted's alias-based index management became 'predictable, automated, and boring'.",
+              "shows": "Shows the target state is reachable.",
+              "source": "Vinted Engineering, 2021"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "States the reindex practices."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Where the risk lies.",
+            "introduces": "The practices that remove it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The ability to reindex from the stream is also the test for Search as System of Record, which Veldmark runs as a quarterly rebuild drill comparing a fresh index with the live one.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Quarterly rebuild drill per market, adopted with the 2027 decision; unexplained differences reveal fields that exist only in the index.",
+              "shows": "Turns rebuildability into evidence.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "States the drill."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A safe, routine reindex.",
+            "introduces": "Its second use as a test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "capacity",
+      "heading": "Capacity Planning for Evening Peaks",
+      "controlling_idea": "Listing traffic peaks predictably in the evening and with campaigns, engine load is a multiple of user queries, and capacity is planned for the peak with headroom, replayed load tests, a maintenance ban, prepared degradation modes and cost per thousand searches.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Plans capacity for the evening peak the brown-out exposed."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Keeping reindexing away from the peak.",
+        "introduces": "Planning for the peak itself.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The predictable peak first, then the multiplier that makes user queries understate load, then the practices those two facts imply; the headroom and load-test practices would be unmotivated without the multiplier before them."
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Listing traffic peaks predictably with evening browsing and campaigns, so capacity planning belongs on the marketing calendar; Rightmove's busiest minute was a TV ad break, and Veldmark's Sunday peak is a property of the fictional group.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove's busiest minute was '8:48 pm on Wednesday during the final ad break on prime-time TV' (2021; more than three years old).",
+              "shows": "Shows a documented, predictable peak.",
+              "source": "Google Cloud Press Corner, 2021"
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Planning from user queries understates engine load, because each results page generates several engine requests: 2.6 at Tradeyard, about 56,000 engine requests per second at peak.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "2.6 engine requests per Tradeyard results page; 31,000 group queries/s × ~70% ≈ 21,700 Tradeyard queries/s and so ~56,000 engine requests/s.",
+              "shows": "Quantifies the multiplier.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When the peak comes.",
+            "introduces": "How large it is at the engine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "form": "list",
+          "controlling_idea": "Five practices follow: size for the peak plus campaign headroom, replay real traffic with the indexer writing, ban maintenance at peak, define degradation modes in advance and track cost per thousand searches.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard sized at 1.5 times the trailing peak because the January campaign added 30%.",
+              "shows": "Ties headroom to the brown-out.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A predictable peak and a request multiplier.",
+            "introduces": "The practices they imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "engine",
+      "heading": "Choosing an Engine: What the Public Record Shows",
+      "controlling_idea": "The public record shows most listing marketplaces on Lucene-based engines and Vinted's move to Vespa as the best-documented exception, and engine choice should be judged by workload fit, team and cloud rather than by benchmarks.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Puts engine choice after the structure and judges it by fit."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The structure the engine must support.",
+        "introduces": "The engine itself, last.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "What is documented first, then licensing as a difference that no longer decides, then Vinted's series and what it does and does not prove, then the criteria that follow; the criteria rely on the evidence before them."
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Most listing marketplaces that have published their engines run Lucene-based engines, and the table records what is documented with dates, a missing company meaning no primary source was found.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vinted (Elasticsearch, Vespa from Nov 2023), leboncoin (~90-node Elasticsearch, 2023), Rightmove (Elasticsearch since 2014, 2025), Homegate (Elasticsearch, 2024), Airbnb (Lucene-based retrieval with an IVF filter, 2026).",
+              "shows": "Shows the documented spread of engines.",
+              "source": "Vinted Engineering, 2024; Le Monde Informatique, 2023; Elastic, 2025; Elastic, 2024; Abdool et al., 2026"
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Licensing no longer separates Elasticsearch from OpenSearch, so the practical differences are managed services, roadmaps and skills.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic left open-source licensing in 2021 and added AGPL in August 2024; AWS moved OpenSearch to the OpenSearch Software Foundation under the Linux Foundation in September 2024.",
+              "shows": "Removes licensing as a deciding factor.",
+              "source": "Elastic, 2024; Linux Foundation, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The documented engines.",
+            "introduces": "A difference between two of them that no longer decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "form": "list",
+          "controlling_idea": "Vinted's 'Search Scaling' series is the most useful public record of a listing search estate evolving over a decade; it gathers in order the steps earlier sections used one at a time and adds only what they left out, from re-sharding in 2017 to one Vespa deployment and a billion items.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "2017 46 indices, re-sharding to ~2.5-3M documents per shard cut weekly slow queries from ~7M to under 200,000; 2021 Kafka Connect and browse-index cache hit ratios above 90%; 2023 delta jobs every seven minutes and week-long backfills replaced, items visible 'within a minute'; 2024 six clusters of 20 nodes to one Vespa deployment of 60 nodes, 5 s visibility, ~10,300 operations/s, ~20,000 requests/s under 150 ms p99, 200,000 ranking candidates; 2025 one billion items. Facts already given earlier (ten countries and hot nodes, offset versioning, the browse index's partitioning, CDC with Kafka and Flink, the 300-second refresh, 4.64 s) appear there only, with a pointer from the timeline.",
+              "shows": "Shows the order in which the hard problems arrived.",
+              "source": "Vinted Engineering, 2017–2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The engines in general.",
+            "introduces": "The one estate documented in detail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Vinted's before-and-after figures cannot be credited to the engine alone, because they combine engine, hardware and topology changes, and Vespa's benchmark is a vendor's.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vinted's figures.",
+            "introduces": "What they cannot prove.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "What the series does show is the order in which the hard problems arrived, with facets the last workload Vinted moved.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the figures cannot prove.",
+            "introduces": "What they do show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "A group should ask which engine fits its workload, team and cloud, not which is fastest, judged on six criteria from partial updates to zero-downtime schema change.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Partial updates, multi-phase ranking, facet maturity, managed services, talent, zero-downtime schema change: Lucene-based against Vespa.",
+              "shows": "Shows the criteria on which the families differ.",
+              "source": "Vespa documentation, n.d."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Replaces benchmarks with fit criteria."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The lessons of the public record.",
+            "introduces": "The criteria a group should use.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "No criterion is decisive alone: deep ranking with in-place feature updates favours Vespa, while small teams, a managed Lucene service and browse-heavy load favour staying in the Lucene family.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Six criteria.",
+            "introduces": "How they combine into a choice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Veldmark's September 2027 Search Platform Decision",
+      "controlling_idea": "Veldmark's 14 September 2027 decision chose OpenSearch for Tradeyard and Hearthly with Motorvane staying on Elasticsearch, but the conditions mattered more than the engine: the contract first, documents only from the event contract, removal and insertion objectives, and a migration ordered by risk.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S2",
+          "S4"
+        ],
+        "how": "Shows the thesis applied: contract before engine, sourced documents, a removal lane and an engine left replaceable."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The criteria for an engine choice.",
+        "introduces": "Veldmark applying them, with the conditions that matter more.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The options pose the choice and the decision with its conditions answers it; the consequences follow: the insertion share on Femke's bike, then the tighter removal target, then the migration order. The bike's seconds and the removal target mean nothing before the decision that sets them, and the migration order depends on the contract the decision requires."
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "controlling_idea": "Tomasz Wiśniewski's group search platform team put four options to the architecture advice forum, from keeping three engines to Vespa for every brand.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "A. keep three engines; B. Elasticsearch on Elastic Cloud; C. OpenSearch on Amazon OpenSearch Service with Motorvane on Elasticsearch; D. Vespa for all, each with for and against.",
+              "shows": "Shows the choice the group faced.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The decision on 14 September 2027 was option C with three conditions that matter more than the engine: every application moves to Listing Search API v1 first, documents come only from the listing event contract and reference services, and Vespa is deferred with a trigger for the 2029 review.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listing event contract v1 on Confluent Cloud, live 1 July 2027; Motorvane adopts the contract on Elasticsearch so the 2029 review becomes an adapter change.",
+              "shows": "Shows the contract and sourced documents applied.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: two engines behind one contract, one indexer framework fed by one event contract.",
+              "shows": "Shows the target platform."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6",
+              "S2"
+            ],
+            "how": "States the conditions that make the engine replaceable."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Four options.",
+            "introduces": "The decision and its conditions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "The new write path gives the index 15 seconds p95 of the 90-second publication budget, shown on Femke's bike: about 2 seconds for the event, 3 for the document build and 5 for the refresh, against the four minutes it spent in Yardstick's batch indexer; the rest of the budget belongs to validation and moderation.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Moderation passed 19:44, searchable 19:48 in March 2027; target: ~2 s event, ~3 s build, 5 s refresh; 15 s p95 index share.",
+              "shows": "Shows the index share of the budget in seconds.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Sets the insertion objective."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The decision.",
+            "introduces": "What it buys on one listing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Removal gets a tighter target, 10 seconds p95 on a priority lane, and the bike shows why removal must be measured across every copy: its removal from search took a minute, but a stale copy reached buyers through the alert digest.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sold 8 March, removal 18:10 to 18:11; the stale copy lived in the alert digest owned by saved-searches-and-alerts.",
+              "shows": "Shows removal is a property of every copy, not only the index.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Sets the removal objective."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The insertion target.",
+            "introduces": "The tighter removal target.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The migration order follows risk, Tradeyard Portugal first behind the contract with four weeks of shadow traffic and Hearthly last, and analyzer parity, checked with real-query test sets, is the explicit migration risk.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "PT Q2 2028; PL; BE and NL with Yardstick's search extraction Q4 2028; Hearthly last; fifteen years of Dutch and French Solr synonyms and stopwords.",
+              "shows": "Shows a risk-ordered migration.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "case",
+              "what": "Vinted brought its Lucene analyzers into Vespa.",
+              "shows": "Shows analyzer parity is a known migration cost.",
+              "source": "Vinted Engineering, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The targets.",
+            "introduces": "The order in which markets move.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each of the chapter's choices (engine family, topology, volatile fields, refresh interval, facets) is right under some conditions and wrong under others.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S6"
+        ],
+        "how": "States the recommended choices as options with conditions."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design and Veldmark's decision.",
+        "introduces": "The choices they rest on, as options with conditions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "controlling_idea": "No choice in this chapter is right everywhere, which is why the contract and the rebuild drill matter: they let a group change a row later, market by market, without a rewrite.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Engine (Lucene family, Vespa), topology, volatile fields, refresh interval, longer interval plus recheck, facets: when each is right and when it is wrong.",
+              "shows": "Shows each option has conditions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in volume, dominant query, attributes, update storms, duplicates, freshness emphasis and geo, so one engine can serve several verticals while each marketplace owns its document schema.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S3"
+        ],
+        "how": "Splits what the platform shares from what each marketplace owns."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Choices with conditions, and Veldmark's decision to put three verticals on one platform.",
+        "introduces": "How the workload differs by vertical, and what that means for the shared engine and the per-marketplace schema.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p66",
+          "controlling_idea": "Because Veldmark's decision puts three verticals on one platform, the vertical table explains why one engine can serve them while one document schema cannot: Hearthly, Motorvane and Tradeyard documents each carry different fields, and the platform shares the engine, indexer, contract and operations.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs across volume, dominant query, attributes, update storms, duplicates, freshness and geo; Zillow cited 200+ attributes per property in 2020.",
+              "shows": "Shows how the workload differs by vertical.",
+              "source": "Zillow Tech Hub, 2020"
+            },
+            {
+              "kind": "scenario",
+              "what": "Hearthly's property-cluster ID collapsing the Lyon apartment's three agency listings; Motorvane's decoded vehicle attributes; Tradeyard's promoted and flattened fields.",
+              "shows": "Shows the schemas that differ.",
+              "source": "scenario-ledger"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Four failures, each touched on in an earlier section, recur often enough to be named here with their symptom and check: the index as the only copy, per-user elements in shared filters, analyzer drift during a migration, and deep pagination by bots.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Names the failures the rebuild drill, cache discipline and migration tests prevent."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "Choices and their conditions.",
+        "introduces": "The failures that follow when they are made badly.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "A one-line announcement that says honestly the four failures were touched on earlier, then the four, each breaking one earlier rule and pointing back to it: how rebuildability is usually lost, cacheable filters, migration parity and read-path cost. The section is the book's standard Failure Modes section (style guide, item 7; named in the journal spec's AC-2), so it stays, as a named catalogue that adds a symptom, an example or a check to each failure rather than claiming them as new."
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "controlling_idea": "Each of the chapter's choices can fail in a recognizable way; four failures, all touched on earlier, recur often enough to deserve a name, a symptom and a check.",
+          "function": "transition"
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Search as System of Record usually begins with a batch job that writes a field into the index and nowhere else, which cannot be rebuilt when a mapping change requires a reindex; the rebuild drill finds such fields while they are few.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows the drill's purpose."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four failures announced.",
+            "introduces": "The first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "A per-user element added to every query, the facet lesson broken, destroys filter and facet cache hit ratios, which is why Vinted kept a per-user filter out of facet queries.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted accepted slightly inaccurate facet counts to keep a per-user filter out of facet queries.",
+              "shows": "Shows the trade made in practice.",
+              "source": "Vinted Engineering, 2023"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first failure.",
+            "introduces": "The second.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "A new engine that tokenizes differently changes results for a share of queries, the migration risk Veldmark's plan already names, so analyzers are ported with test sets of real queries.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second failure.",
+            "introduces": "The third.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Bots paging thousands of results deep, the reason for the pagination cap among the degradation modes, make each page costlier than the last, so pagination depth is capped for anonymous traffic and partners are served through feeds.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third failure.",
+            "introduces": "The fourth.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group level search is a platform decision with a product boundary through it: the platform owns engine, clusters, indexer, contract and capacity, marketplaces own schemas, analyzers and ranking, five decisions are insisted on, and a few numbers are watched over time.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the thesis into governance: the ownership split, the decisions and what to watch."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design, its trade-offs and failures.",
+        "introduces": "The decisions a Chief Architect takes from them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The ownership split first, because every later dispute is settled by it; then the decisions in order of importance; then who decides; then what to watch, which checks the decisions over time."
+      },
+      "paragraphs": [
+        {
+          "id": "p72",
+          "controlling_idea": "The platform owns the engine, clusters, indexer framework, contract, capacity, freshness monitoring and cost, each marketplace owns its schema, analyzers, synonyms, ranking and experiments, and the split must be written down because later disputes are settled by it.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p73",
+          "form": "list",
+          "controlling_idea": "Five decisions come in order of importance: a rebuildable index proved quarterly, a contract in front of the engine, removal latency as a named SLO, the attribute dictionary deciding index fields, and maintenance away from the peak.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ownership split.",
+            "introduces": "The decisions the author would insist on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "The group search platform team decides engine, topology and operations with the architecture advice forum reviewing engine and contract changes, marketplaces decide schemas, analyzers and ranking within the contract, and the CTO arbitrates cost by cost per thousand searches.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The decisions.",
+            "introduces": "Who takes each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Over time the Chief Architect watches freshness percentiles, bot load, cost per thousand searches, index fields without a source, cache hit ratios at peak and analyzer age, and revisits the engine on a fixed cycle with shadow traffic behind the contract.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Makes the engine revisitable on evidence."
+          },
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Decisions and owners now.",
+            "introduces": "What to watch later.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions take the design into a review of the reader's own search layer.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Gives the reader the design as review questions."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions a reviewer asks to test them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p76",
+          "form": "list",
+          "controlling_idea": "Ten review questions cover rebuild time, fields with no source, insertion and removal latency, counters in the document, engine requests per page, document versions, direct engine calls, maintenance at peak, attribute promotion and what would reopen the engine decision.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Engine to Intent",
+    "synthesis": "Ingrid's three questions are answered without naming an engine: what must be true of any index is a listing-owned version, documents only from sourced data, a removal lane with its own objective and a quarterly drill; what is shared is the engine operations, indexer framework, contract and capacity; what may differ is schemas, analyzers and ranking.",
+    "so_what": "Because none of those answers depends on the engine, the brown-out is prevented by how the index is run, and the 2029 engine review becomes an adapter change rather than a rewrite.",
+    "callback": {
+      "to": "The Sunday-evening brown-out and Ingrid's three questions in the scene.",
+      "how": "The reader can now see that the brown-out came from how the index was run at the peak, and that each of Ingrid's questions has a structural answer."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Put product applications behind the search contract, build documents only from the event stream with a listing-owned version, prove the rebuild every quarter and give removal its own lane before deciding any engine change."
+    },
+    "hand_off": {
+      "to": "query-understanding",
+      "relationship": "problem_solution",
+      "carries_over": "A search layer that is fast, fresh and rebuildable behind its contract, but that cannot tell that 'ebike' and 'elektrische fiets' mean the same category.",
+      "introduces": "Query understanding: compiling short, multilingual, misspelled queries into categories and attribute filters with stated confidence, and the place of embeddings and LLMs on top of that."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the brown-out to the review questions.",
+      "introduces": "The answer to Ingrid's three questions.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p77",
+        "controlling_idea": "Ingrid's three questions have answers that name no engine: any index carries a listing-owned version, is built only from sourced data, removes on its own lane and is proved by a quarterly drill; the platform shares engine operations, indexer, contract and capacity; marketplaces keep schemas, analyzers and ranking; so the brown-out is prevented by how the index is run and the 2029 review becomes an adapter change.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The brown-out's causes were a reindex into the live collection, commits clearing caches and campaign traffic, all operating choices.",
+            "shows": "Connects the answer back to the opening incident."
+          }
+        ]
+      },
+      {
+        "id": "p78",
+        "controlling_idea": "A search layer that is fast, fresh and rebuildable still cannot tell that 'ebike' and 'elektrische fiets' mean the same category, and translating words into structured queries is the next chapter's subject.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "A fast, fresh, rebuildable search layer.",
+          "introduces": "What it still cannot do: understand words.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Text analysis, synonyms, autocomplete and hybrid retrieval.",
+      "covered_in": [
+        "query-understanding"
+      ]
+    },
+    {
+      "topic": "Learning to rank and paid-organic blending.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Geo queries and map clustering.",
+      "covered_in": [
+        "map-search"
+      ]
+    },
+    {
+      "topic": "Percolation and alert fan-out.",
+      "covered_in": [
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "End-to-end publication SLA and moderation gate.",
+      "covered_in": [
+        "publication-pipeline"
+      ]
+    },
+    {
+      "topic": "Event contract design and outbox.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "CQRS in general.",
+      "covered_in": [
+        "listing-data-management"
+      ]
+    },
+    {
+      "topic": "Degradation design and SLOs per journey.",
+      "covered_in": [
+        "reliability-and-scale"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No primary source was found for the search engines of OLX, Marktplaats, Kleinanzeigen, Idealista or AutoScout24; the engine table may grow when sources appear. (Carried over from spec.md.)",
+    "Vinted's before-and-after figures mix engine, hardware and topology changes; a neutral engine comparison for listing workloads is not public. (Carried over from spec.md.)",
+    "Whether the read-path status recheck should be part of the search contract or of each marketplace's hydration layer. (Carried over from spec.md.)",
+    "Thesis rubric (2026-11-12, fail) not acted on, because the thesis is copied from the journal spec and is the author's to change: the claim strings together the contents of S2-S6 and reads as a summary holding two theses (a throwaway read model; the engine as a replaceable adapter); the rubric suggests a one-sentence claim leaving the mechanisms to the supporting claims. how_why's first sentence repeats S1; S5 lists six items."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around the 'index is a read model' principle rather than an engine survey, because engine choice is the decision readers over-weight.",
+      "rejected": [
+        "An engine survey as the chapter's spine."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used Vinted's dated series as the main public case and kept leboncoin, Rightmove and Homegate to one line each, because only Vinted documents the evolution in detail."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Rightmove Wednesday TV-break peak as the documented peak example; the Sunday-evening peak stays a Veldmark property."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Added local Veldmark details (2.6 engine requests per results page, 6.4M daily counter writes, 610 promoted attribute keys, 15 s index budget, 10 s removal target) to make the worked example concrete."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria rewritten: the engine-choice, rebuild-drill and alias-reindex criteria are covered by the journal spec's AC-1; the document-design criterion became AC-4 and the versioning and removal criteria became AC-5 (both added here, severity minor). Dropped as inventories: the topology three-questions and Vinted-facet-figures criteria; dropped as an editorial check rather than a reader outcome: 'every company claim carries a dated source; Veldmark figures match the ledger'.",
+      "rejected": [
+        "Carrying the eight success criteria over unchanged."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 found a fault in the spec: the Failure Modes section opened by relisting four failures already described, and its first failure restated Search as System of Record (both flow readers). Changed the section's opening paragraph to a one-line announcement of failures not covered earlier and recast the first failure as how Search as System of Record usually begins; re-validated and continued to round 2.",
+      "rejected": [
+        "Moving Failure Modes before engine choice or folding its items into earlier sections (larger change to the author's structure)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 found the Failure Modes announcement 'not covered above' untrue for two of its four failures (both flow readers; fault spec). Changed the announcement to say two failures are new and two were met earlier in another form, and stated in the section's flow why it follows the decision; re-validated and continued to round 3.",
+      "rejected": [
+        "Folding the four failures into the sections they relate to (larger change to the author's structure)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit set to the published prose length (7,701 words, counted by check_draft.py) plus 5%, 8,086 words, because spec.md set none."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 escalation (1), Vinted timeline, resolved under the author's delegation: cut the restatements from the timeline in Choosing an Engine rather than moving a timeline up after Concepts. Each published Vinted fact now appears once: ten countries and hot nodes stay in Index Topology, offset versioning in the Write Path, the browse index in Concepts and the topology table, CDC with Kafka and Flink in Architecture, the 300-second refresh and 4.64 s in the Write Path; the timeline keeps the facts found only there and points back to the rest. The Concepts pointer now says the steps are gathered in order there.",
+      "rejected": [
+        "A short Vinted timeline after Concepts (would introduce Vespa and the engine history before the structure sections and turn every later use into a repeat)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 escalation (2), Failure Modes, resolved under the author's delegation: neither folded nor replaced. Failure Modes is a book-wide section (style guide item 7) and AC-2's expected answer names it, so folding would remove a required section; replacing would need failures with no source. The announcement now says all four were touched on earlier, and the per-user and pagination items point back to the facet lesson and the degradation modes. All published text kept (rule 8).",
+      "rejected": [
+        "Folding the four failures into earlier sections and dropping the section.",
+        "Replacing them with new, unsourced failures."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 escalation (3), draft: the Write Path no longer uses the term 'attribute fields' for Vespa; it introduces Vespa as an engine outside the Lucene family that the engine section returns to and says it updates fields kept in memory in place. The Vespa documentation fact is kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Ledger correction: the explanation of the 15 s index share as 'about 10 seconds together ... to leave room for the slow tail' was the agent's, not the ledger's; removed. The paragraph keeps only the ledger's figures (about 2 s event, 3 s document build, 5 s OpenSearch refresh; 15 s p95 index share; 10 s p95 removal)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor findings fixed under the author's delegation: the latency budget is said to be set with the September 2027 decision; option C says Hearthly's applications call the AWS-hosted platform across clouds until it moves; the roadmap paragraph names facets and caching; the capacity arithmetic says Tradeyard receives about 21,700 queries per second and so generates about 56,000 engine requests (2.6 per page, ledger)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor findings kept as published under the author's delegation (rule 8): the Trade-offs engine rows overlapping the Decision criteria table; Vinted's 300-second refresh beside its 2023 'within a minute' (both sourced as published); the licensing paragraph; AWS as primary cloud first met in the options table."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: empty modalities (spec.md's unchecked checklist, summary, dialog and comics do not exist); the flow-rubric notes not taken (the two Vinted paragraphs kept apart, licensing kept, Trade-offs not moved)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised from 8,086 to 8,150 (+0.8%, within the 10% the delegation allows) for the pointers and announcement that resolve the round-3 escalation; no published fact was cut to make room."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of query-understanding."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Engines, volumes, the 17 January 2027 brown-out, the 14 September 2027 decision, search platform targets, 610 promoted keys, 6.4M counter writes, 2.6 engine requests per page, the Rotterdam bike."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark, publication-pipeline, listing-data-management, event-driven-listings",
+      "contributed": "Neighboring ownership and the publication budget."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering, Search Scaling series (2017–2025) and related posts (2021–2026)",
+      "contributed": "Engine history, indexing, versioning, facets, freshness, browse index, reindexing practice."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic, Apache Solr and Vespa documentation (n.d.)",
+      "contributed": "Aliases, refresh, soft commits, cache clearing, mapping limits, nested and flattened fields, partial updates, phased ranking."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic (2024) and Linux Foundation (2024)",
+      "contributed": "License and governance history."
+    },
+    {
+      "kind": "external",
+      "ref": "Google Cloud Press Corner (2021)",
+      "contributed": "Rightmove's peak minute."
+    },
+    {
+      "kind": "external",
+      "ref": "Le Monde Informatique (2023); Elastic (2024, 2025); Abdool et al. (2026); Zillow Tech Hub (2020)",
+      "contributed": "Engine table entries and the real-estate attribute count."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: Vinted timeline cut to facts not given earlier, with pointers; Failure Modes announced honestly as failures touched on earlier; Vespa 'attribute fields' aside reworded; unsupported slow-tail explanation of the 15 s share removed; minor fixes (budget, option C, roadmap, capacity arithmetic). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 3 (ESCALATE), close-out fixes without another round: Failure Modes announcement no longer claims two failures are new (spec and prose); roadmap says engine choice comes last among the design sections. check-report.json (round 3) is stale after these edits. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2: Failure Modes announcement changed in spec and prose (spec fault); bike timeline in the scene anchored; the 8 March removal marked as the old platform; term count dropped from the Concepts lead; hydration defined at the architecture table; external version points to the write path; Vespa attribute fields distinguished from listing attributes; Vertical Differences opens from Veldmark's decision. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1: Failure Modes opening and first failure changed in spec and prose (spec fault); roadmap names the evidence; Vinted introduced at first mention with pointers to its timeline; 15 s index share explained as room for the tail; the digest copy and the Lyon apartment introduced where they appear; lead sentences for the Concepts list and the review questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: merged the architecture section's one-line announcement of the three boundary rules into the first rule; failure mode on analyzer drift now points back to Veldmark's migration plan; read-path and in-practice flow reasons and patterns corrected; reasons for document, topology and capacity order say what would break. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline); spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: 'projection' to 'read model' in the excerpt, KEY POINTS, lead, Architecture heading and Figure 2 caption. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,943 to 6,905 prose words; lead rewritten; Architecture heading renamed; 'Choosing an Engine' moved after capacity planning. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: timetoread corrected, license acronyms expanded, Vinted facet-count wording and Rightmove/Zillow evidence dated or hedged, American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8150
+  }
+}

@@ -1,0 +1,647 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/26-identity-and-verification/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/26-identity-and-verification/index.md",
+  "spec_sha": "aaad6ef91504f763",
+  "draft_sha": "342ae41fa2304776",
+  "run_at": "2026-11-12T22:10:19+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter goals: three identity questions and what you will build",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stake: cheap trust versus friction losing honest users",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "architect stake: identity underpins every context; per-brand vs careless merge",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "key points: claims not a flag, identity at moment of risk, badges and separable group identity",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed by the chapter",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "how much identity to require depends on the user's next action",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "roadmap: proofing, authentication, business verification and chapter order",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "scope boundaries with neighboring chapters and sources",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶1",
+      "summary": "Femke's fake payment-link scam and the investigation",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶2",
+      "summary": "phone verification earned the scammer a misleading green tick",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶3",
+      "summary": "same number on Motorvane, unseen because brands' identity is separate",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶4",
+      "summary": "inventory of four separate brand logins",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶5",
+      "summary": "scale of fragmented accounts and approval of Veldmark ID",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶6",
+      "summary": "open questions about meaning of verified, levels, evidence and sale",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶1",
+      "summary": "need for precise identity vocabulary",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶2",
+      "summary": "account versus identity: many accounts per person, shared accounts",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶3",
+      "summary": "NIST separates identity assurance from authenticator assurance",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶4",
+      "summary": "proof and authentication strength can diverge; one level hides the gap",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶5",
+      "summary": "three axes: person, authentication, business",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶6",
+      "summary": "identity levels as derived combinations of claims per action",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶7",
+      "summary": "separate business verification ladder",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶8",
+      "summary": "DSA trader traceability maps to business claims in the identity service",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶9",
+      "summary": "KYB and KYC defined / payment provider owns KYC and supplies only status claim",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶10",
+      "summary": "badges as promises that must state what was checked and how",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Concepts: Identity, Authentication and Business Verification ¶11",
+      "summary": "taken-over accounts weaponize badges",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶1",
+      "summary": "identity service components split by rate of change and owner",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶2",
+      "summary": "boundaries: risk scoring and document evidence kept outside the claim store",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶3",
+      "summary": "claim shape as the central contract",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶4",
+      "summary": "policies cite claim types not vendors / claims hold only needed attributes (GDPR minimization)",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶5",
+      "summary": "tax reporting data kept in a separate purpose-bound profile",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Identity Service and Its Neighbors ¶6",
+      "summary": "claim expiry and revocation must update levels and badges",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶1",
+      "summary": "authentication is where most incidents start; authenticator roles",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶2",
+      "summary": "passkeys explained and synced passkeys as realistic target",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶3",
+      "summary": "Mercari evidence: mandatory passkeys end phishing but cost users",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶4",
+      "summary": "Mercari's gradual migration states, dropping passwords first",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶5",
+      "summary": "FINN's e-mail codes and two-step authentication against takeover",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶6",
+      "summary": "risk-based authentication via session and account posture",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶7",
+      "summary": "per-action controls for sensitive actions",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶8",
+      "summary": "recovery flow as the weaker back door",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Authentication and Account Takeover ¶9",
+      "summary": "recovery must match account assurance and return cautiously",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶1",
+      "summary": "choosing a proofing method for L4",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶2",
+      "summary": "FINN's BankID verification badge and its rules",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶3",
+      "summary": "four FINN design choices worth copying",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶4",
+      "summary": "EU Digital Identity Wallet timeline",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶5",
+      "summary": "wallet acceptance is mostly optional for marketplaces but useful",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Proofing People: Methods and Their Trade-offs ¶6",
+      "summary": "verification orchestrator must be pluggable by country and method",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶1",
+      "summary": "Schibsted account split shows user pain when a group divides",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶2",
+      "summary": "Vend account as the successor shared login",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶3",
+      "summary": "group identity is a bet on the group's shape",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶4",
+      "summary": "Veldmark ID's five separability rules",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶5",
+      "summary": "chosen option and Hearthly.es migration path",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: The Group Identity Question ¶6",
+      "summary": "account linking and pre-hijacking risk; link only by proven control",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶1",
+      "summary": "Barcelona fake-rental ring exploited e-mail-only landlords",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶2",
+      "summary": "proposal: L4 for private landlords in Spain, with cost estimate",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶3",
+      "summary": "cost-benefit approval with conditions and limited effect",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶4",
+      "summary": "Motorvane dealer recheck finds stale business accounts",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶5",
+      "summary": "expiring business claims and continuous KYB",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶6",
+      "summary": "replaying Femke's scam under the new link-holding policy",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice: Levels at the Moment of Risk ¶7",
+      "summary": "precise payee-verified badge instead of generic Verified",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "trade-offs: identity by action and build versus buy",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "vertical differences, rental portals' two-way identity risk",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "catalogue of identity failure modes",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "central vocabulary, local thresholds",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "identity as tier-zero infrastructure",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "separability as a requirement",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "verification as a variable cost in policy business cases",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "four metrics to watch",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "EU wallet on roadmap, not critical path",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "review questions for an identity design",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "From Identity to Obligation ¶1",
+      "summary": "synthesis: record what is known, with method, source and expiry",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "From Identity to Obligation ¶2",
+      "summary": "buyers, regulators and owners depend on precision",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "From Identity to Obligation ¶3",
+      "summary": "hand-off to marketplace regulation chapter",
+      "matched_spec_paragraph": "p67"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 67 aligned units' summaries match the controlling ideas of their spec paragraphs in spec order (p36 sits as Group ¶6, as the spec declares); the five opening callouts match no spec paragraph and carry the thesis statement and roadmap.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Concepts ¶9 (marked two_ideas): the KYB/KYC definitions and Adyen's status claim are one idea as the spec states it for p18: two names with different owners, so the marketplace takes only the provider's status.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Architecture ¶4 (marked two_ideas): the paragraph is controlled by 'Two design rules follow', which the spec declares as p24's single idea (the rules implied by the claim fields).",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to S1-S6 through its section's advances_thesis; no orphan paragraph found.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "In Practice: The Group Identity Question ¶1",
+      "quote": "Whether brands should share these parts depends on how the group may change.",
+      "finding": "Declared cause_effect carrying 'claims, levels, authentication and proofing as parts a group could share'. The prose never names those parts; 'these parts' follows a paragraph about pluggable verification adapters, so the known information is not picked up and the causal link is lost.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4/transition_in",
+      "draft_locus": "In Practice: The Group Identity Question ¶5",
+      "quote": "Veldmark chose the third option, and planned to pass through the fourth for Hearthly.es",
+      "finding": "Declared elaboration carrying the five rules and introducing 'the options they were chosen against', as a sentence at the start. The option table follows the rules with no sentence saying the rules are the design of one of four options, and the unit names 'the third option' without connecting it back to the rules.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in boundaries (intro, scene, concepts, architecture, authentication, proofing, levels in practice, closing sections, conclusion) express the declared relationship and pick up the declared known information, explicitly or through the section heading.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: One Phone Number, Two Brands ¶4",
+      "quote": "The answer took one table, showing four separate logins:",
+      "finding": "The spec's reading of the table is that each brand verifies different things and none re-checks businesses. The prose before and after it says only 'four separate logins' and the account totals, so the 'verified' and business-verification columns, which failure mode 1 and the Motorvane case later rely on, are never drawn out.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4/evidence/0",
+      "draft_locus": "In Practice: The Group Identity Question ¶5",
+      "quote": "Veldmark chose the third option, and planned to pass through the fourth for Hearthly.es, whose Casavista login would be federated in 2028 and migrated in 2029.",
+      "finding": "The four-option table is followed only by the choice. No sentence says what the table shows: that only the third option shares authentication, recovery, verification and bans while staying separable.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other tables, figures (1-4), quotations (DSA, Adyen, Ofcom report, FIDO, Mercari, FINN) and examples are followed or framed by a sentence saying what they show; the Barcelona cost table is read as cost per action against losses and attacker cost.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "In Practice: The Group Identity Question ¶1",
+      "quote": "Whether brands should share these parts depends on how the group may change.",
+      "finding": "Both readers lost the thread at the opening of the group section: 'these parts' has no clear referent after the proofing section, and they had to look back to the components table. The spec's order (group question after the parts it shares) is sound; the prose does not name the parts.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (answer-flowB), item B1; first reader item A4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/flow",
+      "draft_locus": "In Practice: The Group Identity Question ¶4-¶5",
+      "quote": "The architecture advice forum adopted five rules in June 2027.",
+      "finding": "Both readers met the five Veldmark ID rules before the four options they select from, read the decision before the alternatives, and had to map 'the third option' back to the rules; both proposed putting the option table and the choice before the rules. The spec's section flow declares this order ('the option table needs the rules'), so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (answer-flowB), item B2; first reader item A5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "In Practice: Levels at the Moment of Risk ¶3",
+      "quote": "That is about €115,000 a year against about €71,000 lost in one ring, with honest landlords at risk. The forum approved the policy in September 2027 with two conditions.",
+      "finding": "Both readers re-read the passage looking for why a policy costing more than the loss shown was approved under the sub-heading 'a policy worth its cost', and did not find the argument stated (repeat rings, support and reputation cost are only in a table cell). The spec order is fine; the prose does not give the reason.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (answer-flowB), item B3; first reader item A6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/6",
+      "draft_locus": "In Practice: Levels at the Moment of Risk ¶7",
+      "quote": "When Femke sold the bike through Safe Deal the next day, 8 March, Adyen had already verified her as a payee",
+      "finding": "Both readers stopped at a new fact about the opening story (Femke sold the bike the next day to a legitimate buyer) slipped into the badge example, and had to check it did not contradict the scene; the switch from scam target to badge example is abrupt. The spec declares the fact; the prose introduces it without preparation.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (answer-flowB), item B6; first reader item A7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "Architecture: The Identity Service and Its Neighbors ¶1",
+      "quote": "Claims, levels and badges therefore need a service that stores the claims and derives the levels and badges from them.",
+      "finding": "First reader paused: 'therefore' implies a causal link to the preceding paragraph (badges on taken-over accounts), which does not supply it; the link is to the concepts section as a whole.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Proofing People: Methods and Their Trade-offs ¶4-¶5",
+      "quote": "The first of those acts were published on 4 December 2024, which puts the deadline at the end of 2026",
+      "finding": "First reader had to re-read both wallet paragraphs to sort out which clock (24 months after entry into force, publication date, 36 months after the implementing acts) applies to whom.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "In Practice: Levels at the Moment of Risk ¶6",
+      "quote": "Under the new policy, an L2 account younger than 30 days that sends a message containing a link to a domain outside Veldmark's allow list has the message held for a risk check",
+      "finding": "Second reader met 'the new policy' as if already familiar; the link-holding rule is introduced for the first time inside the replay.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "Identity for the person *receiving* sensitive data matters as much as identity for the person posting a listing.",
+      "finding": "Second reader found a new principle (identity of the receiver of sensitive data) introduced late in the vertical commentary without preparation; the spec places this idea there.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "A green tick for phone confirmation in one brand, for an e-mail confirmation in another, for an ID check in a third, for a dealer contract in a fourth and for a VAT number checked once in a fifth.",
+      "finding": "Second reader tried to map the five meanings back to Veldmark's four-brand table before realizing the list is generic.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5/transition_in",
+      "draft_locus": "In Practice: The Group Identity Question ¶6",
+      "quote": "Linking the brands' existing accounts into Veldmark ID, like any group identity program, opens a second: **pre-hijacking**.",
+      "finding": "Second reader re-read to parse what opens the second back door; the interposed clause 'like any group identity program' interrupts the sentence, and the recovery callback is two sections back.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term (axes, NIST assurance, L0-L5, B1-B3, KYB/KYC, claim record, badges, passkeys, synced passkeys, posture, recovery assurance, pre-hijacking, bank eIDs, document and liveness, EU wallet, pairwise identifiers, controller per brand, separability) is defined at or before first substantive use; DAC7, VIES and DMS are glossed. Safe Deal, which both flow readers found unexplained (A1, B4), is on audience.already_knows (Veldmark's cast and Safe Deal from earlier chapters), so it is not a failure for the declared audience.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a puzzling scenario (marketplaces answer the identity question twice, badly) and a thesis; none of placeholder, restated question, dictionary, dawn of man or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Does not open with 'in conclusion', adds no new subtopic or body evidence; the last paragraph is the declared hand-off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Joins the two opening facts into one failure (no record of what Veldmark knew) and names who relies on the record: buyer, regulator, owner.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Aisha's two facts: the green tick for a phone number and nothing joining the brands.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted every section in order (scene, three axes, levels and badges, claim-based service, takeover and recovery, proofing methods with the EU wallet, group question, Barcelona/Motorvane/Femke, closing sections), the evidence (Veldmark plus NIST, FIDO, Mercari, FINN, Schibsted, EU law) and a declarative tone; only Femke's case was guessed as takeover rather than a badge.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer names claims with type, method, source, attributes, assurance, verified/expiry and status; derived L0-L5 levels; scoped badges revoked on claim expiry or posture change; expiring business claims re-checked every 90 days; levels at risky actions (payout change, rental publication, payouts) not at sign-up; one identity with brand profiles, pairwise IDs, controller per brand and export. Contact and trading are covered by the general step-up rule rather than named.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer: no general obligation; acceptance only where law or contract requires strong user authentication, from 36 months after the implementing acts, small and micro enterprises exempt; VLOPs must accept and no classifieds/real-estate/automotive marketplace designated as of October 2026; good fit for L4 and B-ladder (DSA electronic identification, selective disclosure); on the roadmap, off the critical path.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/4",
+      "draft_locus": "In Practice: The Group Identity Question ¶1",
+      "quote": "Schibsted's shared account, the longest-running public example of a marketplace group identity, shows what users feel when the group splits.",
+      "finding": "All other company statements (Mercari 2026, FINN 2024/2025 updated 2026, Adyen n.d., Sudhodanan and Paverd 2022, Integrity Institute for Ofcom 2026) carry dated sources and the Schibsted/Vend internal reading is in the INFERENCE, NOT DOCUMENTED callout; but the superlative 'longest-running public example' about Schibsted carries no source (the following FINN citation supports only the shared login).",
+      "fault": "draft",
+      "severity": "minor"
+    }
+  ]
+}

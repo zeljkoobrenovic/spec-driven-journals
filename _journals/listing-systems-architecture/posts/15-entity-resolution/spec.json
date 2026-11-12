@@ -1,0 +1,1735 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "entity-resolution",
+  "journal": "listing-systems-architecture",
+  "part": "part-3",
+  "title": "One Property, Three Listings: Duplicates and Entity Resolution",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the entity-resolution entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p05, the table leads p47 and p49, and the synthesis paragraph p60.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The five kinds of duplicate and which call for enforcement and which for clustering, and the real-world entity per vertical (property, vehicle, rarely goods).",
+        "The matching pipeline (blocking, pairwise scoring, clustering, an entity registry with stable identifiers and lineage, online and batch) and the merge policies that decide what each audience sees."
+      ],
+      "believe": [
+        "The cluster identifier is a product contract with an owner, not a model output, and the representative-listing rule is a ranking decision that payment must not silently decide."
+      ],
+      "can_do": [
+        "Design or review an entity-resolution capability and say who owns each entity, threshold and dispute.",
+        "Set the legal boundary of which sources a matcher may read, and choose the numbers to watch."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a repost case and a multi-agency case, the reader assigns each to its action and owner and describes what buyers see in the second.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A private seller reposts the same bike every two days, and three agencies each list the same flat at slightly different prices. Using only this chapter: what is the action and who owns it in each case, and what does a buyer searching for the flat see?",
+        "expected": "The repost is abuse: enforcement by the trust-and-safety owner, with a statement of reasons and an appeal. The flat is a legitimate duplicate: the three listings cluster into one canonical property with a stable ID owned by the listing data domain; search shows one card chosen by a published representative rule (completeness and media quality, not payment) with 'also listed by' the other agencies, each one click away; alerts and counts report one property; disputes feed back as labels. The matcher reads only what each listing carries as published."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Five kinds of duplicate; real-world identity by vertical, and vertical differences; the matching pipeline from blocking, scoring and clustering to an entity registry, online and batch; merge policies, the representative listing and Idealista's duplicate control; resolving the Lyon apartment and the same machinery pointed at abuse; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: public company sources, standards and research, and the fictional Veldmark's Lyon apartment listed by three agencies."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a nightly job that renumbers groups and a result page whose header counts listings, the reader names what breaks and where the cluster identifier must live.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A portal's nightly deduplication job writes a fresh group number onto each listing's search document every night, and its collapsed result page shows 1,000 cards under a '2,400 results' header. A reviewer separated two flats last week; this morning they are grouped again. Using only this chapter: what is wrong, and what would you change?",
+        "expected": "The grouping lives only in the search index and is not stable: an entity registry outside search should own durable cluster IDs, keep them across runs, publish merges and splits with lineage, and store the reviewer's 'not the same' decision as a constraint the next run must respect. Collapsing does not change the hit count or facets, so counts must come from a property-level document (or the page decides what a result is and counts that)."
+      }
+    ],
+    "audience": {
+      "who": "Chief and principal architects, search and data leads, and product directors of classifieds, real-estate and automotive marketplaces who face duplicate complaints from buyers or agencies, or who are building a property or vehicle registry.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "From earlier chapters: Veldmark and its brands, the listing aggregate and its lifecycle, normalization and enrichment (canonical addresses, decoded VINs), perceptual image hashes from the media pipeline, H3 cells from the location chapter."
+      ],
+      "does_not_know": [
+        "Record-linkage vocabulary: blocking, pairwise scoring, Fellegi-Sunter, MinHash and SimHash, connected components, chaining, survivorship.",
+        "Search-engine field collapsing and its counting limits.",
+        "French real-estate specifics: T3, DPE, fees-included prices, the Base Adresse Nationale and the RNB."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do you recognize that several listings describe the same thing, and what do you do about it?",
+    "claim": "'Duplicate' names two problems with opposite answers: reposts, freshness gaming and stolen listings are abuse to enforce against, while several agencies or channels listing one flat or car is legitimate supply to cluster for presentation; candidates found by blocking are scored pairwise, with automatic links above a threshold and a gray zone sent to human review, and the clustered listings resolve to an entity that outlives them, a property or a vehicle (goods mostly have none, so none should be invented), recorded with a stable identifier and merge-and-split lineage by a named owner, and the representative listing is chosen by a published rule governed like ranking, which payment does not silently decide, using only what each listing carries as published.",
+    "disputed_by": "The common practice of treating every duplicate as noise for one nightly deduplication job to hide, with the matcher's output used directly as the grouping and the first or highest-paying listing shown; and, in a group, the temptation to match on whatever data the group holds, including its own SaaS customers' records.",
+    "so_what": "A Chief Architect who accepts this shares the matching machinery across brands while each vertical owns its entity model, names an owner for each entity type (canonical property, abuse clusters, cross-feed merges), writes the legal boundary of linking into the matcher's input contract, and tracks listings per entity, precision and recall on a labeled sample, gray-zone volume, cluster churn and dispute rates.",
+    "how_why": "Hearthly France's 1.9 million live listings describe about 1.12 million properties, so buyers saw three cards and received three alerts for the Lyon flat and Valuo's price history counted three properties for one sale, while agencies complained of favoritism. Resolved, the flat is one card with all three agencies reachable; in Veldmark's illustrative first quarter, Lyon pages show 31% fewer cards and Lyon sales alerts fall 24% with no fall in click-through, at 98.6% precision and 91% recall on 4,000 labeled pairs. Using Keybridge's richer data would raise the match rate and lose the trust of every agency that uses Keybridge to publish to competitors.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "'Duplicate' names two problems: reposts, freshness gaming and stolen listings are abuse to enforce against under moderation rules, while several agencies or channels listing one flat or car is legitimate supply to cluster for presentation; one detector can serve both, but actions, owners and appeals stay separate."
+      },
+      {
+        "id": "S2",
+        "claim": "Resolution reaches as far as the vertical's real-world entity: a property or a vehicle outlives its listings and can be modeled as its own record, while goods mostly have no such entity, so none should be invented."
+      },
+      {
+        "id": "S3",
+        "claim": "Matching is blocking for recall, calibrated pairwise scoring with automatic links above a threshold and a gray zone for human review, and clustering guarded against chaining, run cheaply online at publication and globally in batch."
+      },
+      {
+        "id": "S4",
+        "claim": "The cluster identifier is a product contract, not a model output: an entity registry outside the search index keeps it stable with merge-and-split lineage, stores human decisions as constraints, ties cluster state to the members' lifecycle, and has a named owner per entity type."
+      },
+      {
+        "id": "S5",
+        "claim": "What each audience sees is a merge policy chosen per audience, and the representative listing is chosen by a published rule governed like ranking, which payment does not silently decide."
+      },
+      {
+        "id": "S6",
+        "claim": "The matcher reads only what each listing carries as published, the legal boundary of linking is written into its input contract, and the capability is governed by a few watched numbers: listings per entity, precision and recall, gray-zone volume, cluster churn and disputes."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Resolves the clean records into the things actually for sale, giving search, alerts and valuation stable entity identifiers to count and collapse.",
+    "supports": [
+      "P3-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "chronological",
+        "applies_to": "the matching pipeline and the Lyon walk-through, which follow a listing stage by stage from blocking to presentation"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "the Lyon apartment and the abuse cases, which test the model on Veldmark"
+      }
+    ],
+    "rationale": "The scene ends with Ingrid's four questions and the body answers them in the order each answer is needed. What the thing is comes first, in three steps: which kind of duplicate (because the action and owner depend on it), which real-world entity the vertical offers (because matching needs a target), and how duplicates behave in each vertical, placed beside the identity table it extends so the two comparisons are read together. Who decides that two listings are the same comes next, as the matching pipeline and the registry that makes its decisions stable and disputable. What each audience sees can only be stated once clusters exist, so merge policies follow the pipeline. The Lyon apartment then runs the whole model with numbers, and the abuse cases show the same detectors under the enforcement policy the kinds section set apart. Trade-offs, failure modes, the Chief Architect's decisions and review questions are judgements about a model the reader has now seen. Moving merge policies before the pipeline would use clusters and representatives before they exist; moving the Lyon case earlier would show thresholds and registry IDs before they are defined. Kinds come before entities because the enforcement kinds never resolve to an entity: put the other way round, the reader would try to resolve reposts and stolen copies to a property. The abuse cases sit in the practice section, not beside the kinds, because they show the same detectors and registry already described, which the kinds section could only name. The judgement sections run from options (trade-offs) to what goes wrong (failure modes), to the decisions that prevent it (Chief Architect's view) and the questions that test them; the decisions answer the failure modes, so they must follow them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A private seller reposts a bike every two days, a dealer's car arrives through two feeds, three agencies each publish one flat, and a fraudster copies a real rental 35% cheaper; on a result page all four look the same: one thing appears more than once."
+    },
+    "bridge": {
+      "from_reader_world": "Normalization and enrichment left every listing with a canonical address, a decoded VIN where one exists and image hashes, so listings can now be compared.",
+      "to_topic": "The comparison shows that many listings describe the same thing, and the reader must decide what a duplicate is before deciding how to find it."
+    },
+    "thesis_statement": {
+      "text": "'Duplicate' names two problems with opposite answers, enforcement for abuse and clustering for legitimate copies; listings resolve to an entity that outlives them where the vertical has one; and the cluster identifier is a governed product contract with a published representative rule, not a model output.",
+      "placement": "KEY POINTS callout (all three bullets); paragraph p02 states the two-problems claim in the body."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p05, which lists the sections in order.",
+      "promises": [
+        {
+          "promise": "The Lyon apartment that three agencies listed on Hearthly, and Ingrid's four questions.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Five kinds of duplicate and which call for enforcement or clustering.",
+          "kept_in": [
+            "kinds"
+          ]
+        },
+        {
+          "promise": "What real-world thing a listing resolves to in each vertical, and how duplicates differ by vertical.",
+          "kept_in": [
+            "identity",
+            "verticals"
+          ]
+        },
+        {
+          "promise": "The matching pipeline from blocking, scoring and clustering to an entity registry, online and batch.",
+          "kept_in": [
+            "pipeline"
+          ]
+        },
+        {
+          "promise": "Merge policies, the representative listing and Idealista's duplicate control.",
+          "kept_in": [
+            "merge"
+          ]
+        },
+        {
+          "promise": "The Lyon apartment resolved, and the same machinery pointed at abuse.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Trade-offs, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "trade-offs",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Normalization and enrichment made listings comparable, and the comparison shows that many of them describe the same thing; this chapter resolves them, runs its online checks inside the publication pipeline, and gives search, alerts and valuation the cluster identifiers they read.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Canonical address, decoded VIN and image hashes from normalization-and-enrichment; online checks inside publication-pipeline; search, alerts and valuation as readers of cluster IDs.",
+            "shows": "Places the chapter between the link that made comparison possible and the links that consume its output."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Duplicates come in different kinds that look the same on a result page, and treating them as one problem is the most common mistake in this area.",
+        "function": "claim",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A seller reposting a bike every two days; one dealer car through a DMS feed and an aggregator; three agencies with mandates on one flat; a fraudster copying a real rental priced 35% lower.",
+            "shows": "Four causes with different intent produce the same symptom, so the symptom cannot decide the action."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Many listings describe the same thing.",
+          "introduces": "The different kinds behind that one symptom.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter covers two capabilities, duplicate detection and entity resolution, and owns the terms duplicate detection, entity resolution and canonical entity (in real estate, the canonical property).",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Different kinds of duplicate.",
+          "introduces": "The two capabilities that deal with them and the terms the chapter owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Neighboring chapters own the feeds, the normalization, the image hashing and the fraud response, and this chapter owns the matching, the clusters, the canonical entity and the policies for what each side of the market sees.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What this chapter owns.",
+          "introduces": "What neighbouring chapters own instead.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from the Lyon flat and states its four questions, then maps each to the sections that answer it (what is duplicated: kinds, real-world entity and vertical differences; who decides and who can dispute: the pipeline and its registry; what each audience sees: merge policies with Idealista), then the Lyon flat resolved and abuse, then the judgement sections, and names its evidence: public sources, standards, research and the fictional Veldmark.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The four questions mapped to the sections in order; the Lyon apartment as the running example; the kinds of evidence, with Veldmark named as fictional.",
+            "shows": "Lets a reader of the opening predict the sections and the evidence."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The scope of the chapter.",
+          "introduces": "The order in which it is covered and the running example.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Lyon Apartment, Three Times",
+      "controlling_idea": "One Lyon flat listed by three agencies shows the cost of unresolved duplicates for buyers, alerts, market numbers, valuation and agencies, and Hearthly's existing nightly job leaves four questions unanswered.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5"
+        ],
+        "how": "Shows legitimate duplicates harming every audience at once and frames what the capability must decide."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The kinds of duplicate and the chapter's map.",
+        "introduces": "The running example: one flat, three listings.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The three listings arrive, then what buyers and agencies saw before 2027, then the scale of the problem and the CEO's demand, then the existing job and Ingrid's questions that organize the chapter."
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "In May 2027 Hearthly France receives three listings for one 68 m² T3 flat in Lyon 7e from three agencies through three channels, at two prices because French sale prices include different agency fees.",
+          "function": "description",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "T3, 68 m², DPE D, Lyon 7e; Agence Rhône Habitat (14 branches) via Keybridge at €389,000; two other agencies via two software vendors at €389,000 and €395,000.",
+              "shows": "One property reaches the portal as three independent, legitimate listings.",
+              "source": "Scenario ledger, Lyon apartment; Veldmark is fictional"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Before 2027 the flat appeared as three cards, three alerts, three listings in the market report and three properties in Valuo's price history, and agencies complained of favoritism both ways.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three cards with three photo sets; three alerts per saved search; three properties in Valuo's history for one sale; complaints about rank order and about a lower-fee copy.",
+              "shows": "Unresolved duplicates harm buyers, numbers, valuation and agencies at the same time.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three listings of one flat.",
+            "introduces": "What each audience saw as a result.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The flat is typical: 1.9 million live listings at Hearthly France describe about 1.12 million properties, and Claire Fontaine, Hearthly's CEO, asks for buyers to see real supply without agencies seeing favoritism.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1.9 million live listings, about 1.12 million properties, 1.7 listings per property.",
+              "shows": "The problem is systemic, not one flat.",
+              "source": "Scenario ledger"
+            },
+            {
+              "kind": "quotation",
+              "what": "Claire Fontaine: 'Buyers think we have more flats than we do, and agencies think we pick favorites. Fix the first without making the second worse.'",
+              "shows": "States the two constraints the design must satisfy together.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One flat's effects.",
+            "introduces": "The scale across Hearthly France and the CEO's demand.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Hearthly's nightly job already groups some listings by exact address, and Ingrid answers it with four questions, in the order the chapter answers them: what is duplicated, who decides and how often wrongly, who can dispute a grouping, and what each audience sees.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Julien Marchand's nightly exact-address grouping job; Ingrid's four questions.",
+              "shows": "Turns the scene into the chapter's questions.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The CEO's demand.",
+            "introduces": "The existing partial answer and the questions that judge it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kinds",
+      "heading": "Five Kinds of Duplicate",
+      "controlling_idea": "Five kinds of duplicate differ in who creates them and why, so detection can be shared but actions, owners and legal regimes cannot.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Establishes the split between enforcement and clustering."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Ingrid's first question: what is being duplicated.",
+        "introduces": "The first half of the answer: which kind of duplicate.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The five kinds first, then the near-misses that are not duplicates, then the rule that follows (shared detection, separate decisions), then the legal reason the decisions must stay separate."
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "The word 'duplicate' covers five situations that differ in who creates them, why, and what the marketplace should do.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Same-seller repost, freshness relisting, cross-feed duplicate, multi-agency listing, stolen or cloned listing: example, creator and motive, signals, right action, owning context.",
+              "shows": "Each kind has a different action and owner, from silent merge to enforcement."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Two further cases look like duplicates but are not: a new offer on the same entity, which needs the link but must not be hidden, and similar but distinct entities, which cause most wrong merges.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "One flat for sale and for rent, or a car resold two years later; two identical flats on different floors, two white 2021 Golfs at one dealer.",
+              "shows": "Marks the boundary of what clustering may hide."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The five kinds of duplicate.",
+            "introduces": "Cases that resemble duplicates and are not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Detection can be shared but decisions cannot, because the same machinery finds reposts, multi-agency clusters and stolen copies and only the relationship between the sellers separates them.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Veldmark's design note: same seller, same photos is spam or ranking abuse; different seller, same photos is a fraud signal or a legitimate multi-agency listing.",
+              "shows": "Seller, device and organization keys decide the action, not the similarity.",
+              "source": "Illustrative"
+            },
+            {
+              "kind": "source",
+              "what": "OLX's 2019 duplicate pipeline generated candidates with those keys.",
+              "shows": "A public design used the same separation.",
+              "source": "PyCon DE 2019"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: one detector feeds a junction on seller keys; abuse to enforcement, legitimate listings to one property card.",
+              "shows": "Shows shared detection and separate decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five kinds and the near-misses.",
+            "introduces": "The rule that follows from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The two families of action sit under different legal regimes, so one 'dedup' flag cannot meet either: removing or demoting an abusive duplicate owes a DSA statement of reasons, while choosing the card for a cluster is a ranking parameter with transparency duties.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "DSA Art. 17: statement of reasons for restrictions, including demotion.",
+              "shows": "Enforcement on duplicates carries a legal duty to the seller.",
+              "source": "Regulation (EU) 2022/2065"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Decisions cannot be shared.",
+            "introduces": "The legal reason they must stay apart.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "identity",
+      "heading": "What Is the Thing? Real-World Identity by Vertical",
+      "controlling_idea": "How far resolution can go depends on the vertical's real-world entity: a property or vehicle outlives its listings, goods mostly have no entity, and none should be invented.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Defines the entity each vertical resolves to."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Which kind of duplicate.",
+        "introduces": "The second half of 'what is duplicated': same what?",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The comparison table first, then the verticals in falling order of what resolution can achieve: real estate with public references and Zillow as the documented example, vehicles with the VIN, and goods with no entity."
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Entity resolution must first answer 'same what?', and the answer per vertical decides how far resolution can go.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Real estate, automotive, general goods, catalog goods and jobs: entity, identifiers, reliability, what ER can achieve.",
+              "shows": "Only property and vehicle support a durable entity; goods support near-duplicate detection only."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Real estate is where the entity matters most because the property outlives every listing, and national address and building registries narrow candidates to a building but never identify the unit inside it.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OS Open UPRN (about 40 million addressable locations in Great Britain); France's Base Adresse Nationale and the RNB's ID-RNB; US county parcel numbers.",
+              "shows": "Public references exist per country but stop at the building.",
+              "source": "Ordnance Survey, adresse.data.gouv.fr, RNB, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's verdict for real estate.",
+            "introduces": "Why the property matters and what public references can and cannot do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Zillow is the documented example of a property-first model at scale, though its matching method is not public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Zillow's 10-K for fiscal 2025 (filed 2026-02-11): a 'living database' of about 173 million US homes with user updates to more than 46 million property records.",
+              "shows": "A property record can be the system of record that listings and valuation hang off.",
+              "source": "Zillow Group 10-K, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The property as a durable entity.",
+            "introduces": "A public company built on one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Vehicles are easier when the VIN is present, and the work lies in listings without one and in protecting the VIN where it is personal data.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Same VIN at the same time is a cross-feed or multi-site duplicate; same VIN two years later is a new seller of the same car.",
+              "shows": "The VIN makes the entity explicit."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Real estate, where identity must be inferred below the building.",
+            "introduces": "Vehicles, where an identifier exists.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "General goods have no entity to resolve to, so none should be invented and duplicate detection there only protects the result page from abuse.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "eBay mandated catalog association for listings in 2018-2019 and later relaxed it.",
+              "shows": "Forcing used items onto a product catalog fails.",
+              "source": "See attribute-schemas"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Verticals with an entity.",
+            "introduces": "The vertical without one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Next to the identity comparison, the dominant duplicate kind, signals, main action and risk differ by vertical, and each vertical has its own trap.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S1"
+        ],
+        "how": "Shows the dominant kind and the action differ per vertical, completing the answer to what is duplicated."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The identity table just above, which compared what each vertical resolves to.",
+        "introduces": "How duplicates behave in each vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "The identity table compared what each vertical resolves to; this table compares how duplicates behave per vertical: enforcement dominates general classifieds, clustering real estate, silent merges automotive.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven dimensions across four verticals.",
+              "shows": "Enforcement dominates in general classifieds, clustering in real estate, silent merge in automotive."
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "In general classifieds, a perceptual-hash detector without an allowlist of stock images floods moderators with false matches.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Stock and manufacturer photos are common in categories such as new phones or furniture.",
+              "shows": "Legitimate shared images look like copies to a hash detector."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The vertical comparison.",
+            "introduces": "The general-classifieds trap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "In automotive the VIN tempts teams to skip human review of uncertain matches, and the cost appears when a dealer group lists one car at two prices and the merge shows the wrong one first.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A dealer group lists one car at two sites with different prices.",
+              "shows": "A strong identifier still leaves the representative choice to be governed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "A vertical-specific trap.",
+            "introduces": "The automotive trap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pipeline",
+      "heading": "The Matching Pipeline",
+      "controlling_idea": "Blocking, pairwise scoring and clustering propose links, and an entity registry turns them into stable identifiers with lineage that remember human decisions and follow the listing lifecycle, online at publication and in batch.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Describes how links are proposed and how the registry turns them into stable, owned identifiers."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "What the thing is: the kind of duplicate, the vertical's entity and how duplicates behave per vertical.",
+        "introduces": "Ingrid's second question: who decides that two listings are the same, and how often wrongly.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stages in the order a listing passes through them: candidate generation, scoring, the thresholds that route scores, clustering, then the registry that stabilizes clusters, the canonical record it holds, how it keeps human decisions and lifecycle, and finally the two speeds at which the whole runs."
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The pipeline that answers who decides is a reference architecture inferred from public algorithms and the few public marketplace designs, shown whole in Figure 2, ending in a policy engine, a set of rules rather than a model, that routes each cluster by duplicate kind to enforcement or presentation.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: blocking, scoring and clustering propose links; the registry owns identifiers; a policy engine maps clusters to actions; human decisions feed back.",
+              "shows": "Gives the reader the whole pipeline before the stages."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Blocking makes comparison feasible by generating candidate pairs from several cheap, high-recall keys, any one of which makes a pair a candidate.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1.9 million live listings at Hearthly France is about 1.8 trillion pairs.",
+              "shows": "All-pairs comparison is impossible.",
+              "source": "Scenario ledger; arithmetic"
+            },
+            {
+              "kind": "example",
+              "what": "Keys: category and place (H3 cell, price band), normalized address and building ID, hard identifiers, MinHash and SimHash text fingerprints, PDQ image-hash bands, account keys.",
+              "shows": "Each key catches a different kind of match.",
+              "source": "Broder 1997; Manku et al. 2007; Meta 2019 and PDQ docs"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The pipeline as a whole.",
+            "introduces": "Its first stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Blocking is a recall decision, because a pair that shares no key is never compared and a seemingly safe key can silently split true matches.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Exact-address blocking misses 'rue de Marseille' without a number; H3 blocking misses listings near a cell boundary unless neighbors are included.",
+              "shows": "Missing keys cause silent misses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The blocking keys.",
+            "introduces": "What choosing them decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each candidate pair is scored from field-level comparisons, and two families of scorer are in common use.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Candidate pairs.",
+            "introduces": "The next stage: scoring them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Probabilistic record linkage in the Fellegi-Sunter tradition estimates field weights without labels and is a good first scorer because a reviewer can understand its weights.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Splink documentation: 'no training data is required'; a million records on a laptop in about a minute; Spark for 100 million or more.",
+              "shows": "An open, scalable implementation exists.",
+              "source": "Splink, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Two families of scorer.",
+            "introduces": "The first family.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Supervised pairwise classifiers learn from labeled pairs, and OLX's 2019 design is still the best public classifieds example of one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Grigorev, PyCon DE 2019: candidates by category, city, seller, IP, device and image hashes; a classifier on price, location, title and image similarity; MD5, dHash and MobileNet embeddings with LSH in Elasticsearch; about 10 million listings a day; crops and flips break hashes.",
+              "shows": "The supervised shape works at classifieds scale, with known limits; the design is seven years old.",
+              "source": "PyCon DE, 2019"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Scoring without labels.",
+            "introduces": "Scoring with labeled pairs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Calibrated scores map to three bands, automatic link, no link and human review, whose error is measured as precision and recall on a labeled sample, and the gray zone's width is a budget decision.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Two ways to produce a score.",
+            "introduces": "What the score must be for thresholds to mean something.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Pairs are not clusters: connected components chains weak links into giant clusters, so clusters must be internally consistent and size-limited.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A chain of plausible links can merge a whole building; a property rarely has more than four or five agencies at once.",
+              "shows": "Size and consistency limits catch wrong clusters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Linked pairs.",
+            "introduces": "Grouping them into clusters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The entity registry keeps cluster identifiers stable across runs and records merges and splits as lineage events that consumers subscribe to.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Saved properties, price-history charts and valuation series need IDs that do not jump nightly; merges keep the older ID, splits keep it on the larger part.",
+              "shows": "Stability is a consumer contract, not a clustering property."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Clusters that change every run.",
+            "introduces": "The component that keeps their identity stable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The registry also holds the canonical entity, built by survivorship rules from its members, which never overwrites the seller's listing.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Surface from the energy diagnostic, else the most common professional value; address from the most precise geocode; valuation and analytics read the canonical record, the listing page shows the seller's statement.",
+              "shows": "Keeps the seller's legal statement separate from the platform's reconciled view."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Stable identifiers in the registry.",
+            "introduces": "The canonical record it also holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Ingrid's third question is answered here by showing the dispute path: reviewers decide gray-zone pairs in the review queue, an agency or seller that finds its listing grouped with a different property disputes the link, the entity's owner answers and a reviewer checks the pair, and a human 'not the same' decision is stored as a constraint, not only as a training label, or the nightly job reunites the pair.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: a listing's cluster membership lifecycle; rejected or disputed pairs are suppressed; unpublished listings detach.",
+              "shows": "Shows human decisions as durable state and membership following the lifecycle."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What the registry keeps.",
+            "introduces": "Human decisions as part of what it keeps.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Cluster membership follows the listing lifecycle, so a cluster whose last live listing is gone is no longer on the market, or it becomes Ghost Inventory.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Human decisions as durable registry state.",
+            "introduces": "The listing lifecycle as the other input that changes membership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Resolution runs online at publication for cheap, local checks inside the publication budget and in nightly batch for global clustering and repair.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Online: exact and perceptual image hashes against recent listings, same-seller text near-duplicates, VIN and partner-reference lookups. Batch: global blocking and clustering, cross-seller and cross-feed clusters.",
+              "shows": "Each speed catches what the other cannot within its budget."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The stages and the registry.",
+            "introduces": "When they run.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "merge",
+      "heading": "Merge Policies: What Each Audience Sees",
+      "controlling_idea": "A cluster changes something different for each audience, so the policy is chosen per audience, and the representative listing is a published ranking parameter that payment does not silently decide.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "States the per-audience policies and the representative rule."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Stable clusters with owners.",
+        "introduces": "Ingrid's last question: what each audience sees.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "All audiences first, then the two decisions inside search presentation: how collapsing counts, then which listing represents the cluster, then a public product that made those choices."
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "Choosing what a cluster changes is product policy per audience, and the common mistake is to hide the others everywhere.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Search results, listing page, saved-search and price-drop alerts, agency view, valuation, market metrics, lead routing: options and recommended default.",
+              "shows": "Each audience needs a different default; leads are never re-routed."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Collapsing in the search engine shows one card per cluster but leaves totals and facets counting listings, so counts must come from a property-level document or the page disagrees with itself.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic's collapse documentation: total hits count all matching documents, aggregations are not collapsed, inner_hits adds a query per hit, no scroll.",
+              "shows": "The engine's own limits create the count mismatch.",
+              "source": "Elastic, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The search-results policy.",
+            "introduces": "How it is implemented and what it costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "When a cluster collapses, the choice of representative listing rewards different agency behaviors depending on the rule.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Lowest price rewards the lowest fee; earliest rewards publishing first; quality score rewards good photos and complete attributes; paid turns deduplication into an auction.",
+              "shows": "The representative rule shapes supplier behavior."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One card per cluster.",
+            "introduces": "Which listing that card shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Because each option rewards a behavior, the representative rule should be a published ranking parameter decided by product and legal, disclosed when payment affects it, as P2B and the DSA require ranking parameters to be described.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The EU Platform-to-Business Regulation and the DSA require the main ranking parameters to be described to business users and consumers.",
+              "shows": "The representative rule falls under ranking transparency.",
+              "source": "See marketplace-regulation"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Each rule rewards a behavior.",
+            "introduces": "Who must decide it and under which obligations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Idealista's 2021 duplicate-control tool shows a cluster presented as buyer information, with agents limited to their own properties and a daily cadence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Idealista, April 2021: groups ads for one property by several agencies or individuals, including on other portals; shows duplicates, price changes, removals; push notifications; agents see only their own properties after publication; updated daily.",
+              "shows": "A public product made the same per-audience choices; daily updates suggest batch resolution.",
+              "source": "Online Marketplaces, 2021-04-11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The per-audience policies and the representative rule.",
+            "introduces": "A documented product that applied such choices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Resolving the Lyon Apartment",
+      "controlling_idea": "The Lyon flat run through the pipeline becomes one governed property card with every agency reachable, matched only on published data, and the same detectors serve enforcement on Tradeyard and against the Barcelona ring.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5",
+          "S6",
+          "S1"
+        ],
+        "how": "Tests the whole model on Veldmark with numbers."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The pipeline, the registry and merge policies.",
+        "introduces": "The Lyon flat run through them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The flat in the order of the pipeline (listings, blocking, scoring, clustering and review, presentation), then the input constraint on the matcher, placed after presentation because it is the price of the result just shown (a higher match rate that would cost agencies' trust) rather than a pipeline stage, then the first-quarter results; then the same detectors under the enforcement policy, on reposts and on the stolen-photo ring."
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "The section follows the Lyon flat through the pipeline Hearthly built in 2027 and then the same detectors against abuse, with Veldmark's design and illustrative numbers.",
+          "function": "context"
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The three listings arrive over four days with matching facts but different channels, addresses, prices and photo sets.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Listings A, B, C: agency, channel, price fees included (€389,000, €389,000, €395,000), surface and rooms, address quality, DPE D, photos (6 of C's match A at PDQ distance below 20).",
+              "shows": "The evidence a matcher has, including the weak address on B.",
+              "source": "Illustrative; ledger figures"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The walk-through announced.",
+            "introduces": "Its input.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Blocking puts all three in candidate pairs through shared building, cell, type, price band and photo-hash bands, along with 41 pairs from neighbouring flats.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A and C share an address and building ID; B lacks a street number but shares the H3 cell, type, price band and five photo-hash bands; 41 other pairs.",
+              "shows": "Several keys rescue a listing with a weak address.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three listings.",
+            "introduces": "The first stage applied.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Scoring separates the three true pairs from the 41 others and places two pairs in the gray zone.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A-C 0.97, A-B 0.88, B-C 0.84, others below 0.3; automatic link at 0.92, gray zone 0.70-0.92.",
+              "shows": "Thresholds route the weaker true pairs to review.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Candidate pairs.",
+            "introduces": "Their scores and the thresholds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "A reviewer confirms the gray-zone pairs and the registry creates one cluster and one canonical property with reconciled attributes.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A-C links automatically; reviewer confirms A-B and B-C within the hour; address from A, surface from the DPE data, building ID from the address link.",
+              "shows": "Review and survivorship produce one canonical property.",
+              "source": "Illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two pairs in the gray zone.",
+            "introduces": "Review and the resulting cluster.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Search shows one card chosen by the published representative rule with every agency one click away; a lower price at one agency is an update on the known property, and alerts, valuation and price history count one property.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Representative by completeness and media quality (listing A); 'also listed by 2 other agencies, from €389,000'; leads to the agency contacted; C's drop reported as 'now €389,000 at a third agency'; Valuo €372,000-€401,000 once; three asking-price series on one property.",
+              "shows": "The merge policies at work for each audience.",
+              "source": "Ledger (Valuo estimate); illustrative"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: before, three cards, three alerts, triple count; after, one card, one alert, one count.",
+              "shows": "Shows the change for buyers and numbers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "One cluster.",
+            "introduces": "What each audience now sees.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The matcher may use only what each listing carries as published, because the March 2027 Keybridge decision bars Hearthly from Keybridge agency data, and the rule is enforced in the data path.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark's March 2027 decision: no Keybridge agency data used by Hearthly for ranking or sales targeting; access controls and an annual independent review.",
+              "shows": "Sets the legal and business boundary on matcher inputs.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A good result for buyers and agencies.",
+            "introduces": "Data that would raise the match rate and may not be used.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "After the first quarter, Ingrid's four illustrative numbers show fewer cards and alerts with no loss of click-through, high precision and recall, and disputes that become the best labels.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "31% fewer cards on Lyon pages; 24% fewer Lyon sales alerts with no fall in click-through; precision 98.6%, recall 91% on 4,000 labeled pairs; about 60 agency disputes a month, two thirds same-building wrong merges.",
+              "shows": "The capability delivers for buyers without hiding agencies, and disputes feed evaluation.",
+              "source": "Illustrative, kept local per decision log"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The design and its constraint.",
+            "introduces": "The results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "On Tradeyard the same detectors serve enforcement, blocking same-seller reposts and keeping the original creation date, because a marketplace that sells bumps and tolerates free reposts competes with itself.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Repost blocked at publication with a paid-bump offer; delete-and-recreate keeps the original creation timestamp.",
+              "shows": "The same detection under the enforcement policy.",
+              "source": "Illustrative; see listing-aggregate"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The machinery used for presentation at Hearthly.",
+            "introduces": "The same machinery used for enforcement at Tradeyard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The registry must record why listings were linked, because a stolen copy must never be shown as 'also listed by', as the Barcelona ring showed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "July 2027: 26 accounts, 180 fake rentals in Eixample with stolen photos, about 35% below market; hash matches fired from day one but went to a separate queue from price flags, and 11 photo-match items were closed as legitimate multi-agency duplicates before an analyst linked the cluster.",
+              "shows": "A link without its reason sends fraud to presentation.",
+              "source": "Scenario ledger; fraud-prevention"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Enforcement on reposts.",
+            "introduces": "Stolen copies as the other abuse case, and the requirement they add: the registry records why listings were linked.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Where duplicates are resolved, which scorer, how to cluster, how to present and who owns the entity are each a trade-off, and storing the cluster ID outside the search index is the one that decides most of the others.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Weighs the design options and fixes the system of record for clusters."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The model, tested on Veldmark.",
+        "introduces": "The choices behind it, with their alternatives.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Five choices shape an entity-resolution capability, and each option is right under some conditions and costs something.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Where resolved, scorer, clustering, presentation, entity ownership: options, when right, cost.",
+              "shows": "Lets the reader choose per condition rather than by default."
+            }
+          ]
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The trade-off that decides most of the others is where the cluster ID is stored: the registry is the system of record and search holds a copy, or the index becomes Search as System of Record.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Five choices.",
+            "introduces": "The one that decides most of the others.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Entity resolution fails in ten recurring ways, each with a concrete remedy.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Shows what breaks when each claim is ignored."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How the design should work.",
+        "introduces": "How it commonly fails.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "form": "list",
+          "controlling_idea": "The design commonly fails in ten ways: one flag for everything, giant clusters, unstable IDs, forgotten human decisions, counts that disagree with the page, a hidden auction in the representative rule, clusters that outlive their listings, an unmeasured matcher, forbidden data, and hashes kept forever.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale the Chief Architect shares the machinery, names an owner per entity, sets the legal boundary of linking, governs the representative rule as ranking and watches a few numbers.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the model into group decisions with owners."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions at group scale that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From what the group builds once (machinery) to who owns each entity, what inputs it may read, how the most sensitive policy is governed, and what to watch."
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Most failure modes are prevented by decisions taken once at group scale, and entity resolution raises five of them.",
+          "function": "transition"
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Common Ground should build the matching machinery once, while each vertical owns its entity model and policies.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five decisions.",
+            "introduces": "The first: what to share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Each entity type has a named owner who sets thresholds, answers disputes and signs off model changes, because a matcher without one is Set-and-Forget AI.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Canonical property: Hearthly's listing data domain; abuse clusters: the trust-and-safety platform under Aisha Rahman; cross-feed merges: ingestion.",
+              "shows": "Ownership follows the consequence of the action.",
+              "source": "Scenario ledger cast"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Shared machinery, vertical entities.",
+            "introduces": "Who owns each entity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Which sources may be linked is a data-protection and competition decision, made by the Group DPO with brand owners and written into the matcher's input contract.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Linking a Tradeyard Portugal flat with a Hearthly listing, or using Keybridge data at Hearthly; Lucía Ortega decides.",
+              "shows": "Inputs are a governance question.",
+              "source": "Scenario ledger cast"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Owners.",
+            "introduces": "The legal boundary of what they may link.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "The representative rule is governed as ranking: decided by product, legal and search together, published, and changed through the ranking experiment process.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The input boundary.",
+            "introduces": "The policy governance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "A small set of numbers, placed next to the feed-health dashboard, shows when the capability drifts.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Listings per entity (1.7 at Hearthly France); precision and recall; gray-zone volume and cost; cluster churn; dispute and overturn rates; share of listings resolved.",
+              "shows": "Sudden changes usually signal an upstream feed or enrichment change.",
+              "source": "Scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Governance of the rule.",
+            "introduces": "What to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions test a design against the chapter's claims.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns each claim into a question for a design review."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The decisions and numbers.",
+        "introduces": "Questions that check them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "form": "list",
+          "controlling_idea": "Ten questions check those decisions in a design review, from the action per duplicate kind to the sources the matcher may read.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Clean Supply to Live Supply",
+    "synthesis": "Ingrid's four questions turn out to be one: decide what a duplicate is before deciding how to find it. The kind of duplicate sets the action, the vertical's entity sets the target, the registry makes the matcher's decisions stable and disputable, and the published policies decide what each audience sees; a nightly job that groups by address answers none of these.",
+    "so_what": "Because search, alerts, valuation and pro reporting all count by the cluster identifier, governing it once is what lets them agree, and it is how Hearthly fixes Claire's first problem without worsening the second.",
+    "callback": {
+      "to": "Claire Fontaine's two sentences: buyers think there are more flats than there are, agencies think Hearthly picks favorites.",
+      "how": "The resolved Lyon flat answers both: one card for buyers, every agency one click away under a rule none can buy."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Separate enforcement from clustering, resolve to the vertical's entity, keep cluster IDs in an owned registry, and publish the representative rule."
+    },
+    "hand_off": {
+      "to": "publication-pipeline",
+      "relationship": "sequence",
+      "carries_over": "Ingestion, normalization and entity resolution, which bring a record in, clean it and match it, and entity resolution's online checks, which must run before visibility.",
+      "introduces": "The last link of the chain: the path from submission to visibility on every surface and back again, with its stages, latency budget and removal propagation."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the Lyon flat to the review questions.",
+      "introduces": "The answer to Ingrid's four questions and to Claire's demand.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p60",
+        "controlling_idea": "Ingrid's four questions reduce to deciding what a duplicate is before deciding how to find it, and the answer resolves Claire's demand: one card for buyers, every agency reachable under a rule none can buy.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4",
+            "S5"
+          ],
+          "how": "Shows how the claims fit together and answers the scene."
+        }
+      },
+      {
+        "id": "p61",
+        "controlling_idea": "Ingestion brought the listing in, normalization cleaned it and entity resolution matched it, and because the matcher's online checks must run before a listing goes live, the last link is the path from submission to visibility and back, the subject of the publication pipeline.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S3"
+          ],
+          "how": "Places the online checks inside publication."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The resolved supply.",
+          "introduces": "The publication pipeline as the last link.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Feed mechanics and partner reconciliation.",
+      "covered_in": [
+        "listing-ingestion"
+      ]
+    },
+    {
+      "topic": "Address, VIN and attribute normalization.",
+      "covered_in": [
+        "normalization-and-enrichment"
+      ]
+    },
+    {
+      "topic": "Perceptual hashing as a media capability.",
+      "covered_in": [
+        "media-pipeline"
+      ]
+    },
+    {
+      "topic": "Fraud investigation and enforcement after a stolen-listing match.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    },
+    {
+      "topic": "Index design for collapsed results and ranking algorithms.",
+      "covered_in": [
+        "search-architecture",
+        "ranking"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around five duplicate kinds and two action families (enforce vs cluster) rather than around algorithms, because the policy split is where real systems go wrong."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made the entity registry, not the search index, the system of record for cluster IDs; rejected a query-time-only collapse design as the recommended approach."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Keybridge neutrality decision as a constraint on matcher inputs, to show that ER inputs are a governance question."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the Lyon numbers (thresholds, precision 98.6%, recall 91%, dispute volumes) local and illustrative rather than adding them to the ledger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md not carried over as such: the journal entry's AC-1 to AC-3 replace them. 'Name the five kinds with action and owner' and the representative-rule criterion are covered by AC-1; 'explain blocking, scoring, clustering, registry, chaining, stable IDs' and 'field-collapsing count inconsistency' become the minor post-level AC-4; the property-versus-listing criterion is covered by the reverse outline of the identity section; the inventory criteria (Lyon numbers, tables, diagrams, Chief Architect's view, questions, dated sources) were dropped as contents rather than reader outcomes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 ESCALATE on spec-fault flow findings corroborated by both readers: the roadmap mapped sections to questions not yet stated, and the questions were answered in the order 1, 2, 4, 3; the pipeline promised an error rate it never gave. Changed paragraph ideas only: p09 asks the four questions in the order answered (dispute third, audiences last); p05 states the questions before mapping them; p25 says how error is measured; p19 describes the policy engine; p29 and the merge section's transition renumbered; p49 says what the vertical table adds. No reorder, no new units."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 ESCALATE on two spec-fault flow findings, corroborated by both flow readers: Ingrid's fourth question (who can dispute) had no signposted home, and the abuse cases sat under the Lyon heading unannounced. Under the brief's rule for spec faults, changed paragraph ideas only (no reorder, no new units): p05 maps each question to its sections and names the evidence; p29 states that it answers the fourth question; p37 announces the abuse cases; p19 explains Figure 2 and the policy engine; p53 ties the decisions to the failure modes; p46 opens on stolen copies as the second abuse case. Intent, thesis, role and journal criteria unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric verdict 'sound with notes'. Acted on: named Claire in p08 so the conclusion's callback has an antecedent; the post rationale now says why kinds precede entities, why the abuse cases sit in the practice section and why the judgement sections run in their order; the practice section's rationale explains the place of the Keybridge constraint. Notes not taken are in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added minor, post-level units not in the journal spec: a roadmap paragraph (p05) so the opening announces every section; one-sentence leads for Trade-offs (p47) and Vertical Differences (p49) so their tables belong to a unit; a synthesis paragraph (p60) with a callback to Claire's two sentences. Figure 3 moved from after p28 to after p29, the paragraph that cites it."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation, 2026-11-12 (round-3 spec-fault finding, corroborated by both flow readers): moved Vertical Differences (p49-p51) to follow 'What Is the Thing?', so the two vertical comparisons are read together. Dropped its 'Resolvable entity' row, which repeated the identity table (no fact lost); p49 now leads from the identity table; p51 no longer uses 'gray zone' and 'representative' before they are defined. Updated the pipeline section's transition_in, the roadmap (p05 and promises) and the flow rationale. AC-2's expected text, copied from the journal spec, still lists vertical differences among the closing sections; replacement text reported to the orchestrator as a journal-spec edit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation, 2026-11-12: p29 now shows the dispute path from what the chapter already says (reviewers decide gray-zone pairs; an agency or seller disputes a wrong link, the entity's owner answers, a reviewer checks the pair, the registry keeps the outcome as a constraint)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation, 2026-11-12: Multiplier Creep (p35) and Search as System of Record (p48) are now named as the book's failure patterns and glossed with the glossary definitions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Restored under the author's delegation, 2026-11-12 (brief rule 7): the IN THIS CHAPTER callout, trimmed in the first pass to fit the limit, is back to its published wording; length.max_words raised from 6,994 to 7,200 (+2.9%, within the 10% allowed by rule 2) to make room for it and the fixes above."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept under the author's delegation, 2026-11-12 (rule 8): the published-data-only rule (p43) stays in the Lyon practice section rather than moving into the pipeline section. The pipeline section is a company-neutral reference architecture, p43 is a Veldmark decision tied to Keybridge and the Lyon flat, and its round-3 finding was already fixed by the rewritten opener."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor round-3 findings fixed cheaply, 2026-11-12: 'cluster' glossed in p01; roadmap p05 split into shorter sentences; p42 corrected to the arithmetic (listing C's drop to EUR 389,000 does not lower the property's lowest asking price, so it is an update, not a price-drop alert). Not changed: p31's forward link to the publication budget (the next chapter owns it), p06's channel sentence (the table in p38 clears it), the first-person 'rule I recommend' in p35 (house style allows it)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken, kept as published under the author's delegation, 2026-11-12 (rule 8): folding p46's 'records why listings were linked' into p27; cutting p13's pointer to the representative rule; merging Zillow (p16) into p15; adding body paragraphs for failure mode 10 and the jobs column."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over questions from spec.md closed under the author's delegation, 2026-11-12 (rule 8, keep the published text): the OLX 2019 design stays the cited example, with its age stated in p24; the Hearthly property registry stays unnamed (the ledger is not edited from a post); the VIN-as-personal-data note in p17 stays as hedged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "AC-4 (minor, post-level, cold reader on the nightly renumbering job and collapsed counts) accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of publication-pipeline."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Hearthly duplicates (1.9M listings, 1.12M properties, 1.7), the Lyon apartment, the Keybridge decision (March 2027), the Barcelona ring and its timeline, cast."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark, listing-aggregate, media-pipeline, location-and-geo, fraud-prevention, publication-pipeline",
+      "contributed": "Neighbouring contracts."
+    },
+    {
+      "kind": "internal",
+      "ref": "Research briefs: listing data and ingestion (Part 10), real-estate portals (C.8, Part D), search (Part 13), trust and safety (3.4)",
+      "contributed": "Duplicate kinds, real-estate identity, collapsing, abuse signals."
+    },
+    {
+      "kind": "external",
+      "ref": "Grigorev, Fighting fraud: finding duplicates at scale, PyCon DE 2019",
+      "contributed": "The public classifieds dedup design."
+    },
+    {
+      "kind": "external",
+      "ref": "Online Marketplaces, Idealista duplicate-control tool, 2021-04-11",
+      "contributed": "A public product example of per-audience cluster presentation."
+    },
+    {
+      "kind": "external",
+      "ref": "Zillow Group 10-K for fiscal 2025, filed 2026",
+      "contributed": "Property-first database at scale."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic collapse documentation; PDQ release (2019) and docs; Splink; SimHash (2007); MinHash (Broder 1997); OS Open UPRN; BAN; RNB; DSA Art. 17",
+      "contributed": "Algorithms, engine limits, identifiers and regulation."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: Vertical Differences moved after the identity section, dispute path shown in p29, failure-pattern glosses in p35 and p48, published IN THIS CHAPTER callout restored, max_words 6,994 to 7,200, p42 price-drop arithmetic fixed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3 ESCALATE (12 pass, 14 fail, no blocker); cheap close fixes in p12, p43 and p46; remaining findings recorded in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: ideas of p05, p09, p19, p25, p29, p49 and the transitions into the merge and vertical sections revised (spec-fault findings); no reorder. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: paragraph ideas of p05, p19, p29, p35, p37, p52, p53, p59 and the transitions of p46 and p53 revised (spec-fault findings); no reorder. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from index.md); added roadmap, table-lead and synthesis units; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Retitled to 'Three Listings'; sharpening pass 5,883 to 5,915 words; two mermaid diagrams replaced with generated illustrations; cross-chapter consistency sweep. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass (Barcelona-ring detection aligned with fraud-prevention, UPRN and GTIN expanded); 2 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7200
+  }
+}

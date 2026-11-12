@@ -1,0 +1,1926 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "products-and-entitlements",
+  "journal": "listing-systems-architecture",
+  "part": "part-6",
+  "title": "Packages, Bumps and Quotas: Products, Pricing and Entitlements",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the products-and-entitlements entry in journal-spec.json. Units added to the published text: the roadmap paragraph p04, the trade-offs paragraph p43 and the synthesis paragraph p59.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Product catalog, pricing engine, entitlement, quota and effect, and why catalog, price, entitlement and bill stay separate.",
+        "The entitlement ledger's entry types with idempotency keys, effect projection onto the listing document as explicit paid fields, enforcement points with fail-open and fail-closed behavior, and quotas meeting feeds.",
+        "Metering, billing, revenue recognition over the display period, credit notes, and the sold-versus-delivered reconciliation."
+      ],
+      "believe": [
+        "An entitlement is a ledger, not a counter, and a price event should be a data release, not a code release.",
+        "Every invoice line must trace to delivery evidence, which serves revenue assurance, dispute answers and paid-ranking disclosure from one pipeline."
+      ],
+      "can_do": [
+        "Replace scattered package checks with four separated concerns joined by events.",
+        "Specify an entitlement matrix: product, enforcement point, effect, delivery evidence and owner.",
+        "Plan a migration onto a shared entitlement service with shadow billing months and a reconciliation rule for cutover."
+      ]
+    },
+    "audience": {
+      "who": "Principal engineers and architects who own monetization, search or billing integration at a marketplace or a marketplace group, and engineering leaders deciding whether to build or buy billing and entitlements.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline); idempotency and append-only event logs.",
+        "From earlier chapters: the ten monetization models, VAS (value-added services), packages, the package staircase and Autotrader's annual price event (monetization-models); the listing event contract and the event backbone; ranking's paid boosts and its relevance floor; the feed contract and Motorvane's DMS feeds (listing-ingestion); seller accounts and Agence Rhône Habitat's branches (sellers-and-accounts); Omnibus, P2B and the DSA (marketplace-regulation).",
+        "Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly and Keybridge, Common Ground, the architecture advice forum, Yardstick, the cast (Ingrid Halvorsen, Olivier Petit, Felix Brandt, Yara Mendes), Autohaus Ruhrblick and the Essen Golf, and the failure-pattern names (Billing by Guesswork, Multiplier Creep, Deal-Shaped Architecture, Ghost Inventory, Search as System of Record)."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: product catalog, pricing engine, entitlement, quota, effect, delivery evidence, effect projector and enforcement point.",
+        "Billing and finance terms: overage, proration, dunning, credit notes, revenue recognition over the display period, variable consideration, CPQ (configure-price-quote).",
+        "How packages, quotas, feeds and price events interact in practice."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an overbilling dispute and a slow price event, the reader names the shared cause and the design that removes it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A dealer on a 150-slot package is billed overage for 13 cars that were never published: the feed importer enforced the quota and skipped them, while a monthly billing export counted the feed file. Separately, a group price change across four brands is estimated in engineering weeks. Using only this chapter: what is the common cause, and what do you build?",
+        "expected": "There is no single record of what can be sold, what a seller holds and what was delivered. Keep catalog, pricing engine, entitlement ledger and billing apart; record grants, consumptions and refused publications as append-only entries with idempotency keys, so billing reads 150 consumptions and no overage; project effects onto the listing read model as explicit paid fields; emit delivery events and reconcile them daily with grants and invoice lines; hold products and prices as versioned catalog data so a price event is a reviewed data release."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The commercial core every monetization model needs and Part VI's test that what was sold was delivered; the four terms the chapter owns; that the design is a reference-architecture inference anchored to published product behavior; then the Ruhrblick overbilling, the four concerns, the commercial core's architecture (ledger, effects, enforcement points, quotas and feeds, metering and billing, sold versus delivered), the public record, the Veldmark worked example with Tally, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: dated investor sources (Rightmove, Autotrader, CarGurus, OLX, Vinted, Adevinta), Stripe documentation, EU law and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposal that ranking ask the entitlement service per candidate, the reader says why not, where paid effects live instead and what must remove them.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Your search team proposes that the ranking stage call the entitlement service for every candidate to check whether it holds a paid top position, so the answer is always current. Using only this chapter: why should you refuse, where should paid state live instead, and what must happen when a listing with a paid top position is sold?",
+        "expected": "At a peak of 31,000 queries a second with about 400 candidates per query, live lookups mean on the order of 12 million entitlement answers a second, which no ledger should serve. An effect projector consumes ledger events and writes explicit paid fields (such as paid.top_eligible_until, paid.label, paid.product_version) onto the listing document in the search index, so ranking reads them with the listing; effects may be a little stale, the ledger may not; the index is never the record and is re-projected from the ledger on a rebuild. The projector also consumes listing lifecycle events, and a sold, removed or blocked listing carries no paid fields, whatever days remain, or it becomes Ghost Inventory with a price tag."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given an outage of the entitlement service and a dealer feed above its package, the reader states what each enforcement point does and where that policy is recorded.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "The entitlement service is down for an hour on a weekday. During it, a private seller tries to buy a paid publication, a dealer's feed arrives with 163 cars for a 150-slot package, and buyers keep searching. Using only this chapter: what should insertion, feed import and ranking each do, and where is the rule for the dealer's 13 extra cars written down?",
+        "expected": "Paid consumer publication fails closed until payment is confirmed (free listings fail open); feed import queues and retries, never skipping silently, and reports to the feed; ranking serves the last projected effects and logs them as stale. Failing open is the default for what a paying professional already holds, documented per enforcement point, because failing closed protects revenue but damages supply. The overflow policy (reject excess, dealer priority, publish all and bill overage, or publish and prompt to upgrade) is a term of the contract stored with the entitlement, not importer behavior; each refused car gets a PublishRefused entry and appears in the feed report, and billing counts published listings from the ledger, not feed rows."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do you architect what a seller can buy, what they are entitled to, and how they are billed?",
+    "claim": "The commercial core behind paid products should keep four concerns apart, a versioned product catalog, a pricing engine, an entitlement ledger and billing, so that a price event is a reviewed data release rather than a code release; entitlements should be an append-only ledger of grants, consumptions, releases, expiries and refunds with idempotency keys rather than counters in each service; enforcement points should read effects projected through events as explicit paid fields on the listing read model, never asking the ledger live and never letting an effect outlive the listing's sale or removal; and insertion, ranking, rendering and lead routing should emit delivery events that a daily reconciliation compares with grants and invoice lines, so that every invoice line traces to delivery.",
+    "disputed_by": "The common practice of writing package checks as conditions in the insertion service, the search query and the card template, with a monthly billing export counting by its own definition; or a counter service per quota; or a billing vendor's feature switches taken as the entitlement system.",
+    "so_what": "A Chief Architect who accepts this makes the catalog model, the entitlement ledger, the effect schema and the delivery-evidence events group standards while leaving products, prices and contract terms to brands, writes an entitlement matrix naming each product's enforcement point, effect, evidence and owner, buys invoicing, tax and collection but builds the catalog, ledger and effect projector, moves each brand only after a shadow billing month reconciles with no unexplained difference, and watches the daily unexplained difference in euros.",
+    "how_why": "Motorvane counted a dealer's cars twice: the feed importer published 150 of Autohaus Ruhrblick's 163 cars and skipped 13, while the billing export counted the feed file and charged €117 overage for cars never live; an audit found 1,140 dealers overbilled by about €212,000 over 14 months. The same missing record made the 1 January 2028 price event an estimate in engineering weeks per brand. At Veldmark's Sunday peak of 31,000 queries a second, a ranking stage asking the ledger live for 400 candidates per query (an illustrative figure) would need on the order of 12 million answers a second, so effects must ride on the listing document. Under Tally, Ruhrblick's month records 150 consumptions and 13 refused publications, and the invoice carries no overage line.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Billing by Guesswork is structural: when the commercial fact of what a seller holds is counted separately by enforcement and billing and products live in each brand's code, the marketplace overbills sellers and turns every price event into engineering work, both for lack of one record of what was sold, held and delivered."
+      },
+      {
+        "id": "S2",
+        "claim": "Catalog, pricing engine, entitlement ledger and billing stay apart, with products as versioned catalog data that grant explicit effects and prices as effective-dated price lists whose quotes record every input version, so that a price event is a reviewed data release."
+      },
+      {
+        "id": "S3",
+        "claim": "Entitlements are an append-only ledger shared by the consumer and professional selling paths, with grants, consumptions, releases, expiries, suspensions and refunds as entries carrying idempotency keys from the business event, which makes every balance explainable and every invoice reconcilable."
+      },
+      {
+        "id": "S4",
+        "claim": "Enforcement points read effects projected by events as explicit paid fields on the listing read model, never the ledger live; effects never outlive the listing's sale or removal, failure behavior is decided per enforcement point, and quota policy for feeds is a contract term recorded in the ledger."
+      },
+      {
+        "id": "S5",
+        "claim": "Billing consumes the ledger and metering rather than recounting, and a daily reconciliation of grants, delivery evidence and invoice lines makes every invoice line traceable, which serves revenue assurance, seller reports, dispute answers and paid-ranking disclosure from one pipeline."
+      },
+      {
+        "id": "S6",
+        "claim": "A group makes the catalog model, the ledger, the effect schema and the delivery-evidence events shared standards while brands keep products, prices and terms, buys invoicing, tax and collection but builds the catalog, ledger and projector, and migrates each brand only after a shadow billing month reconciles."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Designs the commercial core that implements every monetization model and supplies the part's proof that what was sold was delivered, with paid effects that ranking and advertising consume.",
+    "supports": [
+      "P6-4",
+      "P6-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "the scene poses the Ruhrblick invoice and the price-event estimate as one problem; the worked example replays both under Tally after the body has built the design"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "the architecture section follows a paid product's life: sold through one of two paths, recorded in the ledger, projected as effects, read at enforcement points (including feed import), metered and billed, and reconciled against delivery"
+      }
+    ],
+    "rationale": "The scene comes first because the chapter's design is the answer to its two problems. The concepts come next because every later section uses catalog, price, entitlement, quota, effect and delivery evidence. The architecture follows a paid product from sale to reconciliation; effects cannot be explained before the ledger they are projected from, and reconciliation needs the delivery evidence that the concepts define as emitted by the systems that deliver value, which the reconciliation paragraph names (insertion, ranking, rendering, lead routing). The public record comes after the design, so the reader can see what each documented behavior requires of it, and before the worked example, whose build-or-buy decisions rest on it. The worked example can replay the invoice and the price event only once the whole core exists. Trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions apply the whole design, so they come last; placed earlier, they would weigh options the reader has not yet seen."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A seller who paid for a \"Top listing\" and never appeared on top, or a dealer billed for cars the platform refused to publish, is a customer the marketplace has wronged."
+    },
+    "bridge": {
+      "from_reader_world": "Architects who read in monetization-models that every revenue model needs a commercial core, and who have seen package checks spread across insertion, search and billing code.",
+      "to_topic": "The wrongs come from architecture, the same commercial fact counted in several places, so the question is how to design the core that counts it once."
+    },
+    "thesis_statement": {
+      "text": "Keep catalog, price, entitlement and bill apart; make entitlements an append-only ledger whose effects are projected onto the hot paths; and prove that what was sold was delivered with delivery events reconciled daily against grants and invoice lines.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraphs p01 and p02."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "One dealer's disputed invoice at Veldmark.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The four concerns that must stay apart.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The commercial core: selling paths, ledger, effects, enforcement points, quotas and feeds, metering and billing, sold versus delivered.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "What the public record shows.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Veldmark's design, with the invoice and a price event replayed.",
+          "kept_in": [
+            "worked"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Every revenue model needs the same commercial core, and this chapter designs it around Part VI's test that what was sold was delivered, because at scale sellers are wronged less by bad intent than by the same commercial fact counted in several places; the effects it produces are what ranking and advertising consume.",
+        "function": "context",
+        "organization": "description",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A seller who paid for a Top listing and never appeared on top; a dealer billed for cars the platform refused to publish.",
+            "shows": "Makes the wrong the chapter prevents concrete before any design is shown."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S5"
+          ],
+          "how": "States the problem and the test the design must pass."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter owns four terms, product catalog, pricing engine, entitlement and quota, and states what an effect is (what an entitlement does at an enforcement point, a step such as insertion, ranking or rendering that checks it), so every later section can use both words.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "'may publish up to 150 vehicles'; 'appears in a top slot until Sunday 23:59'.",
+            "shows": "Shows what an entitlement looks like to a seller."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3"
+          ],
+          "how": "Defines the vocabulary the separation rests on."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The commercial core: something that defines, prices, records and bills.",
+          "introduces": "The four terms that name its parts.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "No marketplace has published its catalog, pricing or entitlement architecture, so the design is a reference-architecture inference anchored to published product behavior and billing-vendor documentation, not a description of any company.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Rightmove's commitments plus extras, Autotrader's annual price event and stock lever, OLX's boosts per package, CarGurus' capped free tier, Vinted's fee on every card.",
+            "shows": "Names the public behaviors the design must support and labels the kind of statement."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Sets the evidence standard for the whole design."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The four terms the chapter will build on.",
+          "introduces": "That no company has documented such a design, and what the chapter rests on instead.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter moves from one disputed Veldmark invoice and a price event estimated in engineering weeks through the four concerns and the commercial core to the public record, Veldmark's design replayed, and the trade-offs, vertical differences, failure modes, decisions and questions that apply it.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The section sequence: scene, concepts, architecture (selling paths, ledger, effects, enforcement points, feeds, billing, sold versus delivered), public record, worked example, trade-offs, verticals, failure modes, Chief Architect's view, questions.",
+            "shows": "Lets a reader of the opening predict the sections and the kinds of evidence."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces where each supporting claim is argued."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What the chapter rests on: published behavior and inference.",
+          "introduces": "The order in which it builds the design.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Thirteen Cars and €117",
+      "controlling_idea": "A €117 overage for thirteen unpublished cars and a price event estimated in engineering weeks are one problem: Veldmark has no single place that says what can be sold, what a seller holds and what was delivered.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows Billing by Guesswork as a structural defect with a cost in credits and in delivery speed."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The disputed invoice comes first because it is concrete; its structural cause follows, then the second agenda item, so that Ingrid's framing can join them. Putting the price event first would make the invoice look like a separate bug."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The wrong of billing a dealer for cars the platform refused to publish.",
+        "introduces": "Autohaus Ruhrblick's August invoice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In late September 2027 Autohaus Ruhrblick disputes €117 of overage on its August Motorvane invoice for 13 cars that were never published.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Pro 150: 150 slots for €1,450 a month, €9 per car per month overage; the DMS feed delivered 163 cars; 150 were live; 13 billed at €117.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the dispute in figures a reader can check."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The overbilling is structural: the feed importer skipped cars above the quota while the billing export counted the feed file, so two correct counters billed 1,140 dealers about €212,000 over 14 months.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Felix Brandt's trace; the audit of 14 months: 1,140 dealers, about €212,000, all credited in October 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the defect is the design, not one dealer's bad luck."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: a feed of 163 cars, a quota gate that publishes 150 and skips 13, and a separate counter that bills all 163.",
+              "shows": "Pictures the two counters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The disputed €117.",
+            "introduces": "Its cause: two counters for one fact.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Olivier's group-wide price-and-product event on 1 January 2028 is estimated in engineering weeks because each brand's products and packages are hard-coded in its own stack.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard VAS hard-coded in Yardstick (PHP); Motorvane packages in a Kotlin service and the sales CRM; Hearthly tiers in a Go contract service; Keybridge billing on its own .NET stack.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows why a price change is a code change at every brand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Ruhrblick case at the architecture advice forum.",
+            "introduces": "A second agenda item: the price event.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Ingrid frames both items as one problem, the lack of a single place that says what can be sold, what a seller holds and what was delivered, which Common Ground's catalog and entitlement goal for Q2 2028 must answer.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Common Ground's goal of one product catalog and entitlement service by Q2 2028.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Sets the target the chapter's design meets."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The invoice and the price-event estimate.",
+            "introduces": "Their common cause and the goal that must answer both.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Four Things That Must Stay Apart",
+      "controlling_idea": "The single place Veldmark lacks is four concerns kept apart, catalog, pricing engine, entitlement ledger and billing, joined by delivery evidence, with effects as what enforcement points read.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Defines the separation and the vocabulary the architecture uses."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The four concerns and delivery evidence come first as the whole; each of the first three concerns is then defined in turn, catalog before price because a price is the price of a catalog item, and entitlement last because it is bought at a price and grants a catalog effect. Defining entitlements before the catalog would leave 'effect' undefined."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's 'no single place'.",
+        "introduces": "The four concerns that, kept apart, form that place.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "The chapter's core decision is to keep four concerns apart, each answering one question, changing for its own reasons, with its own owner and things it must not contain.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Product catalog, pricing engine, entitlement ledger, billing: question answered, when it changes, owner, must not contain.",
+              "shows": "Shows that each concern changes for different reasons and has a different owner, which is why merging them fails."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Delivery evidence, the record of what the platform actually did, is an input the four concerns share but none owns: delivery systems emit it, and the ledger, billing and reporting consume it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Listings published under a slot, impressions in a paid position, boosts executed, leads routed.",
+              "shows": "Makes delivery evidence concrete."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four concerns.",
+            "introduces": "The one input the four share but none owns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The subsections define the first three concerns; billing is a finance system the chapter connects to rather than designs, and its interface comes under Architecture.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four concerns and delivery evidence.",
+            "introduces": "Which concerns the following subsections define and where billing is handled.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "A catalog has five object types, product, package, add-on, effect (what an item does at an enforcement point) and product version, and the effect is the one most catalogs forget.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Bump, Top listing (7 days), Highlight; Pro 150 = 150 slots + 20 boosts + statistics + Co-Driver-style tooling.",
+              "shows": "Shows products and packages in the book's terms."
+            },
+            {
+              "kind": "quotation",
+              "what": "Rightmove: 'more than 50% of independent agents purchased incremental product above their package commitment'.",
+              "source": "Rightmove FY2025 results, 2026",
+              "shows": "Shows add-ons in a published result."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Without versions, changing a product silently changes what past buyers bought.",
+              "shows": "Shows why product versions are part of the catalog."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The catalog named as the first concern.",
+            "introduces": "Its five object types.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The catalog is reference data shipped as releases: versioned, reviewed, effective-dated and published as events that downstream services cache.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The same treatment as the category taxonomy in categories-and-taxonomies.",
+              "shows": "Ties the rule to a pattern the reader already knows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Product versions and effects.",
+            "introduces": "How the catalog is released.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A price is a function, not a field: a marketplace price depends on at least ten dimensions, from country and category to contract, date and experiment arm.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ten pricing dimensions with an example and why each matters.",
+              "shows": "Shows how many inputs a single price has, which is why prices cannot be a field on a product."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The catalog: what can be sold.",
+            "introduces": "The pricing engine: what it costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Vinted's public price list shows formula pricing in practice, with the buyer fee and the bump fee varying by order and item characteristics.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Buyer fee varies by 'item characteristics, order value, order type'; bump fee by duration, item price and 'territorial scope (local or international)'.",
+              "source": "Vinted price list, updated 2026-10-08",
+              "shows": "Shows a real marketplace pricing by formula."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Formula pricing as a dimension.",
+            "introduces": "A documented example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Two design rules follow: prices are effective-dated, reversible price-list versions, and every price quote records the version of every input that produced it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Autotrader's 'annual 1 April 2025 pricing and product event'.",
+              "source": "Autotrader FY26 results, 2026",
+              "shows": "Shows the kind of event effective-dated price lists exist for."
+            },
+            {
+              "kind": "reasoning",
+              "what": "A quote with catalog, price-list, contract, promotion and experiment versions can be reproduced exactly in a dispute six months later.",
+              "shows": "Shows why quotes carry versions."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Makes a price event a data release."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Prices as functions of many dated inputs.",
+            "introduces": "The two rules that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "An entitlement has a holder, a product version, a validity window, an optional quantity and a source; a quota is an entitlement that consumption reduces, and at run time an effect is the projection of active entitlements an enforcement point needs.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'account 88412 may hold 150 active vehicle listings and currently holds 150'; 'listing 5531 is top-eligible in category city bikes, Rotterdam, until 14 March 23:59'.",
+              "shows": "Shows effects as the answers an enforcement point needs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The pricing engine.",
+            "introduces": "The third concern: entitlements, quotas and effects.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Separating entitlement from effect keeps the hot paths fast, because enforcement points need only the effect and only the entitlement service reads entitlements.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Ranking needs a boolean, a category, a window and a cap, not whether a top position came from a promotion or a contract.",
+              "shows": "Shows how little the hot path needs."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Sets up effect projection."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Effects defined as projections of entitlements.",
+            "introduces": "Why the separation matters on hot paths.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Commercial Core",
+      "controlling_idea": "The commercial core follows a paid product from two selling paths through an append-only ledger and projected effects to enforcement points, metering and billing, and a daily reconciliation of sold against delivered.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Builds the ledger, the projection and the reconciliation the thesis claims."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The section follows a paid product's life: how it is sold, where the sale is recorded, how the record reaches the hot paths, how those paths enforce it and how feeds meet quotas, how it is billed, and how delivery is checked against the bill. Effects before the ledger would project from nothing; reconciliation before enforcement would compare evidence from points the reader has not met. The billing rule (p33) sits next to the billing definition (p31) so the finance requirements do not split mechanism and rule."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four concerns and delivery evidence, defined.",
+        "introduces": "How they connect as one core, starting where money comes in.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "The commercial core starts with two selling paths that share almost nothing operationally: prepaid consumer purchases and postpaid professional contracts.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the commercial core as five stages, define, sell, hold, deliver, settle, with delivery evidence flowing back; the prose maps the four concerns onto the stages.",
+              "shows": "Gives the whole core before its parts."
+            },
+            {
+              "kind": "example",
+              "what": "A €3.99 bump bought on a phone; Pro 150 for 24 months at a 6% discount with overage.",
+              "shows": "Contrasts the two paths."
+            },
+            {
+              "kind": "fact",
+              "what": "Vinted: a bump bought while a listing is in review is not processed or charged.",
+              "source": "Vinted price list, 2026",
+              "shows": "Shows a rule the consumer path must encode."
+            },
+            {
+              "kind": "quotation",
+              "what": "CarGurus packages on 'monthly, quarterly, semiannual, or annual' terms that 'generally auto-renew on a monthly basis and are cancellable by dealers with 30 days'' notice.",
+              "source": "CarGurus 10-K FY2025, 2026",
+              "shows": "Shows the shape of professional contracts."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The two paths should share the catalog, the pricing engine and the entitlement ledger and nothing else, so a bump bought by a private seller and one in a dealer package are the same product version in the same ledger.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Payment and order-to-cash paths differ in regulation, tooling and failure modes; one billing system forced on both usually serves neither.",
+              "shows": "Shows why only the three concerns are shared."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Two paths that differ.",
+            "introduces": "What they must have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The ledger is append-only: every change is an entry with a type, a creator and an idempotency key, never an update of a counter.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Grant, Consume, Release, Expire, Suspend/Resume, Revoke/Refund, Adjust: created by, example, idempotency key.",
+              "shows": "Shows that every business event that changes what a seller holds has its own entry and key."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the ledger as a ticket book with a journal.",
+              "shows": "Pictures balances as sums of entries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The shared entitlement ledger.",
+            "introduces": "Its entry types.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "Because the balance is the sum of entries, the ledger gains three properties: idempotency, explainability and reconciliation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe: an idempotency key lets a client 'safely repeat the request without risk of creating a second object or performing the update twice'.",
+              "source": "Stripe API reference, n.d., read 2026-10-19",
+              "shows": "Grounds idempotency in a documented principle."
+            },
+            {
+              "kind": "scenario",
+              "what": "The Ruhrblick invoice would have been computed from Consume and PublishRefused entries.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows reconciliation on the chapter's case."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the lifecycle of an entitlement, every transition a ledger entry.",
+              "shows": "Shows Suspended and Revoked as the transitions most often forgotten."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Shows what the ledger makes possible."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Append-only entries.",
+            "introduces": "The three properties that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Enforcement points need answers in milliseconds, so effects are projected onto the read models the hot paths already use: at Veldmark's Sunday peak, live lookups would mean more than 12 million entitlement answers a second.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "31,000 queries per second at the Sunday peak; 400 candidates per query is an illustrative figure; more than 12 million answers per second.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows why the ledger cannot be asked live."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Shows why effects must ride on the listing document."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The ledger as the truth.",
+            "introduces": "Why hot paths cannot read it directly.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The effect projector consumes ledger events, publishes effect-change events on the backbone, and writes per-listing effects as explicit paid fields on the listing document.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "ListingPaidEffectChanged and AccountQuotaChanged on the group event backbone.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Names the events in Veldmark's design."
+            },
+            {
+              "kind": "table",
+              "what": "paid.top_eligible_until, paid.top_scope, paid.bump_time, paid.highlight, paid.label, paid.product_version: example and user.",
+              "shows": "Shows that each paid effect is a separate, explicit field with a named consumer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Projection onto read models.",
+            "introduces": "The projector and the fields it writes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Ranking owns how the paid fields are used, under its standard that relevance models never read them; this chapter owns producing them correctly and removing them promptly.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Ranking's group standard: no paid fields as features, a relevance floor for reserved slots, every paid impression logged.",
+              "shows": "Draws the boundary with ranking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The paid fields.",
+            "introduces": "Who uses them and who produces them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "A paid effect that outlives its listing is Ghost Inventory with a price tag, so the projector must consume listing lifecycle events and sold, removed or blocked listings carry no paid fields.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A sold bike keeps its top slot because ListingSold reached search but not the projector.",
+              "shows": "Shows the failure a buyer would see."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Removing the fields promptly.",
+            "introduces": "What happens when removal fails, and the rule that prevents it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Two consistency rules apply to every effect: effects tolerate bounded staleness while the ledger does not, and the index is never the record.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A top-listing effect 20 seconds after payment is acceptable; a slot granted twice is not; after an index rebuild effects are re-projected from the ledger.",
+              "shows": "Shows each rule at work and how it avoids Search as System of Record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The removal rule.",
+            "introduces": "Two more rules for every effect.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Each enforcement point reads effects within its own latency budget, and its behavior when the ledger is unavailable is a commercial decision: fail open on what a paying professional holds, fail closed only on new consumer charges, documented per point.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven enforcement points (insertion, feed import, ranking, rendering, lead routing, pro tools, scheduler): question, reads, latency budget, behavior on ledger unavailability.",
+              "shows": "Shows that each point has a different budget and a different safe failure."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Failing closed protects revenue and damages supply; failing open protects supply and costs revenue that reconciliation can recover.",
+              "shows": "Shows why the default favors failing open."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The effects and their consistency rules.",
+            "introduces": "The enforcement points that read them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Feeds break naive quota designs, because a DMS export contains the dealer's whole stock; with 88% of Motorvane's dealer listings arriving by feed, the quota rule is the publication rule, and there are four possible policies.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "88% of Motorvane's dealer listings arrive by feed.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows how much supply the quota rule governs."
+            },
+            {
+              "kind": "table",
+              "what": "Reject excess, dealer priority, publish all and bill overage, publish and prompt to upgrade: behavior, good for, risk.",
+              "shows": "Shows that each policy trades control, liquidity and revenue differently."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Feed import as one enforcement point.",
+            "introduces": "Why feeds are the hardest case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Whichever policy is chosen, three rules are not optional: the policy is a contract term stored with the entitlement, every refused car produces a PublishRefused entry and a feed report, and billing counts published listings from the ledger.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The feed report back to the dealer that listing-ingestion's feed contract requires.",
+              "shows": "Ties the rule to the feed contract."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S5"
+            ],
+            "how": "Removes the Ruhrblick defect at its source."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Four policies, any of which can be right.",
+            "introduces": "Three rules that apply to all of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Metering turns delivery evidence into billable quantities, and billing combines contract, metered, one-off, credit and tax lines into invoices for the finance ledger.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The €1,450 package fee as a contract line, overage as a metered line; Veldmark's finance ledger is group finance's SAP S/4HANA.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Places billing in the Veldmark landscape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Enforcement and quotas.",
+            "introduces": "Metering and billing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Billing consumes the entitlement ledger and metering and never recomputes entitlements on its own; the Ruhrblick defect was exactly such a recomputation.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "RECONCILED's designing-financial-ledgers covers the accounting design.",
+              "shows": "Points to where accounting depth lives."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Names the recomputation that caused the Ruhrblick defect."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Billing defined as combining lines into invoices.",
+            "introduces": "The rule that billing reads the ledger rather than recounting.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "Three finance requirements shape the design and must be agreed before launch: recognition over the delivery period, variable consideration for outcome-based fees, and credit notes rather than edits.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adevinta's 2023 accounts recognize listing fees over the period in which the listings are displayed.",
+              "source": "Adevinta Annual Report 2023, 2024",
+              "shows": "Shows recognition over the display period in published accounts."
+            },
+            {
+              "kind": "scenario",
+              "what": "A seven-day top listing bought on 28 December is partly next year's revenue; the Ruhrblick correction was 1,140 credit notes.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows each requirement on a concrete case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Billing that consumes the ledger.",
+            "introduces": "What finance requires of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "A daily delivery reconciliation closes the loop by comparing what was granted, what insertion, ranking, rendering and lead routing report as delivered, and what was billed, for each paid product and holder.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: a top listing from quote to make-good, with the remedy as a ledger entry.",
+              "shows": "Shows the loop on one product."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Billing that reads the ledger, and the finance requirements on it.",
+            "introduces": "The check that compares ledger, delivery and invoice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Only this loop can keep a promise such as Tradeyard's guaranteed prominence, and it also produces the seller-facing delivery report and the evidence for paid-ranking disclosure.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's top listing repositioned in June 2027 as seven days of guaranteed prominence with automatic extension on shortfall (ranking).",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a product that needs the loop."
+            },
+            {
+              "kind": "example",
+              "what": "'Your top listing appeared 1,840 times in top slots for stadsfiets Rotterdam'.",
+              "shows": "Shows the seller-facing answer to 'did I get what I paid for?'"
+            },
+            {
+              "kind": "source",
+              "what": "Directive (EU) 2019/2161 Annex I point 11a; Regulation (EU) 2019/1150 Article 5; the DSA's advertising transparency.",
+              "shows": "Shows the disclosure duties the same evidence meets."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows one pipeline serving delivery promises, seller reports and disclosure."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The reconciliation.",
+            "introduces": "What it makes possible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: What the Public Record Shows",
+      "controlling_idea": "No portal publishes its entitlement architecture, but published product behavior requires each part of the core, and billing vendors cover feature switches but not quotas, per-listing effects or delivery evidence.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Anchors the inferred design in documented behavior and sets up build or buy."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The marketplaces' published behaviors come first, then the vendor documentation that covers part of them, then the build-or-buy judgement the gap between the two supports; the judgement before the gap would be unsupported."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The designed core.",
+        "introduces": "What is actually documented.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "No portal publishes its entitlement architecture, but the behaviors in the public record each require a part of the core.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight published behaviors from Rightmove, Autotrader, OLX, CarGurus and Vinted (2025–2026), each with the requirement it places on the core.",
+              "shows": "Shows that each part of the design answers a documented behavior."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Stripe's Entitlements documentation confirms two parts of the design, entitlements derived from purchases and local projections on hot paths, and shows the gap a marketplace must fill itself.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stripe recommends that integrators 'persist these entitlements internally for faster resolution'; the entitlements.active_entitlement_summary.updated webhook.",
+              "source": "Stripe Entitlements, n.d., read 2026-10-19",
+              "shows": "Confirms projection as vendor practice."
+            },
+            {
+              "kind": "reasoning",
+              "what": "A SaaS entitlement is a feature switch per customer; a marketplace also needs counted quotas, per-listing time-boxed effects, scopes and delivery evidence.",
+              "shows": "Shows the gap."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Marketplace behaviors.",
+            "introduces": "What billing vendors document.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "That gap decides build or buy: buy invoicing, tax, dunning and collection, build the catalog model, ledger and effect projector, and accept CPQ tools only if they write into the shared ledger.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The catalog, ledger and projector encode the marketplace's own products and sit on its hottest paths.",
+              "shows": "Shows why those parts are built."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Gives the build-or-buy split."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The gap between vendor entitlements and marketplace needs.",
+            "introduces": "The build-or-buy decision it shapes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked",
+      "heading": "Veldmark Worked Example: One Catalog for Four Brands",
+      "controlling_idea": "Veldmark's forum answers both problems with Tally, a shared catalog model and entitlement ledger: the Ruhrblick month bills no overage, the price event becomes a data release once brands migrate, and each brand cuts over after a shadow month.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S5",
+          "S6"
+        ],
+        "how": "Replays the scene's two problems under the design and shows the migration rule."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The design comes first, then the invoice and the price event replayed under it, then the migration order that the price event's catch makes necessary. Replays before the design would show results without the mechanism."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The build-or-buy judgement and the general design.",
+        "introduces": "Veldmark's decisions after the Ruhrblick audit.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "In October 2027 the forum agrees Tally, the group entitlement service, on five decisions: shared model with local content, one brand-partitioned ledger, effects on the listing event contract, billing that consumes Tally, and Keybridge outside until 2029.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Five decisions; Kafka for Tradeyard and Motorvane, a bridge to Google Pub/Sub for Hearthly; OpenSearch and Motorvane's Elasticsearch index paid.* fields; SAP S/4HANA; Keybridge's neutrality decision of March 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the design in Veldmark's landscape."
+            },
+            {
+              "kind": "table",
+              "what": "Sizing: 38 million Tradeyard VAS purchases a year (about 104,000 grants a day), 2.3 million new listings a week, 21,400 Motorvane dealers, 36,500 Hearthly agencies, 31,000 queries/s, about 58,000 professional invoices a month, each with its design consequence.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the volumes that force each design choice."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Under Tally, Ruhrblick's August invoice carries no overage line: the ledger records 150 consumptions and 13 refused publications, and billing reads 150 published cars.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Contract policy dealer priority, then newest first, no overage without consent; 150 Consume and 13 PublishRefused entries; €1,450 billed; with consent, 163 consumptions and €117 reconcilable car by car.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the scene's dispute closed by the design."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Tally's design.",
+            "introduces": "The Ruhrblick month replayed under it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The 1 January 2028 price event becomes a reviewed, reversible catalog and price-list release for every brand whose products have migrated, but Tradeyard's still runs through Yardstick one last time.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard price lists in four countries effective 00:00 local time; Motorvane pro-150@v5 with migration at each dealer's renewal; a Hearthly tier; dry-run against last month's orders; Tradeyard VAS moves into Tally only in Q2 2028.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the price event as data and the condition on it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The invoice replayed.",
+            "introduces": "The second agenda item replayed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The forum orders the migration by pain, Motorvane, then Tradeyard, then Hearthly, and lets no brand cut over until a shadow month reconciles with no unexplained difference.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane Q1 2028, Tradeyard Q2 2028, Hearthly second half of 2028; one full shadow billing cycle each; a difference is acceptable only if explained and the legacy system is wrong.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the cutover rule."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: legacy billing and Tally side by side for a month.",
+              "shows": "Pictures the shadow month."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Gives the shadow-month cutover rule."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Products move into Tally brand by brand.",
+            "introduces": "The order and the rule for each move.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each of the chapter's choices is right only under conditions, and the simpler options suit a single brand with few products and no disputes.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "States when the recommendations do not apply."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's choices.",
+        "introduces": "When other choices are right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "The simpler options in the trade-offs table are right for one brand with a few products and no disputes; the ledger, the projection and the shared model pay for themselves once several brands, negotiated contracts, quotas, audits and regulators arrive.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six decisions (where entitlements live, how hot paths read paid state, catalog scope, pricing, billing, quota enforcement under failure) with options and when each is right.",
+              "shows": "Shows that every recommendation has a condition under which an alternative wins."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Products, entitlement holders, selling paths and the hardest problem differ by vertical, and in real estate the hardest is hierarchy.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows how the ledger must hold grants across organization hierarchies."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "General trade-offs.",
+        "introduces": "Differences by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "Real estate's hardest problem is hierarchy: a network contract with a pooled quota means the ledger must hold a grant at network level, consume it at branch level and survive a branch leaving without rewriting history.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs: typical products, entitlement holder, dominant selling path, hardest problem, delivery evidence.",
+              "shows": "Shows how the design shifts by vertical."
+            },
+            {
+              "kind": "scenario",
+              "what": "Agence Rhône Habitat's 14 branches.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a network buying one contract."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Nine recurring failures each break one of the chapter's rules, from two counters for one fact to a global fail-closed default.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Names what goes wrong when each claim is ignored."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The failures are grouped by what breaks: counting (two counters), effects (outliving the listing, product codes in ranking), prices, ledger entries (boosts twice or never, moderation), product definitions (windows, promotions), and failure behavior. The Ruhrblick defect comes first because the reader already knows it; the order inside the group carries no argument, so no reordering would break it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Variation by vertical.",
+        "introduces": "What goes wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "Two counters for one fact, the Ruhrblick defect, is prevented only when every metered invoice line comes from the ledger's consumption entries.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Ruhrblick defect.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Ties the first failure to the chapter's case."
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Paid fields that outlive the listing are visible to buyers and regulators and are a refund liability.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Counters",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Product codes in ranking code make every new product a search release and the paid effects impossible to list, so ranking reads paid.* fields only.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Paid fields that outlive the listing",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "if package == 'GOLD' and country == 'PT' in a search query.",
+              "shows": "Shows what product codes in ranking look like."
+            }
+          ]
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Price lists edited in place cannot be reproduced for a dispute or rolled back.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Product codes in ranking",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Boosts executed twice or never are ledger states that reconciliation should flag within a day.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Price lists edited in place",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "When moderation and monetization disagree a removed listing keeps its effect or is refunded twice, so moderation outcomes write Suspend or Revoke entries and refunds are idempotent per case.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Boosts executed twice or never",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A fake listing that bought a boost with a stolen card (fraud-prevention).",
+              "shows": "Names the case to design for."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Inconsistent time windows are avoided by defining windows in the product version, storing instants and rendering in the seller's time zone.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Moderation and monetization",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Seven days' as 168 hours from purchase in one brand and until 23:59 on day seven in another.",
+              "shows": "Shows the inconsistency."
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Promotions without bounds are prevented by making every promotion a catalog object with a cap, a window and a cost center.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Time windows",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "A global fail-closed default turns an entitlement outage into a supply incident, so failure behavior is documented and tested per enforcement point.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode: Promotions without bounds",
+            "introduces": "Another failure mode and its fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale, decide the catalog model, ledger, effect schema and delivery events centrally, leave products and prices local, write down ownership in an entitlement matrix, watch the unexplained difference, and use the core to price acquisitions.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Turns the design into the group's agenda."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "What to decide centrally comes first because ownership, metrics and the long-term view all assume it; the long-term consideration comes last because it extends the design to acquisitions. Ownership before the central decisions would assign owners to standards not yet chosen."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them at group scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Decide the catalog model, ledger, effect schema and delivery-evidence events centrally, and leave products, packages, prices, contract terms and the choice of model to brands.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The Polish car market and the French property market do not share a price level.",
+              "shows": "Shows why prices stay local."
+            }
+          ]
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Ownership must be written down, and an entitlement matrix of product, enforcement point, effect, delivery evidence and owner is the most useful hour a launch team can spend.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five Veldmark products (Tradeyard Top listing 7d and Bump, Motorvane Pro 150 and lead allowance pilot, Hearthly network tier) with enforcement points, effect, delivery evidence and behavior on listing removal.",
+              "shows": "Shows a filled-in matrix the reader can copy (Tool 9 in toolkit)."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Monetization platform, brand monetization teams, ranking, finance and trust and safety each own a named piece.",
+              "shows": "Shows who owns what."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The central and local decisions.",
+            "introduces": "Who owns each piece.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Watch the daily unexplained difference in euros by brand, the time from catalog change to production, the share of revenue computed from the ledger, projection lag at the peak and credits for under-delivery.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Credits should rise briefly after launch, when the system finds what was always there, and then fall.",
+              "shows": "Shows how to read the credit metric."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Ownership.",
+            "introduces": "What to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Over the long term the core lets a group price the integration of an acquired marketplace's monetization as a content migration plus a shadow month; without it each acquisition starts again, which is how Deal-Shaped Architecture forms.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Every acquisition brings a catalog, an entitlement scheme and a billing integration (platform-consolidation).",
+              "shows": "Shows why the core matters beyond today's brands."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to watch now.",
+            "introduces": "The long-term consideration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions test a commercial core against the chapter's claims.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns each claim into a question for a design review."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that check them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Ten questions check a commercial core, from where the single source of truth lives to what moderation writes when it removes a paid listing.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Products to Attention",
+    "synthesis": "Ruhrblick's €117 and the price-event estimate had one cause, and one record answers both: the ledger that shows 150 consumptions and 13 refused publications is the ledger a price-list release writes to, the source of the paid fields ranking reads, and the evidence finance signs and a disclosure rests on.",
+    "so_what": "A group that builds this record once can change prices as data, sell across brands and prove every invoice line; one that leaves package checks scattered pays for each brand's counting and learns of its errors from its dealers.",
+    "callback": {
+      "to": "The scene: Ruhrblick's €117 overage and the price event estimated in engineering weeks, and the opening's wronged seller.",
+      "how": "The reader now sees both as the same missing record, closed by the ledger, the projection and the reconciliation."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Build one ledger of what was sold, held and delivered before the next price event, and bill only from it."
+    },
+    "hand_off": {
+      "to": "advertising-platforms",
+      "relationship": "contrast",
+      "carries_over": "The commercial core turns monetization models into things that can be sold, held, enforced, delivered and billed, but one family of paid products still needs its own machinery.",
+      "introduces": "Advertising, which sells the audience rather than the listing, to brands and agencies rather than sellers, through ad servers, header bidding and consent signals."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and every section before them.",
+      "introduces": "What the commercial core amounts to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p59",
+        "controlling_idea": "Ruhrblick's €117 and the price-event estimate had one cause and are answered by one record, the ledger that feeds billing, the paid fields and the delivery evidence, so a group that builds it once changes prices as data and proves every invoice line.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "150 consumptions and 13 refused publications; the 1 January 2028 price event.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the scene and shows both problems closed by the same record."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Shows how the sections fit together."
+        }
+      },
+      {
+        "id": "p60",
+        "controlling_idea": "The commercial core turns monetization models into things that can be sold, held, enforced, delivered and billed, but advertising, which sells the audience to brands and agencies through ad servers, header bidding and consent signals, needs its own machinery.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S5"
+          ],
+          "how": "Hands off to advertising-platforms."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "A core that proves what was sold was delivered.",
+          "introduces": "The one paid product family it does not cover: advertising.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Choosing monetization models and their liquidity costs.",
+      "covered_in": [
+        "monetization-models"
+      ]
+    },
+    {
+      "topic": "How paid effects are blended into the result order.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "The ad stack and sponsored-listing auctions in the ad server.",
+      "covered_in": [
+        "advertising-platforms"
+      ]
+    },
+    {
+      "topic": "Payment processing, payouts and buyer protection; accounting design.",
+      "covered_in": [
+        "transactions-and-payments",
+        "designing-financial-ledgers"
+      ]
+    },
+    {
+      "topic": "Feed contracts in general; organization hierarchies.",
+      "covered_in": [
+        "listing-ingestion",
+        "sellers-and-accounts"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "The three units added in conversion (roadmap p04, trade-offs paragraph p43, synthesis p59) and the round-1 spec change to p02 and p17 (effect and enforcement point defined before use): accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Reverting to the unit set of spec.md."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes (S6 supports so_what; S5 does not name the emitters of delivery events): thesis copied from the journal spec left unchanged; p34 already names the emitters. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Rewording the journal-spec thesis."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric and reader reorderings not taken (merge p18 into p23, merge p11 into p09, move p49 next to p45, move In Practice, move the entitlement matrix): the round-3 flow readers did not converge on any move (A: In Practice after Concepts or into Architecture, matrix into the worked example or next to enforcement points; B: no major reordering), so the published order stands. Decided under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Making a move only one reader asked for."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor draft fixes under the author's delegation, 2026-11-12: the vocabulary count (p02 'two related words recur'; p10 'one input that none of them owns' replaces 'a fifth element'); the Tradeyard/Yardstick exception split into its own sentences (p41); Figure 2's five stages mapped to the four concerns at the start of p19; the stock-lever row glossed as the number of paid cars retailers advertise (the book's gloss in liquidity-and-network-effects, no new claim); VAS expanded at first use (p07), which both round-3 flow readers asked for.",
+      "rejected": [
+        "Leaving the minor findings for a later pass."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Feed import during an entitlement outage: the enforcement table now says the importer queues and applies the contract's overflow policy once the quota effect is current, which states what 'queue and retry' already implied. Decided under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Applying the overflow policy to the last projected quota effect during the outage (a second, implicit policy)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised from 6,873 to 7,000 (+1.8%, within the 10% allowed) to make the minor fixes above without cutting published text. Under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Cutting published facts to make room."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept as published under the author's delegation, 2026-11-12: the 400-candidates-per-query figure and the 12 million arithmetic (illustrative, labeled in the prose and the journal spec); Keybridge outside the shared ledger until the 2029 review, as the chapter states; the known differences between generated figures and their mermaid sources (2026-10-20 changelog).",
+      "rejected": [
+        "Changing the illustrative figures before search-architecture or ranking fixes a canonical value.",
+        "Regenerating Figures 2 and 4 in this pass."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote spec.md's success criteria as reader outcomes: the shared-cause and design criterion is the journal spec's AC-1; effect projection with the peak arithmetic became AC-4 and the enforcement-point and quota-versus-feed criterion became AC-5 (both minor, added for this post). Dropped as inventories: the table of concerns, the lifecycle diagram, the trade-off and vertical tables, three diagrams, the dated sources and the Veldmark agreement with the ledger (the last is enforced by the brief's contract rules, not by a reader).",
+      "rejected": [
+        "Carrying the inventory criteria over unchanged."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities left empty: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists.",
+      "rejected": [
+        "Listing planned modalities as if they existed."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit set to the published prose length (6,546 words by check_draft's count) plus 5%: 6,873. spec.md set none.",
+      "rejected": [
+        "The style guide's 7,500-word chapter range."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 1 (escalated: flow_is_followable at fault in the spec, corroborated by both flow readers): p02 now states what an effect and an enforcement point are, and p17 gives the run-time view of the same effect, so the term is introduced once before use and not defined twice. Intent, thesis, role and the journal spec's criteria unchanged.",
+      "rejected": [
+        "Adding effect as a fifth owned term in its own paragraph (adds a unit).",
+        "Waiting for the author before a second round."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Built the chapter around one dispute (13 cars, €117) that generalizes into a group audit, because a concrete billing error makes the two-counters failure tangible. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Chose an append-only ledger with projected effects over a counter service, and showed counters as a trade-off option rather than a strawman. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended buying invoicing, tax and collection while building catalog, ledger and projector; Stripe's entitlement documentation shows both what billing vendors cover and what they do not. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Named the group entitlement service Tally and set the migration order Motorvane, Tradeyard, Hearthly, with shadow months, so later chapters can reference it. (Carried over from spec.md.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, and advertising-platforms' transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/_research/scenario-ledger.md",
+      "contributed": "Ruhrblick, Pro 150, the overbilling audit, Tally, the migration order, the sizing figures and the cast (Veldmark is fictional)."
+    },
+    {
+      "kind": "internal",
+      "ref": "monetization-models, ranking, event-driven-listings, listing-ingestion, meet-veldmark",
+      "contributed": "Models and packages, use of paid fields, the event backbone, feed contracts, the Veldmark setting."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove FY2025 RNS (2026); Autotrader FY26 results (2026); CarGurus 10-K FY2025 (2026); Adevinta Annual Report 2023 (2024); Vinted price list (updated 2026-10-08); OLX Tech posts (2025, 2026)",
+      "contributed": "Product behaviors the core must support."
+    },
+    {
+      "kind": "external",
+      "ref": "Stripe Entitlements and Idempotent requests documentation (n.d., read 2026-10-19)",
+      "contributed": "The vendor pattern and the idempotency principle."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2019/2161 and Regulation (EU) 2019/1150",
+      "contributed": "Paid-ranking disclosure duties."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the escalation under the author's delegation: accepted the added units and the p02/p17 change; kept the published order (readers did not converge on a move); fixed the minor findings (vocabulary count, Yardstick exception, Figure 2 mapping, stock-lever gloss, VAS gloss, feed import during an outage); limit raised to 7,000; open questions moved to the decision log. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from index.md); added the roadmap paragraph p04, the trade-offs paragraph p43 and the synthesis paragraph p59; after the flow rubric, moved p33 (billing never recomputes) before p32 (finance requirements), named the emitters of delivery evidence in p34 and the price event in p04; status draft. After draft check round 1: p02 and p17 changed (effect and enforcement point defined before use); in the draft, section-opening transitions added to verticals, failure modes, the Chief Architect's view and questions, the verticals table moved below its paragraph, PublishRefused added to the ledger table, the feed-policy row made consistent, the matrix event names explained, proration, dunning and RECONCILED glossed, p04, p43 and p59 shortened to stay within the limit. After draft check round 2 (REVISE): the owned-terms count made explicit (four terms, two connecting ones), the matrix delivery events mapped to Consume entries, the verticals paragraph reworded so the table follows its announcement, Co-Driver identified as Autotrader's at first use, the scheduler exempted from the read-effects sentence; added transition sentences shortened. After round 3 (final, ESCALATE): trade-offs paragraph moved above its table, the matrix sentence reworded (delivery events and ledger entries that reconciliation compares), the dunning gloss moved to its first use in the concerns table, the connecting-terms phrase reworded. Final draft 6,869 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass (5,231 to 5,243 prose words); consistency fix in Concepts; cross-chapter heading sweep; three mermaid diagrams replaced with generated illustrations (known differences recorded). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass (toolkit link restored, Omnibus and P2B citations verified against EUR-Lex); three inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7000
+  }
+}

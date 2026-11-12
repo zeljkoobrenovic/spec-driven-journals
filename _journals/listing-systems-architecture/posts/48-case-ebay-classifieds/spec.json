@@ -1,0 +1,1787 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-ebay-classifieds",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "eBay Classifieds Group: Shared Platforms, Local Brands and a Sale",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four acceptance criteria, the thesis and the role are copied unchanged from the case-ebay-classifieds entry in journal-spec.json. Added: one opening clause carrying over from case-olx (p01), a roadmap paragraph (p04) and a conclusion under its own heading (p62 new; p63 is the published closing paragraph moved there).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "eCG's portfolio built two ways from 2004 (bought national leaders such as Marktplaats, mobile.de, Gumtree, dba.dk and 2dehands, and greenfield launches, several later closed or sold) and sold to Adevinta for about US$9.2 billion (agreed July 2020, completed June 2021).",
+        "The shared layers by interface type: a search-engine choice made together and migrated brand by brand after eBay's Voyager was abandoned, a group PaaS, the MoVe motors supply platform with a published Listing API, sandbox and typed webhooks, one external payment institution, and a regional Benelux platform; and inside one brand, Kleinanzeigen's event backbone and per-user migration out of its monolith.",
+        "What the sale exposed: transitional services for Gumtree UK written into the UK regulator's 2021 remedy, support for the Australian businesses 'during the transition', and years of domain, design-system and platform work to remove the eBay name."
+      ],
+      "believe": [
+        "The type of interface behind a shared capability predicts what it costs to separate.",
+        "A group should share the professional supply side of verticals before consumer products."
+      ],
+      "can_do": [
+        "Keep a dependency register per brand listing everything it uses but does not own, with an owner and a replacement path.",
+        "Classify a group's shared capabilities by interface type and say which would need transitional services in a sale."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, platform and search leads, and engineering directors who integrate acquired marketplaces or prepare one for sale.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision.",
+        "Part IX's evidence rules, from part-9, and Adevinta's record, from case-adevinta.",
+        "Global components, tenancy and consolidation sequencing, from multi-country-platforms and platform-consolidation; Veldmark and its Common Ground program, from meet-veldmark."
+      ],
+      "does_not_know": [
+        "eCG's brands, history and sale.",
+        "eCG-specific names: Voyager, PanteraS, MoVe, Online Payment Platform, Gelijk Oversteken.",
+        "Transitional services agreements (TSAs) and undertakings in lieu."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a list of a brand's shared dependencies, the reader uses eCG's record to say which would separate cleanly in a sale, which would need transitional services, and what to keep before any sale is in sight.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A group may sell one country's marketplace in two years. That marketplace uses a search engine chosen jointly with its sister brands, a payment provider contracted by the group, a dealer-listing API the group publishes, and an internal fraud service owned by the parent with no written interface. Using only this chapter: which of these does eCG's record suggest would separate cleanly, which would not, and what should the group keep now?",
+        "expected": "The jointly chosen engine (an agreement), the external payment provider and the published dealer API (a published contract, like MoVe's Listing API and webhooks) are the interface types that left the cleanest record; the parent-owned fraud service with no written interface is the undocumented parent dependency that needed a regulator's transitional-services remedy for Gumtree UK. Keep a dependency register per brand with an owner and replacement path, and give every shared capability a written interface a third party could operate."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+        "expected": "Questions of what eCG shared, at which layer and through what kind of interface, what stayed local, and what the sale revealed about the coupling; evidence scattered across brand blogs in Amsterdam and Berlin, a GitHub organization, conference talks, archived job postings and a regulator's decision, with the group's own silence treated as evidence; the case as the mirror image of Adevinta, linking to it for everything after 2021; a closing test of Veldmark's Common Ground program."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every statement about eBay Classifieds Group's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how eBay Classifieds Group builds or runs a system without a dated source, or a company fact with no source and year?",
+        "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How thin a shared layer did eBay Classifieds Group run beneath its national brands, through which kinds of interface, and what did the 2020–2021 sale expose about that coupling?",
+    "claim": "eCG left each national leader owning its own platform and product and coordinated them through a thin, selective shared layer (a search-engine choice made together but migrated brand by brand, a group PaaS, a motors supply platform with published partner contracts, one external payment institution), and its sale showed that the type of interface predicted the cost of separation: no remedy in the public record touches the agreements, the external provider or the published contracts, while dependence on the parent had to be written into a competition remedy as transitional services for Gumtree UK, and removing the eBay name from the brands Adevinta kept took years of domain, design-system and platform work.",
+    "disputed_by": "The view that what a divestment costs is set by the deal structure and the regulators, not by the kind of interface between a parent and its brands; and with it, the view that a federation which never consolidated its consumer products wasted its scale and should have integrated its brands onto one product platform.",
+    "so_what": "A Chief Architect requires a written interface for every shared capability even when no third party is in sight; keeps a dependency register per brand with an owner and a replacement path for every system, data flow and contract it uses but does not own; shares the professional supply side of verticals, such as dealer stock entered once and shown in several marketplaces, before consumer products; makes group decisions on shared choices and funds local teams to migrate; and treats a parent's technology as a supplier with an end date.",
+    "how_why": "eBay entered classifieds in 2004 by buying national leaders and agreed in July 2020 to sell the whole group to Adevinta for about US$9.2 billion; the sale completed in June 2021. When eBay stopped investing in Voyager, the search engine it had given its subsidiaries, eCG companies chose a replacement together and each migrated alone (Marktplaats in three months with two or three developers). MoVe dispatched dealer listings to Kijiji.ca and kijijiautos.ca through a published API and webhooks; Kleinanzeigen rebuilt 34 million documents from a compacted event topic in under 30 minutes in 2019 and in 2025 migrated users one at a time out of its monolith. The UK regulator's 2021 decision required eBay to offer transitional services to Gumtree UK's buyer, Adevinta promised to support the Australian businesses 'during the transition', and several brands were sold again within 18 months. The group published almost nothing about itself, and that silence is evidence of how federated it was.",
+    "supporting_claims": [
+      {
+        "id": "E1",
+        "claim": "eCG's durable value sat in national leaders that eBay bought and left running on their own platforms; most greenfield launches under group brands were closed, renamed or sold, so the group had little reason to replace the platforms that won their markets."
+      },
+      {
+        "id": "E2",
+        "claim": "The shared layer was thin and selective, and each documented layer sat behind a different kind of interface: a search-engine choice made by agreement and migrated brand by brand, group-built PaaS tooling, the MoVe motors supply platform behind published contracts, the parent's inventory programs, one external payment institution and one regional Benelux platform."
+      },
+      {
+        "id": "E3",
+        "claim": "The deepest engineering in the record happened inside brands on their own paths: Kleinanzeigen's event backbone made its search index rebuildable, its 2025 whole-platform migration moved users one at a time, and mobile.de put dealers' exposure guarantees into ranking."
+      },
+      {
+        "id": "E4",
+        "claim": "The sale turned shared dependencies into contract terms, and the interface type predicted the cost: eBay offered transitional services for Gumtree UK in the UK regulator's remedy, Adevinta promised the Australian businesses support during the transition, and the brands Adevinta kept spent years removing the eBay name from domains, apps and platforms."
+      },
+      {
+        "id": "E5",
+        "claim": "eCG published almost nothing as a group, so its architecture is assembled from dated brand blogs, repositories, talks, job postings and a regulator's decision; every fact is dated, every inference labeled and the questions the record cannot answer are listed, not filled."
+      },
+      {
+        "id": "E6",
+        "claim": "The record yields decision rules a Chief Architect can apply before any sale: prefer interfaces that can be handed over, keep a dependency register per brand, share the professional supply side of verticals first, coordinate choices and fund local migrations, and treat a parent's technology as a supplier with an end date; tested against the book's patterns and Veldmark, they hold."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Tests how thin a shared layer can be and shows a sale converting shared dependencies into contract terms, with the interface type predicting the cost.",
+    "supports": [
+      "P9-2",
+      "P9-1",
+      "P9-4"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs to evidence-stops: cross-phase views (by option, by vertical, by failure, by gap)"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "chief-architect to questions: rules from the record, their test against the book and Veldmark, and questions for the reader's group"
+      }
+    ],
+    "rationale": "Reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference. The phases run in time order, because the sale can only expose dependencies the reader has already seen being built: the portfolio (Phase 1), the shared layers by interface type with Kleinanzeigen's own 2009–2019 backbone beside them (Phase 2), the sale (Phase 3) and its aftermath. The Berlin brands' 2024–2025 work follows the aftermath, whose last piece of evidence, the 2025 migration, hands over to it, so time never runs backwards. The cross-phase views come next because each uses facts from every phase; inside that group they run from what the record shows to what it cannot: the options set side by side by interface type (the central finding), then the same options by vertical, then what went wrong, then the gaps, which close the group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come last because they apply what the record has shown."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "eBay entered classifieds in 2004 by buying national leaders and over sixteen years built one of the largest classifieds portfolios in the world, from Marktplaats and mobile.de to Gumtree, Kijiji and Vivanuncios; in July 2020 it agreed to sell the whole group to Adevinta, and the sale completed in June 2021."
+    },
+    "bridge": {
+      "from_reader_world": "A Chief Architect of a marketplace group deciding what to share across brands that the owner may one day keep, merge or sell.",
+      "to_topic": "eCG ran national brands with a thin shared layer and was then sold whole, so its record can be asked what was shared, through what kind of interface, and what the sale exposed about each."
+    },
+    "thesis_statement": {
+      "text": "eCG left each national leader on its own platform and shared a thin, selective layer through different kinds of interface; the sale showed that the interface type predicted the cost of separation.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, after the questions in p03.",
+      "promises": [
+        {
+          "promise": "Set the reading rules and give a dated timeline.",
+          "kept_in": [
+            "how-to-read",
+            "timeline"
+          ]
+        },
+        {
+          "promise": "Follow three phases: building the portfolio, the federation's shared layers with one brand's own platform beside them, and the sale with its aftermath, followed by what the two Berlin brands published afterwards.",
+          "kept_in": [
+            "phase-1",
+            "phase-2",
+            "phase-3",
+            "aftermath",
+            "berlin-platforms"
+          ]
+        },
+        {
+          "promise": "Look across the phases: trade-offs, verticals, failure modes and where the evidence stops.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "evidence-stops"
+          ]
+        },
+        {
+          "promise": "End with the author's decision rules, a test against the book's patterns and Veldmark, and questions to ask.",
+          "kept_in": [
+            "chief-architect",
+            "comparison",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Where OLX reached for breadth and then concentrated, eBay entered classifieds in 2004 by buying national leaders, built one of the world's largest classifieds portfolios over sixteen years, agreed in July 2020 to sell it whole to Adevinta and completed the sale in June 2021.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "eBay's portfolio: Marktplaats, mobile.de and eBay Kleinanzeigen, Gumtree in three countries, Kijiji, dba.dk and Bilbasen, 2dehands and 2ememain, Vivanuncios and car sites; sale agreed July 2020, completed June 2021.",
+            "source": "eBay SEC filings 2004 and 2020; Adevinta release 2021",
+            "shows": "Sets the scale of the federation and the sale the chapter reads."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "eCG, the mirror image of Adevinta, published almost nothing as a group, and its scattered public record, with that silence as evidence, shows a federation of strong national businesses with a thin, selective shared layer whose dependencies the sale wrote into contracts.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Brand blogs in Amsterdam and Berlin, a GitHub organization, conference talks, archived job postings and a regulator's decision.",
+            "shows": "Names the kinds of evidence the chapter will use and why a group voice is missing."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "eCG sold whole to Adevinta in 2021.",
+          "introduces": "Adevinta published much about its central platforms; eCG published almost nothing as a group.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Among Part IX's cases, eCG tests how thin a shared layer can be and what a sale exposes, the stressor (a parent selling its group) that multi-country-platforms and platform-consolidation leave open, by asking what was shared, at which layer and through what interface, what stayed local and what the sale revealed; it leaves Adevinta's strategy after 2021 to case-adevinta.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "A federation with a thin shared layer, tested by a sale.",
+          "introduces": "The questions the chapter asks, its scope and the Veldmark test it feeds.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter sets reading rules and a timeline, follows three phases (building the portfolio, the federation's shared layers with one brand's own platform beside them, the sale and its aftermath), then what the two Berlin brands published afterwards, looks across all of it at trade-offs, verticals, failure modes and where the evidence stops, and ends with the author's rules, a test against the book's patterns and Veldmark, and questions to ask.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's questions.",
+          "introduces": "The route through the chapter that answers them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Case",
+      "controlling_idea": "The case keeps documented fact, the author's reading and labeled inference apart, and three limits of eCG's record shape what it can say.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "E5"
+        ],
+        "how": "Sets the evidence rules and the record's limits before any fact is used."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the rules every Part IX case follows, to this case's three limits, to the one fictional element and where it appears. The rules come first because the limits are stated in their terms."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction's promise of reading rules and a scattered record.",
+        "introduces": "The rules for reading that record.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Part IX cases separate three kinds of statement: a documented fact carries its source and publication year, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and an inference appears only in a callout labeled INFERENCE, NOT DOCUMENTED.",
+          "function": "definition"
+        },
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Three limits shape this case: no group engineering voice, evidence old enough to describe replaced systems, and internal platform names that no public source confirms and the chapter does not print.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "No eCG group blog found; most group-era sources date from 2009–2020; names circulating for internal platforms unconfirmed.",
+              "shows": "Shows why each statement is true only at its source's date and why some gaps stay open."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three kinds of statement.",
+            "introduces": "The three limits of this particular record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Veldmark, the book's fictional group, appears only in the final comparison and is a composite of industry patterns, not a disguised eCG.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "eCG's real, dated record and its limits.",
+            "introduces": "The fictional group and where it enters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "Timeline: eBay Classifieds in Dated Events",
+      "controlling_idea": "eCG's history from the first acquisitions in 2004 to the 2025 platform migration can be laid out as dated, sourced events.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E5",
+          "E1"
+        ],
+        "how": "Gives every later section a dated, sourced reference and shows the two growth routes and the sale."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The rule that every fact carries its source and year.",
+        "introduces": "The dated events themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The timeline's sources set what can be compared: dates are those of the cited documents, ownership facts are as of October 2026, and the group's self-reported scale figures use different definitions and are not compared across brands.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline table, 2004 to June 2025: acquisitions, launches, the Voyager replacement, the MoVe repositories, the July 2020 agreement (about US$9.2 billion), the CMA decision of 2 March 2021, completion on 25 June 2021, the 2021–2022 divestments, the May 2023 rebrand and the 2025 migration, each with its source type.",
+              "source": "eBay SEC filings 2004 and 2020; eBay Inc. releases 2008, 2015, 2016; CMA 2021; Adevinta releases 2021–2023; Berlin Tech Blog 2019, 2025",
+              "shows": "Puts every fact the chapter uses on one dated line with its source."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: eCG grew by buying leaders and launching group brands, both ending as a federation with a thin shared layer that the sale split.",
+              "shows": "Shows the chapter's arc in one picture."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-1",
+      "heading": "Phase 1: Building a Portfolio Two Ways (2004–2015)",
+      "controlling_idea": "eBay built the portfolio by buying national leaders and by launching group brands, and the bought leaders, which kept their own platforms, are where the value lasted.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1"
+        ],
+        "how": "Shows where the durable value sat and why the group had little reason to replace the leaders' platforms."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim of two routes with different outcomes comes first, then each route with its evidence and the table's sources, then the author's reading of why. The reading needs both routes in view before it can explain the difference, so it closes the section."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The timeline's acquisitions and launches.",
+        "introduces": "The two routes they represent and their different outcomes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "eBay assembled the portfolio by two routes, and their outcomes differ sharply.",
+          "function": "claim"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The first route was buying the national leader and keeping its brand, management and, as far as the record shows, its own platform.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "eBay's November 2004 filing: Marktplaats would be run 'as a separate business'; mobile.de, Gumtree, dba.dk with Bilbasen, 2dehands/2ememain and Vivanuncios followed.",
+              "source": "eBay SEC filing, 2004",
+              "shows": "Shows the operating intent of the buying route in eBay's own words."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two routes.",
+            "introduces": "The first: buy the leader and keep its brand.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The second route was launching new sites under a group brand where there was no leader to buy, and most of those launches were closed, renamed or sold.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Kijiji from 2005 in Canada, Italy and Taiwan (reported by Wikipedia, unverified, as incubated under Marktplaats BV), later US, China and India; eBay Kleinanzeigen absorbed Kijiji's German listings in 2009; iBazar in Mexico in 2013.",
+              "source": "eCG brand pages; Wikipedia",
+              "shows": "Shows the greenfield route at work."
+            },
+            {
+              "kind": "table",
+              "what": "Routes table: bought leaders still trading under their own names at their last documented sale or report; greenfield brands renamed, spun off, closed or retired, with Kijiji Canada and Kleinanzeigen the exceptions.",
+              "shows": "Sets the two routes' outcomes side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first route.",
+            "introduces": "The second: launch a group brand.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The routes table rests on eBay releases from 2004, 2008 and 2015, archived eCG brand pages and, for Kijiji's non-Canadian history, Wikipedia.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay Inc. releases 2004, 2008 and 2015; eCG brand pages 2009–2020 (archived); Wikipedia.",
+              "shows": "Dates and sources the table, as the evidence rules require."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The routes table.",
+            "introduces": "Its sources.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "In the author's reading the two routes differ by liquidity: a bought leader brought local supply and demand already in balance and a platform good enough to win its market, so the group had little reason to replace it and every reason not to risk its liquidity; of the two greenfield successes, one had a clear head start and the record does not explain the other.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: a transplanted mature tree beside wilting seedlings.",
+              "shows": "Shows the liquidity difference between bought and greenfield brands."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two routes' outcomes in the table.",
+            "introduces": "Liquidity as the explanation, and its architectural consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "heading": "Phase 2: A Federation with Group Functions (2009–2020)",
+      "controlling_idea": "Beside brand-run platforms eCG had group functions and shared five documented layers, each behind a different kind of interface, plus one regional platform, while the best-documented platform, Kleinanzeigen's, grew on its own engineering path.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E2",
+          "E3"
+        ],
+        "how": "Documents what was shared, layer by layer, and the interface type of each, and beside it what one brand built on its own."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "First the organization as seen from outside (who decided), then the shared layers one by one from the most local interface (a choice made by agreement) to the most external (a payment provider), then the regional exception with the layer map that sums them up, and last the local side: what one brand, Kleinanzeigen, built on its own between 2009 and 2019. The map comes after every layer because it summarizes them; Kleinanzeigen's backbone follows the map because it is the local counterpart of the shared layers and belongs to the same years, so the chapter does not have to jump back to 2009 after the sale. The interface type of each layer must be clear before the sale tests it in Phase 3."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Brands that grew on their own platforms.",
+        "introduces": "The group functions that existed beside them, seen only from outside.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "form": "list",
+          "controlling_idea": "Four kinds of indirect source show group functions beside brand-run platforms, because eCG never described its operating model in public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Job postings 2009–2011 ('Kijiji Platform', 'sister Classifieds platform', reuse 'by other Classifieds platforms', 'eBay Classifieds Global' as hiring entity); the Berlin Tech Blog shared by Kleinanzeigen and mobile.de; Rick Rackow's HashiConf 2018 talk on the 'Global Motors vertical'; Marktplaats's 2017 Journey Teams and a 2018 Berlin post on team-level decisions.",
+              "source": "Archived eCG careers pages; Berlin Tech Blog 2018; HashiConf 2018; Marktplaats 2017",
+              "shows": "Shows group functions and brand-level autonomy from four independent angles."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "In the author's reading eCG ran several platforms with reuse encouraged and not mandated, and the strongest brands made their own architecture and organization decisions.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four kinds of indirect source.",
+            "introduces": "What they add up to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Five group-wide shared layers are documented, plus a sixth regional one, each behind a different kind of interface, and the interface type is the most useful thing the case teaches.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Group functions existed beside autonomous brands.",
+            "introduces": "What those functions actually shared, and the interface of each.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Search was a coordinated choice migrated brand by brand: after eBay abandoned its Voyager engine, eCG companies chose Elasticsearch together, and Marktplaats migrated itself.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Frank Laan (Marktplaats, December 2015): Voyager 'developed internally by eBay in the USA', 'Ebay itself has moved on', 'almost become a black box'; 'other eBay Classifieds Group (eCG) companies facing similar problems' evaluated together; Elastic{ON} 2015.",
+              "source": "Marktplaats Technology, 2015; Elastic{ON} 2015",
+              "shows": "Shows the choice was shared and the cause was a parent's abandoned engine."
+            },
+            {
+              "kind": "table",
+              "what": "Marktplaats's migration: same interfaces, Voyager behavior first, hundreds of reused tests, replay of recorded queries, 1% to 100% rollout, two or three developers in about three months with zero downtime.",
+              "shows": "Shows the migration was local and small."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five shared layers.",
+            "introduces": "The first: search.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Replaying recorded queries against frozen copies made every difference explainable, which shadowing live traffic cannot.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The comparison step of Marktplaats's migration.",
+            "introduces": "Why that method works.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Infrastructure was shared as group-built tooling: the PanteraS platform-as-a-service and, for the Global Motors vertical, a HashiCorp stack on an OpenStack private cloud.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "PanteraS (November 2014, 'Platform as a Service in a box': Mesos, Marathon, Consul, Fabio) and related tooling on GitHub; Rackow 2018: Terraform on OpenStack, a tenant per developer, stateless apps on PanteraS, databases and Kafka on Nomad 'after having poor results with stateful applications on PanteraS'.",
+              "source": "eBayClassifiedsGroup GitHub; HashiConf 2018",
+              "shows": "Shows a group-built runtime and its limit."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Search, the first layer.",
+            "introduces": "The second: infrastructure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "In the author's reading PanteraS was a familiar first-generation group platform, good for stateless services, weaker for stateful ones and built on a private cloud the brands later left.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "By 2026 mobile.de ran ML serving on Kubernetes on AWS and Kleinanzeigen's home feed on Vespa Cloud on AWS; PanteraS's last push was in 2021.",
+              "shows": "Shows the brands left the group runtime."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The PaaS and its trouble with stateful workloads.",
+            "introduces": "What kind of platform it was and what happened to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "MoVe, the eCG Motors Vertical platform, is documented from outside by two 2020 repositories as a supply platform behind published contracts that dispatched dealer listings to several marketplaces in a tenant.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Listing API at api.ecgmove.com (no longer resolves), sandbox credentials, partnerId, whitelisted IPs; events for listings, dealers, promotions, enriched listings and listing-url; a synchronous reply with the receiver's listing ID and a VIP URL per language; 'In the Canadian tenant, this can include Kijiji.ca, kijijiautos.ca and others.'",
+              "source": "eBayClassifiedsGroup GitHub, 2020",
+              "shows": "Shows the contract shape and the one documented tenant."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the documented shape of MoVe.",
+              "shows": "Shows stock entered once and pushed as typed events to receivers."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: MoVe reads as a shared supply hub per country tenant; other tenants and mobile.de's use are not public.",
+              "shows": "Keeps the reading of two README files apart from fact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Infrastructure, the second layer.",
+            "introduces": "The third: a motors-vertical platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "MoVe is the one shared product platform in the record, and it sits where sharing pays most clearly: structured dealer supply behind a contract, not a shared database.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "MoVe's documented contracts.",
+            "introduces": "Why that vertical and that interface suit sharing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The parent's marketplace was a supply source: eBay inventory and motors seller tools were placed on eCG sites, and in the author's reading this was the most parent-dependent layer and the first a sale would expose.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Alessandro Coppo, December 2016: eBay inventory on Gumtree Australia, Gumtree UK and eBay Kleinanzeigen; Cargigi motors tools 'being used by Kijiji in Canada and Gumtree in South Africa'; 'integrating and cooperating at our technology infrastructure level'.",
+              "source": "eBay Inc., 2016",
+              "shows": "Shows a dependency on the parent with no documented interface."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The motors platform, the third layer.",
+            "introduces": "The fourth: the parent's own marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Payment holding was bought from one external payment institution for two brands, not built, and both flows have since changed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Marktplaats person-to-person payments through Online Betaalplatform (June 2017) and Gelijk Oversteken (November 2017, 2% plus €0.40, seven-day release); eBay Kleinanzeigen 'Sicher bezahlen' (October 2020, 14 days, 'Online Payment Plattform'); t3n names Online Payment Platform as provider in July 2023; Worldline's 2022 release names both brands as clients; Marktplaats withdrew Gelijk Oversteken in April 2022; Kleinanzeigen's help page (read October 2026) names Adyen.",
+              "source": "Emerce 2017; RetailTrends 2017; onlinemarketing.de 2020; t3n 2023; Worldline 2022; Kleinanzeigen help page",
+              "shows": "Shows one external provider serving two brands and a switch whose date is not public."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The parent's marketplace, the fourth layer.",
+            "introduces": "The fifth: payments.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The sixth, regional layer is a Benelux multi-tenant platform for Marktplaats, 2dehands and 2ememain, known only from an undated job posting, and the layer map gives each layer's interface and evidence, with the two layers that stayed local.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta job posting: Marktplaats, 2dehands and 2ememain 'are hosted on a multi-tenant platform, operated from our Amsterdam location'.",
+              "source": "Adevinta job posting, undated (2025–2026)",
+              "shows": "The only public statement that two eCG countries shared one product platform."
+            },
+            {
+              "kind": "table",
+              "what": "Layer map: each layer, whether shared, its interface and its evidence and date.",
+              "shows": "Sums up the interface type of every layer."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: the evidence is consistent with a shared generalist platform for smaller horizontals; no source confirms it.",
+              "shows": "Keeps a plausible reading apart from fact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Five group-wide layers.",
+            "introduces": "One regional layer and the map of all six.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The shared layers sat beside platforms the brands built for themselves, and the best-documented eCG platform belongs to a brand, showing what a national platform did on its own engineering path in the same years.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The shared layers and the layer map.",
+            "introduces": "The platforms the brands built for themselves, and the best-documented one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "E3"
+            ],
+            "how": "Shows the local side of the federation beside the shared layers."
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Kleinanzeigen absorbed a hundredfold growth in daily inserts on its own engineering path, not through a group platform.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "eBay Kleinanzeigen built in 2009 'to process 10K new ads per day', launched with about 700,000 live ads; by 2019 more than 34 million live ads and up to a million new ads a day.",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "Shows a brand scaling on its own platform."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A national platform on its own engineering path.",
+            "introduces": "The scale it absorbed between 2009 and 2019.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Kleinanzeigen's event backbone began with one job its database could not do, real-time saved-search alerts, and earned trust by solving it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Andre Charton, October 2019: 2009 'plain old database backend' with Solr and a Java monolith; Kafka introduced in 2015 'to break out from the monolith'; saved searches with push notifications not possible 'in real time with MySQL'; 45 million saved searches and up to a million new ads a day by 2019; 'we won big trust'.",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "Shows the backbone started from a visible failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Growth from 10,000 to a million new ads a day.",
+            "introduces": "The event backbone that began with one job the database could not do.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Two later uses followed from that trust: Kafka became storage from which the search index could be rebuilt, and a stream feeding the home feed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'We are able to fully index 34 million documents in our search cluster in less than 30 minutes' from a compacted topic; a personalized home feed 'consumed like a stream'.",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "Shows the same log reused to make the index disposable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The trust won with alerts.",
+            "introduces": "The two uses that followed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "In the author's reading this is the case's most transferable engineering lesson and owes nothing to the group: an index rebuildable from a durable log cannot quietly become the system of record.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Alerts, then storage, then a stream.",
+            "introduces": "Why the sequence matters and which failure pattern it prevents.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "heading": "Phase 3: The Sale (2020–2021)",
+      "controlling_idea": "The sale's public terms say almost nothing about technology, but the UK regulator's remedy records eBay offering transitional services for Gumtree UK, and the divested brands, not the self-sufficient ones, needed help to separate.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E4"
+        ],
+        "how": "Shows the sale converting a shared dependency into a contract term."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "From the July 2020 terms and their silence on technology, to what the regulator wrote in 2021, to the divestments of 2021–2022, to the author's reading of which brands needed help. The reading needs the regulator's sentence and the divestments in view first."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The federation and its shared layers up to 2020.",
+        "introduces": "The July 2020 agreement to sell eCG to Adevinta.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "eBay's July 2020 release valued eCG at about US$9.2 billion and estimated synergies that Adevinta restated as €130–165 million of run-rate cost synergies at completion in June 2021.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About US$9.2 billion: US$2.5 billion in cash plus about 540 million Adevinta shares (about 44% of equity, 33.3% of votes); Schibsted to buy the Danish business; US$150–185 million a year of synergies within three years; €130–165 million guided on 25 June 2021.",
+              "source": "eBay SEC filing, 2020; Adevinta release, 2021",
+              "shows": "Gives the deal's scale and its synergy case."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "On technology the release says only that the two companies 'will continue to partner in key areas post-closing to ensure a seamless transition', and nothing public describes which eBay systems eCG depended on.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "eCG innovates 'across its product portfolio and advertising technology platform'; 'will continue to partner in key areas post-closing to ensure a seamless transition'.",
+              "source": "eBay SEC filing, 2020",
+              "shows": "Shows the deal's public terms leave the technical dependencies unnamed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The deal's detailed financial terms.",
+            "introduces": "Its near-silence on technology.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The UK competition regulator's remedy required the sale of Gumtree UK with its platforms and recorded that eBay offered transitional services for it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "CMA: Gumtree and Shpock competed closely; Gumtree 'has significant potential to compete with eBay Marketplace in the UK'; undertakings in lieu accepted 2 June 2021; Gumtree UK sold with its 'platforms, related tangible and intangible assets, employees, leaseholds, contracts and goodwill'; 'Adevinta and eBay have offered to provide transitional services in relation to Shpock and Gumtree UK respectively as part of the Proposed Undertakings.'",
+              "source": "CMA decision ME/6897/20, 2021",
+              "shows": "Shows a shared dependency written into a regulator's remedy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The release's silence on technology.",
+            "introduces": "What the regulator did write down.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The offer came from eBay, the seller, and in the author's reading it means a business sold with 'its platforms' still needed something from eBay that was not in the package because it was shared.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A transitional services agreement (TSA) is a contract under which the seller keeps running some systems or functions for the divested business for a limited period; the CMA text does not say what the services covered.",
+              "shows": "Defines the term and keeps the reading within what the source says."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The CMA's sentence on transitional services.",
+            "introduces": "Who offered them and what that implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Gumtree UK, Shpock and then the Australian, South African and Mexican businesses were sold within about fifteen months, with Adevinta promising the Australian business support during the transition.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shpock to Russmedia Equity Partners on the day the undertakings were accepted; Gumtree UK and Motors.co.uk (about 7% of eCG's 2020 revenue) to O3 Industries and Novum Capital on 1 December 2021; Australian businesses to The Market Herald for US$60 million in August 2022 ('will continue to support the Australian business and its employees during the transition'); Mexico to Navent in September 2022; Gumtree South Africa to Impresa Capital in July 2022.",
+              "source": "Adevinta releases 2021–2022; trade press",
+              "shows": "Shows the divestments and the one other public promise of transition support."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: a plausible reference view of a carve-out, labeled as not describing any specific separation.",
+              "shows": "Shows each used-but-not-owned capability becoming a TSA line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The remedy accepted on 2 June 2021.",
+            "introduces": "The sales that followed, 2021–2022.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "In the author's reading separation cost appeared where sharing had been: Gumtree UK and the Australian businesses needed transitional help, while the self-sufficient platforms in Amsterdam and Berlin became the combined group's core.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The remedy and the divestments.",
+            "introduces": "The one pattern the record supports.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "aftermath",
+      "heading": "Aftermath: Removing a Parent from a Platform",
+      "controlling_idea": "The brands Adevinta kept had to stop being eBay, which took years of domain, app and platform work beneath the logo.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E4"
+        ],
+        "how": "Shows the separation cost on the kept brands, not only on the sold ones."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The three pieces of evidence first, then one brand outside the core, then the reading of what they add up to. The reading generalizes from the evidence; placed first it would be an unsupported claim about separation budgets."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Sold brands that needed transitional services.",
+        "introduces": "The brands Adevinta kept, which had to stop being eBay.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Three pieces of evidence show what stopping being eBay took: the name and domain, the apps and the platform.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "16 May 2023 rebrand with the old domain kept 'several more years'; €15 million rebrand cost and no use of the brand beyond 2024 (Adevinta 2023 annual report, via case-adevinta); mobile.de's Android rebrand 'took only two weeks to implement once the base refactoring was done', removing 'technical debt from 8 years ago' (2025); Kleinanzeigen's 2025 migration, not documented as a consequence of the sale.",
+              "source": "Adevinta release 2023; Berlin Tech Blog 2025",
+              "shows": "Shows the work at each layer and keeps the migration's cause unclaimed."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Away from the core, Adevinta impaired Kijiji Canada by €147 million in its 2023 results, citing competition and a new 2023 mobile app; Kijiji is still listed among Adevinta's brands.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€147 million impairment citing competition and a new 2023 mobile app; still listed as of October 2026.",
+              "source": "OnlineMarketplaces, 2024",
+              "shows": "Shows a kept brand outside the core."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The core brands' rebrand work.",
+            "introduces": "A kept brand away from the core.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "E1"
+            ],
+            "how": "Records a kept greenfield brand outside the core, beside the self-sufficient national leaders."
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "In the author's reading, which goes beyond the three examples, separating from a parent takes work at several layers below the logo (domains, identity and design systems), and the logo, the cheapest part, is the one most often budgeted.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The name, app and platform evidence from the kept brands.",
+            "introduces": "A general list of the layers a separation budget must cover, which goes beyond those examples.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "berlin-platforms",
+      "heading": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025",
+      "controlling_idea": "After the sale the two Berlin brands kept engineering on their own paths: Kleinanzeigen migrated its whole platform user by user in 2025, and mobile.de put dealer commitments into ranking in 2024.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "E3"
+        ],
+        "how": "Shows the local side of the federation after 2021: what national platforms did without the group."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Kleinanzeigen's 2025 migration comes first because the Aftermath's third piece of evidence hands it over; its six design choices and the author's reading of its ownership follow. mobile.de, the other Berlin brand, comes last as a second, narrower example of a brand on its own path, about models rather than platform."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Aftermath's third piece of evidence: Kleinanzeigen's 2025 whole-platform migration, which the Aftermath says the next section describes.",
+        "introduces": "The migration in detail, from Kleinanzeigen's own engineers, and the other Berlin brand.",
+        "form": "sentence",
+        "placement": "both"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Kleinanzeigen's own engineers documented the whole-platform migration the Aftermath named: in 2025 it ran both systems and switched users one at a time, and the post gives no basis for linking the new system to Adevinta's convergence plan.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "MD Sayem Ahmed, June 2025: 'KA recently migrated the whole platform to a new system'; ran it 'parallel to our legacy system', 'incrementally switched users' with the option to 'revert the users to the old system'; neither platform named.",
+              "source": "Berlin Tech Blog, 2025",
+              "shows": "Shows a whole-platform migration done per user, and what the post does not say."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Aftermath's third piece of evidence, the 2025 whole-platform migration.",
+            "introduces": "The migration as its engineers described it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "The post documents six design choices that made the migration reversible per user.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Order by data dependency; route by user through a reverse proxy; no dual writes, up to a minute of sync delay; Debezium change data capture with row-format replicas; back-sync for rollback; a per-user state machine with loops broken by the JPA @Version field.",
+              "source": "Berlin Tech Blog, 2025",
+              "shows": "Shows the mechanics of a per-user strangler migration."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the per-user migration states.",
+              "shows": "Shows replatforming as small reversible per-user moves."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A per-user migration with rollback.",
+            "introduces": "The six design choices behind it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "In the author's reading the migration's ownership mattered as much as its algorithm: a migration between two systems owned by different teams needs its own owner and anti-corruption layer.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six design choices.",
+            "introduces": "Who owned the migration and why that matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "mobile.de, the other Berlin brand, published more about models, and its ranking post shows dealers' exposure guarantees shaping a ranking service moved out of Elasticsearch.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Manish Saraswat, February 2024: top 100 'within a few milliseconds' over more than a million listings while honoring 'exposure guarantees made to our premium dealers'; LTR moved from an Elasticsearch plugin to a Python service; pairwise XGBoost beat pointwise in an A/B test.",
+              "source": "Berlin Tech Blog, 2024",
+              "shows": "Shows a second brand's own engineering path and a commercial commitment inside ranking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Kleinanzeigen's platform migration.",
+            "introduces": "The other Berlin brand, which published about models.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "In the author's reading the ranking post is the clearest public statement that a dealer package's promise of exposure becomes a ranking constraint, so the ranking service must know about entitlements.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Exposure guarantees in mobile.de's ranking.",
+            "introduces": "What they mean for the ranking/entitlement boundary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs the Case Illustrates",
+      "controlling_idea": "Set side by side, eCG's options differ mainly in the kind of interface they create, and that kind decides how easily each unwinds.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "E4",
+          "E2"
+        ],
+        "how": "States the case's central finding across all phases: interface type predicts separation cost."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The record across all phases, from the portfolio to the Berlin brands' own paths.",
+        "introduces": "The options it shows, set side by side.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "The options differ mainly in the kind of interface they create: agreements and external providers are easy to unwind, published contracts can be handed over or re-pointed, and undocumented dependence on a parent is the hardest and the one the regulator wrote into the remedy.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven options (buy the leader, launch greenfield, coordinate a choice, build a PaaS, share a vertical supply platform behind contracts, buy from one external provider, depend on the parent), each with what eCG's record shows and when it is right or fails.",
+              "shows": "Lays the options side by side for comparison."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: four joints, from a handshake to a knotted tangle.",
+              "shows": "Shows the ordering of interfaces by ease of unwinding."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in the Record",
+      "controlling_idea": "eCG treated its generalist and automotive verticals differently, and the automotive pattern of sharing the supply side generalizes.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "E6",
+          "E2"
+        ],
+        "how": "Grounds the rule to share professional supply first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The options set side by side.",
+        "introduces": "How the same options played out by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "eCG's portfolio was mostly generalist and automotive, and the record shows the two verticals treated differently.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Generalist: local products, a Benelux platform, a shared payment provider, parent inventory; automotive: a Global Motors vertical, a central SRE team, MoVe, mobile.de ranking with exposure guarantees; real estate and jobs: no documented vertical platform.",
+              "shows": "Shows where sharing reached in each vertical."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "In the author's reading the automotive pattern generalizes: where supply is professional, structured and arrives through integrators, a group can share the supply side and leave consumer marketplaces separate.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Automotive treated differently from generalist.",
+            "introduces": "Why that pattern generalizes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The vertical table first, then the reading that generalizes from it. The generalization needs the table's automotive row, which draws on MoVe and mobile.de's ranking shown earlier; placed before them it would be an unsupported claim."
+      }
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes the Record Exposes",
+      "controlling_idea": "The record exposes four failure modes of shared technology in a group: a parent's abandoned technology, dependencies that appear only at the sale, a first-generation platform outlived by its tenants, and hidden behavior in legacy systems.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "E4",
+          "E6"
+        ],
+        "how": "Names the risks the decision rules must guard against."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What worked: sharing the supply side behind contracts.",
+        "introduces": "What the record shows going wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "form": "list",
+          "controlling_idea": "The record also shows what went wrong: four failure modes recur in it, each traced to a dated example.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Voyager abandoned by eBay; 'partnering in key areas' and the remedy naming no shared system; PanteraS on a private cloud outlived by public-cloud tenants; Marktplaats's 'hidden functionality' and Kleinanzeigen's replication settings.",
+              "shows": "Ties each failure to the record."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence-stops",
+      "heading": "Where the Public Evidence Stops",
+      "controlling_idea": "The public record cannot answer nine questions about eCG, from its generalist platform to the synergy outcome, and the chapter does not fill them beyond its two labeled callouts.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "E5"
+        ],
+        "how": "Lists the gaps so the rules that follow do not outrun the record."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the record exposes.",
+        "introduces": "What it cannot show.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "The record exposes those failures but leaves much unanswered: no public source found for this book answers nine questions about eCG, and the chapter fills none of them beyond the two labeled callouts.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine questions, each with what is public and what is not: a shared generalist platform, engineering organization, MoVe's tenants, dependencies on eBay at signing, the Gumtree UK TSA, the separations of Australia, Mexico and South Africa, Kleinanzeigen's 2025 system, Marktplaats after 2017, the synergy outcome.",
+              "shows": "Shows exactly where the record ends."
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Ownership of Gumtree UK, Gumtree Australia and Kijiji Canada after 2024 is volatile, and readers should check it before relying on the portfolio facts.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The listed gaps.",
+            "introduces": "One more limit: facts that may change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The nine open questions first, then the one caveat that applies to facts already given (ownership after 2024). The caveat refers to the portfolio facts, so it follows the list of what is unknown rather than interrupting it."
+      }
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The author draws five decision rules from eCG for a group that buys marketplaces and may one day sell them.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "E6"
+        ],
+        "how": "Turns the record into rules."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The rule the whole case supports (interfaces you can hand over) comes first, then the register that applies that rule brand by brand and so needs it stated first, then the narrower rules on verticals, migrations and the parent's technology. Each rule names evidence the reader has already seen."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The record and its limits.",
+        "introduces": "The rules the author takes from it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "What the author takes from eCG is a set of decision rules for a group that buys marketplaces and may one day sell them.",
+          "function": "transition"
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Prefer interfaces you can hand over: require every shared capability to have a written interface a third party could operate against.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Agreements, an external provider and published contracts left the cleanest record; undocumented dependence on a parent needed a regulator's attention.",
+              "shows": "Grounds the rule in the trade-offs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decision rules.",
+            "introduces": "The first: interfaces you can hand over.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Keep a dependency register per brand listing every system, data flow and contract it uses but does not own, with an owner and a replacement path.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 7: a brand's register beside a rushed discovery under a clock.",
+              "shows": "Shows transitional services read from a list instead of discovered at signing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Written interfaces.",
+            "introduces": "The list that records them per brand.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Share the supply side of professional verticals first, because dealer stock entered once and shown in several marketplaces is the clearest case for a shared product platform in the record.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The register.",
+            "introduces": "Which layer to share first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Coordinate choices and fund local migrations: the Chief Architect owns the decision record, the shared expertise and the migration method, not the migration itself.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to share first.",
+            "introduces": "How to run a shared choice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Treat the parent's technology as a supplier with an end date, and plan the exit before the supplier moves on.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Shared choices and local migrations.",
+            "introduces": "The last rule, from Voyager.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "heading": "Comparing the Case to the Book's Patterns and to Veldmark",
+      "controlling_idea": "eCG's record supports the book's patterns and adds 'the parent sells' as a stressor, and applied to Veldmark it says to make each shared capability hand-over-able rather than to share less.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "E6"
+        ],
+        "how": "Tests the rules against the book and the fictional group."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the book's patterns, to Veldmark's 2027 choices, to one worked sale question, to the answer. The worked question uses the last row of the Veldmark table, so it must follow it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The author's rules.",
+        "introduces": "Their test against the book's patterns and Veldmark.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "controlling_idea": "The author's rules rest on the same record that tests the book's patterns, and eCG's record supports or is consistent with every pattern it touches and adds one stressor: the parent sells.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven book patterns with eCG's record and a verdict for each.",
+              "shows": "Shows which patterns the case supports and how strongly."
+            }
+          ]
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Veldmark's Common Ground program follows 'share platforms, not products', close to what eCG did but with a much thicker shared layer, and each of its 2027 choices for Tradeyard and Motorvane has an eCG parallel and a suggestion.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Common Ground approved January 2027, €140 million over 2027–2030; six Veldmark choices (Motorvane syndication to Tradeyard Poland, OpenSearch, Yardstick strangler with Debezium CDC, Kafka on Confluent Cloud and alerts for 46 million saved searches, Safe Deal on Adyen for Platforms, private-equity ownership since 2025), each with an eCG parallel.",
+              "source": "Scenario ledger",
+              "shows": "Applies the case to the fictional group's actual decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The book's patterns.",
+            "introduces": "Veldmark, the fictional group.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "If Veldmark's owner sold Tradeyard Portugal in 2029, each shared capability it would then use would become a line in a transitional services agreement, as for Gumtree UK.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Portugal: 1.1 million live listings, about 210,000 new listings a week, no Safe Deal; by 2029 on the group taxonomy service, the Confluent backbone and Listing event contract v1, Veldmark ID, the shared OpenSearch platform and Tally, and still on Yardstick until end of 2029.",
+              "source": "Scenario ledger",
+              "shows": "Turns the rule into a concrete separation list."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The last row: private-equity ownership.",
+            "introduces": "A worked sale question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "The architectural answer is not to share less but to make each shared capability hand-over-able, with a per-brand dependency register that makes the tenancy model's exit paths checkable.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Country-scoped taxonomy exports, brand- and country-filtered topics, per-brand identity profiles, per-country indices, extractable entitlement accounts; the June 2027 tenancy model; Ingrid Halvorsen and the architecture advice forum; separability tabletops.",
+              "source": "Scenario ledger",
+              "shows": "Shows what hand-over-able means for each capability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Every shared capability becomes a TSA line.",
+            "introduces": "How to make each one hand-over-able.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Eight questions let a reader test their own group against eCG's lessons.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "E6"
+        ],
+        "how": "Puts the rules to the reader's own group."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The tests applied to Veldmark.",
+        "introduces": "The same tests for the reader's own group.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "The same tests apply to any group: eight questions turn the case into checks on the reader's own group, from dependencies per brand to the cost of removing a brand name.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From eBay Classifieds to AVIV",
+    "synthesis": "The three questions give one answer: what the group shared was thin and chosen layer by layer, what stayed local was the national platforms that kept their value and could move to a new owner, and what the sale revealed depended on the interface each layer used. Choosing interfaces a third party could operate is what keeps a group free to keep, merge or sell each brand.",
+    "so_what": "A Chief Architect does not need to know whether a sale is coming to act on this: a dependency register per brand and a written interface for every shared capability cost little now and set the price of separation later.",
+    "callback": {
+      "to": "The hook: eBay entered classifieds in 2004 by buying national leaders and sold the group whole in 2021; and the group's public silence.",
+      "how": "The reader can now see that the leaders eBay bought and left on their own platforms were the ones that moved cleanly to a new owner, and that the group's silence matched how little it held in common."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Start a dependency register per brand and require a written interface for every shared capability; read case-aviv next for a group that took the opposite route in one vertical."
+    },
+    "hand_off": {
+      "to": "case-aviv",
+      "relationship": "place",
+      "carries_over": "eBay Classifieds' closing: a federation whose value lay in strong national platforms and whose shared layer was tested by a sale.",
+      "introduces": "One vertical, real estate, and a group that took the opposite route: it assembled national portals by acquisition and set out to make them work as one, with almost no engineering evidence to read."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole case, from the phases to the questions.",
+      "introduces": "What the chapter's three questions add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p62",
+        "controlling_idea": "Asked of the whole record, the chapter's questions give one rule: the national platforms that stayed local kept their value, and the interface each shared layer used set what the sale cost, so interfaces a third party could operate keep a group free to keep, merge or sell each brand.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "E1",
+            "E2",
+            "E4",
+            "E6"
+          ],
+          "how": "Synthesizes the chapter and calls back to the hook."
+        }
+      },
+      {
+        "id": "p63",
+        "controlling_idea": "eCG shows a federation whose value lay in strong national platforms and whose shared layer was tested by a sale, and case-aviv follows a group that took the opposite route in one vertical, assembling a European real-estate platform from acquired portals.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "E1"
+          ],
+          "how": "Hands off to case-aviv."
+        },
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "One federation's whole record.",
+          "introduces": "The next case: one vertical and the opposite route.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A company profile, a valuation or a judgement on eBay's portfolio strategy."
+    },
+    {
+      "topic": "Adevinta's integration, convergence and decentralization after 2021.",
+      "covered_in": [
+        "case-adevinta"
+      ]
+    },
+    {
+      "topic": "Re-teaching tenancy models, consolidation sequencing, migration patterns or payment design.",
+      "covered_in": [
+        "multi-country-platforms",
+        "platform-consolidation",
+        "modernization-and-migration",
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "Gumtree, Kijiji or Vivanuncios engineering, for which no first-hand public source was found."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Which brands, other than Canada's receivers, used MoVe, and did mobile.de?",
+    "Did eCG run a shared generalist platform for its smaller horizontals? Names circulating for it remain unverified.",
+    "Scope and duration of the Gumtree UK transitional services.",
+    "Identity of Kleinanzeigen's 2025 'new system' and its relation to any Adevinta platform.",
+    "When Kleinanzeigen's buyer-protection provider changed from Online Payment Platform to Adyen.",
+    "Ownership of Gumtree UK, Gumtree Australia and Kijiji Canada after 2024 (volatile)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the round-3 escalation under the author's delegation. Kleinanzeigen section split, because both flow readers objected to every position: the 2009–2019 growth and event backbone (p27, p14, p28–p30) moved into Phase 2 as its last subsection, 'What one brand built on its own: Kleinanzeigen, 2009–2019', after the layer map; the 2025 migration (p31–p33) and mobile.de's ranking (p34–p35) became a new section after the Aftermath, retitled 'Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025' so that mobile.de fits under it. p27 rewritten as a contrast with the shared layers; its sentence pointing to case-adevinta moved, unchanged in substance, into p31, whose opening now picks up the Aftermath's hand-over. Transitions of p27, p31, p34, the new section and trade-offs rewritten; roadmap p04 and its promise updated; post and Phase 2 flow rationales rewritten, including the reason for the internal order of the cross-phase views.",
+      "rejected": [
+        "Keeping the section whole before or after the sale (both positions drew corroborated objections in rounds 2 and 3).",
+        "Giving mobile.de its own section (a heading change is enough)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "AC-4 callouts, made to agree with the page's own sources: 'Each brand kept its own core platform' now reads 'As far as the record shows, each brand kept its own core platform; the one documented exception is a multi-tenant platform the Benelux sites share, known from an undated job posting' (the body's p10 hedge and p26 Benelux evidence); 'much of that value sat in a few national brands' is now labeled 'On my reading', and the price is attributed (eBay, 2020) as in the timeline; 'eBay's strongest European market' is labeled 'on my reading' (the page gives no source). No new statement about any company."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Published inconsistencies (rule 3, page's own sources): 'The two greenfield sites that succeeded both had a head start' now reads 'Of the two greenfield sites that succeeded, one had a clear head start', matching the next sentences, which say the record does not explain Kijiji Canada; 'three layers below the logo' now reads 'several layers below the logo', since the evidence list above names name/domain, apps and platform while the reading names domains, identity and design systems; the Deal-Shaped Architecture bullet's 'coordinated them only by agreement' now reads 'mostly by agreement', since the body documents a group PaaS and MoVe's published contracts. CMA dates: the 2 March 2021 decision (timeline and text), its April 2021 publication and the 2 June 2021 acceptance are three different events and do not contradict each other; kept as published, timeline unchanged (rule 8)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Glosses before use (known_before_new, corroborated in round 3): 'transitional services' glossed in the WHY THE BUSINESS CARES callout as 'systems and functions the seller keeps running for a sold business while it separates'; 'statement-based binary logs' glossed in the Aftermath as 'a MySQL replication setting that logs SQL statements rather than changed rows'. The failure-modes lead now opens 'The record also shows what went wrong', signalling the turn from the options to the failures."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Raised length.max_words from 8166 to 8300 (rule 2, within 10%) for the glosses, the qualified callouts and the transitions of the split; no published fact cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept the orchestrator's removal of the interpretive Kijiji-impairment sentence; p43's controlling idea now states only the documented impairment and listing, and the paragraph stays in the Aftermath as placed by the author (rule 8)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Remaining open items closed by keeping the published text (rule 8), accepted under the author's delegation, 2026-11-12: the flow-rubric suggestions not taken (merging the cross-phase sections, moving the Phase 1 sources line, the ownership-volatility note, moving the Kijiji impairment); the layer counts (five group-wide plus one regional in the text, eight rows in the map with two local, explained in one sentence); p24's labeled reading that the parent-inventory layer was 'the first to be exposed by a sale'. Agent-written glosses, transitions, roadmap and renamed headings of earlier passes accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate; both flow readers reported the backward jump from 2025 to 2020 and new evidence inside Vertical Differences): moved the Kleinanzeigen section after Aftermath (the Aftermath's 'described above' now reads 'described in the next section') and returned the mobile.de ranking subsection to the end of that section, undoing the flow-rubric move. Also clarified the layer count, named the stressor in p03, added two 'my reading' labels to callouts, a source to the 7% revenue share and a reading to the Kijiji impairment.",
+      "rejected": [
+        "Splitting the Kleinanzeigen section between Phase 2 and the Aftermath (breaks its own chronological reading)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate on spec faults, fixed under the brief's rule that the spec's order, paragraph ideas and transitions may change): moved p14 (Kleinanzeigen's hundredfold growth) from Phase 1 to the Kleinanzeigen section and its caveat on the group's self-reported figures into the timeline note (p08), because both flow readers found it out of period; re-pointed p43 (Kijiji impairment) to E1; rewrote p44's transition as elaboration that goes beyond the evidence, since the published triad does not match the evidence list.",
+      "rejected": [
+        "Moving the Kijiji impairment out of Aftermath (reordering a published fact the author placed there)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved the mobile.de ranking subsection (p34, p35) from the Kleinanzeigen section to Vertical Differences, between the vertical table and the generalization, so the automotive evidence sits together; p34's opening sentence now ties it to the table's automotive row. Sharpened the flow rationales of phase-2, kleinanzeigen, aftermath and chief-architect, and added one for verticals.",
+      "rejected": [
+        "Merging the three cross-phase sections into one (headings shared with the other Part IX cases)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted to spec.json. Success criteria of spec.md not carried as criteria: the timeline, layer map, trade-off and vertical tables, diagrams, questions and sources were inventories; the inference-labeling and evidence-stops criteria are covered by AC-4 and the evidence-stops section; agreement of the sale figures with case-adevinta and 'ledger facts only' in the comparison are editorial checks, not reader outcomes. No criteria added beyond the journal spec's four."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a conclusion under its own heading ('From eBay Classifieds to AVIV'), as case-adevinta did: a new synthesis paragraph and the published closing paragraph moved out of 'Questions to Ask'. Added a roadmap paragraph so the opening announces every section, and one clause in p01 carrying over from case-olx.",
+      "rejected": [
+        "Leaving the hand-off inside 'Questions to Ask', which gives the chapter no synthesis or callback."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the case around shared layers and their interface types (agreement, external provider, published contract, undocumented parent dependency) rather than by brand, because the interface type is what predicted separation cost at the sale."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Upgraded MoVe from brief-level inference to documented fact for the Canadian tenant after re-reading the webhook-receiver README, which names Kijiji.ca and kijijiautos.ca as receivers; kept other tenants as inference."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used Kleinanzeigen's 2019 and 2025 posts as the deepest engineering evidence but refused to link the 2025 migration to Adevinta's convergence plan, which the post does not mention."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "For the Veldmark comparison, used a hypothetical 2029 Tradeyard Portugal sale built only from ledger dates (Adevinta's case used Hearthly), so the two cases test different shared capabilities; no ledger facts added."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "case-adevinta",
+      "contributed": "Post-2021 story and payment flows, kept consistent."
+    },
+    {
+      "kind": "internal",
+      "ref": "multi-country-platforms, platform-consolidation, listing-ingestion, search-architecture, event-driven-listings, modernization-and-migration, ranking, long-term-evolution",
+      "contributed": "Patterns tested."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-ebay-classifieds.md (primary), brief-adevinta.md, brief-search-discovery.md, brief-platform-data-ml.md; _research/scenario-ledger.md",
+      "contributed": "Evidence base and Veldmark facts."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay SEC filings 2004 and 2020; eBay Inc. releases 2008, 2015, 2016 (re-verified 19 October 2026)",
+      "contributed": "Acquisitions, operating intent, sale terms, parent inventory programs."
+    },
+    {
+      "kind": "external",
+      "ref": "UK CMA decision ME/6897/20, 2021 (re-verified)",
+      "contributed": "Transitional services offered by eBay for Gumtree UK."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta releases 2021–2023 (Gumtree UK and Australia sales re-verified)",
+      "contributed": "Completion, divestments, rebrand."
+    },
+    {
+      "kind": "external",
+      "ref": "Marktplaats Technology 2015/2017; Berlin Tech Blog 2018–2026 (2019 Kafka and 2025 migration posts re-verified); eBayClassifiedsGroup GitHub (MoVe READMEs re-verified); HashiConf 2018 (re-verified)",
+      "contributed": "Engineering record."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: Kleinanzeigen section split between Phase 2 and a new Berlin section after the Aftermath; AC-4 callouts qualified or labeled; four published inconsistencies aligned with the page's sources; two glosses; max_words raised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: removed one added interpretive sentence about eBay's Kijiji. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): sections and paragraphs reconstructed from the published text; opening clause from case-olx, roadmap paragraph and a two-paragraph conclusion added; spec.md removed. Flow rubric (sound with notes): mobile.de ranking subsection moved to Vertical Differences. Draft check round 1: p14 moved to the Kleinanzeigen section; section-opening sentences added for Phase 3, the regulator, Verticals, Failure Modes, Evidence Stops, Comparison and Questions; inference labels and two source dates added. Round 2: Kleinanzeigen section moved after Aftermath; mobile.de subsection returned to it. Round 3 (escalate). Closing fixes without another round: Figures 4 and 5 renumbered to match their new order, the layer-count sentence split and the two local layers named, 'To answer them' added to the roadmap, 'Not every shared layer worked' cut from the Failure Modes lead."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 4 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Trade-offs heading capitalized as in the 45 chapters. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,695 → 6,702 words (fact-dense case, structure only); opening states the chapter's Part IX question and its feed into the Veldmark comparison; Phase 1's two subsection headings removed; six paragraphs re-led with their point; worked question split in two. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: re-verified 10 load-bearing claims (SEC 2004/2020, CMA decision, Worldline, MoVe, Australia sale, rebrand); dated OPP at Kleinanzeigen to July 2023 (t3n) and the Adyen switch as after that; added Shpock buyer and acceptance date; tied the worked question to the tenancy model exit paths; American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8300
+  }
+}

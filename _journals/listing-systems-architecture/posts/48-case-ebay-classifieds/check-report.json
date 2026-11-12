@@ -1,0 +1,676 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/48-case-ebay-classifieds/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/48-case-ebay-classifieds/index.md",
+  "spec_sha": "1ce8ab65920fda10",
+  "draft_sha": "9484737062f49b62",
+  "run_at": "2026-11-12T22:46:35+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter scope: eCG history from 2004 purchases through 2021 sale, with evidence types separated",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stakes: sale value sat in self-sufficient brands while shared-service brands needed seller support",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "architect stakes: architecture reconstructed from scattered sources reveals a federation with few shared layers",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three key takeaways: value in local leaders, thin selective sharing, sale converts dependencies to contracts",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns the case illuminates: deal-shaped architecture, search as record, uncontracted feeds",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "eBay's acquisition-led classifieds portfolio and its 2020-21 sale to Adevinta",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "case contrasted with Adevinta: group silence as evidence of a loose federation",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "case's role in Part IX: guiding questions on sharing, locality and sale exposure, and scope limits",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter's phases and closing sections",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "How to Read This Case ¶1",
+      "summary": "evidence labelling rules: fact, author reading, inference",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "How to Read This Case ¶2",
+      "summary": "three source limitations: no group voice, dated evidence, unconfirmed platform names",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "How to Read This Case ¶3",
+      "summary": "Veldmark is fictional and appears only in the final comparison",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Timeline: eBay Classifieds in Dated Events ¶1",
+      "summary": "caveats on timeline dates and non-comparable scale figures",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Phase 1: Building a Portfolio Two Ways (2004–2015) ¶1",
+      "summary": "two acquisition routes with differing results",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Phase 1: Building a Portfolio Two Ways (2004–2015) ¶2",
+      "summary": "buying national leaders and running them independently",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Phase 1: Building a Portfolio Two Ways (2004–2015) ¶3",
+      "summary": "greenfield launches under group brands like Kijiji",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Phase 1: Building a Portfolio Two Ways (2004–2015) ¶4",
+      "summary": "source citations for the portfolio table",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Phase 1: Building a Portfolio Two Ways (2004–2015) ¶5",
+      "summary": "liquidity explains why bought leaders won and kept their own platforms",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶1",
+      "summary": "indirect evidence of group functions alongside brand-run platforms",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶2",
+      "summary": "interpretation: multiple platforms with voluntary reuse and strong brand autonomy",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶3",
+      "summary": "shared layers differ chiefly by interface type",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶4",
+      "summary": "joint Elasticsearch choice replacing orphaned Voyager, with per-brand migration",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶5",
+      "summary": "why replaying recorded queries on frozen copies beats live shadowing",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶6",
+      "summary": "group-built PaaS (PanteraS) and the motors infrastructure stack",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶7",
+      "summary": "PanteraS as a first-generation platform later abandoned for public cloud",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶8",
+      "summary": "MoVe motors platform's listing API and webhook contracts",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶9",
+      "summary": "why sharing paid off for professional motors supply via contracts",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶10",
+      "summary": "eBay marketplace inventory and tools fed into classifieds brands as parent-dependent layer",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶11",
+      "summary": "escrow payments bought from one external provider by two brands, later changed",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶12",
+      "summary": "Benelux sites sharing a regional multi-tenant platform",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶13",
+      "summary": "transition to a brand's self-built platform",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶14",
+      "summary": "Kleinanzeigen's hundredfold growth handled on its own",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶15",
+      "summary": "Kafka introduced to break the monolith, starting with saved-search alerts",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶16",
+      "summary": "Kafka reused as storage for index rebuilds and as a feed stream",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Phase 2: A Federation with Group Functions (2009–2020) ¶17",
+      "summary": "lesson: rebuildable index from an event log prevents search becoming system of record",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶1",
+      "summary": "deal valuation, consideration and synergy estimates",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶2",
+      "summary": "release's vagueness about technology dependencies",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶3",
+      "summary": "UK competition regulator's findings and Gumtree/Shpock divestment remedy",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶4",
+      "summary": "seller's transitional services reveal shared dependencies outside the sale package",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶5",
+      "summary": "subsequent disposals of non-core brands",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Phase 3: The Sale (2020–2021) ¶6",
+      "summary": "self-sufficient brands kept options; separation cost appeared where sharing existed",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Aftermath: Removing a Parent from a Platform ¶1",
+      "summary": "evidence of de-eBaying: rebrand and domain, app refactor, platform replacement",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Aftermath: Removing a Parent from a Platform ¶2",
+      "summary": "Kijiji Canada impairment outside the core",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Aftermath: Removing a Parent from a Platform ¶3",
+      "summary": "parent separation demands deep work beyond the cheap visible logo",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025 ¶1",
+      "summary": "Kleinanzeigen's parallel-run whole-platform migration, unlinked to group plans",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025 ¶2",
+      "summary": "six migration design choices: dependency order, per-user routing, CDC, back-sync, state machine",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025 ¶3",
+      "summary": "cross-team migration needs its own owner and translation layer",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025 ¶4",
+      "summary": "mobile.de moving ranking out of Elasticsearch into a separate service with dealer guarantees",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Inside the Berlin Platforms: Kleinanzeigen and mobile.de, 2024–2025 ¶5",
+      "summary": "dealer exposure promises become ranking constraints tied to entitlements",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Trade-offs the Case Illustrates ¶1",
+      "summary": "interface type determines how easily sharing unwinds",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Vertical Differences in the Record ¶1",
+      "summary": "generalist and automotive verticals handled differently",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Vertical Differences in the Record ¶2",
+      "summary": "sharing professional supply side while keeping consumer sites separate generalizes",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Failure Modes the Record Exposes ¶1",
+      "summary": "four recurring failures: orphaned parent tech, hidden dependencies, outlived platform, undocumented legacy behavior",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Where the Public Evidence Stops ¶1",
+      "summary": "unanswered questions left without speculative filling",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Where the Public Evidence Stops ¶2",
+      "summary": "warning that later brand ownership is volatile",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "framing decision rules for acquisitive groups",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "rule: favor shared interfaces a third party could operate",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "rule: maintain a per-brand register of unowned dependencies",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "rule: share professional supply before consumer products",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "rule: centralize decisions and method, let local teams migrate",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "rule: plan exit from parent-owned technology in advance",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Comparing the Case to the Book's Patterns and to Veldmark ¶1",
+      "summary": "case supports book patterns and adds the parent-sale stressor",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Comparing the Case to the Book's Patterns and to Veldmark ¶2",
+      "summary": "Veldmark's Common Ground program compared with eCG's thinner sharing",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Comparing the Case to the Book's Patterns and to Veldmark ¶3",
+      "summary": "hypothetical sale of a Veldmark country and its resulting transitional-service lines",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Comparing the Case to the Book's Patterns and to Veldmark ¶4",
+      "summary": "make each shared capability separable, verified via a dependency register",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "self-assessment questions for readers' own groups",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "From eBay Classifieds to AVIV ¶1",
+      "summary": "synthesis answering the three guiding questions and the cheap safeguards",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "From eBay Classifieds to AVIV ¶2",
+      "summary": "hand-off to the AVIV real-estate case",
+      "matched_spec_paragraph": "p63"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 63 outline units after the five intro callouts match their aligned spec paragraphs' controlling ideas in spec order (p01-p63, including p27/p14 inside Phase 2 and p31-p35 after the Aftermath); callouts match no spec paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The reverse outliner marked no unit as holding two ideas.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to E1-E6: portfolio (E1), shared layers (E2), brand engineering incl. mobile.de ranking (E3), sale and aftermath (E4), reading rules, timeline and gaps (E5), rules, comparison and questions (E6).",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1 (p43)",
+      "draft_locus": "Aftermath: Removing a Parent from a Platform ¶2",
+      "quote": "Kijiji is still listed among Adevinta's brands as of October 2026.",
+      "finding": "The €147 million Kijiji Canada impairment is given with no sentence saying what it shows (the spec's 'a kept brand outside the core'); the next paragraph returns to domains and logos, so the statistic's point is left to the reader. Both flow readers could not see why it was there.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All paragraph-level and section-level transitions except the Trade-offs section boundary express the declared relationship and pick up the declared known information; the hand-off links to case-aviv.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/transition_in (trade-offs)",
+      "draft_locus": "Trade-offs the Case Illustrates ¶1",
+      "quote": "The rows differ mainly in",
+      "finding": "The section opens directly with the options table; the only prose comes after it and starts from 'The rows'. The declared conclusion_summary phrase carrying over 'the record across all phases' into 'the options set side by side' is absent at the section start.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3 (p04)",
+      "draft_locus": "Introduction ¶4",
+      "quote": "To answer them, the chapter sets reading rules and a timeline",
+      "finding": "Both flow readers had to look back to find what 'them' refers to: the three questions sit mid-p03 and sentences on scope and case-adevinta intervene. Naming the questions would fix it.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, section (3) first item ('Intro: \"To answer them...\"'); Flow reader A, section (3) second item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11 (p26, INFERENCE callout)",
+      "draft_locus": "Phase 2 ¶12, INFERENCE callout after the layer map",
+      "quote": "the regulator needed eBay to offer transitional services to the buyer of Gumtree UK",
+      "finding": "The inference callout in Phase 2 uses a Phase 3 fact (the CMA's transitional-services sentence) as evidence before the sale section presents it; both readers paused on it. The spec's callout content does not require this fact.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, section (3) item 'Inference callout after the layer map'; Flow reader A, section (3) fifth item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/13-15 (p14, p28, p29)",
+      "draft_locus": "Phase 2 ¶14-¶16",
+      "quote": "by 2019 it held more than 34 million live ads and took up to a million new ads a day",
+      "finding": "The same figures ('up to a million new ads a day' twice, '34 million' three times) recur across three consecutive paragraphs, and both readers re-read to check whether they were different numbers.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, section (3) item 'Kleinanzeigen 2009-2019'; Flow reader A, section (3) sixth item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0 (p42, third bullet)",
+      "draft_locus": "Aftermath: Removing a Parent from a Platform ¶1, third bullet",
+      "quote": "Kleinanzeigen's 2025 whole-platform migration, described in the next section, is not documented as a consequence of the sale, and this chapter does not claim it was one.",
+      "finding": "Offered as one of 'three pieces of evidence' of what stopping being eBay took, then disclaimed as not linked to the sale; it also introduces statement-based binary logs before the section that explains them. Both readers found it out of place. The spec requires this migration as the Aftermath's third piece of evidence and as the hand-over to the Berlin section, so the difficulty comes from the declared structure.",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, section (3) item 'Aftermath, third bullet'; Flow reader A, section (3) seventh item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in and /flow (berlin-platforms)",
+      "draft_locus": "Inside the Berlin Platforms ¶1",
+      "quote": "The Aftermath's third piece of evidence, Kleinanzeigen's whole-platform migration, is documented by its own engineers.",
+      "finding": "Both readers marked the section's position unclear: it is introduced as Aftermath evidence and at once cut loose from the sale, making a loop with the Aftermath bullet. Both proposed moving the 2025 migration next to the Phase 2 Kleinanzeigen subsection or making it a separate 'later engineering' section. The spec's flow and section transition declare exactly this hand-over, so the fault is the order.",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, section (2) 'Inside the Berlin Platforms, Replacing the whole platform: unclear placement' and section (3) item 'Inside the Berlin Platforms'; Flow reader A, section (2) 'Inside the Berlin Platforms: unclear' and section (3) tenth item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/3-4 (p34, p35)",
+      "draft_locus": "Inside the Berlin Platforms ¶4",
+      "quote": "mobile.de, the other Berlin brand, published less about its platform and more about models.",
+      "finding": "Both readers found the mobile.de ranking subsection unconnected to the chapter's three questions (shared, local, sale) and marked its placement unclear; both pointed to the motors/verticals material where it is later cited. The spec places it here as 'a second, narrower example of a brand on its own path'; a bridge to the 'what stayed local' question might mitigate, but both readers' difficulty is the placement.",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, section (2) 'Inside the Berlin Platforms, mobile.de ranking: unclear' and section (3) item 'mobile.de ranking subsection'; Flow reader A, section (3) eleventh item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1 (p43)",
+      "draft_locus": "Aftermath: Removing a Parent from a Platform ¶2",
+      "quote": "Away from the core, Adevinta recorded a €147 million impairment on Kijiji Canada in its 2023 results",
+      "finding": "Both readers found the Kijiji impairment unrelated to removing a parent from a platform and proposed moving it to 'Which brands needed help' or the evidence-limits section. The spec places it in the Aftermath between the evidence and the reading, so the difficulty is the order (the missing explanation of what it shows is recorded separately under evidence_is_explained).",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, section (3) item 'Aftermath: \"Away from the core...\"'; Flow reader A, section (3) eighth item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0 (p45, trade-offs table)",
+      "draft_locus": "Trade-offs the Case Illustrates, table row 2",
+      "quote": "Launch greenfield brands on a group platform",
+      "finding": "The trade-offs table presents a group platform for greenfield brands as part of the record, while the chapter earlier labeled such a platform inference only; both readers paused to check whether they had missed evidence. The spec's option is 'launch greenfield', without the group platform.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, section (3) item 'Trade-offs table, second row'; Flow reader A, section (3) twelfth item",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2 (p17) and /sections/3/paragraphs/16 (p30)",
+      "draft_locus": "Phase 2 ¶3 and ¶17",
+      "quote": "the interface type is the most useful thing the case teaches",
+      "finding": "Flow reader A: two different things are each called the case's main lesson (p30: 'this is the case's most transferable engineering lesson'), and the reader stopped to work out how they relate.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11 (p26)",
+      "draft_locus": "Phase 2 ¶12",
+      "quote": "The layer map below gives each layer's interface and evidence, with the two layers that stayed local (brand decisions and engineering organization).",
+      "finding": "Flow reader A: the map's rows do not follow the 1-5 numbering just read (local rows first, sixth layer last), so matching rows to the list took a second pass.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2 (p17)",
+      "draft_locus": "Phase 2 ¶3",
+      "quote": "Five group-wide shared layers are documented, plus a sixth regional one.",
+      "finding": "Flow reader B: 'group-wide' overstates item 2 (adopted at least by the motors vertical) and item 5 (two brands); the reader went back to recount. The wording is the spec's controlling idea.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/10 (p25)",
+      "draft_locus": "Phase 2 ¶11",
+      "quote": "the sources spell the provider's name in Dutch, German and English",
+      "finding": "Flow reader B: the payments paragraph moves through three spellings of the provider, five sources and 2022-2026 events inside a 2009-2020 section; the spelling note comes after all three names, so the reader re-read to confirm one company.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2 (p38)",
+      "draft_locus": "Phase 3 ¶3",
+      "quote": "The decision of 2 March 2021, published in April 2021, adds one sentence an architect should read twice:",
+      "finding": "Flow reader B: dates run backwards (June acceptance, then the March decision published in April); the reader re-read to see which document the quoted sentence came from.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0 (p42, second bullet)",
+      "draft_locus": "Aftermath ¶1, second bullet",
+      "quote": "A July 2025 Berlin Tech Blog interview describes a later rebrand of mobile.de's Android app.",
+      "finding": "Flow reader B: mobile.de never carried the eBay name, so the reader stopped to ask why it appears under 'stop being eBay'; the analogue caveat comes only after the detail.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2 (p44)",
+      "draft_locus": "Aftermath ¶3",
+      "quote": "Identity must carry over without forcing users to register again.",
+      "finding": "Flow reader A: none of the three Aftermath bullets mentions identity, so this point seems to come from nowhere (the paragraph does say it goes beyond the examples).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0 (p45, trade-offs table)",
+      "draft_locus": "Trade-offs the Case Illustrates, table row 1",
+      "quote": "Marktplaats, mobile.de, Kleinanzeigen-scale platforms evolved locally and became the valuable core.",
+      "finding": "Flow reader B: the 'Buy the leader' row includes Kleinanzeigen, which Phase 1 and the next row present as a launched group brand; the reader re-read both rows.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/1 (p58)",
+      "draft_locus": "Comparing the Case ... ¶2",
+      "quote": "That principle is close to what eCG did in practice, with a much thicker shared layer.",
+      "finding": "Flow reader A: ambiguous who has the thicker shared layer; re-read to settle it means Veldmark.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0 (p62)",
+      "draft_locus": "From eBay Classifieds to AVIV ¶1",
+      "quote": "The chapter's three questions give one answer.",
+      "finding": "Flow reader A: three separate answers follow, so the reader looked for the single unifying claim, which arrives only later in the paragraph.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given at first use: Voyager (p18), PanteraS (p20), MoVe (p22), Online Payment Platform and Gelijk Oversteken (p25), undertakings in lieu (p38), TSA (p39). Common Ground and the Veldmark scenario names are on already_knows (meet-veldmark); statement-based binary logs, VIP, LTR and GTIDs are glossed inline.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on the OLX contrast and eBay's 2004-2021 arc (intriguing example), then the silence-as-evidence claim, questions and roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "No 'in conclusion', no new idea or evidence; synthesis plus hand-off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p62 joins the three questions into one interface-type answer and says why it matters: a register and written interfaces cost little now and keep a group free to keep, merge or sell each brand.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p62 returns to the hook (leaders bought in 2004 and left on their own platforms moved to a new owner) and to the group's silence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the three questions (shared/layer/interface, local, sale revealed), the scattered evidence (Amsterdam and Berlin blogs, GitHub, talks, job postings, regulator, silence as evidence), the mirror image of Adevinta with post-2021 strategy left to case-adevinta, every roadmap section in order, and the ending in rules, Veldmark/Common Ground test and questions.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader classified the jointly chosen engine (agreement), the external payment provider and the published dealer API (MoVe-style contract) as clean, the parent-owned undocumented fraud service as the Gumtree UK transitional-services case, and named the per-brand dependency register with owner and replacement path and a written interface a third party could operate, matching expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/intent/acceptance_criteria/3; /sections/7/paragraphs/0 (p45 table)",
+      "draft_locus": "Trade-offs the Case Illustrates, options table row 2",
+      "quote": "Launch greenfield brands on a group platform",
+      "finding": "Outside an INFERENCE, NOT DOCUMENTED label, the trade-offs table states as part of eCG's record that greenfield brands were launched on a group platform; the chapter itself says no public source confirms a shared generalist platform (How to Read This Case, limit 3; the Phase 2 inference callout). Quote taken from both flow readers, since table cells are not in structure.json. All prose units in structure.json pass: company facts carry source and year in the sentence or the timeline, and interpretations are marked 'my reading' or sit in the Chief Architect's view. The intro callouts and table cells could not be read directly and were judged only through reader quotes.",
+      "fault": "draft",
+      "severity": "major"
+    }
+  ]
+}

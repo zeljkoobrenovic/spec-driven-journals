@@ -1,0 +1,695 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/05-bounded-contexts/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/05-bounded-contexts/index.md",
+  "spec_sha": "30e8da6b7c0c97d7",
+  "draft_sha": "a1f5b8272b9e88bb",
+  "run_at": "2026-11-12T21:34:32+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: DDD subdomains, contexts, context map, aggregates, listing event, Veldmark map",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: boundaries set how fast brands can change products",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architect stake: boundaries are costly to reverse and drive ownership and services",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: boundaries at meaning changes, one owner of listing truth, explicit relationships",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: search as record, billing guesswork, ghost inventory",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Capability map is not a design; bounded context as decomposition tool",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Listing is an overloaded noun, so a shared model forces negotiation",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter roadmap and where later chapters build on it",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Six Answers to \"What Is a Listing?\" ¶1",
+      "summary": "Veldmark scene: event contract deadline forces 'what is a listing, who decides?'",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Six Answers to \"What Is a Listing?\" ¶2",
+      "summary": "Six Veldmark leaders give six different correct definitions of a listing",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Six Answers to \"What Is a Listing?\" ¶3",
+      "summary": "Forum conclusion: listing is six concepts sharing a name; question is ownership",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶1",
+      "summary": "Introducing DDD strategic vocabulary from Evans",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶2",
+      "summary": "Defining domain and subdomain, found in the business",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶3",
+      "summary": "Core, supporting and generic subdomains as a business judgement",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶4",
+      "summary": "Bounded context defined as model boundary, Fowler's meter analogy",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶5",
+      "summary": "Ubiquitous language holds only within one context",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶6",
+      "summary": "Context map and the named relationship patterns",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶7",
+      "summary": "Tactical terms: aggregate as transactional unit / domain event as published fact",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶8",
+      "summary": "Table distinguishing these concepts from capability terms",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Subdomains, Contexts and Context Maps ¶9",
+      "summary": "Healthy ownership shape: one team per context, Conway's law both ways",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Subdomains: Where a Marketplace Competes ¶1",
+      "summary": "Classify subdomains first, per brand, to guide investment",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Subdomains: Where a Marketplace Competes ¶2",
+      "summary": "Core subdomains get brand-owned contexts even on shared platforms",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Subdomains: Where a Marketplace Competes ¶3",
+      "summary": "Generic subdomains are bought or shared once, e.g. Veldmark ID",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Subdomains: Where a Marketplace Competes ¶4",
+      "summary": "Same subdomain classified differently across brands, e.g. trust and safety",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "One Listing, Many Models ¶1",
+      "summary": "Lyon flat traced through ten contexts and their listing models",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "One Listing, Many Models ¶2",
+      "summary": "Each context owns data no other may write; double writers mean wrong boundaries",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "One Listing, Many Models ¶3",
+      "summary": "One price cut interpreted differently by each context from one event",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "One Listing, Many Models ¶4",
+      "summary": "Reference models agree on one owner / listing as publication about a property",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "One Listing, Many Models ¶5",
+      "summary": "Reference model numbers show one owner, many readers; ownership needs review",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶1",
+      "summary": "Introducing Veldmark's Common Ground context map",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶2",
+      "summary": "Feed ingestion as a one-way anti-corruption layer for partner feeds",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶3",
+      "summary": "Catalog as open host service publishing the event contract language",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶4",
+      "summary": "Search conforms to the published language and never writes back; Vinted example",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶5",
+      "summary": "Monetization as customer-supplier partner that owns entitlements",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶6",
+      "summary": "Trust and safety acts only via commands, partnership during redesign",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶7",
+      "summary": "Transactions conform to the regulated payment provider",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶8",
+      "summary": "Identity and taxonomy as open host services",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶9",
+      "summary": "Keybridge on separate ways to honour a commercial promise",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: The Marketplace Context Map ¶10",
+      "summary": "Yardstick monolith contained behind a CDC translator",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Aggregates and Transactional Boundaries ¶1",
+      "summary": "Aggregates bound transactions; refer to each other only by ID",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Aggregates and Transactional Boundaries ¶2",
+      "summary": "Bump purchase split into idempotent steps across aggregates",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Aggregates and Transactional Boundaries ¶3",
+      "summary": "Consistency within aggregates, eventual between, idempotency everywhere",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Listing Event as Published Language ¶1",
+      "summary": "Design rules of the listing event contract as published language",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Listing Event as Published Language ¶2",
+      "summary": "Femke's bike: ghost inventory as a missing shared language",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶1",
+      "summary": "Worked example setup: five steps over four sessions",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶2",
+      "summary": "Step 1: capabilities collapse into 19 candidate contexts",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶3",
+      "summary": "Step 2: language breaks set boundaries; the price meaning surprise",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶4",
+      "summary": "Step 3: assigning data ownership, contested decisions",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶5",
+      "summary": "Step 4: relationships and four named translation layers",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶6",
+      "summary": "Step 5: one owning team per context, orphans assigned",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶7",
+      "summary": "Essen Golf: late removal becomes one context's problem",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶1",
+      "summary": "Real marketplaces publish enough to show similar decisions",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶2",
+      "summary": "Vinted: slow domain discovery before services, events between domains",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶3",
+      "summary": "AutoScout24: services aligned to bounded contexts, old evidence",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶4",
+      "summary": "Kleinanzeigen CDC pipeline makes the database a de facto contract",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶5",
+      "summary": "Adevinta dispute back office as a reusable anti-corruption layer",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Three recurring decomposition trade-offs without universal answers",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Trade-off: context granularity follows maturity",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Trade-offs ¶3",
+      "summary": "Trade-off: integration style per interaction, never shared database",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Trade-offs ¶4",
+      "summary": "Trade-off: group canonical model only in the shared kernel",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Verticals share the map skeleton but differ in contexts and entity",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Real estate needs entity resolution and mandates; product identity for recalls",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Boundary failures stem from missing owners or relationships",
+      "matched_spec_paragraph": "p59a"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "Failure: god listing table and how to escape it",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Failure: shared database across contexts",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Failure: enterprise canonical model for everything",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Failure: contexts drawn by technical layer",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Failure: search index becomes the owner",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Failure: entitlement checks scattered everywhere",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Failure Modes ¶8",
+      "summary": "Failure: accidental conformist to vendor models",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Failure Modes ¶9",
+      "summary": "Failure: split ownership and orphaned responsibilities",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "Failure Modes ¶10",
+      "summary": "Failure: too many contexts too early",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Context map as constitution: group vs brand decisions",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Five decisions kept at group level",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Decisions left to brands",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Governance: forum reviews map changes, teams decide inside",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Signals to watch for boundary drift",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Pointers to multi-country and organization chapters",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions for a context map",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "From One Map to Four Verticals ¶1",
+      "summary": "Answer to the forum question and the working rule",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "From One Map to Four Verticals ¶2",
+      "summary": "Hand-off to the vertical requirements chapter",
+      "matched_spec_paragraph": "p77"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 81 outline summaries (5 callouts plus 76 units) match the controlling ideas of their aligned spec paragraphs in spec order; no unit is unmatched except the introduction callouts, which carry the thesis statement and roadmap.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Concepts ¶7 (p13), marked two_ideas: the spec's controlling idea is the pair of tactical terms the chapter needs (aggregate and domain event); the paragraph introduces them as one unit ('Two more terms come from DDD's tactical design').",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "One Listing ¶4 (p24), marked two_ideas: one owner and the separate property are both the 'same structure' the reference models reach; the paragraph's single idea is that independent models reach that structure because the listing is a publication about the thing.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to S1, S3, S4 or S5 through its section's advances_thesis; the transition and pointer units (p03, p41, p47, p54, p59a, p74, p77) serve the flow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table is framed by a sentence stating its point (e.g. 'Each style fits one kind of interaction; a shared database fits none'); Figures 1-4 are followed or preceded by the claim they show; every quotation (Fowler, Vinted, AutoScout24/InfoQ, Kleinanzeigen, Adevinta 2023 and 2025, the reference model) is followed by what it shows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "One Listing, Many Models ¶4",
+      "quote": "The book also draws on two generic domain models, one for a general-listings marketplace and one for a real-estate marketplace, which are the author's working models and describe no company.",
+      "finding": "Declared similarity carrying 'the structure Veldmark's contexts show', placed at the start of p24. The opening sentence introduces a new source and picks up nothing from p21-p23; the similarity ('They reach the same structure by a different route') arrives only in the second sentence. Both flow readers stopped at this sentence.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The context map's skeleton is shared across verticals. What changes is which contexts exist, which are core and where the entity sits.",
+      "finding": "Declared contrast carrying 'decisions that apply to every marketplace' (the three trade-offs) into 'what differs by vertical'. The opening picks up the context map, not the trade-offs just made, so the boundary from Trade-offs is unmarked and the section's position goes unexplained (both flow readers questioned it).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions (introduction, section openings and paragraph boundaries) are expressed at the start of the aligned unit and pick up the declared known information.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "One Listing, Many Models ¶1",
+      "quote": "the other two agencies publish through two different real-estate software vendors at €389,000 and €395,000; Step 2 below explains why.",
+      "finding": "Flow-A item 1: 'I stopped to wonder what \"Step 2\" meant. Its answer (prices include agency fees) comes about ninety lines later in the worked example.' The forward reference points to a numbered step three sections away; the order is fine (the worked example may explain the fee basis), but the prose should explain the difference in half a sentence here or drop the forward pointer.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 1 ('A forward reference to a step that does not exist yet ... I stopped and looked for a Step 1 nearby.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "One Listing, Many Models ¶4",
+      "quote": "The book also draws on two generic domain models, one for a general-listings marketplace and one for a real-estate marketplace, which are the author's working models and describe no company.",
+      "finding": "Flow-A item 2: 'I had to re-read to work out what these models were and why they appear here, in the middle of the Veldmark discussion.' The spec places the reference models here as a similarity to Veldmark's structure (decision of 2026-11-12); the prose opens on the source rather than on the shared structure, so the link is not visible.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 2 ('The reference models arrive without warning ... a new kind of source dropped into a section about Veldmark's contexts.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "One Listing, Many Models ¶5",
+      "quote": "Even their mistakes make the case for named owners: the general model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability, a reminder that ownership assignments must be reviewed as carefully as boundaries.",
+      "finding": "Flow-A item 3: 'I read it twice before I saw how a mis-assignment supports \"named owners\". It is a tangent at the end of the section.' The spec keeps the point; the prose does not say why a wrong assignment argues for named, reviewed owners in a listing system.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 2 (quotes the same sentence: 'I had to re-read it. The cookie-consent detail is about a model the reader has only just met, and it leads away from the listing.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Architecture: The Marketplace Context Map ¶3",
+      "quote": "Hearthly's events reach the group event backbone through a bridge from Google Pub/Sub.",
+      "finding": "Flow-A item 5: 'Nothing before it prepares for this, and it means nothing until Step 4 names the bridge as one of four anti-corruption layers.' The spec puts the bridge in p28 so that p51 holds no surprise; the sentence is appended as plumbing and not tied to the paragraph's point (the same published language reaches the backbone from every brand, Hearthly's through a translating bridge).",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3 ('An unrelated sentence closes the paragraph on the catalog as open host service ... It makes sense only later, when Step 4 lists the bridge as an anti-corruption layer.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The context map's skeleton is shared across verticals.",
+      "finding": "Flow-B, section list: 'Vertical Differences: The placement is only partly clear ... I could not tell why it belongs there rather than elsewhere.' The declared order is defensible (both readers say the current position works); the prose never states why the section follows Trade-offs, because its opening does not express the declared contrast with decisions that apply to every marketplace.",
+      "fault": "draft",
+      "corroborated_by": "flow-A, section 2 'Vertical Differences' bullet ('Its position is defensible, though less clearly forced than the others') and section 4 last bullet (optionally move it after Subdomains)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "One Listing, Many Models ¶5",
+      "quote": "In the general model, the listing is owned by one capability and read by eleven others, and two more query it through search.",
+      "finding": "Flow-A item 4: 'The Concepts table has just said that capabilities and contexts are different units, so seeing ownership expressed per capability made me stop and check whether the word was meant.' Not reported by flow-B.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Aggregates and Transactional Boundaries ¶2",
+      "quote": "Monetization sends `ApplyPlacement` to the catalog with the entitlement reference, and publishes `VisibilityChanged` for search.",
+      "finding": "Flow-A item 7: 'Visibility is published before the catalog has accepted the placement (step 3), and step 4 then has to reverse it. I went back to check whether this order was intended.' The order is the spec's (p37 evidence), but one clause saying why visibility is published at once would remove the re-read. Not reported by flow-B.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶6",
+      "quote": "which went to the new group taxonomy and attribute team whose service went live in October 2027",
+      "finding": "Flow-A item 8: 'The October date is after the sessions, and the past tense briefly confused the timeline.' Not reported by flow-B.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Veldmark Worked Example: Drawing Common Ground's Boundaries ¶5",
+      "quote": "the transaction context's edge towards Adyen",
+      "finding": "Flow-B item 4: p32 says the transaction context conforms to Adyen and 'translates only at the edge where an order meets a listing'; Step 4 then lists 'the transaction context's edge towards Adyen' as an anti-corruption layer. 'I went back to check which one was meant.' Not reported by flow-A.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "Introduction callout",
+      "quote": "how Veldmark draws the Common Ground context map across four brands and a PHP monolith",
+      "finding": "Flow-B item 6: 'I could not tell whether Keybridge is the fourth brand or whether another brand exists that the chapter never names.' The chapter names three brands; the conclusion's 'four brands' and 'jobs' imply a fourth never named here. Not reported by flow-A.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "quote": "The general-listings reference model's resilience analysis points to the same separation for goods in one case",
+      "finding": "Flow-B item 7: 'This relies on the reference models from point 2 and on a \"resilience analysis\" that was never introduced. I had to read it twice.' Not reported by flow-A.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction callout",
+      "quote": "how Veldmark draws the Common Ground context map across four brands and a PHP monolith",
+      "finding": "'Four brands' is used in the callout and again in p77 ('treats the four brands alike'), but the chapter names only Tradeyard, Motorvane and Hearthly; Keybridge is introduced as listing software for agencies, and the jobs brand implied by p77 is never named. A reader cannot tell what the fourth brand is.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 6 ('The fourth brand is never identified')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "quote": "The general-listings reference model's resilience analysis points to the same separation for goods in one case",
+      "finding": "The reference model's 'resilience analysis' is used as a source without ever being introduced; p24 and p46 describe the reference models' structure and data catalog, not any resilience analysis.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 7 ('a \"resilience analysis\" that was never introduced')",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens from the previous chapter's capability map and the decomposition questions it leaves open, then the overloaded noun and a roadmap; none of the five weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "p76 answers the forum's question with consequences and a course of action; p77 hands off by contrast. No 'in conclusion', no new idea, no evidence that belongs in the body.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p76 joins meanings (six models) and ownership (one context decides, relationships recorded), which no single section states together, and says why it matters: the Essen Golf's removal becomes one freshness contract and brands change ranking or packages without a cross-team project.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p76 opens with the forum's question 'what is a listing, and who decides?' and answers both halves, returning to the six answers.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the sections in the roadmap's order (scene and terms, subdomains, one listing through ten contexts, context map with relationships, aggregates, listing event, Veldmark's map then the public record, then trade-offs, verticals, failure modes, Chief Architect's view, review questions), the evidence (fictional Veldmark, DDD literature, public engineering writing) and the declarative, practical tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader says the catalog decides; ingestion reads the feed removal and sends Withdraw; the catalog emits ListingRemoved on the published contract; search, alerts and leads react within declared deadlines and never write state; the delay becomes ingestion's freshness contract with the dealer. Matches the expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader classifies per brand (core at the private-seller classifieds brand, supporting at the dealer car brand), with a shared pipeline and policies configurable per brand and country, and the brand keeping its core contexts on a shared engine. Matches the expected answer.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader names separate aggregates in two contexts and Fowler's rule; describes the grant keyed by order ID, ApplyPlacement, VisibilityChanged, retries with the same key, rejection on a removed listing and monetization refunding and reversing; consistent inside aggregates, eventually consistent between. Matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

@@ -33,25 +33,27 @@ A listing marketplace is a machine for getting strangers to trust each other eno
 
 This chapter is about catching the setup. It owns three terms. A **fraud signal** is an observable property of an item, actor, session or relationship that changes the probability of fraud. A **risk score** is a calibrated estimate of that probability for a specific action, such as publishing a listing, sending a message, logging in or releasing a payout. **Step-up friction** is an additional check imposed in proportion to risk, which genuine users pass easily and fraudsters do not.
 
-This chapter supplies the scores that Part V's shared trust platform acts on. [[trust-and-safety-architecture]] built the decision service that turns a score into enforcement and appeals; fraud scoring is how that service catches fraudsters who exploit the speed Part IV gave new listings. The strongest frictions it recommends are identity checks, which [[identity-and-verification]] designs next. Payment-side fraud in transactional flows (chargebacks, payout holds) is covered in [[transactions-and-payments]]. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
+[[trust-and-safety-architecture]] built the decision service that turns a score into enforcement and appeals, and left detection as a slot for detectors to plug into. This chapter fills that slot with the most demanding detector: the one aimed at people who study the platform, adapt within days and exploit the speed with which search and alerts (Part IV) put new listings in front of buyers. The strongest frictions it recommends are identity checks, which [[identity-and-verification]] designs next. Payment-side fraud in transactional flows (chargebacks, payout holds) is covered in [[transactions-and-payments]] in Part VI. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
+
+The chapter opens with the Barcelona ring. It then sets out the threat model and how it differs by vertical, then the signals, and designs the risk scoring service that combines them. Step-up friction, fraud controls in messaging, feedback loops and labels, and collaboration with banks and police follow, before the chapter returns to Barcelona. Trade-offs, failure modes, the Chief Architect's view and questions close it. The evidence is public reporting from UK Finance, OLX, Which?, Meta, Stripe and Airbnb, and the fictional Veldmark.
 
 ## Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring
 
-On Thursday **1 July 2027**, a new account on Hearthly Spain published a rental listing for a renovated two-bedroom flat in Barcelona's Eixample district at about 35% below comparable rents. Hearthly Spain was the former Casavista, acquired in 2025 and rebranded in 2026. Over the next twelve days, **26 accounts** published **180** such listings. Every listing used photos copied from real listings, most of them still live on Hearthly and published by real agencies. Each "landlord" was abroad, could not arrange a viewing and asked for a deposit by bank transfer to secure the flat.
+On Thursday **1 July 2027**, a new account on Hearthly Spain published a rental listing for a renovated two-bedroom flat in Barcelona's Eixample district at about 35% below comparable rents. Over the next twelve days, **26 accounts** published **180** such listings. Every listing used photos copied from real listings, most of them still live on Hearthly and published by real agencies. Each "landlord" was abroad, could not arrange a viewing and asked for a deposit by bank transfer to secure the flat.
 
 By the time the listings came down on Tuesday **13 July**, **63 people** had reported losses totaling about **€71,000**, roughly €1,130 each, in most cases one month's advertised rent paid as a "deposit". The listings had received about 4,700 contacts.
 
-The detectors did not miss the ring, and that is the uncomfortable part. The ledger records that it was detected through **perceptual-hash matches** against existing listings plus **price anomalies**. A perceptual hash is a fingerprint of an image that survives resizing and recompression ([[media-pipeline]] owns the capability). Hearthly Spain's hash index matched the first stolen photos on 1 July, within minutes of upload. Its rent-anomaly check flagged most of the listings as well. The signals existed from the first day. What failed was everything between the signals and a decision.
+The detectors did not miss the ring, and that is the uncomfortable part. The ring was detected through **perceptual-hash matches** against existing listings plus **price anomalies**. A perceptual hash is a fingerprint of an image that survives resizing and recompression ([[media-pipeline]] owns the capability). Hearthly Spain's hash index matched the first stolen photos on 1 July, within minutes of upload. Its rent-anomaly check flagged most of the listings as well. The signals existed from the first day. What failed was everything between the signals and a decision.
 
 - **Each signal went to a different place.** The photo match created a "possible duplicate" item in the general moderation queue. The rent anomaly created a separate, low-priority "price check" item. No component combined them.
 - **Reviewers saw listings, not actors.** A reviewer looking at one listing whose photos matched an agency's listing saw something that looked like a second agency marketing the same flat, which is common in real estate ([[entity-resolution]]). Eleven of the first photo-match items were closed as legitimate duplicates.
-- **Nobody linked the accounts.** The 26 accounts used five devices and four Spanish bank accounts, which turned out to belong to recruited money mules. Hearthly Spain's stack had no identity graph, and none of the accounts had been asked to prove more than an e-mail address ([[identity-and-verification]]). Each account looked new and unremarkable.
+- **Nobody linked the accounts.** The 26 accounts used five devices and four Spanish bank accounts, which turned out to belong to recruited money mules (people paid to receive and pass on fraud proceeds). Hearthly Spain's stack had no identity graph, a store that links accounts through shared devices, phone numbers, bank accounts and photos, and none of the accounts had been asked to prove more than an e-mail address ([[identity-and-verification]]). Each account looked new and unremarkable.
 - **The first victim report, on Friday 9 July, was routed to support** as a dispute between a tenant and a landlord.
 
 ![Three fraud signals, a photo match, a price anomaly and a victim report, flowing into three walled-off trays while an empty dashed gear in the middle combines nothing.](assets/images/25-fraud-prevention/signals-in-separate-places.jpeg)
 **Figure 1:** *In Barcelona the photo matches, rent anomalies and the first victim report all existed early, but each went to a different place and no component combined them into one decision.*
 
-On Monday 12 July, a Hearthly analyst in Barcelona noticed that three victim reports named listings whose photos had been flagged. She queried the hash matches, the price flags and the account metadata by hand, and linked all 26 accounts in an afternoon. A combined rule went live on Tuesday morning, and by 16:40 that day all 180 listings had been removed and the accounts suspended. Hearthly Spain was not yet on Veldmark's shared trust-and-safety platform, which went live for Tradeyard Netherlands and Belgium in November 2027.
+On Monday 12 July, a Hearthly analyst in Barcelona noticed that three victim reports named listings whose photos had been flagged. She queried the hash matches, the price flags and the account metadata by hand, and linked all 26 accounts in an afternoon. A combined rule went live on Tuesday morning, and by 16:40 that day all 180 listings had been removed and the accounts suspended. She worked by hand because Hearthly Spain, the former Casavista (acquired in 2025 and rebranded in 2026), was not on Veldmark's shared trust-and-safety platform. The platform went live in November 2027, first for Tradeyard Netherlands and Belgium, the group's general-classifieds marketplace.
 
 Ingrid Halvorsen, the Group Chief Architect, asked Aisha Rahman, the Group Head of Trust & Safety, and Priya Raman, Head of Data & ML, one question in the review that followed: **"We had the signals on day one. What would it have taken to act on day one?"** The rest of this chapter is the answer: a risk scoring service that scores actors as well as items, an identity graph, a combination of rules and models, graduated friction, and feedback loops measured in hours.
 
@@ -59,7 +61,7 @@ Ingrid Halvorsen, the Group Chief Architect, asked Aisha Rahman, the Group Head 
 
 ### Why classifieds differ
 
-Most classifieds platforms are lead-generation businesses: buyer and seller meet on the platform, but the money often moves elsewhere ([[marketplace-taxonomy]] covers the business models). The platform sees the listing and the conversation. It often does not see the payment and cannot reverse it. The dominant fraud is therefore **authorized push payment (APP) fraud**: the victim willingly sends money, usually by bank transfer, to someone who is not who they claim to be.
+Barcelona is one instance of a wider threat. Most classifieds platforms are lead-generation businesses: buyer and seller meet on the platform, but the money often moves elsewhere ([[marketplace-taxonomy]] covers the business models). The platform sees the listing and the conversation. It often does not see the payment and cannot reverse it. The dominant fraud is therefore **authorized push payment (APP) fraud**: the victim willingly sends money, usually by bank transfer, to someone who is not who they claim to be.
 
 Purchase scams, the typical classifieds fraud, are the most common kind of APP fraud in UK Finance's data, the most detailed public series. Its 2026 annual fraud report, covering 2025, counts **175,809 purchase-scam cases** in the UK with losses of **£118.1 million**. Purchase scams were **71% of all APP scam cases** and had the lowest average value of the APP types, **£671**. It describes the typical pattern: although "many online platforms offer secure payment options, the criminal will persuade their victim to pay via a bank transfer instead". **78% of purchase-scam losses were returned to victims**, which reflects the UK's mandatory reimbursement regime from October 2024 and explains why banks now ask the government to "mandate seller verification and secure payment protections on online marketplaces" ([UK Finance, 2026](https://www.ukfinance.org.uk/system/files/2026-06/UK%20Finance%20Fraud%20Report%202026.pdf)). As of October 2026 that is a lobbying position, not law.
 
@@ -79,15 +81,27 @@ The architectural consequence is that a classifieds platform's controls are most
 | **Fake sellers and fake shops** | Batches of new accounts or pseudo-dealers with stolen identity or company data | Shared devices, IPs, e-mail patterns, register mismatch | Onboarding risk; identity graph; business verification |
 | **Counterfeit and prohibited goods** | Branded goods at implausible prices; weapons, drugs, recalled products | Brand × price anomaly, rights-holder notices, image classifiers | Listing scoring ([[trust-and-safety-architecture]]) |
 
-Three public observations sharpen the table.
+The table maps each fraud type to the point where it can be stopped. Three public observations sharpen it.
 
 - **Images are a large share of chat fraud.** In a January 2026 post, OLX said fraudulent images make up about **30% of fraud cases** on its Polish marketplace. Its generative-AI chat image system blocks suspicious images in real time and detects fraudulent QR codes in chat with **80% precision**. It is live in Poland, Portugal, Bulgaria, Romania and other markets ([OLX Group, 2026](https://www.olxgroup.com/?p=4590)).
 - **Scammers edit after approval.** In Which?'s December 2024 undercover test, Gumtree blocked a first scam-style ad, but edited versions passed review "in minutes" ([Which?, 2024](https://www.which.co.uk/policy-and-insight/article/scam-ads-slipping-through-the-net-too-easily-on-second-hand-marketplaces-which-warns-aqyF66m1TlU1)).
 - **Fraud is industrial.** Meta reported in November 2024 that it had removed more than two million accounts linked to scam centers in Southeast Asia and elsewhere ([Meta, 2024](https://about.fb.com/news/2024/11/cracking-down-organized-crime-scam-centers/)). Classifieds fraud is increasingly run by organized groups that test a platform's defenses systematically and change scripts within days. A rules engine updated twice a week loses that race.
 
+## Vertical Differences
+
+The typology varies by vertical, and so does where the money moves, which decides where the controls can sit. The last row of the table below explains the strategic link between fraud and transactions. Moving money onto the platform with buyer protection turns unrecoverable APP fraud into a mediated dispute, which is why UK Finance asks for "secure payment protections on online marketplaces". It also creates a new fraud surface: phishing that impersonates the platform's own payment product, which is exactly what Femke, a Tradeyard seller, received in March 2027 (see the messaging controls below). [[transactions-and-payments]] covers the transactional pivot. The fraud consequence is that **launching protected payments changes the threat model, it does not end it**.
+
+| Dimension | General classifieds | Real estate | Automotive | Jobs | Recommerce with payments |
+| --- | --- | --- | --- | --- | --- |
+| Dominant fraud | Payment-link phishing, advance payment, counterfeit | Fake rentals and deposit fraud | Deposit scams, cloned listings, fake escrow | Fake job offers, mule recruitment, data harvesting | Shipping and refund fraud, phishing that imitates the platform's payment product |
+| Typical loss per victim | Tens to hundreds of euros | One or two months' rent | Hundreds to thousands of euros | Personal data, sometimes "training fees" | Item value |
+| Strongest signal | Domain and link checks, price | Photo reuse, rent anomaly, lister verification | VIN and plate reuse, price vs. market value | Contact details and salary anomaly | Payment and shipping events |
+| Natural friction | Message warnings, limits | Lister verification; viewing before payment | Dealer verification; protected deposits | Employer verification | Protected payment by default |
+| Where the money moves | Off-platform transfer | Off-platform transfer | Off-platform transfer or fake escrow | Usually no money; data is the target | On-platform, through the payment provider |
+
 ## Fraud Signals
 
-A fraud signal is useful only if it is available at decision time, hard for the fraudster to change cheaply, and not too costly for genuine users. The families below are the ones that matter for listings.
+Both tables name a strongest signal for each fraud type and vertical. A fraud signal is useful only if it is available at decision time, hard for the fraudster to change cheaply, and not too costly for genuine users. The families below are the ones that matter for listings.
 
 | Signal family | Examples | Available when | Cost to the fraudster to evade |
 | --- | --- | --- | --- |
@@ -101,9 +115,9 @@ A fraud signal is useful only if it is available at decision time, hard for the 
 | **Graph** | Shared devices, phones, IBANs, IP ranges, images and text across accounts; distance to known fraud | Near real time if maintained incrementally | High: rings must share infrastructure to be economical |
 | **External** | Bank fraud reports, phishing-domain feeds, domain registration age, trusted-flagger notices, chargebacks | Minutes to weeks | Not controllable by the fraudster |
 
-Two signals deserve special attention because they are hard to fake. **Price** is the bait: a fake bargain has to be a bargain. A valuation or market-price model, built for buyers, doubles as a fraud feature. Motorvane's market-value model, which rates the Essen Volkswagen Golf at €22,800 against an asking price of €21,900, can flag a 2021 Golf offered at €12,000 just as easily ([[ml-platform]] owns these models). **The graph** is the ring's weak point: organized fraud has to reuse devices, phone numbers, bank accounts and photos to stay profitable, and every reuse is a link.
+Two signals deserve special attention because they are hard to fake. **Price** is the bait: a fake bargain has to be a bargain. A valuation or market-price model, built for buyers, doubles as a fraud feature. The market-value model of Motorvane, Veldmark's automotive brand, which rates the Essen Volkswagen Golf from earlier chapters at €22,800 against an asking price of €21,900, can flag a 2021 Golf offered at €12,000 just as easily ([[ml-platform]] owns these models). **The graph** is the ring's weak point: organized fraud has to reuse devices, phone numbers, bank accounts and photos to stay profitable, and every reuse is a link.
 
-The Barcelona ring illustrates both. Its prices were about 35% below market, which required structured surface, rooms and district to compute ([[attribute-schemas]]). Its 26 accounts shared five devices and four IBANs. No single account was alarming; the cluster was unmistakable.
+The Barcelona ring illustrates both. Its prices were about 35% below market, which required structured floor area, rooms and district to compute ([[attribute-schemas]]). Its 26 accounts shared five devices and four IBANs. No single account was alarming; the cluster was unmistakable.
 
 ### Duplicate photos: one detector, two policies
 
@@ -115,7 +129,7 @@ The design lesson from Barcelona is about the policy, not the detector. **"Same 
 
 ## Architecture: The Risk Scoring Service
 
-A **risk scoring service** answers one question for many callers: *how risky is this action, by this actor, right now?* Callers include the insertion and edit flows, the message send path, login and account recovery, contact-detail reveal, and payout release where the marketplace handles payments. The service does not decide the enforcement action; it returns scores, reasons and recommended friction to the decision service described in [[trust-and-safety-architecture]].
+A **risk scoring service** answers one question for many callers: *how risky is this action, by this actor, right now?* Callers include the insertion and edit flows, the message send path, login and account recovery, contact-detail reveal, and payout release where the marketplace handles payments ([[transactions-and-payments]] designs payouts in Part VI). The service does not decide the enforcement action; it returns scores, reasons and recommended friction to the decision service described in [[trust-and-safety-architecture]].
 
 The design below is a **reference-architecture inference**, built from public adjacent systems (Meta's Sigma rule engine, Stripe Radar's documented rule operations, Uber's 2017 description of a shared feature store, Mercari's 2026 risk-based authentication) and from the evidence above. No classifieds company has published a fraud-scoring architecture in this form.
 
@@ -156,13 +170,13 @@ The Barcelona combined rule shows the division of labor. It was written in an af
 
 > photo match to a listing of an **unrelated** seller **and** rent at least 25% below the district estimate **and** account younger than 30 days **and** lister not a verified agency → hold all the account's listings and open one case for the account cluster.
 
-That rule stopped the ring. A model trained on the ring's 180 listings, and on the 2,000 or so fake-rental listings Hearthly Spain had removed over the previous year, replaced it six weeks later, because the next ring would use 20% discounts and slightly older accounts. **Rules are the fast response; models are the durable one.** A platform that only has one of the two either reacts too slowly or overfits to last month.
+That rule stopped the ring. A model trained on the ring's 180 listings, and on the 2,000 or so fake-rental listings Hearthly Spain had removed over the previous year, replaced it six weeks later, because analysts expected the next ring to use 20% discounts and slightly older accounts. **Rules are the fast response; models are the durable one.** A platform that only has one of the two either reacts too slowly or overfits to last month.
 
 ### Scoring actors, not just items
 
 The deepest design choice in the service is the **unit of scoring**. A listing score answers "is this listing fraudulent?" An actor score answers "is this account, or this cluster of accounts, operated by a fraudster?" Organized fraud is an actor problem. A ring's individual listings are designed to pass item-level checks. Its infrastructure is not.
 
-The **identity graph** links accounts through shared attributes: devices, phone numbers, e-mail patterns, payment accounts, IP ranges, image hashes, even near-identical listing text. Its main uses are to:
+The **identity graph** links accounts through shared attributes: devices, phone numbers, e-mail patterns, payment accounts, IP ranges, image hashes, even near-identical listing text. It records which accounts share infrastructure, not who a user is ([[identity-and-verification]]). Its main uses are to:
 
 - **propagate known fraud**: an account two hops from a terminated fraud account starts with a higher risk score;
 - **detect rings**: dense clusters of new accounts sharing infrastructure are suspicious even before any report; and
@@ -179,7 +193,7 @@ Blocking is a blunt answer to a probability. Most risky actions are taken by gen
 
 Airbnb described the approach publicly in 2018 as **targeted friction**. Machine-learning models score bookings for payment fraud. Instead of blocking above a threshold, Airbnb applies frictions such as micro-authorizations (two small charges the cardholder must identify), 3-D Secure authentication or billing-statement verification. The threshold is chosen by minimizing a loss that weighs the cost of genuine users abandoning the friction against the fraud losses it prevents, and the effect of each friction on good users is measured by A/B testing on low-risk users ([InfoQ, 2018](https://www.infoq.com/news/2018/03/financial-fraud-ml-airbnb/), summarizing an Airbnb engineering post). The system is eight years old; the method is the durable part.
 
-A friction ladder for a listing marketplace:
+A friction ladder for a listing marketplace matches each friction to the fraud it defeats and its cost to genuine users:
 
 | Friction | Defeats | Cost to genuine users | Typical trigger |
 | --- | --- | --- | --- |
@@ -195,7 +209,7 @@ Two public sources support the ladder's upper rungs. Mercari reported in July 20
 
 ### Choosing a threshold: a worked example
 
-Tradeyard's shared T&S platform introduced a friction in December 2027: a new account that tries to send more than five first-contact messages within an hour must verify a phone number before sending more, if its message-risk score is above a threshold. The question was which threshold. Priya Raman's team ran a two-week shadow evaluation and estimated, per week, about **2,000 fraudulent new accounts** reaching the velocity trigger. Their working assumptions: 85% of fraud accounts fail or abandon the verification; 8% of genuine accounts abandon it; an unstopped fraud account causes about **€180** of expected harm (victim losses, support cost and lost buyers); a lost genuine account costs about **€25** in expected future contribution. All figures are illustrative.
+Tradeyard's shared trust-and-safety (T&S) platform introduced a friction in December 2027: a new account that tries to send more than five first-contact messages within an hour must verify a phone number before sending more, if its message-risk score is above a threshold. The question was which threshold. Priya Raman's team ran a two-week shadow evaluation and estimated, per week, about **2,000 fraudulent new accounts** reaching the velocity trigger. Their working assumptions: 85% of fraud accounts fail or abandon the verification; 8% of genuine accounts abandon it; an unstopped fraud account causes about **€180** of expected harm (victim losses, support cost and lost buyers); a lost genuine account costs about **€25** in expected future contribution. All figures are illustrative.
 
 | Threshold | Accounts challenged per week | Fraud accounts challenged | Genuine accounts challenged | Fraud stopped | Genuine lost | Weekly cost |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -208,9 +222,9 @@ The weekly cost is (2,000 − fraud stopped) × €180 + genuine lost × €25. 
 
 ## Fraud Controls in Messaging
 
-Most classifieds scams close in the conversation, so the controls have to act before a message is delivered. Payment-link phishing, deposit requests, fake courier offers and moves to other messaging apps all happen there. [[messaging-and-leads]] owns the conversation model and its storage; this section covers the fraud controls inside it.
+Friction acts before an action completes. Sending a message is the action that matters most, because most classifieds scams close in the conversation, so the message controls have to act the same way: before the message is delivered. Payment-link phishing, deposit requests, fake courier offers and moves to other messaging apps all happen there. [[messaging-and-leads]] owns the conversation model and its storage; this section covers the fraud controls inside it.
 
-Tradeyard shows the cost of scanning too late. Its users sent about 11 million messages a day in 2026, and NL and BE users filed about **41,000 reports of payment-link phishing** that year. On Sunday 7 March 2027, a fake Safe Deal payment link reached Femke, who was selling a €240 city bike in Rotterdam, because its domain had been registered that day and no rule looked at domain age. The account was suspended seven minutes after Femke reported it, and a new rule then withheld 37 similar messages to other sellers. Seven minutes was fast, but the message should never have been delivered.
+Tradeyard shows the cost of scanning too late. Its users sent about 11 million messages a day in 2026, and NL and BE users filed about **41,000 reports of payment-link phishing** that year. On Sunday 7 March 2027, a fake link imitating Safe Deal, Tradeyard's in-platform payment, reached Femke, who was selling a €240 city bike in Rotterdam, because its domain had been registered that day and no rule looked at domain age. The account was suspended seven minutes after Femke reported it, and a new rule then withheld 37 similar messages to other sellers. Seven minutes was fast, but the message should never have been delivered.
 
 A reference design for message-level fraud controls:
 
@@ -224,7 +238,7 @@ A reference design for message-level fraud controls:
 ![Diagram: The 7 March 2027 phishing message as it would be handled by the target design](assets/images/25-fraud-prevention/fig04-7-march-2027-phishing-message-it.jpeg)
 **Figure 4:** *The 7 March 2027 phishing message as it would be handled by the target design. The message is scored before delivery; the domain-age and brand check is decisive; the decision service withholds the message, restricts the sender and opens a case for linked accounts.*
 
-Scanning private messages for fraud has a legal side. In the EU it engages the GDPR's purpose-limitation and minimization principles and the ePrivacy framework. The DSA also requires platforms to disclose their use of automated means in moderation. Veldmark documents fraud prevention as the purpose, runs a data protection impact assessment, says in its terms that automated tools scan messages for scams, and keeps scanned content only as long as the case needs it. [[marketplace-regulation]] covers the legal analysis.
+Scanning private messages for fraud has a legal side. In the EU it engages the GDPR's purpose-limitation and minimization principles and the ePrivacy framework. The EU Digital Services Act (DSA) also requires platforms to disclose their use of automated means in moderation. Veldmark documents fraud prevention as the purpose, runs a data protection impact assessment, says in its terms that automated tools scan messages for scams, and keeps scanned content only as long as the case needs it. [[marketplace-regulation]] covers the legal analysis.
 
 ## Feedback Loops and Labels
 
@@ -247,12 +261,12 @@ Four practices keep the loop honest.
 
 - **Correct selection bias with the random sample.** If labels only come from flagged items, the model never learns what it misses. A stratified random sample of live listings and delivered messages, reviewed blind, is the only unbiased source ([[trust-and-safety-architecture]] covers prevalence measurement).
 - **Treat late labels as first-class.** A bank report about a transfer three weeks ago must be joined to the listing, the account and the features as they were then. That requires stable identifiers and point-in-time feature logs.
-- **Shadow before enforce.** Every new rule and model runs at 0% traffic first and reports what it would have done, as Stripe documents for Radar. The comparison against the current champion is the promotion test.
+- **Shadow before enforce.** Every new rule and model runs at 0% traffic first and reports what it would have done, as Stripe documents for Radar. The comparison against the current champion, the rule or model in production, is the promotion test.
 - **Monitor rules for rot.** Stripe's guidance on rule metrics gives a ready diagnostic: if a rule's blocks rise while confirmed fraud stays flat, the rule may be blocking good users. Every rule needs an owner and an expiry review date.
 
 ### Adversarial adaptation
 
-Fraudsters probe the gate. Which?'s testers changed devices, Wi-Fi networks and identities between attempts, and edited approved ads into scam ads. Professional fraud groups do the same at scale. Three design rules follow:
+The loop learns from labels; fraudsters learn by probing the gate. Which?'s testers changed devices, Wi-Fi networks and identities between attempts, and edited approved ads into scam ads. Professional fraud groups do the same at scale. Three design rules follow:
 
 1. **Re-score on every material edit** (price, payment terms, contact details, photos), not only at creation.
 2. **Do not leak thresholds.** A rejection message, or a statement of reasons under the DSA, must give the ground and the relevant facts. It need not reveal which signal tipped the score or by how much.
@@ -260,7 +274,7 @@ Fraudsters probe the gate. Which?'s testers changed devices, Wi-Fi networks and 
 
 ## Collaboration with Banks and Police
 
-A classifieds platform sees the setup; the bank sees the money. Neither can stop APP fraud well alone.
+Banks and police are more than the slowest label source. A classifieds platform sees the setup; the bank sees the money. Neither can stop APP fraud well alone.
 
 - **Bank-side checks have limits.** Under the EU Instant Payments Regulation, payment service providers in the euro area have had to offer **Verification of Payee**, a check that the payee name matches the account, before a credit transfer since 9 October 2025 ([McCann FitzGerald, 2025](https://www.mccannfitzgerald.com/knowledge/financial-services-regulation/are-you-vop-to-go-prepare-for-verification-of-payee-by-october-2025)). It stops some impersonation, but not a fraudster who uses a money mule's real account in the mule's own name. In Barcelona, the four IBANs belonged to recruited mules, so a name check would have matched.
 - **The exchange that matters is identifiers.** Banks can tell a platform which payee accounts received fraud proceeds. Platforms can tell banks which IBANs fraudsters asked victims to pay. Both are fraud signals for the other side. Exchanging them needs a legal basis, a secure channel and agreed formats.
@@ -281,7 +295,7 @@ Ingrid's question can now be answered component by component.
 | First victim report went to support | Intake routing | Victim reports routed as notices to trust and safety, linked to the listing and the account |
 | Combined rule took 12 days to exist | Rule platform with shadow mode | Analysts write and shadow-test a rule in hours, then promote it |
 
-With those components, a plausible timeline is that the first five or six listings go live on 1 July, the cluster forms when the third account links through a shared device that evening, and the remaining listings are held at the gate. That would not have prevented every loss, but most of the €71,000 was paid between 5 and 12 July. Hearthly Spain's move to the shared platform was brought forward to the first quarter of 2028.
+With those components, even if the first five or six listings still went live on 1 July, the cluster forms when the third account links through a shared device that evening, and the remaining listings are held at the gate. That would not have prevented every loss, but most of the €71,000 was paid between 5 and 12 July. Hearthly Spain's move to the shared platform was brought forward to the first quarter of 2028. The design also forces choices.
 
 ## Trade-offs
 
@@ -310,19 +324,9 @@ Every friction costs liquidity somewhere. A held listing is not searchable; a ve
 
 Most platforms need the middle row, with **risk tiers deciding which items wait for the asynchronous result**. In Barcelona, a rental listing from a new, unverified private account should have waited.
 
-## Vertical Differences
-
-| Dimension | General classifieds | Real estate | Automotive | Jobs | Recommerce with payments |
-| --- | --- | --- | --- | --- | --- |
-| Dominant fraud | Payment-link phishing, advance payment, counterfeit | Fake rentals and deposit fraud | Deposit scams, cloned listings, fake escrow | Fake job offers, mule recruitment, data harvesting | Shipping and refund fraud, phishing that imitates the platform's payment product |
-| Typical loss per victim | Tens to hundreds of euros | One or two months' rent | Hundreds to thousands of euros | Personal data, sometimes "training fees" | Item value |
-| Strongest signal | Domain and link checks, price | Photo reuse, rent anomaly, lister verification | VIN and plate reuse, price vs. market value | Contact details and salary anomaly | Payment and shipping events |
-| Natural friction | Message warnings, limits | Lister verification; viewing before payment | Dealer verification; protected deposits | Employer verification | Protected payment by default |
-| Where the money moves | Off-platform transfer | Off-platform transfer | Off-platform transfer or fake escrow | Usually no money; data is the target | On-platform, through the payment provider |
-
-The last row explains the strategic link between fraud and transactions. Moving money onto the platform with buyer protection turns unrecoverable APP fraud into a mediated dispute, which is why UK Finance asks for "secure payment protections on online marketplaces". It also creates a new fraud surface: phishing that impersonates the platform's own payment product, which is exactly what Femke received. [[transactions-and-payments]] covers the transactional pivot. The fraud consequence is that **launching protected payments changes the threat model, it does not end it**.
-
 ## Failure Modes
+
+Fraud stacks fail in recognizable ways:
 
 1. **Signals without combination.** Photo matches, price flags and account-age checks each raise their own queue item. No component combines them, so each looks minor. Barcelona is the canonical case.
 2. **Item-only scoring.** Rings design listings to pass item checks. Without an identity graph and actor-level cases, enforcement removes listings one by one while the ring posts new ones.
@@ -337,7 +341,7 @@ The last row explains the strategic link between fraud and transactions. Moving 
 
 ## The Chief Architect's View
 
-Fraud prevention is where a marketplace group's scale is a genuine advantage, provided the architecture lets it be one. A fraud ring that hits Tradeyard Netherlands will try Tradeyard Belgium next week and possibly Motorvane after that. A shared identity graph, shared block lists and a shared label store let the group learn once. Four separate stacks learn four times, each too slowly.
+Preventing those failures is a group decision. Fraud prevention is where a marketplace group's scale is a genuine advantage, provided the architecture lets it be one. A fraud ring that hits Tradeyard Netherlands will try Tradeyard Belgium next week and possibly Motorvane after that. A shared identity graph, shared block lists and a shared label store let the group learn once. Four separate stacks learn four times, each too slowly.
 
 The decisions I would put on the architecture agenda:
 
@@ -346,7 +350,7 @@ The decisions I would put on the architecture agenda:
 | A single risk scoring service, with a contract for all callers (insertion, message, login, payout) | Chief Architect, Head of Data & ML, Head of T&S | Callers that implement their own scoring |
 | Actor-level scoring and the identity graph, with data protection boundaries | Head of T&S and the DPO | Graph-only terminations; cross-brand data flows outside the approved hashed lists |
 | Rule lifecycle: backtest, shadow, rollout, owner, expiry | Head of T&S | Time from new scam pattern to rule in production; rules with no owner |
-| Friction thresholds and the cost of a lost genuine user | Marketplace GMs with T&S | Abandonment per friction from experiments; fraud stopped per friction |
+| Friction thresholds and the cost of a lost genuine user | Marketplace general managers with T&S | Abandonment per friction from experiments; fraud stopped per friction |
 | Label pipeline, including bank and police reports | Head of Data & ML | Label delay per source; share of fraud cases with a joined late label |
 | Buy versus build per signal | Chief Architect and procurement | Label and feature portability in vendor contracts |
 | Bank and law-enforcement data exchange | DPO, legal and T&S | Turnaround time; hits on exchanged identifiers |
@@ -356,6 +360,8 @@ Three numbers belong on the group dashboard: **sampled prevalence of fraudulent 
 In the long term, fraud and trust will increasingly be **AI against AI**. Generative tools make fake listings, fake documents and convincing messages cheap, and they make fraud scripts easy to translate into every market's language. The same tools make detectors faster to build and policies faster to change. [[ai-in-listing-systems]] covers the broader shift. The architectural defense does not change: a platform that combines signals, scores actors, applies friction in proportion and learns from labels within days will absorb new attack tools. A platform that relies on any single detector, however capable, will not.
 
 ## Questions to Ask
+
+For a design review:
 
 1. Which actions are scored for fraud risk today (insertion, edit, message, login, recovery, contact reveal, payout), and which are not?
 2. Do our photo-reuse matches between unrelated sellers go to fraud scoring with seller context, or to a deduplication queue?
@@ -369,6 +375,8 @@ In the long term, fraud and trust will increasingly be **AI against AI**. Genera
 10. For our last confirmed fraud ring, how long did it take from the first fraudulent listing to the takedown of the whole cluster?
 
 ## From Risk to Identity
+
+Ingrid's day-one question now has one answer seen from every section. The platform cannot see the payment, so it has to act on the setup, and the setup becomes visible only when weak signals about one actor are combined. The identity graph links them, the risk score weighs them, friction makes the score cost the fraudster rather than the genuine user, and labels keep the weights current. **That is what moves the time from first fraudulent listing to cluster takedown from days to hours**, and it keeps the trust strangers place in the platform from being borrowed by fraudsters.
 
 Fraud prevention keeps coming back to one question: who is on the other side? A risk score is a probability estimated from indirect evidence, and step-up friction is a request for better evidence. The strongest frictions are identity checks: strong authentication, verified phone numbers, verified identities and verified businesses. They are also the most expensive and the most sensitive. [[identity-and-verification]] takes up that question: how much a marketplace should know about its users, how it verifies it, and what a verified badge should and should not promise.
 

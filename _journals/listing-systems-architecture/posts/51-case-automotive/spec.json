@@ -1,0 +1,1890 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-automotive",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "mobile.de, Auto Trader and AutoScout24: Lessons from Automotive Marketplaces",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the five journal acceptance criteria, the thesis and the role are copied unchanged from the case-automotive entry in journal-spec.json. Added: a roadmap paragraph (p04), a one-sentence lead-in to the vertical-differences table (p49), and a conclusion section that performs Part IX's closing (p64 to p66; the published closing paragraph is split across p64, p65 and p66, its sentences kept).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Why automotive behaves differently: a car carries a machine-readable identity, most cars are listed by dealers through software, and the dealer who supplies the stock is also the paying customer.",
+        "mobile.de's architecture as written in its APIs (transfer service providers as integration principals, idempotent creates, one write at a time per ad, taxonomy keyed to a vehicle derivative, the price rating as a resource, a change feed with a 24-hour catch-up window); Autotrader UK's disclosed levers, data APIs and Deal Builder; AutoScout24's platform story; CarGurus' price transparency and the CarOffer wind-down; OLX Autos as the contrast.",
+        "Price evaluation as a control loop across the cases (five-band ratings, no-rating paths, dealer tools that show how a price change moves the band or the search position) and where the evidence stops (mobile.de internals, AutoScout24's product platform, all valuation methods)."
+      ],
+      "believe": [
+        "In automotive the published dealer contract is the architecture document.",
+        "A price rating that feeds ranking or dealer tools needs the governance of a ranking model, and platform-controlled states on a dealer's stock are commercial-model changes that must be opt-in and reversible."
+      ],
+      "can_do": [
+        "Write the commitments of a professional supply contract (accountable integrators, idempotent creates, one writer per listing, stable error keys, a change feed with replay, a notice period).",
+        "Decide how far up the transaction ladder a marketplace should go and what evidence would justify each step."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects, principal engineers and engineering leaders of vertical or multi-vertical marketplace groups, especially those running dealer-fed automotive brands or deciding how far a marketplace should reach into the transaction.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are, and ML serving.",
+        "Part IX's evidence rules, from part-9, and the five earlier cases.",
+        "Feed contracts (listing-ingestion), change feeds (event-driven-listings), enrichment (normalization-and-enrichment), model governance by decision (ml-platform), ranking (ranking), entitlements (products-and-entitlements) and the automotive requirement profile (vertical-requirements).",
+        "Veldmark and its automotive brand Motorvane, from meet-veldmark and the chapters."
+      ],
+      "does_not_know": [
+        "The automotive companies' corporate histories and products (mobile.de, Autotrader UK, AutoScout24, CarGurus, OLX Autos).",
+        "Automotive integration terms: transfer service provider (TSP), dealer management system (DMS), Germany's type-approval codes (HSN/TSN).",
+        "The metrics ARPR (average revenue per retailer) and IMV (Instant Market Value)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a motors marketplace planning a dealer price tool and online reservations, the reader uses the dated automotive record to say what each requires.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A motors marketplace that rates every car's price in five bands plans a dealer tool showing how a price cut would move the band and the car's search position, and wants to switch on online reservations for all dealers' stock. Using only this chapter: what does the public record show, and what should the marketplace put in place for each?",
+        "expected": "mobile.de, CarGurus and Autotrader publish five-band price ratings, and mobile.de shows dealers how a price change moves search position; once a rating feeds ranking and dealer tools the model shapes the prices it learns from, so it needs an owner, evaluation on band accuracy and boundary clustering, a no-rating path and ranking-change review. Autotrader's Deal Builder reached 137,000 full reservations in a year while forecourts fell in the second half and dealers cut paid stock, and its auto-rollout was paused for 'request a reservation'; reservations must be opt-in, configurable per dealer and reversible. Owning cars is a different business, from which CarGurus' CarOffer and OLX Autos retreated."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+        "expected": "Three questions asked of each company (what the public contract reveals, what the reported numbers say about the systems behind them, where the marketplace's responsibility ends); evidence from integration API manuals, investor reports and engineering posts for mobile.de, Autotrader UK, AutoScout24 and CarGurus, with OLX Autos as the brief contrast; tests of feed contracts, change feeds and model governance; a comparison with Veldmark's Motorvane and the close of Part IX's cases."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every statement about mobile.de, Autotrader, AutoScout24 or CarGurus's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how mobile.de, Autotrader, AutoScout24 or CarGurus builds or runs a system without a dated source, or a company fact with no source and year?",
+        "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+      },
+      {
+        "id": "AC-5",
+        "statement": "The chapter's final section performs Part IX's closing: it says what the six cases show together that no single case shows, why it matters, and returns to the part introduction's test of which patterns the record supports, which it only fails to contradict, and where it is silent, before handing off to the toolkit.",
+        "check": "conclusion_synthesizes_and_answers_so_what",
+        "method": "rubric",
+        "severity": "major"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What do the automotive leaders' published dealer contracts, investor reports and engineering posts reveal about a dealer-fed listing system, and where does the marketplace's responsibility end?",
+    "claim": "Because a car has a machine-readable identity, arrives through dealer software and is supplied by the customer who pays, the automotive leaders' public record is their architecture: mobile.de's and Autotrader's published dealer contracts (accountable integrators, idempotent creates, serialized writes, a change feed with replay) are the documented answer to unmanaged feeds; their five-band price ratings, once shown to dealers alongside search position or used in ranking, shape the prices they learn from and need ranking-model governance; and the marketplace's responsibility ends where platform-controlled state on a dealer's stock stops being opt-in and reversible, as Deal Builder's friction and the CarOffer and OLX Autos retreats show.",
+    "disputed_by": "The view that a dealer feed is an import job each marketplace tunes privately, that a price rating is a neutral label rather than a model with consequences, and that a marketplace should move into reservations, guarantees and owning cars to capture more of each sale.",
+    "so_what": "A Chief Architect publishes the professional supply contract before building the importer and treats vendor certification as a release gate; publishes change with a stated delay and replay window, 24 hours by default; registers any price rating that labels or orders results as a ranking model with an owner, band-boundary monitoring and a no-rating path; derives billing counts from the same inventory state search shows; makes every platform-set transactional state opt-in, configurable per dealer and reversible; and runs data APIs as a business line with their own service levels.",
+    "how_why": "Nine-tenths of automotive supply arrives through dealer feeds. mobile.de's Seller API and Ad Stream document transfer service providers as integration principals, idempotent creates, one write at a time per ad, a taxonomy keyed to a vehicle derivative and a change feed with a 24-hour catch-up window, and its price planner links price to search position. mobile.de, CarGurus and Autotrader all publish five-band price ratings or flags. Autotrader UK discloses its levers, serves about 155 million data-API calls a month, and by March 2026 had more than 6,700 retailers on Deal Builder with 137,000 full reservations in the year, while forecourts fell in the second half and dealers cut paid stock. CarGurus' 2025 annual report records the wind-down of CarOffer, and Prosus exited OLX Autos from 2023. mobile.de's internals, AutoScout24's product platform and every valuation method remain unpublished.",
+    "supporting_claims": [
+      {
+        "id": "A1",
+        "claim": "A car's machine-readable identity, supply written by dealer software and a supplier who is also the paying customer make the automotive leaders' public contracts and investor disclosures a description of their listing systems."
+      },
+      {
+        "id": "A2",
+        "claim": "mobile.de's and Autotrader's published dealer contracts (accountable integrators, idempotent creates, serialized writes, stable error keys, a change feed with replay, a notice period for breaking changes) are the documented answer to unmanaged dealer feeds."
+      },
+      {
+        "id": "A3",
+        "claim": "Five-band price ratings, once they feed ordering or dealer tools that show a price change moving the band or the search position, become a control loop that shapes the prices the model learns from, and need the governance of a ranking model."
+      },
+      {
+        "id": "A4",
+        "claim": "When the supplier pays, inventory state is billing state and a platform-controlled state on a dealer's stock is a commercial-model change; the marketplace's responsibility ends where such states stop being opt-in and reversible, as Deal Builder's friction and the CarOffer and OLX Autos retreats show."
+      },
+      {
+        "id": "A5",
+        "claim": "The evidence is uneven and stops at internals (mobile.de's services, AutoScout24's product platform, every valuation method), so each fact is dated, each inference labeled, and the book's patterns and Veldmark's Motorvane are tested only as far as the record reaches."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Tests the supply contract, change feed and model-governance patterns in the vertical that publishes its contracts, marks where the marketplace's responsibility ends, and closes Part IX with the hand-off to the toolkit.",
+    "supports": [
+      "P9-4",
+      "P9-3"
+    ]
+  },
+  "flow": {
+    "pattern": "grouping",
+    "additional_patterns": [
+      {
+        "pattern": "order_of_importance",
+        "applies_to": "mobile-de to olx-autos: the two European listing platforms first (mobile.de's contracts, then AutoScout24's platform), then Autotrader UK, CarGurus and OLX Autos in order of how far each reaches up the transaction ladder (reservations, wholesale, owning cars)"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "across-cases to evidence-stops: cross-case views (price products side by side, options, risks, other verticals, gaps)"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "chief-architect to questions: rules from the record, their test against the book and Veldmark, and questions for the reader's group"
+      }
+    ],
+    "rationale": "Reading rules, the timeline and the vertical's properties come first because every later sentence is a dated fact, a reading or an inference, and the properties explain why the companies publish what they publish. The companies are grouped one per section because each documents a different layer (API contracts, investor levers, platform posts, a 10-K) and the record cannot be phased (decision of 2026-10-19); mobile.de leads because its contracts set the write path, change feed and price rating that every later section refers back to; AutoScout24 follows as the other European listing platform, whose record is platform only, so that Autotrader, CarGurus and OLX Autos then run up the transaction ladder without a break (decision of 2026-11-12, after both round-1 flow readers found AutoScout24 out of place between Autotrader and CarGurus); OLX Autos closes the group as the contrast that bounds the ladder. The cross-case views come only after all companies because each uses facts from several of them; the evidence limits close that group so the rules that follow do not outrun them. The author's rules, the comparison and the questions apply what the record has shown, and the conclusion closes the case and Part IX together because this is Part IX's last case."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "This last case of Part IX tests the book's patterns in the vertical whose marketplaces are the clearest about their architecture, because they have to be."
+    },
+    "bridge": {
+      "from_reader_world": "A Chief Architect who has read the property portals: a listing business on valuable data and a professional supply base it does not control.",
+      "to_topic": "The same questions where the item has a machine-readable identity, supply is written by dealer software and the supplier is the customer who pays, so the leaders publish their integration contracts and report their revenue levers."
+    },
+    "thesis_statement": {
+      "text": "In automotive the public API is the architecture document; a price rating is a control loop, not a label; and when the supplier is the paying customer, platform-controlled state on its stock is a commercial-model change.",
+      "placement": "KEY POINTS callout (the three bullets) and the bold sentence of paragraph p01."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, after the three questions.",
+      "promises": [
+        {
+          "promise": "Set the reading rules, give the dated timeline and say why automotive behaves differently.",
+          "kept_in": [
+            "how-to-read",
+            "timeline",
+            "why-different"
+          ]
+        },
+        {
+          "promise": "Read mobile.de and AutoScout24, then Autotrader UK, CarGurus and OLX Autos in order of how far each reaches into the transaction.",
+          "kept_in": [
+            "mobile-de",
+            "autoscout24",
+            "autotrader",
+            "cargurus",
+            "olx-autos"
+          ]
+        },
+        {
+          "promise": "Look across the cases: price evaluation as a control loop, the trade-offs, the other verticals, the failure modes and where the public evidence stops.",
+          "kept_in": [
+            "across-cases",
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "evidence-stops"
+          ]
+        },
+        {
+          "promise": "End with my decision rules, a comparison with the book's patterns and Veldmark's Motorvane, questions to ask, and what the six cases of Part IX show together.",
+          "kept_in": [
+            "chief-architect",
+            "comparison",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Like the property portals, automotive marketplaces sit on a professional supply base they do not control, but a car's machine-readable identity, dealer-software supply and a supplier who also pays make their leaders publish integration contracts and revenue levers that describe a listing system, so this last case tests feed contracts, change feeds and model governance against public documents.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Three properties: machine-readable identity, professional listing through software, the supplier is the paying customer; contracts published for vendors, levers reported to investors.",
+            "shows": "Shows why this vertical's public record is unusually architectural."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "A1"
+          ],
+          "how": "States why the record can be read as architecture and what it will test."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter reads four companies, each for the layer it documents (mobile.de its dealer write path, price rating and change feed; AutoScout24 its engineering platform; Autotrader UK its unit economics, data platform and reservation friction; CarGurus its price transparency and CarOffer wind-down), with OLX Autos as the brief contrast.",
+        "function": "description",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "A record that describes a listing system.",
+          "introduces": "The four companies whose record it is and what each documents.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "A5"
+          ],
+          "how": "Names the evidence base and its unevenness."
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Each company is asked three questions: what the public contract reveals, what the reported numbers say about the systems behind them, and where the marketplace's responsibility ends.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The four companies.",
+          "introduces": "The questions asked of each.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter sets the reading rules, the timeline and the vertical's properties, reads the two European listing platforms (mobile.de for its contracts, AutoScout24 for its platform) and then the companies in order of how far they reach into the transaction, looks across them, and ends with the author's rules, tests against the book and Motorvane, questions, and what Part IX's six cases show together.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The three questions.",
+          "introduces": "The route through the chapter, ending with the close of Part IX.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Case",
+      "controlling_idea": "The case keeps documented fact, the author's reading and labeled inference apart, and each company documents a different layer, so the evidence is uneven and dated as read.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Sets the evidence rules and states the unevenness before any fact is used."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the rules every Part IX case follows, to how far each company's evidence reaches, to the dating caveat on undated manuals, to the one fictional element and where it appears."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction's promise of reading rules.",
+        "introduces": "The rules themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Part IX cases separate three kinds of statement: a documented fact carries its source and publication year, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and a reference-architecture inference appears only in a labeled callout.",
+          "function": "definition"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The evidence is uneven because each company documents a different layer, and each has a weakest point.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five companies with their strongest and weakest public evidence: mobile.de's manuals and newsroom against no engineering blog; Autotrader's FY26 results, portal and blog against its post-2019 topology and valuation method; AutoScout24's engineering blog and careers page against its dealer APIs and product architecture; CarGurus' 10-K and help center against engineering detail and model thresholds; OLX Autos' trade press and Prosus results against its systems.",
+              "source": "The cited manuals, results, blogs and filings",
+              "shows": "Shows in advance which questions each section can and cannot answer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The rule that every fact carries its source.",
+            "introduces": "How much each company's sources cover.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The API manuals carry no publication dates, so they describe the contract as read on 19 October 2026, and ownership facts are stated as of a date.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The unevenness of the evidence.",
+            "introduces": "Its dating problem.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Veldmark appears only in the final comparison, and Motorvane is a composite of industry patterns, not a disguised description of any company in the chapter.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The real companies' evidence and its limits.",
+            "introduces": "The one fictional element and where it appears.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "Timeline: Automotive Marketplaces in Dated Events",
+      "controlling_idea": "The companies' record from 1996 to October 2026 is a dated sequence of foundings, ownership changes, platform migrations, product launches and retreats, and it places each company on one line: how far the marketplace reaches into the transaction.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A4",
+          "A5"
+        ],
+        "how": "Gives every later section its dated anchor and introduces the transaction ladder."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The rule that every fact carries its source and year.",
+        "introduces": "The dated events themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "The chronology draws on the cited releases, filings and reports, with ownership as of October 2026.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seventeen dated events from mobile.de's founding (1996) through eBay's 2004 purchase, Auto Trader's last print edition (2013), Project Tatsu (2014), Auto Trader's 2015 listing, the c. 2019 GKE platform, OLX Autos (2019), AutoScout24's 2020 sale, CarOffer (2021), Adevinta's 2021 purchase of eBay Classifieds Group, Null-Leasing (2022), the 2023 OLX Autos exit announcement, Adevinta's 2024 take-private, Co-Driver (2025), CarOffer's wind-down decision (2025), the Trader migration (2025), the reported mobile.de dual track (2025), the November 2025 stock cuts, the July 2026 platform update and the 8 October 2026 Bundeskartellamt clearance.",
+              "source": "Each row names its source type and year",
+              "shows": "Shows the sequence the company sections draw on, each event with its source."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The four marketplaces and the contrast case sit at different points on one line, how far the marketplace reaches into the transaction (from listing and contact, through leads and reservations, to owning the car), and the documented retreats are all from its last step.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: where each case sits on the transaction ladder as of 2026.",
+              "shows": "Shows that the retreats are from the step where the marketplace takes price risk on the car itself."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The dated events.",
+            "introduces": "The single line on which they place each company.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "why-different",
+      "heading": "Why Automotive Behaves Differently",
+      "controlling_idea": "Four properties of the automotive profile (strong item identity, software-mediated professional supply, a supplier who pays, a high-ticket item of uncertain value) shape the architecture the case reads, and price evaluation is the vertical's signature data product.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A1"
+        ],
+        "how": "Explains why the record is architectural and introduces the price-rating thread."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The dated events and the transaction ladder.",
+        "introduces": "The properties of the vertical every case is read against.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Four properties of the automotive profile, developed in vertical-requirements, matter for reading this case.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Strong item identity (VIN, UK plate, HSN/TSN; attributes decoded, not typed), professional software-mediated supply (DMS uploads; the write path is an API for vendors), the supplier pays (inventory state is billing state), high ticket and uncertain value (price guidance, history and finance as data products), each with where the case shows it.",
+              "shows": "Shows what each property means for the architecture and which company's record shows it."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Price evaluation, rating an asking price against a model of market value, is the vertical's signature data product and gets its own cross-case section.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The fourth property, buyers' need for price guidance.",
+            "introduces": "The data product that answers it and its own section.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "mobile-de",
+      "heading": "mobile.de: An Architecture Written in Its APIs",
+      "controlling_idea": "mobile.de publishes no engineering blog, but its Seller API, Search API and Ad Stream manuals and its 2026 releases document an accountable dealer write path, a price rating as a contract, a change feed with a 24-hour replay window, and a price tool that links price to search position.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A5"
+        ],
+        "how": "Gives the fullest documented dealer contract, change feed and price rating, and the record's clearest sign that price feeds ranking."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the business and its market (ownership, non-exclusive inventory) to why the documents are the evidence, then the write path, the price rating, the read path and change feed, and finally ranking and the 2026 product layer, where the price-rating thread meets ranking."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The four properties and the price-rating thread.",
+        "introduces": "The company whose API manuals show them most completely.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "mobile.de's history, segment revenue and scale are public, but its ownership as of October 2026 is not fully clear.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Founded 1996, bought by eBay 2004, part of Adevinta from 25 June 2021; 2023 segment revenue €432 million (€408 million classifieds, €24 million advertising); more than 1.6 million listed vehicles and 140 million visits a month as 2025 averages; reported IPO-or-sale process (October 2025); 'Adevinta subsidiary' (August 2026); Bundeskartellamt names Oak Germany Buyer GmbH as parent (8 October 2026).",
+              "source": "Adevinta Annual Report 2023 (2024); mobile.de newsroom (2026); PYMNTS relaying the FT (2025); Bundeskartellamt (2026)",
+              "shows": "Shows a large, almost purely classifieds business whose current owner the public record does not settle."
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "In a dealer-fed vertical inventory is not exclusive, so a marketplace differentiates through audience, data products and workflow rather than supply lock-in.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The Bundeskartellamt's clearance: mobile.de's 'starke Marktposition', AutoScout24 a 'starker Wettbewerber', consumers and dealers 'häufig mehrere Plattformen parallel', platforms offering 'Datenexport zu anderen Plattformen'.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "Shows in the regulator's words that the same car is on several marketplaces."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Bundeskartellamt clearance decision.",
+            "introduces": "What it records about the market.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "No mobile.de engineering blog was found, so the architectural evidence is its integration documentation, which is unusually complete.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Differentiation through data products and workflow.",
+            "introduces": "Where the evidence for those systems has to come from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "list",
+          "controlling_idea": "The Seller API manual defines who may write and how: integrators are accountable principals, creates are idempotent and writes to one ad serialized, freshness is a separate field, vehicle identity is carried as codes, bulk XML upload exists beside the REST API, and the resource list is a product map.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Seller API Access can be granted to Transfer Service Providers and Self-Uploading Dealers registered with mobile.de'; the X-Mobile-Insertion-Request-Id header and HTTP 303 on retry; 'Do not send multiple requests for the same ad at the same time'; renewalDate; hsn, tsn and schwackeCode; seller-inventory-key and customerNumber in the XML upload.",
+              "source": "mobile.de Seller API manual, Seller-API reference and XML upload manual, n.d. (read October 2026)",
+              "shows": "Shows each contract term in the manual's own words."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The integration documentation as evidence.",
+            "introduces": "Its write path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Taken together, mobile.de treats the integration vendor as an accountable party, makes retries safe and puts ordering responsibility on the client in writing, and each choice removes a class of Feed Roulette incident.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six contract terms.",
+            "introduces": "What they add up to against Feed Roulette.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A2"
+            ],
+            "how": "Names the published contract as the answer to unmanaged feeds."
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The price rating is part of the same contract: five labels, a preview endpoint returning each band's euro range before an ad exists, a reason when no rating is available, and recalculation when images arrive.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "VERY_GOOD_PRICE to HIGH_PRICE; a vehicle 'that has not been created yet'; 'a reason will be provided'; 'If images are uploaded later (at any time), the price rating will be recalculated including the image data.'",
+              "source": "mobile.de Seller API manual, n.d. (read October 2026)",
+              "shows": "Shows the rating specified as an API resource with explicit states."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Seller API contract.",
+            "introduces": "The price rating inside it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Three design choices are visible in the rating: a band with published boundaries rather than a point estimate, an explicit no-rating state with a reason, and recomputation when any input changes.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: a price rating designed as a contract (band, no-rating slot, recalculation on new photos).",
+              "shows": "Shows the three choices in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The rating's documented behavior.",
+            "introduces": "The design choices it reveals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A3"
+            ],
+            "how": "Sets out the rating's documented design before the loop is discussed."
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The Search API lets dealers embed their mobile.de listings on their own sites and carries the consumption, emissions and CO2-cost data German labeling rules require.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The write path and the rating.",
+            "introduces": "The interfaces that let others read the inventory.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Ad Stream is a WebSocket change feed with two event types, a contract-dependent delay, one connection per user and a catch-up mode that replays 24 hours of missed events.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "AD_CREATE_OR_UPDATE and AD_DELETE; 'one connection per user'; catchup=true; 'the historical events are kept for 24 hours'; a test endpoint with 'only 10% of all events' and 60 seconds of extra delay.",
+              "source": "mobile.de Ad Stream manual, n.d. (read October 2026)",
+              "shows": "Shows a published change-feed contract with a stated retention."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Search API as one read interface.",
+            "introduces": "The second, a change feed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The 24-hour replay window is a public benchmark for how long a consumer may be disconnected before it needs a full resynchronization, and the external contracts imply an internal design that is shown only as a labeled inference.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED: a log of listing state changes feeding Ad Stream, a price-rating service called synchronously and asynchronously, per-ad serialization of writes.",
+              "shows": "Shows the implied design kept apart from documented fact."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: a plausible reference flow consistent with the public API documentation, not a description of mobile.de's systems.",
+              "shows": "Shows safe retries, rescoring on photos and a delayed change feed with a 24-hour replay window."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The 24-hour catch-up.",
+            "introduces": "What that number tells consumers and what the contracts imply inside.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A2",
+              "A5"
+            ],
+            "how": "Turns the feed into a benchmark and labels the inference."
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "mobile.de's ranking is documented only by a 2024 conference abstract (learning to rank with XGBoost under a 30 ms latency target), which does not name the model's features.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'millions of searches daily' and a 'strict latency SLA <30ms'.",
+              "source": "Berlin Buzzwords, June 2024",
+              "shows": "Shows how little of ranking is public."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Fully documented integration contracts.",
+            "introduces": "The thinly documented ranking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The July 2026 platform update says more about the dealer-side product layer: AI lead tools now handle dealers' leads, two releases add data to the listing, and a Preis-Planer simulates how price steps affect days on market, the price rating and search position.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "AI reply suggestions produce 45% of written replies; Lead API into CRM systems; 91% of answered calls outside opening hours; Preis-Planer in 2% steps; Stellantis leasing offers (June) and CARFAX checks (September).",
+              "source": "mobile.de newsroom, 2026",
+              "shows": "Shows the dealer workflow products and the one that ties price to search position."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What ranking documents leave out.",
+            "introduces": "A 2026 release that says more.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "My reading is that the Preis-Planer is the most revealing sentence in the public record: it confirms that price relative to the market model affects ranking at mobile.de, which makes the price-rating model part of the ranking function.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The Preis-Planer.",
+            "introduces": "Why it matters more than the other products.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A3"
+            ],
+            "how": "Shows the loop visible in public."
+          }
+        }
+      ]
+    },
+    {
+      "id": "autoscout24",
+      "heading": "AutoScout24: The Platform Story",
+      "controlling_idea": "AutoScout24's public record is almost entirely about its engineering platform, the best-dated platform history of the four, and shows an acquirer's platform absorbing another marketplace at the account and identity layer.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Shows the platform layer documented and the product platform not."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "mobile.de's integration contracts, the other European listing platform's record.",
+        "introduces": "A European rival whose public record is almost all engineering platform.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "Unlike mobile.de, AutoScout24 documents its platform rather than its contracts, and its platform history runs from a 2014–2018 re-architecture onto AWS, through a 2025 consolidation of 110 AWS accounts from Trader, to a 2026 platform of nearly 1,000 services.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "'the largest pan-European online car market'; Hellman & Friedman purchase in 2020 (reported €2.84 billion); Project Tatsu from November 2014, 'AWS first' and 'shared nothing' (InfoQ, 2016); bounded-context microservices, 'some' using Kafka (2018); '110 AWS accounts' with 'zero downtime' (August 2025); 994 services, 107 APIs, 2,700 requests per second, 30 TB, more than 270 engineers (careers page, read October 2026); EKS, Argo CD, Backstage and a read-only AI debugging agent (July 2026).",
+              "source": "InfoQ 2016; AutoScout24 Tech Blog 2018, 2025, 2026; careers page, n.d.",
+              "shows": "Shows a dated platform history in three steps."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The record says little about AutoScout24's listing, ranking or pricing systems, but in my reading it does show an acquirer's platform absorbing another marketplace at the account and identity layer, without any public sign that the product platforms were merged.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the platform history documents.",
+            "introduces": "What it leaves out and what it still shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autotrader",
+      "heading": "Autotrader UK: The Economics Disclosed",
+      "controlling_idea": "Autotrader's results disclose the levers of its revenue, its data business and the cost of Deal Builder, showing that paid-stock counts are revenue, that partner data APIs are a governed B2B product, and that a platform-set state on dealer stock is a commercial-model change.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A4"
+        ],
+        "how": "Gives the documented economics of a dealer-paid marketplace and the friction of platform-set state."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the company's disclosed totals to the three revenue levers and the stock lever, then the data APIs and how their contract is run, then Deal Builder, which uses the stock lever to show what platform-set state cost, and last the platform evidence, which is the thinnest and dated (moved after Deal Builder on 2026-11-12, after both round-2 flow readers found it breaking the thread from the stock lever to Deal Builder)."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Two listing platforms documented through contracts and platform posts, without financial detail.",
+        "introduces": "A listed company that discloses the economics behind its systems and takes the first step up the transaction ladder.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "Autotrader, listed since March 2015, reports for the year to 31 March 2026 a 70% operating margin, nearly 14,000 retailer forecourts and an audience that arrives mostly directly and almost not at all from AI assistants.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Group revenue £624.3 million; Autotrader operating margin 70%; 13,942 average forecourts; over nine million monthly unique visitors; more than 80% direct, 13% organic, 4% paid; 'currently less than 1% of audience comes from generative AI chat assistants'.",
+              "source": "Autotrader full-year results, published 21 May 2026",
+              "shows": "Shows the scale and margin of the business whose levers follow."
+            }
+          ]
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The results decompose growth in average revenue per retailer into price, stock and product levers, and each lever depends on a system getting something right.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "ARPR levers for FY2026 and FY2025: price +£117/+£78, stock −£48/−£22, product +£72/+£77, ARPR £2,995/£2,854 (+£141, +5%), with Autotrader's explanation and what a system has to get right for each.",
+              "source": "Autotrader full-year results, 2026",
+              "shows": "Shows revenue levers that map onto catalog, inventory and entitlement systems."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The company's disclosed totals.",
+            "introduces": "How it explains revenue per retailer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The lever figures come from Autotrader's full-year results to 31 March 2026, published 21 May 2026.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The lever table.",
+            "introduces": "Its source and date.",
+            "form": "word",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Autotrader full-year results to 31 March 2026, published 21 May 2026.",
+              "shows": "Shows where every figure in the lever table comes from and when it was published."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The arithmetic closes to reported retailer revenue, and the stock lever is the architecturally interesting one: a dealer can cut spending by advertising fewer cars, so revenue depends on the accuracy of the count of paid cars.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "£2,995 × 13,942 × 12 ≈ £501 million against reported retailer revenue of £501.1 million.",
+              "shows": "Shows that the levers account for retailer revenue."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the stock lever, with one inventory line feeding search and a paid-stock gauge.",
+              "shows": "Shows that the paid-stock count must come from the inventory state search shows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The three levers.",
+            "introduces": "The one that matters to architecture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A4"
+            ],
+            "how": "Shows inventory state as billing state."
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Autotrader's data is a large partner business, with 220 technology partners, 155 million calls a month and an API set that runs from taxonomy and stock management to valuations and the objects behind its online deal product.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "'integrated with over 220 technology partners'; 155 million calls a month (91 million the year before); APIs for lookup, taxonomy to derivative level, stock, images, search, valuations, vehicle metrics including a 'Retail Rating', and deal objects.",
+              "source": "Autotrader full-year results, 2026; developer portal, n.d. (release notes into 2026)",
+              "shows": "Shows data services at a scale that partners depend on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Revenue from retailers.",
+            "introduces": "The data services behind it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Three details show how the contract is run: policy is encoded as validation, breaking changes have at least 30 days' notice, and stock changes are pushed by webhooks kept at parity with the Stock API.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'not meeting minimum price of 75'; the DVLA category A/B rejection; the 30-day breaking-change policy and what counts as breaking; 'to gain parity between the Stock API and the Stock Notifications'.",
+              "source": "Autotrader Connect developer documentation, n.d. (read October 2026)",
+              "shows": "Shows contract terms that a partner can rely on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The API set.",
+            "introduces": "How its contract is run.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A2"
+            ],
+            "how": "Adds stable error keys, a notice period and pushed changes to the documented contract."
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "My reading is that at 155 million calls a month from 220 partners Autotrader's data is a B2B platform, and its change policy is the contract attribute-schemas recommends for any schema partners depend on.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The scale and the contract terms.",
+            "introduces": "What they make the data business.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Deal Builder lets a buyer start a deal online, and by March 2026 it reached more than 6,700 retailers and 137,000 fully reserved deals in the year, which Autotrader calls its best enquiries.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "6,700 retailers (2,000 a year earlier); 175,000 vehicles live; 137,000 deals with a full reservation; 'the very best enquiries in terms of conversion to sale'.",
+              "source": "Autotrader full-year results, 2026",
+              "shows": "Shows the product's reach and value claim."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Autotrader's data products and the stock lever.",
+            "introduces": "The product that placed platform state on dealer stock.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The same results describe what the rollout cost (softer retailer numbers, fewer forecourts in the second half, cut advertised stock, lower engagement) and a response that paused auto-rollout and introduced 'request a reservation'.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'concerns with the speed and nature of our Deal Builder product roll-out'; 236 (1.7%) fewer forecourts in H2; stock cut from November 2025; engagement 91% to 72%; 'pausing auto-rollout ... introducing \"request a reservation\"'; the £99 fee (trade press, December 2025).",
+              "source": "Autotrader full-year results, 2026; Car Dealer Magazine, 2025",
+              "shows": "Shows the commercial cost of a platform-set state applied without dealer control."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Deal Builder's reach.",
+            "introduces": "What the rollout cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A4"
+            ],
+            "how": "Gives the documented friction."
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "My reading is that Deal Builder put a platform-controlled 'reserved' state on inventory the dealer owns, changing who takes a car off the market, and the documented response amounts to making that state opt-in and dealer-controlled: who may trigger a transition is part of the business model.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: a reference state model for reservations on dealer stock, not Autotrader's design.",
+              "shows": "Shows opt-in platform-set reservations, dealer-accepted requests and lapse back to active."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The friction and the response.",
+            "introduces": "Why the friction arose and the rule it implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A4"
+            ],
+            "how": "States where the marketplace's responsibility ends."
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The engineering evidence spans seven years and grows thinner toward the present, from a c. 2019 Kubernetes and Istio case study to 2026 statements and one streaming-personalization post.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "GKE with Istio, about 400 microservices and 200–250 deployments a day (c. 2019); 'transitioned fully to a modern cloud-based delivery and data platform' and 'an AI platform' (2026 results); Snowplow, Spark Structured Streaming and Kafka (August 2026 post).",
+              "source": "Istio case study, n.d.; Autotrader results, 2026; Autotrader Engineering, 2026",
+              "shows": "Shows how dated the platform evidence is."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Well-documented products and their economics.",
+            "introduces": "A thinly documented platform beneath them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A5"
+            ],
+            "how": "Dates the platform evidence and shows where it thins."
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The results claim more than 50 proprietary AI and ML models defensible against general-purpose language models, an incumbent's claim rather than a neutral finding, and name concrete products built on them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'more than 50 proprietary AI and machine learning models'; 'publicly available vehicle listings represent only a small part of the required data'; Co-Driver ('anecdotally' 28 to 5 minutes); 'specification adjusted valuations underpinning our price flags'; Buying Signals leads that 'convert at twice the average rate'; a ChatGPT app via the Model Context Protocol.",
+              "source": "Autotrader full-year results, 2026",
+              "shows": "Shows the AI products and labels the defensibility claim as the company's."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The 2026 statement of an AI platform.",
+            "introduces": "The models and products the results claim for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cargurus",
+      "heading": "CarGurus: Price Transparency as the Product",
+      "controlling_idea": "CarGurus makes a market-value model the center of its product and its dealer tools, and records the wind-down of CarOffer, the business that facilitated transactions on volatile prices.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A3",
+          "A4"
+        ],
+        "how": "Shows the dealer side of the price loop and a documented retreat from the transaction."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The proposition first (IMV and deal ratings), then the dealer tools and monetization that close the loop, then the retreat that bounds it, then the reading that joins the two."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Autotrader's reservations, the reservation step of the ladder.",
+        "introduces": "A company built on price transparency that also tried the wholesale step and wound it down.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "CarGurus' 2025 10-K makes price evaluation the center of the proposition: five deal ratings based on Instant Market Value, updated daily and, per the help center, ordering deals by the algorithm rather than by payment.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'our proprietary algorithm that assesses the market value of a used vehicle in a local market'; 'tens of millions of data points'; updated 'daily'; 'based on our algorithm, not how much a dealer pays us.'",
+              "source": "CarGurus 10-K, filed 19 February 2026; help center, May 2026",
+              "shows": "Shows a price model that labels and orders results."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The 10-K documents the dealer side of the loop (tools showing the smallest cut that reaches the next band and the increases that keep it) and monetization that follows the dealer's inventory, a dealer-paid model at the scale its 2025 figures show.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Next Best Deal Rating; Maximize Margin; PriceVantage; subscriptions priced by 'a dealer's inventory size and region'; Restricted Listings with 'capped anonymous leads and connections'; 2025 revenue $907.0 million; 34,409 paying dealers; QARSD $7,938 (US, Q4).",
+              "source": "CarGurus 10-K, 2026",
+              "shows": "Shows dealers being shown how to price to the bands, and stock-scaled billing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The consumer-facing ratings.",
+            "introduces": "Their dealer-facing side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A3"
+            ],
+            "how": "Shows dealer tools closing the loop."
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "CarGurus also records the retreat that bounds the case: it wound down CarOffer, its digital wholesale business, in 2025 to focus on analytics rather than facilitating transactions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "51% of CarOffer acquired January 2021; wind-down decided 6 August 2025, 'proven less effective in today's more volatile and unpredictable pricing environment'; focus on 'technology and analytics ... rather than facilitating the transactions themselves'; completed by 31 December 2025.",
+              "source": "CarGurus 10-K, 2026",
+              "shows": "Shows a documented retreat from the last step of the transaction ladder."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Price data as an information product.",
+            "introduces": "Price data used to facilitate transactions, and its end.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A4"
+            ],
+            "how": "Shows where the record puts the limit."
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "My reading is that CarGurus shows both ends of price data: a market-value model is a strong information product, while facilitating transactions on volatile prices proved a different business.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The ratings and the wind-down.",
+            "introduces": "What the two together show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "olx-autos",
+      "heading": "OLX Autos: The Contrast",
+      "controlling_idea": "OLX Group went furthest toward owning cars and then exited, which shows that a car-owning business is a retailer whose platform does not carry over to a marketplace.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A4"
+        ],
+        "how": "Bounds the transaction ladder with its furthest documented step and the exit from it."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "CarGurus' retreat from facilitating transactions.",
+        "introduces": "A group that went further, to owning cars, and also retreated.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "OLX Group built OLX Autos into a buy, recondition, sell business that reached half its classifieds revenue, then announced in 2023 that it would exit, and by March 2025 had disposed of or closed all of it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Control of Frontier Car Group in 2019; FY2022 revenue $1.6 billion, up 158%, 'just over half' of classifieds revenue, about 175,000 cars; exit announced 2 March 2023 citing 'higher cost of capital, high inflation and a reversal of pandemic trends' after first-half losses of $206 million; all operations 'disposed of, classified as held for sale or closed' by 31 March 2025.",
+              "source": "TechCrunch, 2021; Fin24, 2023; Prosus results, 2025",
+              "shows": "Shows the furthest documented step up the ladder and its reversal."
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "A business that owns cars is a retailer with an e-commerce front end, needing inspection, reconditioning, logistics, pricing authority and a finance book, so the platform built for one does not carry the other.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "OLX Autos' exit.",
+            "introduces": "Why owning cars is a different business from a marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "across-cases",
+      "heading": "Across the Cases: Price Evaluation as a Control Loop",
+      "controlling_idea": "Compared side by side, the price products of mobile.de, CarGurus and Autotrader form a control loop once a rating feeds ordering and dealer tools, and the loop needs bands, a no-rating state, boundary monitoring and a declared list of consumers.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A3"
+        ],
+        "how": "Draws the control loop from three companies' documents."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The price products met in three company sections.",
+        "introduces": "Their direct comparison.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Three of the four companies publish enough to compare their price products directly, and together they imply a loop in which the model measures a market it helps to set; the valuation method itself is shown only as labeled inference.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "mobile.de, CarGurus and Autotrader compared on consumer output, no-rating path, recalculation, dealer tool, link to ordering, and source and date.",
+              "shows": "Shows which parts of the loop each company documents."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: the loop the public record implies.",
+              "shows": "Shows dealers pricing toward band boundaries and the training distribution shifting."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED: a plausible gradient-boosted or hedonic model per market, served as a band on the listing, with boundaries from a prediction interval.",
+              "shows": "Shows a reference design kept apart from fact."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "My reading is that the loop needs four things: bands rather than point estimates, an explicit no-rating state, monitoring for clustering at band boundaries, and a declared list of every consumer of the rating.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "A model that shapes the market it measures.",
+            "introduces": "What keeps that loop in check.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs the Case Illustrates",
+      "controlling_idea": "Seven options from the record each have conditions under which they are right and fail, and the leaders moved deeper into data and workflow and stepped back from price risk.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Puts the contract, loop and ladder choices side by side."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The price-rating options compared across the cases.",
+        "introduces": "All seven options the record shows, and the direction the leaders took.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "The seven options the record shows are not stages of maturity: the leading automotive marketplaces moved deeper into data and workflow and stepped back from price risk.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven options (publish integration contracts, a change feed with replay, rating as label, rating as ranking feature and dealer tool, subscription scaled by stock, platform-controlled transaction states, holding inventory) with what the record shows, when right and when each fails.",
+              "shows": "Shows each option's conditions and the direction the leaders took."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes the Record Exposes",
+      "controlling_idea": "The record exposes six risks, from feed truncation to new AI intermediaries, each tied to documented evidence.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Turns the record into risks a group can check for."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Options and where each fails.",
+        "introduces": "The risks the record exposes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "The record exposes six risks: feed truncation and duplicate creates, systems counting stock differently, an undeclared consumer of the rating, rollout as architecture, model error as balance-sheet risk, and new AI intermediaries.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in the Record",
+      "controlling_idea": "The automotive lessons transfer to real estate, general classifieds and jobs unevenly, depending on how strong identity, vendor-mediated supply and stock-tied billing are there.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A1"
+        ],
+        "how": "Shows which properties make the lessons hold elsewhere."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Risks inside automotive.",
+        "introduces": "How far the lessons travel to other verticals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "The lessons above hold in other verticals only as far as those verticals share automotive's identity, supply and billing.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five lessons (decoded identity, vendor-mediated writes, price rating as control loop, billing tied to stock, platform state on supplier stock) across real estate, general classifieds and jobs.",
+              "shows": "Shows how far each lesson transfers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence-stops",
+      "heading": "Where the Public Evidence Stops",
+      "controlling_idea": "Nine questions that matter to an architect, from mobile.de's internals to taxonomy licensing, are answered by no public source, and the chapter does not fill them with inference.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Lists the gaps rather than filling them."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the record shows and how far it travels.",
+        "introduces": "What it cannot answer.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "No public source found for this book answers nine questions, and the chapter does not fill them with inference.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine questions (mobile.de's systems, its owner, full-versus-delta XML, valuation methods, whether ratings feed ranking at Autotrader and AutoScout24, Autotrader's current topology, AutoScout24's dealer APIs, Deal Builder's systems, taxonomy licensing) with what is public and what is not.",
+              "shows": "Shows exactly where the record stops."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "From the record the author draws six decision rules: write the dealer contract first, publish change, govern the price rating as ranking, make inventory state the single source for search and billing, move up the transaction ladder only with consent, and treat data APIs as a business line.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "States the thesis's so-what as the author's rules."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The rules follow the order of the record: the supply contract and the change feed first because every later system reads from them, then the price rating, then billing and the transaction ladder, which depend on inventory state, and last the data APIs, a business consequence of the contract."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "What the record shows and where it stops.",
+        "introduces": "What the author takes from it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "What I take from the automotive leaders is six decision rules, each tied to the evidence above.",
+          "function": "transition"
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Write the dealer contract before the importer: publish accountable integrators, idempotent creates, one writer per listing, stable error keys and a notice period, and treat vendor certification as a release gate.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Six rules.",
+            "introduces": "The first.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Publish change, not only state: a change feed with a stated delay and replay window, 24 hours by default.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The write contract.",
+            "introduces": "The read contract.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Govern the price rating as ranking: once it labels or positions a result it decides exposure and needs an owner, band and boundary evaluation, a no-rating path, ranking review and dealer explanations in the label's terms.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Contracts for supply and change.",
+            "introduces": "The rule for the price model.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Make inventory state the single source for search and billing, so that a dealer who pays per car is billed from the same state, with the same timestamps, that search shows.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rating's rule.",
+            "introduces": "The billing rule.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Move up the transaction ladder only with the dealer's consent: reservations need opt-in, configuration and reversal, and owning cars or guaranteeing prices is a different business.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Inventory state as billing state.",
+            "introduces": "Platform state on that inventory.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Treat data APIs as a business line with their own service levels, versioning and owner.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The transaction rule.",
+            "introduces": "The last rule.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "heading": "Comparing the Case to the Book's Patterns and to Veldmark",
+      "controlling_idea": "The automotive record supports the book's supply-contract, enrichment, change-feed, exposure-model, billing and endpoint patterns, and applied to Motorvane it endorses its fixes while warning about the price-rating loop.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4",
+          "A5"
+        ],
+        "how": "Tests the rules against the book's claims and the running example."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The book's patterns first, then Veldmark's seven parallel choices, then one worked price-rating sequence, then a caution about comparing figures; each step narrows from the book to one listing."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The author's rules.",
+        "introduces": "Their test against the book's patterns and Veldmark's choices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "The author's rules rest on the book's patterns, and the automotive record supports all six patterns tested, two of them strongly.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six book patterns (listing-ingestion, normalization-and-enrichment, event-driven-listings, ranking and ml-platform, products-and-entitlements, marketplace-taxonomy) with what the record shows and a verdict.",
+              "shows": "Shows which patterns the record supports and how strongly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The author's rules.",
+            "introduces": "The book's patterns they rest on, as the record tests them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Veldmark's Motorvane has the same supply physics as mobile.de, and the case confirms most of its 2027 choices and sharpens the rest.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven Veldmark choices or events (the truncated-snapshot incident, the late Essen Golf sale, the market-value model as ranking feature, Pro 150 overbilling, opt-in reservations, the lead ledger, Elasticsearch until 2029) with the automotive parallel and what the case suggests.",
+              "source": "Scenario ledger",
+              "shows": "Shows the record applied to the running example."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The book's patterns.",
+            "introduces": "Veldmark's choices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "One worked price-rating sequence on the Essen Golf shows how a planner of price steps and search position would let the model learn from prices it induced, and who in Veldmark should register and monitor it.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The market-value model as a ranking feature.",
+            "introduces": "One listing's sequence of events.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "A3"
+            ],
+            "how": "Makes the loop concrete."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Wednesday 14 April 2027: the Golf listed at €21,900, rated 'good price' against €22,800; Thursday 22 April: cut to €21,400, rescored, up a band, higher in ranking, alerts to 1,180 watchers; Priya Raman's registry (9 November 2027 decision) and Felix Brandt, Motorvane's CTO.",
+              "source": "Scenario ledger",
+              "shows": "Shows how a planner of price steps would lead dealers to price inside band boundaries and who should own the model's monitoring."
+            }
+          ]
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Motorvane's and Autotrader's revenue per dealer use different denominators, currencies and package scopes and should not be ranked against each other.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Comparisons that hold.",
+            "introduces": "One that does not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Nine questions let a reader test their own group's supply contract, change feed, price model, billing, platform-set states and place on the transaction ladder.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Turns the rules into questions for the reader's group."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The rules as tested against Veldmark.",
+        "introduces": "The questions they pose to the reader's own group.",
+        "form": "word",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p63",
+          "form": "list",
+          "controlling_idea": "Nine questions turn the case's lessons into checks on integrator accountability, idempotency, change feeds, model consumers, boundary clustering, billing counts, platform-set states, breaking-change notice and where the group stops on the transaction ladder.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What the Cases Show Together",
+    "synthesis": "The automotive record shows the limit as well as the pattern (the leaders went deeper into data and workflow and stepped back from price risk), and read together the six verdict tables of Part IX sort the book's patterns into three groups: supported by dated evidence (share the uniform layers, contracts at the supply boundary, the search index as a rebuildable read model, models governed by the decision they drive, separability under a change of owner), not contradicted (product convergence last and with its own case, since no public convergence completed), and silent (how any group runs search, ranking or listing services across brands after 2024).",
+    "so_what": "A Chief Architect can cite the public record for the layers to share, the separability to design in and the contracts and model governance to publish, and should treat a product-platform convergence as a bet the record has not shown paying off.",
+    "callback": {
+      "to": "The chapter's hook (a vertical clear about its architecture because it has to be) and the part introduction's closing test: which of the book's patterns the public record supports, which it only fails to contradict, and where it is silent.",
+      "how": "The reader can now say why the automotive leaders were clear (vendors, investors and paying dealers needed it) and answer the part introduction's three-way test for the book's patterns."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Use the toolkit's templates (the feed contract, the listing event specification, the entitlement matrix) to put the record's lessons into the group's own decisions, and date every external fact cited in them."
+    },
+    "hand_off": {
+      "to": "toolkit",
+      "relationship": "conclusion_summary",
+      "carries_over": "Case-automotive's closing: the automotive leaders publish their contracts and their levers, which closes the cases of Part IX, and the toolkit turns the book's recurring decisions, including the feed contract, the listing event specification and the entitlement matrix that that chapter's Veldmark comparison calls for (the truncated snapshot, the late sale and the Pro 150 overbilling), into templates a team can fill in.",
+      "introduces": "Templates, definitions and sources gathered for use."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole case, from the reading rules to the questions.",
+      "introduces": "What the automotive record and Part IX's six cases add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p64",
+        "controlling_idea": "The automotive leaders publish their contracts and levers because they have to, and the same record shows where their responsibility ends: they went deeper into data and workflow and stepped back from price risk.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "A1",
+            "A4"
+          ],
+          "how": "Synthesizes the case and calls back to the hook."
+        }
+      },
+      {
+        "id": "p65",
+        "controlling_idea": "That closes the cases of Part IX, and read together the six verdict tables answer the part introduction's test: the record supports the shared uniform layers, supply contracts, rebuildable indexes, decision-tier model governance and separability, only fails to contradict one pattern (converge product platforms last, as a separate investment case), and is silent on cross-brand product internals after 2024, so a group should cite it for the first and treat convergence as an unproven bet.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The automotive case's own lesson.",
+          "introduces": "What all six cases show together.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "A5"
+          ],
+          "how": "Performs Part IX's closing synthesis, so-what and callback."
+        }
+      },
+      {
+        "id": "p66",
+        "controlling_idea": "The toolkit turns the book's recurring decisions, including the feed contract, the listing event specification and the entitlement matrix that this chapter's Veldmark comparison calls for (the truncated snapshot, the late sale and the Pro 150 overbilling), into templates a team can fill in, and every external fact cited in them should carry its date.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "Lessons the record supports.",
+          "introduces": "The templates that put them into a group's decisions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "A2"
+          ],
+          "how": "Hands off to the toolkit with a course of action."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A company profile, market-share analysis or investment view."
+    },
+    {
+      "topic": "Re-teaching feed contracts, enrichment and provenance, model governance, ranking design, entitlements or the automotive requirement profile.",
+      "covered_in": [
+        "listing-ingestion",
+        "normalization-and-enrichment",
+        "ml-platform",
+        "ranking",
+        "products-and-entitlements",
+        "vertical-requirements"
+      ]
+    },
+    {
+      "topic": "OLX Group beyond OLX Autos, and mobile.de's place in Adevinta.",
+      "covered_in": [
+        "case-olx",
+        "case-adevinta"
+      ]
+    },
+    {
+      "topic": "US dealer-software conglomerates (Cox Automotive, Cars.com) beyond what the comparison needs; they are omitted."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "mobile.de's ownership as of October 2026: the Bundeskartellamt names Oak Germany Buyer GmbH as parent; whether the reported 2025 dual track ended in a sale or listing is not confirmed.",
+    "Full-versus-delta semantics of mobile.de's XML upload (documented on a page not read).",
+    "Whether price ratings feed ranking at Autotrader and AutoScout24.",
+    "The corporate relationship between AutoScout24 and Trader (Canada) is not stated in the migration post; common ownership is widely understood but not verified here.",
+    "mobile.de newsroom pages returned HTTP 403 on re-verification; their facts rest on the automotive brief's verified reads of the same day.",
+    "For the author: 'Nine-tenths of automotive supply arrives through dealer feeds' (failure-patterns callout) is a stated fact, not an interpretation, and has no source or year; it is kept as published (the nearest canonical figures are Motorvane's: 91% of listings from dealers, 88% of those via DMS feeds). Add a source and year, or reword.",
+    "For the author: failure mode 6, 'Autotrader's register of risks names \"AI being used to disintermediate marketplaces\"', names no document or year. It is kept as published; _research/brief-automotive.md (line 91) records the quote as verified in Autotrader's full-year results to 31 March 2026 (FY26 results, 2026), which are already in Sources, so adding '(FY26 results, 2026)' would close it."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized by company, then a cross-case section, because each company's public evidence is of a different kind (API contracts, investor levers, platform posts, a 10-K); a phase structure like the Adevinta case did not fit."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made the price rating the case's central technical thread, since it is the one product all four document and the one where the book's Set-and-Forget AI pattern is visible in public (mobile.de's Preis-Planer linking price to search position)."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Framed Deal Builder and the CarOffer and OLX Autos retreats as one 'transaction ladder' (Figure 1) rather than as separate anecdotes; labeled the reading as the author's."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Avoided Autohaus Ruhrblick's package price in the Veldmark comparison, because chapter 17 and the ledger give different package details; used only the Pro 150 overbilling facts recorded in the ledger. No new canonical facts added."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. The eight success criteria of spec.md were inventories (a timeline replaces the scene, tables delivered, at least two diagrams, 6–10 questions) and were dropped; the journal spec's five acceptance criteria state the outcomes they served (AC-4 covers the fact and inference rules, AC-2 the opening, AC-5 the close of Part IX). No post-level criteria were added.",
+      "rejected": [
+        "Rewriting each inventory item as its own minor criterion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a conclusion section, 'What the Cases Show Together', that performs Part IX's closing (journal spec: closing carried_by case-automotive). The published closing paragraph's three sentences were kept and distributed across p64 to p66; p65 adds the six-case synthesis, the so-what and the return to the part introduction's three-way test. Added a roadmap paragraph (p04) and a lead-in to the vertical-differences table (p49), which had no prose.",
+      "rejected": [
+        "Leaving the closing at the end of 'Questions to Ask', where it hands off without performing the part's closing."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so the limit is the published prose length by check_draft's count (6,876) plus 5%: 7,220."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric verdict: sound with notes. Taken: the chief-architect section's flow relabeled from order_of_importance to prerequisite_order (its rationale is dependency order); p49's controlling idea no longer counts 'five lessons'. Other notes recorded in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 escalated on one spec-fault finding: both flow readers found AutoScout24 out of place between Autotrader UK and CarGurus. The AutoScout24 section was moved to follow mobile.de (no text in it changed), the roadmap now states the company order, and the transitions into autoscout24, autotrader and cargurus were rewritten. Draft fixes in round 1: transaction ladder named in p10; TSP spelled out in the failure-patterns callout; ARPR and Schwacke/derivative glossed in the why-different table; 'n.d.' added to the Wikipedia timeline source (as in Sources and Evidence); AutoScout24's self-description given its source (Tech Blog, 2025, the Trader migration post, per brief-automotive.md); lead-ins added to trade-offs (moved before the table) and failure modes; a sentence saying what each Veldmark comparison table shows; evidence explained in p24 and p41; '(subscriptions only)' added to the €927 figure (ledger: 'Motorvane dealer subscription ARPA ≈ €927'); my own added words trimmed to stay under 7,220.",
+      "rejected": [
+        "Raising the word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 escalated on two corroborated spec-fault order findings. Moved: the Autotrader platform subsection (p33, p34) after Deal Builder, and the verticals section after failure-modes; transitions into p35, p33, failure-modes, verticals and evidence-stops rewritten. Draft fixes: roadmap and AutoScout24's first sentence now say why AutoScout24 comes second; `NO_RATING` named where the mobile.de section introduces the no-rating state; 'all six patterns'; 'forecourts (dealer sites)'; AutoScout24's absorption sentence marked 'in my reading'; the Part IX 'fails to contradict' sentence rewritten; my own added words trimmed again to stay at 7,219.",
+      "rejected": [
+        "Raising the word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (1), 'all four' price-rating claims: the page contradicted itself ('Three of the four companies publish enough' in the cross-case section; no AutoScout24 rating in its section or in _research/brief-automotive.md). All three statements now say three: why-different table 'Price ratings at three of the four (mobile.de Seller API manual, n.d.; CarGurus 10-K, 2026; Autotrader FY26 results, 2026)'; trade-offs table 'mobile.de, CarGurus and Autotrader show ratings (sources in the cross-case table)'; evidence-stops table 'Inputs and outputs at three of the four (none for AutoScout24)'. No new company statement; the sources are those of the cross-case table."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (2): 'Autotrader's register of risks' and 'Nine-tenths of automotive supply arrives through dealer feeds' are stated facts, not interpretation, so they were not labeled 'my reading'; both kept as published and listed for the author in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (3), hand-off: 'the entitlement matrix used in this chapter's comparison' pointed to nothing in the chapter. p66 and conclusion.hand_off.carries_over now say what the chapter actually hands to the toolkit: 'the entitlement matrix that this chapter's Veldmark comparison calls for (the truncated snapshot, the late sale and the Pro 150 overbilling)'. The toolkit's transition_in in journal-spec.json still has the old wording; the replacement is reported to the orchestrator as a journal-spec edit (journal-spec.json not edited)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (4)-(6), draft faults blocked by the word limit: length.max_words raised from 7,220 to 7,550 (+4.6%, under the 10% allowed). Added: glosses for the Essen Golf ('a dealer's 2021 Volkswagen Golf the book follows', sold 29 April 2027, ledger: 'Sold Thursday 29 April 2027'), Pro 150 ('a 150-car dealer package', ledger: '150 slots'), Tally ('the group entitlement service', ledger), Priya Raman's registry ('the group model registry of Veldmark's head of data and ML', ledger: Head of Data & ML, 9 Nov 2027 ML platform decision); the basis of €927 ('subscriptions only, so not the €360 million total divided by 21,400 dealers'; '(subscriptions only)' kept); Deal Builder explained where first named (KEY POINTS, timeline); transitions at the starts of mobile.de, AutoScout24, Autotrader, CarGurus, failure modes and verticals; p24's trailing clause folded into its first sentence; trade-offs lead no longer reads as contradicting itself; p64's dangling opener and p65's 'six verdict tables' clarified; roadmap names the cross-case sections; the German quote in p14 moved after its English."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (7), the three disputed moves (AutoScout24 second, the Autotrader platform subsection after Deal Builder, verticals after failure modes): the current order is accepted under the author's delegation, 2026-11-12; a bridging sentence was added for each instead of a further move."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Author notes resolved by keeping the published text (rule 8): the Part IX closing's grouping of the six verdict tables (from the journal spec) is accepted under the author's delegation, 2026-11-12; the comparison table's 'Supported' and 'Strongly supported' verdicts kept as published; 'Employee engagement fell from 91% to 72%' kept in the Deal Builder cost paragraph as published (it is in the same results); failure mode 6 kept as published. The flow-rubric notes recorded earlier (p28 merge, p53 terms, repeated 'deeper into data and workflow', thin chapter-level so-what, p02/p06 overlap, CarOffer 'retreat that bounds the case', moving p14) are accepted under the author's delegation, 2026-11-12 as not taken."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 ended ESCALATE (13 pass, 26 fail, 18 major); its items are resolved above and a round-4 draft check follows."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "listing-ingestion, normalization-and-enrichment, event-driven-listings, listing-aggregate, ranking, ml-platform, products-and-entitlements, marketplace-taxonomy, vertical-requirements",
+      "contributed": "Patterns the case tests."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md",
+      "contributed": "Motorvane facts used in the comparison."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-automotive.md, brief-monetization-economics.md, brief-listing-data-ingestion.md, brief-platform-data-ml.md, brief-search-discovery.md, brief-olx.md",
+      "contributed": "Evidence base."
+    },
+    {
+      "kind": "external",
+      "ref": "Autotrader full-year results to March 2026 (PDF text extracted and checked), re-verified 19 October 2026",
+      "contributed": "Levers, Deal Builder, data APIs, AI products."
+    },
+    {
+      "kind": "external",
+      "ref": "mobile.de Seller API and Ad Stream manuals; Bundeskartellamt clearance of 8 October 2026; CarGurus IMV help article; AutoScout24 Trader migration post and careers page; Berlin Buzzwords 2024 abstract; Press Gazette 2013 on Auto Trader's last print edition (re-verified 19 October 2026)",
+      "contributed": "Contracts, ownership, price products, platform history."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: re-verified 11 load-bearing claims (Autotrader FY26, mobile.de manuals, Bundeskartellamt, CarGurus 10-K, Fin24, AutoScout24, Berlin Buzzwords); tightened the Prosus exit wording, expanded WLTP, American spelling, timetoread updated."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,757 → 5,793 prose words; opening now places the case as the last of Part IX and names what it tests; one subheading renamed ('The platform, dated' → 'The platform from 2019 to 2026'); buried points moved to paragraph openings; spec otherwise unchanged."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Trade-offs heading capitalized as in the 45 chapters."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: 'Vertical Differences: How the Lessons Transfer' renamed to the fixed case heading 'Vertical Differences in the Record'; the table under it is unchanged."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 4 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json)."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec revision): reconstructed from the published text; added a roadmap (p04), a vertical-differences lead-in (p49) and a conclusion section performing Part IX's closing (p64 to p66)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (ESCALATE on a spec-fault order finding): AutoScout24 section moved after mobile.de; transitions, roadmap and seven paragraph ideas updated to the revised prose."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (ESCALATE on order): Autotrader platform subsection moved after Deal Builder; verticals moved after failure-modes; transitions and six paragraph ideas updated."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (13 pass, 26 fail). One-word clarity fix in p65 after the round; remaining failures listed in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Auto-resolved the round-3 escalation under the author's delegation: 'all four' to 'three of the four', hand-off reworded, max_words 7,220 to 7,550, glosses and transitions added, open questions reduced to evidence gaps and two unsourced statements."
+    }
+  ],
+  "length": {
+    "max_words": 7550
+  }
+}

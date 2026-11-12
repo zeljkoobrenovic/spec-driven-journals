@@ -1,0 +1,477 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-6",
+  "journal": "listing-systems-architecture",
+  "part": "part-6",
+  "title": "Part VI — MONEY: Conversion and Monetization",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-6-intro/index.md) and its former spec.md (accepted 2026-10-21), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part VI's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its three supporting claims are written here from the part's thesis and flow. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's claim in three bullets and the IN THIS PART callout names the five chapter subjects in reading order. Units added to the published page to meet the contract, in the shape the Part II to V introductions now share: a roadmap paragraph (p03) giving the reading order and the reason for it, a lead-in to the chapter table (p04), and a closing paragraph under 'Where to begin' (p07) with synthesis, callback and hand-off, grown from the published last line of the Veldmark section.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part VI's argument: conversion and monetization are one pipeline with a conflict built in; contact needs a conversation and a lead as separate objects; the unit of charge chooses the architecture and every model spends liquidity; what was sold must be proved delivered.",
+        "The five chapters in reading order and the question each answers, and the Veldmark cases and 2027 decisions they follow."
+      ],
+      "can_do": [
+        "Pick the Part VI chapter that answers the money problem in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Chief architects, monetization and commercial-platform leads, and product and engineering directors who decide what a listing marketplace sells, how it is delivered and how it is billed (the journal's readers), who have read Part V and are about to start Part VI, or who arrive with a money problem in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; how to make and defend an architecture decision; what a ledger and an invoice are.",
+        "Part I's liquidity and match rate (buyers finding the right listing and making contact), Part IV's ranking with its relevance floor, and Part V's trust-and-safety platform, message controls, DAC7 perimeter and trader records (liquidity-and-network-effects, part-4, part-5, marketplace-regulation).",
+        "The fifteen named failure patterns, among them Fast Mail for Fraudsters, Multiplier Creep and Billing by Guesswork (where-listing-systems-go-wrong).",
+        "Veldmark in outline: a fictional group of four brands (Tradeyard, Motorvane, Hearthly, Keybridge) and a group ad unit, Ingrid Halvorsen its Group Chief Architect, the architecture advice forum, Tradeyard Safe Deal as its in-platform payment, and the recurring examples, among them Femke's Rotterdam city bike and the Essen Volkswagen Golf (meet-veldmark)."
+      ],
+      "does_not_know": [
+        "Conversation versus lead, the message safety gate's verdicts and the lead contract (owned by messaging-and-leads; the KEY POINTS callout glosses a conversation as a private exchange and a lead as a commercial record delivered, counted and billed).",
+        "Unit of charge, system of record per model and guardrail metric (owned by monetization-models; the KEY POINTS callout names the six units and says a guardrail is owned outside the team that books the revenue).",
+        "Entitlement, entitlement ledger and paid effect (owned by products-and-entitlements; the KEY POINTS callout and the Veldmark thread name them, glossing Tally as the group entitlement service).",
+        "Header bidding, ad load and the ad policy layer (owned by advertising-platforms; the page uses 'header bidding' and 'ad load' only in the table's 'Read it when' column).",
+        "Order, payment edge, buyer protection and the transaction ledger (owned by transactions-and-payments; the page says 'in-platform payment, shipping or buyer protection')."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+        "expected": "How to connect buyers and sellers so contacts become deals without a scam channel; when a classifieds marketplace should take part in the transaction and what it must then own; which revenue models fit which marketplace and what each requires; how to architect what a seller can buy, holds and is billed for; how to run advertising beside listings without degrading the experience or breaking privacy law."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given situations the chapter table lists, the reader names the chapter to open.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your dealers' lead counts never match yours; separately, a dealer disputes an invoice you cannot explain; and the ad team changed the header-bidding timeout without a contacts guardrail. Using only this page, which chapter do you open for each?",
+        "expected": "Messaging and leads for the lead counts; products and entitlements for the disputed invoice; advertising platforms for the timeout change."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader can say what Part VI takes from earlier parts and which later part supplies what it needs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: what does this part take from earlier parts of the book, and what does a later part supply to it?",
+        "expected": "From Part V three threads: the message safety gate from the trust-and-safety platform, DAC7 seller reporting that in-platform payments bring into scope, and trader records that feed billing; from Part IV the ranking and its relevance floor, under which paid effects sit. Part VII supplies the plumbing: paid effects and leads travel as events, 'contact' becomes a governed metric, and pricing tests get guardrails."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this part argue, and in what order should its chapters be read?",
+    "claim": "Part VI argues that conversion and monetization are one pipeline with a conflict built in: a classifieds marketplace sells access to attention, and many of its revenue lines earn more when buyers see more pages or paid listings displace relevant ones, so every revenue line needs a record both sides can count, proof that what was sold was delivered, and a guardrail on the match rate it spends; its five chapters are read in the order money arises (the contact and its lead, the deal, the revenue models, the record of what sellers bought), with advertising last because it earns from page views rather than from matches.",
+    "disputed_by": "The common practice of treating each revenue line (chat, payments, visibility products, packages, ads) as a product owned by its own team and judged by its own revenue, so the money chapters are independent topics a reader may consult in any order.",
+    "so_what": "A reader who accepts it reads messaging first, or opens the one chapter that answers the money problem in front of them, and judges any paid product by its unit of charge, the liquidity it spends and how its delivery would be proved, not by its business case alone.",
+    "how_why": "The lead defined in messaging is what monetization prices and products-and-entitlements bills; the transaction follows the contact into the deal; the entitlement ledger records what every model sold; advertising reuses those records and the contacts guardrail. Veldmark's 2027 decisions follow the same order: one conversation service and lead contract, three monetization proposals, the transaction platform funded first, Veldmark Ads rules with contacts per session as the guardrail, and Tally after 1,140 Motorvane dealers were overbilled.",
+    "supporting_claims": [
+      {
+        "id": "PVI-1",
+        "claim": "The five chapters follow money in the order it arises, from the contact to the record of what sellers bought, with advertising last, and each is the chapter to open first for a recognizable symptom."
+      },
+      {
+        "id": "PVI-2",
+        "claim": "The money pipeline sits between the book's other parts: it takes the message safety gate, the DAC7 perimeter and trader records from Part V and the relevance floor from Part IV, and needs Part VII's events, governed metric and guardrailed tests."
+      },
+      {
+        "id": "PVI-3",
+        "claim": "Veldmark meets the money pipeline with €1.31 billion of revenue sold through four catalogs and a group ad unit, and answers with five 2027 decisions that the chapters design."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states that conversion and monetization are one pipeline with a conflict built in, gives the reading order of the five chapters, and frames them with Veldmark's revenue, the city bike and the Essen Golf, and five 2027 decisions.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "p03 and the chapter table in p04: the five chapters in the order money arises, each pricing or recording what the one before produced"
+      }
+    ],
+    "rationale": "The page opens where Part V left off (contact made safe) and on what a classifieds site sells (access to attention), states the part's claim (one pipeline with a conflict built in), then gives the reading order with the reason for it and narrows to one row per chapter with the symptom that sends a reader there. It widens once to place the pipeline in the book, shows Veldmark's revenue and five 2027 decisions, and ends with a short synthesis, the part's test and the hand-off to the first chapter. The order is given before the table because the rows read as a sequence only once the reader knows that each chapter prices or records what the one before produced; the connection section follows the table because it says what the chapters take from Parts IV and V and need from Part VII; the Veldmark section follows because its decisions are what the chapters design; the conclusion comes last and holds no new material. Put Veldmark first and its decisions arrive before the reader knows which chapter designs each; put the connection first and it names the safety gate, DAC7 and the relevance floor before the reader has met the chapters that use them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Part V made contact between strangers safe enough to happen. A classifieds site usually steps aside before the sale, so it charges for access to attention: the right to list, a better position, a package of slots, a lead, an advertisement."
+    },
+    "bridge": {
+      "from_reader_world": "Part V's trust platform, which made contact between strangers safe enough to happen.",
+      "to_topic": "What the marketplace earns from that contact, and the conflict built into its revenue: core revenue comes when buyers find the right listing quickly, while many revenue lines earn more when buyers see more pages or paid listings displace relevant ones."
+    },
+    "thesis_statement": {
+      "text": "Conversion and monetization are one pipeline with a conflict built in; each revenue line sells attention while its cost to the match rate is measured and capped.",
+      "placement": "KEY POINTS callout; paragraph p02 (bold phrase)"
+    },
+    "roadmap": {
+      "placement": "IN THIS PART callout; paragraph p03",
+      "promises": [
+        {
+          "promise": "Five chapters in the order money arises: first the contact, whose lead later chapters price and bill; then the payment that closes the deal; then the revenue models and the record of what sellers bought; and advertising last, because it earns from page views rather than matches; a table says when to open each.",
+          "kept_in": [
+            "chapters"
+          ]
+        },
+        {
+          "promise": "After the table, a section placing the part between Parts IV, V and VII, and the Veldmark thread showing the decisions the chapters design.",
+          "kept_in": [
+            "connects",
+            "veldmark"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part V made contact between strangers safe enough to happen, and Part VI turns to what the marketplace earns from it: a classifieds site usually steps aside before the sale, so it charges for access to attention.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The things a classifieds site sells: the right to list, a better position, a package of slots, a lead, an advertisement.",
+            "shows": "Every one of them is access to buyers' attention, not a share of the sale, which is where the conflict in p02 comes from."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The part's claim is that conversion and monetization are one pipeline with a conflict built in: core revenue comes when buyers find the right listing quickly, many revenue lines earn more when buyers see more pages or paid listings displace relevant ones, and the chapters design each revenue line to sell attention while measuring and capping what it costs the match rate.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: a pipeline in which attention becomes contacts and then revenue, with paid products feeding in through capped valves and a match-rate gauge below.",
+            "shows": "Every paid product sells attention, so each is capped and measured against what it costs the match rate."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Charging for access to attention.",
+          "introduces": "The conflict that creates and the part's answer: one pipeline whose revenue lines are measured and capped against the match rate.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapters follow money in the order it arises: the contact first, because later chapters price and bill its lead, then the payment that closes the deal, the revenue models and the record of what sellers bought, and advertising last, because it earns from page views rather than matches; a table says when to open each chapter, a section places the part between Parts IV, V and VII, and the Veldmark thread shows the decisions the chapters design.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapters that design each revenue line.",
+          "introduces": "The order in which they are read, and why.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters answers one question and is the one to open first for a recognizable symptom.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "PVI-1"
+        ],
+        "how": "Lists the chapters in reading order with the question each answers and the symptom that sends a reader to it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The five chapters in the order money arises.",
+        "introduces": "One row per chapter: its question and when to open it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Each row of the table gives a chapter's question and the symptom that should send a reader to that chapter.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five rows in reading order: messaging-and-leads (scams close in your chat, or dealers' lead counts never match yours), transactions-and-payments (adding in-platform payment, shipping or buyer protection, or finance cannot match refunds and payouts to orders at month-end), monetization-models (a new revenue model is proposed, or price rises meet professional pushback), products-and-entitlements (a price change needs a release, or a dealer disputes an invoice you cannot explain), advertising-platforms (ad load, header bidding or consent changes are made without a contacts guardrail).",
+              "shows": "The reader can go from the money problem in front of them to the chapter that answers it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connects",
+      "heading": "How this part connects",
+      "controlling_idea": "The money pipeline takes three threads from Part V and the relevance floor from Part IV, and needs Part VII's plumbing.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "PVI-2"
+        ],
+        "how": "Says what the pipeline inherits from earlier parts, what a later part supplies and where the payments depth lives."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The five chapters of the pipeline.",
+        "introduces": "Where the pipeline sits in the book: what it takes from Parts IV and V and what Part VII supplies.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Part V hands this part three threads (the message safety gate, DAC7 seller reporting brought into scope by in-platform payments, trader records that feed billing), paid effects sit under Part IV's relevance floor, Part VII supplies the plumbing (events, a governed contact metric, guardrailed pricing tests), and the sibling book holds the payments and ledger depth behind Safe Deal.",
+          "function": "context"
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "The Veldmark thread",
+      "controlling_idea": "Veldmark sells through four separate catalogs and a group ad unit, and Ingrid Halvorsen's team answers with five 2027 decisions that the chapters design.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "PVI-3"
+        ],
+        "how": "Shows the group's starting point, the two recurring cases and the decision each chapter designs."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The pipeline and the parts around it.",
+        "introduces": "Veldmark's revenue, its two recurring money cases and its five 2027 decisions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Veldmark (fictional) earned €1.31 billion in 2026 through four separate product catalogs and a group ad unit; Femke's city bike and the Essen Golf's leads carry the thread, and Ingrid Halvorsen's team and Olivier Petit (VP Monetization) take one 2027 decision per chapter, listed in chapter order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€1.31 billion of 2026 revenue sold through four product catalogs and a group ad unit; Femke's Rotterdam city bike sold for €225 through Tradeyard Safe Deal; a Volkswagen Golf in Essen with 23 raw leads (19 once repeat contacts are merged). Decisions, in chapter order: one group conversation service with a message safety gate (May 2027), live for Tradeyard NL and BE in November 2027, and a lead event contract with a stable lead ID in Q1 2028 (messaging-and-leads); a transaction platform funded before any Safe Deal expansion (September 2027: Safe Deal Portugal approved for Q3 2028, Motorvane private-car 'secure handover' left at design study, protected rental deposits in Spain declined) (transactions-and-payments); three monetization proposals at the advice forum in May 2027 (Top listing price rise approved, Motorvane per-lead 'lead ledger' counted but not billed, Hearthly commission pilot for 2028) (monetization-models); Tally, the group entitlement service, designed in October 2027 after an audit found 1,140 Motorvane dealers overbilled for cars never published (products-and-entitlements); Veldmark Ads rules (July 2027: contacts per session as the guardrail for ad changes, at most three paid positions in the first ten rows on Tradeyard Poland from Q1 2028) (advertising-platforms).",
+              "source": "_research/scenario-ledger.md (2026 figures and brand revenue rows; 'Four of everything'; Olivier Petit row (VP Monetization); recurring example 1 and the [editor] Essen Golf line; messaging-and-leads contact path; monetization-models proposals; advertising-platforms Jul 2027 decisions; transactions-and-payments advice forum 22 Sep 2027; products-and-entitlements overbilling and Tally); consistency-issues.md item 11",
+              "shows": "Each chapter's design answers one Veldmark decision, listed in the chapters' order ('per chapter'); the Tally bullet shows what selling through separate catalogs without one record of what was sold cost (1,140 dealers overbilled)."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to begin",
+    "synthesis": "Read together, the chapters give every revenue line a record both sides can count, proof of delivery and a guardrail on the match rate.",
+    "so_what": "That is how the marketplace sells attention without selling out its liquidity, and how a reader can answer the part's test for any paid product.",
+    "callback": {
+      "to": "The opening (p01): a classifieds site charges for access to attention.",
+      "how": "The closing paragraph says how that attention can be sold without selling out the liquidity the marketplace lives on."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "By the end of Part VI, say for any paid product which unit it charges for, what liquidity it spends and how you would prove it was delivered; begin with messaging-and-leads."
+    },
+    "hand_off": {
+      "to": "messaging-and-leads",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first key point, that contact is the marketplace's output and needs two objects, a conversation and a lead.",
+      "introduces": "The conversation and the lead as separate objects, the safety gate on the delivery path, and the lead contract with professionals' systems."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five chapters, their place in the book and Veldmark's decisions.",
+      "introduces": "What the five chapters give every revenue line together, the part's test, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p07",
+        "controlling_idea": "Read together, the chapters give every revenue line a record both sides can count, proof of delivery and a guardrail on the match rate, so the marketplace sells attention without selling out its liquidity and a reader can say, for any paid product, which unit it charges for, what liquidity it spends and how its delivery would be proved; a reader begins with messaging-and-leads.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-teaching any chapter's content; defining lead, VAS, entitlement or ad stack beyond one clause; the chapters own them and the page points to them.",
+      "covered_in": [
+        "messaging-and-leads",
+        "transactions-and-payments",
+        "monetization-models",
+        "products-and-entitlements",
+        "advertising-platforms"
+      ]
+    },
+    {
+      "topic": "Payments and ledger depth behind Safe Deal.",
+      "covered_in": [
+        "payments-fundamentals"
+      ]
+    },
+    {
+      "topic": "External factual claims; the page cites no company facts and needs no sources."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled on part-2 (callout set, chapter table, connections, Veldmark thread, hand-off) so all part intros look alike."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Failure patterns limited to the three strongest for the part; Vanity Liquidity left to the chapters."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "The Veldmark thread lists decisions only; figures stay in the chapters, except the €1.31 billion group revenue and the overbilling count that motivate the part."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Chapter 29 row and the Veldmark thread updated from the written transactions-and-payments chapter (former open question, resolved)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, argument, chapter-table, connection, Veldmark-facts, hand-off and word-count criteria were inventories of contents or format and are dropped (format stays governed by the style guide; Veldmark facts by the ledger; the hand-off is now conclusion.hand_off; the word count is length.max_words). They are replaced by the journal spec's AC-1 to AC-3 and one added minor criterion, AC-4 (what the part takes from earlier parts and what Part VII supplies), which tests the connection section.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims PVI-1 to PVI-3 written here, since the journal spec's entry for this post has none: the question is the entry's question; the claim condenses the part thesis to what this page argues (one pipeline with a conflict built in, and the reading order). For the author to confirm.",
+      "rejected": [
+        "Copying the part thesis whole, which this page summarizes but does not argue."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: max_words 1,000 by check_draft's count, as for the Part II to V introductions (the old spec's 500–800 words was prose without callouts). The published page counted 914 by it."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units added so the page carries the part opening, in the shape the Part II to V introductions share: a roadmap paragraph (p03) giving the reading order and the reason for it; a lead-in to the chapter table (p04); and a closing paragraph under a new 'Where to begin' heading (p07) with synthesis, callback and hand-off, grown from the published 'By the end of Part VI… Begin with [[messaging-and-leads]].' To fit 1,000 words with no published fact, name or link cut, p02's 'The argument of this part is that' became 'This part argues that' (Part V's wording). For the author to confirm.",
+      "rejected": [
+        "Keeping the part's test and the hand-off as the last line of the Veldmark section, which leaves the page without a conclusion.",
+        "Cutting the IN THIS PART chapter list to pay for the roadmap."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric: pass on all four questions, with minor notes (open_questions). Flow rubric: sound with notes. Taken: p03 said advertising comes last 'because it sells attention rather than matches', which clashed with p01 (the whole site sells attention); it now says advertising 'earns from page views rather than matches' (the journal flow's 'paid for attention rather than matches'), and the roadmap's last sentence names 'Veldmark's decisions'. The order is unchanged, so no transition_in was rewritten.",
+      "rejected": [
+        "Moving the record and proof of delivery into p02 (no words left; open_questions).",
+        "Swapping the connection and Veldmark sections (house shape; open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1: ESCALATE (pass 34, fail 5; one spec fault). Spec fault, corroborated by both flow readers: p06's evidence listed the Veldmark decisions in date order, so the transaction platform (chapter 2) came fourth and Veldmark Ads (chapter 5) third. Changed under the brief's rule for spec faults (paragraph idea and evidence only; intent, thesis, role and criteria unchanged): p06 lists one decision per chapter in chapter order; each bullet keeps its date, so no fact changed. Draft faults revised: the roadmap (p03) says 'the contact and its lead' and 'the payment' instead of 'the deal' (both flow readers re-read it); Olivier Petit glossed as VP Monetization (ledger people table); the Veldmark lead-in says the decisions come 'per chapter'. To stay within 1,000 words: 'comes from' dropped in p05, 'Chapters follow the money' in p03, and 'you should be able to say' became 'you can say' in p07. For the author to confirm.",
+      "rejected": [
+        "Raising the word limit.",
+        "Changing the thesis how_why, which says the decisions 'follow the same order' as the chapters; it is true of the page after the reorder and the thesis is not changed in this pass."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2: REVISE (pass 34, fail 5; three corroborated flow failures, all fault draft). Revised: p05 lists Part V's three threads as parallel noun phrases ('DAC7 seller reporting for in-platform payments', 'trader records that feed billing'; the round-1 cut of 'comes from' had broken the parallel) and names Safe Deal as 'Tradeyard Safe Deal' and the sibling book as 'the sibling finance book'; p06 says 'a Volkswagen Golf in Essen' for 'the Essen Golf' (same ledger case, recurring example 2). To stay within 1,000 words: 'the fictional marketplace group' became 'the fictional group' (Part III's wording), and p07 now opens 'The chapters give' and says 'so attention is sold without selling out liquidity'. No figure, date, name or link changed. Minor findings ('the part's links' vague; 'insertion' ambiguous in KEY POINTS) not fixed: no words left (open_questions).",
+      "rejected": [
+        "Moving the payments-fundamentals sentence after the Veldmark thread, which would put body material in the conclusion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3: ESCALATE (pass 35, fail 2, both on p03, corroborated by both flow readers). No fourth round and no edit to index.md after round 3, so check-report.json matches the draft; this spec edit (open_questions and this entry only) makes the report stale. See open_questions for the two failures; the author decides."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalations resolved under the author's delegation ('auto resolve all ESCALATE topics'). (1) Round-3 draft fault in p03 (no reason for the payment's position): max_words raised from 1,000 to 1,100 (rule: up to 10% to clear a draft fault blocked by the limit) and the roadmap sentence rewritten as 'first the contact, whose lead later chapters price and bill; then the payment that closes the deal; then ...; and advertising last, because ...'. (2) Round-3 spec fault (empty signpost 'A table, the part's links and Veldmark's decisions follow.'): kept the second roadmap promise and gave each part its use: 'A table says when to open each chapter, a section places the part between Parts IV, V and VII, and the Veldmark thread shows the decisions these chapters design.' (also clears the round-2 minor that 'the part's links' read as hyperlinks); p03 controlling idea and roadmap promises updated to match. (3) Published wording trimmed in earlier passes restored: 'The argument of this part is that' (p02), 'the fictional marketplace group' (Veldmark thread), 'you should be able to say' (p07). (4) KEY POINTS bullet 3 glosses 'insertion' as 'a paid listing going live' (round-2 minor). (5) The thesis and supporting claims PVI-1 to PVI-3 written here, the units added in the conversion (p03, p04, p07), the round-1 and round-2 wording trims of agent-written text, and AC-4: accepted under the author's delegation, 2026-11-12. Draft now 1,045 words by check_draft's count.",
+      "rejected": [
+        "Dropping the second roadmap promise (the validator requires every section to be promised).",
+        "Cutting published text to make room."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Remaining rubric and minor notes closed by keeping the published text (rule for ambiguous items): no supporting claim added for the conflict itself (would need a body section the page lacks; thesis rubric passed); record and proof not moved into p02 (KEY POINTS carries them); connection and Veldmark sections not swapped (house shape of the Part II to V introductions); the transactions chapter's place left as the roadmap now states it ('the payment that closes the deal'); round-3 single-reader minors (liquidity/match rate, Femke/Golf sentence length, 'audience' as a unit, decision vs launch dates, Poland cap under Ads, Part IV relevance floor) left as published. accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-6 and its post entry part-6; the entries for marketplace-regulation and messaging-and-leads)",
+      "contributed": "Intent outcome, AC-1 to AC-3 and role (post entry); the part's opening (hook, bridge, roadmap), thesis and flow; the previous chapter's hand-off and the first chapter's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "config.yaml, PLAN.md (contracts 28–32), and the KEY POINTS and lead paragraphs of messaging-and-leads, transactions-and-payments, monetization-models, products-and-entitlements and advertising-platforms",
+      "contributed": "The chapters summarized, their questions and the symptoms that send a reader to them."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Veldmark figure and date."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/part-6-intro/spec.md (accepted 2026-10-21, removed 2026-11-12)",
+      "contributed": "Non-goals, decision log, sources and changelog carried over."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: max_words 1,100; p03 roadmap gives the payment's reason and what each later section gives; published wording restored in p02, the Veldmark thread and p07; 'insertion' glossed in KEY POINTS. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); roadmap paragraph p03, table lead-in p04, closing 'Where to begin' p07; Veldmark decisions in chapter order; draft-check revisions of rounds 1 and 2. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 742 → 746 prose words; two sentences tightened (the part argument now says what the chapters design; the Part V threads read as one list); no heading, section or fact changes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 1 inline illustration (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: chapter 29 row rewritten from the written chapter, Safe Deal transaction-platform decision added to the Veldmark thread, Golf leads labeled raw versus merged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 1100
+  }
+}

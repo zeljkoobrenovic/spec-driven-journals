@@ -1,0 +1,482 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-3",
+  "journal": "listing-systems-architecture",
+  "part": "part-3",
+  "title": "Part III — SUPPLY: Getting Inventory In",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-3-intro/index.md) and its former spec.md (accepted 2026-10-21), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part III's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its three supporting claims are written here from the part's thesis and flow. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's claim in three bullets. Following the Part II intro's check, the Veldmark thread is a body section and the conclusion has its own heading. Units added to or changed on the published page to meet the contract: the roadmap sentences in p02, the lead-in to the chapter table (p03), and the closing paragraph (p06, grown from 'Begin with [[listing-ingestion]].' and taking the Part IV sentence from the connection paragraph).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part III's argument: supply is one chain, not five features, with a contract per door, provenance on every value, entities behind duplicates, and a publication path whose removal side matters more.",
+        "The five chapters in reading order and the question each answers, and the Veldmark incidents and decisions they follow in 2027."
+      ],
+      "can_do": [
+        "Pick the Part III chapter that answers the supply problem in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects, principal engineers and leads for ingestion, catalog, publication, partner integration or professional products (the journal's readers) who have read Part II and are about to start Part III, or who arrive with a supply problem in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; how to make and defend an architecture decision; what idempotency means for a write.",
+        "Part II's listing model: a small aggregate referencing governed categories, attributes, media, places and seller accounts by ID; compiled attribute schemas; organizations, branches and integration principals (part-2, attribute-schemas, sellers-and-accounts).",
+        "Part I's liquidity metrics, among them time to first contact, and what a ghost listing is (liquidity-and-network-effects, where-listing-systems-go-wrong).",
+        "The fifteen named failure patterns, among them Feed Roulette, Seeing Double and Ghost Inventory (where-listing-systems-go-wrong).",
+        "Veldmark in outline: a fictional group of four brands (Tradeyard, Motorvane, Hearthly, Keybridge), Ingrid Halvorsen its Group Chief Architect, and the recurring examples (the Essen Volkswagen Golf, the Lyon apartment) (meet-veldmark); the page still glosses Keybridge where its data matters."
+      ],
+      "does_not_know": [
+        "Feed contract, snapshot versus delta, mass-change guard (owned by listing-ingestion; the KEY POINTS callout says only that a contract states what it means when a listing is missing from a feed).",
+        "Provenance, canonical value and replayable enrichment (owned by normalization-and-enrichment; the KEY POINTS callout and p02 use 'recorded provenance' in the plain sense of where a value came from).",
+        "Entity and cluster identifier (owned by entity-resolution; the KEY POINTS callout glosses an entity as the one flat or car behind several listings and avoids 'cluster identifier').",
+        "Freshness SLA, SLA card and stage budget (owned by publication-pipeline; the page says only 'an SLA card with a time budget per stage').",
+        "Dealer Hub, the lead ledger and neutrality controls (owned by professional-seller-tooling; the page says 'Motorvane's dealer portal')."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+        "expected": "How a marketplace accepts supply through forms, APIs and feeds under contracts; how heterogeneous input becomes consistent, enriched listings with recorded sources; how several listings of one thing are recognized and what is shown; what happens between 'publish' and searchable, how fast, and how listings are taken down; what professional sellers need and how their tooling is built."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a situation the chapter table lists, the reader names the chapter to open.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A partner's bad file unpublished thousands of listings overnight, and separately dealers dispute your lead counts. Using only this page, which chapter do you open for each?",
+        "expected": "Listing ingestion for the bad file; professional seller tooling for the disputed lead counts."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader can say what Part III takes from earlier parts and which later part reads its result.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: what does this part take from Parts I and II, and which later part depends on what it delivers?",
+        "expected": "From Part II, the attribute schemas ingestion validates against, the listing aggregate it writes commands to and the seller accounts it attaches records to; from Part I, the liquidity metrics that set its targets (time to first contact sets the publication budget, ghost rates the removal guarantee). Part IV's search, alerts and recommendations depend on how fresh, deduplicated and trustworthy the supply is; trust and safety (Part V) owns the moderation gate inside the publication pipeline."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this part argue, and in what order should its chapters be read?",
+    "claim": "Part III argues that supply is one chain, not five features: every door writes through one path under its own contract, every value keeps its original and its recorded source, listings of the same thing are recognized as one, and publication is a decision followed by a propagation whose removal side matters more; its five chapters take the links in the order a record meets them and end with professional tooling, where the professionals who supply most of the inventory check the chain's output against their own systems.",
+    "disputed_by": "The common practice of treating each door, the deduplication job, the index and the pro dashboard as separate features owned by the teams that built them, so the supply chapters are a set of independent topics a reader may consult in any order.",
+    "so_what": "A reader who accepts it reads ingestion first, or opens the one chapter that answers the supply problem in front of them, and expects every later part (search, alerts, recommendations) to inherit whatever weakness a link of the chain leaves.",
+    "how_why": "Normalization works only on records ingestion accepted; entity resolution compares the canonical values normalization produces; the publication pipeline budgets stages the reader has by then met; and professional tooling reconciles leads from listings already published, which is why it comes last. Veldmark meets each link first as an incident: a truncated file that unpublished 38,400 Motorvane listings, a six-minute baseline that ignored held listings, 23 portal leads against 14 in a dealer's CRM.",
+    "supporting_claims": [
+      {
+        "id": "PIII-1",
+        "claim": "The five chapters take the chain's links in the order a record meets them, and each is the chapter to open first for a recognizable symptom."
+      },
+      {
+        "id": "PIII-2",
+        "claim": "The chain sits between the book's other parts: it consumes Part II's contracts, takes its targets from Part I's liquidity metrics and delivers what Part IV reads."
+      },
+      {
+        "id": "PIII-3",
+        "claim": "Veldmark meets each link first as an incident or a mismatch and answers it with a contract or a design, one per chapter."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states that supply is one chain with a contract, a provenance record and a removal path at every link, the reading order of the five chapters and the Veldmark incidents they answer.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "p02 and the chapter table in p03: the five chapters in the order a record meets the links"
+      }
+    ],
+    "rationale": "The page opens on the problem (supply arriving through many doors, each growing its own idea of a listing), states the part's claim (one chain) together with the order in which the chapters take its links, then narrows to one row per chapter with the symptom that sends a reader there. It then widens once to place the chain in the book, shows Veldmark meeting each link as an incident in chapter order, and ends with a short synthesis that hands off to the first chapter. The professionals' check is stated as the chain's last link, where its output is checked, so that 'five features' and five chapters agree. The order of the chapters is stated before the table because the rows only make sense once the reader knows they follow one record; the connection section follows the table because it says what the chapters take from Parts I and II; the Veldmark section follows the connection because its incidents are the chain's weaknesses in practice, listed in chapter order; the conclusion comes last, holds no new material and carries the forward link to Part IV, which is the chain's so-what. Put Veldmark first and the incidents arrive before the reader knows which link each belongs to; put the connection first and it names contracts and targets before the reader knows which chapters use them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Supply arrives through many doors, at different rhythms, from systems the marketplace does not control, and each door tends to grow its own idea of what a listing is."
+    },
+    "bridge": {
+      "from_reader_world": "Part II's listing model: a small aggregate referencing governed categories, attributes, media, places and accounts.",
+      "to_topic": "That model put under load by supply from forms, partner APIs and bulk feeds the marketplace does not control."
+    },
+    "thesis_statement": {
+      "text": "Supply is one chain, not five features; its last link is the professionals who check its output, and the five chapters take the links in order.",
+      "placement": "KEY POINTS callout; paragraph p02 (bold phrase)"
+    },
+    "roadmap": {
+      "placement": "paragraph p02",
+      "promises": [
+        {
+          "promise": "Five chapters on the chain's five links in order: entering under a contract, normalization and enrichment with recorded provenance, recognition of what is already known, publication and, above all, unpublication within a freshness target, and, as the last link, the professionals who check the output against their own systems; a table says when to open each.",
+          "kept_in": [
+            "chapters"
+          ]
+        },
+        {
+          "promise": "After the table, the part's place in the book and the Veldmark thread.",
+          "kept_in": [
+            "connects",
+            "veldmark"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part II modeled the listing as a small aggregate referencing governed subdomains, and this part puts that model under load: supply arrives through many doors, at different rhythms, from systems the marketplace does not control, and each door tends to grow its own idea of what a listing is.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Many doors, at different rhythms, from systems the marketplace does not control, each growing its own idea of a listing.",
+            "shows": "Without a common chain, the listing model Part II designed is redefined at every door, which is the problem this part answers."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The part's claim is that supply is one chain, not five features: a record enters under a contract, is normalized and enriched with recorded provenance, is recognized when it describes something already known, and is published and, above all, unpublished within a freshness target, and the chain's last link is the professionals who check its output against their own systems; the five chapters take these links in order, and a table, the part's place in the book and the Veldmark thread follow.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: a single conveyor carrying listings from phone, dealer-system and agency doors through contract, provenance, matching and publication stations, with a return path for removal.",
+            "shows": "Every door feeds the same contracted path, and the same path takes listings down again."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The many doors, each growing its own idea of a listing.",
+          "introduces": "The part's answer: one chain, and the chapters as its links in order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters answers one question and is the one to open first for a recognizable symptom.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "PIII-1"
+        ],
+        "how": "Lists the chapters in reading order with the question each answers and the symptom that sends a reader to it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The five chapters in the chain's order.",
+        "introduces": "One row per chapter: its question and when to open it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p03",
+          "controlling_idea": "Each row of the table gives a chapter's question and the symptom that should send a reader to that chapter.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five rows in reading order: listing-ingestion (a partner's bad file can unpublish thousands of listings overnight), normalization-and-enrichment (nobody can tell typed values from inferred ones), entity-resolution (one flat appears three times, or reposts crowd out new supply), publication-pipeline (publication takes minutes, or sold items still appear in alerts), professional-seller-tooling (dealers dispute lead counts, or the group sells software to professionals).",
+              "shows": "The reader can go from the supply problem in front of them to the chapter that answers it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connects",
+      "heading": "How this part connects",
+      "controlling_idea": "The chain consumes Part II's contracts, takes its targets from Part I's liquidity metrics and hosts trust and safety's moderation gate.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "PIII-2"
+        ],
+        "how": "Says which earlier models and metrics the chain uses and which part owns the gate inside it."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The five chapters of the chain.",
+        "introduces": "Where the chain sits in the book: what it consumes from Part II and what Part I sets as its targets.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "This part consumes Part II's contracts (ingestion validates against the attribute schemas, writes commands to the listing aggregate and attaches records to seller accounts), Part I's liquidity metrics set its targets (time to first contact sets the publication budget, ghost rates the removal guarantee), and trust and safety (Part V) owns the moderation gate inside the publication pipeline.",
+          "function": "context"
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "The Veldmark thread",
+      "controlling_idea": "At Veldmark, each link of the chain shows up first as an incident or a mismatch and is answered by a contract or a design, one per chapter.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "PIII-3"
+        ],
+        "how": "Shows each link's weakness and answer at Veldmark, in chapter order."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The chain and the targets that the earlier parts set for it.",
+        "introduces": "Veldmark's supply incidents and answers in this part, one per chapter.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "At Veldmark (fictional) supply problems arrive as incidents before designs, and Ingrid Halvorsen's team answers one per chapter, in chapter order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 8 March 2027 incident at Motorvane, the group's car marketplace (truncated snapshot files unpublished 38,400 listings), answered by Supply Contract v1 in September 2027 (listing-ingestion); the Essen Volkswagen Golf's 31 decoded attributes each given a recorded source (normalization-and-enrichment); the Lyon apartment's three agency listings clustered into one canonical property using only what each listing carries as published to Hearthly, never data from Keybridge, the group's agency software that also feeds rival portals, because agencies fear Veldmark would use their data to favor Hearthly (entity-resolution); the 90-second p95 publication target of Tradeyard, the group's classifieds site, written as an SLA card with a time budget per stage (publication-pipeline); the Golf's 23 leads in Motorvane's dealer portal reconciled against the 14 in the dealer's CRM (professional-seller-tooling).",
+              "source": "_research/scenario-ledger.md (listing-ingestion lines 8 Mar 2027 and Sep 2027; recurring examples 2 and 3; Moderation row and Tradeyard publication time; publication-pipeline SLA card; professional-seller-tooling Golf reconciliation); Keybridge row and 'Keybridge neutrality' line; Tradeyard and Motorvane rows",
+              "shows": "Each link's weakness reached Veldmark as an incident or a disputed number before it became a contract or a design."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to begin",
+    "synthesis": "Read together, the five chapters turn many doors into one chain: a contract per door, a source for every value and a removal that reaches every copy.",
+    "so_what": "Part IV's search, alerts and recommendations are only as fresh, deduplicated and trustworthy as that chain.",
+    "callback": {
+      "to": "The opening (p01): supply arriving through many doors, each growing its own idea of a listing.",
+      "how": "The closing paragraph names what the many doors become when the chapters are read together."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with listing-ingestion and read the chapters in order, or open the chapter the table names for the supply problem in front of you."
+    },
+    "hand_off": {
+      "to": "listing-ingestion",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first link of the chain, 'many doors, one write path, one contract per door', and the 8 March 2027 incident it names.",
+      "introduces": "The four channel types, snapshot and delta semantics, the clauses of a feed contract and the architecture that sends every door through one idempotent write path."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The chain's links, their place in the book and Veldmark's incidents.",
+      "introduces": "What the five chapters amount to together, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p06",
+        "controlling_idea": "Read together, the five chapters turn many doors into one chain (a contract per door, a source for every value, a removal that reaches every copy), and Part IV's search, alerts and recommendations are only as fresh, deduplicated and trustworthy as that chain; a reader begins with listing-ingestion.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-teaching feed contracts, provenance, matching, pipeline budgets or neutrality design; the chapters own them and the page points to them.",
+      "covered_in": [
+        "listing-ingestion",
+        "normalization-and-enrichment",
+        "entity-resolution",
+        "publication-pipeline",
+        "professional-seller-tooling"
+      ]
+    },
+    {
+      "topic": "Search and alerts.",
+      "covered_in": [
+        "part-4"
+      ]
+    },
+    {
+      "topic": "The moderation gate's design.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    },
+    {
+      "topic": "External factual claims; the page cites no company facts and needs no sources."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Structure follows the sibling part-2 intro for consistency; no diagram, to stay within 800 words."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Failure patterns chosen: Feed Roulette, Seeing Double, Ghost Inventory, each the lead pattern of at least one chapter in the part."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, KEY POINTS synthesis, chapter-table, connection, Veldmark-facts, hand-off and word-count criteria were inventories of contents or format and are dropped (format stays governed by the style guide; Veldmark facts by the ledger; the hand-off is now conclusion.hand_off; the word count is length.max_words). They are replaced by the journal spec's AC-1 to AC-3 and one added minor criterion, AC-4 (what the part takes from Parts I and II and which part reads its result), which tests the connection section and the closing.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims PIII-1 to PIII-3 written here, since the journal spec's entry for this post has none: the question is the entry's question; the claim condenses the part thesis to what this page argues (one chain, and the reading order). For the author to confirm.",
+      "rejected": [
+        "Copying the part thesis whole, which this page summarizes but does not argue."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit kept at the old spec's 800, applied to check_draft's count (callouts, prose, table and list). The published page counted 794 by it; the roadmap sentences (p02), table lead-in (p03) and closing (p06) the contract asks for were paid for by cuts: the Part IV sentence moved from p04 to the closing; the WHY ARCHITECTS callout's parenthetical list and the Supply Contract v1 clause list in the Veldmark thread (one envelope, one error catalog, mandatory mass-change guards, brand-local adapters; owned by listing-ingestion) were cut; the Lyon bullet now says 'without using Keybridge's own data'; small wording trims in KEY POINTS, the failure-pattern callout, the Veldmark lead-in and the connection paragraph. No figure, date or name was changed. For the author to confirm.",
+      "rejected": [
+        "Raising the limit to 1,000 as the Part II intro did; the brief keeps the old limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Applied the Part II intro's round-1 spec fault in advance: the Veldmark thread is a body section (supports PIII-3) and the conclusion is one paragraph under a new heading 'Where to begin', so the conclusion holds no body evidence.",
+      "rejected": [
+        "Keeping 'Begin with [[listing-ingestion]].' as the last line of the Veldmark section, which leaves the page without a conclusion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric: pass on all four questions. Flow rubric: sound with notes. Taken: p02 now states that removal matters more than publication ('published and, above all, unpublished'), so the conclusion's 'a removal that reaches every copy' is not new. The order is unchanged, so no transition_in was rewritten.",
+      "rejected": [
+        "Folding the Veldmark incidents into the chapter table as a third column (recorded in open_questions).",
+        "Leading each Veldmark bullet with its chapter's name: no room within 800 words (open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1: REVISE (12 failed, all fault draft; 9 corroborated or deterministic blockers, 2 minor). Revised within the 800-word limit: p02 now says four chapters take the record's links and a fifth covers the professionals' check, and names the table in its roadmap sentence (both flow readers found 'Professionals then check' broke the chain and the meta sentence awkward; the intro reader did not foresee the table); the table lead-in opens 'In that order'; KEY POINTS glosses entity ('the one flat or car behind several listings') and replaces 'cluster identifiers governed as a product contract' with 'stable IDs other systems can rely on', and says 'a time budget per stage'; the Veldmark thread glosses Keybridge (the group's agency software that also feeds rival portals), the SLA card and Dealer Hub. To pay for the glosses: the IN THIS PART callout's list of the five chapter subjects (repeated in p02 and the table), 'not just data quality' in WHY THE BUSINESS CARES, and the bullet clause 'keeps Keybridge's cross-portal report out of Hearthly's reach' were cut. Three callout changes and one removed Veldmark statement, for the author to confirm.",
+      "rejected": [
+        "Raising the word limit.",
+        "Cutting the 6-minute baseline clause (a figure the part's how_why uses)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2: ESCALATE (pass 36, fail 8; one spec fault). Spec fault, corroborated: p02 and the thesis statement set 'one chain, not five features' beside 'four chapters take these links; a fifth covers the professionals', so readers counted four links against five. Changed under the brief's rule for spec faults (paragraph idea only; intent, thesis, role and criteria unchanged): p02's controlling idea, the roadmap promise and the thesis statement now make the professionals' check the chain's last link, as the journal's closing synthesis does ('checked by the professionals'). Draft faults revised: table lead-in names 'the chain's order'; the professional-tooling row says 'you sell software' instead of the undefined 'the group'; Motorvane and Tradeyard glossed at first use; 'this part's targets'; KEY POINTS 'what a missing listing means' and 'checked for every copy' instead of 'absence' and 'audited per consumer'; Ghost Inventory callout 'with evidence for each'. To stay within 800 words: the Dealer Hub name became 'Motorvane's dealer portal', and the clause 'the 6-minute baseline ignored the 6% of listings held for human review' was cut (both readers stumbled on it; the publication-pipeline chapter keeps the figure). For the author to confirm.",
+      "rejected": [
+        "Keeping the four-plus-one framing and adding a sentence to explain it (no words left).",
+        "Raising the word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3: ESCALATE (pass 31, fail 7; five blocking, all fault draft; budget spent). Close, without a fourth round: p02 now says 'The last link is the professionals' check of its output' (both readers stumbled on a link that was a group of people) and its roadmap names 'a table of when to open each chapter' (AC-1); the Seeing Double callout reads 'Blocks abusive reposts and clusters legitimate multi-listing' instead of 'Separates abuse… clusters the latter'; the connection paragraph restores 'ghost rates set'. To stay within 800 words the SLA-card gloss is shortened to 'an SLA card with a time budget per stage' and 'without using data' to 'without data'. Remaining points in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: max_words raised from 800 to 1,000 by check_draft's count, as for the Part II introduction (the old 800 was a prose cap without callouts), and the published Veldmark-thread facts the pass had cut to fit 800 restored: Supply Contract v1's four clauses, the published-to-Hearthly-only rule for the Lyon cluster, the 6% held for human review behind the 6-minute baseline, the Dealer Hub name, and keeping Keybridge's cross-portal report out of Hearthly's reach."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'). KEY POINTS: bullet 3 now ends 'Last, the professionals check the result, down to lead counts, against their own systems', so the callout names the chain's last link without a fourth bullet (exactly-three rule kept).",
+      "rejected": [
+        "A fourth KEY POINTS bullet (house rule of exactly three)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Lyon bullet now says why Keybridge data is not used: 'agencies fear Veldmark would use their data to favor Hearthly' (ledger 'Keybridge neutrality', item 7; Mar 2027 neutrality decision). Spec p05 evidence updated to match."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Callout cuts listed in open_questions restored to the published wording (rule: published callout sentences are never cut): IN THIS PART's list of the five chapter subjects, 'not just data quality' in WHY THE BUSINESS CARES, and WHY ARCHITECTS SHOULD CARE's parenthetical. The callout rewordings made on reader findings (KEY POINTS glosses 'the one flat or car behind several listings', 'stable IDs other systems can rely on', 'a time budget per stage', 'checked for every copy'; Seeing Double and Ghost Inventory rewordings) accepted under the author's delegation, 2026-11-12. Minor: 'what a missing listing means' reworded to 'what it means when a listing is missing from a feed'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric note (a third table column or naming each Veldmark bullet's chapter) not taken; the published Veldmark list is kept, accepted under the author's delegation, 2026-11-12. Thesis-rubric minor notes (length, 'removal matters more' unqualified, PIII-2 not in the claim) and the large_to_small flow label: thesis and label kept as written, accepted under the author's delegation, 2026-11-12. The agent-written thesis and supporting claims PIII-1 to PIII-3 and the added minor criterion AC-4 accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-3 and its post entry part-3; the entries for sellers-and-accounts and listing-ingestion)",
+      "contributed": "Intent outcome, AC-1 to AC-3 and role (post entry); the part's opening (hook, bridge, roadmap), thesis and flow; the previous chapter's hand-off and the first chapter's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-ingestion, normalization-and-enrichment, entity-resolution, publication-pipeline, professional-seller-tooling, meet-veldmark",
+      "contributed": "The chapters summarized, in their questions and the symptoms that send a reader to them."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Veldmark figure and date."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/part-3-intro/spec.md (accepted 2026-10-21, removed 2026-11-12)",
+      "contributed": "Non-goals, decision log, sources and changelog carried over."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored cut Veldmark-thread facts and raised max_words to 1,000. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); roadmap sentences in p02, table lead-in (p03), Veldmark thread as a body section and a closing 'Where to begin' (p06); cuts to stay within 800 words. (AI-mediated session) After draft check round 1: p02 roadmap, table lead-in, KEY POINTS glosses, Veldmark glosses; cuts listed in decision_log. After round 2: professionals' check made the chain's last link (spec fault fixed in p02); glosses for Motorvane, Tradeyard, missing listings and per-copy checks; 6-minute baseline clause and Dealer Hub name cut for length. After round 3: close fixes to p02, the Seeing Double callout and p04; check report stale."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 657 → 657 words; headings unchanged (match sibling part intros); long connections sentence split; meet-veldmark link added to the Veldmark thread to match sibling intros. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 1 inline illustration (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: restored part-1 and part-5 links in the connections section. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "(AI-mediated session) Escalation resolved: KEY POINTS bullet 3 names the professionals' check; Lyon bullet gives the Keybridge neutrality reason; published callout wording restored; open questions closed into decision_log."
+    }
+  ],
+  "length": {
+    "max_words": 1000
+  }
+}

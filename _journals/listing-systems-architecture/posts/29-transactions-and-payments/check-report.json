@@ -1,0 +1,669 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/29-transactions-and-payments/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/29-transactions-and-payments/index.md",
+  "spec_sha": "231417226d315982",
+  "draft_sha": "d140dbb7f8f4c7b4",
+  "run_at": "2026-11-12T22:14:06+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout 1",
+      "summary": "Chapter goals: when and how to architect taking part in the transaction",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout 2",
+      "summary": "Business benefits and full costs of in-platform payment with buyer protection",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout 3",
+      "summary": "Why the order, its money boundaries and reconciliation matter to architects",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout 4",
+      "summary": "Three key points: category gating, licensed partner holds money, protection as liability",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout 5",
+      "summary": "Failure patterns addressed: fraud via fake payment, ghost inventory, forced fit",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Classifieds left the money moment outside the platform, inviting payment fraud",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Horizontals adding payment and protection since 2017 / definitions of the chapter's three terms",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "The chapter's central question and its links to neighbouring chapters and sibling book",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶1",
+      "summary": "Veldmark's forum meets to hear three transaction proposals together",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶2",
+      "summary": "Safe Deal's markets, provider, volumes and revenue",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶3",
+      "summary": "The three proposals: Portugal launch, car payment, protected rental deposit",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶4",
+      "summary": "Unmatched €2.3M clearing balance shows checkout shipped before ledger",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶5",
+      "summary": "Safe Deal is profitable but was run as a bolt-on feature",
+      "matched_spec_paragraph": "p08a"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Proposals and a Clearing Account ¶6",
+      "summary": "The rest of the chapter is the forum's decision framework",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: What Changes When the Platform Takes Part in the Sale ¶1",
+      "summary": "Glossary of transactional terms: order, PSP, KYC, hold/release, protection, disputes, PUDO",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What Changes When the Platform Takes Part in the Sale ¶2",
+      "summary": "Holding funds and bearing protection losses are separate",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What Changes When the Platform Takes Part in the Sale ¶3",
+      "summary": "Order is a separate aggregate from the listing",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "When to Take Part in the Transaction ¶1",
+      "summary": "The pivot pays where four conditions hold together",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "When to Take Part in the Transaction ¶2",
+      "summary": "European horizontals gated payments by category",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "When to Take Part in the Transaction ¶3",
+      "summary": "Transactional revenue and margin dilution / OLX scaling back pay-and-ship",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "When to Take Part in the Transaction ¶4",
+      "summary": "Buyer protection's trust case: turning unrecoverable scams into disputes",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "When to Take Part in the Transaction ¶5",
+      "summary": "Rule of thumb: join the transaction where it removes a sales-blocking fear",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶1",
+      "summary": "Three basic options for who holds the money, provider route is common",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶2",
+      "summary": "How provider marketplace products (Adyen, Stripe Connect) work",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶3",
+      "summary": "Specialist providers and which classifieds groups used them",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶4",
+      "summary": "Holding your own licence, as Vinted did, and its burdens",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶5",
+      "summary": "Staying out of payments entirely and its trade-off",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶6",
+      "summary": "Comparison table framing: five models differing by holder, verifier, loss bearer",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Payment Models: Who Holds the Money ¶7",
+      "summary": "Veldmark chose the provider model and conforms to Adyen",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶1",
+      "summary": "Transaction platform adds six contexts outside the listing service",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶2",
+      "summary": "Order must atomically reserve the listing, with a timeout, to avoid double sales",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶3",
+      "summary": "A completed sale must propagate everywhere; the bike still in alerts",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶4",
+      "summary": "Four state-machine rules: timers, release decisions, reconciliation, post-completion states",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶5",
+      "summary": "Shipping makes the marketplace a logistics integrator, with carrier examples",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶6",
+      "summary": "Shipping context components and tracking timeliness as a reliability need",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶7",
+      "summary": "Shipping changes discovery: distance and fees enter search",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶8",
+      "summary": "Dispute desk as case management with a canonical model across brands",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶9",
+      "summary": "Buyer protection is a liability to provision and price",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶10",
+      "summary": "Every order amount must be reconcilable, plus per-seller balances and aggregates",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: The Transaction Platform ¶11",
+      "summary": "Regulatory switches: DAC7, consumer and platform law, payment regulation",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: Two Safe Deal Orders ¶1",
+      "summary": "Femke's bike sold via pay at pickup",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: Two Safe Deal Orders ¶2",
+      "summary": "Handover code as release event / payee verification and DAC7 exclusion for Femke",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: Two Safe Deal Orders ¶3",
+      "summary": "Fake Safe Deal phishing link and the messaging countermeasure",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: Two Safe Deal Orders ¶4",
+      "summary": "A shipped camera lens order in Belgium",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice: Two Safe Deal Orders ¶5",
+      "summary": "Every step evented and ledgered; why the clearing balance arose",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Architecture Advice Forum's Decisions ¶1",
+      "summary": "Forum applies conditions and architecture to each proposal",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Architecture Advice Forum's Decisions ¶2",
+      "summary": "Portugal approved but waits for the target platform",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Architecture Advice Forum's Decisions ¶3",
+      "summary": "Car payment reduced to a narrow secure-handover study",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Architecture Advice Forum's Decisions ¶4",
+      "summary": "Rental deposits declined as a forced fit; fix upstream instead",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Architecture Advice Forum's Decisions ¶5",
+      "summary": "Transaction platform rebuild funded first with three objectives",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Eight trade-off decisions, each right under some conditions",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Buyer-paid fees protect supply, with fee examples",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Trade-offs ¶3",
+      "summary": "Sharing the platform across countries versus local differences",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Verticals differ in whether and how they go transactional",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Autotrader shows transactional state on dealer inventory must be opt-in",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Failure: checkout ships before the ledger",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "Failure: release by timer only",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Failure: double sale",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Failure: sold item persists as ghost inventory",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Failure: disputes handled by e-mail",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Failure: protected-payment brand used for phishing",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Failure: tax reporting discovered late",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Failure Modes ¶8",
+      "summary": "Failure: accidental provider lock-in",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Failure Modes ¶9",
+      "summary": "Failure: imposing the goods checkout on other verticals",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Four standing group-level decisions prevent these failures",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Decide the pivot per profile in configuration with named owners",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Share the transaction platform only among profiles that use it",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Treat the payment provider as a strategic dependency",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Measure trust and money metrics together",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten design-test questions from the chapter",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "From Transactions to Monetization ¶1",
+      "summary": "Recap: conditions say where, contexts are the cost; forum outcomes explained",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "From Transactions to Monetization ¶2",
+      "summary": "Two questions any transactional proposal must pass",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "From Transactions to Monetization ¶3",
+      "summary": "Payments are one revenue line; hand-off to monetization models",
+      "matched_spec_paragraph": "p69"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 69 prose units' summaries match the controlling ideas of their aligned spec paragraphs in spec order; the five opening callouts match no paragraph (the spec places the thesis and roadmap in them). Trade-offs ¶3's summary omits the inferred-reference-architecture half of p49, which the draft carries only in the INFERENCE callout (see evidence_is_explained).",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Introduction ¶2",
+      "finding": "The outliner marked two ideas, but the spec's controlling idea for p02 joins them (terms with the move; cost with OLX's retreat; release, verification and tax for one order), so the paragraph has one controlling idea as specified.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "When to Take Part in the Transaction ¶3",
+      "finding": "The outliner marked two ideas, but the spec's controlling idea for p15 joins them (terms with the move; cost with OLX's retreat; release, verification and tax for one order), so the paragraph has one controlling idea as specified.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶2",
+      "finding": "The outliner marked two ideas, but the spec's controlling idea for p37 joins them (terms with the move; cost with OLX's retreat; release, verification and tax for one order), so the paragraph has one controlling idea as specified.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to a supporting claim T1-T6 or to the introduction, scene or conclusion functions declared in the spec; none is orphaned.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Trade-offs ¶3 (INFERENCE callout)",
+      "quote": "> **INFERENCE, NOT DOCUMENTED:** The public descriptions of Kleinanzeigen's and Marktplaats' flows fit a common pattern: a licensed provider holds funds; the marketplace owns the offer and acceptance in chat, the buyer-paid fee pricing, label generation and tracking, the release timer and dispute handling.",
+      "finding": "The callout ends the Trade-offs section and no sentence says what it shows for the sharing trade-off. p49's controlling idea includes 'the public record shows the pattern without describing any company's systems', but the prose of ¶3 stops at Adevinta's decentralization and never introduces or interprets the callout, so the reader cannot tell why a reference split of responsibilities appears here (both flow readers found it out of place).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained:others",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Every other table, figure and quotation is introduced or followed by a sentence saying what it shows (Safe Deal 2026 table by ¶5's take-rate reading; conditions table by its lead-in; five-model table by its lead-in and 'Veldmark chose the first row'; Figure 3 by the four rules; both order tables by their analysis paragraphs; eBay, Adevinta, Stripe, Which?, Autotrader quotations by the following sentence).",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "Eight decisions shape a transaction platform, the first two restating the payment models above as choices, and for each one, both options are right under some conditions:",
+      "finding": "Declared: contrast, carrying over the forum's decisions for Veldmark and introducing the general alternatives behind them. The opening picks up the payment models, not the forum's decisions, and expresses no contrast between Veldmark's specific choices and the general alternatives, so the boundary from the Forum's Decisions is unmarked.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "**The checkout ships before the ledger.** The order flow goes live, payouts work, and finance discovers at the first month-end that refunds, partial refunds, label charges and chargebacks cannot be matched.",
+      "finding": "Declared: a contrast sentence at the start of the section, carrying over how the design and its alternatives should be chosen and introducing what goes wrong when they are not. The section opens directly with the first failure label; no sentence expresses the contrast or picks up the preceding sections.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship:others",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in entries (introduction, section openings, paragraph boundaries and the conclusion) express the declared relationship and pick up the declared known information, allowing for subheadings at subsection boundaries.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Payment Models: Who Holds the Money ¶1",
+      "quote": "A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options, which the comparison below splits into five models. In practice, classifieds groups have used the first.",
+      "finding": "Both flow readers stopped at three-versus-five; how three options become five is explained only later under 'Comparing the models', and the specialist providers appear under the first option yet get their own row. The spec's order is fine; the opening sentence can say how the five arise.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 2 (flow-a item 2)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Architecture: The Transaction Platform ¶3",
+      "quote": "Femke's bike, whose order In Practice walks through step by step, is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.",
+      "finding": "Both readers met the bike's outcome (times and the 214-user digest) before the order is introduced, so In Practice repeats a result already told, and 'In Practice' read as a phrase rather than a section name. The spec's p27 prescribes this evidence with these details in the Architecture section, so the difficulty comes from the spec placing the full example ahead of its walkthrough.",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 3 (flow-a item 3)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Architecture: The Transaction Platform ¶4",
+      "quote": "Four design rules follow from the diagram's waiting states (placed, awaiting hand-in or pickup, delivered, disputed).",
+      "finding": "Both readers stopped at this lead-in: one because the rules depend on a diagram the prose does not describe, the other because rules 3 (money and order states reconciled) and 4 (states after completion) do not follow from waiting states. The draft reproduces the spec's controlling idea for p28, which itself claims all four rules follow from the waiting states.",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 4 (flow-a item 4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶2",
+      "quote": "Femke had already been verified as a payee by Adyen before her first Safe Deal payout, which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]]).",
+      "finding": "Both readers were pulled out of the walkthrough: the sentence is about identity design rather than this order, names Veldmark ID without introducing it, and its future tense 'will carry' breaks the March 2027 past-tense timeline. The spec asks only that prior verification makes Femke payable; the tense and the unglossed system name are the draft's.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 6 (flow-a item 5)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶3",
+      "quote": "**A protected-payment brand is the scammer's favorite disguise**, as Femke's Sunday evening showed. At 20:11 on Sunday a \"buyer\" had sent her a link to a fake Safe Deal payment page, on a domain registered that day.",
+      "finding": "After a Monday-to-Tuesday order table, both readers had to re-anchor to Sunday evening; both suggested telling the phishing attempt before the order. The draft signals the jump; the difficulty comes from the spec's order, which places p38 after the order and declares it 'the fake order that preceded it'.",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 7 (flow-a item 6)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "Eight decisions shape a transaction platform, the first two restating the payment models above as choices, and for each one, both options are right under some conditions:",
+      "finding": "Both readers re-read the stacked clauses; 'for each one' can refer to the eight decisions or to the first two. A sentence-level fix in the draft.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 10 (flow-a item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Trade-offs ¶3 (INFERENCE callout)",
+      "quote": "> **INFERENCE, NOT DOCUMENTED:** The public descriptions of Kleinanzeigen's and Marktplaats' flows fit a common pattern: a licensed provider holds funds; the marketplace owns the offer and acceptance in chat, the buyer-paid fee pricing, label generation and tracking, the release timer and dispute handling.",
+      "finding": "Both readers found the reference split of responsibilities out of place after the paragraph on sharing across countries and would move it to Payment Models or the start of Architecture. The spec's p49 places this callout in Trade-offs as its evidence, so the position is the spec's; the draft also does not tie it to the sharing trade-off (see evidence_is_explained).",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 11 (flow-a item 10)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Vertical Differences table",
+      "quote": "Workflow imposed on dealers (the reservation backlash)",
+      "finding": "Both readers did not know which backlash the table meant; it is explained only in the paragraph after the table (Autotrader's Deal Builder). A small forward reference the draft can resolve with a pointer or by naming Autotrader in the cell.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 12 (flow-a item 11)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "The Architecture Advice Forum's Decisions ¶2",
+      "quote": "It waits for the platform work below, because launching a fourth country on the 2024 design would multiply the clearing problem.",
+      "finding": "Flow reader A had to hold Portugal in mind until the prerequisite decision ('funded first') arrived last in the section. The spec orders the platform decision last (p46), so this is the spec's order. Reported by one reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Architecture: The Transaction Platform ¶7",
+      "quote": "Vinted's price list describes its buyer-paid fee as varying with \"item characteristics, order value, order type\" ..., and a fee that varies per item has to be computed on the search and listing read path, not only at checkout.",
+      "finding": "Flow reader A felt the shipping subsection drift into fee display, which belongs to fees and pricing. The spec's p31 puts per-item fee computation in this paragraph. Reported by one reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶1 (order table)",
+      "quote": "Tue 9 Mar, 07:00 | The alert digest assembled at 17:30 on Monday still features the sold bike to 214 users",
+      "finding": "Flow reader B could not reconcile this row with the 14:02 row ('alerts stop') and the Architecture rule that on reservation 'alerts stop notifying': if alerts stopped at 14:02, a digest assembled at 17:30 should not include the bike. The draft does not say why the digest used stale data. Reported by one reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶5",
+      "quote": "Every step produced an event, and every amount has a ledger line",
+      "finding": "Flow reader B could not tell whether the April 2027 lens order ran on the current system or on the target design, since the forum in September 2027 still funds the ledger 'first'. Only Figure 4's caption hints at the target design. Reported by one reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/already_knows",
+      "draft_locus": "In Practice: Two Safe Deal Orders ¶2",
+      "quote": "which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]])",
+      "finding": "Veldmark ID is used as a known system, but it is not on the audience's already_knows list (which names Veldmark's systems such as Yardstick and Safe Deal explicitly) and the chapter never glosses it. Both flow readers reported it as unexplained. (Yardstick and the Essen Golf, also flagged by both readers, are on already_knows and are not failures.)",
+      "fault": "draft",
+      "corroborated_by": "flow-a item 5; flow-b item 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a direct statement of the classifieds bargain and its cost; none of placeholder, restated question, dictionary, dawn of man or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Opens by returning to the bargain, not 'in conclusion'; synthesizes, poses the two questions and hands off; the revenue models named in ¶3 are the declared hand-off, not a new subtopic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "¶1 joins the four conditions and the six contexts as two halves of one decision with the forum outcomes and the clearing balance, which no section states; ¶2 gives the so-what as two questions to put to any proposal.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "¶1 returns explicitly to 'the classifieds bargain this chapter opened with, where the platform finds the buyer and the parties settle the money' and judges it right for some categories and not others.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the sections in order (scene with three proposals and clearing account, terms, when to take part, who holds the money, platform contexts and state machine, two Safe Deal orders, forum decisions, trade-offs, verticals, failure modes, CA view, questions), the three terms, the question and the RECONCILED link, and evidence from named European horizontals, providers, regulation and the fictional Veldmark. It did not name Which? or PSD2 specifically, which is within tolerance for 'kind of evidence'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader put the transaction platform first (order owning availability and timers, shipping, disputes, ledger receiving order and money events, every amount traceable, DAC7 from the ledger), approved the new country on it because all four conditions hold, reduced car payment to a narrow study on price and professional sellers (short hold, flat fee, handover code, payee verification), and declined rental deposits as The Forced Fit with upstream identity checks and messaging warnings. Matches expected.",
+      "severity": "major"
+    }
+  ]
+}

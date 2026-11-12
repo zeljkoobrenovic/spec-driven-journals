@@ -1,0 +1,1830 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "advertising-platforms",
+  "journal": "listing-systems-architecture",
+  "part": "part-6",
+  "title": "Selling Attention: Display, Native and Retail-Media Advertising",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the advertising-platforms entry in journal-spec.json; the conclusion realises Part VI's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part VII's part-level transition_in (re-read at the end of the pass, when Part VII had reached full detail). Units added or split by this conversion: introduction p02/p03 (split) and roadmap p04, concepts p12/p13 (split), one lead-in paragraph each for Trade-offs (p40) and Vertical Differences (p42), and a conclusion widened from one paragraph to three (p52 to p54).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Advertising as three businesses (display and native, sponsored listings, retail media), the components of a marketplace ad stack and who owns each.",
+        "The header-bidding timeout trade-off and page-speed rules for ad slots; why sponsored listings belong inside ranking and the regulatory floor for paid ranking (Omnibus, P2B, DSA Art. 26).",
+        "Consent architecture (TCF, certified CMPs, the EDPB consent-or-pay opinion) and a first-party audience service with consent checks, exclusions, minimum sizes and controlled activation."
+      ],
+      "believe": [
+        "Consent and latency set the ceiling on display revenue, so changes to them are revenue changes and match-rate changes that need experiments and guardrails.",
+        "First-party intent data is the marketplace's advantage and its main liability, and data held in a neutral role stays out of advertising."
+      ],
+      "can_do": [
+        "Set an ad-change rule with contacts per session as the guardrail and run the experiment that tests it.",
+        "Design an audience service whose segments are consented, purpose-bound and approved by the data-protection officer.",
+        "Put every paid position, whoever sells it, under one relevance floor and slot cap and one invoice line."
+      ]
+    },
+    "audience": {
+      "who": "Chief architects, heads of ad tech and data, product and monetization leaders at marketplace groups who own or depend on an advertising unit; data-protection leads who must approve audience products.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine, a read model and Kubernetes are; page-speed basics such as largest contentful paint and the 75th percentile.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane, Hearthly, Keybridge and Valuo, the cast (Ingrid Halvorsen, Noor Hassan, Priya Raman, Lucía Ortega, Felix Brandt), the architecture advice forum, Safe Deal, contacts and leads (messaging-and-leads), the relevance floor for top listings and paid-organic blending (ranking), the group product catalog and entitlement effects (products-and-entitlements), guardrail metrics (monetization-models), DSA labels and remunerated-ranking disclosure (marketplace-regulation), and the failure patterns Multiplier Creep, Vanity Liquidity, Billing by Guesswork and Ghost Inventory.",
+        "From the part introduction: the test for any paid product (which unit it charges for, what liquidity it spends, how delivery is proved)."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: ad stack, first-party audience, sponsored listing.",
+        "Ad-industry vocabulary: ad server and line items, SSP, DSP, header bidding and Prebid, PMP deals, native ads, retail media, CMP, TCF and the TC string, ad load, CPM, eCPM, CPC, viewability.",
+        "Supply-chain files (ads.txt, app-ads.txt, sellers.json), clean rooms, and the EDPB's consent-or-pay opinion."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given three advertising conflicts, the reader names the component that decides each and the rule it applies.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your ad unit lengthened the header-bidding timeout and earned about 4% more per thousand page views while listing pages loaded half a second slower; it built an 'in-market' audience for a car maker from search behavior without a consent review; and sellers can buy a fixed-price top listing from the brand and a sponsored campaign from the ad unit for the same rows. Using only this chapter: what decides each, and what rule applies?",
+        "expected": "Timeouts, slot counts and ad load are set in the ad policy service and ship only behind an experiment with contacts per session as the guardrail; revenue that costs contacts needs a product leadership decision. Audiences come from the first-party audience service, built only from consented, purpose-bound sources approved by the data-protection officer, excluding dealer-side, neutral-role and message data, with a minimum size and off-site activation through a clean room. Both paid products become one product family in the group catalog, decided inside ranking under one relevance floor and slot cap (at most three paid positions in the first ten rows), shown on one invoice line."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Advertising as the part's last revenue line and the only one paid for attention rather than matches; the tension between core revenue and page views; the three businesses and the terms the chapter owns; then Veldmark Ads and its three arguments, vocabulary, three stacks under one policy layer, consent, the public record, three 2027 decisions, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: investor sources (Adevinta, eBay, CarGurus, Autotrader, Rightmove), EU law and the EDPB, IAB and Prebid documentation, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The chapter's last section performs Part VI's closing: it states what the five chapters build in common for every revenue line, says why that matters for Part VII, and returns to the part introduction's test of unit, liquidity spent and proof of delivery.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the final section state something about Part VI that no single chapter states, say why it matters for Part VII, and return to the question the part introduction ends on?",
+        "expected": "A synthesis that every revenue line in the part needs a record both sides can count (lead ID, order and transaction ledger, entitlement ledger, one invoice line for paid positions), delivery events, and a guardrail on the match rate; a so-what that those records need platform support (events, a governed contact definition, guardrails on tests, consent on every event), which Part VII builds; an explicit return to the part introduction's test answered for one paid product."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do marketplaces run advertising alongside listings without degrading the experience or breaking privacy law?",
+    "claim": "Advertising on a listing marketplace is three businesses that should run on three decision paths, display and native through an ad server with header bidding, sponsored listings inside each brand's search and ranking, and retail media through a consented first-party audience service, under one ad policy service, held as configuration by the product organization that owns the page, which sets ad load, labels, exclusions and the floors and caps on paid positions; changes to auction timeouts, slot counts or ad load ship only behind an experiment with contacts per session as the guardrail; fixed-price and auctioned paid positions share one relevance floor and slot cap; and audiences are built only from consented, purpose-bound sources, excluding special-category data, minors and data the group holds in a neutral role.",
+    "disputed_by": "The view that advertising is a separate business unit optimized against eCPM, fill rate and revenue per page view, which sets its own timeouts, ad load and sponsored placements on result pages and builds audiences from whatever behavioral data the group holds.",
+    "so_what": "A Chief Architect who accepts this shares the ad server, header bidding, consent integration, audience service and measurement as one group stack but serves sponsored listings inside each brand's ranking, puts all paid positions in one product family in the group catalog, has the data-protection officer approve every audience purpose with exclusions enforced by access control, keeps the campaign, targeting and reporting model group-owned to limit vendor dependency, and shows eCPM and fill rate next to contacts per session and page speed on one dashboard.",
+    "how_why": "Veldmark Ads earned €100 million in 2026. Raising the Prebid timeout on Tradeyard Netherlands from 1,000 to 1,500 ms lifted programmatic revenue per thousand page views about 4% but worsened the 75th-percentile largest contentful paint from 2.4 to 2.9 seconds on a site where 46% of sessions start from organic search, and nobody measured contacts; in the July 2027 experiment, 900 ms with server-side bidders and lazy loading lost 1.9% of that revenue and gained about 1% in contacts, which is worth more because contacts drive renewals, VAS purchases and Safe Deal transactions. A car maker's 'electric SUV' segment fell from about 310,000 to about 240,000 users once consent purposes were checked. On Tradeyard Poland a seller could pay twice, on two invoices, for a Top listing and a Sponsored campaign claiming the same rows, the second outside the relevance floor.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Advertising on a listing marketplace is three businesses with different buyers, auctions, latency budgets and rules (display and native through an ad server with header bidding, sponsored listings inside search and ranking, retail media through placements and first-party audiences), so they run on three decision paths rather than one ad stack."
+      },
+      {
+        "id": "S2",
+        "claim": "One ad policy service, held as configuration by the product organization that owns the page, sets ad load, labels, exclusions and the floors and caps on paid positions for all three paths; advertising rents positions under that policy."
+      },
+      {
+        "id": "S3",
+        "claim": "Consent and latency set the ceiling on display revenue: the consent record must reach every bid request and audience pipeline server-side, and the auction timeout, slot counts, ad load and the consent dialog are revenue and match-rate parameters that change only behind an experiment with contacts per session as the guardrail."
+      },
+      {
+        "id": "S4",
+        "claim": "Sponsored listings are decided inside ranking, and fixed-price and auctioned paid positions are one product family under one relevance floor, one slot cap and one invoice line, with a paid flag carried from campaign to rendering to meet the EU's paid-ranking rules."
+      },
+      {
+        "id": "S5",
+        "claim": "A first-party audience is a data product: segments are built only from consented, purpose-bound sources approved by the data-protection officer, exclude special-category data, minors and data held in a neutral or other-purpose role, have minimum sizes, and leave the platform only as identifiers in a clean room, never as exported lists."
+      },
+      {
+        "id": "S6",
+        "claim": "At group scale the generic ad stack (ad server, header bidding, consent integration, ads.txt, audience service, measurement) is shared under a group-owned campaign, targeting and reporting model that limits vendor dependency, while sponsored-listing serving stays in each brand's ranking and ad revenue is reported next to contacts and page speed."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Adds the one revenue line paid for attention rather than matches, puts it under the same guardrails and product family as the others, and carries the part's closing into Part VII's platform demands.",
+    "supports": [
+      "P6-5",
+      "P6-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses Ingrid's three arguments (timeout against page speed, an unreviewed audience, two products for one position); worked answers each with a decision after the body has built the design"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene comes first because its three arguments are the questions the chapter answers. The concepts follow because every later section uses ad-industry terms (ad server, SSP, header bidding, TC string, first-party audience) that marketplace engineers do not know; the scene glosses header bidding in passing. The architecture then lays out the three decision paths and the policy layer, path by path; consent follows it because its consequences name components the architecture introduced (Prebid Server, the audience service, app backends) and cut across all three paths; placed before the architecture, consent would be a list of rules for systems the reader has not seen. The public record comes right after the vocabulary and before the design, as the evidence that motivates it: advertising is large and cyclical on horizontals, and sponsored listings and audiences are decided in the marketplace's own systems; placed after the design, as first published, it repeated sources the architecture had already cited and separated consent from the worked example that applies it. The worked example can only replay the scene's three arguments once the timeout rule, the audience-service rules and the sponsored-listing design exist. Trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions apply the whole design, so they come last, and the conclusion closes Part VI."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A marketplace earns its core revenue when buyers find the right listing quickly; it earns advertising revenue when they look at more pages."
+    },
+    "bridge": {
+      "from_reader_world": "Part VI so far: messaging-and-leads turned contacts into leads, monetization-models chose what to charge for, and products-and-entitlements proved that what was sold was delivered, all revenue paid for matches.",
+      "to_topic": "Advertising, the part's last revenue line and the only one paid for attention, sold to brands that sell nothing on the marketplace, so the architecture must decide where the balance between pages viewed and matches made is enforced."
+    },
+    "thesis_statement": {
+      "text": "Advertising is three businesses (display and native, sponsored listings, retail media) built as three products under one shared policy layer for labels, ad load, consent and data use; consent and latency changes are revenue changes that need experiments and guardrails; first-party intent data is used only through consented, purpose-bound segments that exclude sensitive and neutral-role data.",
+      "placement": "KEY POINTS callout (three bullets), with p02 naming the three businesses."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, which names the sections in order, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Open with three arguments over Veldmark Ads that reached the Group Chief Architect in one week.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the vocabulary of the ad stack.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Show the public record.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Set out three decision paths under one policy layer.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Explain the consent signal behind display revenue.",
+          "kept_in": [
+            "consent"
+          ]
+        },
+        {
+          "promise": "Apply the design in three 2027 Veldmark decisions.",
+          "kept_in": [
+            "worked"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view, questions and Part VI's closing.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Advertising is Part VI's last revenue line and the only one paid for attention rather than for matches, so a marketplace that earns core revenue when buyers find the right listing quickly and ad revenue when they look at more pages must decide where the balance between the two is enforced.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Part VI's chapters so far (messaging-and-leads, monetization-models, products-and-entitlements) priced matches; advertisers such as car makers, banks, insurers, energy suppliers and furniture retailers pay to reach an audience with commercial intent without selling anything on the marketplace.",
+            "shows": "Sets advertising apart from the part's other revenue lines and states the conflict the chapter resolves."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3"
+          ],
+          "how": "States the conflict between pages viewed and matches made that the policy layer and the contacts guardrail resolve."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "\"Advertising\" hides three different businesses (display and native sold through an ad server, sponsored listings sold to sellers inside search results, and retail media sold to brands against the marketplace's own audiences), and the chapter owns the terms ad stack, first-party audience and sponsored listing.",
+        "function": "definition",
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Names the three businesses whose separate paths the chapter argues for."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Advertising as one revenue line paid for attention.",
+          "introduces": "The three businesses the word hides and the terms the chapter owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Neighbouring chapters own paid-organic blending (ranking), the sale and entitlement of visibility products (products-and-entitlements) and revenue models (monetization-models), while the chapter's two platform demands, a consent signal on every event and contacts as the guardrail for every ad change, return in Part VII.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S4"
+          ],
+          "how": "Places sponsored listings next to ranking and products, and names the guardrail and consent demands."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The terms this chapter owns.",
+          "introduces": "What it leaves to neighbouring chapters and what it hands to Part VII.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter runs from three arguments over Veldmark Ads through the vocabulary, the public record, three decision paths under one policy layer and consent, to three 2027 decisions, the judging sections and Part VI's closing.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Announces the sections that argue the claims."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's scope and neighbours.",
+          "introduces": "The order of the sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments",
+      "controlling_idea": "Veldmark Ads, a €100 million shared unit, faced three arguments in one week of June 2027 (a longer auction against page speed, an unreviewed audience, two products for one position), which pose the chapter's question of which parts of advertising are one platform, which slots and data each may use and who decides conflicts.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows the cost of a timeout set without contacts, an audience built without consent review and paid positions sold outside ranking, and poses the questions the body answers."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The unit and its revenue come first so the reader knows what is at stake; the three arguments follow, each a problem one of the later decisions answers; Ingrid's question closes the section so the reader carries it into the vocabulary and design."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The three businesses and the conflict between pages viewed and matches made.",
+        "introduces": "Veldmark Ads as the running example.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Veldmark runs one shared advertising unit, Veldmark Ads, which earned €100 million in 2026 on Google Ad Manager with Prebid header bidding (glossed as an auction run before the ad server decides), split across four products with different buyers and different places where they run: the three businesses, with display and native sold two ways, programmatic and direct.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2026 revenue by product: programmatic display €41M (agencies through SSPs, ad server with Prebid), direct-sold display and native €26M (Veldmark Ads sales team, ad server), sponsored listings €19M (professional sellers on Tradeyard Poland and Motorvane, self-serve, served by each brand's search stack), retail media €14M (car makers, banks and insurers, ad server placements plus audience deals); total €100M.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The four products have different buyers and run in different systems, which is the chapter's first claim."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "By inventory, Tradeyard pages earned €58 million, Motorvane €24 million and Hearthly €18 million, and Keybridge carries no advertising.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Tradeyard €58M, Motorvane €24M, Hearthly €18M; Keybridge none.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows where advertising runs across the group's brands, and that the agency-software business is outside it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Revenue by product.",
+            "introduces": "Revenue by the brand whose pages carried the inventory.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "In June 2027 three disagreements about advertising reached Ingrid Halvorsen, the Group Chief Architect, in the same week.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Veldmark Ads and its revenue.",
+            "introduces": "The week in June 2027 when three arguments arrived.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Raising the Prebid timeout on Tradeyard Netherlands from 1,000 to 1,500 ms lifted programmatic revenue per thousand page views about 4% but slowed listing pages from 2.4 to 2.9 seconds at the 75th percentile, on a site where 46% of web sessions start from organic search, and nobody measured contacts.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Q1 2027 timeout change 1,000 ms to 1,500 ms; +4% programmatic revenue per 1,000 page views; LCP p75 2.4 s to 2.9 s; 46% of Tradeyard web sessions from organic search; contacts not measured.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "A revenue gain was measured against no match-rate metric, which is the problem Decision 1 answers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Three disagreements.",
+            "introduces": "The first: page speed against bids.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "A car maker's 'in-market for an electric SUV' audience built from Motorvane search and saved-search behavior raised three questions the Group Data Protection Officer could not get answered: which consent purposes covered it, whether dealer-side data was used, and how it would be kept from leaving Veldmark.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lucía Ortega's three unanswered questions about consent purposes, dealer-side data and leakage.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "An audience built without a consent review, data exclusions or activation controls, which Decision 2 answers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first argument, over page speed.",
+            "introduces": "The second: an audience nobody had reviewed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "On Tradeyard Poland a seller could buy a brand-sold Top listing and a Veldmark Ads Sponsored campaign for the same first rows, paying twice on two invoices, and the sponsored units escaped ranking's relevance floor because a separate service inserted them.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Top listing (fixed price, seven days) and Sponsored (cost per click, self-serve, since 2026) claiming the first rows; two invoices from two systems; relevance floor not applied to sponsored units.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Paid positions sold by two teams outside one product model and outside ranking, the problem Decision 3 answers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second argument, over an audience.",
+            "introduces": "The third: two products for one position.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Ingrid's question was not whether to sell advertising, which at €100 million Veldmark clearly should, but which parts of advertising are one platform, which slots and data each part may use, and who decides when they conflict.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2"
+            ],
+            "how": "States the question the three paths and the policy layer answer."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three arguments.",
+            "introduces": "The single question they pose, which the rest of the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: The Vocabulary of the Ad Stack",
+      "controlling_idea": "Two distinctions, media sold to advertisers versus visibility sold to sellers, and the first-party audience as a data product, shape the chapter, and a short vocabulary of ad-industry terms makes the rest readable.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5"
+        ],
+        "how": "Separates display from sponsored listings and treats audiences as data products, the basis of two supporting claims."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Ingrid's question about which parts are one platform.",
+        "introduces": "The distinctions and terms needed to answer it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Display and native ads are a media business sold to advertisers who may have no listings, sponsored listings are a visibility product sold to sellers about their listings, and a first-party audience is a data product that needs purpose limitation, access control and ownership.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The two distinctions and the pointer to data-platform for data products.",
+              "shows": "Grounds why sponsored listings belong with visibility products and why audiences need data-product governance."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A table defines the ad-industry terms the chapter uses, most unfamiliar to marketplace engineers, from the ad stack and ad server to header bidding, the data clean room, the TC string, ad load and viewability.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Sixteen definitions: ad stack, ad server, SSP, DSP, header bidding and Prebid, PMP deal, native ad, sponsored listing, retail media, data clean room, first-party audience, CMP with TCF and TC string, ad load, CPM/eCPM/CPC, viewability with the MRC 50%-for-one-second rule.",
+              "source": "MRC Viewable Ad Impression Guidelines v2.0 (2015) for viewability",
+              "shows": "Gives the reader every term the architecture and consent sections rely on; the three owned terms are marked."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two distinctions.",
+            "introduces": "The vocabulary the chapter uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: What the Public Record Shows",
+      "controlling_idea": "Public filings show advertising is large on horizontals, cyclical, built on SSPs as critical suppliers and, for sponsored listings and audiences, decided in the marketplace's own systems.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Grounds the three businesses and the shared-stack argument in documented company facts."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The vocabulary of the ad stack.",
+        "introduces": "What companies have documented about the business those terms describe.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "Marketplaces publish advertising revenue more readily than architecture, but their figures show how large and cyclical the business is and where its decisions run.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven rows: Adevinta 2023 advertising €312M of €1,826M (about 17%), €204M of €744M (about 27%) in European Markets, France down 7%; SSPs as key suppliers and revenue 'recognised as the ads are displayed'; first-party advertising in the convergence plan; eBay US$1,993M; CarGurus audience targeting; Autotrader £15.2M (+14%) next to £585.3M revenue; OLX VAS LTR.",
+              "source": "Adevinta 2024; eBay 2026; CarGurus 2026; Autotrader 2026; OLX 2025",
+              "shows": "Each row's last column states what it shows: size, fragility, dependencies, and that paid visibility is a ranking concern."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Display advertising follows the advertising market, not the marketplace's liquidity, so a group should never plan platform investments on display revenue growing with audience.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta European Markets earned more than a quarter of revenue from advertising while France reported a 7% decline driven by agencies and programmatic demand; Adevinta has been private since 2024.",
+              "source": "Adevinta, 2024",
+              "shows": "Display revenue moves with the ad market, not with matches."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The documented figures.",
+            "introduces": "The lesson they support.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Three Stacks, One Policy Layer",
+      "controlling_idea": "Veldmark's reference design keeps the display, sponsored-listing and retail-media decision paths apart, each with its own rules, and puts one policy service over all of them.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "how": "Lays out the three paths and the policy layer, path by path, with the rules each path needs."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The overview and component table come first; then each path in turn, display (with native placements, which share its ad server), sponsored listings, retail media and the audience service, ordered from the most generic to the most marketplace-specific, so each path can be contrasted with the one before."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The public record: advertising is large, cyclical and, for sponsored listings and audiences, decided in the marketplace's own systems.",
+        "introduces": "The reference architecture that follows from that record.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Veldmark's reference architecture keeps three decision paths apart and puts one policy service, owned by the product organization as configuration, over all of them, with a named owner for each component.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: display and native decided by the ad server after header bidding, sponsored listings inside the search stack, retail media using both plus the audience service; one policy service sets ad load, labels, exclusions and floors; measurement reports contacts next to revenue.",
+              "shows": "Shows the three paths and the one policy layer at a glance."
+            },
+            {
+              "kind": "table",
+              "what": "Eight components with responsibility and owner: CMP (group privacy), header bidding, ad server, audience service (Veldmark Ads with Data & ML; DPO approves purposes), sponsored listing auction (each brand's search team), campaign and budget service, ad policy service (Group CPO's organization; configuration, not code), measurement and billing.",
+              "shows": "Each component has one owner, and the policy and sponsored-listing decisions are owned outside the ad unit."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2"
+            ],
+            "how": "Shows the three paths and the policy service."
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "A display impression on a listing page is a short distributed transaction with a hard deadline, from consent through bid requests, the ad server's decision and rendering to impression and viewability reports.",
+          "function": "process",
+          "organization": "process",
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S3"
+            ],
+            "how": "Shows the deadline and the consent string on the display path."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The architecture as a whole.",
+            "introduces": "The display path, step by step.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The header-bidding timeout trades bids against page speed, as Prebid's documentation says, and because apps cannot run browser header bidding, server-side bidding through Prebid Server is not optional for a marketplace with much app traffic.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Prebid: late bidders 'will not be included in the auction'; finding the balance 'might require some time and experimentation'; Prebid Server 'required in environments that don't have HTML header sections'; Prebid Mobile works 'in conjunction with Prebid Server'.",
+              "source": "Prebid, n.d.",
+              "shows": "The trade-off is documented by the tool itself, and apps need the server-side path."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: one display impression, timeout bounding the bid step, late bids dropped, consent string on every request, lazy-loaded slots below the fold.",
+              "shows": "Shows where the timeout and consent string sit in the request."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Makes the timeout a revenue and page-speed parameter."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A transaction with a hard deadline.",
+            "introduces": "The trade-off that deadline creates and the server-side path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "Five rules keep the auction off the page's critical path: never block listing content, reserve slot dimensions, lazy-load below-the-fold slots, move heavy bidders server-side, and treat the timeout as a product parameter with an owner and an experiment measured on contacts.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Ends in the rule that timeouts are measured on contacts as well as revenue."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The timeout's trade-off.",
+            "introduces": "The rules that limit its cost to the page.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Supply-chain hygiene is part of the stack: ads.txt, app-ads.txt and sellers.json declare who may sell the inventory and must be kept in step with every SSP contract, per domain, app and brand.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "IAB Tech Lab: ads.txt lets a publisher declare authorized sellers, 'making it harder for bad actors to profit from selling counterfeit inventory'.",
+              "source": "IAB Tech Lab, n.d.",
+              "shows": "These small files are configuration that must track contracts."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Names shared configuration the group stack must manage."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rules for the page.",
+            "introduces": "The configuration around the auction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The ad server is a dependency to manage: Google Ad Manager is a reasonable default but a concentration risk after the April 2025 US antitrust ruling, so line items, targeting keys, creatives and reporting belong in a group-owned model that makes the ad server replaceable in a quarter.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "US Department of Justice (2025): a court held Google 'violated antitrust law by monopolizing open-web digital advertising markets'.",
+              "source": "US Department of Justice, 2025",
+              "shows": "Remedies may change the product, so dependency is a real risk."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Argues for the group-owned campaign model that limits vendor dependency."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Configuration that tracks contracts.",
+            "introduces": "The largest vendor dependency in the stack.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Native ads inside the result list must be labeled as advertising under the DSA, and their positions count against the same ad-load budget as sponsored listings because each is a position not given to the most relevant listing.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "DSA Art. 26(1): recipients identify 'in a clear, concise and unambiguous manner and in real time' that the information is an advertisement, on whose behalf and who paid.",
+              "source": "Regulation (EU) 2022/2065, Art. 26(1)",
+              "shows": "Labels are a legal requirement on every native unit."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Puts native and sponsored positions under one ad-load budget set by the policy layer."
+          },
+          "transition_in": {
+            "relationship": "place",
+            "carries_over": "The display path and its ad server.",
+            "introduces": "Native placements, which the same ad server fills inside the listing grid.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Sponsored listings are the advertising product closest to the core marketplace, and public sources from eBay and OLX show that paid visibility lives inside ranking whatever team sells it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "eBay FY2025 10-K: Promoted Listings 'a first-party advertising offering' producing 'a meaningful amount of our revenue'; advertising revenue US$1,993M against US$79.6B GMV.",
+              "source": "eBay, 2026",
+              "shows": "Sponsored listings can be a large business."
+            },
+            {
+              "kind": "source",
+              "what": "OLX Tech Blog (2025): a 'VAS LTR' model balancing relevance and visibility for paid listings, retrained when vector retrieval changed which paid listings were retrieved.",
+              "source": "OLX, 2025",
+              "shows": "Paid visibility is a ranking concern in practice."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: campaigns and budgets in the ad unit's service; the decision which paid listings appear, where, above a relevance floor, made inside ranking from a read model; billing and attribution consume impression and click events.",
+              "shows": "Shows the split between selling and deciding."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Places the sponsored-listing decision inside ranking."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Native ads, filled by the ad server.",
+            "introduces": "Sponsored listings, which belong to the search stack.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "Five design choices keep paid positions inside the marketplace's rules: the auction runs inside ranking from a read model, budgets are paced, invalid traffic is filtered before billing, attribution reports contacts, and sponsored and fixed-price visibility products are one product family.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A campaign with €300 a day should not spend it in the first hour of a Sunday peak; overspend of a few percent is credited.",
+              "shows": "Shows pacing tolerating the staleness of a read model."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Argues for one product family and the auction inside ranking."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Paid visibility lives inside ranking.",
+            "introduces": "The design choices that follow from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "EU law sets a clear floor for paid ranking (undisclosed paid ranking is blacklisted for consumers, and business users must be told how payment affects ranking), so a sponsored listing needs a machine-readable paid flag from campaign to rendering.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Directive (EU) 2019/2161, UCPD Annex I point 11a: search results without clearly disclosing paid advertisement or payment for higher ranking; Regulation (EU) 2019/1150 Art. 5: describe the possibility to influence ranking against remuneration and its effects.",
+              "source": "Directive (EU) 2019/2161; Regulation (EU) 2019/1150",
+              "shows": "Both laws require the paid flag and a product description for sellers."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Adds the paid flag to the sponsored-listing design."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The design choices for sponsored listings.",
+            "introduces": "The legal floor they must meet.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Retail media sells brands placements, audiences and measurement against outcomes the marketplace can see, as CarGurus, Autotrader and Rightmove show in their filings.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "CarGurus FY2025 10-K: 'Audience Targeting' retargeting off site by 'geography, search history, CarGurus website activity', plus manufacturer and 'non-endemic programmatic advertisers'.",
+              "source": "CarGurus, 2026",
+              "shows": "The audience product exists in automotive marketplaces."
+            },
+            {
+              "kind": "statistic",
+              "what": "Autotrader FY26: Manufacturer & Agency revenue £15.2M, up 14%, expected to grow in FY27, small next to £585.3M Autotrader revenue but reported on its own and growing; Rightmove: about 10 million consumers subscribed to its marketing CRM.",
+              "source": "Autotrader, 2026; Rightmove, 2026",
+              "shows": "Retail media and first-party channels are real revenue lines at vertical leaders."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S5"
+            ],
+            "how": "Shows retail media as a distinct business built on audiences."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The sponsored-listing path.",
+            "introduces": "The third path: retail media.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "The first-party audience service concentrates the privacy risk, so Veldmark's five rules make segments reviewed data, check consent at build and activation, exclude special-category, minors' and neutral-role data at the source, never export raw data, and protect sellers' interests.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "DSA Art. 26(3): no ads 'based on profiling … using special categories of personal data'; Art. 28(2): no profiling-based ads to recipients known 'with reasonable certainty' to be minors.",
+              "source": "Regulation (EU) 2022/2065",
+              "shows": "The exclusions are legal floors, enforced at the source category."
+            },
+            {
+              "kind": "example",
+              "what": "A car maker's audience built from Motorvane searches is, to a dealer, Motorvane selling its dealers' buyers to a competitor; Keybridge's agency CRM data is out of scope by policy and access control.",
+              "shows": "Seller interests and neutral-role data are architectural constraints, not only legal ones."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "States the audience-service rules."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Retail media sells audiences.",
+            "introduces": "Where that concentrates privacy risk and the rules that contain it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "consent",
+      "heading": "Consent: The Signal That Sets the Revenue",
+      "controlling_idea": "Consent determines how much inventory can be sold with personalized targeting, so the consent record, the consent dialog and the fallback for users who decline are architecture decisions with revenue and legal consequences.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Shows consent as the signal that sets display revenue and gates audiences."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The legal and industry frame comes first, then three consequences from the most technical (where the record lives) to the most strategic (what decliners see), and finally the dependency on third-party identifiers that the contextual fallback reduces."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The three paths, each of which carries or checks consent.",
+        "introduces": "Consent as the signal they all depend on.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "All three paths depend on consent: EU law requires consent to read or store device identifiers, the industry encodes it through IAB Europe's TCF (v2.3, with a 28 February 2026 adoption deadline), and Google requires a certified TCF-integrated CMP for personalized ads in the EEA and UK since 16 January 2024.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "IAB Europe TCF versions v1.1 (2018) to v2.3 (April 2025); 'TCF participants have until 28 February 2026 to adopt TCF v2.3'; Disclosed Vendors segment mandatory.",
+              "source": "IAB Europe, n.d.",
+              "shows": "The consent string has a versioned format the stack must keep up with."
+            },
+            {
+              "kind": "source",
+              "what": "Google Ad Manager Help: 'a certified CMP integrated with the TCF', in force since 16 January 2024; traffic without it may still receive non-personalized or limited ads.",
+              "source": "Google Ad Manager Help, n.d.",
+              "shows": "Without a certified CMP, personalized demand disappears."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The first of three architectural consequences is that consent is per user, device, purpose and vendor and it changes, so the CMP's record must be available server-side to Prebid Server, the audience service and app backends, and withdrawals must propagate within a stated time.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S5"
+            ],
+            "how": "Requires the consent record on every bid request and audience build."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The legal and industry frame.",
+            "introduces": "Three architectural consequences, and the first: where the consent record lives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The consent dialog is a revenue component and the most regulator-visible design decision in the stack, so changes to it belong under experimentation with legal review, not under a growth team's control.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Treats the dialog as a governed revenue parameter."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The consent record.",
+            "introduces": "The second consequence: the dialog that creates it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Consent or pay is not a safe default after the EDPB's 2024 opinion, so the more robust design is consent or contextual, which a listing marketplace does unusually well because the page states the intent.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "EDPB Opinion 08/2024 (17 April 2024): 'in most cases, it will not be possible for them to comply with the requirements for valid consent'; consider a free alternative 'without behavioural advertising'.",
+              "source": "EDPB, 2024",
+              "shows": "A binary pay-or-track choice is legally fragile."
+            },
+            {
+              "kind": "fact",
+              "what": "No classifieds marketplace was on the Commission's list of designated very large online platforms when checked in October 2026.",
+              "source": "European Commission, updated 15 October 2026",
+              "shows": "The opinion binds large platforms directly but sets the direction for everyone."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: consent or contextual, decliners see ads targeted by category, location and price band.",
+              "shows": "Shows the fallback path."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Gives the design for users who decline."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The dialog.",
+            "introduces": "The third consequence: what users who decline see.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Contextual targeting also keeps a marketplace's dependence on third-party identifiers low, which matters because browser identity plans keep changing, as Google's 2025 reversal on third-party cookies and Privacy Sandbox showed.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Google (October 2025): Chrome would 'maintain our current approach to offering users third-party cookie choice' and retire Topics and Protected Audience, citing 'low levels of adoption'.",
+              "source": "Google Privacy Sandbox, 2025",
+              "shows": "Identity plumbing outside the marketplace's control changes without notice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Supports first-party identity as part of limiting dependency."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Contextual targeting, which needs no third-party identifier.",
+            "introduces": "Why reducing that dependency matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked",
+      "heading": "Veldmark Worked Example: Three Decisions in 2027",
+      "controlling_idea": "In July 2027 the architecture advice forum answered the scene's three arguments with three decisions: a timeout set with contacts as the guardrail, audiences rebuilt from approved building blocks, and one product family of paid positions.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Applies the guardrail rule, the audience rules and the one-product-family rule to the scene's cases, with numbers."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The decisions follow the order of the scene's arguments, so each answer meets its problem in the same position; within each decision, the evidence comes before the rule adopted."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The scene's three arguments, and the design and consent rules that answer them.",
+        "introduces": "The decisions the forum took.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "The architecture advice forum took three decisions in July 2027, each with a decision record.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Three decisions in July 2027, each recorded.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Signals that the scene's three arguments are answered in order."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Priya Raman's team tested the timeout in a four-week user-randomized experiment on Tradeyard Netherlands with three arms, and the arm at 900 ms with server-side bidders and lazy loading was fastest and produced the most contacts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Arms 1,500 ms / 900 ms / 900 ms server-side and lazy-load: programmatic revenue per 1,000 page views 100 / 96.8 / 98.1; LCP p75 2.9 / 2.5 / 2.3 s; search-to-contact rate 100 / 100.5 / 100.9; contacts per 1,000 sessions 100 / 100.6 / 101.0.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows that shorter, server-side auctions trade a small revenue loss for faster pages and more contacts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Three decisions.",
+            "introduces": "Decision 1: the experiment on the auction timeout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The forum adopted the third arm because about 1% more contacts is worth more than 1.9% of programmatic revenue, and made a rule that every change to ad timeouts, slot counts or ad load ships behind an experiment with contacts per session as the guardrail, with revenue that costs contacts decided by the CPO.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Contacts drive renewals, VAS purchases and Safe Deal transactions; Noor Hassan decides revenue that requires fewer contacts.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Explains why the contact gain outweighs the revenue loss."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: a balance scale with the faster page and more contacts outweighing slightly more ad revenue; a contacts gate for ad changes.",
+              "shows": "Shows the guardrail rule."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "States the guardrail rule."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The experiment's results.",
+            "introduces": "The decision and the general rule drawn from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The car maker's electric-SUV audience was rebuilt from approved building blocks (Motorvane searches and saved searches in 30 days, consented users only, no dealer, Keybridge, Valuo or contact data, at least 1,000 users, off site only through a clean room), and the consent check cut it from about 310,000 to about 240,000 users, a 23% difference the original had ignored.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Segment of about 310,000 users in Germany falling to about 240,000 after the consent check; minimum 1,000 users per activation; private deals and on-site activation; off site only via clean room with aggregate reporting.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the audience-service rules applied, and what an unchecked segment had silently included."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: an audience tower built from approved blocks only, excluded data outside, shrunk by a consent filter, off-site use only through a clean room.",
+              "shows": "Shows the rules as one picture."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Applies the audience rules with numbers."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decision 1 on the timeout.",
+            "introduces": "Decision 2: the audience rebuilt.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The forum accepted Felix Brandt's condition that car makers' retail-media placements stay off Motorvane dealer listing detail pages, because dealers paying €238 million a year in subscriptions matter more than a €14 million retail-media line.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Motorvane dealer subscriptions €238M a year against €14M of retail media; placements only on search, editorial and model pages; dealers see which placements ran next to their stock.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Seller trust outweighs the advertising revenue at stake."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S5"
+            ],
+            "how": "Shows the policy layer enforcing a commercial exclusion."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rebuilt audience.",
+            "introduces": "A second condition on the same retail-media deal: where its placements may appear.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Decision 3 took effect later, from Q1 2028: Top listing and Sponsored on Tradeyard Poland became one product family, two pricing modes for one slot type read by ranking from one read model under the relevance floor, with at most three paid positions in the first ten rows and one invoice line per seller per period.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Sponsored-listing revenue on Tradeyard Poland fell about 6% in the first months of 2028, after the floor, while contacts per paid position rose; Veldmark Ads keeps the auction, budgets and self-serve tool; the brand keeps the product description and slot rules.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "One floor and cap cost some revenue and raised the value of each paid position, the pattern ranking reports for top listings."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Applies one product family, one floor, one cap and one invoice line."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decision 2 on audiences.",
+            "introduces": "Decision 3: one family of paid positions, signposted as taking effect later, from Q1 2028.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Most ad-stack choices have two defensible options that depend on scale, privacy posture and the matching business, and the general rule is to own the decisions that use the marketplace's listings and audiences and rent the plumbing for generic display.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Separates what a marketplace should own from what it should rent."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design and its three applications.",
+        "introduces": "The choices behind it, with the conditions for each option.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "For seven recurring ad-stack choices, a table gives two options and the conditions under which each is right.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ad server, header bidding, sponsored-listings owner, audience activation, users who decline consent, ad load, sales: option A, option B, when each is right.",
+              "shows": "Each option is right under named conditions; contextual for decliners and low, contact-guarded ad load are right almost always for marketplaces."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "An in-house display ad server is rarely justified because demand sits in the programmatic ecosystem, but sponsored listings and retail media are decided in the marketplace's own systems anyway, so a marketplace should own the decisions that use its listings and audiences and rent the plumbing for generic display.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table's seven choices.",
+            "introduces": "The rule that sums them up.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Advertising's revenue share, buyers, sensitive data and main conflict differ by vertical, and real estate shows how a vertical's sensitive data shapes the audience rules.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S1"
+        ],
+        "how": "Shows the audience exclusions and the three businesses varying by vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Choices that hold across marketplaces.",
+        "introduces": "How the same choices differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Advertising differs by vertical in revenue share, buyers, sensitive data and main conflict.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs, recommerce across share of revenue from ads, main buyers, sponsored listings, sensitive data risk and main conflict.",
+              "shows": "Each vertical has its own sensitive data and its own conflict between advertising and sellers or users."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "In real estate a property search reveals a household's budget and life events, so Hearthly's mortgage and insurance advertisers buy contextual placements and consented search audiences, and never segments derived from Valuo valuation requests, which were collected for another purpose.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Hearthly rule: contextual placements by price band and region, audiences only from consented search behavior, no Valuo-derived segments.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Purpose limitation applied to a vertical's most sensitive data."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Applies the other-purpose exclusion."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Sensitive data varies by vertical.",
+            "introduces": "The real-estate case at Veldmark.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Advertising fails in recognizable ways when it escapes ranking, measures only revenue, stops consent at the browser, builds or exports audiences without controls, competes with sellers, runs unrestricted scripts, lets seller files go stale or keeps gone listings alive.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Shows the cost of ignoring each supporting claim."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the right design looks like across verticals.",
+        "introduces": "What goes wrong without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Without the design, advertising fails in nine ways, from sponsored units inserted after ranking (Multiplier Creep by a second door) to ads on gone listings (Ghost Inventory monetized).",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale the Chief Architect decides five things about advertising: what is shared, who owns the page, what data advertising may use, how dependent to be, and how to measure.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S2",
+          "S5"
+        ],
+        "how": "Turns the design into group-level decisions."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One paragraph per question, from the structural (what is shared, who owns the page) to the operational (data, dependency, measurement), so the last question returns to the contacts the chapter measures against."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failure modes.",
+        "introduces": "The questions a Chief Architect owns to prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "At group scale, preventing these failures raises five questions for the Chief Architect's agenda.",
+          "function": "transition"
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The ad server, header bidding, CMP integration, ads.txt management, audience service and measurement are generic and belong to one group stack, while sponsored-listing serving belongs inside each brand's ranking and paid positions in the group product catalog.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "States what is shared and what is not."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five questions.",
+            "introduces": "The first: what is shared.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "A listing page has one owner, the brand's product team, and advertising rents positions on it under a policy the product organization sets as configuration in the ad policy service.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Places the policy layer with the product organization."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What is shared.",
+            "introduces": "The second question: who owns the page.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The audience service is a data product with DPO-approved purposes and hard exclusions (special categories, minors, Keybridge's neutral-role data, Valuo's other-purpose data), and every segment has an owner, a definition, a size and an activation log.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Restates the audience rules as a group responsibility."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who owns the page.",
+            "introduces": "The third question: what data advertising may use.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "A display business on one vendor's ad server and one browser's identity choices has two dependencies it does not control, so the campaign, targeting and reporting model stays group-owned, identity stays first-party and the exit plan is reviewed when the landscape changes.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Limits vendor dependency."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What data advertising may use.",
+            "introduces": "The fourth question: how dependent to be.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The group dashboard shows advertising's revenue, eCPM, fill rate and viewability next to contacts per session, search-to-contact rate and page speed, so measurement puts back the matches advertising does not depend on.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S6"
+            ],
+            "how": "Puts contacts next to ad revenue."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "How dependent to be.",
+            "introduces": "The fifth question: how to measure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let an architect test a marketplace's advertising against the chapter: paid positions under one floor, the timeout, consent reach, decliners, audience approval, exclusions, seller visibility, vendor exit, supply-chain files and labels.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Gives the reader a working audit drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's five questions.",
+        "introduces": "Detailed questions that test whether they are answered.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Ten questions test the Chief Architect's five answers: whether a marketplace's paid positions, timeouts, consent, audiences, exclusions, seller visibility, vendor dependency, seller files and labels meet the chapter's design.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Revenue to the Platform Underneath",
+    "synthesis": "The five chapters of Part VI give every revenue line three things: a record both sides can count (the lead ID, the order and transaction ledger, the entitlement ledger, and one invoice line for all paid positions), delivery events that prove the record, and a guardrail on what the line costs in contacts. Money is one pipeline because those records and guardrails are shared, not because one team sells everything.",
+    "so_what": "Those records and guardrails are platform demands: the ad stack needs a consent signal on every event, a read model of paid positions inside ranking and measurement joining impressions to contacts, and the earlier chapters need leads and paid effects as events, one governed contact definition and guardrails on pricing tests; these are platform problems, which Part VII builds the shared platform to solve.",
+    "callback": {
+      "to": "The Part VI introduction's closing test (for any paid product, which unit it charges for, what liquidity it spends and how you would prove it was delivered).",
+      "how": "The reader can now answer the test for a Sponsored campaign on Tradeyard Poland from the chapter's design: a position priced per click; the organic listings it pushes down, within the relevance floor and three paid positions in the first ten rows; impression and click events from ranking proving delivery on one invoice line."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Review every revenue change for its cost in contacts, with its record, delivery evidence and guardrail named before launch; Part VII begins with event-driven-listings, the event backbone these records ride on."
+    },
+    "hand_off": {
+      "to": "part-7",
+      "relationship": "place",
+      "carries_over": "The ad stack needed a consent signal on every event, a read model of paid positions inside ranking and measurement that joins impressions to contacts, and Part VI as a whole assumed events for leads and paid effects, contact counts and pricing tests without building them.",
+      "introduces": "The distributed system beneath every stage: events, copies, the public web, data, experimentation, ML, tenancy and reliability, starting with the event backbone in event-driven-listings."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from Veldmark Ads' three arguments to the review questions, and the four Part VI chapters before it.",
+      "introduces": "What Part VI's five chapters share.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p52",
+        "controlling_idea": "Ingrid's question is answered (the ad stack and one policy layer are shared, the policy service and DPO-approved audience blocks set which slots and data each business may use, the forum settles conflicts and the CPO decides revenue that costs contacts), and Part VI's five chapters give every revenue line a record both sides can count, delivery events that prove it and a guardrail on what it costs in contacts, so money is one pipeline because its records and guardrails are shared, not because one team sells everything.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The lead ID (messaging-and-leads), the order and transaction ledger (transactions-and-payments), the entitlement ledger (products-and-entitlements) and one invoice line for paid positions (this chapter).",
+            "shows": "Each chapter builds one such record; none states that they share a shape."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S4",
+            "S6"
+          ],
+          "how": "Places the chapter's one invoice line and shared stack within the part's common records."
+        }
+      },
+      {
+        "id": "p53",
+        "controlling_idea": "The part introduction's test can now be answered for a Sponsored campaign on Tradeyard Poland: it charges per click for a position, spends the organic listings it pushes down within the relevance floor and slot cap, and is proved delivered by impression and click events on the seller's one invoice line.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Tradeyard Poland Sponsored (cost per click) under the relevance floor and at most three paid positions in the first ten rows, from Q1 2028; impression and click events consumed by billing.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "The part's three-part test is answered by this chapter's design."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S4"
+          ],
+          "how": "Answers the test with the one-product-family design."
+        },
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Records, delivery events and guardrails shared across the part.",
+          "introduces": "The part introduction's test applied to one paid product of this chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54",
+        "controlling_idea": "These records depend on systems beneath every brand (consent on every event, a read model of paid positions, measurement joining impressions to contacts, leads and paid effects as events, a governed contact definition, guardrails on tests), so every revenue change should be reviewed for its cost in contacts, and Part VII turns to that distributed platform, starting with the event backbone.",
+        "function": "recommendation",
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S6"
+          ],
+          "how": "Turns the consent and guardrail demands into the hand-off."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "A test answered from shared records.",
+          "introduces": "What those records demand of the platform, and the hand-off to Part VII.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "How paid and organic candidates are blended and evaluated in ranking.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Product catalog, pricing and entitlements for visibility products.",
+      "covered_in": [
+        "products-and-entitlements"
+      ]
+    },
+    {
+      "topic": "Revenue model comparison and KPIs.",
+      "covered_in": [
+        "monetization-models"
+      ]
+    },
+    {
+      "topic": "Tracking plans and consent on behavioral events in general.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Core Web Vitals and SEO.",
+      "covered_in": [
+        "web-and-seo-architecture"
+      ]
+    },
+    {
+      "topic": "Full regulatory analysis.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Split advertising into three businesses rather than describing one 'ad stack', because their decision points (ad server, ranking, audience service) and owners differ, and the conflicts between them are the chapter's real subject."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Invented a Veldmark Ads revenue split (programmatic €41M, direct and native €26M, sponsored listings €19M, retail media €14M; inventory Tradeyard €58M, Motorvane €24M, Hearthly €18M) summing to the ledger's €100M, and recorded it in the ledger."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Measured ad decisions against contacts in the worked example, tying the chapter to the book's liquidity thesis instead of to ad-industry metrics alone."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept consent mechanics here and linked to data-platform for ePrivacy basics, to avoid repeating chapter 36."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's seven success criteria were inventories in substance (figures and tables present, regulations cited, the Veldmark figure used); the reader outcomes behind them are covered by the journal entry's outcome (know, believe, can_do) and AC-1 to AC-3, so none is carried over. 'Every company claim carries a dated source' is a house-style rule, kept in the style guide.",
+      "rejected": [
+        "Carrying the criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added AC-4 (minor, custom rubric) so the post checks that its last section performs Part VI's closing, mirroring Part VI's AC-4 in the journal spec.",
+      "rejected": [
+        "Leaving the part closing unchecked at post level."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Split the published second introduction paragraph into the three businesses with the owned terms (p02) and the neighbours with the Part VII demands (p03), because it held two ideas, and added a roadmap paragraph (p04) so a reader of the opening can predict the sections (AC-2).",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names the businesses but not the sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Split the Concepts paragraph so the two distinctions (p12) and the sentence introducing the terms table (p13) are separate units, with the table as p13's evidence.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gave Trade-offs and Vertical Differences, whose tables opened their sections, one lead-in sentence each (p40, p42) so each table belongs to a unit.",
+      "rejected": [
+        "Leaving the tables unattached, which hides them from the draft readers."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from one paragraph to three (Part VI synthesis, the part introduction's test answered for a Tradeyard Poland Sponsored campaign, platform demands with takeaway and hand-off) to carry Part VI's closing, as the journal spec requires; the published sentences are kept in p52 and p54, and the hand-off now names Part VII's 'distributed system beneath every stage' (relationship place).",
+      "rejected": [
+        "Putting Part VI's closing in the Chief Architect's View."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): merged the one-sentence signpost 'Three architectural consequences follow.' (former p27) into p28.",
+      "rejected": [
+        "Keeping a signpost as its own unit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate): both flow readers found the public record's position unclear (fault spec). Moved 'In Practice' from after Consent to after Concepts, as evidence that motivates the design, and rewrote the transitions into practice, architecture and worked plus the roadmap (p04) and flow rationale. Draft revised at the failing units: table explanations (p05, p14), section openers (consent, trade-offs, failure modes, ca-view, questions), glosses for header bidding, key-values, AMP and clean room, Ghost Inventory, the forum principle, and 'match rate' replaced by contacts in the conclusion; the four-catalogs clause dropped from p54 to stay within the word limit.",
+      "rejected": [
+        "Raising max_words.",
+        "Leaving In Practice between Consent and the worked example."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (revise, six draft faults): p31 now opens from contextual targeting; p39 dates the 6% fall to the first months of 2028; Vanity Liquidity named in Failure Modes and Billing by Guesswork in Decision 3; the scene's revenue table points to the next section for its terms; deal ID and clean room glossed at first use in p25; fill rate glossed in p50. Words offset by tightening p53, p54 and the Failure Modes lead-in.",
+      "rejected": [
+        "Raising max_words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Set length.max_words to 6,793 (the published 6,470 words by check_draft's count plus 5%), because spec.md set no word limit.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the four draft faults round 3 escalated, raising length.max_words from 6,793 to 6,950 (+2.3%, within the 10% allowed): p05 maps the four products onto the three businesses (display and native sold two ways, programmatic and direct); p39 signposts that Decision 3 took effect later, from Q1 2028, and keeps 'in the first months of 2028, after the floor', which the chapter's own Q1 2028 start date (ledger: 'from Q1 2028 Top listing and Sponsored on Tradeyard PL are one product family') supports; 'data clean room' added to the terms table (sixteen definitions); p24 says what the Autotrader £15.2M shows, using only the £585.3M Autotrader revenue the In Practice table already cites from the same source. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Cutting published sentences to stay within 6,793 words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moving In Practice to after Concepts (round 1) accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow notes taken: Valuo introduced at first use (p37, Hearthly's valuation product), Priya Raman (Head of Data & ML, p35) and Felix Brandt (Motorvane's CTO, p38) named with their roles at first use, and a sentence in p52 answering Ingrid's question from p11. Notes not taken, keeping the published text: moving the public-company citations from p21 and p24 into In Practice, seeding Felix Brandt's condition in the scene, an evidence paragraph before Decision 3, and cutting p48's repetition of p25. accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Unverified real-company points stay out (eBay Promoted Listings pricing modes, the European Commission's adtech proceedings) and Google Ad Manager terminology stays generic, as published; no new real-company statements added. accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric note on S6 (supports the so_what more than the claim): thesis and supporting claims kept as copied from the journal spec. accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, Part VI's closing and Part VII's transition_in."
+    },
+    {
+      "kind": "internal",
+      "ref": "ranking",
+      "contributed": "Top-listing relevance floor; paid-organic blending."
+    },
+    {
+      "kind": "internal",
+      "ref": "monetization-models, products-and-entitlements, data-platform, messaging-and-leads, experimentation",
+      "contributed": "Guardrail metrics, the product catalog and entitlement effects, consent on events, contacts and leads, guardrails in experiments."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-monetization-economics.md, brief-adevinta.md, brief-trust-safety-regulation.md; _research/scenario-ledger.md",
+      "contributed": "Research briefs and the canonical Veldmark Ads figures and 2027 decisions."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Report 2023 (2024); eBay, CarGurus 10-Ks for FY2025 (2026); Autotrader FY26 and Rightmove FY2025 results (2026); OLX Tech Blog on hybrid search (2025)",
+      "contributed": "Advertising revenue, Promoted Listings, audience targeting, manufacturer advertising, CRM audience, paid visibility in ranking."
+    },
+    {
+      "kind": "external",
+      "ref": "DSA Arts. 26 and 28; Directive (EU) 2019/2161; Regulation (EU) 2019/1150; EDPB Opinion 08/2024 (2024); European Commission VLOP list (updated 15 October 2026)",
+      "contributed": "Labels, profiling exclusions, paid-ranking disclosure, consent or pay."
+    },
+    {
+      "kind": "external",
+      "ref": "IAB Europe TCF; Google Ad Manager CMP requirement; Prebid documentation; IAB Tech Lab ads.txt; MRC viewability guideline (2015); Google Privacy Sandbox update (2025); US DOJ press release (2025)",
+      "contributed": "Consent framework, CMP requirement, header bidding, supply-chain files, viewability, identity changes, ad-server antitrust ruling."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: four draft fixes, three name introductions, the answer to Ingrid's question in the conclusion, a clean-room definition; max_words raised to 6,950; open questions closed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 3 (escalate, budget spent): two cheap fixes applied (p28 'First,', p44 'this chapter's design'); four draft findings left for the author in open_questions; check report now stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2 (revise): p31's controlling idea reworded to start from contextual targeting; draft revised at six failing units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1 (escalate on one spec fault): In Practice moved after Concepts; transitions, roadmap and flow rationale rewritten; conclusion's so-what no longer cites the four-catalog problem; draft revised at the failing units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (status draft): one paragraph per unit, reconstructed from the published text; added roadmap, two table lead-ins, two splits and a three-paragraph conclusion carrying Part VI's closing; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations; sharpening pass 5,566 → 5,615 prose words; cross-chapter consistency sweep of 4 headings. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review (hand-off restored to part-7, VLOP statement sourced, Omnibus and P2B citations verified); 3 inline illustrations. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6950
+  }
+}

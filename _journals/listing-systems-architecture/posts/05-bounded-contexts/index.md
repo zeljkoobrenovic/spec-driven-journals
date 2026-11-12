@@ -33,7 +33,7 @@ The previous chapter, [[business-capabilities]], described what a marketplace do
 
 Listing marketplaces are an unusually clear case for that tool, because their central noun is overloaded. Ask six teams what a listing is and you get six correct answers that cannot all be true of one data structure. The seller's draft, the moderator's case subject, the search document, the paid placement, the lead's source and the analyst's fact row are all called "the listing". Teams that share one model of it end up negotiating every change with every other team.
 
-The rest of the book builds inside the boundaries drawn here. [[listing-aggregate]] designs the catalog's listing, [[event-driven-listings]] specifies the event contract's envelope and evolution, and [[organizing-marketplace-engineering]] turns the contexts into teams. This chapter defines the terms and draws the map: subdomains first, then the contexts and the meanings they own, then the context map and its relationships, then aggregates, then the listing event as the shared language. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
+The rest of the book builds inside the boundaries drawn here. [[listing-aggregate]] designs the catalog's listing, [[event-driven-listings]] specifies the event contract's envelope and evolution, and [[organizing-marketplace-engineering]] turns the contexts into teams. This chapter starts from six Veldmark answers to "what is a listing?", defines the terms, and draws the map: subdomains first, then one listing followed through ten contexts and the meanings they own, then the context map and its relationships, then aggregates, then the listing event as the shared language. It then shows how Veldmark drew its own map and what the public engineering record shows, and ends with the trade-offs, the vertical differences, the failure modes, the Chief Architect's view and questions for a design review. The running example is Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]).
 
 ## Setting the Scene at Veldmark: Six Answers to "What Is a Listing?"
 
@@ -55,13 +55,13 @@ The forum's conclusion is the starting point of this chapter: **"listing" is six
 
 ## Concepts: Subdomains, Contexts and Context Maps
 
-Domain-driven design (DDD) was introduced by Eric Evans in *Domain-Driven Design: Tackling Complexity in the Heart of Software* (2003). Its strategic part deals with large models and many teams, and five of its terms carry this chapter.
+Answering the forum's question needs a vocabulary. Domain-driven design (DDD) was introduced by Eric Evans in *Domain-Driven Design: Tackling Complexity in the Heart of Software* (2003). Its strategic part deals with large models and many teams, and five of its terms carry this chapter.
 
 A **domain** is the area of business the software serves: here, running a listing marketplace. A **subdomain** is a part of it with its own concerns, such as discovery, trust and safety or billing. Subdomains are found in the business. The capability map's level-1 and level-2 areas are a good first draft of them.
 
 Subdomains differ in strategic value. Evans distinguished the **core domain**, where the business competes and the best people should work, from **generic subdomains** that every business needs and nobody wins with. Vaughn Vernon added the middle category of **supporting subdomains**: specific to the business, necessary, but not where it wins (*Implementing Domain-Driven Design*, 2013). The classification is a business judgement, and it maps onto the differentiation score of the capability heat map.
 
-A **bounded context** is the boundary within which one model and its vocabulary apply consistently. Martin Fowler calls it "a central pattern in Domain-Driven Design" and explains that DDD "deals with large models by dividing them into different Bounded Contexts". He adds that the dominant factor in drawing the boundaries is usually human culture, because the model is the language people use ([Fowler, "BoundedContext"](https://martinfowler.com/bliki/BoundedContext.html), 2014). Fowler's example is an electricity utility in which "meter" meant three different things in different departments. "Listing" is the marketplace's meter.
+Subdomains are found in the business; a **bounded context** is drawn in the model. It is the boundary within which one model and its vocabulary apply consistently. Martin Fowler calls it "a central pattern in Domain-Driven Design" and explains that DDD "deals with large models by dividing them into different Bounded Contexts". He adds that the dominant factor in drawing the boundaries is usually human culture, because the model is the language people use ([Fowler, "BoundedContext"](https://martinfowler.com/bliki/BoundedContext.html), 2014). Fowler's example is an electricity utility in which "meter" meant three different things in different departments. "Listing" is the marketplace's meter.
 
 The **ubiquitous language** is the vocabulary used consistently inside one context, in conversation, documents and code. It is ubiquitous *within* the context, not across the company.
 
@@ -72,9 +72,9 @@ A **context map** shows the bounded contexts and the relationships between them:
 | **Partnership** | Two teams coordinate planning and manage the integration together | Listing catalog and trust and safety during a pipeline redesign |
 | **Shared kernel** | A small, explicit part of the model that two teams co-own | Listing identifiers and tenant codes |
 | **Customer–supplier** | Upstream plans for the downstream team's needs | Listing catalog (supplier) and monetization (customer) |
-| **Conformist** | Downstream adopts the upstream model as it is | Safe Deal conforming to the payment provider's model |
+| **Conformist** | Downstream adopts the upstream model as it is | Safe Deal, Tradeyard's in-platform payment, conforming to the payment provider's model |
 | **Anti-corruption layer (ACL)** | Downstream translates to keep its model clean | Feed ingestion translating 160 vendors' formats; a translator in front of a monolith |
-| **Open host service** | Upstream offers a well-defined protocol to many consumers | Identity, taxonomy, the partner listing API |
+| **Open host service** | Upstream offers a well-defined protocol to many consumers | The listing catalog, identity, taxonomy, the partner listing API |
 | **Published language** | A documented shared language for exchange | The listing event contract; feed standards |
 | **Separate ways** | No integration; each side solves its own problem | A neutral SaaS business that must not consume the portal's data |
 | **Big ball of mud** | A part with mixed models and no clear boundary, to be contained | A 20-year-old monolith |
@@ -110,17 +110,15 @@ Before drawing contexts, classify the subdomains. The classification decides whe
 | Taxonomy and attributes | Supporting | Supporting | Supporting | Necessary and specific, rarely visible as a differentiator |
 | Identity, notifications, media storage | Generic | Generic | Generic | Commodity capabilities with marketplace-specific configuration |
 
-The classification has two practical consequences.
-
-First, **core subdomains are where brand-specific contexts belong**, even inside a shared platform. Motorvane's ranking and Hearthly's valuation model are core. A group platform may provide the engine underneath them, but the contexts that hold the relevance model and the valuation model belong to the brand. This is the bounded-context version of the capability chapter's rule: share the machinery, keep the content.
+The classification has two practical consequences. First, **core subdomains are where brand-specific contexts belong**, even inside a shared platform. Motorvane's ranking and Hearthly's valuation model are core. A group platform may provide the engine underneath them, but the contexts that hold the relevance model and the valuation model belong to the brand. This is the bounded-context version of the capability chapter's rule: share the machinery, keep the content.
 
 Second, **generic subdomains are candidates for buying or for one group context**. Veldmark ID, the group identity approved in June 2027, is a generic subdomain implemented once, as an open host service with brand-specific profiles. Nobody at Veldmark argues that their brand's login is a competitive advantage.
 
-Classification gets political when one group platform serves brands that classify the same subdomain differently. At Tradeyard, trust and safety is core. At Motorvane, whose supply is 91% from about 21,400 dealers verified at contract signature, it is supporting. A group trust-and-safety platform must serve both, which is why [[trust-and-safety-architecture]] makes the pipeline shared and the policies configurable per brand and country.
+Classification gets political when one group platform serves brands that classify the same subdomain differently. At Tradeyard, trust and safety is core. At Motorvane, where 91% of supply comes from about 21,400 dealers verified at contract signature, most of it by feed, it is supporting. A group trust-and-safety platform must serve both, which is why [[trust-and-safety-architecture]] makes the pipeline shared and the policies configurable per brand and country.
 
 ## One Listing, Many Models
 
-The decomposition starts from the contexts in which the listing appears and what each one needs it to be. The table follows the Lyon apartment through ten of them. In May 2027 three agencies list the same 68 m² T3 flat in Lyon 7e. **Agence Rhône Habitat**, a 14-branch network, publishes through Keybridge at €389,000; the other two agencies publish through two different real-estate software vendors at €389,000 and €395,000.
+With the subdomains classified, the decomposition starts from the contexts in which the listing appears and what each one needs it to be. The table follows the Lyon apartment through ten of them. In May 2027 three agencies list the same 68 m² T3 flat in Lyon 7e. **Agence Rhône Habitat**, a 14-branch network, publishes through Keybridge, Veldmark's listing software for agencies, at €389,000; the other two agencies publish through two different real-estate software vendors at €389,000 and €395,000; Step 2 below explains why.
 
 | Context | What "listing" means here | Identity | Owns | The Lyon flat in this context |
 | --- | --- | --- | --- | --- |
@@ -139,20 +137,20 @@ The decomposition starts from the contexts in which the listing appears and what
 
 **The same real-world change means different things in different contexts**, as the Lyon flat shows. If Rhône Habitat cut its price to €379,000, ingestion would see a changed field in a feed record. The catalog would see a `PriceChanged` transition with a new version. Search would see a document update, alerts a possible price-drop alert, valuation a new asking-price observation and analytics a row in the price-history fact table. One published event serves all of them, but each context interprets it in its own model.
 
-The generic domain models this book draws on reach the same structure by a different route. Both put the listing in one system-of-record capability with one owner, many readers and a separate search projection. The real-estate model also separates the listing from the property, through a property reference that "connects multiple classifieds, valuations, and location signals to the same underlying property without treating every listing as a separate property". **The listing is not the thing; it is a publication about the thing.** [[listing-aggregate]] turns that into an aggregate design, and [[entity-resolution]] owns the canonical entity.
+The book also draws on two generic domain models, one for a general-listings marketplace and one for a real-estate marketplace, which are the author's working models and describe no company. They reach the same structure by a different route. Both put the listing in one system-of-record capability with one owner, many readers and a separate search projection. The real-estate model also separates the listing from the property, through a property reference that "connects multiple classifieds, valuations, and location signals to the same underlying property without treating every listing as a separate property". **The listing is not the thing; it is a publication about the thing.** [[listing-aggregate]] turns that into an aggregate design, and [[entity-resolution]] owns the canonical entity.
+
+The models' numbers make the one-owner pattern concrete. In the general model, the listing is owned by one capability and read by eleven others, and two more query it through search. Even their mistakes make the case for named owners: the general model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability, a reminder that ownership assignments must be reviewed as carefully as boundaries.
 
 ## Architecture: The Marketplace Context Map
 
-The context map below is Veldmark's **Common Ground context map**, as approved by the architecture advice forum in May 2027. It shows the target for 2028, with Yardstick still in place behind a translator.
+Meanings with owners still need rules for how they talk, which a context map records. The one below is Veldmark's **Common Ground context map**, as approved by the architecture advice forum in May 2027. It shows the target for 2028, with Yardstick still in place behind a translator.
 
 ![Diagram: The Common Ground context map (target 2028)](assets/images/05-bounded-contexts/fig02-common-ground-context-map-target-2028.jpeg)
 **Figure 2:** *The Common Ground context map (target 2028). The listing catalog owns listing truth and publishes it as Listing event contract v1. Partner feeds and the Yardstick monolith reach the contract through anti-corruption layers. Search conforms to the contract. Trust and safety, monetization and transactions change listings only through commands to the catalog. Keybridge sends listings in through the same public feed contract as any vendor and consumes nothing.*
 
-Each relationship on the map is a decision, and each has a reason.
+Each relationship on the map is a decision, and each has a reason. **Feed ingestion is an anti-corruption layer.** Hearthly receives 84% of its listings from about 160 real-estate software vendors, and Motorvane receives most of its dealer stock from DMS exports. Each source has its own field names, enumerations, photo conventions and ideas of what "deleted" means. If the catalog adopted any vendor's model, every vendor's quirk would leak into search, trust and analytics. Ingestion translates all of them into catalog commands, keeps the source payloads for reconciliation and reports errors back to partners. [[listing-ingestion]] owns the design. The relationship is deliberately one-way: the catalog does not know which vendor a listing came from, except through a provenance reference.
 
-**Feed ingestion is an anti-corruption layer.** Hearthly receives 84% of its listings from about 160 real-estate software vendors, and Motorvane receives most of its dealer stock from DMS exports. Each source has its own field names, enumerations, photo conventions and ideas of what "deleted" means. If the catalog adopted any vendor's model, every vendor's quirk would leak into search, trust and analytics. Ingestion translates all of them into catalog commands, keeps the source payloads for reconciliation and reports errors back to partners. [[listing-ingestion]] owns the design. The relationship is deliberately one-way: the catalog does not know which vendor a listing came from, except through a provenance reference.
-
-**The listing catalog is upstream of almost everything, and it publishes a language rather than exposing a model.** Consumers do not read the catalog's tables. They read Listing event contract v1: thirteen event types with the listing's public state, version and cause (see [[event-driven-listings]]). That makes the catalog an **open host service with a published language**. The catalog can refactor its storage without telling anyone, as long as the contract holds.
+**The listing catalog is upstream of almost everything, and it publishes a language rather than exposing a model.** Consumers do not read the catalog's tables. They read Listing event contract v1: twelve event types with the listing's public state, version and cause (see [[event-driven-listings]]). That makes the catalog an **open host service with a published language**. The catalog can refactor its storage without telling anyone, as long as the contract holds. Hearthly's events reach the group event backbone through a bridge from Google Pub/Sub.
 
 **Search is a conformist to the published language.** The search context adopts the contract's vocabulary for listing state and public fields, and adds its own model on top: analyzers, facets, boosts. It never writes listing state back. If the catalog says a listing is sold, search removes it; search does not decide. That keeps the index a read model and prevents Search as System of Record. When Vinted moved its search engine to Vespa, it put a "search contract" in a Go gateway in front of the engine so that product applications did not change ([Vinted Engineering](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/), 2024). That is the same idea from the other side: a stable language at the boundary lets the model behind it change.
 
@@ -160,17 +158,17 @@ Each relationship on the map is a decision, and each has a reason.
 
 **Trust and safety acts on listings only by command.** The trust context keeps its own model of listings as subjects, with actors, devices, reports and evidence. When it decides to remove a listing, it sends an enforcement command to the catalog, which emits `ListingRemoved` with the cause. The decision record stays in trust and safety, where it survives the listing's deletion for appeals and regulatory reporting. The two contexts work as a **partnership** during the 2027 pipeline redesign, because the publication pipeline's 90-second target cannot be met unless both change together ([[publication-pipeline]]).
 
-**Transactions conform to the payment provider.** Safe Deal runs on Adyen for Platforms, which is the licensed party. Veldmark's transaction context adopts the provider's model of payments, payouts and accounts rather than inventing its own, and translates only at the edge where an order meets a listing: a reservation, a sale. Conforming is the right choice when the upstream is a regulated provider whose model you cannot change. The cost is portability, which [[transactions-and-payments]] discusses together with the sibling book's [[adyen]] chapter.
+**Transactions conform to the payment provider.** Safe Deal runs on Adyen for Platforms, which is the licensed party. Veldmark's transaction context adopts the provider's model of payments, payouts and accounts rather than inventing its own, and translates only at the edge where an order meets a listing: a reservation, a sale. Conforming is the right choice when the upstream is a regulated provider whose model you cannot change. The cost is portability, which [[transactions-and-payments]] discusses together with the [[adyen]] chapter of RECONCILED, this book's companion on finance systems.
 
 **Identity and taxonomy are open host services.** Both serve every context with a stable protocol. Taxonomy publishes versioned category trees and attribute schemas, and listings record the taxonomy version they were classified under. Identity provides one login and brand-specific profiles. Neither owns listings, and neither should know about them.
 
-**Keybridge goes separate ways.** Keybridge publishes agency listings to Hearthly and to Hearthly's competitors. In March 2027 Veldmark committed that Hearthly would not use Keybridge agency data for ranking or sales targeting. On the context map, that commitment is a relationship: Keybridge reaches Hearthly only through the same public feed contract as every other vendor, and it has no subscription to Hearthly's listing events. A context map that showed Keybridge as a partner of the catalog would have contradicted a commercial promise.
+**Keybridge goes separate ways.** Keybridge publishes agency listings to Hearthly and to Hearthly's competitors. In March 2027 Veldmark committed that Hearthly would not use Keybridge agency data for ranking or sales targeting. On the context map, that commitment is a relationship: Keybridge reaches Hearthly only through the same public feed contract as every other vendor, and it has no subscription to Hearthly's listing events. Separate ways does not mean no data at all: it means no integration beyond what any outside vendor gets. A context map that showed Keybridge as a partner of the catalog would have contradicted a commercial promise.
 
 **Yardstick is a big ball of mud, contained.** Tradeyard's monolith still holds the `ads` table and its 214 columns until the insertion flow moves out in Q2 2028. It is not decomposed in place. **Yardstick Relay**, a translator service, reads Yardstick's tables through change data capture (CDC) and emits contract events, so consumers see the same language from Tradeyard as from Motorvane. The rule Veldmark adopted is that CDC is a source, never a contract: only the translator reads Yardstick's tables. When the new insertion service ships, it publishes the same contract through its own outbox, and consumers do not notice. [[modernization-and-migration]] owns the strangler plan.
 
-### Aggregates and transactional boundaries
+## Aggregates and Transactional Boundaries
 
-Bounded contexts set the boundaries of models. Aggregates set the boundaries of transactions inside them. Most damage in listing systems comes from transactions that try to span what should be two aggregates, often in two contexts.
+Bounded contexts set the boundaries of models. Aggregates set the boundaries of transactions inside them. Most damage in listing systems comes from transactions that try to span what should be two aggregates, often in two contexts. In the table, each aggregate refers to the others only by ID or a snapshot, so no transaction needs to cross two of them.
 
 | Aggregate | Context | Consistency rule inside | What it must not include |
 | --- | --- | --- | --- |
@@ -186,16 +184,16 @@ Consider a bump. A seller buys a "Top listing" for seven days. A naive implement
 1. Monetization records the order and grants the entitlement in the entitlement account aggregate, idempotently keyed by the order ID.
 2. Monetization sends `ApplyPlacement` to the catalog with the entitlement reference, and publishes `VisibilityChanged` for search.
 3. The catalog records the placement reference on the listing and emits a new version.
-4. If step 2 or 3 fails, monetization retries with the same key. If the listing has been removed in the meantime, the catalog rejects the command and monetization refunds or re-credits the entitlement.
+4. If step 2 or 3 fails, monetization retries with the same key. If the listing has been removed in the meantime, the catalog rejects the command and monetization refunds or re-credits the entitlement and reverses the visibility change.
 
 ![Diagram: A bump crosses two aggregates in two contexts without a shared transaction](assets/images/05-bounded-contexts/fig03-bump-crosses-two-aggregates-two-contexts.jpeg)
 **Figure 3:** *A bump crosses two aggregates in two contexts without a shared transaction. Each step is atomic inside its own aggregate, the order ID makes retries safe, and a rejection from the catalog is repaired by monetization, which owns the entitlement.*
 
 Each step is consistent within one aggregate. Between them, the system is eventually consistent, and the boundaries say who repairs what. This is the trade an architect makes on purpose: **atomic consistency within an aggregate, explicit eventual consistency between aggregates, and idempotency everywhere.**
 
-### The listing event as published language
+## The Listing Event as Published Language
 
-The listing event contract is the context map's most important artifact: the language through which the catalog tells every other context what happened to a listing. Its design rules follow from the map.
+Between contexts, the listing event contract is the map's most important artifact: the language through which the catalog tells every other context what happened to a listing. Its design rules follow from the map.
 
 - **Owned by the catalog, designed for consumers.** The catalog team owns the contract, but its first version was designed with the four first consumers: search, alerts, trust and safety, and the warehouse. A published language that only the producer understands is a leaked internal model.
 - **Public state, not the catalog's internals.** Events carry the listing's public state, version and cause, and leave out personal contact data and internal performance data. Consumers that need contact details fetch them through an access-controlled interface when they need them.
@@ -203,34 +201,20 @@ The listing event contract is the context map's most important artifact: the lan
 - **Versioned and keyed per listing.** Each event carries a strictly increasing listing version and is keyed by listing ID, so every consumer can apply events in order and ignore stale ones.
 - **Group identifiers as a shared kernel.** The listing ID format (brand, country and local ID, for example `vm:tradeyard:nl:84711032`) and the tenant codes are the one piece of model all contexts share. They are small, stable and co-owned, which is what a shared kernel should be.
 
-The Rotterdam city bike shows why the contract matters for boundaries, not only for plumbing. On Monday 8 March 2027 Femke marked her €240 bike sold at 18:10, and search removed it at 18:11. Yet the alert digest featured it the next morning, because the digest builder assembled its candidates from its own copy of the data and did not consume removals. Under the context map, the alerts context subscribes to `ListingSold` and purges its candidate set, and every consumer declares in its contract how fast it removes a listing that has left the active state. Ghost Inventory is a boundary failure before it is a latency failure: **one context learned about the sale and another did not, because they did not share a language.**
+Femke's Rotterdam city bike, from earlier chapters, shows why the contract matters for boundaries, not only for plumbing. On Monday 8 March 2027 Femke marked her €240 bike sold at 18:10, and search removed it at 18:11. Yet the alert digest featured it the next morning, because the digest builder assembled its candidates from its own copy of the data and did not consume removals. Under the context map, the alerts context subscribes to `ListingSold` and purges its candidate set, and every consumer declares in its contract how fast it removes a listing that has left the active state. Ghost Inventory is a boundary failure before it is a latency failure: **one context learned about the sale and another did not, because they did not share a language.**
 
 ![Left, a sale announced in one room reaches search but not the newsletter room, which mails a ghost bike; right, one shared broadcast reaches every room.](assets/images/05-bounded-contexts/ghost-as-boundary-failure.jpeg)
 **Figure 4:** *Ghost Inventory is a boundary failure before it is a latency failure: the alert digest featured the sold bike because it never consumed the sale, and a shared ListingSold event closes that gap.*
 
-## In Practice: What the Public Record Shows
-
-Few marketplaces publish their context maps. Several have published enough to show the shape of the decisions.
-
-**Vinted: domains before services.** In a January 2026 engineering post, Vinted described leaving its Rails monolith. "Our first step wasn't to break the monolith apart. It was to understand it." Domain-driven design gave the team "the vocabulary" to find natural boundaries. "It took us at least two years to understand the domains, as we identified almost 300 of them," and DDD "guided how we restructured teams". Synchronous calls between parts were replaced by business events, so "services could publish state changes and let other domains react whenever they were ready" ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), 2026). Two lessons transfer: the decomposition came first and was slow, and the integration that made it work was events between domains, not shared tables.
-
-**AutoScout24: services aligned to bounded contexts.** In a 2018 post, an engineer described AutoScout24's architecture after its migration from a .NET monolith to JVM microservices on AWS: services each focused on a bounded context, mostly synchronous APIs, some Kafka for asynchronous work, and pages composed from fragments served by the services ([AutoScout24 Tech Blog](https://tech.autoscout24.com/blog/posts/first-year-at-autoscout24/), 2018). The migration itself, "Project Tatsu", started in November 2014 with one team, grew by adding teams every two to three months, and followed a "shared nothing" principle ([InfoQ](https://www.infoq.com/news/2016/02/autoscout-microservices/), 2016). The evidence is old and describes the state of that time; the current architecture is not public. It is an early documented case of a listing marketplace using bounded contexts as the unit of service ownership.
-
-**Kleinanzeigen: what happens when the database is the contract.** In a January 2025 post on the Adevinta tech blog, Kleinanzeigen's search team described a pipeline that uses Debezium CDC to stream MySQL changes into Kafka, joins them with SQL against the source database, enriches them over HTTP, and publishes a denormalized per-user object to a compacted Kafka topic as a re-consumable cache. The author notes that Debezium troubleshooting is harder because problems "often occur at the infrastructure level rather than in the application code" ([Adevinta Tech Blog](https://adevinta.com/techblog/make-data-migration-easy-with-debezium-and-apache-kafka/), 2025). The pattern is a pragmatic way to get data out of an existing database with configuration rather than code. Its architectural cost, which is an inference rather than something the post states, is that the source schema becomes a de facto public contract for every downstream consumer. That is why Veldmark puts a translator between CDC and the published language.
-
-**Adevinta: an anti-corruption layer as a product.** In a February 2023 post, Adevinta described a dispute-management back office built as a reusable component "that can be plugged into any marketplace". It ingests per-marketplace events through Kafka, SQS or REST and normalizes them into a common model; its constraint was "We couldn't hardcode anything… or make any assumptions" ([Adevinta Tech Blog](https://adevinta.com/techblog/from-hello-world-to-a-dispute-management-back-office/), 2023). In context-map terms, a group-level context consumes each marketplace's language through its own translation layer. The design lets the shared context serve several marketplaces whose models differ. Its dependency is that each marketplace must publish good events. [[case-adevinta]] discusses how such shared components fared when the group later decentralized.
-
-**The reference models: one owner, many readers.** The two generic domain models behind this book, one for general listings and one for real estate, assign the listing to a single system-of-record capability, with a search index as a projection and a change event as the interface. In the general model, the listing is owned by one capability and read by eleven others, and two more query it through search. The models are not descriptions of any company, but their structure is the canonical pattern, and their mistakes are instructive. The general model's data catalog assigns credentials, sessions and the audit log to the cookie-consent capability. That is a reminder that ownership assignments must be reviewed as carefully as boundaries.
-
 ## Veldmark Worked Example: Drawing Common Ground's Boundaries
 
-Ingrid's team draws the map in four working sessions in April and May 2027, using the capability map from March as input.
+The sections so far showed the finished map, its aggregates and its published language; Veldmark's sessions show the work behind them. Ingrid's team draws the map in Figure 2 in five steps, spread over four working sessions in April and May 2027, using the capability map from March as input.
 
-**Step 1: candidate contexts from capabilities.** The 54 level-2 capabilities collapse into 19 candidate contexts. Some capabilities share a model and become one context, for example *Saved searches and alerts* with the alert parts of *Notifications*. Others split. *Search and filtering* splits into a group search platform context (engine, indexing, capacity) and brand relevance contexts, because the capability heat map gave them different verdicts.
+**Step 1: candidate contexts from capabilities.** The 54 level-2 capabilities collapse into 19 candidate contexts, more than the ten a listing passes through in the Lyon table, because the map also holds contexts such as identity and taxonomy. Some capabilities share a model and become one context, for example *Saved searches and alerts* with the alert parts of *Notifications*. Others split. *Search and filtering* splits into a group search platform context (engine, indexing, capacity) and brand relevance contexts, because the capability heat map gave them different verdicts.
 
 **Step 2: find the language breaks.** For each candidate, the team writes down what "listing", "seller" and "price" mean there. Where two candidates use the same words with the same meaning and the same invariants, they merge. Where one word changes meaning, there is a boundary. The exercise produced one surprise. At Motorvane, "price" means the dealer's asking price. At Hearthly France it means the price including agency fees, which is why the three Lyon listings show €389,000, €389,000 and €395,000 for one flat. Valuation needs the net price. The catalog keeps the advertised price and the fee basis as separate fields, and valuation owns the translation.
 
-**Step 3: assign truth.** For every piece of data, one context is named as owner. The forum records 31 ownership decisions. Five took more than one session:
+**Step 3: assign truth.** For every piece of data, one context is named as owner. The forum records 31 ownership decisions. Five took more than one session; each went to the context whose rules need it:
 
 | Data | Candidates | Decision | Why |
 | --- | --- | --- | --- |
@@ -240,17 +224,29 @@ Ingrid's team draws the map in four working sessions in April and May 2027, usin
 | Canonical property | Catalog, entity resolution, valuation | **Entity resolution** | The property outlives every listing and is read by valuation |
 | Sold price for off-platform sales | Catalog, analytics | **Catalog**, as an optional outcome on `ListingSold` | It is a seller-reported fact about the listing, used by pricing |
 
-**Step 4: draw relationships and name the translation points.** The map in Figure 2 is the result. Four anti-corruption layers are named and owned: feed ingestion (one per brand, sharing a group library), Yardstick Relay, the Hearthly bridge from Google Pub/Sub to the group event backbone on Confluent Cloud, and the transaction context's edge towards Adyen.
+**Step 4: draw relationships and name the translation points.** The map in Figure 2 is the result. Four anti-corruption layers are named and owned: feed ingestion (one per brand, sharing a group library), Yardstick Relay, the transaction context's edge towards Adyen, and the Hearthly bridge from Google Pub/Sub to the group event backbone on Confluent Cloud.
 
 **Step 5: assign teams.** Each context gets exactly one owning team. Thirteen of the 19 contexts were already owned by one team. Four had split ownership, all inside Yardstick. Two had no owner. The two orphans were *removal propagation to alerts and digests*, which went to the Alerts team as part of the alerts context, and *taxonomy*, which went to the new group taxonomy and attribute team whose service went live in October 2027.
 
-The Essen Golf shows the map at work. When the dealer sold the Golf on 29 April 2027, the feed's removal arrived 26 hours later. Under the map, nothing downstream decides that the Golf is gone. Ingestion sees the removal in the next feed run and sends `Withdraw` to the catalog, which emits `ListingRemoved` with the cause "feed removal". Search, alerts and leads react to that event within their declared deadlines. The 26-hour delay is still there, because it sits in the dealer's DMS. But the map makes it **one problem in one context**: ingestion's freshness contract with the dealer. Before the map, it was a different problem in each of six places.
+The Essen Golf shows the map at work. When the dealer sold the Golf on 29 April 2027, the feed's removal arrived 26 hours later. Under the map, nothing downstream decides that the Golf is gone. Ingestion sees the removal in the next feed run and sends `Withdraw` to the catalog, which emits `ListingRemoved` with the cause "feed removal". Search, alerts and leads react to that event within their declared deadlines. The 26-hour delay is still there, because it sits in the dealer's DMS. But the map makes it **one problem in one context**: ingestion's freshness contract with the dealer. Before the map, it was a different problem in each of six places with their own copy.
+
+## In Practice: What the Public Record Shows
+
+Veldmark's map is fictional, and few real marketplaces publish theirs. Several have published enough to show the shape of the same decisions.
+
+**Vinted: domains before services.** In a January 2026 engineering post, Vinted described leaving its Rails monolith. "Our first step wasn't to break the monolith apart. It was to understand it." Domain-driven design gave the team "the vocabulary" to find natural boundaries. "It took us at least two years to understand the domains, as we identified almost 300 of them," and DDD "guided how we restructured teams". Synchronous calls between parts were replaced by business events, so "services could publish state changes and let other domains react whenever they were ready" ([Vinted Engineering](https://vinted.engineering/2026/01/09/building-global-event-driven-platform-part-1/), 2026). Two lessons transfer: the decomposition came first and was slow, and the integration that made it work was events between domains, not shared tables.
+
+**AutoScout24: services aligned to bounded contexts.** In a 2018 post, an engineer described AutoScout24's architecture after its migration from a .NET monolith to JVM microservices on AWS: services each focused on a bounded context, mostly synchronous APIs, some Kafka for asynchronous work, and pages composed from fragments served by the services ([AutoScout24 Tech Blog](https://tech.autoscout24.com/blog/posts/first-year-at-autoscout24/), 2018). The migration itself, "Project Tatsu", started in November 2014 with one team, grew by adding teams every two to three months, and followed a "shared nothing" principle ([InfoQ](https://www.infoq.com/news/2016/02/autoscout-microservices/), 2016). The evidence is old and describes the state of that time; the current architecture is not public. It is an early documented case of a listing marketplace using bounded contexts as the unit of service ownership.
+
+**Kleinanzeigen: what happens when the database is the contract.** In a January 2025 post on the Adevinta tech blog, Kleinanzeigen's search team described a pipeline that uses Debezium CDC to stream MySQL changes into Kafka, joins them with SQL against the source database, enriches them over HTTP, and publishes a denormalized per-user object to a compacted Kafka topic as a re-consumable cache. The author notes that Debezium troubleshooting is harder because problems "often occur at the infrastructure level rather than in the application code" ([Adevinta Tech Blog](https://adevinta.com/techblog/make-data-migration-easy-with-debezium-and-apache-kafka/), 2025). The pattern is a pragmatic way to get data out of an existing database with configuration rather than code. Its architectural cost, which is an inference rather than something the post states, is that the source schema becomes a de facto public contract for every downstream consumer. That is why Veldmark puts a translator between CDC and the published language.
+
+**Adevinta: an anti-corruption layer as a product.** In a February 2023 post, Adevinta described a dispute-management back office built as a reusable component "that can be plugged into any marketplace". It ingests per-marketplace events through Kafka, SQS or REST and normalizes them into a common model; its constraint was "We couldn't hardcode anything… or make any assumptions" ([Adevinta Tech Blog](https://adevinta.com/techblog/from-hello-world-to-a-dispute-management-back-office/), 2023). In context-map terms, a group-level context consumes each marketplace's language through its own translation layer. The design lets the shared context serve several marketplaces whose models differ. Its dependency is that each marketplace must publish good events. [[case-adevinta]] discusses how such shared components fared when the group later decentralized.
 
 ## Trade-offs
 
-Three decisions recur in every decomposition. None has a universal answer.
+Veldmark's map and the public cases turn on three decisions that recur in every decomposition. None has a universal answer.
 
-**Granularity of contexts.**
+**Granularity of contexts.** Size follows the maturity of the domain work and the event platform.
 
 | Option | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |
@@ -258,7 +254,7 @@ Three decisions recur in every decomposition. None has a universal answer.
 | Contexts per level-2 capability (15–25) | Aligns with the capability map and team sizes | Needs a mature event platform and contract discipline | A group-scale platform; Veldmark's choice |
 | Many fine-grained domains (100+) | Precise ownership; small blast radius | High coordination and integration cost; contexts become services in disguise | Very large organizations that have done the domain work first, as Vinted's 300 domains suggest |
 
-**Integration style between contexts.**
+**Integration style between contexts.** Each style fits one kind of interaction; a shared database fits none.
 
 | Style | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |
@@ -267,7 +263,7 @@ Three decisions recur in every decomposition. None has a universal answer.
 | Published events | Decoupled in time; many consumers; replayable | Eventual consistency; contract governance needed | Listing changes, lifecycle, anything with many consumers |
 | CDC from tables | Gets data out without code changes | Schema becomes the contract; no business intent | A transitional source behind a translator |
 
-**One group model or one model per context.**
+**One group model or one model per context.** A group-wide canonical model belongs only in the shared kernel.
 
 | Option | Strengths | Weaknesses | When it is right |
 | --- | --- | --- | --- |
@@ -287,9 +283,11 @@ The context map's skeleton is shared across verticals. What changes is which con
 | Where the hardest boundary is | Messaging versus trust (scams arrive in conversations) | Listing versus property (duplicates, history) | Listing versus vehicle (relisting, history, valuation) | Jobs: application data with sensitive personal data. Recommerce: order versus listing |
 | Transactions context | Supporting, where shipping applies | Absent; milestones only | Emerging (reservations, deposits) | Recommerce core; jobs absent |
 
-The real-estate column explains why Hearthly's map has two contexts that Tradeyard's does not: entity resolution as a core context, and a mandates context that records which agency is authorized to market which property. The general-listings resilience analysis points to the same separation for goods in one case: when product-safety rules make the marketplace responsible for recalled items, a product identity must exist separately from the listing so that one safety notice can suspend every affected listing. [[vertical-requirements]] develops the differences further.
+The real-estate column explains why Hearthly's map has two contexts that Tradeyard's does not: entity resolution as a core context, and a mandates context that records which agency is authorized to market which property. The general-listings reference model's resilience analysis points to the same separation for goods in one case: when product-safety rules make the marketplace responsible for recalled items, a product identity must exist separately from the listing so that one safety notice can suspend every affected listing. [[vertical-requirements]] develops the differences further.
 
 ## Failure Modes
+
+Boundaries go wrong in recurring ways, most of them a missing owner or an undecided relationship. Nine of them recur often enough to name.
 
 **The god listing table.** One table holds the seller's content, the moderation state, paid flags, search boosts, contact data and counters, and every module reads and writes it. Yardstick's 214-column `ads` table is the example. Every change needs a cross-team review, and no team can say which columns it owns. The way out is not to split the table first. It is to name the owner of each group of columns, put a translator in front, and move consumers to the published language one at a time.
 
@@ -305,13 +303,13 @@ The real-estate column explains why Hearthly's map has two contexts that Tradeya
 
 **Conformist by accident.** A context adopts a vendor's or a partner's model without deciding to, because the first integration was the quickest. Five years later the vendor's field names are in the search index. Make conformity a recorded decision, as Veldmark did for the payment provider, and put an anti-corruption layer everywhere else.
 
-**Split ownership.** One context, two teams. Each team assumes the other handles the edge cases, and the edge cases are where Ghost Inventory lives. The two orphaned responsibilities that Veldmark found, removal propagation to digests and taxonomy, were both in this category.
+**Split ownership.** One context, two teams. Each team assumes the other handles the edge cases, and the edge cases are where Ghost Inventory lives. Its mirror image is a responsibility with no team: the two orphans Veldmark found, removal propagation to digests and taxonomy.
 
 **Too many contexts too early.** Fine-grained contexts before the domain is understood produce distributed monoliths: many services, one change at a time. Vinted's two years of domain work came before the services.
 
 ## The Chief Architect's View
 
-At group scale, the context map is the architecture's constitution. These are the decisions I would keep at group level, and the ones I would leave to brands.
+Those failures come from owners and relationships nobody decided, so the group must say who decides what. At group scale, the context map is the architecture's constitution. As Chief Architect, these are the decisions I would keep at group level, and the ones I would leave to brands.
 
 **Decided at group level, by decision record:**
 
@@ -337,6 +335,8 @@ At group scale, the context map is the architecture's constitution. These are th
 
 ## Questions to Ask
 
+These turn the decisions and signals above into a map review.
+
 1. For each brand, which context owns listing truth, and can every other copy, including the search index, be rebuilt from it?
 2. Where does the meaning of "listing", "seller" and "price" change in our system, and is there a boundary at each change?
 3. Which subdomains are core for each brand, and are those contexts owned by the brand even when the engine underneath is shared?
@@ -350,7 +350,9 @@ At group scale, the context map is the architecture's constitution. These are th
 
 ## From One Map to Four Verticals
 
-The context map says where the models are and how they talk. It deliberately treats the four brands alike, because most of the map is shared. The next chapter, [[vertical-requirements]], asks the opposite question: what genuinely differs between general classifieds, real estate, automotive and jobs, and therefore which contexts must never be forced into one shape.
+The forum's question, *what is a listing, and who decides?*, now has an answer in two halves. The six people were all right because each described a different context, so the group keeps six models, joined by an identifier and the published listing event. And one context decides: the catalog owns the listing's state, and every relationship on the map records who adapts to whom. The Essen Golf's late removal becomes one context's freshness contract instead of a bug in six places, and a brand can change its ranking or its packages without a cross-team project. The working rule for any group is the same: name one owner for every piece of listing data and one team for every context, and record each relationship on the map as a decision.
+
+The context map says where the models are and how they talk. It deliberately treats the four brands alike, because most of the map is shared. The next chapter, [[vertical-requirements]], goes beyond this chapter's short table of vertical differences and asks the opposite question: what genuinely differs between general classifieds, real estate, automotive and jobs, and therefore which contexts must never be forced into one shape.
 
 ## Sources and Evidence
 

@@ -1,0 +1,2060 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "messaging-and-leads",
+  "journal": "listing-systems-architecture",
+  "part": "part-6",
+  "title": "From Interest to Contact: Messaging and Lead Management",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the messaging-and-leads entry in journal-spec.json. Added units not in the published text: the roadmap paragraph p04 and the synthesis paragraph p75.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between a conversation and a lead (owner, lifecycle, retention), and the contact channels compared by what the platform sees, safety leverage and attribution quality.",
+        "The contact path: contact policy, conversation storage and real-time delivery, the message safety gate, the lead service, lead routing and delivery adapters, and the outcome feedback loop.",
+        "Lead creation and deduplication rules, the lead state machine, push versus pull delivery (Rightmove's export contract), retention per data class, attribution, ROI and disintermediation."
+      ],
+      "believe": [
+        "Safety checks belong on the delivery path, before the recipient sees a message, because that is where scams close.",
+        "A lead is a governed contract with the professional's systems, not an e-mail, and changing the lead-creation rule is a pricing change."
+      ],
+      "can_do": [
+        "Place a synchronous safety gate with a latency budget and verdicts on the delivery path, and say what runs asynchronously.",
+        "Define a lead-creation and deduplication rule and a delivery contract that portal and professional can reconcile.",
+        "Decide which parts of messaging a group shares and who owns the gate, the verdict logic, billable lead states and retention."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a phishing message and a lead-count dispute, the reader places each control on the contact path.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A seller receives a link to a fake payment page sixteen minutes after her first buyer contact; the check that should catch it runs after the message is stored and pushed. Separately, a car produced 23 contacts on your portal (14 e-mails, 7 calls, 2 bookings) and the dealer's CRM shows 14 leads. Using only this chapter: where should the check sit, and how do you make both sides count the same leads?",
+        "expected": "A synchronous safety gate between sender and recipient with a fixed latency budget and four verdicts, withholding links to newly registered domains (fail-closed for links and payment details from new accounts), with slower conversation-level scoring withdrawing messages and warning recipients afterwards. A lead service with one creation and deduplication rule across channels and a stable lead ID, delivered to the CRM by an acknowledged adapter, so 23 contacts become the same 19 leads on both sides; calls and bookings are leads too."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The moment of contact as the marketplace's unit of output, split into a conversation and a lead; why the chapter opens Part VI; then the city bike and Essen Golf cases, concepts, contact channels, the contact-path architecture, safety on the delivery path, leads and their lifecycle, routing and delivery, attribution and disintermediation, retention, the Veldmark worked example, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: dated company engineering and investor sources (OLX, Discord, Rightmove, Zillow, CoStar, Adevinta), EU law, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposal to count billable leads from the chat store and to copy message text into the data warehouse, the reader says why both are wrong and what to build instead.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Your team proposes to bill dealers per lead by counting conversations in the chat database, and to copy all message text into the data warehouse for analytics. Using only this chapter: what is wrong with each proposal, and what would you build instead?",
+        "expected": "A conversation and a lead are different objects with different owners, lifecycles and retention; leads are created from contacts (messages, calls, bookings, callback requests) by a versioned rule in a lead service with its own store and a stable lead ID, because counting the chat store makes every chat change alter billing retroactively. Only the conversation service stores message content; the data platform receives message events with identifiers and timings, not text, because every copy has to be found, secured and deleted."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a small vendor polling with overlapping windows and a dealer group wanting leads in seconds, the reader chooses a delivery style for each and says who deduplicates.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A small agency-software vendor polls your lead export every 15 minutes, always asking for the last 20 minutes, and complains of duplicate leads; a large dealer group wants each lead in its CRM within seconds and wants proof it arrived. Using only this chapter: what do you tell each, and who removes duplicates in each case?",
+        "expected": "The vendor uses a pull contract, which delivers each lead at least once and often twice by design (as Rightmove's specification describes), so the vendor's system must deduplicate on the stable lead ID. The dealer group gets push delivery by webhook or API, where the portal retries until the recipient acknowledges and sends the same lead ID every time, so the portal owns exactly-once. Both are adapters on one versioned lead contract."
+      }
+    ],
+    "audience": {
+      "who": "Chief architects, principal engineers and engineering leaders of classifieds, real-estate and automotive marketplaces who own or depend on messaging and lead delivery; product and monetization leaders who sell leads to professionals; trust-and-safety leads who need to know where their checks attach to messaging.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine, a webhook and Kubernetes are; p99 and p95 latency.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane, Hearthly and Keybridge, the cast (Ingrid Halvorsen, Aisha Rahman, Lucía Ortega), the Common Ground program, the architecture advice forum, Yardstick, Tradeyard Safe Deal, Dealer Hub, the Rotterdam city bike, the Essen Golf, the Lyon apartment, bounded contexts and anti-corruption layers, listing events, entity resolution, the trust-and-safety platform's synchronous gate and asynchronous path, fraud signals, DSA statements of reasons, disintermediation, and the failure patterns Ghost Inventory and Vanity Liquidity.",
+        "From the part introduction: contact is the marketplace's output and needs two objects, a conversation and a lead."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: conversation, lead and lead routing; 'connection' as a portal-specific count.",
+        "Lead-delivery practice: DMS and CRM integration, ADF XML, Rightmove's Real Time Datafeed, pull versus push delivery and exactly-once on a lead ID.",
+        "Message-store design: hot partitions, per-participant inbox indexes, idempotency keys.",
+        "The legal frame of message scanning: GDPR legitimate interest and the EECC's 'interpersonal communications service'."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How should a marketplace connect buyers and sellers so contacts become deals, without creating a scam channel?",
+    "claim": "A marketplace should model the moment of contact as two objects with different owners and retention, a platform-held conversation and a commercial lead, with only the conversation service storing message content; safety checks on links, domain age, payment and contact details, images and QR codes belong on the delivery path as a synchronous gate with a fixed latency budget (150 ms p99 at Veldmark) and four verdicts (deliver, deliver with warning, withhold, block), fail-closed for links and payment details from new accounts, while slower conversation-level scoring can withdraw messages afterwards; and a lead is a versioned contract with the professional's systems, with one creation and deduplication rule across channels, a stable lead ID, push or pull delivery acknowledged exactly once, and outcome feedback, so portal and professional count the same leads before any lead is billed.",
+    "disputed_by": "The common practice of building messaging for delivery speed with safety checks after delivery or only on user reports, using the chat store as the lead database or the CRM e-mail as the only lead record, and counting every message, call and form submission as a lead.",
+    "so_what": "A Chief Architect who accepts this shares one conversation service and safety gate across brands while each keeps its own interface, makes the lead contract a governed interface with an owner, a schema registry entry and a versioning policy, reviews any change to the lead-creation rule as a pricing change, and puts time to first reply, gate p99 and fail-open rate, lead acknowledgement rate and the reconciliation gap between portal and CRM lead counts on the group dashboard.",
+    "how_why": "On 7 March 2027 a link to a fake Safe Deal page reached Femke sixteen minutes after her first buyer contact, because Tradeyard's deny-list check ran after the message had been stored and pushed and the domain had been registered that afternoon; the account had already reached nine other sellers, and 37 similar messages were withheld only after an analyst wrote a rule that evening. Under a gate, the domain-age rule withholds the message and Femke never sees it. The Essen Golf's 23 contacts were 23 leads to Motorvane and 14 in the dealer's CRM, because calls and bookings were never exported and a repeat e-mail counted twice; under one deduplication rule and a stable lead ID both sides count 19, which a per-lead charge on Motorvane's €40 million lead and referral line needs.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The moment of contact is two objects, a platform-held conversation and a commercial lead created from contacts by a versioned rule, with different owners, lifecycles and retention, and only the conversation service stores message content."
+      },
+      {
+        "id": "S2",
+        "claim": "Contact channels differ in what the platform sees, its safety leverage and the quality of attribution, and a channel the platform cannot see it can neither protect nor count."
+      },
+      {
+        "id": "S3",
+        "claim": "Safety checks on messages belong on the delivery path as a synchronous gate with a fixed latency budget and four verdicts, fail-closed for links and payment details from new accounts, with slower scoring withdrawing messages afterwards, under a written legal position on scanning."
+      },
+      {
+        "id": "S4",
+        "claim": "A lead is a versioned contract with the professional's systems: one creation and deduplication rule across channels, a stable lead ID, typed qualification, states both sides recognize, versioned routing and push or pull delivery acknowledged exactly once, so both sides count the same leads."
+      },
+      {
+        "id": "S5",
+        "claim": "Lead value is proven downstream, with outcome data from the professional's systems, and users are kept on the platform with value rather than walls."
+      },
+      {
+        "id": "S6",
+        "claim": "A group shares the conversation service and the safety gate, governs the lead contract with explicit owners, and measures the contact path rather than contact volume."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Defines the conversation, the lead and the safety gate on the contact path, the objects the rest of the part prices, bills and measures, and shows which of them a group shares.",
+    "supports": [
+      "P6-1",
+      "P6-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses Ingrid's two questions (where safety checks sit, what a lead is); the worked example answers them after the body has built the design"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "channels, architecture, safety, leads, routing and attribution follow one contact through its life: how it arrives, how it is carried and checked, how it becomes a lead, how the lead is delivered and what it produces; retention follows both objects to the end of that life"
+      }
+    ],
+    "rationale": "The definitions come before anything else because every later section is about either the conversation or the lead. The channels come next because the architecture's components exist to handle them. The safety gate follows the architecture because it sits on the step between stored and shown that the delivery tiers expose. Leads, routing and attribution then follow the lead from creation to outcome; placed before the conversation sections, the lead rule would merge contacts the reader has not seen arrive. Retention comes after attribution because its rules cover both objects, including the lead copy in the professional's CRM and the export window of the pull contract; placed after safety, as first drafted, it treated lead records before the lead sections had introduced them. The worked example can only replay the cases once both objects and their controls exist; trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions apply the whole design, so they come last. The public-record evidence is not a section of its own: in three positions (after attribution, after retention, before the Chief Architect's View) both flow readers could not tell why it was there, so Adevinta's shared chat supports the Chief Architect's first decision and CarGurus' consent point is the fourth channel observation."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Search, ranking and alerts exist to produce one event: a buyer deciding to contact a seller. The contact is the last moment the marketplace can see both parties at once, and the last moment it can protect either of them."
+    },
+    "bridge": {
+      "from_reader_world": "Architects who built Part IV's search, ranking and alerts to bring buyers to listings, and who read in the part introduction that contact is the marketplace's output.",
+      "to_topic": "At the moment of contact a private seller's conversation and a professional's lead meet, and most platforms model only one of them."
+    },
+    "thesis_statement": {
+      "text": "Model the contact as two objects, a platform-held conversation guarded by a safety gate on the delivery path and a lead delivered to professionals as a versioned contract both sides can count, and prove lead value with outcomes that flow back.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraphs p02 and p03; the scene's last paragraph (p10) poses the two questions the body answers."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which lists the sections in order and names the kinds of evidence.",
+      "promises": [
+        {
+          "promise": "Two Veldmark cases: the Rotterdam city bike and the Essen Golf.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Definitions of contact, conversation and lead.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The contact channels compared.",
+          "kept_in": [
+            "channels"
+          ]
+        },
+        {
+          "promise": "The contact path and its safety gate.",
+          "kept_in": [
+            "architecture",
+            "safety"
+          ]
+        },
+        {
+          "promise": "Leads from creation through routing and delivery to attribution.",
+          "kept_in": [
+            "leads",
+            "routing",
+            "attribution"
+          ]
+        },
+        {
+          "promise": "Retention for messages and leads.",
+          "kept_in": [
+            "retention"
+          ]
+        },
+        {
+          "promise": "Both cases replayed under Veldmark's 2027 design.",
+          "kept_in": [
+            "worked"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Search, ranking and alerts exist to produce one event, a buyer deciding to contact a seller, which is the marketplace's unit of output and the last moment it can see, and protect, both parties at once.",
+        "function": "context",
+        "organization": "description",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3"
+          ],
+          "how": "Poses why the contact needs its own architecture."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Two different systems meet at that moment: for private sellers the contact is a conversation, for professionals it is a lead that their software receives and counts, and most platforms start with one and bolt the other on.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "General classifieds start with chat and discover dealers want CRM leads; vertical portals start with e-mail leads and discover buyers want chat, where the fraud is.",
+            "shows": "Neither starting point covers both objects, which is the problem the chapter solves."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "States the two-object split the thesis rests on."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The contact as the unit of output.",
+          "introduces": "The two objects that share the contact: the conversation and the lead.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "This chapter treats both objects as first-class and opens Part VI because the contact is the first thing the marketplace can count and charge for; it owns the terms lead, conversation and lead routing and leaves fraud detection, the moderation pipeline and the professional's tooling to their own chapters.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "monetization-models prices the lead, products-and-entitlements bills it, transactions-and-payments starts from the offer agreed in a conversation; fraud-prevention, trust-and-safety-architecture and professional-seller-tooling own the neighbouring topics.",
+            "shows": "Places the chapter in Part VI and sets its boundaries so the reader knows what is pointed to rather than taught."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "Ties the lead to the part's pricing and billing chapters."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The two objects.",
+          "introduces": "Why the chapter that defines them opens Part VI, and what it leaves to neighbouring chapters.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts from two Veldmark cases, defines the contact, the conversation and the lead, compares the channels, lays out the contact path and its safety gate, follows leads from creation through routing and delivery to attribution, sets retention for messages and leads, replays both cases under Veldmark's 2027 design, and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions, drawing on dated company engineering posts and investor filings, EU law and the fictional Veldmark.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces every section and the kinds of evidence."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What the chapter covers and leaves out.",
+          "introduces": "The order of the sections and the evidence they use.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Fourteen Conversations and Twenty-Three Leads",
+      "controlling_idea": "A phishing link delivered sixteen minutes after Femke's first contact and a lead count the dealer could not reconcile pose the chapter's two questions: where safety checks sit in a message's life, and what a lead is as an object both sides can count.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the cost of a late safety check and of an uncountable lead, and poses the questions the body answers."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The two cases come first because each poses one of the questions the body answers; the questions close the section so the reader carries them into the definitions."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Veldmark as the running example.",
+        "introduces": "The two spring 2027 cases.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In early 2027 Veldmark ran four contact systems, and two cases from that spring set the agenda for its messaging work.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark is the fictional group the book follows (meet-veldmark).",
+              "shows": "Introduces the running example."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "On 7 March 2027 a link to a fake Safe Deal payment page reached Femke at 20:11, sixteen minutes after her first buyer contact, because Tradeyard's deny-list check could not know a domain registered that afternoon; she reported it and the account was suspended at 20:26.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "€240 city bike listed 19:42, searchable 19:48, 312 saved searches, first message 19:55, 14 conversations; phishing link 20:11; report 20:19; suspension 20:26; 37 similar messages withheld by a rule written that evening; sold Monday 8 March for €225 via Safe Deal pay at pickup.",
+              "shows": "A check against known domains cannot stop a domain registered hours before use.",
+              "source": "scenario-ledger.md, Rotterdam city bike"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The two cases.",
+            "introduces": "The first case: the Rotterdam city bike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The problem Ingrid and Aisha saw was not the seven minutes from report to suspension but that the check ran after the message was stored and pushed, by which time the account had reached nine other sellers who were never warned.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Sixteen minutes from first contact to phishing link; nine other sellers contacted before the report.",
+              "shows": "The weak point is the place of the check, not the speed of enforcement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The city bike timeline.",
+            "introduces": "What it shows: the check sat in the wrong place.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "On 14 April 2027 the Essen Golf produced 23 raw leads on Motorvane but only 14 in Autohaus Ruhrblick's CRM, because calls and bookings were never exported and a repeat e-mail counted twice, so the two sides counted different things with no shared lead identifier.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "€21,900 2021 Golf from the DMS feed; 14 e-mails, 7 calls, 2 test-drive bookings in ten days; sold 29 April; CRM showed 14; calls and bookings only in Dealer Hub; two of the fourteen the same person.",
+              "shows": "Two honest counts disagree when there is no shared lead object.",
+              "source": "scenario-ledger.md, Essen Golf; consistency-issues.md item 11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The safety problem in a private sale.",
+            "introduces": "The second case, explicitly a counting problem rather than a safety problem.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The gap mattered beyond one car because Motorvane, which earns €40 million a year from leads and financing referrals, was about to charge per lead, and a per-lead charge on a number the dealer cannot reconcile generates disputes.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Motorvane's €40 million leads and financing referrals line; proposed per-lead charge above a monthly allowance.",
+              "shows": "Billing turns the counting gap into money.",
+              "source": "scenario-ledger.md, Motorvane revenue"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The 23 against 14 gap.",
+            "introduces": "Why it matters: the planned per-lead charge.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Ingrid took two questions to the architecture advice forum in May 2027: where safety checks should sit in a message's life, and what a lead is as an object both Veldmark and a dealer can count.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Both cases.",
+            "introduces": "The two questions the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Contact, Conversation, Lead",
+      "controlling_idea": "A contact is an event, a conversation is the platform-held thread, a lead is a record created from contacts by a versioned rule, and the conversation and the lead differ in almost every property.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the objects the architecture is built from."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The vocabulary comes first, then the one distinction the chapter turns on, then the rule that links contacts to leads, which needs both definitions. With the rule first, it would count leads before the reader knew a lead differs from a conversation."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's question what a lead is.",
+        "introduces": "Definitions that answer it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "form": "list",
+          "controlling_idea": "Ingrid's question what a lead is needs definitions first, so the book fixes contact, conversation, message, lead, lead routing and connection, owning conversation, lead and lead routing, because the industry uses these words loosely and published counts differ.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "CarGurus' FY2025 10-K defines connections to include clicks to directions; Zillow's 10-K calls Premier Agent connections 'validated customer connections, or leads'.",
+              "shows": "Published definitions differ, so a number is meaningless without its definition.",
+              "source": "CarGurus 10-K (2026); Zillow 10-K (2026)"
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The conversation and the lead often begin with the same click, but almost every property differs: purpose, owner, lifecycle, identity, what counts, retention, risk and link to revenue.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Conversation versus lead across purpose, owner, lifecycle, record identity, what counts, retention driver, main risk and monetization link.",
+              "shows": "The two objects need different components, owners and retention."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The definitions.",
+            "introduces": "The central distinction between conversation and lead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A lead is created from a contact by a rule that changes the number on a professional's invoice, so the rule needs an owner and a version like a pricing rule.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Typical rules: first message in a new conversation; calls above a duration threshold; every booking; repeat contacts within a window update the existing lead.",
+              "shows": "Each rule choice changes counts and therefore billing."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: one click forking into a guarded conversation and a counted lead record.",
+              "shows": "Shows the two objects and the rule between them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lead as a different object.",
+            "introduces": "How a lead is created from contacts, and why the rule is a pricing decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "Contact Channels: What the Platform Sees",
+      "controlling_idea": "Each contact channel gives the platform a different view of the exchange, a different safety lever, a different attribution quality and its own legal obligations, and what the platform cannot see it can neither protect nor count.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Compares the channels on the three properties the design depends on."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The table states the comparison; the four observations each draw one consequence from it, ordered from safety (needed by the next sections) to lead quality and attribution (needed by the lead sections), ending with the consent each channel must record, which the architecture's contact policy and the retention rules carry. Reversed, the lead-quality and attribution observations would arrive before the safety point the next three sections build on. The consent observation sat in a separate public-record section until 2026-11-12; both flow readers in three rounds could not say why that section was separate."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The contact as an event with many forms.",
+        "introduces": "The channels through which a contact happens.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Each way a buyer can reach a seller gives the platform a different view of the exchange, a different lever for safety and a different quality of attribution, and four observations follow from the comparison.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight channels (chat, e-mail form or relay, visible phone, masked phone, callback, booking, offer or reservation, application) by what the platform sees, safety leverage, attribution quality and typical fit.",
+              "shows": "Channels range from full visibility and leverage (chat) to almost none (a visible number)."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Every channel the platform cannot see is a channel it cannot protect, because classifieds fraud is mostly pre-payment and the conversation is the platform's last chance to intervene.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The comparison.",
+            "introduces": "The first observation: visibility is protection.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Channels with more friction produce better leads, as Autotrader's reservation figures show, though pushing such a channel too fast has a cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Autotrader FY26: 137,000 Deal Builder reservations (49,000 the year before), enquiries that 'convert at double the rate into sales'; a fall in retailer numbers partly attributed to 'the speed and nature' of the roll-out.",
+              "shows": "Higher-intent channels yield better leads, and their roll-out has a limit.",
+              "source": "Autotrader FY26 results (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first observation.",
+            "introduces": "The second: friction and lead quality.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Channels evolve away from what the platform cannot attribute: whatever a portal cannot deliver into the professional's system it reports only in its own dashboards, where it is easy to dispute.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rightmove's RTDF change log: version 1.3.6 (April 2021) removed the phone-lead calls, leaving e-mail lead exports; the specification gives no reason.",
+              "shows": "A documented case of a channel dropping out of the delivered record.",
+              "source": "Rightmove RTDF v1.4.1 (2023)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second observation.",
+            "introduces": "The third: attribution shapes which channels survive.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Channels carry their own law, as CarGurus' 10-K shows by listing TCPA compliance as a risk, so a contact channel is also a consent record the platform must keep.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "CarGurus lists TCPA compliance as a risk because its platforms send texts and calls.",
+              "shows": "Channels bring consent obligations.",
+              "source": "CarGurus 10-K (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third observation.",
+            "introduces": "The fourth: each channel is also a consent record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Contact Path",
+      "controlling_idea": "The contact path has eight components with explicit boundaries, of which only the conversation service stores message content, and its store and delivery tiers are shaped by busy inboxes and by the step between stored and shown.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Lays out the components and the two boundaries the conversation-lead split depends on."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole path first, then component ownership, then the two boundaries the conversation-lead split depends on, then the storage and delivery details of the one component that holds content; the section ends on the step between stored and shown so the safety section can pick it up."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "What each channel lets the platform see.",
+        "introduces": "The components that carry contacts through the platform.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Whatever the channel, contacts pass through one contact path of eight components, and Figure 2 shows the reference architecture Veldmark adopted, which is not a description of any real company's systems.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: contact policy, conversation service calling the gate before delivery, lead service, routing and outcome feedback.",
+              "shows": "Shows the components and the single store of message content."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "A table states what each component owns and what it must not own.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Contact policy, conversation service, message safety gate, real-time gateway, call tracking, booking service, lead service, lead routing and delivery: responsibility, owns, does not own.",
+              "shows": "Each component has a bounded responsibility and named neighbours."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The eight components.",
+            "introduces": "Their ownership boundaries.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Contact policy is where friction for new accounts lives: capping how many sellers a new account may contact per hour and masking contact details until the account has history.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Experts for Ofcom recommend 'creating delays between creating an account and reaching a large audience'.",
+              "shows": "External support for friction on new accounts.",
+              "source": "Integrity Institute for Ofcom (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The component table.",
+            "introduces": "The first component's job in practice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Two boundaries cause most of the trouble when they are blurred.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The components and their ownership.",
+            "introduces": "The two boundaries that matter most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The listing is referenced, not copied: a conversation keeps only a small snapshot, and listing events must close contact when the listing is sold or removed, or the inbox keeps accepting messages as Ghost Inventory.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The city bike marked sold at 18:10 on Monday should close new contact within seconds.",
+              "shows": "A concrete deadline for closing contact.",
+              "source": "scenario-ledger.md, Rotterdam city bike"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two boundaries.",
+            "introduces": "The first: listing reference.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Only the conversation service stores message content: leads carry the first message and consented contact details, analytics receive message events without content, and every extra copy has to be found, secured and deleted.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first boundary.",
+            "introduces": "The second: one store of message content.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "A conversation store has a simple access pattern, users reading their own inbox newest first, and a demanding volume of small writes to messages whose content is immutable but whose metadata changes.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The conversation service as the only store of content.",
+            "introduces": "What that store must handle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "OLX's 2021 account of chat on Cassandra shows how mutable metadata on 'immutable' messages shapes the store, down to the compaction strategy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OLX stored chat on Cassandra partitioned by user, with chats and threads tables, and moved from time-window to leveled compaction because 'additional states have to be associated with the messages'.",
+              "shows": "Changing metadata spreads updates across files and slows reads.",
+              "source": "OLX Tech Blog (2021)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Mutable metadata on immutable messages.",
+            "introduces": "A marketplace's documented store.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Discord's 2023 account shows the problem at scale: messages partitioned by channel and time bucket, and hot partitions solved by request coalescing and a database migration.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "177 Cassandra nodes to 72 ScyllaDB nodes; p99 historical fetch from 40-125 ms to 15 ms.",
+              "shows": "Hot partitions, not storage, are the hard problem.",
+              "source": "Discord (2023)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "OLX's store.",
+            "introduces": "A larger public example outside marketplaces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "In a listing marketplace the hot partition is the busy inbox, so the recommended design partitions messages by conversation, keeps a per-participant inbox index, treats professional inboxes as a separate product, uses idempotency keys and stores attachments as references.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A dealer with hundreds of open conversations; an agency branch with a popular development; a private seller with eighty messages an hour.",
+              "shows": "Where the load concentrates in a marketplace."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Discord's busy channels.",
+            "introduces": "The marketplace's version of the problem and the design for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Delivery has three tiers (an open connection, push notification, e-mail fallback), and the conversation service records the delivery state the gateway reports without knowing the tier.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Storing messages.",
+            "introduces": "Delivering them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Delivery speed earns money, but speed and safety pull against each other on exactly one step, the moment between stored and shown, which the next section resolves.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Delivery tiers.",
+            "introduces": "The tension between delivery speed and safety.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "heading": "Safety on the Delivery Path",
+      "controlling_idea": "The message safety gate must decide before delivery, within a fixed latency budget, with four verdicts, slower detectors working asynchronously and a written legal position on scanning.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Argues for the gate's place, budget, verdicts and legal basis."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Scope first, then the claim (gate before delivery) and its public evidence, then the design parameters in the order a builder needs them (budget, asynchronous path, verdicts), and last the legal constraint that can change all of them."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The step between stored and shown.",
+        "introduces": "The gate that decides on that step.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "The step between stored and shown is where Veldmark put the message safety gate; the moderation pipeline and fraud signals have their own chapters, so this section covers only what is specific to messages.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Pointers to trust-and-safety-architecture and fraud-prevention.",
+              "shows": "Prevents re-teaching Part V."
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The gate must sit before delivery because the scams that matter in classifieds close in the conversation, and once a phishing link is on the seller's screen the platform depends on the seller's judgement.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Fake 'payment received' pages; deposit requests by bank transfer; fake landlords asking for money before a viewing.",
+              "shows": "The scam scripts complete inside the conversation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "What the section covers.",
+            "introduces": "Why the gate must come before delivery.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Large classifieds operators are moving the decision earlier, as OLX's real-time chat-image blocking and earlier warn-in-context pattern show, and a platform's own brand inside a message is itself a risk signal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "OLX 2026: Chat Images GenAI blocks suspicious images in real time; fraudulent images about 30% of fraud cases in Poland; QR-code detection at 80% precision.",
+              "shows": "Real-time blocking in chat is documented practice.",
+              "source": "OLX Group (2026)"
+            },
+            {
+              "kind": "case",
+              "what": "OLX South Africa 2018: payment keywords and moves to e-mail or WhatsApp triggered safety tips; Kleinanzeigen warns that 'Kleinanzeigen' messages in chat can come from the chat partner.",
+              "shows": "Warn-in-context and brand impersonation are recognized patterns.",
+              "source": "ITWeb (2018); Kleinanzeigen (n.d.)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The argument for deciding before delivery.",
+            "introduces": "Public evidence that operators do so.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Because the gate runs on every message it must be deterministic, cheap and bounded: Veldmark set 150 ms at p99, fail-open for low-risk conversations and fail-closed for links or payment details from accounts under 24 hours old.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Checks that fit the budget: URL lists, domain age, platform brand, IBAN and handles, image hashes and QR decoding, sender velocity, counterparty and listing risk, each with what it catches and its typical verdict.",
+              "shows": "The budget admits enough checks to catch the city bike link.",
+              "source": "scenario-ledger.md, messaging-and-leads"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where the gate sits.",
+            "introduces": "What it can afford.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Slower checks run asynchronously on message events and can withdraw delivered messages and warn counterparties, with LLMs used only on the uncertain band because at 14 million messages a day sending every message would cost more than the fraud it prevents.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 14 million messages a day; the uncertain 1-2% sent to an LLM.",
+              "shows": "Puts a number on the cost argument.",
+              "source": "scenario-ledger.md, Messaging volumes"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What runs synchronously.",
+            "introduces": "What runs asynchronously.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The gate needs four verdicts (deliver, deliver with warning, withhold silently, block), because a sender told a message was blocked learns which words to change, and a withhold may require a DSA statement of reasons.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Synchronous and asynchronous checks.",
+            "introduces": "The verdicts the gate returns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: a message's life with the gate before delivery and asynchronous withdrawal after.",
+              "shows": "Shows where the safety decision sits relative to delivery."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Automated scanning of private messages engages the GDPR and possibly the ePrivacy confidentiality rules, so a platform needs a written legal position before building message scanning.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The EECC excludes services where communication is 'merely a minor ancillary feature that is intrinsically linked to another service'.",
+              "shows": "A marketplace chat may be ancillary, but that is a reading to confirm with counsel.",
+              "source": "Directive (EU) 2018/1972, Art. 2(5)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the gate does.",
+            "introduces": "The legal limits on doing it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "leads",
+      "heading": "Leads: Creation, Qualification and Lifecycle",
+      "controlling_idea": "The lead service creates leads by one rule across channels, deduplicates them, carries qualification as typed fields, and moves each lead through states both sides recognize.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Defines the lead object the contract carries."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The section follows a lead from creation to qualification to its lifecycle states, the order in which the lead service acts on it. Qualification placed before creation would enrich a lead the reader has not seen created, and the lifecycle placed first would name states for an object without a rule."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The conversation and its safety gate.",
+        "introduces": "The other object: the lead and the service that creates it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "With the conversation and its gate in place, the chapter turns to the other object: the lead service turns contacts into leads by subscribing to conversation, call and booking events and applying the creation, deduplication and enrichment rules.",
+          "function": "description"
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Veldmark's version of the typical rules is that a lead is created by a first buyer message to a professional, a tracked call of at least 30 seconds, a confirmed booking or a callback request, and further contacts from the same buyer about the same listing within 30 days attach to it: one buyer, three channels, one lead.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Veldmark's lead rule.",
+              "shows": "The rule a professional will accept.",
+              "source": "scenario-ledger.md, messaging-and-leads"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lead service.",
+            "introduces": "Its creation and deduplication rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "A lead's value depends on what the professional learns from it, and the published examples all add structured information at the moment of contact.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Rightmove Enhanced Leads (used by 50% of letting lead senders; over 80% signed in; 60% attach a property to their Mortgage in Principle); CarGurus Digital Deal and Pre-Qualified Leads; Autotrader Buying Signals on more than 800,000 enquiries, high-intent leads converting at twice the average rate.",
+              "shows": "Portals raise lead value with structured data and model scores.",
+              "source": "Rightmove (2026); CarGurus 10-K (2026); Autotrader FY26 (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Creation and deduplication.",
+            "introduces": "Qualification and enrichment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A signed-in buyer, a structured enquiry and a model score make a lead worth more than free text, so qualification data must travel in the lead contract as typed fields, and lead scoring needs the ownership of any model.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three published examples.",
+            "introduces": "The pattern and its architectural requirement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A lead needs states that both sides recognize, because each state is a potential dispute.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the lead lifecycle Veldmark adopted.",
+              "shows": "Shows which states the portal controls and which depend on the professional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Qualification.",
+            "introduces": "The lead lifecycle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Delivered means the recipient's system accepted the lead, and the states after Acknowledged are reported by the professional, so they are only as good as the integration.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lifecycle figure.",
+            "introduces": "Two points in it that are easy to miss.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "routing",
+      "heading": "Lead Routing and Delivery",
+      "controlling_idea": "Routing is a separate, versioned rule set, and delivery is one lead contract with adapters per channel, where pull shifts deduplication to the client and push keeps it at the portal.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Specifies how the lead contract reaches the professional exactly once."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Routing comes before delivery because the recipient must be chosen before a channel is; the section ends on the single contract both depend on. Placed before routing, the delivery channels would have no recipient to deliver to, and the one-contract recommendation would arrive before the reader had seen why pull and push need the same lead ID."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "A created and qualified lead.",
+        "introduces": "Who receives it and how.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "Most leads go to the professional who owns the listing, but some models route by commercial rules, and dealer groups and agency networks route further to a branch and a salesperson.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "CoStar's Homes.com 'your-listing your lead basis'; Zillow's share-of-voice distribution with no promised share; Follow Up Boss 'intelligent lead routing'.",
+              "shows": "Routing models range from owner-only to paid share.",
+              "source": "CoStar 10-K (2026); Zillow 10-K (2026)"
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The routing decision should be a separate, versioned rule set with logged inputs because it is commercially sensitive, subject to transparency obligations where paid, and the first thing examined in a dispute.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Routing models.",
+            "introduces": "How the routing decision should be built.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Professionals receive leads in systems the portal does not control, so the delivery adapter is the anti-corruption layer between the lead contract and each of them.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "E-mail, structured e-mail or file (ADF XML in US automotive), pull API, push webhook, portal pro inbox: how each works, strengths, weaknesses, when to use.",
+              "shows": "Each channel trades integration cost against acknowledgement and outcomes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who receives the lead.",
+            "introduces": "How it reaches them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "A pull contract shifts the exactly-once problem to the client, which must deduplicate on the lead ID because overlapping windows deliver leads at least once, while push keeps it at the portal, which is where larger portals are heading.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove advises polling at most every 15 minutes and requesting the last 20 minutes, because Replication_Lag reports replication 'between the three Rightmove datacentres'.",
+              "shows": "Overlapping windows deliver duplicates by design.",
+              "source": "Rightmove RTDF v1.4.1 (2023)"
+            },
+            {
+              "kind": "quotation",
+              "what": "mobile.de's July 2026 Lead API transfers leads 'directly and securely into existing CRM systems'.",
+              "shows": "A documented move to push.",
+              "source": "mobile.de (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The delivery channels.",
+            "introduces": "The difference between pull and push for duplicates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "A multi-brand group should define one versioned lead contract and implement each delivery channel as an adapter on it, which is what makes the Golf disagreement disappear.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Routing and both delivery styles.",
+            "introduces": "The recommendation that combines them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "attribution",
+      "heading": "Attribution, ROI and Disintermediation",
+      "controlling_idea": "Lead value is proven only with outcomes from the professional's systems, lead counts are an operational signal, and users are best kept on the platform with value rather than walls.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Closes the lead's life with the outcome and the leakage it competes with."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The section defines attribution and says where its data lives, adds the operational use of lead counts, and ends on contacts that leave the platform and the answer to that leakage. Disintermediation placed first would argue about leakage before the reader knows what the platform loses when an outcome goes unattributed."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Delivered leads.",
+        "introduces": "What happens to them afterwards.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "A professional pays for outcomes and is sold contacts, and because the portal rarely owns the outcome, attribution that both sides accept needs outcome data sent back from the professional's systems or long-period transaction matching.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Zillow's pay-at-close fee charged 'when a real estate transaction is closed with one of the leads, generally within two years', estimated from 'the conversion rate of a lead'.",
+              "shows": "A model that depends on an outcome pipeline.",
+              "source": "Zillow 10-K (2026)"
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Lead counts are also an operational signal: a broken contact button looks like a quiet day unless someone watches lead counts against a forecast.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta's Artemis monitors more than 140 product metrics and caught a drop in iOS leads of about 100,000 a day, about €41,000 a day, within a day.",
+              "shows": "Lead-volume monitoring pays.",
+              "source": "Adevinta (2024)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Leads as a commercial measure proven by outcomes.",
+            "introduces": "Leads as an operational signal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Disintermediation, buyers and sellers moving off the platform once they have met, is the other side of attribution: part of the business model for visibility businesses, revenue leakage for pay-per-lead and transactional models, and fighting it with walls works only until it damages the match.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Measuring what leads produce.",
+            "introduces": "Contacts that leave the platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The defensible position is to keep users on the platform with value rather than walls, as Marktplaats and Kleinanzeigen do by tying buyer protection to the conversation.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Marktplaats buyer protection (2022) only for deals arranged in platform messaging; Kleinanzeigen 'Sicher bezahlen' starts from a chat agreement.",
+              "shows": "Protection tied to the conversation gives users a reason to stay.",
+              "source": "AVROTROS Radar (2022); Kleinanzeigen (n.d.)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: a walled marketplace against an open square.",
+              "shows": "Value keeps users where walls do not."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Leakage and walls.",
+            "introduces": "The alternative.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "heading": "Retention: What to Keep, and for How Long",
+      "controlling_idea": "Retention is set per data class, and lead payloads must be minimized at design time because a lead copy in a professional's CRM is beyond the platform's reach.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows that the two objects have different retention drivers."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The conversation and the lead followed through their lives, from first message to outcome.",
+        "introduces": "How long each kind of data from both objects is kept.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Both objects leave data behind, and because messages are the most sensitive unpublished data a listing platform holds, retention is set per data class.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Message content, message metadata, safety evidence, platform lead record, lead copy at the professional: example, retention driver, Veldmark 2027 rule (content deleted 24 months after the last message; lead contact details removed after 13 months).",
+              "shows": "Each class has its own driver and rule.",
+              "source": "scenario-ledger.md, messaging-and-leads"
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Lead payloads must be minimized at design time because the platform cannot delete a buyer's details once they are in a dealer's CRM, and a bounded export window, as at Rightmove, keeps the portal from becoming an indefinite lead archive.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove's brand-level lead export returns 'a maximum of 24 hours within the last 28 days'.",
+              "shows": "A documented bounded window, from the pull contract the routing section described.",
+              "source": "Rightmove RTDF v1.4.1 (2023)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The last row of the retention table.",
+            "introduces": "What it implies for lead design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked",
+      "heading": "Veldmark Worked Example: One Messaging Platform, Four Brands",
+      "controlling_idea": "Under the design Veldmark adopted in May 2027, the city bike's phishing link is withheld before Femke sees it and the Golf's 23 contacts become 19 leads both sides count, recorded in four decisions.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Answers the scene's two questions with the design applied."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Baseline and load first, then the two cases in the order the scene posed them, then the decisions that commit the group. With the decisions first, the reader would meet commitments before seeing the load and the two replays that justify them."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's two questions and the design built since, ending with retention.",
+        "introduces": "The design applied to both cases.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "The advice forum adopted the reference design in May 2027 as part of Common Ground, replacing four brand-specific contact systems (Keybridge as the receiving fourth), none of which checked a message before delivery or gave a lead an identifier the recipient's software shared.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Baseline per brand: contact channels, message store, safety, lead delivery.",
+              "shows": "Each brand ran its own contact system, with no pre-delivery check and no shared lead ID, which is what the shared design replaces.",
+              "source": "scenario-ledger.md, messaging-and-leads"
+            }
+          ]
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "At about 14 million messages a day the capacity problem is not storage but the synchronous gate at about 600 calls a second at peak inside 150 ms, and the inbox fan-out for professionals.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "14 million messages a day, 11 million on Tradeyard; average about 160 a second; planned peak about 600 a second; about 11 GB a day and about 4 TB a year on Tradeyard.",
+              "shows": "Worked arithmetic puts the load on the gate, not the store.",
+              "source": "scenario-ledger.md, Messaging volumes"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The adopted design.",
+            "introduces": "Its load.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Replayed under the gate, the city bike's 20:11 message is withheld by the domain-age rule, Femke never sees it, the nine other sellers get safety notices, and the 37 messages are withheld within seconds instead of after an analyst writes a rule.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Three signals (day-old domain, 'Safe Deal' in text, account created Saturday); 13 genuine conversations continue; sale on Monday as before.",
+              "shows": "Answers the first question.",
+              "source": "scenario-ledger.md, Rotterdam city bike"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The load the gate must carry.",
+            "introduces": "What it does to the first case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Replayed under the lead contract, the Golf's 23 contacts become 19 leads with stable IDs delivered by webhook with acknowledgements, so both sides count the same leads and the per-lead charge can be priced on an auditable number.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "14 e-mails from 13 buyers make 13 leads; one booking merges, one is new; 7 calls of which two merge make 5; 13 + 1 + 5 = 19; sale on 29 April reported against one lead.",
+              "shows": "Worked arithmetic answers the second question.",
+              "source": "scenario-ledger.md, Essen Golf; consistency-issues.md item 11"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: 23 against 14 before, 19 shared lead IDs after.",
+              "shows": "Shows the reconciled count."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first case replayed.",
+            "introduces": "The second case replayed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "form": "list",
+          "controlling_idea": "The forum recorded four decisions: one group conversation service with brand interfaces, a gate owned by T&S with a Messaging contract, a Lead event contract v1 from Q1 2028, and Keybridge on the receiving side only.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Stages from November 2027 (Tradeyard NL and BE) and 2028 (Motorvane, Hearthly gains chat); 150 ms p99 and fail-closed rule; e-mail-only delivery retired by end of 2028; the March 2027 neutrality decision applied to leads.",
+              "shows": "The decisions turn the design into commitments.",
+              "source": "scenario-ledger.md, messaging-and-leads"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Both replays.",
+            "introduces": "The decisions that make them real.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Six design choices, from build or buy to one group platform, each have conditions under which the other option is right, and masking can also be a paid entitlement.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "States when the recommendations do not apply."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's decisions.",
+        "introduces": "When the other option is right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p64",
+          "controlling_idea": "Veldmark's decisions are not the only right answers, since for each of six choices the table says when the other option is right, and of these masking needs the most care: it protects private sellers and makes counting possible but can feel to professionals like the portal standing in the way, and where it is a paid entitlement the contact policy service enforces it from the entitlement read model.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Build or buy, safety placement, contact details, lead delivery, lead definition, group platform: option A, option B, when each is right.",
+              "shows": "Each recommendation has limits."
+            },
+            {
+              "kind": "quotation",
+              "what": "CarGurus' free tier offers 'capped anonymous leads and connections'.",
+              "shows": "Masking as an entitlement.",
+              "source": "CarGurus 10-K (2026)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Channels, recipients, fraud, qualification, routing and outcome data differ by vertical, and real estate and automotive each change one rule of the design.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Shows how the lead design varies by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "General trade-offs.",
+        "introduces": "Differences by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "controlling_idea": "Channels, recipients, fraud, qualification, routing and outcome data change by vertical, and in real estate the lead goes to the agency whose listing the buyer contacted, even when entity resolution has clustered several agencies' listings, because routing it elsewhere would be ranking disguised as routing.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five verticals by dominant channel, recipient, need for a lead object, main fraud, qualification data, routing complexity and outcome data.",
+              "shows": "The design shifts by vertical."
+            },
+            {
+              "kind": "case",
+              "what": "The Lyon apartment listed by three agencies (entity-resolution).",
+              "shows": "A cluster is not a recipient."
+            }
+          ]
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "In automotive outcome data is closest to the portal, so lead attribution can be most precise there if the dealer agrees to share it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Golf's removal arrived 26 hours after the sale.",
+              "shows": "Sale data reaches the portal within days.",
+              "source": "scenario-ledger.md, Essen Golf"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Real estate.",
+            "introduces": "Automotive.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Eight recurring failures each break one of the chapter's rules, from safety after delivery to lead volume treated as success.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Names what goes wrong when each claim is ignored."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Variation by vertical.",
+        "introduces": "What goes wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "form": "list",
+          "controlling_idea": "Eight failure modes each break one of the rules above and each has a symptom: safety after delivery, the chat store as lead database, e-mail as the lead contract, duplicate leads, contacts on gone listings, copies of message content, hidden routing rules and lead volume treated as success.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Five group-level decisions: share the conversation platform early, govern the lead contract, assign ownership explicitly, measure the path rather than the volume, and plan for AI on both sides.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S4"
+        ],
+        "how": "Turns the design into the group's agenda."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "Sharing comes first because it fixes the platform the other decisions govern; AI comes last because it extends the design rather than founds it. Governance or ownership placed before sharing would assign owners to a platform not yet decided. The Adevinta evidence that was a separate 'In Practice' section until 2026-11-12 now sits in the first decision, which it supports."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The eight failure modes.",
+        "introduces": "The decisions that prevent the failures at group scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p68",
+          "controlling_idea": "The failure modes are prevented by decisions above any single team: at group scale messaging and leads raise five decisions for the Chief Architect's agenda, which generalize the four Veldmark's forum recorded.",
+          "function": "transition"
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "Share the conversation platform early: messaging is a natural client of the group identity, and the little marketplaces publish on messaging points the same way, since Adevinta consolidated chat first, suggesting messaging is generic enough to share and close enough to trust and safety that sharing pays twice; the brand experience stays local.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five decisions.",
+            "introduces": "The first: share the conversation platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'consolidating enabling capabilities such as cloud and data, and overarching elements such as chat and moderation'; no architecture post on the shared service.",
+              "shows": "A group shared chat early; how it built it is not public.",
+              "source": "Adevinta Annual Report 2023 (2024)"
+            }
+          ]
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Make the lead contract a governed interface with a registry entry, a versioning policy, an owner and a change process, and review any change to the lead-creation rule as a pricing change.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first decision.",
+            "introduces": "The second: govern the lead contract.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Assign ownership explicitly: Messaging, Trust & Safety, Monetization, the Data Protection Officer and Professional Tools each own a named piece, and the forum reviews changes that cross two.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second decision.",
+            "introduces": "The third: ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "Measure the path, not the volume: reply times, scam reports and withheld-message precision, gate p99 and fail-open rate, lead delivery latency and acknowledgement, the reconciliation gap and lead-to-outcome rate.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The third decision.",
+            "introduces": "The fourth: metrics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Plan for AI on both sides of the conversation, so the conversation model marks machine-generated messages, the lead contract records them and lead rules decide whether an assistant's enquiry is a lead.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Zillow reports 'AI-supported smart message suggestions' in its CRM.",
+              "shows": "Professionals already use AI on enquiries.",
+              "source": "Zillow 10-K (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The fourth decision.",
+            "introduces": "The fifth: AI.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions test a messaging and lead design against the chapter's claims.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns each claim into a question for a design review."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that check them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p74",
+          "form": "list",
+          "controlling_idea": "Ten questions test a contact design against the decisions above, from where the first safety check runs to which outcome data flows back.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Contact to Transaction",
+    "synthesis": "Ingrid's two questions have one answer: keep the conversation and the lead apart and give each its own control, a gate inside the conversation before delivery and one versioned lead contract both sides read.",
+    "so_what": "A platform that merges the two objects can neither stop a phishing link in time nor defend an invoice; one that separates them can share a conversation service across brands and put a price on the lead.",
+    "callback": {
+      "to": "The opening claim that the contact is the last moment the marketplace sees both parties, and the two cases of the scene.",
+      "how": "The gate is where the platform uses that moment to protect Femke; the lead contract is where it counts the Golf's 19 leads with the dealer."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Put the safety gate on the delivery path, make the lead contract a governed interface, and review any change to the lead-creation rule as a pricing change."
+    },
+    "hand_off": {
+      "to": "transactions-and-payments",
+      "relationship": "sequence",
+      "carries_over": "An offer accepted in chat leaves the marketplace a choice between stepping aside and carrying the deal through payment, and the phishing link that reached Femke imitated exactly that Safe Deal flow.",
+      "introduces": "Payment, shipping and buyer protection, and when a classifieds marketplace should take part in them."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the two cases to the review questions.",
+      "introduces": "The answer to Ingrid's two questions.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p75",
+        "controlling_idea": "Ingrid's two questions have one answer: keep the conversation and the lead apart, put the check that protects Femke inside the conversation before delivery, and make the rule that turns the Golf's 23 contacts into 19 leads one versioned contract both sides read, because a platform that merges them can neither stop a phishing link in time nor defend an invoice.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The city bike and the Golf, each answered by one of the two objects.",
+            "shows": "The callback shows each question closed by the design."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Shows how the sections fit together."
+        }
+      },
+      {
+        "id": "p76",
+        "controlling_idea": "A contact that turns into an agreement leaves the marketplace a choice between stepping aside and carrying the deal through payment, and the phishing link that reached Femke imitated exactly the Safe Deal flow the next chapter examines.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S4"
+          ],
+          "how": "Hands off to transactions-and-payments."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The contact as two objects.",
+          "introduces": "The next step after contact: the transaction.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Fraud typology, risk scoring and step-up friction.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    },
+    {
+      "topic": "The moderation pipeline, enforcement propagation and appeals.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    },
+    {
+      "topic": "The professional's lead inbox, CRM features and pro SaaS.",
+      "covered_in": [
+        "professional-seller-tooling"
+      ]
+    },
+    {
+      "topic": "Lead pricing, quotas and billing.",
+      "covered_in": [
+        "products-and-entitlements",
+        "monetization-models"
+      ]
+    },
+    {
+      "topic": "Payments and buyer protection after the contact.",
+      "covered_in": [
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "The legal analysis of DSA statements of reasons.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Whether marketplace chat is an 'interpersonal communications service' under the European Electronic Communications Code is presented as a legal question; a reviewer with EU telecoms-law expertise should check the framing. (Carried over from spec.md.)",
+    "The ADF (Auto-lead Data Format) XML convention for US dealer CRMs is stated as industry practice without a primary-source citation; verify before print. (Carried over from spec.md.)",
+    "No primary source on pay-per-call or masked-number products at European portals was found; the call-tracking discussion is reference architecture. (Carried over from spec.md.)",
+    "Known differences between generated figures and their mermaid sources (Figure 2: an extra arrow from the gate to the lead service carrying the BookingConfirmed label and two parallel lines from call tracking; Figure 4: Merged points to Acknowledged instead of the end) are recorded in the 2026-10-20 changelog entry and not fixed. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the round-3 escalation under the author's delegation ('auto resolve all ESCALATE topics'): dissolved 'In Practice: The Public Record', the move both flow readers converged on in rounds 1-3. Adevinta's annual-report quotation, its citation, the note that no architecture post is public and the bold strategic reading moved into the Chief Architect's first decision (p69), together with the scope sentence that marketplaces publish little on messaging and lead architecture; the CarGurus TCPA point, quotation and citation became the fourth observation of Contact Channels (p58). Dropped only the parenthetical recap of sources already cited in the body (OLX, Rightmove, Autotrader, CarGurus, Zillow), whose citations all remain where they are used. Rewrote the ca-view transition and opener (p68), the channels opener (three to four observations), the roadmap (p04 and its promises) and the flow rationales. Journal-spec AC-2's expected answer still lists the public record and retention before leads; the replacement text is handed to the orchestrator, the journal spec is not edited here.",
+      "rejected": [
+        "Keeping the house 'In practice' heading, which three rounds of flow readers could not place.",
+        "Moving the CarGurus point to Failure Modes, where it would be the only item that is not a design failure."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added one sentence to the worked example's baseline (p59) saying what the table shows: each brand's own contact system, Keybridge as the receiving fourth, no pre-delivery check and no shared lead ID. This also answers the minor finding that 'four contact systems' did not match the table. No raise of length.max_words was needed: the draft is 9,421 words against 9,457 after dissolving the section."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric and flow-rubric notes (four runs, 2026-11-12) accepted under the author's delegation, 2026-11-12, as recorded and not acted on further: S2, S5 and S6 support the claim indirectly and the claim is one long sentence (copied from the journal spec, unchanged); condensing the storage items, moving p20 beside p16, merging p41/p42, p53 near p72, patterns for the closing reference sections. Kept the published text and order (rule: keep the published text when no option is clearly better)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 minor findings (one reader each) left as published: the nine contacted sellers versus the 37 withheld messages, the 'connection' bullet in Concepts, the link from lead monitoring to disintermediation. The 'one buyer had e-mailed twice' wording (13 + 1 + 5 = 19) is kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 2 (two corroborated flow findings judged spec faults): moved Figure 3 from the end of the architecture section (p29) to the safety section after the verdicts (p35), since its caption uses withhold, withdrawal and the silent sender that section explains; moved In Practice to directly before The Chief Architect's View, whose first decision cites Adevinta. Rewrote the transitions into worked, practice, ca-view and trade-offs, the roadmap and the flow rationale; added lead-ins to the failure-mode and question lists and section openers for concepts, architecture and safety; framed p40 as Veldmark's version of the typical rules.",
+      "rejected": [
+        "Folding In Practice into the Chief Architect's View, which would drop the house heading."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 1 (three corroborated flow findings judged spec faults): moved the Retention section after Attribution, since its lead rows need the lead sections; moved the disintermediation definition out of the Concepts list into the attribution paragraph that uses it (p54; link and facts kept, duplicate sentence merged); made the public-record opener say which forum decisions the two documents bear on. Rewrote the affected transitions (leads, retention, practice), the roadmap (p04 and its promises) and the flow rationale.",
+      "rejected": [
+        "Folding the In Practice section into the Chief Architect's View, which would drop the house 'In practice' heading.",
+        "Splitting retention between the safety and lead sections, which would separate two rules set by one table."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Applied flow-rubric notes: merged the one-sentence push paragraph (p49) into the pull/push paragraph (p48) and the attribution definition (p51) into p52; attribution flow declared large_to_small; added what-breaks statements to the rationales.",
+      "rejected": [
+        "Moving units across sections (retention, storage evidence, contact policy), which would reorder the published chapter beyond what the rubric found necessary."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote the spec.md success criteria as reader outcomes: the conversation-versus-lead criterion became AC-4 and the push-versus-pull criterion AC-5 (both minor, added for this post); the safety-gate and lead-rule criteria are covered by the journal spec's AC-1. Dropped as inventories: the channel comparison, the component sketch (Figure 1), the Veldmark arithmetic and the dated-sources criterion (dated sources stay governed by the style guide).",
+      "rejected": [
+        "Carrying the success criteria over unchanged."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) and a synthesis paragraph (p75) that the published text lacked, so the introduction announces every section and the conclusion returns to the opening and to Ingrid's two questions instead of only handing off."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around the conversation/lead split rather than around channels, because the split explains both the fraud problem (conversations) and the billing-dispute problem (leads), and keeps the boundaries with chapters 17, 25 and 31 clean. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used Rightmove's RTDF v1.4.1 lead-export contract as the documented delivery example, since it is the only public, detailed lead-delivery specification found. (Carried over from spec.md.)",
+      "rejected": [
+        "Inventing internals for dealer platforms."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Re-counted the Golf's ledger '23 leads' as 23 contacts yielding 19 deduplicated leads under the new rule, keeping the ledger figure as Motorvane's 2027 count rather than changing it. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the trust-and-safety detail to the message-specific gate (checks, verdicts, privacy) and linked to chapter 24 for the general pipeline, to avoid re-teaching. (Carried over from spec.md.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of transactions-and-payments."
+    },
+    {
+      "kind": "internal",
+      "ref": "trust-and-safety-architecture, fraud-prevention",
+      "contributed": "Gate, detectors, the city bike enforcement timeline."
+    },
+    {
+      "kind": "internal",
+      "ref": "monetization-models",
+      "contributed": "Motorvane's per-lead proposal; lead-based fees."
+    },
+    {
+      "kind": "internal",
+      "ref": "event-driven-listings, entity-resolution, professional-seller-tooling, products-and-entitlements, data-platform",
+      "contributed": "Neighbouring owners linked from the chapter."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-trust-safety-regulation.md, brief-monetization-economics.md, brief-real-estate-portals.md, brief-adevinta.md",
+      "contributed": "Research behind the gate, lead economics, portals and Adevinta's shared chat."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md; _research/consistency-issues.md",
+      "contributed": "Veldmark figures, the city bike and Golf timelines, the May 2027 contact-path decisions; the 23 raw / 19 deduplicated ruling."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Tech Blog, Cassandra Compaction Trade-Offs (2021)",
+      "contributed": "Chat storage."
+    },
+    {
+      "kind": "external",
+      "ref": "Discord, How Discord Stores Trillions of Messages (2023)",
+      "contributed": "Message storage at scale."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Group, AI fraud prevention (2026); ITWeb on OLX South Africa (2018)",
+      "contributed": "Chat safety."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove, Real Time Datafeed Specification v1.4.1 (2023) and FY2025 results (2026)",
+      "contributed": "Lead exports, Enhanced Leads."
+    },
+    {
+      "kind": "external",
+      "ref": "Autotrader FY26 results (2026); CarGurus, Zillow and CoStar 10-Ks for FY2025 (2026)",
+      "contributed": "Lead products, definitions, routing."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Report 2023 (2024) and Artemis post (2024)",
+      "contributed": "Shared chat; lead monitoring."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2018/1972, Art. 2",
+      "contributed": "Interpersonal communications service definition."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: In Practice dissolved (Adevinta into the Chief Architect's View, CarGurus TCPA into Contact Channels); baseline-table sentence added to the worked example; rubric notes moved to the decision log; draft check round 4. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from index.md); added roadmap and synthesis units; applied flow-rubric merges (p49 into p48, p51 into p52); status draft. (AI-mediated session) After draft check round 1: Retention moved after Attribution; disintermediation definition moved into p54; public-record opener, Golf contrast and arithmetic, 18:10 sale time, neutrality gloss and table references fixed in the draft. After draft check round 2: Figure 3 moved into the safety section; In Practice moved before the Chief Architect's View; section openers, list lead-ins, the neutrality sentence and p40 revised. After draft check round 3 (ESCALATE): Golf duplicate wording, architecture opener and Chief Architect's View opener fixed without a re-check; remaining findings in open_questions."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; known differences for Figures 2 and 4 listed in open questions). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 8,034 to 8,032 prose words; one heading renamed ('The Contact Channels' to 'Contact Channels: What the Platform Sees'); three long paragraphs split. Cross-chapter consistency sweep: 3 headings aligned. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass (Golf aligned to 23 raw / 19 merged leads, OLX chat-image claim matched to the 2026 source, EECC citation verified against the Official Journal); 3 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 9457
+  }
+}

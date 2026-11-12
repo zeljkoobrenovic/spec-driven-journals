@@ -1,0 +1,2144 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "attribute-schemas",
+  "journal": "listing-systems-architecture",
+  "part": "part-2",
+  "title": "Attributes Without Chaos: Schemas, Dictionaries and Validation",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-20), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the attribute-schemas entry in journal-spec.json. Two changes to the published text are specified: a roadmap paragraph in the introduction (p04, for AC-2) and a synthesis paragraph before the hand-off in the conclusion (p85).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The three layers of definition (dictionary), binding (category schema) and value (with provenance), and the storage options with their trade-offs.",
+        "How a schema service compiles one definition into forms, validators, search mappings, facets and feed mappings, and the compatibility rules for changing attributes."
+      ],
+      "believe": [
+        "The Attribute Junkyard forms when systems interpret attributes on their own, and a shared dictionary does not require a shared storage model."
+      ],
+      "can_do": [
+        "Plan the cleanup of their own attribute keys and the governance that keeps them from regrowing.",
+        "Ship a new required attribute without breaking producers."
+      ]
+    },
+    "audience": {
+      "who": "Chief and principal architects, search and data leads, and engineering directors of multi-vertical listing marketplaces who own, or depend on, attribute data.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are, and how to make and defend an architecture decision.",
+        "Relational and document databases, JSON Schema and event-schema compatibility.",
+        "From listing-aggregate: the listing as a small aggregate that holds attributes as a validated value collection.",
+        "From categories-and-taxonomies: the category as a schema key, versioned taxonomy releases and Veldmark's bikes split.",
+        "Veldmark, its brands and cast, from meet-veldmark."
+      ],
+      "does_not_know": [
+        "Marketplace attribute design: dictionaries, requiredness levels, product versus instance scope, stewardship.",
+        "Entity-attribute-value storage and facet design on a search index.",
+        "Vertical reference data: VIN decoding, licensed vehicle taxonomies, property feed standards (RESO, OpenImmo).",
+        "Regulatory attributes: the French DPE and the German Pkw-EnVKV."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a request to change an existing attribute, the reader classifies the change and says how to ship it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A steward wants battery capacity to become required on e-bikes now, and separately to change mileage from kilometres to miles in one country. Using only this chapter: how is each shipped?",
+        "expected": "Making an attribute required breaks producers, so it ships first as recommended with a published effective date and is enforced on create and revise once the feed readiness report allows; existing listings are not invalidated. Changing a unit changes meaning, so it is a new attribute, never an edit of the old one, with values normalized and both bound during migration."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Veldmark's eleven keys for frame size; the three layers; the dictionary entry; category schemas and how they evolve; reference data; normalization of units and values; attributes for search, trust, ads and feeds; storage models; a schema service that compiles, with mappings to partner feed standards; public examples and Veldmark's cleanup in steps; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: public company sources, feed and regulatory standards and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should listing attributes be modeled so they can be validated, searched, faceted and evolved per category and vertical?",
+    "claim": "Listing attributes need three layers with different owners: a dictionary that fixes each attribute's meaning, type, unit and allowed values; versioned category schemas that bind attributes as required, recommended or optional; and listing values with provenance. One schema service compiles these into forms, validators, search mappings, facets and feed mappings, and changes follow event-schema compatibility rules: an optional addition is safe, a new requirement ships with an effective date, and a change of meaning, type or unit creates a new attribute. The storage model may differ per brand.",
+    "disputed_by": "The view that attributes are a storage choice (wide columns, EAV or a JSON document) that each team, country or feed extends as needed, with forms, feeds and search each validating and interpreting values themselves, and that a group-wide definition is only worth having if it comes with one shared storage model.",
+    "so_what": "A group that accepts this shares the dictionary, compiler, validator library and reference-data service but not storage, gives each vertical a named steward, makes a reviewed new attribute live in two working days, and tracks coverage, validity and the long-tail ratio. Veldmark mapped 2,310 of Tradeyard's 3,900 keys to 1,240 canonical attributes, retired 990 and kept 600 as country extensions, migrating first the 31 retired keys something still read.",
+    "how_why": "Attributes are read by more systems than any other part of the listing, so a key without a governed definition gets a different meaning in each: Tradeyard stored frame size under eleven keys, and 41% of its 3,900 keys were used on fewer than 0.1% of listings. Making a field required breaks every producer that does not yet send it, so battery capacity for e-bikes shipped as recommended with a required date of 1 March 2028 to give dealer feeds time.",
+    "supporting_claims": [
+      {
+        "id": "A1",
+        "claim": "The Attribute Junkyard forms when attributes have no governed definition: attributes are read by more systems than any other part of the listing, so each system gives an ungoverned key its own meaning."
+      },
+      {
+        "id": "A2",
+        "claim": "An attribute's meaning, its binding to a category and its value are three layers with different owners, and the dictionary entry that fixes meaning records type, unit, allowed values, scope and the purposes that make every reader of the attribute visible."
+      },
+      {
+        "id": "A3",
+        "claim": "Attributes change under event-schema compatibility rules applied separately to producers and readers: an optional addition is safe, a new requirement ships recommended first with an effective date and is enforced on create and revise, and a change of meaning, type or unit creates a new attribute."
+      },
+      {
+        "id": "A4",
+        "claim": "The storage model may differ per vertical and brand, provided every attribute, including those held in typed vertical models, is registered in the one dictionary."
+      },
+      {
+        "id": "A5",
+        "claim": "One schema service compiles the dictionary and schemas into forms, validators, search and facet mappings and feed mappings that every system loads locally, so every channel validates with the same code and no write path depends on a request-time lookup; reference data, normalization targets and what each reader needs are defined in the same place."
+      },
+      {
+        "id": "A6",
+        "claim": "A group cleans up the Junkyard from an inventory of keys and their readers and keeps it from regrowing with federated stewards, a time target for new attributes and a few tracked numbers: coverage, validity and the long-tail ratio."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Defines the attribute contract that ingestion validates, enrichment normalizes toward and search turns into filters and facets.",
+    "supports": [
+      "P2-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to schema-service: the Junkyard, then the layers, rules and service that prevent it"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "in-practice: Veldmark's seven cleanup steps"
+      }
+    ],
+    "rationale": "The scene poses the question; the three layers give the vocabulary every later section uses; the dictionary entry and the category schema specify the definition and binding layers and the rules for changing them; reference data, normalization and readers' needs then fill in what the dictionary must hold; storage comes only after the dictionary is complete, so the reader sees that it matters less and meets the search-index trade-off just before the compiler that produces the search mapping; the schema service comes after all of them because it compiles every one of them (reference data, canonical units, purposes, sensitivity flags, feed mappings) into what each system loads; the public examples and Veldmark's cleanup apply the whole design; trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions test and govern it. Storage before the dictionary's contents would answer the question architects ask first and leave the dictionary looking optional, and it interrupted the account of the dictionary for both round-1 flow readers; the schema service before reference data, normalization and the readers' needs would compile things the reader has not met."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A listing titled \"Gazelle Chamonix, nice condition\" cannot be found by a buyer searching for a city bike with a 57 cm frame, three gears and a front basket."
+    },
+    "bridge": {
+      "from_reader_world": "Attributes in most platforms start as a few columns, then spread into key-value tables and per-country and per-feed keys that nobody reviews.",
+      "to_topic": "The chapter's subject: a contract that keeps one definition of each attribute true in every system that reads it."
+    },
+    "thesis_statement": {
+      "text": "Listing attributes need three layers with different owners (a dictionary for meaning, versioned category schemas for binding, values with provenance), one schema service that compiles them into the forms, validators, search mappings and feed mappings every system uses, and event-schema compatibility rules for change, while each brand may keep its own storage.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p03."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Veldmark's eleven keys for frame size.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The three layers of definition, binding and value.",
+          "kept_in": [
+            "layers"
+          ]
+        },
+        {
+          "promise": "What a dictionary entry holds, and how category schemas evolve under compatibility rules.",
+          "kept_in": [
+            "dictionary-entry",
+            "schemas"
+          ]
+        },
+        {
+          "promise": "Reference data, the normalization of values and what each reader needs.",
+          "kept_in": [
+            "reference-data",
+            "normalization",
+            "readers"
+          ]
+        },
+        {
+          "promise": "Storage models, and a schema service that compiles the dictionary and maps partner feed standards.",
+          "kept_in": [
+            "storage",
+            "schema-service"
+          ]
+        },
+        {
+          "promise": "Public examples and Veldmark's cleanup step by step.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "chief-architect",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A listing title cannot answer a structured search, so attributes, the structured and typed facts about an item, drive filters, facets, ranking, validation and feeds, yet they get less design attention than almost any other part of the listing.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The title \"Gazelle Chamonix, nice condition\" against a search for a city bike with a 57 cm frame, three gears and a front basket.",
+            "shows": "Free text cannot be filtered; only typed attributes can serve the buyer's search."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Neglected attributes grow into the Attribute Junkyard, thousands of duplicate keys whose cost appears far from its cause: in empty facets, in duplicate detection that cannot compare listings and in trust rules that never fire.",
+        "function": "cause_effect",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The neglect of attributes.",
+          "introduces": "How the neglect accumulates into the Attribute Junkyard and what it costs.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Preventing the Junkyard takes a contract, and this chapter gives attributes one (dictionary, category schema, storage model, validation and governance) one layer below the category, which decides which schema applies but does not define it, without forcing one storage model on every brand; ingestion, enrichment and search then depend on that contract.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The Attribute Junkyard.",
+          "introduces": "The contract that prevents it and the chapter's place between the category chapter and the chapters that depend on it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter builds the contract in order: Veldmark's eleven frame-size keys, the three layers, the dictionary entry, how category schemas evolve, reference data, normalization and what each reader needs, then storage models, which matter less, and a schema service that compiles all of it and maps partner feed standards, then public examples and Veldmark's cleanup, and finally trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The parts of the contract.",
+          "introduces": "The order in which the chapter takes them up.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\"",
+      "controlling_idea": "Veldmark's attempt to show one frame-size facet reveals the Attribute Junkyard in numbers at Tradeyard and attributes held in a different shape by each of its other brands, which poses the chapter's question.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "A1"
+        ],
+        "how": "Shows, at one group, that keys without a governed definition multiply and that no facet can be built from them."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Attribute Junkyard described in general.",
+        "introduces": "A concrete case of it at Veldmark in 2027.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The scene goes from one facet question to the group: Tradeyard's numbers, one listing that carries them, then the other two brands, ending in the question the chapter answers. Starting with the question would ask it before the reader has seen why it is hard."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Weeks before Veldmark's group taxonomy and attribute service goes live and the bikes split ships, the Group Chief Architect asks what the new frame-size facet on the city-bikes page will show.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Late August 2027; service live for Tradeyard in October; bikes split on Monday 1 November 2027; Ingrid Halvorsen asks Daan Visser and Tomasz Wiśniewski.",
+              "shows": "Places a simple facet question at a dated point where the answer matters.",
+              "source": "scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The answer is the Junkyard in numbers: 3,900 keys, 41% of them used on fewer than 0.1% of listings, frame size under eleven keys with many value formats, and a usable frame size on only about 23% of live Dutch bike listings.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Four country trees (NL 1,420 leaves, BE 1,380, PL 980, PT 760); 3,900 keys, 41% on fewer than 0.1% of listings; eleven frame-size keys; values such as 57, 57 cm, 22\", L; about 23% usable coverage. Figure 1.",
+              "shows": "Without a governed definition the same fact is stored under many names and formats, so the facet would be nearly empty.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The question about the facet.",
+            "introduces": "The answer, as a spreadsheet of keys and values.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Femke's city bike shows the cost on one listing: a bare 57 typed into a free-text field puts the bike in no frame-size filter.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Femke's Rotterdam city bike, €240, listed Sunday 7 March 2027, \"maat\" = 57.",
+              "shows": "The system cannot tell what 57 means, so the bike is invisible to the filter buyers use.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The keys and values across Tradeyard.",
+            "introduces": "One listing that carries them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The problem is not only Tradeyard's: Motorvane's VIN-decoded vehicle model and Hearthly's French and Spanish energy-performance fields each hold attributes in their own shape.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Essen Golf's 31 decoded attributes with names differing from Tradeyard Poland's car section; the Lyon apartment's energy class D in documents structured differently in France and Spain.",
+              "shows": "Each brand already has its own attribute model, so a group dictionary must cover different shapes.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Tradeyard's sprawl.",
+            "introduces": "The two other verticals, each structured differently.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The Group Chief Architect's question is the chapter's: can one dictionary and one schema service serve three verticals without forcing every brand into one shape and without a central team that every change queues for?",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three brands' attribute problems.",
+            "introduces": "The question they add up to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "layers",
+      "heading": "Three Layers: Definition, Binding and Value",
+      "controlling_idea": "Attribute problems start from treating an attribute's meaning, the categories that use it and the value on a listing as one thing; they are three layers with their own owners and rates of change.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "A2"
+        ],
+        "how": "Defines the three layers and reference data, and says what separating them gains."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Tradeyard's sprawl and the question whether one dictionary can serve all brands.",
+        "introduces": "The distinction that the answer rests on: definition, binding and value.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "The three layers are the attribute definition, the category schema that binds definitions to a category and the attribute value with its provenance, each with its own owner and rate of change; the dictionary that collects definitions and reference data complete the vocabulary.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The layer table: question, typical owner, rate of change and example for definition, schema, reference data and value.",
+              "shows": "Each layer has a different owner and changes at a different rate, so they cannot be one structure."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Separating the layers makes meaning reusable, change local and ownership possible.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: one definition, schemas binding it, values with provenance badges.",
+              "shows": "Frame size is defined once and reused by every bike leaf."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The separated layers.",
+            "introduces": "Three payoffs of the separation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dictionary-entry",
+      "heading": "The Attribute Dictionary Entry",
+      "controlling_idea": "A dictionary entry is a small contract whose fields come from public marketplace dictionaries and from what downstream readers need; purposes and scope are the fields most often missing.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A2"
+        ],
+        "how": "Specifies the definition layer: what a governed definition records."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The definition layer, which the previous section named.",
+        "introduces": "What one entry in the dictionary contains.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The section says where the fields come from, shows the two public models, combines them into a recommended entry, singles out the two fields most often missed and then fills one entry in. The example comes last because it uses every field the reader has just met."
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Two kinds of evidence say which fields a dictionary entry needs: the public dictionaries marketplaces expose to sellers and the systems that read attributes downstream.",
+          "function": "context"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "eBay's Taxonomy API is the most complete public dictionary, recording per leaf category requiredness, selection mode, type, cardinality, product or item scope and an expected-required date.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay Taxonomy API specification v1.1.1 (n.d.): AspectConstraint fields and the warning that required aspects block listing or revising.",
+              "shows": "A public dictionary already records more than type and label, including a date for future requiredness."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Public dictionaries as the first kind of evidence.",
+            "introduces": "The most complete one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Amazon publishes its attribute requirements as JSON Schema 2019-09 with a small marketplace vocabulary on top, which shows a standard schema language extended for marketplace needs.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Amazon SP-API Product Type Definitions guide (updated 2026): editable, maxUtf8ByteLength, selectors, enumeration labels, version pinning.",
+              "shows": "Marketplace needs fit as a small vocabulary on a standard schema language."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "eBay's dictionary.",
+            "introduces": "A second public model built on a standard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Combining the public models with what downstream systems need gives a recommended dictionary entry of fourteen fields.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The field table: key, labels, description, type, unit, allowed values, mode, cardinality, scope, editability, purposes, sensitivity, mappings, owner and status.",
+              "shows": "Each field answers a need of a seller, a reader or a steward."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two public models and the needs of downstream readers.",
+            "introduces": "The entry they add up to, labeled as a recommendation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Purposes and scope are the two fields most often missing.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The fourteen fields.",
+            "introduces": "The two that matter most because they are usually absent.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Purposes make an attribute's dependants visible, so the impact of a change is known before it is made.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Purposes, the first missing field.",
+            "introduces": "What it makes possible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Scope separates product facts a catalog match can supply from instance facts only the seller knows, as eBay's rolled-back catalog mandate shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay PBSE playbook (n.d., covers 2018–2020): catalog matching mandated, then rolled back; product versus instance aspects.",
+              "shows": "Without scope, prefilling product facts from a catalog match overwrites what the seller knows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Purposes.",
+            "introduces": "Scope, the second missing field.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Veldmark's fictional frame-size entry shows the fields filled in, including a separate letter-size attribute.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The bike.frame_size_cm entry: labels in five languages, seat-tube meaning, integer cm with inch conversion, 30–70, purposes, related bike.frame_size_class, owner and status.",
+              "shows": "The fields work on a real attribute and expose a design choice.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The recommended fields.",
+            "introduces": "One entry written with them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Keeping letter sizes as a separate attribute is less elegant and more honest, because a letter size cannot be converted to centimeters reliably.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Size L is 54 cm from one brand and 58 cm from another.",
+              "shows": "Conversion would create false precision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The related entry in the example.",
+            "introduces": "Why it is a separate attribute.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "schemas",
+      "heading": "Category Schemas and How They Evolve",
+      "controlling_idea": "A category schema binds definitions to a category through inheritance, three levels of requiredness and immutable versions, and it changes under compatibility rules applied separately to producers and readers.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A3"
+        ],
+        "how": "Gives the binding layer and the rules under which it and the definitions change."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The definition layer.",
+        "introduces": "The binding layer: category schemas and how they change.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The three design choices come first because the compatibility rules apply to schemas that are inherited, leveled and versioned; the event-platform vocabulary then frames the change table, and the section ends on the two rules the table leads to."
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "A category schema is a list of bindings, and three design choices shape how it behaves over time.",
+          "function": "definition"
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Attributes bound high in the tree are inherited by every leaf, and a leaf may tighten an inherited binding but not loosen it.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three design choices.",
+            "introduces": "The first: inheritance.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Requiredness needs three levels, because the recommended level gives producers a runway before enforcement.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay's expectedRequiredByDate; Autotrader Connect (n.d.): breaking changes announced at least 30 days ahead, new mandatory parameters and validation errors listed as breaking.",
+              "shows": "Public platforms already treat a new requirement as a change that needs notice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Inheritance.",
+            "introduces": "The second choice: three levels of requiredness.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Schema versions are immutable and recorded on each listing, and they are separate artifacts from taxonomy versions.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Requiredness.",
+            "introduces": "The third choice: immutable versions.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Evolving schemas follows the compatibility logic of event platforms, which Confluent defines as backward, forward, full, transitive and none.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Confluent Schema Evolution and Compatibility (n.d.); backward is the default.",
+              "shows": "The reader already knows these terms from event schemas, so the chapter can reuse them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Versioned schemas.",
+            "introduces": "The event-platform vocabulary for changing them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Applied to attributes, compatibility has two kinds of schema user to protect, producers and readers, and a change can be safe for one and breaking for the other.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The change table: seven kinds of change, their effect on producers and readers, and the rule the author uses.",
+              "shows": "Making an attribute required breaks producers but not readers, while adding an enumeration value is the reverse."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Compatibility logic.",
+            "introduces": "Its application to attributes, with producers and readers judged separately.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "A change of type, unit or meaning must create a new attribute, because changing it in place corrupts every historical value and every reader at once.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table's last two rows.",
+            "introduces": "The rule they lead to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Enforcing a new requirement on create and revise rather than on all stored listings makes backfill gradual.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay: sellers blocked \"from listing or revising\" without required aspects.",
+              "shows": "A public precedent for enforcing on write."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: lifecycle of an attribute definition.",
+              "shows": "Deprecation stops new writes while readers continue; retirement waits until the purposes list has no users; keys are never reused."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The rule for making an attribute required.",
+            "introduces": "Where it is enforced and what that does to existing listings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reference-data",
+      "heading": "Reference Data: Makes, Models, Property Types and Energy Classes",
+      "controlling_idea": "Large controlled vocabularies are reference data with their own service, supplier mappings and provenance; in real estate and new cars regulation decides which of them are required and how they are computed.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A5",
+          "A2"
+        ],
+        "how": "Defines reference data and shows the dictionary carrying legal obligations."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The allowed values of a dictionary entry and the closed enumerations of the change rules.",
+        "introduces": "Vocabularies too large for an enumeration: reference data, and how each vertical's differs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Reference data is defined and its three sources announced, then grouped by vertical and by what drives it: cars (supplier trees, design rules, a Veldmark case, then the German labeling rules), property (French regulation) and brands (curation). Cars come first because they give the design rules the other groups reuse; the German new-car rules sit with the cars, so the passage moves from vehicles to property once, not back again."
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Enumerations do not scale to thousands of hierarchical, aliased and supplied values, which are reference data with their own service and governance, coming from suppliers, regulation or curation.",
+          "function": "definition"
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Automotive reference data is the deepest case, with supplier taxonomies, reference endpoints and VIN decoding.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Autotrader Connect (n.d.) taxonomy to derivatives; mobile.de Seller-API (n.d.) reference endpoints, hsn, tsn, schwackeCode; NHTSA vPIC version 4.10 (2026).",
+              "shows": "Vehicle data comes from licensed and public suppliers with their own identifiers and trees."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Reference data in general.",
+            "introduces": "Its deepest case, cars.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Three design rules follow: keep identity, specification and listing apart; map licensed taxonomies to internal IDs; and record decode results with provenance and version.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Supplier taxonomies and decoders.",
+            "introduces": "The design rules they force.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The Essen Golf's decode conflict shows why decode results need provenance.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Autohaus Ruhrblick's DMS feed, Wednesday 14 April 2027; 31 decoded attributes; 96 kW and 110 kW candidates; dealer states 96 kW; market value €22,800.",
+              "shows": "Without provenance the valuation would have used the wrong derivative.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The third rule.",
+            "introduces": "A listing where it decides the outcome.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Regulation shapes vehicle attributes too: Germany's passenger-car energy-labeling ordinance makes \"new\" a computed regulatory classification derived from registration date and mileage.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Pkw-EnVKV (amended 2026): consumption, CO2 and CO2 class once motorization data is shown; new if first registered at most eight months ago or with 1,000 km or less.",
+              "shows": "A regulatory attribute is derived, not chosen by the dealer, and can change while the car is listed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Essen Golf, where supplier data shapes vehicle attributes.",
+            "introduces": "Regulation, which shapes vehicle attributes too: the German new-car labeling rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Real-estate reference data is driven by regulation: French ads must show the DPE energy and climate classes, a warning for F and G, and estimated energy costs, and the classes affect rental eligibility and can move with a calculation change.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Service-Public.fr, DPE (2026): mandatory disclosures, fines of €3,000 and €15,000, G barred from new leases since 1 January 2025, F in 2028, E in 2034, electricity factor 2.3 to 1.9 from 1 January 2026.",
+              "shows": "The law fixes required attributes and changes how they are calculated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Cars, where reference data comes mostly from supplier trees.",
+            "introduces": "Real estate, where it comes almost entirely from regulation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "For the dictionary, DPE class, climate class and cost range are required in French residential schemas, with the DPE date and method as companions and rental eligibility derived.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Lyon apartment's class D.",
+              "shows": "A class unremarkable today can matter for a future rental listing of the same flat.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The French rules.",
+            "introduces": "What they require of the dictionary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Brands sit between supplier trees and regulation, and Vinted's brand curation shows the pattern for turning free text into reference data.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted Engineering, 2023: about two million brand strings to about 40,000 verified brands.",
+              "shows": "The pattern is a canonical entity with aliases, a verified flag and a parent; unverified values stay on the listing but out of facets."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Supplier-driven and regulation-driven reference data.",
+            "introduces": "A third kind, curated from free text.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "normalization",
+      "heading": "Normalization of Units and Values",
+      "controlling_idea": "The dictionary defines the target of normalization: one canonical unit, the value as entered beside the normalized value, normalization on write, explicit special states and no conversion of what cannot be converted.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Puts the normalization target in the dictionary rather than in each reader."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Reference data, which fixes which values exist.",
+        "introduces": "How entered values are brought to the dictionary's form.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Five rules belong in a group's attribute standard: one canonical unit per attribute, the value as entered kept beside the normalized one, normalization on write, explicit special states and no conversion of what cannot be converted.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Standard codes inside the dictionary cost nothing and save a mapping layer later.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "schema.org Vehicle (V30.1, 2026): UN/CEFACT unit codes such as KMT; ISO 4217 currencies.",
+              "shows": "Standards already exist for the canonical units the dictionary needs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The normalization rules.",
+            "introduces": "Standard unit and currency codes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "readers",
+      "heading": "Attributes for Search, Trust, Ads and Feeds",
+      "controlling_idea": "Each reader needs something different from the same attribute, and the purposes field records it, so one definition serves search, trust, ads, outbound feeds and analytics.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A5"
+        ],
+        "how": "Shows one definition serving every reader through purposes and versioned mappings."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Normalized values and the purposes field of the entry.",
+        "introduces": "What each reader needs from them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "All readers first in one table, then the three rows that need prose, ending on outbound schemas, the last thing the dictionary must hold before storage and the schema service that compiles it."
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "Different readers need different things from the same attribute, and the purposes field records which reader needs what.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The purposes table: facet, filter and sort, ranking feature, trust rule, ads targeting, outbound feeds and SEO, analytics, with the dictionary requirement and an example for each.",
+              "shows": "One definition can carry each reader's requirement."
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Three of the rows carry lessons the table cannot show.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The purposes table.",
+            "introduces": "The three rows that need more.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Trust rules depend on attribute quality more than on rule cleverness.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Barcelona fake rentals, priced about 35% below market, detectable only because district, surface and rooms were structured.",
+              "shows": "A rule can fire only on attributes that are typed and comparable.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three rows.",
+            "introduces": "Trust rules.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Ads targeting needs a sensitivity flag, because an attribute harmless as a filter can reveal too much about a viewer as a targeting key.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Trust rules.",
+            "introduces": "Ads targeting.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Outbound schemas are outputs, not models.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google Search Central (2025): vehicle-listing structured data added October 2023, phase-out notices June 2025, removed September 2025.",
+              "shows": "An external schema can disappear, so generating it through a versioned mapping makes the change a mapping edit."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Ads targeting.",
+            "introduces": "Outbound schemas.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "storage",
+      "heading": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas",
+      "controlling_idea": "The storage choice matters less than the dictionary: a hybrid of typed core fields, validated documents and typed vertical models fits most groups provided every attribute is registered in the dictionary, and facets run on the search index, not on the store.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A4"
+        ],
+        "how": "Shows that storage may differ per brand while meaning stays in the dictionary."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The dictionary's contents, now complete: definitions, schemas, reference data, normalization targets and what each reader needs.",
+        "introduces": "The storage question, which architects usually ask first and which matters less.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four models are defined and compared before the recommendation; the search index comes last because it applies the same comparison to the place where facets run, uses the purposes field the readers section explained, and leads into the compiler's search mapping."
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "With the dictionary's contents in place, storage is the question architects reach for first and it matters less than the dictionary, though it constrains validation, queries and the cost of change.",
+          "function": "claim"
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "There are four storage models: wide tables, entity-attribute-value (EAV) rows, validated documents and typed per-vertical models, and EAV is where junkyards grow fastest.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The storage question.",
+            "introduces": "The four answers to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A document store needs a schema as much as any other, so a schemaless document store is EAV with better syntax.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "PostgreSQL JSON Types documentation (current): jsonb_path_ops indexes, whole-row locking on update, advice to keep a somewhat fixed structure.",
+              "shows": "The database's own documentation assumes a structure the application must enforce."
+            },
+            {
+              "kind": "table",
+              "what": "The storage comparison: strengths, weaknesses and when each model is right, with the hybrid as the last row.",
+              "shows": "Each model fits a different job, which leads to the hybrid."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Validated documents, one of the four models.",
+            "introduces": "Why validation is not optional for them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The hybrid is the recommendation for a group, under the rule that typed vertical models are registered in the dictionary.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Motorvane keeps its Kotlin vehicle types, but vehicle.mileage_km is a dictionary entry with meaning, unit and mappings.",
+              "shows": "Storage can differ while every reader means the same thing by a key.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison.",
+            "introduces": "The recommendation it leads to and the one rule that makes it work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Whatever the primary store, faceted queries run on the search index, and Vinted's brand curation, described under reference data, shows that a dictionary decision has a measured search effect.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted Engineering, 2023: facets over almost 600 million items, about 20% more CPU for about 71 ms faster item search, brands cut from about 2,000,000 to about 40,000, p99 about 15 ms lower.",
+              "shows": "Turning a free-text value into a verified reference entity changed search latency."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The system of record's storage.",
+            "introduces": "The search index, where facets are actually computed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The search index has its own storage dilemma between typed fields and generic structures, and the dictionary's purposes field decides which attributes get typed fields.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic nested field type documentation (current): nested queries are typically expensive; flattened gives up typed range queries.",
+              "shows": "The index needs the same split between typed and generic fields as the store."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The storage hybrid.",
+            "introduces": "The same trade-off inside the search index.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema-service",
+      "heading": "Architecture: A Schema Service That Compiles",
+      "controlling_idea": "Schemas should be compiled into artifacts that every system loads locally rather than served by a request-time lookup, and the design rests on one validator for every channel, hard and soft validation outcomes, and readers that tolerate the unknown. Its inbound feed mappings make each partner standard a versioned mapping with an owner.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Designs the service that makes one definition true in every reader."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Everything the dictionary now holds (definitions, schemas, reference data, normalization targets, purposes and outbound schemas), needed by several stores and a search index.",
+        "introduces": "The service that compiles it into what every system loads.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The principle comes first, then the components, then the three properties that matter more, then one Veldmark contract that applies them. The properties need the components in view, and the example needs the properties. The inbound feed mappings close the section in a subsection of their own: they are the one compiled output that faces partners, and the readers of rounds 2 and 3 found the feed standards out of place both among the readers' needs and under reference data."
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "Everything the dictionary holds has to reach every system that writes or reads listings, and schemas should compile into artifacts for it, because a request-time schema service puts a network hop on every write path and turns a governance tool into an availability dependency.",
+          "function": "claim"
+        },
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "The design has six components: a dictionary store, a schema compiler, a validator library, a reference-data service, release events and quality metrics.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: stewards change the dictionary; the compiler produces validator, forms, mappings and configurations loaded locally.",
+              "shows": "No system on the write path calls the schema service at request time."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Compiled artifacts.",
+            "introduces": "The components that produce and distribute them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Three properties of the design matter more than its components.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The six components.",
+            "introduces": "The three properties that matter more.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Every channel validates with the same code and error codes, which removes the most common source of Feed Roulette.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three properties.",
+            "introduces": "The first: one validator.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Validation has a hard and a soft outcome, and the schema says which rules block a write and which only flag a value.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "One validator.",
+            "introduces": "The second property: two outcomes.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Readers ignore unknown attributes and map unknown values to a safe default, which is the reader-side half of backward compatibility and a coding standard.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two outcomes.",
+            "introduces": "The third property: tolerant readers.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Tolerant readers make Veldmark's Listing event contract v1 work: it carries attributes as a typed map whose meaning comes from the dictionary, and readers ignore keys they do not know.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Listing event contract v1, live 1 July 2027: key, normalized value, unit and schema version per entry.",
+              "shows": "A new attribute does not change the event schema, at the cost of weaker compile-time typing.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Tolerant readers and the compiled dictionary.",
+            "introduces": "How Veldmark's event contract carries attributes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "form": "list",
+          "controlling_idea": "The compiler's inbound feed mappings face partners, who bring vocabularies of their own: inbound feed standards set what they send, each with its own size and change rate.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "RESO Data Dictionary 2.0 (n.d.): more than 1,700 fields and 3,100 lookups; OpenImmo (n.d.): about 250 features, 2.0 not compatible; Rightmove RTDF v1.4.0 (2022) and v1.4.1 (2023).",
+              "shows": "Feed standards are large and change with regulation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The compiler's inbound feed mappings from partner standards, the one output that faces partners.",
+            "introduces": "The vocabularies partners bring: inbound feed standards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "A feed mapping is a versioned artifact with an owner, not a transformation hidden in an importer.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Hearthly France's connectors to about 160 real-estate software vendors.",
+              "shows": "With private mappings there would be 160 meanings of heating type.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three feed standards.",
+            "introduces": "What they show about mappings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Public Examples and Veldmark's Cleanup",
+      "controlling_idea": "Public examples show dictionaries published as data, schemas used as model inputs and policy encoded as validation rules, and Veldmark's seven-step cleanup shows a group turning 3,900 keys into one dictionary and keeping it.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A3",
+          "A4",
+          "A6"
+        ],
+        "how": "Shows the design in public practice and, in the fictional group, as a cleanup with governance."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The design built in the previous sections.",
+        "introduces": "How it looks in public practice and in Veldmark's cleanup.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p59 to p62: three groups of public examples"
+          }
+        ],
+        "rationale": "Public examples come first because they show each part of the design outside Veldmark; the cleanup then follows its own seven steps in time (profiling and decisions from June, the namespaces, the backfill finished by the end of September 2027, the bikes split of 1 November 2027, the other brands and governance), ending with the reader inventory because its value appears only once the steps are done."
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "The public record on attribute design is thin, but three groups of examples teach most of what is needed.",
+          "function": "context"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "eBay and Amazon publish their dictionaries as data that partners can diff and validate against locally.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay's fetchItemAspects bulk file (can exceed 100 MB compressed) and Taxonomy SDK; Amazon's JSON Schema contracts.",
+              "shows": "Errors caught before submission never become support tickets."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three groups.",
+            "introduces": "The first.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Mercari and Etsy show the schema as an input to extraction models, which can fill a dictionary but cannot replace one.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Mercari Engineering (2024): attribute keys supplied at request time; Etsy via a secondary ZenML summary (2025): coverage 31% to 91%.",
+              "shows": "Extraction works against a target schema; without one it builds a second junkyard."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Dictionaries as data.",
+            "introduces": "The second group: schemas as model inputs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Autotrader's validation errors show regulation and policy encoded as schema rules with stable error codes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Autotrader Connect (n.d.): rejections for a price below a minimum and for DVLA category A or B write-offs.",
+              "shows": "A rule with a stable error code is enforced the same way on every channel."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Schemas as model inputs.",
+            "introduces": "The third group: policy as validation.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Veldmark's attribute work ran from June to October 2027 under Common Ground, and its numbers are fictional.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Public examples.",
+            "introduces": "The fictional group's cleanup.",
+            "form": "paragraph",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "Step 1 profiled every key: its usage per country and category, the value types observed and every reader that could be found.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 410 million EAV rows, Polish Elasticsearch mappings, Portuguese forms; 3,900 keys.",
+              "shows": "The inventory covers values and readers, not only keys."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The cleanup.",
+            "introduces": "Its first step.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "Step 2 gave each key one of three fates: mapped into a canonical attribute, retired or kept as a country extension.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2,310 keys mapped into 1,240 canonical attributes; 990 retired; 600 kept as country extensions; 3,900 total.",
+              "shows": "Most keys were duplicates or unused.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The profile.",
+            "introduces": "The decision per key.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Frame size's eleven keys became two attributes, and history, not language, was the largest source of duplicates.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three fates.",
+            "introduces": "What they did to frame size, and the main cause of duplicates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Step 3 organized the dictionary in three tiers (group core, vertical namespaces and country extensions), which answers the question of centralization.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Mapped and retired keys.",
+            "introduces": "Where the kept ones live.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Step 4 backfilled values without blocking listings, which raised usable frame-size coverage on live Dutch bike listings from 23% to 71% by the end of September 2027.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Femke's maat: 57 normalized to 57 cm with medium confidence, provenance seller-entered, unit inferred; the extraction pilot.",
+              "shows": "A listing can join the facet before its seller confirms the value.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The namespaces.",
+            "introduces": "Backfilling the values of existing listings.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Step 5 shipped the bikes split's new e-bike attributes on 1 November 2027 under the compatibility rules: battery capacity recommended with a required date four months later, in two releases; the split's model re-classification of existing listings, with low-confidence cases left for seller confirmation, is told in the category chapter.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Eight inherited attributes; motor position, battery capacity and assist speed added; battery capacity required from 1 March 2028.",
+              "shows": "A new requirement shipped as recommended first gives dealer feeds time.",
+              "source": "scenario-ledger.md"
+            },
+            {
+              "kind": "case",
+              "what": "Listings that existed before 1 November re-classified by a model; low-confidence cases left in a transitional category until sellers confirmed at the next edit.",
+              "shows": "The category side of the split is separate from the attribute side.",
+              "source": "scenario-ledger.md"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: two releases, recommended then enforced on create and revise once the readiness report shows feeds are ready.",
+              "shows": "Existing listings are not invalidated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The backfill, done by the end of September 2027.",
+            "introduces": "The first schema change made in the new dictionary: the bikes split of 1 November 2027.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Step 6 brought Motorvane and Hearthly into the dictionary without moving their storage, and search typing followed the dictionary too.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Motorvane's 212 vehicle attributes in vehicle.*; Hearthly's property.* with DPE companions and a separate Spanish certificate; typed index fields for about 610 of Tradeyard's original keys.",
+              "shows": "The dictionary is shared while storage stays per brand.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Tradeyard's bikes split.",
+            "introduces": "The other two brands.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "Step 7 put governance on a clock: a reviewed new attribute is live in two working days, stewardship is federated, and the core changes only by decision record.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The brands joining.",
+            "introduces": "The governance that keeps the result.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Looking back over the seven steps, the reader inventory from step 1 was the cleanup's most useful by-product: 31 retired keys still had readers and were migrated first.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "31 of the 990 retired keys still read by something, mostly old reports and one partner export.",
+              "shows": "Without the inventory those keys would have been found as incidents.",
+              "source": "scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The seven steps.",
+            "introduces": "The single result that mattered most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each choice in the design, from storage and dictionary scope to validation strictness, enumeration openness and release cadence, is right under stated conditions, and validation strictness is a liquidity decision.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A3",
+          "A4"
+        ],
+        "how": "States when each recommended choice does not hold."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The one path Veldmark took.",
+        "introduces": "The alternatives and when each is right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p74",
+          "controlling_idea": "Each choice in the chapter has a cost, and a table compares the main alternatives with the conditions for each.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five decisions: storage, dictionary scope, validation, enumerations, schema evolution, each with two options and when to choose them.",
+              "shows": "Each recommendation has conditions under which the alternative is right."
+            }
+          ]
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Validation strictness is a liquidity decision: the right set of hard rules is the smallest one that protects legal compliance and downstream integrity.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The trade-off table.",
+            "introduces": "The row with a business consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ most visibly in their attributes, which is why one dictionary with namespaces works better than one flat schema or separate systems.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A4"
+        ],
+        "how": "Shows that the namespaced dictionary absorbs vertical differences that storage alone cannot."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The dictionary-scope row of the trade-offs.",
+        "introduces": "How far the verticals actually differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p76",
+          "controlling_idea": "Attributes are where the verticals differ most, so one dictionary with namespaces works better than either one flat schema or separate systems.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five verticals compared on attributes per listing, source of truth, reference data, regulatory attributes, main junkyard risk and typical storage.",
+              "shows": "The differences are in content and storage, not in the need for one definition."
+            }
+          ]
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "In jobs, mapping a free-text title to an occupation is probabilistic, so occupation carries a confidence score and an override.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "ESCO v1.2.1 (European Commission, 2025): 3,039 occupations and 13,939 skills in 28 languages.",
+              "shows": "Reference data can be large enough that mapping to it is a guess with a confidence."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The vertical table.",
+            "introduces": "The jobs vertical's reference data.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Eight failures recur in attribute design, each with a control from the chapter.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A3",
+          "A5",
+          "A6"
+        ],
+        "how": "Names what goes wrong when each part of the design is missing."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The trade-offs and vertical differences.",
+        "introduces": "What goes wrong in practice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p78",
+          "form": "list",
+          "controlling_idea": "Eight failures to look for first in a design review: unreviewed keys, meaning changed in place, requirements without runway, validation only in the interface, facet values drifting from the dictionary, readers that reject the unknown, sensitive attributes in the wrong place and a dictionary team as bottleneck, each with its control.",
+          "function": "cause_effect"
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale attributes are a governance problem: share the dictionary, compiler, validator and reference data but not storage, give each layer an owner, measure five numbers and watch three long-term pressures.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A4",
+          "A6"
+        ],
+        "how": "Gives the group-level decisions that keep the design in place."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions at group level that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "Ranked by how much each decision constrains the others: what is shared decides who must own what, ownership decides who answers for the five numbers, and the long-term pressures matter only once the numbers are tracked. Putting the measures first would ask for numbers no owner is accountable for."
+      },
+      "paragraphs": [
+        {
+          "id": "p79",
+          "controlling_idea": "At group scale attributes are a governance problem with an architecture attached, and the Chief Architect's decisions about them are few but durable.",
+          "function": "claim"
+        },
+        {
+          "id": "p80",
+          "controlling_idea": "The group should share the dictionary, compiler, validator library and reference-data service but not a storage model.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The few decisions.",
+            "introduces": "The first: what is shared.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p81",
+          "controlling_idea": "Stewards own definitions, category owners own bindings, the platform team owns the service, the architecture advice forum decides the core, and data protection reviews sensitive and regulatory attributes.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What is shared.",
+            "introduces": "Who decides.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p82",
+          "controlling_idea": "Five numbers show whether the dictionary works: coverage, validity, the long-tail ratio, time to a new attribute and facet coverage.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What to measure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p83",
+          "controlling_idea": "Three long-term pressures will test the design: model-generated attributes, regulation with effective dates and acquisitions bringing new dictionaries.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to measure.",
+            "introduces": "What to watch.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions let a reader test their own platform's definitions, change process, validation, reader tolerance, legal attributes, purposes, reference data, long tail, provenance and sensitivity.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A2",
+          "A3",
+          "A4",
+          "A5",
+          "A6"
+        ],
+        "how": "Turns each supporting claim into a question a design review can ask."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions a reader takes into a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p84",
+          "form": "list",
+          "controlling_idea": "The chapter's decisions become ten questions for a design review.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Attributes to Pictures",
+    "synthesis": "The Attribute Junkyard was never a storage problem: it forms wherever each reader interprets an attribute itself, so putting meaning in one compiled, versioned dictionary is what lets storage stay per brand and lets attributes change without breaking producers or readers.",
+    "so_what": "A group can answer yes to the opening question: Veldmark shares the dictionary, compiler, validator and reference data but not storage, ships a reviewed attribute in two working days and watches the long-tail ratio to see whether the Junkyard regrows.",
+    "callback": {
+      "to": "Ingrid's question whether one dictionary and one schema service can serve three verticals without forcing one shape on all brands or creating a central queue, and Femke's bare 57.",
+      "how": "The conclusion answers the question with the namespaces, the compiled artifacts and federated stewards, and notes that Femke's 57 now appears in the frame-size facet."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Start with an inventory of your own keys and their readers, and measure the long-tail ratio before choosing any storage model."
+    },
+    "hand_off": {
+      "to": "media-pipeline",
+      "relationship": "contrast",
+      "carries_over": "The attribute dictionary, which describes what a listing says in words and numbers.",
+      "introduces": "Pictures, which buyers judge first: a second and far larger body of listing data with its own pipeline, storage economics, privacy risks and fraud signals."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The review questions and the whole chapter.",
+      "introduces": "The answer to the chapter's opening question.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p85",
+        "controlling_idea": "The answer to the opening question is yes, because the Junkyard forms where readers interpret attributes on their own, not in any particular store: one compiled dictionary with namespaces and federated stewards lets each brand keep its storage, and Femke's 57 now reaches the facet.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p86",
+        "controlling_idea": "The attribute dictionary describes what a listing says in words and numbers, but buyers decide on pictures first, and media is a second, far larger body of listing data that the next chapter takes up.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Attributes, the words and numbers of a listing.",
+          "introduces": "Pictures and the media pipeline.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The category tree, taxonomy versioning and category migrations.",
+      "covered_in": [
+        "categories-and-taxonomies"
+      ]
+    },
+    {
+      "topic": "The normalization and enrichment pipeline, attribute provenance mechanics and LLM extraction design.",
+      "covered_in": [
+        "normalization-and-enrichment",
+        "ai-in-listing-systems"
+      ]
+    },
+    {
+      "topic": "Feed contracts, error reporting to partners and ingestion channels.",
+      "covered_in": [
+        "listing-ingestion"
+      ]
+    },
+    {
+      "topic": "Search index design, faceting performance and ranking.",
+      "covered_in": [
+        "search-architecture",
+        "ranking"
+      ]
+    },
+    {
+      "topic": "The listing aggregate's lifecycle and invariants.",
+      "covered_in": [
+        "listing-aggregate"
+      ]
+    },
+    {
+      "topic": "Event contract design.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around three layers (definition, binding, value) rather than around storage technologies, because storage choice matters less than the dictionary and readers usually start from the wrong end."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used event-schema compatibility (Confluent's backward/forward vocabulary) as the frame for schema evolution, applied separately to producers and readers.",
+      "rejected": [
+        "A simple breaking/non-breaking list, too coarse for enumeration changes."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made the compiled-artifacts architecture the recommendation.",
+      "rejected": [
+        "A request-time schema lookup service on the write path."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Chose the frame-size key sprawl and the bikes split as the main Veldmark thread, with the Essen Golf decode conflict and the Lyon DPE fields as vertical counterpoints."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: 'distinguish the layers', 'list the fields of a dictionary entry', 'compare storage models', 'describe a compiling schema service' and 'name the regulatory attributes' are kept as intent.outcome.know and tested through AC-1 to AC-3; 'classify a schema change and apply the rollout rule' is the journal spec's AC-1; 'follow Veldmark's cleanup numbers' and 'every company claim is dated and sourced' were inventories of contents and evidence format and are dropped (the style guide still governs sourcing). No acceptance criteria were added.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims A1 to A6 written here (the journal spec gives none for this post) from the thesis's parts: how the Junkyard forms, the three layers and the entry, compatibility rules, storage per brand under one dictionary, the compiling service, and cleanup with governance. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) to the introduction so that a reader of the opening can predict the sections (AC-2).",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names only the layers, storage, the schema service and Veldmark."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from the hand-off paragraph alone to a synthesis paragraph (p85) that answers the scene's question and calls back to Femke's bike, followed by the hand-off (p86).",
+      "rejected": [
+        "Leaving the synthesis to the Chief Architect's View, which is a body section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved Architecture: A Schema Service That Compiles from after Storage Models to after Attributes for Search, Trust, Ads and Feeds, so the compiler comes after everything it compiles (reference data, units, purposes, feed mappings); rewrote the transitions into reference data and the schema service, the roadmap (p04) and the opener of p35; p49 now points back to Vinted under storage.",
+      "rejected": [
+        "Changing the declared reason to admit the compiler comes before its inputs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 1 (ESCALATE on two spec-fault flow findings corroborated by both readers, plus a corroborated 'Storage unclear'): moved Storage Models from after Category Schemas to after Attributes for Search, Trust, Ads and Feeds (just before the schema service), so the account of the dictionary runs without a break and Vinted's brand curation is met under reference data first; moved p48 (Pkw-EnVKV) from after the French DPE paragraphs to directly after the Essen Golf (p45), so the passage goes from cars to property once. Transitions into reference data, storage, the schema service, p48 and p46 rewritten; roadmap p04 updated. Intent, thesis, role and criteria unchanged.",
+      "rejected": [
+        "Keeping storage after the schemas and only stating the reason in its opener (both readers suggested the move)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 2 (ESCALATE on one spec-fault flow finding corroborated by both readers): moved the inbound feed-standards subsection (p57, p58) from Attributes for Search, Trust, Ads and Feeds to the end of Reference Data, because inbound standards are vocabularies partners send, not reader needs; transitions into p57 and Normalization rewritten. AC-2's expected answer (copied from the journal spec) still lists storage and the schema service before reference data; the journal spec is not edited from this pass, so this is left for the orchestrator.",
+      "rejected": [
+        "Moving the subsection into the schema-service section next to the compiler's inbound mappings."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit set to the published draft's length plus 5% (8,633 words by check_draft's count, which includes callouts and tables; limit 9,065), because spec.md set no limit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation: the inbound feed-standards subsection (p57, p58) moved from the end of Reference Data to the end of the schema-service section, beside the compiler's inbound feed mappings (the placement both round-3 flow readers proposed; the readers section was tried in round 1 and failed). Transitions into p57 and Normalization rewritten, the schema-service carry-over now names outbound schemas, roadmap p04 and its promise updated. AC-2's expected answer (journal spec) is out of order with this post; the replacement is handed to the orchestrator.",
+      "rejected": [
+        "A section of its own for feed standards (one more heading for two paragraphs).",
+        "Retitling Reference Data to include partner vocabularies."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation: p69 (category re-classification) merged into the bikes-split step as a clause and evidence item, with all its facts kept, so it no longer interrupts the numbered steps.",
+      "rejected": [
+        "Moving p69 before Figure 5 as a separate paragraph (it would separate the figure from the step it illustrates)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation: the cleanup steps stay declared chronological and the backfill (done by the end of September 2027) now comes before the bikes split (1 November 2027): old Step 5 is Step 4 and old Step 4 is Step 5. Ledger dates unchanged; transitions into p70, p68 and p71 rewritten.",
+      "rejected": [
+        "Declaring the steps a grouping of overlapping workstreams (readers would still meet a later date before an earlier one)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims A1 to A6 accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes ('safe' mildly evaluative; how_why does not say why storage may differ per brand) accepted under the author's delegation, 2026-11-12: the thesis is copied from the journal spec and stays unchanged; no rewording is clearly better."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken in earlier passes (merge Vertical Differences into Trade-offs, merge signposts p37/p53/p59, cut p69 to a clause, p60's overlap with p13-p14, gloss Feed Roulette and the advice forum, p73 inside steps 1 and 2) kept as published, accepted under the author's delegation, 2026-11-12; p69 is now a clause under the escalation decision above."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 single-reader minor points (no dictionary row in the layer table, Pkw-EnVKV placement, 'had decode and dealer disagreed silently', the Category Straitjacket only in the callout, JSON Schema 2020-12 beside Amazon's 2019-09, 'feed cycle') kept as published, accepted under the author's delegation, 2026-11-12; they did not block and no clearly better option was found."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over research items kept as published, accepted under the author's delegation, 2026-11-12: Etsy's 31% to 91% stays with its stated secondary-summary caveat; EU EPBD recast obligations are not cited (no new real-law claim); vehicle reference-data licensing stays a design rule only."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "max_words raised from 9,065 to 9,300 (under the 10% allowed) for the transitions added by the moves above.",
+      "rejected": [
+        "Cutting published text to make room."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role and the incoming transition and hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/09-attribute-schemas/spec.md (accepted 2026-10-20)",
+      "contributed": "Audience, non-goals, open questions, decision log, sources and changelog."
+    },
+    {
+      "kind": "internal",
+      "ref": "categories-and-taxonomies, normalization-and-enrichment, listing-ingestion, search-architecture, media-pipeline",
+      "contributed": "Neighbouring chapters and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-listing-data-ingestion.md (Parts 3, 4, 8, 11), brief-real-estate-portals.md (C.1, C.4, C.7), brief-automotive.md (A.2, A.3, A.7), brief-search-discovery.md (2.2, 2.7), scenario-ledger.md",
+      "contributed": "Evidence and the Veldmark facts."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay Taxonomy API specification and PBSE playbook",
+      "contributed": "The public attribute-dictionary model and the product/instance split."
+    },
+    {
+      "kind": "external",
+      "ref": "Amazon SP-API Product Type Definitions",
+      "contributed": "JSON Schema contracts with a custom vocabulary."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering, faceted search (2023)",
+      "contributed": "Facets on the index; brand curation."
+    },
+    {
+      "kind": "external",
+      "ref": "Autotrader Connect and mobile.de Seller-API documentation",
+      "contributed": "Vehicle taxonomies, reference data, breaking-change policy, validation rules."
+    },
+    {
+      "kind": "external",
+      "ref": "Confluent schema-evolution docs; PostgreSQL JSON docs; Elastic nested docs; NHTSA vPIC",
+      "contributed": "Compatibility vocabulary, storage and index trade-offs, VIN decoding."
+    },
+    {
+      "kind": "external",
+      "ref": "Service-Public.fr (DPE), Pkw-EnVKV, RESO Data Dictionary, OpenImmo, Rightmove RTDF v1.4.1, ESCO",
+      "contributed": "Regulatory attributes and feed and occupation standards."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: reverted 'about 610 of the 2,310 mapped original keys' to the published 'about 610 of Tradeyard's original keys'; the ledger does not say the 610 are a subset of the 2,310. Check report stale."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: acronyms expanded on first use (DMS, NHTSA), reading time corrected; frame-size baseline (23%) confirmed against the editor's ledger line; DPE, Vinted and ESCO figures re-verified. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 2 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 7,807 to 7,867 prose words; lead now places the chapter in Part II; 1 heading renamed (\"In Practice: Public Examples and Veldmark's Cleanup\"); 3 long paragraphs split; \"four examples\" corrected to \"three groups of examples\". (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 3 (ESCALATE): wording fixes only (p03, p04, p26, p33, p42, p71, p76, p85); no further round; check report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2: feed-standards subsection moved into Reference Data; draft fixes (bikes-split gloss, layer table row order, producers no longer called consumers, sources of reference data announced, Amazon explained, event-contract tied to tolerant readers, step 6 tied to search typing, Trade-offs, Failure Modes and Chief Architect openers); trims to stay within 9,065 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1: storage section moved before the schema service; Pkw-EnVKV paragraph moved next to the Essen Golf; draft-fault fixes (layer table header, Barcelona and Common Ground glosses, 610 keys, event-contract opener, intro opener, change-of-meaning pointer, Questions lead-in, Golf market value, Lyon class D). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric applied: schema-service section moved after the readers section; roadmap paragraph p04 and conclusion synthesis p85 added; transitions rewritten. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: feed standards moved to the schema-service section, p69 merged into the bikes-split step, Steps 4 and 5 swapped into date order, open questions closed into the decision log, max_words 9,300. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 9300
+  }
+}

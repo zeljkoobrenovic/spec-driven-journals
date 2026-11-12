@@ -1,0 +1,466 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-8",
+  "journal": "listing-systems-architecture",
+  "part": "part-8",
+  "title": "Part VIII — LEADERSHIP: The Chief Architect's Agenda",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-8-intro/index.md) and its former spec.md (accepted 2026-10-21), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part VIII's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its three supporting claims are written here from the part's thesis and flow. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's claim in three bullets and the IN THIS PART callout names the five chapter subjects in reading order. Units added to the published page to meet the contract, in the shape the Part II to VII introductions now share: a roadmap paragraph (p03) giving the reading order and the reason for it, a lead-in to the chapter table (p04), and a closing paragraph under 'Where to begin' (p07) with synthesis, callback and hand-off, grown from the published last paragraph of the Veldmark section.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part VIII's argument: the hard problems of a marketplace group are problems of change, not of design, so change is sequenced by risk to liquidity, every capability gets one owning team, AI proposes while the structured systems decide, and the platform is steered by fitness functions.",
+        "The five chapters in reading order, the question each answers and when to read it, and the Veldmark decisions of 2027 they follow."
+      ],
+      "can_do": [
+        "Pick the Part VIII chapter that answers the leadership problem in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Chief and group architects, CTOs, principal engineers and engineering leaders who must sequence platform change across acquired marketplaces, assign ownership and keep the result coherent over years (the journal's readers), who have read Part VII and are about to start Part VIII, or who arrive with a leadership problem in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; how to make and defend an architecture decision; what a monolith, a rewrite and a cut-over are.",
+        "Part VII's platform: the listing event contract, the ML platform and model registry, the tenancy model with its release rings, and journey reliability (event-driven-listings, ml-platform, multi-country-platforms, reliability-and-scale); Part IV's search platform (search-architecture); Part I's context map (bounded-contexts); Part II's taxonomy and attribute schemas; Part VI's paid bumps; liquidity as buyers finding listings and sellers getting contacts.",
+        "The fifteen named failure patterns, among them Deal-Shaped Architecture, The Forced Fit and Set-and-Forget AI (where-listing-systems-go-wrong).",
+        "Veldmark in outline: a fictional group of four brands (Tradeyard, Motorvane, Hearthly, Keybridge), Casavista as Hearthly's Spanish acquisition, the Common Ground program, Ingrid Halvorsen its Group Chief Architect, Yardstick, Tradeyard's PHP monolith, the architecture advice forum, and the people table, among them Yara Mendes (Platform Engineering) (meet-veldmark and earlier chapters)."
+      ],
+      "does_not_know": [
+        "Integration option, consolidation sequence, synergy ledger and dis-synergies (owned by platform-consolidation; the page names the synergy ledger only as a Veldmark decision 'in place of spreadsheets', and glosses Keybridge's option 'federated under group controls' as 'sharing finance and security only').",
+        "Stream-aligned and platform teams, decision rights and the advice process (owned by organizing-marketplace-engineering; the KEY POINTS callout says 'platform teams earn their tenants by being worth adopting' and 'an open, recorded advice process rather than a review board that owns nothing').",
+        "Strangling a monolith behind seams, stage gates and relevance parity (owned by modernization-and-migration; the KEY POINTS callout says 'slice by slice behind a seam' and 'gate every step on measured outcomes with a rollback answer').",
+        "The AI control layer and the AI use register (owned by ai-in-listing-systems; the KEY POINTS callout says 'let AI propose while the structured systems decide').",
+        "Stressor analysis and marketplace fitness functions (owned by long-term-evolution; the KEY POINTS callout glosses stressors as 'new owners, laws, channels'; fitness functions are named as what the chapter builds)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+        "expected": "What a group should consolidate after acquiring marketplaces, when and how; which organizational design makes a multi-marketplace architecture work; how to move a live marketplace off legacy systems without losing traffic, sellers or revenue; where generative AI and agents create value and what architecture keeps them controlled; how to keep a marketplace platform coherent over ten years of change."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given situations the chapter table lists, the reader names the chapter to open.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A fix reaches one country and not the next; external AI assistants start querying your search; and the transformation program reports milestones instead of matches. Using only this page, which chapter do you open for each?",
+        "expected": "Organizing marketplace engineering for the fix that does not travel; AI in listing systems for the external assistants; long-term evolution for the program that reports milestones."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader can say which earlier designs the part's chapters build on and which later part tests its argument.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: which designs from earlier parts do the chapters of this part build on, and for what; and what does the following part do with this part's argument?",
+        "expected": "The tenancy model and release rings of multi-country platforms make consolidation possible; the event-driven listings contract and the search platform are the seams a migration routes through; the bounded-contexts context map becomes the list of owning teams; AI in listing systems extends the ML platform and depends on Part II's taxonomy and attribute schemas. Part IX tests the argument against publicly documented marketplace groups."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this part argue, and in what order should its chapters be read?",
+    "claim": "Part VIII argues that the hard problems of a marketplace group are problems of change, not of design: change is sequenced by risk to liquidity and each step gated on measured outcomes with a rollback answer, every journey, bounded context and shared capability gets exactly one owning team with cross-brand decisions made through a recorded advice process, AI proposes while the structured systems decide, and the platform is steered by fitness functions rather than program milestones; its five chapters are read in the order each acts on what the one before decided: consolidation chooses what to share, organization assigns owners, migration uses those owners to retire the monolith, AI builds on the changed platform, and long-term evolution tests every decision over a decade.",
+    "disputed_by": "The program view of transformation, in which the target architecture is the hard part and the rest is execution on the deal's timetable, so the leadership chapters are independent management topics a reader may consult in any order.",
+    "so_what": "A reader who accepts it reads the consolidation chapter first, or opens the one chapter that answers the leadership problem in front of them, and judges any change plan by what it changes first, who owns it, how it will be known to work and what must stay true.",
+    "how_why": "Each chapter's input is the previous chapter's output: organizing-marketplace-engineering assigns owners to the capabilities consolidation chose to share, every migration slice needs an owning team from the target organization, the AI control layer uses the centrally owned gateway, the model registry and the services migration moved out of the monolith, and long-term evolution sorts all of these decisions into what lasts and what is replaced. Veldmark's 2027 problems were problems of change: by October 2027 the Casavista deal had delivered €9.6 million of €18 million in promised synergies, and Common Ground (€140 million over 2027–2030) must retire Yardstick by the end of 2029.",
+    "supporting_claims": [
+      {
+        "id": "PVIII-1",
+        "claim": "The five chapters are read in the order each acts on what the one before decided, and each is the chapter to open first for a recognizable symptom."
+      },
+      {
+        "id": "PVIII-2",
+        "claim": "Each chapter builds on a design from an earlier part, and Part IX tests the part's argument against publicly documented marketplace groups."
+      },
+      {
+        "id": "PVIII-3",
+        "claim": "Veldmark's 2027 decisions, shaped by Ingrid Halvorsen and taken by the CTO, the board and the advice forum, move Common Ground from plan to practice, and each is the material of one or two chapters."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states that the hard problems of a group are problems of change, gives the reading order of the five chapters, and frames them with Veldmark's 2027 decisions.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "p03 and the chapter table in p04: the five chapters in the order each acts on what the one before decided"
+      }
+    ],
+    "rationale": "The page opens on the step after Part VII (a designed platform that a group assembled by acquisition has only on paper), states the part's claim (change, not design, is the hard problem), then gives the reading order with the reason for it and narrows to one row per chapter with the symptom that sends a reader there. It widens once to say which earlier designs the chapters build on and where Part IX takes the argument, shows Veldmark's 2027 decisions, and ends with a short synthesis, the part's test and the hand-off to the first chapter. The order is given before the table because the rows read as a sequence only once the reader knows each chapter acts on what the one before decided; the connection section follows the table because it names what each listed chapter builds on; the Veldmark section follows because its decisions are what the chapters design; the conclusion comes last and holds no new material. Put Veldmark first and its decisions arrive before the reader knows which chapter treats each; put the connection first and it names consolidation, migration and owning teams before the reader has met the chapters that treat them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Part VII built the distributed system underneath the marketplaces; Part VIII turns to the work that decides whether that system ever exists outside a diagram."
+    },
+    "bridge": {
+      "from_reader_world": "Part VII's platform, designed but, in a group assembled by acquisition, real only on paper.",
+      "to_topic": "The hard problems of change: in what order the decisions are carried out, who owns them, how a live business moves onto them and how a group knows years later that they still serve their purpose, while the group's platforms come in several copies, its teams follow old org charts, its monolith still bills sellers for bumps and its future owners and regulators are unknown."
+    },
+    "thesis_statement": {
+      "text": "The hard problems of a marketplace group are problems of change, not of design.",
+      "placement": "KEY POINTS callout (in three bullets); paragraph p02 (bold phrase)"
+    },
+    "roadmap": {
+      "placement": "IN THIS PART callout; paragraph p03; the section headings",
+      "promises": [
+        {
+          "promise": "Five chapters in the order each acts on the one before: consolidation chooses what to share, organization assigns owners, migration uses them to retire the monolith, AI builds on the result, and long-term evolution tests it all over a decade; a table says when to open each.",
+          "kept_in": [
+            "chapters"
+          ]
+        },
+        {
+          "promise": "After the table, the earlier designs the chapters build on and Veldmark's 2027 decisions (p03's closing sentence: 'A table of the chapters follows, then the earlier designs they build on and Veldmark's decisions.').",
+          "kept_in": [
+            "connects",
+            "veldmark"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part VII built the distributed system underneath the marketplaces, and Part VIII turns to the Chief Architect's agenda, the work that decides whether that system ever exists outside a diagram: in what order the earlier decisions are carried out, who owns them, how a live business moves onto them and how a group knows years later that they still serve their purpose.",
+        "function": "context"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The part's claim is that the hard problems of a marketplace group are problems of change, not of design: a group assembled by acquisition has platforms in several copies, teams that follow old org charts, a monolith that still bills sellers for bumps and unknown future owners and regulators, and the architect changes all of this while buyers keep finding things and sellers keep getting contacts.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: a market street that stays open while crews replace its foundation section by section, moving from duplicated old machines and a monolith to one shared platform.",
+            "shows": "Change made while the marketplace keeps serving: consolidating, assigning owners, migrating, governing AI and evolving the platform while buyers and sellers keep trading."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The questions of order, ownership, migration and lasting purpose that decide whether the platform exists outside a diagram.",
+          "introduces": "The part's answer: these are problems of change, not of design, and why a group assembled by acquisition has them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The five chapters are read in the order each acts on the one before: consolidation chooses what to share, organization assigns owners, migration uses them to retire the monolith, AI builds on the result, and long-term evolution tests it all over a decade; a table of the chapters follows, then the earlier designs they build on and Veldmark's decisions.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The changes the part's claim names (several copies, old org charts, the monolith, unknown future owners).",
+          "introduces": "The order in which the chapters treat them, and why.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters answers one question and is the one to open first for a recognizable symptom.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "PVIII-1"
+        ],
+        "how": "Lists the chapters in reading order with the question each answers and the symptom that sends a reader to it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The five chapters in reading order.",
+        "introduces": "One row per chapter: its question and when to open it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Each row of the table, in reading order, gives a chapter's question and when to open it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five rows in reading order: platform-consolidation (the board asks where the synergies are, or a rebrand is planned alongside a replatform), organizing-marketplace-engineering (a fix reaches one country and not the next, or a shared platform has no team that owns it), modernization-and-migration (the monolith deploys twice a week, or a rewrite is being proposed), ai-in-listing-systems (several AI proposals arrive at once, or external assistants start querying your search), long-term-evolution (an investor asks what a sale would cost, or the program reports milestones instead of buyer–seller matches).",
+              "shows": "The reader can go from the leadership problem in front of them to the chapter that answers it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connects",
+      "heading": "How this part connects",
+      "controlling_idea": "Each chapter builds on a design from an earlier part, and Part IX tests the part's argument against public cases.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "PVIII-2"
+        ],
+        "how": "Says, chapter by chapter, which earlier design each builds on, and what Part IX does with the argument."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The five chapters of the part.",
+        "introduces": "Where the part sits in the book: the earlier designs it builds on and the part that tests it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Each chapter builds on a design from an earlier part, in the order of the chapters: the tenancy model and release rings make consolidation possible, the context map becomes the list of owning teams, the listing event contract and the search platform are the seams a migration routes through, and AI in listing systems extends the ML platform and depends on Part II's taxonomy and attribute schemas; long-term evolution draws on all of these designs and closes the book's argument, which Part IX then tests against publicly documented marketplace groups.",
+          "function": "context"
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "The Veldmark thread",
+      "controlling_idea": "The chapters follow Veldmark, which has approved Common Ground and is behind on the Casavista synergies; the 2027 decisions Ingrid Halvorsen shapes, listed in chapter order, not by date, each under its chapter, move the program from plan to practice.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "PVIII-3"
+        ],
+        "how": "Shows Veldmark's starting point (the program and the synergy gap) and the 2027 decisions the chapters treat."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The part's chapters and the earlier designs they build on.",
+        "introduces": "Veldmark as the case the chapters follow: its program, its synergy gap and its 2027 decisions, chapter by chapter.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "The chapters follow Veldmark (fictional), which has approved Common Ground (€140 million over 2027–2030 to share platforms and retire Yardstick by the end of 2029) and whose Casavista deal has delivered €9.6 million of €18 million in promised synergies by October 2027; Ingrid Halvorsen shapes the decisions, which the CTO, the board and the advice forum take; they are listed in chapter order, not by date, each bullet naming its chapter.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Decisions in chapter order, each bullet opening with its chapter link and keeping its date: the consolidation review (9 November 2027): a synergy ledger in place of spreadsheets, the Keybridge cross-selling line (synergies from agency data) withdrawn and Keybridge permanently federated under group controls (sharing finance and security only) (platform-consolidation); Common Ground organization v1 (22 June 2027, effective 1 September) with a group platform organization under Yara Mendes, journey-aligned brand teams and the weekly architecture advice forum (organizing-marketplace-engineering); the Yardstick Exit plan (October 2027), waves 0 to 6 ending in decommissioning by 31 December 2029, when the Amsterdam colocation contract expires (modernization-and-migration); the photo-to-listing assistant pilot (15 November 2027), in which the model proposes and the taxonomy, attribute schema and trust rules decide (ai-in-listing-systems); a stressor workshop (18–19 November 2027) and the marketplace fitness scorecard v1 of twelve measures (8 December 2027), ahead of the 14 December board meeting on the investor's question about selling Hearthly (long-term-evolution).",
+              "source": "_research/scenario-ledger.md: Common Ground program (Jan 2027, €140M over 2027–2030, Yardstick retired by end of 2029); platform-consolidation line (Casavista €18M case, Oct 2027 tracker €9.6M; consolidation review Tue 9 Nov 2027; synergy ledger replaces spreadsheets; Keybridge €7M cross-selling withdrawn; federate under group controls, permanently); organizing-marketplace-engineering line (Common Ground organization v1 decided Tue 22 Jun 2027, effective 1 Sep 2027, group platform organization under Yara Mendes, journey-aligned stream teams, weekly open advice forum); modernization-and-migration line (Exit plan approved Oct 2027, waves 0 to 6, decommission by 31 Dec 2029; Amsterdam colocation contract ends 31 Dec 2029); ai-in-listing-systems line (photo-to-listing pilot approved Mon 15 Nov 2027; category from the taxonomy service, attributes constrained to the category schema, photo screening); long-term-evolution line (stressor workshop Thu 18–Fri 19 Nov 2027; fitness scorecard v1, 12 functions, adopted Wed 8 Dec 2027; investor's question about a 2030 sale of Hearthly, Ingrid's paper to the board Tue 14 Dec 2027). Gloss 'sharing finance and security only': platform-consolidation's option table (federate under group controls: security baseline, access, finance close, data protection) and its Keybridge paragraph (finance, security operations, procurement, the annual independent review). Gloss 'synergies from agency data': platform-consolidation ledger line (Keybridge 2024 deal case €7M/yr cross-selling from agency data, withdrawn).",
+              "shows": "The decisions the chapters treat, one bullet per chapter in the chapters' order, from the review that fixes the consolidation sequence to the scorecard that measures whether the design still works."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to begin",
+    "synthesis": "Together, the chapters turn the diagram into owned, gated, measured changes.",
+    "so_what": "With every change owned, gated and measured, a reader can answer the part's test for any change: what to change first, who owns it, how they will know it worked and what must stay true when the group's owners, laws and channels change.",
+    "callback": {
+      "to": "The opening (p01): the work that decides whether the platform ever exists outside a diagram.",
+      "how": "The closing paragraph says that the chapters together turn the diagram into owned, gated, measured changes."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "By the end of Part VIII, say what to change first, who owns it, how you will know it worked and what must stay true when the group's owners, laws and channels change; begin with platform-consolidation."
+    },
+    "hand_off": {
+      "to": "platform-consolidation",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first question, in what order the earlier chapters' decisions are carried out, and Part VII's tenancy model and release rings, which make consolidation possible.",
+      "introduces": "The integration option, the consolidation sequence with its gates, the synergy case as a ledger, and brand migration."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five chapters, the designs they build on and Veldmark's decisions.",
+      "introduces": "What the chapters give together, the part's test, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p07",
+        "controlling_idea": "Together, the chapters turn the diagram into owned, gated, measured changes, so that by the end of Part VIII a reader can say what to change first, who owns it, how they will know it worked and what must stay true when the group's owners, laws and channels change; a reader begins with platform-consolidation.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-teaching any chapter's content or defining the terms the chapters own (integration option, consolidation sequence, synergy case and ledger, team topology, advice process, stage gate, relevance parity, AI use register, stressor analysis, fitness function); the page names them only as what a chapter builds and points to it.",
+      "covered_in": [
+        "platform-consolidation",
+        "organizing-marketplace-engineering",
+        "modernization-and-migration",
+        "ai-in-listing-systems",
+        "long-term-evolution"
+      ]
+    },
+    {
+      "topic": "Veldmark supporting numbers beyond the program budget, the synergy gap and the decision dates (traffic loss, integration cost, team counts, wave contents, stressor residues); the decisions are listed and the numbers stay in the chapters.",
+      "covered_in": [
+        "platform-consolidation",
+        "organizing-marketplace-engineering",
+        "modernization-and-migration",
+        "long-term-evolution"
+      ]
+    },
+    {
+      "topic": "External factual claims; the page cites no company facts and needs no sources."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled on part-2 and part-7; same callout set and chapter table."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Failure patterns limited to three (Deal-Shaped Architecture, The Forced Fit, Set-and-Forget AI); The Copy-Paste Country and Vanity Liquidity are left to the chapters."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "The Veldmark thread lists decisions only; supporting numbers stay in the chapters."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, argument, chapter-table, connection, Veldmark-facts, hand-off and word-count criteria were inventories of contents or format and are dropped (format stays governed by the style guide; Veldmark facts by the ledger; the hand-off is now conclusion.hand_off; the word count is length.max_words). They are replaced by the journal spec's AC-1 to AC-3 and one added minor criterion, AC-4 (which earlier designs the chapters build on and what Part IX does with the argument), which tests the connection section.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims PVIII-1 to PVIII-3 written here, since the journal spec's entry for this post has none: the question is the entry's question; the claim condenses the part thesis to what this page argues (change, not design, and the reading order from the part's flow). For the author to confirm.",
+      "rejected": [
+        "Copying the part thesis whole, which this page summarizes but does not argue."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: max_words 1,000 by check_draft's count, as for the Part II to VII introductions (the old spec's 500–800 words was prose without callouts). The published page counted 951 by it.",
+      "rejected": [
+        "Keeping 500–800 words of body prose, which the page already exceeded once the callouts are counted."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units added so the page carries the part opening, in the shape the Part II to VII introductions share: a roadmap paragraph (p03) giving the reading order and the reason for it; a lead-in to the chapter table (p04); and a closing paragraph under a new 'Where to begin' heading (p07) with synthesis, callback and hand-off, grown from the published 'By the end of Part VIII… Begin with [[platform-consolidation]].' To stay within 1,000 words, three wordings of published text were shortened without losing a fact ('This part argues that', 'the fictional group', 'shapes the decisions; the CTO, the board and the advice forum take them') and 'you should be able to say' became 'you can say', as in the Part VI and VII closings. For the author to confirm.",
+      "rejected": [
+        "Keeping the part's test and the hand-off as the last paragraph of the Veldmark section, which leaves the page without a conclusion.",
+        "Raising the word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric: pass on all four questions (minor notes in open_questions). Flow rubric: sound with notes; order unchanged, so no transition_in rewritten.",
+      "rejected": [
+        "Naming the part's four commitments in p02 so the synthesis 'owned, gated, measured' is earned in prose (the KEY POINTS callout, which the rubric does not see, already states gating on measured outcomes; no words left under 1,000).",
+        "A roadmap clause announcing the connection and Veldmark sections (no words left; the section headings announce them).",
+        "Glossing 'the advice forum' in the Veldmark thread (known from earlier chapters and meet-veldmark; the KEY POINTS callout names the advice process)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1: ESCALATE (pass 32, fail 9; one spec fault, six corroborated draft faults, one minor). Spec fault (AC-1, intro_predicts_content): the roadmap's second promise was kept by headings only, so a reader of the introduction could not predict the earlier-designs and Veldmark sections; p03 now ends 'A table, their earlier foundations and Veldmark's decisions follow.' Spec changes under the brief's rule (paragraph ideas, evidence order and one transition; intent, thesis, role and the journal spec's criteria unchanged): p06 lists the decisions chapter by chapter (consolidation review, organization v1, Yardstick Exit, assistant pilot, stressor workshop and scorecard) instead of by date, and opens 'The chapters follow Veldmark' so the example relationship is stated; p05 takes the earlier designs in chapter order (minor B6). Draft faults revised: 'bills sellers for bumps'; 'buyer–seller matches' in the table; glosses 'stressors (new owners, laws, channels)' and 'federated under group controls (sharing finance and security only)'. No published fact, figure, name or link cut. The page is now 1,026 words by check_draft's count, 26 over max_words 1,000; no published fact was cut to fit, as the brief requires. For the author: raise the limit for this page (about 1,030) or choose what to cut.",
+      "rejected": [
+        "Cutting published sentences (the p01 questions, p05's Part IX sentence, Veldmark details) to stay within 1,000 words.",
+        "Tagging each Veldmark bullet with its chapter link (more words than ordering them by chapter)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2: REVISE (pass 36, fail 7; five blocking, all fault draft; one minor; plus the length check, 1,026 of 1,000). Revised: p03's signpost reworded ('A table of the chapters follows, then the earlier designs they build on and Veldmark's decisions.'; A1/B1); p05 says long-term evolution 'draws on all of these designs and closes the book's argument, which [[part-9]] then tests' (A7/B3 and the AC-4 reader); 'Keybridge permanently federated under group controls (sharing finance and security only)' (A5/B5); the Veldmark list announced as 'listed in chapter order rather than by date' (A6/B6); KEY POINTS 'platform teams earn their tenants by being worth adopting' (known_before_new, A3). Spec paragraph ideas updated to the same words (p03, p05, p06; no order change). The page is now 1,047 words by check_draft's count, 47 over max_words 1,000: every fix in rounds 1 and 2 added words and no published fact, figure, name or link was cut to fit. Minor not taken: 'cross-selling line' unglossed (one reader).",
+      "rejected": [
+        "Cutting published text to fit 1,000 words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3: ESCALATE (pass 28, fail 5; one spec fault, two corroborated draft faults, length). No fourth round. Close-out fixes applied without another round as cheap and plainly right: the Ingrid sentence split ('…take them. They are listed in chapter order, not by date:') and the gloss 'cross-selling line (synergies from agency data)' (ledger: Keybridge's €7M/yr cross-selling from agency data, withdrawn). These edits make check-report.json stale by hash; the rest is in open_questions for the author."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation of round 3 resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: (1) length: max_words raised from 1,000 to 1,100 (rule 2, within 10%); no published fact cut. (2) Veldmark list order: kept in chapter order, and each bullet now opens with its chapter link ('in [[platform-consolidation]], ...'), every date kept, so the order is visibly by chapter. (3) The Ingrid sentence split and (4) the gloss 'cross-selling line (synergies from agency data)' made after round 3 are kept. (5) 'six waves' corrected to 'waves 0 to 6' (ledger modernization-and-migration line: Exit plan in waves 0 to 6; the chapter's own wave table runs 0 to 6, while its prose says 'six waves'). (6) 'ahead of the board's question about selling Hearthly' corrected to 'ahead of the 14 December board meeting on the investor's question about selling Hearthly' (ledger long-term-evolution line: the investor's question, Ingrid's paper to the board Tue 14 Dec 2027). (7) The edits to published wording listed in open_questions (KEY POINTS glosses, p02 rewordings, roadmap p03 and signpost, table lead-in p04 and 'buyer–seller matches', p05 reorder and Part IX sentence, Veldmark opening and Ingrid sentences, bullet reorder, Keybridge gloss wordings, 'Where to begin' heading and synthesis, 'you can say') accepted under the author's delegation, 2026-11-12. Thesis-rubric and flow-rubric notes recorded and not taken (thesis unchanged; the published text kept).",
+      "rejected": [
+        "Date order with chapter tags (round 1's readers asked for chapter order; chapter order keeps the bullets aligned with the table).",
+        "A table column for the decisions (more words, a second table).",
+        "'six waves after a preparatory wave 0' (the ledger gives wave 0 real work: events, indexer, SEO pages)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-8 and its post entry part-8; the entries for reliability-and-scale and platform-consolidation)",
+      "contributed": "Intent outcome, AC-1 to AC-3 and role (post entry); the part's opening (hook, bridge, roadmap), thesis and flow; the first chapter's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "config.yaml, PLAN.md, and the KEY POINTS and lead paragraphs of platform-consolidation, organizing-marketplace-engineering, modernization-and-migration, ai-in-listing-systems and long-term-evolution",
+      "contributed": "The chapters summarized, their questions and the symptoms that send a reader to them."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Veldmark figure and date."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/part-8-intro/spec.md (accepted 2026-10-21, removed 2026-11-12)",
+      "contributed": "Non-goals, decision log, sources and changelog carried over."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); roadmap paragraph p03, table lead-in p04, closing 'Where to begin' p07. (AI-mediated session) After draft check round 1: roadmap signpost in p03, Veldmark decisions chapter by chapter, p05 in chapter order, glosses (stressors, federated), 'bills sellers for bumps', 'buyer–seller matches'. After round 2: signpost reworded, long-term evolution's place in p05, 'permanently' moved, Veldmark list announced as chapter order rather than date, 'platform teams earn their tenants by being worth adopting'. Round 3: ESCALATE; close-out fixes (Ingrid sentence split, cross-selling gloss); open questions recorded."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 793 → 799 words; headings unchanged (house shape for part intros); lead and 'How this part connects' opening sentences made concrete. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 1 inline illustration (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: American spelling (program); Veldmark thread no longer says Ingrid's team takes decisions owned by the CTO, the board and the forum. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 1100
+  }
+}

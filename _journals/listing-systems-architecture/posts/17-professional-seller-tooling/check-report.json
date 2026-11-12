@@ -1,0 +1,670 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/17-professional-seller-tooling/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/17-professional-seller-tooling/index.md",
+  "spec_sha": "528c55159da4c9b6",
+  "draft_sha": "b8eb8e7c7937c281",
+  "run_at": "2026-11-12T21:57:20+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter learning goals: pro needs and neutral design",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: pros pay and renew on proof",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architect stake: risk of a second system of record vs thin workspace",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: reconcilable numbers, workspace not record, neutrality by architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: vanity metrics, opaque feeds, scattered gating",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Professionals treat the marketplace as a business system judged by reconciling numbers",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Chapter's place in Part III and what pros want to learn from their spend",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Definitions of pro tooling, pro lead management and pro SaaS, and what other chapters own",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's structure and evidence",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Two Arguments in One Week ¶1",
+      "summary": "Scene set: two tooling disputes reach the group architect",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Two Arguments in One Week ¶2",
+      "summary": "Dealer disputes lead count (23 vs 14) and threatens downgrade; CTO wants rebuild",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Two Arguments in One Week ¶3",
+      "summary": "Owned CRM wants cross-portal report; sister portal asks to see it",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Two Arguments in One Week ¶4",
+      "summary": "Existing neutrality decision lacks mechanism; architect must answer both with one design",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶1",
+      "summary": "Professional jobs and fears from the reference model, plus agencies winning mandates",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶2",
+      "summary": "Pointer to table mapping jobs to capabilities",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶3",
+      "summary": "Caption of jobs-to-capabilities table",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶4",
+      "summary": "Every pro capability spans several domains",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶5",
+      "summary": "Measuring causal value is hard: package self-selection bias and incumbents reporting outcomes",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶6",
+      "summary": "Need for a per-listing outcome funnel with views as diagnostics only",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶7",
+      "summary": "Lead lifecycle on the professional's side, mostly in their CRM",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: What Professionals Need ¶8",
+      "summary": "Response time and outcome as the key lead measurements",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶1",
+      "summary": "Three properties of the recommended workspace architecture",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶2",
+      "summary": "Components of the architecture and why each is placed there",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶3",
+      "summary": "Inventory tools should expose feed pipeline status readably for managers",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶4",
+      "summary": "Bulk edits as asynchronous commands via the listing service",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶5",
+      "summary": "Stats, leads and billing delivery from one shared event stream",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶6",
+      "summary": "Rules for honest stats: dedup shown, estimates labelled, no naive package comparison",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶7",
+      "summary": "Serving portal-inbox users and CRM users with one lead object, plus outcome return path",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶8",
+      "summary": "Exported leads as personal data needing tracking + model scores inside exported leads",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶9",
+      "summary": "Pricing tools offered by major portals",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶10",
+      "summary": "Pricing feedback loop at band edges + aggregated data access governance",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶11",
+      "summary": "Org hierarchy rules for ownership and permissions + OAuth baseline for partner tokens",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶12",
+      "summary": "Scale and discipline of incumbents' partner integrations",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: A Workspace Over Systems of Record ¶13",
+      "summary": "Pro API as a governed product because inventory is multi-homed",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶1",
+      "summary": "Marketplace groups that also sell CRMs and pro software",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶2",
+      "summary": "Owning pro software: lock-in advantage vs conflict over competitor data",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶3",
+      "summary": "EU P2B rules on differentiated treatment and data access, and pending repeal",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶4",
+      "summary": "Questions any neutral design must answer with evidence",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶5",
+      "summary": "Neutrality rests on four evidence-producing controls",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶6",
+      "summary": "Caption of the four-controls table",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Neutrality by Design: When the Group Sells the CRM ¶7",
+      "summary": "Cost of the neutrality controls",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶1",
+      "summary": "Reconstructing the disputed car's leads across systems",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶2",
+      "summary": "Caption: three conflicting counts of the same demand",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶3",
+      "summary": "Both counts wrong; true unique buyers and VIN-confirmed sale",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶4",
+      "summary": "Four targeted changes replacing the planned portal rebuild",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶5",
+      "summary": "Reconciled numbers lead the dealer to renew",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶6",
+      "summary": "CRM's cross-portal report and its data boundary",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶7",
+      "summary": "Refusing the sister portal access, even anonymized",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶8",
+      "summary": "Mechanisms that make the boundary auditable: vendor parity, data tagging, evidence pack",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶9",
+      "summary": "Controls must be policies and tests, not hosting accidents",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Trade-offs: Build, Integrate or Own ¶1",
+      "summary": "Three options: build, integrate via API, or own SaaS",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Trade-offs: Build, Integrate or Own ¶2",
+      "summary": "Caption of the build/integrate/own comparison",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Trade-offs: Build, Integrate or Own ¶3",
+      "summary": "Author's rule for choosing, and the underfunded API option",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Trade-offs: Build, Integrate or Own ¶4",
+      "summary": "Owned SaaS must be separable for divestment",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Pro tooling varies strongly by vertical",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Caption of the vertical-differences table",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶3",
+      "summary": "Real estate: supply acquisition tools; recommerce: compliance boundary",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Failure: the pro portal becoming a second system of record",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "Failure: flattering statistics",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Failure: leads exported only partially",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Failure: package checks scattered in front-end code",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Failure: neglected partner API",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Failure: neutrality eroded by small exceptions",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Failure: imposing platform-controlled states without consent",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Lead-in to group-level decisions",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "What the group must decide: shared engines, governed API, neutrality regime",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Who owns which decisions",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Metrics to monitor: reconciliation, export coverage, response, API health, neutrality",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "AI agents as a new kind of API caller",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "From Supply to Discovery ¶1",
+      "summary": "Recap of the completed supply chain and the two resolved disputes",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "From Supply to Discovery ¶2",
+      "summary": "Discovery can rely on supply as read models, or inherit its defects",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "From Supply to Discovery ¶3",
+      "summary": "Hand-off to Part IV and the search chapter",
+      "matched_spec_paragraph": "p68"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 68 aligned units' one-phrase summaries match the controlling ideas of their spec paragraphs in spec order (p01-p68, including the neutrality section opening with p17-p18); the five intro callouts match no spec paragraph and carry the thesis statement and roadmap callouts the spec places there.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked three units as two-idea. Architecture ¶8 (p26): the model-output point is subordinate ('That record matters more as leads carry model outputs'), one idea about recording exports. Architecture ¶10 (p28): opened by one controlling sentence, 'Two architectural consequences follow; both are my inference from the published designs', which the spec's p28 controlling idea declares as one unit. Architecture ¶11 (p29): the OAuth baseline elaborates the third rule ('integrations are principals'), so it serves the three-rules idea. None needs two controlling ideas against its spec entry.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to S1-S4: concepts and worked-example Golf units to S1, workspace pieces/inventory/team to S2, partner API, trade-offs rule and agents to S3, neutrality, Keybridge boundary and group-exit separability to S4; failure modes, CA view and questions each map to one claim; conclusion performs the part's closing.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Tables 1-5 are each followed by a caption that states what they show and a paragraph drawing the consequence (p12, p35/p36, p39, p48, p52); Figures 1-5 are explained in their units (p16, p19-p20, p23, p39, p42-p43); quotations (P2B Arts. 7 and 9, Bundeskartellamt, Rightmove, Vinted, productscape) are each followed by the point they make. The renewal figures in p41 are covered under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in, section and paragraph level, is expressed at its boundary: e.g. p02 contrast ('treated every seller the same way, but professionals supply most'), section openings 'Ingrid's first question' / 'The second question' / 'The third of Ingrid's questions', p33 contrast ('Whatever happens to the regulation'), p36 contrast ('The controls cost something'), trade-offs elaboration ('Keybridge is one of three ways'), verticals elaboration ('Which option fits also depends on the vertical'), failure-modes contrast ('The design fails in practice'), CA view cause_effect ('Preventing these failures'), p64 time ('will soon ... from 2025-2026'), questions sequence, conclusion summary. Whether the verticals bridge is delivered by the section is a flow finding, recorded there.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "from outcomes rather than exposure to the lead from their side",
+      "finding": "The roadmap compresses section topics into phrases that do not parse until the sections arrive. Reader B misparsed 'exposure to the lead' as one phrase and re-read; reader A found 'building, integrating or owning' cryptic until the Trade-offs section names the three options. Same passage (the roadmap paragraph), same problem: over-compressed section labels. The spec's order is fine; plainer labels (e.g. 'whether to build tools, integrate partners through APIs or own pro software') fix it.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶2",
+      "quote": "After deduplication (one buyer, one listing, 14 days)",
+      "finding": "Both readers paused on Table 3's header: the 14-day deduplication window sits beside the CRM count of 14 and the ten-day period, and both briefly read '14 days' as linked to the 14 CRM leads. A wording change in the table (e.g. 'same buyer and listing within a 14-day window', or stating the window in prose) removes the collision.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 7 (this result is flowB item 8)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶5",
+      "quote": "Over the last quarter, Autohaus Ruhrblick's 150 slots produced 1,610 deduplicated leads; across dealers who opt in to sale matching, Motorvane sees about one confirmed sale for every twelve leads; the downgrade is withdrawn.",
+      "finding": "Both readers say the step from the figures to the withdrawn downgrade is asserted, not shown: three facts joined by semicolons, with the reader left to infer the sales against €1,450 a month (B adds that the one-in-twelve rate is a cross-dealer average, not Ruhrblick's own). One sentence connecting the numbers to the package's value would make the inference explicit.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 9 (this result is flowB item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Trade-offs: Build, Integrate or Own ¶4",
+      "quote": "Owning SaaS also changes the economics of a group exit.",
+      "finding": "Both readers read the group-exit paragraph as a tangent: nothing earlier prepares the exit or separability theme and 'group exit' is not explained (A), so it interrupts the build/integrate/own rule. The spec places it here as additional support for owning SaaS separably; the prose can earn it by tying it to the separate tenancy just shown for Keybridge and saying what a group exit is.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 10 (this result is flowB item 11)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "Which option fits also depends on the vertical.",
+      "finding": "Both readers say this bridge promises that the vertical section will say which of the three options fits each vertical, and Table 5 and the following paragraph do not deliver that; both rate the section's position only 'partly' earned. The spec's section idea (the professional's existing system decides what the portal must provide; in automotive and real estate the integration surface matters as much as the portal's tools) does bear on the options, so the prose can make the link explicit or reword the bridge.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 11 (this result is flowB item 12)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "The design fails in practice in seven ways. The first is **the second system of record**:",
+      "finding": "The first failure mode is folded into the section's opening sentence while the other six are bold-led paragraphs; both readers had to count to check whether 'seven' included it. Giving the first failure the same bold-led form (with the count in its own sentence) fixes it.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 12 (this result is flowB item 14)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "quote": "Those measures will soon cover a new kind of caller:",
+      "finding": "Both readers found the AI-agents paragraph a separate topic attached to the 'What to watch' list by a forced link, interrupting the decide / who / watch structure. The spec's flow ends the section with 'the change that raises the stakes'; the prose can signal that as its own step (e.g. a 'What raises the stakes' label matching the other three) instead of hanging it off the measures.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 14 (this result is flowB item 16)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "This chapter owns three terms.",
+      "finding": "Reader A only: the definitions paragraph is the densest part of the opening, and the Pro SaaS definition matters only three sections later. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: What Professionals Need ¶3",
+      "quote": "Eight professional jobs and the capabilities that serve them.",
+      "finding": "Reader A only: the prose counts three jobs plus a fourth, Table 1 counts eight; A re-read to see the table splits them more finely. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Two Arguments in One Week ¶2",
+      "quote": "shows **23 leads** in the first ten days",
+      "finding": "Reader B only: 'the first ten days' of what, and whether 23 and 14 are the Golf's or the dealer's numbers, needed a re-read. Not corroborated (reader A's timeline point, item 8, concerns the 29 April sale date in the worked example, a different passage).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶3",
+      "quote": "the car's VIN appears in the record of the 29 April sale",
+      "finding": "Reader A only: the sale date arrives without warning and A had to reconstruct the timeline (listed in April, sold 29 April, argument in June). Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/8",
+      "draft_locus": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report ¶9",
+      "quote": "The separate clouds (Keybridge on Azure, Hearthly on Google Cloud) help, but they are not the control.",
+      "finding": "Reader B only: the hosting facts appear for the first time here and arrive 'out of nowhere'. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Failure Modes ¶4",
+      "quote": "\"Premium statistics\" or \"AI replies\" are switched on by checks of the package name scattered through the workspace code.",
+      "finding": "Reader B only: this is the first place the chapter discusses where entitlement checks live, so the failure mode (and the Billing by Guesswork pattern promised in the callout) has no positive design in the Architecture section. The spec's architecture section has no entitlement-check unit, so a fix would start in the spec. Not corroborated.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/9 (audience.does_not_know: P2B Articles 7 and 9)",
+      "draft_locus": "Architecture: A Workspace Over Systems of Record ¶10",
+      "quote": "exactly the kind of aggregated data whose access the EU's Platform-to-Business Regulation asks portals to describe (see below)",
+      "finding": "The P2B Regulation is on audience.does_not_know and is first used here, two sections before the neutrality section explains it, with only a forward '(see below)'. Both flow readers reported it (A: 'appears here before it is explained ... feels dropped in'; B: 'relies on a regulation that is only explained two sections later'). The spec's p28 controlling idea does not require naming P2B here; a one-clause gloss or dropping the reference fixes it.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 5 (this result is flowB item 6)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2 (audience.already_knows: the Lyon apartment)",
+      "draft_locus": "Setting the Scene at Veldmark: Two Arguments in One Week ¶3",
+      "quote": "whose Lyon branch listed the Lyon apartment in May",
+      "finding": "The Lyon apartment is on audience.already_knows, so for the declared audience this is not new; but both flow readers raised the definite article for an object this chapter never introduces or uses again (A: 'plays no role here'), so per the corroboration rule it is recorded as corroborated. Cheap fix: a short appositive or drop the clause.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 1 (this result is flowB item 3)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1 (audience.already_knows: the vertical layer model)",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "are layer-2 engines (shared engines that carry each vertical's content); Dealer Hub and Hearthly's agency workspace are layer-4 products",
+      "finding": "The layer model is on audience.already_knows and the draft glosses both labels, so both readers could follow; but both reported 'layer-2' and 'layer-4' as numbers they cannot place (layers 1 and 3 never named), so it is recorded as corroborated. Cheap fix: name the model ('the four-layer model of vertical-requirements').",
+      "fault": "draft",
+      "corroborated_by": "flowA item 13 (this result is flowB item 15)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: What Professionals Need ¶1",
+      "quote": "The productscape reference model (the author's domain model)",
+      "finding": "Reader B only: 'productscape' is an unexplained name whose authority is unclear until the Sources line. The parenthetical gloss is present. Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "quote": "The architecture advice forum decides",
+      "finding": "Reader B only: the architecture advice forum is introduced without explanation (not on already_knows). Not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on an intriguing example (private seller vs. a dealer who lives in the marketplace), bridges to the reconciliation test and states the thesis in KEY POINTS; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new subtopic, and does not end on a restated thesis; the 90-second and 10-second targets it cites come from publication-pipeline as the spec's p67 evidence requires, serving the hand-off rather than holding body evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p66 states what no section states alone (Part III is one chain from forms and feeds to the professional who checks it); p67 says why it matters (discovery can treat indices and alerts as read models, or inherits the ghost, the duplicate or the disputed count).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p66 returns to the hook ('it ends where this chapter began: with professionals who judge the marketplace by whether its numbers agree with their own'), the scene's two arguments (Ruhrblick's withdrawn downgrade, Claire's question) and the part's 'one chain, not five features'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted all ten sections in the spec's order (two arguments; what professionals need incl. outcomes over exposure and the lead from their side; workspace architecture; neutrality with the four controls and P2B; worked example settling both; build/integrate/own; verticals; failure modes; CA view; questions), the evidence (company filings and documentation, EU P2B law, fictional Veldmark) and a declarative practitioner tone, matching AC-2's expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader resolved both cases as expected: reconciled per channel into one ledger of 19 unique buyers, exported every channel through the Lead API and webhooks with stable IDs and deduplication keys, raw and deduplicated counts side by side, statistics/ledger/delivery from one event stream, opt-in VIN sale matching; refused the cross-portal data even anonymized, report computed inside the CRM per agency, enforced by separate tenancy, API parity, data boundary and ranking blindness, with an evidence pack for the annual independent review.",
+      "severity": "major"
+    }
+  ]
+}

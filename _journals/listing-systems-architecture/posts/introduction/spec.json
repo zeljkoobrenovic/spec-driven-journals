@@ -1,0 +1,1294 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "introduction",
+  "journal": "listing-systems-architecture",
+  "part": "preface",
+  "title": "Introduction: Architecture for Liquidity",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the five acceptance criteria, the thesis and the role are copied unchanged from the introduction's entry in journal-spec.json; the introduction realises the Preface's opening (hook, bridge, roadmap) from the same file.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The book's claim, and that liquidity is local (measured per place and category) and compounds.",
+        "That the book is written from the position of the Chief Architect of a multi-country, multi-vertical marketplace group, and for whom.",
+        "How the book is laid out: three preface pages, nine parts that follow the machine from business model to practice, and three reference pages.",
+        "The five kinds of statement and why company-specific claims carry their publication year.",
+        "Veldmark in one paragraph, and that fifteen named failure patterns exist."
+      ],
+      "believe": [
+        "The general manager's question of why a smaller competitor turns listings into more contacts is an architecture question.",
+        "Each architectural choice should be judged by the liquidity it protects or spends."
+      ],
+      "can_do": [
+        "Go from the decision in front of them to the chapter to start with.",
+        "Tell a documented fact from industry practice, an inference, a recommendation and an illustration when a chapter states one."
+      ]
+    },
+    "audience": {
+      "who": "Experienced architects and engineering leaders working on listing marketplaces: chief and enterprise architects of marketplace groups, principal and staff engineers, search, data and ML leads, platform-engineering leads, product and engineering directors of classifieds, real-estate, automotive, jobs and recommerce marketplaces, and technology leaders integrating acquired marketplaces.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision."
+      ],
+      "does_not_know": [
+        "Marketplace economics: liquidity, network effects, multi-homing.",
+        "Search and ML vocabulary: learning to rank, percolation, hybrid retrieval.",
+        "Regulatory detail: DSA statements of reasons, DAC7, P2B.",
+        "Vertical specifics: VINs, property and vehicle feed standards."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can state the book's argument and list the subjects of its parts in order.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what does this book argue, and what will its parts cover, in order?",
+        "expected": "A listing marketplace is a liquidity machine, judged by how reliably it turns fresh, trustworthy supply into matches with demand; then the marketplace business, the listing model, supply, discovery, trust, money, the platform, the Chief Architect's agenda over time, and public cases."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a decision the routing table lists, the reader names the chapter to start with and the reason the table gives.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand wants to add payments, shipping and buyer protection. Using only this page: which chapter do you open first, and why not the payments chapter?",
+        "expected": "The marketplace taxonomy chapter, because moving from contact to transaction changes who holds the money and the risk, and that decides identity depth, trust and regulation before it decides a payment provider."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given three sentences in the book's style, the reader labels each with the kind of statement it is.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page, say what kind of statement each is and how much weight it deserves: (a) 'On Tradeyard a new listing takes six minutes to become searchable.' (b) 'I would not let the search index become the system of record.' (c) 'Adevinta's 2023 annual report, published in 2024, describes a unified global platform.'",
+        "expected": "(a) an illustration from the fictional Veldmark, not a benchmark; (b) a recommendation, with reasoning and exceptions to argue with; (c) a documented fact with its publication year, true when written and possibly reversed since."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the page's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this page discuss, in what order, and with what kind of evidence?",
+        "expected": "Who the book is for; the liquidity-machine argument; why the book exists; how statements are labeled and sourced; how the parts are organized; how to find a chapter for a decision; the failure patterns; the fictional group and the toolkit. Evidence: one invented business-review scene and dated public sources."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this book argue, who is it for, and how should it be read?",
+    "claim": "This book argues that a listing marketplace is a liquidity machine whose architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand, so that a question about why a competitor gets more contacts per listing is answered at the boundaries between stages and brands; it is written from a group Chief Architect's position for architects and engineering leaders, who should read it in order along the machine or enter it from the decision on their desk, weighing each statement as documented fact, industry practice, inference, recommendation or fictional illustration.",
+    "disputed_by": "The view that listings, search, trust and monetization are separate products each judged by its own team's report, so that the competitor's lead is a product or marketing question, and that an architecture book on marketplaces is a reference on engines and vendors to consult by technology.",
+    "so_what": "A reader who accepts this judges each design by the liquidity metric it protects or spends, looks for failures at the hand-offs no team owns, and treats engine and vendor choices as decisions that follow from those guarantees.",
+    "how_why": "In the general manager's scene every team's report is green while a listing takes six minutes to become searchable, a sold bike stays in alert e-mails, one flat appears three times and paid placements fill the first page. Each of those sits between two systems, and at group scale acquisitions and country launches have multiplied such boundaries across brands that nobody is accountable for as a whole.",
+    "supporting_claims": [
+      {
+        "id": "I1",
+        "claim": "The general manager's question is an architecture question: matches leak at the hand-offs between systems while every team's own report is green, and the leaks recur as named patterns."
+      },
+      {
+        "id": "I2",
+        "claim": "A listing marketplace is a liquidity machine, so every architectural choice is judged by the liquidity it protects or spends."
+      },
+      {
+        "id": "I3",
+        "claim": "The book is written from a group Chief Architect's position for the people accountable for how a marketplace's systems fit together, because the boundaries cost most at group scale."
+      },
+      {
+        "id": "I4",
+        "claim": "Every statement is marked as documented fact, industry practice, inference, recommendation or fictional illustration and drawn only from public sources, so the reader can weigh it."
+      },
+      {
+        "id": "I5",
+        "claim": "The book can be read in order along the machine or entered from the decision on the reader's desk."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the journal's and the part's opening: states the claim, the evidence discipline and the reading routes, and names the failure patterns and the group in outline so the next two pages have something to unpack.",
+    "supports": [
+      "PF-1"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "large_to_small",
+        "applies_to": "organization to decision: the whole book in parts, then a single decision and the chapter that answers it"
+      }
+    ],
+    "rationale": "The page answers a newcomer's questions in the order each answer is needed. Who the book is for comes first so the reader knows whether to go on. The argument comes before the reasons the book exists, because the gap it fills is a gap in judging systems by liquidity; stated first, the gap would have nothing to be a gap in. How statements are labeled and what they draw on come before the layout, because the part paragraphs and the routing table already contain facts, recommendations and Veldmark examples the reader must weigh. The routing table needs the parts it routes into, so it follows the organization. The failure patterns and Veldmark come next because they are the subjects of the next two pages. How the book is kept and made comes last: placed between the sourcing sections and the layout it read as a detour from the subject (round-1 readers), and at the end it does not interrupt the path from the book's argument to its map."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "At the end of a quarterly business review the general manager of a country's largest classifieds site shows contacts per live listing against a younger competitor with a third of the listings and more contacts per listing, and asks why; search availability was 99.95%, the moderation queue met its service level, feed imports were green every night and paid 'top listing' sales were up a fifth."
+    },
+    "bridge": {
+      "from_reader_world": "Every team at the quarterly business review has a green report for its own system: search availability, the moderation queue, nightly feed imports, paid placement sales.",
+      "to_topic": "Following one listing from the seller's first tap to the buyer's message shows that the reasons sit at the hand-offs between systems, so the general manager's question is an architecture question."
+    },
+    "thesis_statement": {
+      "text": "A listing marketplace is a liquidity machine whose architecture should be judged by how reliably it turns fresh, trustworthy supply into matches with demand; the book is written from a group Chief Architect's position, can be read in order or from the decision on the reader's desk, and marks what kind of statement each claim is.",
+      "placement": "KEY POINTS callout (all three bullets); the argument section's p11 restates the claim after liquidity is defined."
+    },
+    "roadmap": {
+      "placement": "IN THIS BOOK callout and paragraph p04, which lists this page's sections in order and then names the two other preface pages.",
+      "promises": [
+        {
+          "promise": "Say who the book is for and what it assumes the reader knows.",
+          "kept_in": [
+            "who"
+          ]
+        },
+        {
+          "promise": "State the argument: a listing marketplace is a liquidity machine.",
+          "kept_in": [
+            "argument"
+          ]
+        },
+        {
+          "promise": "Say why the book exists and from whose position it is written.",
+          "kept_in": [
+            "why-exists"
+          ]
+        },
+        {
+          "promise": "Explain how statements are labeled and what material they come from.",
+          "kept_in": [
+            "how-written"
+          ]
+        },
+        {
+          "promise": "Show how the parts are organized and how to find the chapter for the decision in front of you.",
+          "kept_in": [
+            "organized",
+            "decision"
+          ]
+        },
+        {
+          "promise": "Introduce the failure patterns and the fictional group the examples come from, and the toolkit.",
+          "kept_in": [
+            "failure-patterns",
+            "veldmark"
+          ]
+        },
+        {
+          "promise": "Say how the book is kept current and how it was made.",
+          "kept_in": [
+            "living-journal"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "At the end of a quarterly business review, the general manager of a country's largest classifieds site shows that a younger competitor with a third of the listings gets more contacts per live listing, and asks why.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The general manager's chart of contacts per live listing against a younger competitor's estimate; the competitor has a third of the listings.",
+            "source": "Invented scene, not tied to a company",
+            "shows": "The question is about matches, the marketplace's output, not about any one system."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Every team has a green report for its own system, so nobody owns the question, because it is not about any one system.",
+        "function": "description",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Search availability 99.95% for the quarter; moderation queue within its service level; feed imports green every night; paid 'top listing' sales up a fifth.",
+            "source": "Invented scene",
+            "shows": "Each stage meets its own target while the whole underperforms."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The general manager's question.",
+          "introduces": "Each team's good answer for its own part, and why none of them answers it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Following one listing from the seller's first tap to the buyer's message shows the losses sit at the hand-offs between systems, so the general manager's question is an architecture question.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Six minutes from submission to searchable because moderation and indexing run in batches; a bike sold on Monday still in Tuesday's alert e-mails; one flat listed three times by three agencies; a first page half paid placements.",
+            "source": "Invented scene",
+            "shows": "Each loss sits between two systems, not inside one."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: green team dashboards above a pipeline that leaks at every joint.",
+            "shows": "Shows green reports coexisting with leaks at the hand-offs."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Nobody owns the question.",
+          "introduces": "What a Chief Architect does with it: follow one listing, and find the reasons at the hand-offs.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The opening scene is invented, and its examples return later as cases from Veldmark, the book's fictional group; this page covers, in order, who the book is for, the argument and why the book exists, how statements are labeled and sourced, the parts and the routing table, the failure patterns, Veldmark and the toolkit, and how the book is kept current, and the next two preface pages unpack the patterns and the group.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The page's sections in order; the next two pages, where-listing-systems-go-wrong and meet-veldmark; Part I.",
+            "shows": "Lets a reader of the opening predict the page and the preface."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The general manager's question as an architecture question.",
+          "introduces": "The book's claim stated plainly, and the map of this page and the preface.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "who",
+      "heading": "Who This Book Is For",
+      "controlling_idea": "The book is for the people accountable for how a listing marketplace's systems fit together, written from a group Chief Architect's position, and it assumes architecture literacy but no marketplace vocabulary.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "I3"
+        ],
+        "how": "Names the readers and the vantage point the thesis says the book is written from."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The map of the page.",
+        "introduces": "The first item on it: the readers.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Readers first, then the one position the book writes from, then what it takes for granted and what it explains, so the reader can place themselves before learning what they must bring."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "The book is written for six kinds of readers who are accountable for how a listing marketplace's systems fit together.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Chief and enterprise architects of groups; principal and staff engineers; search, data and ML leads; platform-engineering leads; product and engineering directors; technology leaders integrating acquisitions.",
+              "shows": "Each reader owns a boundary or a stage, which is where the book's argument places the problems."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The book takes the perspective of a Chief Architect of a multi-country, multi-vertical marketplace group, and its reasoning also applies to a single marketplace.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The readers.",
+            "introduces": "The single vantage point the book takes, and why group scale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The book assumes architecture literacy and does not explain APIs, databases, event streams, search engines or Kubernetes.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The vantage point.",
+            "introduces": "What the reader brings.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The book does not assume marketplace, search, regulatory or vertical vocabulary, and defines each such term where it first matters.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the book assumes.",
+            "introduces": "What it does not, with examples of terms the owning chapters define.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "argument",
+      "heading": "The Argument: A Liquidity Machine",
+      "controlling_idea": "A listing marketplace sells matches, the probability of a match is liquidity, and so the marketplace is a liquidity machine whose every architectural choice protects or spends liquidity.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "I2"
+        ],
+        "how": "States and explains the book's central claim."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Who the book is for.",
+        "introduces": "What it argues.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "From what a single seller and buyer want, to the property that names it (liquidity), to the claim about the whole machine, to what the claim means for each design choice, to where the book draws it together. Each step needs the one before it; the claim stated before liquidity is defined would be a slogan."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A listing marketplace sells matches: it usually does not own the goods or set the price, and what it provides is the probability that the two sides find each other.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A private seller wants a buyer for a city bike before Saturday; a dealer wants leads; an agency wants mandates; a buyer wants the item before someone else.",
+              "shows": "Every party's goal is a match."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "That probability is liquidity, which is local, measured per region and category, and compounds over years into network effects.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A group can be liquid in Amsterdam bikes and illiquid in rural Portuguese furniture at the same time.",
+              "shows": "Shows that liquidity is measured per cell, not per site."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The probability that the two sides find each other.",
+            "introduces": "Its name, liquidity, and its two properties that matter for architecture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The book's central claim is that a listing marketplace is a liquidity machine, whose stages of one pipeline should be judged by how reliably they turn fresh, trustworthy supply into matches with demand.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: supply becomes listings that are published, found, trusted, contacted and paid for; outcomes and paid effects flow back.",
+              "shows": "Shows listings, search, trust and monetization as stages of one pipeline whose output is matches."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Liquidity as what the marketplace provides.",
+            "introduces": "The claim that follows from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Read that way, every architectural choice is judged by the liquidity it protects or spends.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A freshness target justified by time to first contact; a removal that reaches search but not the alert digest; a paid placement as a sale of liquidity; a shared platform that is good only if every brand runs faster on it.",
+              "shows": "Each design decision becomes a decision about liquidity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The claim.",
+            "introduces": "What it changes about judging a design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Chapters work on one stage at a time, and a chapter near the end of the book, long-term-evolution, draws the argument together into fitness functions a group can measure.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The lens applied to single choices.",
+            "introduces": "Where in the book the lens is applied to the whole machine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "why-exists",
+      "heading": "Why This Book Exists",
+      "controlling_idea": "Material exists on engines, on marketplace economics and on single companies, but not on the boundaries between them, and that gap costs most at group scale, which is the position the book is written from.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "I1",
+          "I3"
+        ],
+        "how": "Shows why the failures sit at boundaries no one owns, and why the Chief Architect is placed to see them."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The argument that a marketplace is one machine judged by liquidity.",
+        "introduces": "Why existing material does not serve that argument.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "What exists, what is missing between it, then where the gap costs most and who can see it. The book's position answers the gap, so it comes last; stated before the gap, the Chief Architect's position would read as a credential rather than as the reason the book exists."
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Good material exists on each side of the subject: engine documentation, marketplace economics and company engineering posts.",
+          "function": "context"
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "What is missing is the material between them: none says which guarantee or target protects liquidity, or what happened after a company's solution.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Engine documentation does not say the index must never become the system of record, or what to do when a dealer's truncated file unpublishes tens of thousands of cars at three in the morning.",
+              "shows": "Shows a decision at a boundary that no existing source covers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three kinds of material that exist.",
+            "introduces": "What each leaves out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The gap costs most at group scale, where twenty years of portfolio building left several copies of each system and failures at boundaries no team owns, which only a Chief Architect is placed to see.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Country launches from shared templates, acquired vertical portals, mergers and demergers left several copies of identity, search, moderation and data beneath unrelated-looking brands.",
+              "shows": "Multiplies the boundaries at which liquidity is lost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The missing material between the sides.",
+            "introduces": "Where its absence costs most and who can see it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "how-written",
+      "heading": "How This Book Is Written",
+      "controlling_idea": "The book is organized around architectural questions rather than companies or products, keeps five kinds of statement apart so each can be weighed for what it is, and rests every statement on public or generic material only.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "I4"
+        ],
+        "how": "Gives the reader the labels by which to weigh every statement, and states the material behind them, so the reader knows what no statement rests on."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The position the book is written from.",
+        "introduces": "How it is written: its stance on companies and its kinds of statement.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The stance on companies first, because the kinds of statement exist to keep company facts apart from inference and recommendation. The three easy confusions need all five kinds named first; the date rule and the check date apply only to documented fact, so they follow it. Swapping the table and the date rule would explain a rule about one kind before the reader knows there are kinds. The material every statement rests on comes last: it applies to all five kinds at once, and the exclusion of internal material closes the section by pointing to Veldmark."
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "The book draws on named companies' public record but organizes its argument around architectural questions, and recommends no product in general.",
+          "function": "explanation"
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Every chapter keeps five kinds of statement apart: documented fact, industry practice, reference-architecture inference, recommendation and illustration.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The five kinds with what each is and how to recognize it in the text.",
+              "shows": "Gives the reader a way to recognize each kind."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: a sorting desk routes cards into five labeled trays.",
+              "shows": "Restates that the kinds are kept apart."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Real companies as precedents.",
+            "introduces": "The rule that separates what is documented from what is not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Three of the distinctions are easy to lose: a figure from Veldmark, the book's fictional group, is not a benchmark, an inference is not evidence, and a recommendation that sounds like a fact is still a recommendation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Six minutes from submission to searchable at Veldmark; 'the search index is not the system of record'.",
+              "shows": "Shows each confusion with a sentence the book actually uses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The five kinds.",
+            "introduces": "The three confusions to watch for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Company claims carry their publication year because marketplace groups change faster than books.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta's 2023 annual report (published 2024) describes 'a unified global platform'; its 2025 strategic report (published 2026), after a 2024 take-private, describes 'a decentralised, standalone operating model'.",
+              "source": "Adevinta Annual Report 2023 (2024); Strategic Report 2025, Aurelia UK Feederco Ltd (2026)",
+              "shows": "Both were true when written; cited without dates, the first would describe a reversed strategy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Documented fact as one kind of statement.",
+            "introduces": "Why each such fact carries its date.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Facts were checked against public sources in October 2026, so date-sensitive statements are pointers to sources to check before relying on them.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Dated claims.",
+            "introduces": "The date the book's facts were checked.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "The book draws on three kinds of material: two generic domain models, the public record of named companies and standards, regulation and research.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Two Productscape domain models (general listings, residential real estate) in the author's sibling repository; company blogs, reports and filings with publication years; EU regulation, feed standards and research.",
+              "shows": "Shows that no statement rests on private material."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The five kinds of statement and the dates documented facts carry.",
+            "introduces": "The three kinds of material every statement, whatever its kind, rests on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Nothing comes from internal material, and where the public record cannot supply a realistic situation the book uses Veldmark.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three kinds of material used.",
+            "introduces": "What is excluded, and what fills the gap.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "organized",
+      "heading": "How the Book Is Organized",
+      "controlling_idea": "After three preface pages, eight parts follow the liquidity machine from the business to the Chief Architect's agenda, Part IX tests the patterns against public cases, and reference pages close the book.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "I5"
+        ],
+        "how": "Gives the order for reading along the machine."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "What the book's statements rest on.",
+        "introduces": "How its chapters are laid out.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The overview table and figure first, so each part paragraph can be placed in the whole; then one paragraph per part in book order, which is the order a listing moves through the machine, so the reader meets the parts as they will read them; the shape every chapter shares comes last because it applies to all parts at once."
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "The book has three preface pages, eight parts that form a learning path along the machine, a Part IX of public cases and reference pages.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "One row per section: the question it answers and its chapters, Preface to Reference.",
+              "shows": "Shows the whole layout at once."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: Parts II to VI follow a listing; Part I sets the business terms; Part VII is the platform; Part VIII keeps it coherent; Part IX tests against evidence.",
+              "shows": "Shows how the parts relate to the machine."
+            }
+          ]
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Part I starts with the business because the business model decides the architecture.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A site whose job ends at the contact, a lead-selling portal and a marketplace holding buyers' money need different identity, trust, payment and data systems.",
+              "shows": "Shows the business model deciding systems."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The layout.",
+            "introduces": "The first part.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Part II models the listing as an offer about a thing, not the thing itself.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The business.",
+            "introduces": "The thing being sold.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Part III treats supply as one chain from ingestion to publication with contracts and a freshness target, in which removal must be faster than publication.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The listing model.",
+            "introduces": "The model under load from feeds and forms.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Part IV treats listing search as a high-write operational system and search, ranking, recommendations, map search and alerts as one pipeline.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Supply.",
+            "introduces": "The buyer's side.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Part V treats trust and safety as a platform capability with shared services and local policy.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Discovery.",
+            "introduces": "Contact between strangers.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Part VI argues that conversion and monetization are one pipeline with a conflict built in.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Trust.",
+            "introduces": "The path from message to invoice.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Part VII builds the platform underneath and claims a shared platform earns trust through contracts, not mandates.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stages.",
+            "introduces": "The system beneath them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Part VIII is the Chief Architect's agenda and claims the hard problems of a group are problems of change, not of design.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The platform.",
+            "introduces": "Keeping it coherent over a decade.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Part IX steps outside the fiction and tests the book's patterns against six publicly documented cases.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The fictional group's agenda.",
+            "introduces": "Real groups, with documented fact kept apart from interpretation.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Every part opens with a short introduction and every chapter follows the same shape.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The nine parts.",
+            "introduces": "What a reader meets inside each part and chapter.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "decision",
+      "heading": "Start With the Decision in Front of You",
+      "controlling_idea": "A reader with a decision waiting finds the matching row and starts with the chapter the table names, which is sometimes not the obvious one.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "I5"
+        ],
+        "how": "Gives the second route into the book: from the decision on the reader's desk."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The parts as a learning sequence.",
+        "introduces": "The route for a reader who already has a decision waiting.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "A reader with a decision waiting finds the matching row, reads the Start with chapter and follows the Then column if needed.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fifteen rows from an immediate need to a starting chapter and follow-up chapters.",
+              "shows": "Maps a concrete decision to the chapter to start with."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Two rows start somewhere unexpected on purpose: payments start with the marketplace model because it decides who holds the money and the risk, and a shared platform starts with what differs between verticals because a platform built for one is often imposed on the others.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The payments row starts at the marketplace taxonomy because moving from contact to transaction changes who holds the money and the risk; the single-platform row starts with vertical requirements because platforms built for one vertical are imposed on others.",
+              "shows": "Shows the book's business-model-first stance in the routing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The routing table.",
+            "introduces": "The two rows that start somewhere unexpected, and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-patterns",
+      "heading": "The Failure Patterns",
+      "controlling_idea": "Marketplaces lose liquidity through recurring patterns that each looked reasonable when chosen, and the next page names fifteen of them so a design review can name one and go to the remedy.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "I1"
+        ],
+        "how": "Shows that the losses at hand-offs recur in named forms."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The two ways into the chapters.",
+        "introduces": "The shared names for failure every chapter opens with.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Listing marketplaces lose liquidity through recurring patterns that each looked reasonable when chosen, which the next page names and every chapter refers to.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The Category Straitjacket, Feed Roulette, Ghost Inventory, Multiplier Creep, Deal-Shaped Architecture, Set-and-Forget AI.",
+              "source": "_research/style-guide.md, failure patterns table",
+              "shows": "A short list of the names the next page unpacks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "Veldmark and the Toolkit",
+      "controlling_idea": "The examples come from one fictional group, Veldmark, to be used as a rehearsal space, and the toolkit and glossary hold the book's templates and terms.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "I4",
+          "I5"
+        ],
+        "how": "Labels the illustrations as fictional and points to the reference pages a reader uses alongside the chapters."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The failure patterns, illustrated in every chapter.",
+        "introduces": "The group the illustrations come from.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "Veldmark Group is a fictional marketplace group, a composite of common patterns, whose decisions the reader should treat as a rehearsal for their own.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Rotterdam headquarters; €1.31 billion revenue in 2026; four brands (Tradeyard, Motorvane, Hearthly, Keybridge) in eight countries; three clouds, three search engines, four identity systems, a 2006 PHP monolith; Common Ground, €140 million, approved January 2027, 'share platforms, not products'; the €240 Rotterdam city bike sold Monday and in 214 alert e-mails on Tuesday; Ingrid Halvorsen, Group Chief Architect.",
+              "source": "Veldmark scenario ledger, _research/scenario-ledger.md (fictional)",
+              "shows": "Gives the reader enough of the group to recognize it in later chapters."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Where Veldmark is the book's rehearsal of decisions, the toolkit gives the reader twelve templates to make their own, one at a time, and the glossary defines the book's terms and names their owning chapters.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Veldmark as a rehearsal space for decisions.",
+            "introduces": "The instruments a reader uses to make the same decisions in their own marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "living-journal",
+      "heading": "A Living Journal",
+      "controlling_idea": "The book is revised as a living journal with a published spec behind each chapter, and was made by AI-mediated authoring for which the author is responsible.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "I4"
+        ],
+        "how": "Tells the reader how current the statements are and who stands behind them."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The book's running example and its reference pages.",
+        "introduces": "How the book itself is kept current and how it was made.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "The book is a living journal, and each chapter's spec, linked from its byline, shows what it was written against and where its limits are.",
+          "function": "context"
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The book was developed by AI-mediated authoring in which the author set the concept and arguments and is responsible for the content.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The specs behind each chapter.",
+            "introduces": "How they were used to make the book, and who answers for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Go Next",
+    "synthesis": "Liquidity is lost at the boundaries between stages and brands, and the parts, the routing table, the failure patterns and the fictional group all lead to one question about a design: which liquidity it protects or spends, and at which boundary.",
+    "so_what": "The general manager's question, which no team's green report answers, becomes one the reader can trace to a hand-off and an owner; each chapter answers it for one stage or boundary.",
+    "callback": {
+      "to": "The general manager's question in the opening scene.",
+      "how": "The reader now sees it as the question every chapter answers for one stage or boundary of the machine."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Read on in order with where-listing-systems-go-wrong, then meet-veldmark, or use the routing table and return to the preface later, keeping the general manager's question in mind."
+    },
+    "hand_off": {
+      "to": "where-listing-systems-go-wrong",
+      "relationship": "elaboration",
+      "carries_over": "The liquidity-machine claim and the short list of pattern names from this page.",
+      "introduces": "Each of the fifteen patterns unpacked, as ways the machine loses liquidity."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole page: argument, routes, labels, patterns, the group and how the book is kept.",
+      "introduces": "Where each kind of reader goes next.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p42",
+        "controlling_idea": "A reader going in order turns next to where-listing-systems-go-wrong, which unpacks the patterns named here, then meet-veldmark; a reader with a decision uses the routing table.",
+        "function": "recommendation"
+      },
+      {
+        "id": "p43",
+        "controlling_idea": "Either way, the general manager's question becomes one the reader can trace to a hand-off, because the parts, the routing table, the patterns and Veldmark all ask of a design which liquidity it protects or spends and at which boundary.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The two routes.",
+          "introduces": "What both have in common: the general manager's question.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The fifteen failure patterns themselves.",
+      "covered_in": [
+        "where-listing-systems-go-wrong"
+      ]
+    },
+    {
+      "topic": "Veldmark's full description, cast, systems and worked examples.",
+      "covered_in": [
+        "meet-veldmark"
+      ]
+    },
+    {
+      "topic": "The part-by-part synthesis, the four cross-cutting ideas, stressor analysis and fitness functions.",
+      "covered_in": [
+        "long-term-evolution"
+      ]
+    },
+    {
+      "topic": "Part-level reading guidance.",
+      "covered_in": [
+        "part-1",
+        "part-2",
+        "part-3",
+        "part-4",
+        "part-5",
+        "part-6",
+        "part-7",
+        "part-8",
+        "part-9"
+      ]
+    },
+    {
+      "topic": "Definitions of marketplace terms in depth, and the industry timeline.",
+      "covered_in": [
+        "glossary",
+        "industry-evolution"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled on RECONCILED's introduction (scene, audience, why it exists, evidence table, structure table, routing table, fictional-company paragraph, living-journal note), with its reconciliation framing replaced by the liquidity-machine argument."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Stated the argument with a simplified machine diagram only; the part-by-guarantee-by-metric table stays in long-term-evolution so the synthesis keeps its payoff."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used Adevinta's 2023 'unified global platform' and 2025 'decentralised, standalone operating model' statements as the dated example of why company claims carry publication years, because the book already sources both."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Routing table starts the payments row at marketplace-taxonomy and the single-platform row at vertical-requirements, and says why, to model the book's business-model-first stance."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the front-matter and callout-format criterion, the structure-table, routing-table-row-count and pointer criteria and the word-count criterion were inventories of contents or format and are dropped (format stays governed by the style guide; the word count is kept as length.max_words 4500); the scene, argument, evidence-label and routing criteria are replaced by the journal spec's AC-1 to AC-4 (reader outcomes); the hand-off criterion is replaced by conclusion.hand_off. No acceptance criteria were added beyond the journal spec's.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims I1 to I5 written here (the journal spec gives none for this post) from the thesis's four parts: the question as architecture, the liquidity machine, the position and readers, the statement labels, the two reading routes. For the author to confirm.",
+      "rejected": [
+        "A sixth claim for the failure patterns and Veldmark; they are folded into I1 and I4/I5."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Audience copied from the journal-level audience, since this is the book's first page and does not narrow it."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric: moved A Living Journal from the last body section to directly after What the Book Draws On, so the three sections on weighing statements sit together and the page ends on the failure patterns and Veldmark, the subjects of the next two pages; rewrote the transitions into living-journal and organized; glossed Veldmark at its first use in the body (p19); completed the roadmap in p04; gave the conclusion a synthesis and so-what.",
+      "rejected": [
+        "Keeping the published order, which ended the body on the living-journal note and broke the hand-off to the next page."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Second flow rubric (sound with notes): p04 now names every section of the page in order; p13 no longer names Part VIII before the parts are introduced; p36 states the vertical-differences reason without relying on an earlier unit. Notes not taken are in open_questions.",
+      "rejected": [
+        "Moving the toolkit into the organization section and merging What the Book Draws On into How This Book Is Written (see open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-1 draft check, failures at fault in the spec: (1) A Living Journal moved back to the last body section, where the published page had it; both round-1 flow readers read it as a detour between the sourcing sections and the layout, which outweighs the flow rubric's earlier preference; transitions into organized, living-journal and the conclusion rewritten. (2) The toolkit paragraph stays in 'Veldmark and the Toolkit' because AC-4's expected answer (journal spec) pairs the group and the toolkit, but p39 now opens with an explicit additional-support link (Veldmark rehearses decisions; the toolkit helps make your own). (3) p04 states that the opening scene is invented and that its examples return as Veldmark cases, and announces the toolkit; the thesis is carried by KEY POINTS and p11 rather than repeated in p04 (both readers flagged the claim as repeated). (4) The conclusion's synthesis no longer says the kinds of statement ask about liquidity.",
+      "rejected": [
+        "Moving the toolkit into How the Book Is Organized (would contradict AC-4's expected order).",
+        "Keeping A Living Journal before the layout."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "No acceptance criteria were added beyond the journal spec's five; length.max_words 4500 carries the old spec's 3,000-4,500 range."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims I1 to I5 (agent-written; the journal spec gives none for this post) accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Readers in all three rounds suggested merging What the Book Draws On into How This Book Is Written (round-1 A, round-2 B, round-3 A and B). Under the author's delegation the two sections are merged: p22 and p23 now close how-written, p22 opens by linking back to the five kinds of statement ('Whatever its kind, every statement in the book rests on three kinds of material'), and the draws-on heading and section are removed. AC-4's expected answer already lists 'how statements are labeled and sourced' as one item, so the journal spec needs no change. This also clears the round-3 failure on the draws-on opener.",
+      "rejected": [
+        "Keeping two sections, which readers in every round read as one subject split in two."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moving The Failure Patterns next to The Argument: not done. Only one reader per round proposed it, and round-3 reader B called the current position defensible and did not push it; the move would also contradict AC-4's expected order. Kept the published position (rule: ambiguous, keep the published text). The opener now reads 'Whichever route you take into a chapter of Parts I to VIII, its opening callouts name the failure patterns it works on', restoring the published scope (Parts I to VIII) and agreeing with the restored chapter-shape list, which starts with the opening callouts.",
+      "rejected": [
+        "Moving the section after The Argument and asking for an AC-4 edit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moving the toolkit and glossary paragraph into How the Book Is Organized or Where to Go Next: not done; kept with Veldmark because AC-4's expected answer pairs 'the fictional group and the toolkit' and the readers did not converge on one destination. Putting the date rules next to A Living Journal and having Why This Book Exists refer back to the Chief Architect's position rather than restate it: single-reader or rubric notes, published text kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Restored, under the rule that published facts are never cut, what the first revision cut for length: Kleinanzeigen, Marktplaats, leboncoin and mobile.de in the company-aware list; the pattern names Search as System of Record and The Copy-Paste Country (both still pattern headings on where-listing-systems-go-wrong); the rule on renamed brands; what each spec contains and the changelog sentence in A Living Journal; the full chapter-shape list; the next page's description of each pattern (warning signs, mechanism, cost, chapters); and the Veldmark brand details (Tradeyard's paid visibility, Motorvane's dealer packages and leads, Hearthly assembled from acquisitions, Keybridge publishing listings to Hearthly's competitors), all as in the published page and the scenario ledger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Part VIII and Part IX introductions re-checked against this page (open question carried over from spec.md): Part IX's six cases match; the Part VIII paragraph's 'one owning team for every capability' is restored to the published 'every journey, bounded context and shared capability has one owning team', which is the wording of the Part VIII introduction."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Glossary teaser ('words you need now'): not added; the published page links the glossary instead (ambiguous, keep the published text)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes on the thesis copied from the journal spec ('is found at the boundaries'; 'those guarantees' without a referent in so_what): thesis not changed here; proposed rewordings passed to the orchestrator as journal-spec edits."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Single-reader round-3 points (throughput as liquidity; two senses of 'mandate'; 'Scams close in our messaging'; compressed Part V summary; part paragraphs repeating the table; the central claim stated in KEY POINTS, p11 and the conclusion): published wording kept; none was corroborated."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 draft-fault findings (Draws On opener, 'Both routes', 'one vertical's physics', 'Productscape' in the body, 'the book's research digest', 'take-private', 'one canonical record'): the wording fixes made after round 3 are kept; the Productscape name stays in Sources and Evidence as the citation."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "length.max_words raised from 4500 to 4700 (4.4%, within the 10% allowed) to restore the published facts the first revision cut for length; the restored page counts 4,622 words by check_draft.py."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, and the Preface opening (hook, bridge, roadmap) this page carries."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md, _research/style-guide.md, _research/scenario-ledger.md, _research/productscape-digest.md",
+      "contributed": "Positioning, pattern names, Veldmark facts, the domain-model description."
+    },
+    {
+      "kind": "internal",
+      "ref": "long-term-evolution, part-1 to part-9, meet-veldmark, where-listing-systems-go-wrong, toolkit",
+      "contributed": "Argument wording, part summaries, the pointers to the other preface pages and the toolkit."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/finance-systems-architecture/posts/introduction/index.md",
+      "contributed": "Structural model (RECONCILED's introduction)."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta, Annual Report 2023 (2024)",
+      "contributed": "The 'unified global platform' statement used as the dated example."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta (Aurelia UK Feederco Ltd), Strategic Report 2025 (2026)",
+      "contributed": "The 'decentralised, standalone operating model' statement."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review of the pass: two wording changes in the agent's prose reverted toward the published facts ('purchase by private investors' -> 'purchase by private-equity investors'; 'domain models that I wrote for an earlier project' -> 'from my sibling repository', as published). Check report stale."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Part VIII paragraph aligned with the written part intro; argument checked against long-term-evolution; American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Book retitled to LISTED: Architecting Large-Scale Classifieds and Marketplace Platforms; permalinks unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 3,873 to 3,852 words; outline unchanged; six paragraph openers rewritten. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources in _research/mermaid-figures.json); Figure 2 kept attempt 4 with the Discovery box truncated. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric applied: living-journal moved after draws-on; roadmap, conclusion synthesis and rationales revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 1 of the draft check: living-journal moved back to the end of the body; p04, p39 and the conclusion synthesis revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "index.md revised to the spec over three draft-check rounds: roadmap paragraph p04 (thesis now carried by KEY POINTS and p11), split conclusion with synthesis and callback, glosses for terms readers did not know (vertical, recommerce, mandates, paid visibility packages, entitlements, DSA transparency database, weekly traffic peak, stressors, match rate removed), Veldmark labeled fictional at first mention, Part VII row chapter names made distinct. Round 1 ESCALATE (spec faults), round 2 REVISE, round 3 ESCALATE (budget); closing wording fixes applied after round 3. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: draws-on merged into how-written; published facts cut for length restored; length.max_words raised; open questions moved to the decision log. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 4700
+  }
+}

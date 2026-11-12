@@ -1,0 +1,3452 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/09-attribute-schemas/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/09-attribute-schemas/index.md",
+  "spec_sha": "2baeae91bb5e7cca",
+  "draft_sha": "22f72fb3bb532e7c",
+  "run_at": "2026-11-12T21:41:59+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the reader will learn: separating definition, binding and value, and compiling one schema",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business cost of missing attributes: unfindable listings and legal defects",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Attributes are read by many systems, so ungoverned meaning and changes break them",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: three layers, compile once, evolve with compatibility rules",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Attribute Junkyard, Category Straitjacket, Feed Roulette",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Attributes, not titles, drive filtering and do the most work yet get least design attention",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "How attribute neglect grows into the Attribute Junkyard and where its costs appear",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Attributes need a governed contract; chapter's place among neighbouring chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶1",
+      "summary": "Veldmark context: bikes split ahead, Ingrid asks what the frame-size facet will show",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶2",
+      "summary": "Tradeyard's 3,900 keys, eleven frame-size keys, messy values, 23% usable coverage",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶3",
+      "summary": "Femke's ambiguous '57' leaves her bike out of every frame-size filter",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "summary": "Motorvane and Hearthly have their own inconsistent attribute models too",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶5",
+      "summary": "Chapter question: can one dictionary serve all verticals without forcing shape or a central queue",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Three Layers: Definition, Binding and Value ¶1",
+      "summary": "Vocabulary: definition, dictionary, category schema, value with provenance, reference data",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Three Layers: Definition, Binding and Value ¶2",
+      "summary": "Benefits of the separation: reusable meaning, local change, clear ownership",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶1",
+      "summary": "Public dictionaries and downstream needs determine the entry's fields",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶2",
+      "summary": "eBay's AspectConstraint fields as the most complete public model",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶3",
+      "summary": "Amazon's JSON Schema definitions with a small marketplace vocabulary",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶4",
+      "summary": "Recommended dictionary entry fields (table intro)",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶5",
+      "summary": "Purposes and scope are the most often missing fields",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶6",
+      "summary": "Purposes reveal dependents before a change",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶7",
+      "summary": "Scope separates product from instance aspects, shown by eBay's catalog history",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶8",
+      "summary": "Veldmark's frame-size entry as a worked example",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "The Attribute Dictionary Entry ¶9",
+      "summary": "Letter sizes stay a separate related attribute rather than being converted",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶1",
+      "summary": "A category schema is a list of bindings shaped by three design choices",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶2",
+      "summary": "Bindings inherit down the tree and may tighten but not loosen",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶3",
+      "summary": "Three requiredness levels, with recommended giving a runway before enforcement",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶4",
+      "summary": "Immutable schema versions recorded per listing, separate from taxonomy versions",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶5",
+      "summary": "Confluent's schema compatibility modes as the model for evolution",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶6",
+      "summary": "Compatibility of attribute changes for producers versus readers (table)",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶7",
+      "summary": "Changing meaning, type or unit in place corrupts data; make a new attribute",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Category Schemas and How They Evolve ¶8",
+      "summary": "Enforce new requirements on create and revise so backfill is gradual",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶1",
+      "summary": "Large structured vocabularies need reference data, not enumerations",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶2",
+      "summary": "Automotive reference data examples: Autotrader taxonomy, mobile.de, NHTSA vPIC",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶3",
+      "summary": "Three rules: separate identity/spec/listing, map licensed taxonomies, record decode provenance",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "summary": "Essen Golf: decode candidates versus dealer power value, both kept",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "summary": "German energy-labeling law makes 'new car' a computed classification",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "summary": "French DPE rules for real-estate ads, rental bans and the 2026 factor change",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶7",
+      "summary": "Dictionary consequences: required DPE fields, dated companions, derived eligibility",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "summary": "Brands as reference data, per Vinted's brand verification",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Normalization of Units and Values ¶1",
+      "summary": "Rules for normalizing units and values toward the dictionary",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Normalization of Units and Values ¶2",
+      "summary": "Use standard unit and currency codes in the dictionary",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Attributes for Search, Trust, Ads and Feeds ¶1",
+      "summary": "Each reader needs different things from an attribute, recorded in purposes (table)",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Attributes for Search, Trust, Ads and Feeds ¶2",
+      "summary": "Transition to three lessons beyond the table",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Attributes for Search, Trust, Ads and Feeds ¶3",
+      "summary": "Trust rules depend on structured attribute quality",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Attributes for Search, Trust, Ads and Feeds ¶4",
+      "summary": "Ads use needs a sensitivity flag",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Attributes for Search, Trust, Ads and Feeds ¶5",
+      "summary": "Outbound schemas are generated outputs, shown by Google dropping vehicle markup",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶1",
+      "summary": "Storage matters less than the dictionary but still constrains",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶2",
+      "summary": "The four storage models defined",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶3",
+      "summary": "Document stores still need a schema, per PostgreSQL jsonb limits",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶4",
+      "summary": "Recommended hybrid, with typed vertical models registered in the dictionary",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "summary": "Facets run on the search index + Vinted's brand curation as a dictionary decision with search effect",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶6",
+      "summary": "Index typing trade-off, decided by the dictionary's purposes field",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶1",
+      "summary": "Compile schemas into artifacts instead of a request-time service",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶2",
+      "summary": "Six components of the compiling schema service",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶3",
+      "summary": "Transition to three key properties",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶4",
+      "summary": "One validator on every channel with stable error codes",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶5",
+      "summary": "Hard versus soft validation outcomes",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶6",
+      "summary": "Readers must tolerate unknown attributes and values",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶7",
+      "summary": "Veldmark's event contract carries attributes as a typed map relying on tolerant readers",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶8",
+      "summary": "Inbound partner feed standards: RESO, OpenImmo, Rightmove",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Architecture: A Schema Service That Compiles ¶9",
+      "summary": "Feed mappings as versioned, owned artifacts, illustrated by Hearthly's 160 connectors",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶1",
+      "summary": "Public record is thin; three groups of examples",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "summary": "eBay and Amazon publish dictionaries as data",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶3",
+      "summary": "Mercari and Etsy use the schema to drive extraction models; enrichment needs a target dictionary",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶4",
+      "summary": "Autotrader encodes policy and regulation as validation errors",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶5",
+      "summary": "Veldmark's cleanup timeline and program",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶6",
+      "summary": "Step 1: profiling all existing keys and readers",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶7",
+      "summary": "Step 2: each key assigned one of three fates (table)",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶8",
+      "summary": "Frame size's keys collapse into two attributes + duplicates mostly came from history, not language",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶9",
+      "summary": "Step 3: three namespace tiers answer the centralization concern",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶10",
+      "summary": "Step 4: backfill without blocking, raising frame-size coverage to 71%",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶11",
+      "summary": "Step 5: attribute side of the bikes split with recommended-first battery capacity",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "summary": "Step 6: Motorvane and Hearthly register attributes without moving storage + search typing limited to purposed canonical attributes",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶13",
+      "summary": "Step 7: federated stewardship with a two-day target",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Cleanup ¶14",
+      "summary": "Reader inventory prevented incidents from retired keys",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Comparison of choices, alternatives and costs (table)",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Hard validation rules trade off against supply",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Verticals differ most in attributes, favouring one namespaced dictionary (table)",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Jobs vertical: probabilistic occupation mapping with ESCO",
+      "matched_spec_paragraph": "p77"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Eight failure modes with their controls",
+      "matched_spec_paragraph": "p78"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Attributes at group scale are governance; few durable decisions",
+      "matched_spec_paragraph": "p79"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Share dictionary tooling, not storage",
+      "matched_spec_paragraph": "p80"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Decision rights for stewards, owners, platform, forum and regulatory review",
+      "matched_spec_paragraph": "p81"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Five metrics to tell whether the dictionary works",
+      "matched_spec_paragraph": "p82"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Long-term pressures: model attributes, regulation, acquisitions",
+      "matched_spec_paragraph": "p83"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten design-review questions",
+      "matched_spec_paragraph": "p84"
+    },
+    {
+      "draft_locator": "From Attributes to Pictures ¶1",
+      "summary": "Answer yes: compiled dictionary, local storage, start with key inventory",
+      "matched_spec_paragraph": "p85"
+    },
+    {
+      "draft_locator": "From Attributes to Pictures ¶2",
+      "summary": "Hand-off to the media pipeline chapter",
+      "matched_spec_paragraph": "p86"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Attribute Dictionary Entry ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Attribute Dictionary Entry ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Attribute Dictionary Entry ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Attribute Dictionary Entry ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "The Attribute Dictionary Entry ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "The Attribute Dictionary Entry ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "The Attribute Dictionary Entry ¶7",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "The Attribute Dictionary Entry ¶8",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "The Attribute Dictionary Entry ¶9",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Category Schemas and How They Evolve ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Category Schemas and How They Evolve ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Category Schemas and How They Evolve ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Category Schemas and How They Evolve ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Category Schemas and How They Evolve ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Category Schemas and How They Evolve ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Category Schemas and How They Evolve ¶7",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Category Schemas and How They Evolve ¶8",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶7",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Normalization of Units and Values ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Normalization of Units and Values ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶7",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶8",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/8",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶9",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶6",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶7",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/7",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶8",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/8",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶9",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/9",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶10",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/10",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶11",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/12",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶13",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/13",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶14",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/14/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Attributes to Pictures ¶2",
+      "finding": "Outline summary matches the controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "quote": "That curation is an attribute-dictionary decision with a measured search effect.",
+      "finding": "Outliner needed two summaries: faceted queries run on the search index, and Vinted's brand curation is a dictionary decision with a measured search effect. The spec's controlling idea itself joins both claims with 'and', so the draft follows the spec.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/7",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶8",
+      "quote": "The largest single source of duplicates was not language but history",
+      "finding": "Two unrelated points in two sentences: frame size's eleven keys became two attributes, and history (not language) was the main source of duplicates. The spec's controlling idea joins both.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "quote": "and search typing followed the dictionary too",
+      "finding": "Step 6 carries a second idea (search typing limited to canonical attributes with facet/filter/sort purposes, ~610 keys) beside Motorvane and Hearthly joining without moving storage. The spec's controlling idea bundles it; both flow readers (A8, B9) also stumbled on it.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Attribute Dictionary Entry ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Attribute Dictionary Entry ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Attribute Dictionary Entry ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Attribute Dictionary Entry ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "The Attribute Dictionary Entry ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "The Attribute Dictionary Entry ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "The Attribute Dictionary Entry ¶7",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "The Attribute Dictionary Entry ¶8",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "The Attribute Dictionary Entry ¶9",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Category Schemas and How They Evolve ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Category Schemas and How They Evolve ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Category Schemas and How They Evolve ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Category Schemas and How They Evolve ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Category Schemas and How They Evolve ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Category Schemas and How They Evolve ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Category Schemas and How They Evolve ¶7",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Category Schemas and How They Evolve ¶8",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶7",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Normalization of Units and Values ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Normalization of Units and Values ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶7",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶8",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/8",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶9",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶6",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶7",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/7",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶8",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/8",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶9",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/9",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶10",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/10",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶11",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/12",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶13",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/13",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶14",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/14/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Attributes to Pictures ¶2",
+      "finding": "Ties to the supporting claim(s) of its section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "title example explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶2",
+      "finding": "Figure 1 and statistics explained by the coverage sentence",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶3",
+      "finding": "case explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "finding": "case explained by p09",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶1",
+      "finding": "layer table framed by owner/lifecycle sentence and followed by the payoffs",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶2",
+      "finding": "Figure 2 explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Attribute Dictionary Entry ¶3",
+      "finding": "closing sentence explains",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Attribute Dictionary Entry ¶4",
+      "finding": "field table introduced as the combination of public models and downstream needs; p16-p18 discuss it",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "The Attribute Dictionary Entry ¶7",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "The Attribute Dictionary Entry ¶8",
+      "finding": "entry table followed by p20",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "The Attribute Dictionary Entry ¶9",
+      "finding": "example explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Category Schemas and How They Evolve ¶3",
+      "finding": "eBay and Autotrader evidence explained as runway/notice",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Category Schemas and How They Evolve ¶5",
+      "finding": "Confluent definitions picked up in p26 (see flow result on the producer/reader mapping)",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Category Schemas and How They Evolve ¶6",
+      "finding": "change table followed by p27",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Category Schemas and How They Evolve ¶8",
+      "finding": "eBay quote and Figure 3 explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶2",
+      "finding": "supplier sources followed by the design rules",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "finding": "case explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "finding": "followed by p47",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶7",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Normalization of Units and Values ¶2",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶1",
+      "finding": "purposes table followed by p53-p56",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶3",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶5",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶3",
+      "finding": "PostgreSQL quotes explained; storage table followed by the hybrid",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶4",
+      "finding": "example explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶6",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶2",
+      "finding": "Figure 4 accompanied by the component list",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶7",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶8",
+      "finding": "followed by p58",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/8",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶9",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶3",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶4",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶6",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶7",
+      "finding": "fates table followed by p66",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/9",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶10",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/10",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶11",
+      "finding": "Figure 5 and cases explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/13",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶14",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "trade-off table followed by p75",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "vertical table framed and followed by p77",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Attribute Dictionary Entry ¶2",
+      "quote": "but they are actually required and a seller will be blocked from listing or revising an item without these aspects.",
+      "finding": "The paragraph lists eBay's AspectConstraint fields and ends on the quoted warning with no sentence saying what they show (per the spec: a public dictionary records more than type and label, including a date for future requiredness). The warning is only interpreted fifteen paragraphs later (p28).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "cause_effect expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "problem_solution expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶1",
+      "finding": "example expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶2",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶3",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "finding": "additional_support expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶5",
+      "finding": "conclusion_summary expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶1",
+      "finding": "problem_solution expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶2",
+      "finding": "cause_effect expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "The Attribute Dictionary Entry ¶1",
+      "finding": "elaboration expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "The Attribute Dictionary Entry ¶2",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "The Attribute Dictionary Entry ¶3",
+      "finding": "additional_support expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "The Attribute Dictionary Entry ¶4",
+      "finding": "conclusion_summary expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "The Attribute Dictionary Entry ¶5",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "The Attribute Dictionary Entry ¶6",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "The Attribute Dictionary Entry ¶7",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "The Attribute Dictionary Entry ¶8",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "The Attribute Dictionary Entry ¶9",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Category Schemas and How They Evolve ¶1",
+      "finding": "sequence expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Category Schemas and How They Evolve ¶2",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Category Schemas and How They Evolve ¶3",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Category Schemas and How They Evolve ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Category Schemas and How They Evolve ¶5",
+      "finding": "similarity expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Category Schemas and How They Evolve ¶6",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Category Schemas and How They Evolve ¶7",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Category Schemas and How They Evolve ¶8",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶1",
+      "finding": "elaboration expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶2",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶3",
+      "finding": "cause_effect expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "finding": "additional_support expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "finding": "contrast expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶7",
+      "finding": "cause_effect expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Normalization of Units and Values ¶1",
+      "finding": "sequence expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Normalization of Units and Values ¶2",
+      "finding": "additional_support expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶1",
+      "finding": "elaboration expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶2",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶3",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Attributes for Search, Trust, Ads and Feeds ¶5",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶1",
+      "finding": "contrast expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶2",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶3",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶4",
+      "finding": "cause_effect expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶5",
+      "finding": "contrast expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "Storage Models: Wide Tables, EAV, Documents and Typed Schemas ¶6",
+      "finding": "similarity expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶1",
+      "finding": "problem_solution expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶2",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶3",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶5",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶6",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/6",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶7",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶8",
+      "finding": "elaboration expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/8",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶9",
+      "finding": "conclusion_summary expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶1",
+      "finding": "example expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶3",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶5",
+      "finding": "contrast expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶6",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶7",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/7",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶8",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/8",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶9",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/9",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶10",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/10",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶11",
+      "finding": "time expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/12",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶13",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/13",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶14",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "contrast expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "emphasis expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "elaboration expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "example expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "sequence expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "problem_solution expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/13/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "sequence expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/14/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "conclusion_summary expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "conclusion_summary expressed at the section boundary.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Attributes to Pictures ¶2",
+      "finding": "contrast expressed; known information picked up.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7/transition_in",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "quote": "**Brands** sit between the two.",
+      "finding": "Declared additional_support should pick up 'supplier-driven and regulation-driven reference data'. After the Pkw-EnVKV and DPE paragraphs, the preceding unit is the DPE dictionary consequences, so 'the two' has no recoverable referent (flow reader A, item A6).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "draft_locus": "whole draft",
+      "finding": "Flow reader A: principle problem -> concepts -> mechanism -> practice -> judgement ('meaning first, storage later') agrees with prerequisite_order + problem_solution; every section's position explained, none unclear. Weak, not-insisted reorder suggestions (Vertical Differences before Trade-offs; reference data/normalization/readers before Category Schemas) are not lost-thread points.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "draft_locus": "whole draft",
+      "finding": "Flow reader B: principle meaning -> mechanism -> evidence -> judgement agrees with the declared pattern; no section unclear; In Practice read as chronological application of earlier sections. B finds Category Schemas' position 'less natural' and suggests moving it after Attributes for Search (A made the same suggestion weakly); recorded here, not as a lost thread.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "[[categories-and-taxonomies]] decided which schema applies to a listing but did not define those schemas, and its bikes split (city, e-bike, cargo and kids' bikes) added new e-bike attributes.",
+      "finding": "Crowded sentence with several cross-references and a forward mention of the bikes split; both flow readers (and the intro reader) read it twice.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Category Schemas and How They Evolve ¶5",
+      "quote": "Confluent's Schema Registry defines **backward** compatibility (consumers on the new schema can read data written with the previous one)",
+      "finding": "The backward/forward/full definitions are given in consumer terms, then p26 and the change table switch to producers/readers without saying which mode matches which column; reader A could not work it out. Reader B adds that p40's 'reader-side half of backward compatibility' contradicts the quoted definition (an old reader tolerating newer data is forward compatibility by that definition).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶4",
+      "quote": "The dictionary marks `vehicle.power_kw` as a field where the decode is a suggestion and a consistent dealer statement wins, with both kept.",
+      "finding": "'consistent' (with what?) and 'had decode and dealer disagreed silently' needed a second read; the example shows conflict resolution, while the rule it illustrates is about re-running decoding without overwriting dealer corrections.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶5",
+      "quote": "Regulation shapes vehicle attributes too.",
+      "finding": "The Pkw-EnVKV paragraph (a computed regulatory classification, not a vocabulary) sits in Reference Data between the supplier rules/Golf and real estate; both readers found it out of place. The spec places it there.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶6",
+      "quote": "**Real-estate reference data** is less about a supplier tree and almost entirely about regulation.",
+      "finding": "What follows (and p47) is required, companion and derived attributes, not reference vocabularies, so the section drifts from its definition of reference data. Reader B reports the same drift for the DPE material. Comes from the spec's assignment of regulatory attributes to the Reference Data section.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Reference Data: Makes, Models, Property Types and Energy Classes ¶8",
+      "quote": "**Brands** sit between the two.",
+      "finding": "Unclear what 'the two' refers to (single reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/7",
+      "draft_locus": "Architecture: A Schema Service That Compiles ¶8",
+      "quote": "One compiled output faces outward: the inbound feed mappings.",
+      "finding": "Calling inbound mappings 'outward' made both readers stop; outbound feeds were the outward-facing ones earlier, and the subsection does not say outbound mappings were covered.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/11",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶12",
+      "quote": "which stood in for about 610 of Tradeyard's original keys; everything else sits in a flattened field",
+      "finding": "Dense search-typing sentence that changes subject at the end of the Motorvane/Hearthly step; 'stood in for' unclear. The spec's controlling idea for Step 6 includes it.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/12",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶13",
+      "quote": "Common Ground set a target of two days for a new category, against six weeks before",
+      "finding": "A category target appears without context in an attribute step; both readers bumped on it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Three Layers: Definition, Binding and Value ¶1",
+      "quote": "two supporting terms complete the vocabulary: the dictionary, which collects definitions, and reference data, which has its own owner.",
+      "finding": "Text names the dictionary as a supporting term, but the 'Layer or supporting term' table has no dictionary row; the spec's table evidence lists definition, schema, reference data and value only.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "quote": "Motorvane's typed vehicle model, which VIN decoding fills with **31 attributes** on a listing such as the Essen Volkswagen Golf",
+      "finding": "Reader B: Motorvane and Hearthly not identified as Veldmark brands; the Golf and Lyon apartment given definite articles without gloss (single reader; the audience knows Veldmark from meet-veldmark).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Cleanup ¶2",
+      "quote": "Beyond the constraint fields described earlier, eBay's bulk `fetchItemAspects` file",
+      "finding": "Reader B: In Practice returns to eBay and Amazon, partly repeating the dictionary-entry section (single reader). The spec places the examples in both sections.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know",
+      "draft_locus": "whole draft",
+      "finding": "Dictionaries, requiredness levels, product/instance scope, EAV, facet design, licensed taxonomies, RESO, OpenImmo, DPE and Pkw-EnVKV are each glossed at or before first substantive use; cast, brands and the bikes split are on already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say \"Frame Size\" ¶4",
+      "quote": "which VIN decoding fills with **31 attributes**",
+      "finding": "VIN decoding is on does_not_know and is used in the scene without a gloss; the draft explains it only in Reference Data (p43-p44). No flow reader reported the term.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "without forcing one storage model on every brand",
+      "finding": "'brand' is used before Veldmark (and its brands) is named in the paragraph; the intro reader and flow reader B reported it as assumed.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B1",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Opens with an intriguing example (the Gazelle Chamonix title), then a cause-effect bridge, contract and roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "Answers the opening question, no 'in conclusion', no new idea or body evidence; hands off to media-pipeline.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "States what no single section states (the Junkyard formed wherever a reader interpreted an attribute on its own, not in a store) and why it matters (storage stays per brand, two-day target, start from a key/reader inventory).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/callback",
+      "draft_locus": "From Attributes to Pictures ¶1",
+      "finding": "Returns to Ingrid's question (yes; no central queue) and Femke's 57 now in the frame-size facet.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Intro reader predicted all sections in the spec's roadmap order (scene, layers, entry, change rules, reference data/normalization/readers, storage, schema service with feed mappings, public examples, cleanup, trade-offs...questions), the evidence (Veldmark numbers, public marketplace examples, standards/regulation via the French energy class) and the tone. Note: AC-2's expected lists storage and the schema service before reference data and normalization; that is the pre-reorder order, and the spec's current roadmap is authoritative.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "Category Schemas and How They Evolve",
+      "finding": "Reader classified battery-capacity-required as producer-breaking: recommended first with effective date, enforced on create and revise once the readiness report allows, existing listings not invalidated. Mileage unit change: change of meaning, new attribute, migrate values, deprecate old, never edit in place. Matches expected.",
+      "severity": "major"
+    }
+  ]
+}

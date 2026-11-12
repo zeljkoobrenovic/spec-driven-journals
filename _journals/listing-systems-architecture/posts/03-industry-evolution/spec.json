@@ -1,0 +1,2014 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "industry-evolution",
+  "journal": "listing-systems-architecture",
+  "part": "part-1",
+  "title": "From Newspaper Columns to Portfolios: How the Classifieds Industry Evolved",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json. Two units are new against the published text: the introduction's roadmap (p03, rewritten from the method paragraph) and the conclusion's synthesis paragraph (p75).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The industry timeline in five waves, from print columns to private-equity break-ups, with dated sources.",
+        "The portfolio model, and what each wave typically left in the systems: pioneer monoliths, country copies, acquired national stacks, shared platforms and carve-out residue."
+      ],
+      "believe": [
+        "A group's architecture is the sediment of its corporate history, and capital strategy changes faster than platforms do."
+      ],
+      "can_do": [
+        "Ask of any inherited system which strategy deposited it and whether that strategy still holds.",
+        "Specify a shared platform that can survive the sale of one brand."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, technology leaders integrating acquisitions or preparing carve-outs, and engineering directors who inherit landscapes they did not design.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "From earlier pages: classifieds, horizontal and vertical marketplaces, recommerce, liquidity and local network effects, Veldmark's brands, cast and systems, and the fifteen failure-pattern names."
+      ],
+      "does_not_know": [
+        "The dated history of the classifieds industry and its groups.",
+        "Deal vocabulary: portfolio model, take-private, carve-out, transitional services agreement.",
+        "Convergence as distinct from sharing enabling layers, and architectural sediment."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a likely sale of one brand, the reader states what that changes in the design of a shared platform.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "The group's owner may sell one of its brands within five years. Using only this chapter: how does that change the design of the shared search platform the group is about to build?",
+        "expected": "Design it to be separable: per-brand clusters or tenants with indexes rebuildable from the event stream, tenant-scoped data, per-brand accounts and cost centres, exportable contracts and a documented exit path, with a business case that survives the sale of any one brand, because owners such as Adevinta and AVIV reversed their convergence within a few years."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Veldmark's systems laid out by year; waves, portfolios and sediment; a dated timeline; each wave (print and pioneers, portfolio builders, consolidation, take-privates and break-ups) with what it left in the systems; reading a group as sediment; Veldmark's history read that way; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: dated public records with labeled inferences, and fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How did today's marketplace groups form, what did each phase do to their architectures, and what must a group's shared platforms therefore survive?",
+    "claim": "Today's marketplace groups formed in five waves (print columns, online pioneers, portfolio building, consolidation, and take-privates and break-ups), each of which left systems that outlived the strategy that deposited them, so a group's architecture should be read as sediment rather than as a set of mistakes; and because capital strategy changes faster than platforms, as Adevinta's 2023 convergence and 2025 decentralization show, every shared group platform must be built to be separable when a brand is sold.",
+    "disputed_by": "The view that a group's several search engines and identity systems are technical debt from poor past decisions, to be consolidated onto one target stack for maximum synergy in a portfolio treated as permanent.",
+    "so_what": "An architect who accepts this asks of every system which strategy deposited it before proposing to remove it, and writes tenant-scoped data, per-brand accounts and a documented exit path into every shared platform, judging its business case by whether it survives the sale of any one brand.",
+    "how_why": "Because network effects are local, groups grew by copying one codebase per country or buying national leaders and keeping them as separate businesses; each move left a stack. Consolidation then built shared platforms for synergy, and take-privates and break-ups turned them into separation costs. Veldmark's 2006 monolith, its four Tradeyard category trees from country copies and its third and fourth clouds from the 2023–2025 acquisitions each trace to one wave.",
+    "supporting_claims": [
+      {
+        "id": "E1",
+        "claim": "Today's marketplace groups formed in five waves (print columns, online pioneers, portfolio building, consolidation, and take-privates and break-ups), each documented in a dated public record."
+      },
+      {
+        "id": "E2",
+        "claim": "Because network effects are local, each wave's growth method (copying a codebase per country, buying and keeping national leaders, launching group brands, rebranding, building verticals, sharing platforms) left a characteristic layer of systems that outlived the strategy that deposited it."
+      },
+      {
+        "id": "E3",
+        "claim": "A group's architecture is therefore best read as sediment: for each system, ask which strategy deposited it and whether that strategy still holds, instead of treating duplicates as mistakes."
+      },
+      {
+        "id": "E4",
+        "claim": "Capital strategy changes faster than platforms: the shared platforms consolidation built for synergy became separation costs when take-privates and break-ups followed within two or three years (Adevinta 2023 to 2025, AVIV 2021 to 2025)."
+      },
+      {
+        "id": "E5",
+        "claim": "Every shared group platform must therefore be separable by design, with tenant-scoped data, per-brand accounts and cost centres, exportable contracts, a documented exit path and a business case that survives the sale of any one brand."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Explains why a group's landscape looks as it does and adds separability as a requirement on every shared platform.",
+    "supports": [
+      "P1-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "chronological",
+        "applies_to": "wave01, wave2, wave3, wave4: the waves in the order they happened"
+      }
+    ],
+    "rationale": "The scene poses the question, the concepts and timeline give the vocabulary and the dates, and the four wave sections then tell the history in order, each ending with what it left in the systems. Only after all waves can the sediment table name every layer, and only after the table can Veldmark be read with it. Trade-offs, vertical differences, failure modes and the Chief Architect's view generalize from the record and the example; placed before the waves they would be unsupported advice."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "Why does a group run three search engines, four identity systems and a monolith from 2006?"
+    },
+    "bridge": {
+      "from_reader_world": "Every review of a group's landscape reaches the question 'why is it like this?'.",
+      "to_topic": "The answer is rarely that someone chose it; a strategy put it there and changed before the system did, so the industry's history is the explanation."
+    },
+    "thesis_statement": {
+      "text": "A marketplace group's architecture is the sediment of its corporate history, and because capital strategy changes faster than platforms, separability belongs in every group platform.",
+      "placement": "KEY POINTS bullets 1 and 3, and the last sentence of p01."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03.",
+      "promises": [
+        {
+          "promise": "Veldmark's systems laid out by year.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The terms and the dated timeline.",
+          "kept_in": [
+            "concepts",
+            "timeline"
+          ]
+        },
+        {
+          "promise": "Each wave's public record and what it left in the systems.",
+          "kept_in": [
+            "wave01",
+            "wave2",
+            "wave3",
+            "wave4"
+          ]
+        },
+        {
+          "promise": "A way of reading a group's architecture as sediment, applied to Veldmark.",
+          "kept_in": [
+            "sediment",
+            "veldmark"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "tradeoffs",
+            "vertical",
+            "failure",
+            "cav",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Because leadership is won country by country, groups are portfolios of local leaders, and the answer to 'why is our landscape like this?' is that a strategy put each system there and changed before the system did: a group's architecture is the sediment of its corporate history.",
+        "function": "claim"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter traces the industry from newspaper columns to the take-privates and break-ups of 2024 to 2026, owns the terms industry timeline and portfolio model, leaves taxonomy, liquidity economics and the full Adevinta story to other chapters, and gives later chapters the separability rule they build on.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The sediment claim.",
+          "introduces": "The span of history the chapter covers, the terms it owns and its boundaries with other chapters.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter moves from Veldmark's landscape laid out by year, through definitions, a dated timeline and each wave's public record with what it left in the systems, to a way of reading a group as sediment applied to Veldmark, and ends with trade-offs, vertical differences, failure modes and the Chief Architect's view; every company statement carries its source and year, and inferences and the fictional Veldmark are labeled.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The scope of the chapter.",
+          "introduces": "The order in which the chapter covers it and the kinds of evidence it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Twenty-Three Years in One Diagram",
+      "controlling_idea": "Laid out by year, Veldmark's systems fall into layers that each match a period of its corporate history, which raises the question of which layers others consolidated and which a future sale would force it to take apart.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "E2",
+          "E3"
+        ],
+        "how": "Shows, in the fictional group, systems that each trace to a strategy, and poses the chapter's two questions."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The scene follows Ingrid's week in order: the request, what the dates showed, how to read it, and the questions it raised. The questions come last because they need the layers to be visible first."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that architecture is the sediment of corporate history.",
+        "introduces": "Veldmark's inventory as a case of it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "In February 2027 Ingrid Halvorsen asked each brand of Veldmark, the fictional group this book follows, for every production system with the year it was built and why it exists, and the dates ran from 2004 to 2027.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark: four brands, eight countries, €1.31 billion revenue in 2026, about 1,150 engineers; slides dated 2004 to 2027.",
+              "source": "scenario-ledger.md",
+              "shows": "Sets the fictional group and the span of history the inventory covers."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Laid out by year rather than by brand, the systems clustered into four layers, each matching a period of Veldmark's corporate history, with Common Ground starting as a fifth.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Period table: 2004-2008 Tradeyard and Yardstick, Motorvane; 2009-2014 copies for Belgium and Portugal, Poland bought; 2015-2022 Motorvane's Kotlin platform and Tradeyard's AWS services; 2023-2025 acquisitions and a private-equity owner; 2027 Common Ground at €140 million.",
+              "source": "scenario-ledger.md",
+              "shows": "Each period left identifiable systems (a monolith, four category trees, two cloud estates, a third and fourth cloud), so the landscape is layered by history."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The inventory with dates.",
+            "introduces": "What the dates reveal when the systems are ordered by year.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Each 'of everything' on the board's slide was a fossil from a different strategy, defensible when it was made, not a mistake.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The four identity systems: residue of an organic launch (Tradeyard), an automotive build (Motorvane) and two recent purchases (Hearthly, Keybridge).",
+              "shows": "Duplicates trace to separate strategies, each defensible at the time."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: architecture as sediment, five strata of system fossils.",
+              "shows": "Pictures the layered reading the paragraph states."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The five layers on Ingrid's diagram.",
+            "introduces": "The board's 'four of everything' reading set against hers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The diagram raised two questions, the Group CTO Mateus Carvalho's (which layers larger groups consolidated and at what cost) and the CEO Henrik de Boer's (which planned platforms a brand sale in 2030 would force Veldmark to take apart), and the rest of the chapter answers both from the industry's record.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The layers read as fossils of strategies.",
+            "introduces": "The CTO's and CEO's questions that the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Waves, Portfolios and Sediment",
+      "controlling_idea": "The chapter's argument rests on a small set of defined terms, from classifieds and local number-ones to convergence, carve-outs and architectural sediment, and on five approximate waves.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E3"
+        ],
+        "how": "Defines the terms the history and the sediment reading use, and the five waves the history is divided into."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The two questions the scene raised.",
+        "introduces": "The vocabulary needed before the industry's answer can be told.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "form": "list",
+          "controlling_idea": "Nine terms carry the chapter: classifieds, local number-one, portfolio model, copy-paste market entry, shared platform, convergence, take-private, carve-out with transitional services agreement, and architectural sediment, which is not a defect until nobody remembers which strategy deposited it.",
+          "function": "definition"
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The chapter divides the history into five numbered waves, Wave 0 (print) to Wave 4 (take-privates and break-ups), whose boundaries are approximate and overlap, because different groups reached each wave at different times.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: five waves of classifieds strategy, with vertical portals alongside and the transactional pivot through consolidation.",
+              "shows": "Shows the waves and that each strategic change left the previous wave's systems in place."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The defined terms.",
+            "introduces": "The five waves that organize the rest of the chapter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "The Timeline in Dated Events",
+      "controlling_idea": "A dated, sourced timeline from 1977 to 2026 shows that the same assets change hands repeatedly and that systems outlive the waves.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E4"
+        ],
+        "how": "Gives the public record of the five waves and the two patterns, ownership churn and short waves, that make separability matter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The five waves.",
+        "introduces": "The dated events that fill them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "The book's reference timeline keeps to events with public sources, from Auto Trader's founding in 1977 to Adevinta's decentralization and OLX's purchase of La Centrale in 2025 to 2026.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline table, 1977 to 2025-2026, each event with its source and year (eBay's 2004 purchases, OLX 2006 and Naspers 2010/2014, Adevinta's 2019 demerger and 2021 eCG completion, Adevinta's 2024 take-private, AVIV's 2025 separation, Adevinta's 2025 decentralization).",
+              "source": "Sources as listed in the table",
+              "shows": "Anchors every wave in dated, sourced events."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The timeline shows that the same assets change hands repeatedly and that the waves are short compared with the systems, so a system routinely outlives two or three owners.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Gumtree has had at least three owners, mobile.de three, AutoScout24 two.",
+              "source": "The timeline",
+              "shows": "Ownership churns."
+            },
+            {
+              "kind": "case",
+              "what": "Kleinanzeigen's 2009 platform served under eBay, Adevinta's listing, its take-private and its decentralization before users were migrated off it in 2025.",
+              "source": "Berlin Tech Blog, 2025",
+              "shows": "One system outlived several owners and strategies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The dated events.",
+            "introduces": "The two patterns visible in them before any architecture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wave01",
+      "heading": "Wave 0 and Wave 1: From Paid Columns to Free Pages",
+      "controlling_idea": "Print left vocabulary and pricing habits, and the online pioneers inverted print's model with free, local, minimal sites whose monoliths, free listings and category structure still shape platforms.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E2"
+        ],
+        "how": "Gives the first two waves' record and what they left in the systems."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Print comes before the pioneers who inverted it, the pioneers' record before what it left. Reading the legacy list before the record would leave its items unexplained."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The timeline's first events.",
+        "introduces": "The first two waves in detail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "For most of the twentieth century classifieds were a newspaper's most profitable pages, small paid notices sold by the line, and specialist print titles grew alongside.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Auto Trader began in 1977 as Thames Valley Trader and published its final print edition in June 2013, 'after thirty six years'.",
+              "source": "Wikipedia, Auto Trader Group, 2026",
+              "shows": "Specialist print titles existed and lasted into the online era."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Print's architectural legacy is vocabulary and pricing habits, not code: category columns became category trees, paying per listing survives in insertion fees and bumps, and each city as its own market survives in per-country, per-city structure.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Print's paid columns.",
+            "introduces": "What they left in today's platforms.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The pioneers inverted the print model: listings became free for private sellers and money came from a few paid categories, as craigslist shows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Craigslist: Craig Newmark's 1995 e-mail list, web 1996, incorporated 1999, other cities from 2000; revenue mainly from paid job ads, $25 job posts in New York and Los Angeles from August 2004.",
+              "source": "Wikipedia, Craigslist, 2026, widely reported",
+              "shows": "A pioneer made listings free and charged a few categories."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Print's paid listings.",
+            "introduces": "The pioneers' free listings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Free listings pushed down newspapers' classified prices, as research on craigslist's entry into US local markets measured.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Seamans and Zhu: classified-ad rates fell by 20.7% at newspapers relying heavily on classifieds; classified-ad buyers saved about $5 billion between 2000 and 2007.",
+              "source": "NYU Stern, 2013",
+              "shows": "The free model took value from print."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Free listings.",
+            "introduces": "Their effect on newspapers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "In Europe the same years produced the national leaders that still dominate, and those founded by their suppliers, like Rightmove, inherited a feed-first relationship with them.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "mobile.de (1996), ImmobilienScout24 and AutoScout24 (1998), Marktplaats (1999), Rightmove and Gumtree (2000); Rightmove's founders were Countrywide, Halifax, Royal & Sun Alliance and Connells.",
+              "source": "Wikipedia, Rightmove, 2026",
+              "shows": "Today's leaders date from the pioneer wave, and a supplier-founded portal starts feed-first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "place",
+            "carries_over": "The US pioneers.",
+            "introduces": "The European leaders of the same years.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "Wave 1 left minimal monolithic stacks, free listings as the default for private sellers, and categories as the unit of the business.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kleinanzeigen's 2009 architecture: 'a plain old database backend', Solr master/slave, built 'to process 10K new ads per day'; by 2019, 34 million live ads.",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "Simple pioneer stacks survived hundredfold growth and later had to be strangled."
+            },
+            {
+              "kind": "quotation",
+              "what": "Parker on the unbundling of craigslist: 'a team of thirty-or-so people manages a top 10 ranked English-speaking website'.",
+              "source": "Parker, 2010",
+              "shows": "Simple stacks let small teams run large sites; the same post shows competition happening category by category, which later made taxonomy strategic."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The pioneers' record.",
+            "introduces": "What Wave 1 left in the systems.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wave2",
+      "heading": "Wave 2: The Portfolio Builders",
+      "controlling_idea": "Between about 2005 and 2016 Schibsted, eBay and Naspers with OLX built international portfolios by different entry methods, and the vertical portals grew into the assets portfolios most wanted; each method left a different architecture, and its cost was deferred, not avoided.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E2"
+        ],
+        "how": "Gives the portfolio wave's record per builder and maps each entry method to the architecture it left."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p19-p27: Schibsted, eBay, OLX in the order they began building portfolios"
+          }
+        ],
+        "rationale": "One builder at a time, each with its record and then its architectural reading, so the reader holds one method at once; verticals come after the horizontals because they were what the horizontals bought; the summary table comes last because it needs every method."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The pioneer leaders.",
+        "introduces": "The groups that assembled them into portfolios.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Between roughly 2005 and 2016 three groups, Schibsted, eBay and Naspers with OLX, turned local classifieds into international portfolios by different entry methods, each of which left a different architecture.",
+          "function": "claim"
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Schibsted's expansion is widely described as built on the Blocket platform, but that copy-paste playbook is reported, not verified, while its dated founding of leboncoin and willhaben in 2006 is documented.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "A 2012 Nieman Lab article reportedly saying Schibsted ran classifieds in 28 countries on the Blocket platform (not retrieved).",
+              "shows": "The copy-paste account rests on secondary sources, so the chapter reports it as such."
+            },
+            {
+              "kind": "fact",
+              "what": "leboncoin founded 28 April 2006; willhaben in 2006 as a 50/50 joint venture with Styria.",
+              "source": "Adevinta Annual Report 2023, published 2024",
+              "shows": "Dated facts of the Schibsted wave."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three groups.",
+            "introduces": "The first: Schibsted.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The record shows that Schibsted's federation stayed local in product and technology for a long time, with the tension against central scale visible early.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "2016: 'one global product and tech organization'; Adevinta 2019: 'one of our historic success formulas has been local autonomy and decentralised capacity in product and technology', data centralized because 'investment requirements are large and the technology is uniform'.",
+              "source": "Schibsted investor presentation 2016 (widely reported); Adevinta Annual Report 2019",
+              "shows": "Local autonomy was the norm and central sharing was argued capability by capability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The unverified copy-paste account.",
+            "introduces": "What the record does show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The federation also produced group platforms from local inventions, such as FINN.no's FIAAS deployment abstraction.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "FIAAS built at FINN.no and open-sourced in early 2019; FINN.no reported 350 microservices and about 1,200 deployments a week in 2017.",
+              "source": "Adevinta 2020 talk write-up; KubeCon Europe 2017 slides",
+              "shows": "Shared platforms could grow out of one brand."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE callout: copy-paste entry produces country codebases that diverge; the mechanism behind The Copy-Paste Country; central scale later built as new shared components.",
+              "shows": "Labels the architectural reading of the Schibsted model as inference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The local federation.",
+            "introduces": "Group platforms that grew from it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "eBay assembled its classifieds portfolio mainly by buying national leaders and keeping their brands, and launched group brands where it had no leader.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "mobile.de 2004 (about €121 million), Marktplaats 2004 (about €225 million, run 'as a separate business'), Gumtree and LoQUo 2005, dba.dk and Bilbasen 2008 (about US$390 million), 2dehands/2ememain 2013, Vivanuncios 2015; Kijiji 2005, eBay Kleinanzeigen 2009.",
+              "source": "eBay 8-K exhibit, 2004; eBay, 2008; eCG brand pages, 2014 snapshots",
+              "shows": "Buy-and-keep was eBay's main method, with greenfield brands as the exception."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Schibsted's launch-and-copy model.",
+            "introduces": "eBay's buy-the-leader model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The bought leaders mostly survived and grew while many greenfield launches were closed, renamed or sold, with eBay Kleinanzeigen as the exception.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Kijiji Hong Kong and Taiwan closed in 2015; Kijiji China became Baixing; Kijiji India became Quikr; iBazar retired; eBay Kleinanzeigen launched with about 700,000 live ads by absorbing a Kijiji audience.",
+              "source": "eBay, 2015; Wikipedia, Kijiji, 2026",
+              "shows": "Local leadership, not group technology, decided which brands lasted."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "eBay's two entry methods.",
+            "introduces": "How each fared.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Technically eCG was a federation with group functions, and its clearest shared element, the parent's Voyager search, became an orphaned black box that Marktplaats replaced with Elasticsearch itself.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "eCG job ads 2009-2011: a 'sister Classifieds platform'; Marktplaats 2015: eBay 'has moved on from Voyager several years ago', 'almost become a black box for us'; migrated in three months with two or three developers, zero downtime.",
+              "source": "eCG careers pages, 2009-2011; Marktplaats Technology, 2015, republished 2017",
+              "shows": "Inherited parent technology decays faster than local code, and a jointly chosen replacement can be migrated brand by brand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "eBay's portfolio of kept brands.",
+            "introduces": "What it shared technically.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Two lessons travel from eBay: coordinate the technology choice across brands but let each brand migrate itself, and expect a parent's platform to become orphaned legacy faster than local code.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The Voyager case.",
+            "introduces": "The two lessons drawn from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Naspers built OLX into a global roll-up, rebranding acquired local sites to one name while vertical brands kept their own, reaching 45 markets by 2018.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "OLX founded 2006; Naspers majority 2010, 95% in 2014 with rebranding across Romania, Bulgaria, Kazakhstan, Belarus, Hungary, Poland and Indonesia; OLX Group in 2016; 'a network of leading classifieds platforms in 45 markets' (2018); Otomoto, Otodom, Standvirtual, Imovirtual, Autovit, Storia kept their names.",
+              "source": "Wikipedia, OLX, 2026; OLX Tech, 2018",
+              "shows": "OLX's method was buy and rebrand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "eBay's keep-the-brand method.",
+            "introduces": "OLX's rebrand-to-one-name method.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Rebranding to one name implies a push toward shared product, but OLX's public record documents shared practices and some shared code more than one global platform, and its identity standardization is a direct trace of sediment.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "One frontend repository for three brands (2026); a centralized learning-to-rank repository with per-brand configuration (2025); user identification standardized 'across 71 services' at OLX Motors (2024-2025).",
+              "source": "OLX Tech, 2026",
+              "shows": "Brand unity came ahead of platform unity, and identity was per platform until consolidation fixed it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What one brand name implies.",
+            "introduces": "What OLX's engineering record documents.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "While the horizontals built portfolios, the vertical portals became the industry's most profitable businesses by monetizing professionals.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Rightmove: 70% underlying operating margin on £425.1 million revenue for 2025; Autotrader: 70% operating margin for the year to March 2026; most traffic arrives directly.",
+              "source": "Rightmove, 2026; Autotrader, 2026",
+              "shows": "Vertical leaders earn very high margins."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The horizontal portfolio builders.",
+            "introduces": "The verticals growing in the same years.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Verticals were the assets portfolios most wanted to own, and their architecture differs because supply arrives through professional feeds, items have authoritative identities and data products are part of what they sell.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "eBay bought mobile.de; Axel Springer combined Immowelt and Immonet in 2015 and bought Meilleurs Agents for €200 million in 2019; OLX built and bought motors and property brands per country.",
+              "source": "Immowelt, 2015; FrenchWeb, 2019",
+              "shows": "Portfolios competed to own verticals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Verticals' margins.",
+            "introduces": "Why portfolios bought them and how their systems differ.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Each entry method was a reasonable way to win local leadership quickly, so the table of what each left behind is not a ranking: the architecture cost was deferred, not avoided.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Entry method, example and architecture left behind: copy the codebase (diverged copies, The Copy-Paste Country), buy and keep separate (national stacks, Deal-Shaped Architecture), group brand (fragile where it did not lead), buy and rebrand (brand ahead of platform), verticals per country (deeply local feeds and schemas).",
+              "shows": "Maps each method of Wave 2 to the systems it left."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five entry methods described in this section.",
+            "introduces": "What each left in the systems, and the judgement on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wave3",
+      "heading": "Wave 3: Consolidation",
+      "controlling_idea": "From around 2016 the portfolio builders integrated what they owned: sharing enabling layers worked and paid while the portfolio held together, converging product platforms was attempted, and the wave left shared platforms, partial convergence, transitional dependencies and rebrand residue.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E2",
+          "E4"
+        ],
+        "how": "Gives the consolidation wave's record and shows the shared platforms that the next wave would have to separate."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The Adevinta deal first, because it is the largest and its layers (remedies, enabling layers, product convergence) show the whole range; then the other two groups' contrasting paths; then the transactional thread that ran through all of them; the legacy list last because it summarizes all of them. Placed after OLX or AVIV, the Adevinta deal would leave the reader without the baseline (shared enabling layers, then product convergence) that their paths are contrasted with."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The deferred architecture cost of the portfolio builders.",
+        "introduces": "The consolidation that tried to collect it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "From around 2016, the year Naspers consolidated its classifieds under OLX Group and Schibsted presented 'one global product and tech organization', the portfolio builders turned to integrating what they owned, driven by the cost of many stacks, rising user expectations local teams could not meet alone, and deals that combined portfolios of comparable size.",
+          "function": "cause_effect"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The largest consolidation was Adevinta's acquisition of eBay Classifieds Group, completed in June 2021 with targeted cost synergies of €130-165 million after three years.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Announced 21 July 2020 for US$2.5 billion plus about 540 million shares (eBay about 44%); completed 25 June 2021; number-one positions in 16 countries; run-rate cost synergies of €130-165 million after three years.",
+              "source": "Adevinta, 2021",
+              "shows": "The deal's case rested on synergies from sharing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The drivers of consolidation.",
+            "introduces": "Its largest deal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Competition law shaped the result before integration began, forcing divestments served by transitional services, and Adevinta then sold further businesses to focus on five core markets.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "CMA undertakings: sale of Gumtree UK with Motors.co.uk and of Shpock; 'Adevinta and eBay have offered to provide transitional services'; Adevinta 2022: 'five core European markets: Benelux, France, Germany, Italy and Spain'.",
+              "source": "CMA, 2021; Adevinta, 2022",
+              "shows": "Divestments created transitional dependencies from the first day."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The deal.",
+            "introduces": "What happened before integration started.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Integration proceeded layer by layer, from cloud and data centres to chat and moderation, and its costs, such as the eBay Kleinanzeigen rebrand, show how far sediment reaches.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'to a single public cloud vendor for our EU5 businesses', 'close three of four data centre footprints'; integration cost €69 million in 2023, the rebrand €15 million; the old domain to 'remain accessible for several more years'.",
+              "source": "Adevinta Annual Report 2023; Adevinta, 2023",
+              "shows": "Integration was layered and costly, and residue lingered."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The deal and its remedies.",
+            "introduces": "The integration that followed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Sharing the enabling layers worked and paid, at least while the portfolio held together.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Kubernetes platform for 'more than 4,000 developers' (2023) and 'over 2,000 Kubernetes nodes and 30 clusters across 25 marketplaces' (2024); experimentation from about ten tools across 22 marketplaces to one.",
+              "source": "Adevinta tech blog, 2023, 2024",
+              "shows": "Enabling layers produced fleet economics."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Layer-by-layer integration.",
+            "introduces": "Its result for the enabling layers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "In 2023 Adevinta set out to converge the product platform itself, Kleinanzeigen's and leboncoin's into one unified global platform, and no public source confirms it was delivered.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Stop 'individually addressing local market customer needs'; transform 'the two platforms into a unified global platform'; May 2024: 'progressing well and according to plan'.",
+              "source": "Adevinta Annual Report 2023; Adevinta, 2024",
+              "shows": "Convergence moved from enabling layers to product, across two countries and legal regimes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Shared enabling layers.",
+            "introduces": "The further step: convergence of product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "OLX consolidated differently, by merging regional businesses into larger local players and keeping minority stakes, which is architecturally the cleanest exit because the group keeps equity, not systems.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "June 2020: dubizzle and Middle East and South Asia operations into EMPG for 39%; March 2020: letgo US with OfferUp for 40%; Brazilian joint venture with Adevinta bought Grupo ZAP for about R$2.9 billion.",
+              "source": "Wamda, 2020; OLX Group, 2020",
+              "shows": "Mergers into another operator move systems off the group."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Adevinta's integrate-and-converge path.",
+            "introduces": "OLX's merge-into-others path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Axel Springer's property business, AVIV, took the integrate-first path in 2021.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "AVIV's CEO, 2021: 'we are aligning our tech roadmap across the organization to create a European real estate marketplace'.",
+              "source": "Online Marketplaces, 2021",
+              "shows": "A third group chose integration, which Wave 4 would reverse."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "OLX's merger path.",
+            "introduces": "AVIV's integrate-first path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "In the same years the horizontals moved toward payments and shipping, and payments became the main product capability consolidators wanted to build once, while recommerce specialists built that model from the start.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Marktplaats transactional 2017, shipping 2019; leboncoin 2019; 'Sicher bezahlen' October 2020; Adevinta transactional revenue €103 million in 2023, about 6%; OLX Pay&Ship 2023 and Prosus's 'de-prioritisation of pay-and-ship in Europe'; Vinted €10.8 billion GMV and €1.1 billion revenue for 2025.",
+              "source": "Adevinta Annual Reports 2019 and 2023; onlinemarketing.de, 2020; OLX Tech, 2023; Prosus, 2025; Vinted, 2026",
+              "shows": "The transactional pivot ran through consolidation and pushed toward shared payments."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The consolidation paths.",
+            "introduces": "The transactional pivot running through the same years.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "form": "list",
+          "controlling_idea": "Wave 3 left shared enabling platforms with their coupling, partially converged product platforms, transitional-services dependencies and rebrand residue.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "mobile.de Android, 2025: a rebrand 'took only two weeks to implement once the base refactoring was done', after removing 'technical debt from 8 years ago'.",
+              "source": "Berlin Tech Blog, 2025",
+              "shows": "Rebrand residue is real engineering work."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The consolidation record.",
+            "introduces": "What Wave 3 left in the systems.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wave4",
+      "heading": "Wave 4: Take-Privates, Focus and Break-Ups",
+      "controlling_idea": "From 2022 owners changed their minds about breadth: OLX retreated to a few markets, Adevinta and AVIV reversed their integration under new owners at real separation cost, and consolidation moved to platform buyers, so platform topology has to match a capital strategy that can change within two or three years.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "E1",
+          "E4"
+        ],
+        "how": "Documents the reversals that make capital strategy faster than platforms."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The opening claim first, then one owner per paragraph from retreat to break-up to reversal, then the buyers who kept consolidating, which sets up the inference that topology must follow capital strategy. The reversals must come before the platform buyers, because the contrast in p46 needs both, and the inference needs both reversals to generalize from."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The consolidators' shared and converged platforms.",
+        "introduces": "The owners who changed their minds about breadth.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "From 2022 the cost of capital rose and the industry's owners changed their minds about breadth.",
+          "function": "claim"
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "OLX retreated from 45 markets in 2018 to seven in 2026, the starkest public example of a group concluding that local leadership in a few markets beats global breadth.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Avito sold for RUB 151 billion (October 2022); exit from OLX Autos announced March 2023 after $1.6 billion revenue in the year to March 2022; India and Indonesia sold 2023; Uzbekistan and Kazakhstan agreed for sale 2025; year to March 2026: seven markets, US$992 million revenue, 48% adjusted EBITDA margin, La Centrale bought for €1.1 billion.",
+              "source": "Naspers, 2022; News24, 2023; OLX Group, 2026; Online Marketplaces, 2026",
+              "shows": "Breadth was traded for local leadership."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Owners rethinking breadth.",
+            "introduces": "OLX's retreat.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "After its take-private, Adevinta moved from a centralized to a decentralized standalone model and sold businesses, and the parallel running this required shows that undoing a shared platform costs real money.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "NOK 115 per share offer (November 2023), completed May 2024; 'evolved from a centralised structure to a decentralised, standalone operating model… ramp-down of central functions… localisation of intellectual property'; willhaben stake sold 2025; Spain to EQT, completed 27 February 2026, Fotocasa and Habitaclia on to Scout24; cloud emissions 'more than doubled' from 'parallel running of central and local services'.",
+              "source": "Adevinta Strategic Report 2025, published 2026; Scout24, 2025",
+              "shows": "A shared platform became a separation cost within two years of convergence."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "OLX's retreat.",
+            "introduces": "Adevinta's take-private and break-up.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The break-up reached mobile.de, whose sale process is reported but whose outcome is not public as of October 2026, so the separation is still under way.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "FT (October 2025, via PYMNTS): IPO or sale at up to about €10 billion; mobile.de's August 2026 release still calls it an Adevinta subsidiary; Bundeskartellamt (October 2026) names 'Oak Germany Buyer GmbH' as its parent.",
+              "source": "PYMNTS, 2025; Bundeskartellamt, 2026",
+              "shows": "The break-up is still under way and the record is unsettled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Adevinta's break-up.",
+            "introduces": "One of its remaining pieces, mobile.de, and its unsettled sale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "AVIV, separated from Axel Springer under KKR and CPP Investments in 2025, rowed back on its fully integrated platform in favour of local autonomy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Separate joint ventures from 29 April 2025, Axel Springer keeping about 10%; interviewer (not AVIV), December 2025: rowed 'back on its plans for a fully integrated platform'; Immowelt's head: 'AVIV has strengthened the autonomy of its local businesses'; Yad2 sale to Apax signed the same month.",
+              "source": "KKR, 2025; Online Marketplaces, 2025",
+              "shows": "A second integrator reversed under a new owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Adevinta's reversal.",
+            "introduces": "AVIV's reversal.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The consolidation logic did not disappear but moved to platform buyers who integrate acquisitions into their own platform, and for owners pursuing break-up value a shared product platform is a liability, so topology has to match the capital strategy.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "CoStar completed Domain (August 2025), 'ready to apply that same proven playbook'; AutoScout24 migrated '110 AWS accounts across 4 business units' of Trader in 2025.",
+              "source": "CoStar, 2025; AutoScout24, 2025",
+              "shows": "Integration continues where the buyer owns the platform."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE callout: a shared product platform creates transitional services, IP questions and double running at exit; the 2021 synergy became a 2025 separation cost.",
+              "shows": "States, labeled as inference, why topology must follow capital strategy."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the centralize-decentralize swing in Adevinta's own words, 2019-2026.",
+              "shows": "Shows each step justified by its moment's ownership."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The reversals at Adevinta and AVIV.",
+            "introduces": "Owners who kept consolidating, and what the contrast means.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sediment",
+      "heading": "Reading a Group's Architecture as Sediment",
+      "controlling_idea": "For each major system, asking which wave deposited it and under what assumption about ownership and sharing predicts its behavior better than its technology does, and says what to do with it.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "E3"
+        ],
+        "how": "Turns the waves into the chapter's practical tool."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The five waves and what each left.",
+        "introduces": "A tool that reads any group's systems by the wave that deposited them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "For each major system an architect should ask which wave deposited it and under what assumption about ownership and sharing, because the answer predicts its behavior and what to do with it better than the technology does; a table of seven layers of sediment gives the assumption, symptom and treatment of each.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven layers of sediment (pioneer monolith, country copies, acquired stacks, inherited parent technology, shared enabling platforms, converged product platforms, carve-out residue) with assumption, symptom in 2027 and what to do.",
+              "shows": "Each layer's assumption explains its symptoms and its treatment."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the loop behind the timeline, ownership sets topology, sediment sets the cost of the next deal.",
+              "shows": "Shows why the architect's leverage is making sediment cheap to separate."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "In Practice: Veldmark's History, Read as Sediment",
+      "controlling_idea": "Read layer by layer, Veldmark's fictional history explains its monolith, its four category trees, its overlapping automotive businesses and its extra clouds, and Common Ground answers Henrik's question by writing a separability rule into every shared platform.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "E3",
+          "E5"
+        ],
+        "how": "Applies the sediment reading to the fictional group and shows separability specified in advance."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Veldmark's layers in the order they were deposited, as in Ingrid's diagram, so each paragraph matches a row of the sediment table; the decisions table and its separability column come last because they answer Henrik's question from the reading."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The sediment table.",
+        "introduces": "Veldmark's history read with it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "Veldmark's history is fictional but was written to follow the industry's waves, so Ingrid's diagram can be read with the sediment table, each layer labeled by the strategy that deposited it rather than by its date.",
+          "function": "transition"
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Yardstick is Wave 1 sediment: built for one country and one team, it now carries 6.1 million listings and 140 engineers, which is why Common Ground strangles it capability by capability.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard NL 2004 from the founding family's classified pages; Yardstick the 2006 PHP rewrite on MySQL; 6.1 million live listings in 2026; single deployable for 140 engineers, released twice a week; insertion out Q2 2028, search Q4 2028, decommissioned end of 2029.",
+              "source": "scenario-ledger.md",
+              "shows": "A pioneer monolith's assumption sets its treatment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The reading of Veldmark by wave.",
+            "introduces": "Wave 1.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Wave 2's copies and acquisition left four country category trees and a separate Polish search, The Copy-Paste Country in reference data, which is why the group taxonomy service comes before sharing Tradeyard's code.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Belgium 2009 and Portugal 2014 on copies of Yardstick, folded back 2016-2018 (about 2,600 country branches); Poland 2012 bought, kept Elasticsearch; 1,420, 1,380, 980 and 760 leaf categories; 3,900 attribute keys, 41% on fewer than 0.1% of listings; about six weeks to add a category.",
+              "source": "scenario-ledger.md",
+              "shows": "Copy-paste entry leaves diverged reference data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Wave 1 at Veldmark.",
+            "introduces": "Wave 2's copies.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Motorvane is the vertical-portal pattern, one automotive platform across four countries, and its overlap with Tradeyard's cars section in Poland is its sediment.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane launched in Germany in 2008 because its supply was dealers with feeds; rebuilt 2017-2020 as about 120 Kotlin services on AWS; NL, PL, AT on one platform; Tradeyard's cars section and Motorvane Poland selling to the same dealers by 2027.",
+              "source": "scenario-ledger.md",
+              "shows": "A vertical built separately overlaps the horizontal's category."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Tradeyard's copies.",
+            "introduces": "The vertical built as a separate brand.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Veldmark's 2023-2025 acquisitions were Wave 2 buy-and-keep and its 2025 private-equity owner is the Wave 4 owner type, so Common Ground, its Wave 3, starts after the change of owner, which makes Henrik's question a design input.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly France 2023, Keybridge 2024, Casavista 2025; private-equity majority owner 2025; each acquisition brought its own cloud, search engine and data warehouse.",
+              "source": "scenario-ledger.md",
+              "shows": "Consolidating after the change of owner makes separability a requirement from the start."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Waves 1 and 2 at Veldmark, read by strategy.",
+            "introduces": "The recent acquisitions and the new owner.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Ingrid's March 2027 table gives, for each duplicated capability, the wave that created the copies, the Common Ground decision and a separability rule.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Identity (4), search (3 engines), taxonomy (4 trees), events (4), data warehouses (3), product catalog (4), Keybridge platform (1), each with the wave whose strategy created the copies (labeled by strategy, not date), decision and separability rule.",
+              "source": "scenario-ledger.md",
+              "shows": "Every sharing decision carries a rule for cutting one brand out."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four waves read at Veldmark.",
+            "introduces": "Ingrid's table that turns them into decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The separability column applies Wave 4's lesson in advance: because the owner is a future seller, every Common Ground platform carries tenant-scoped data, per-brand accounts and cost centres, exportable contracts and a documented exit path, and the €38 million run-cost target must survive the sale of any one brand.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: fused modules tearing versus brand drawers sliding out cleanly.",
+              "shows": "Pictures a brand leaving a separable platform."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Ingrid's table.",
+            "introduces": "Its last column and the reason for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "heading": "Trade-offs: Growth Strategies and Their Architecture Bills",
+      "controlling_idea": "Every growth strategy sends a later architecture bill, and how much a group should share depends on its capital strategy: share what you can separate cheaply.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "E4",
+          "E5"
+        ],
+        "how": "Compares strategies and sharing topologies by their cost at exit."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Veldmark's decisions and separability rule.",
+        "introduces": "The general trade-offs behind them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "Each wave's growth strategy sent an architecture bill that arrived later.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven strategies (copy, group platform, buy and keep, buy and integrate, regional merger, vertical spin-out, convergence) with speed, architecture left, when right, when it backfires.",
+              "shows": "Every strategy defers a cost, and the conditions under which it backfires."
+            }
+          ]
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Underneath sits a second trade-off, how much to share given the capital strategy, because the cost at exit rises from federation to converged product platform.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Federation, shared enabling layers, shared capability services, converged product platform: what is shared, best fit, cost at exit (low to high).",
+              "shows": "Topology must be chosen against the expected exit."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Growth strategies and their bills.",
+            "introduces": "The sharing decision beneath them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Adevinta's 2019 rule, centralize where investment is large and technology uniform, is the best default in the public record, and the swings that followed add a second rule: share whatever you can separate cheaply.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two trade-off tables.",
+            "introduces": "The two rules that resolve them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vertical",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The waves hit verticals differently: real estate's local differences are structural, while recommerce's uniform model allows merging, though even there per country and per user.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "E2"
+        ],
+        "how": "Shows that what each wave left depends on the vertical's local differences."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The general trade-offs.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "controlling_idea": "The waves hit verticals differently, and that is visible in their architectures today.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs and recommerce by pioneer origin, how portfolios grew, consolidation outcome, why local wins and typical sediment.",
+              "shows": "Each vertical's sediment follows its local differences."
+            }
+          ]
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Real estate and recommerce sit at opposite ends: real estate's local differences are structural, the most plausible reading of AVIV's scaled-back platform, while Vinted could merge its country portals but still had to migrate per user with consent.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted merged its per-country portals into one marketplace with per-user consent, because each country had been a separate legal entity with separate databases.",
+              "source": "Vinted Engineering, 2022",
+              "shows": "Even a uniform model carries per-country sediment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The vertical table.",
+            "introduces": "The two extremes in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure",
+      "heading": "Failure Modes",
+      "controlling_idea": "Misreading the history produces seven recurring mistakes, from copying the last wave's answer to pricing rebrands as marketing projects.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "E3",
+          "E5"
+        ],
+        "how": "Names what goes wrong when sediment is misread or separability is missing."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The mistakes roughly follow a deal's life: the strategy chosen, the synergy case, the platform built, the acquired stacks kept, convergence forced, dependencies forgotten, the rebrand; the general mistake of copying the last wave comes first because the others are instances of misreading. Placed elsewhere, it would read as one more mistake rather than the frame for the six specific ones."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The waves, the sediment reading and the trade-offs.",
+        "introduces": "What goes wrong when they are misread.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "controlling_idea": "Misreading the history produces seven recurring mistakes.",
+          "function": "claim"
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Copying the last wave's answer, convergence during consolidation or autonomy during a break-up, follows a fashion instead of reading the group's own ownership, markets and sediment.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The count of seven mistakes.",
+            "introduces": "The first.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "A synergy case that counts platform retirements as straight-line savings ignores the long tails the record shows and should carry the convergence's risk.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rebrands keeping old domains for years; €69 million integration cost at Adevinta in 2023; transitional services for divested brands.",
+              "source": "Adevinta Annual Report 2023",
+              "shows": "Platform savings arrive late and partly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Synergy cases that count platforms as savings.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "A shared platform without tenant-scoped data, per-brand accounts and cost allocation turns every later sale into a carve-out project.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adevinta's parallel running during decentralization.",
+              "source": "Adevinta Strategic Report 2025",
+              "shows": "The visible cost of a platform with no exit path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Shared platforms with no exit path.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "Treating acquired stacks as temporary without a dated, funded plan creates Deal-Shaped Architecture.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Acquired stacks treated as temporary.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "Forcing convergence where local differences are the product invites The Forced Fit, with local teams routing around the platform.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Convergence forced over local differences.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Inherited dependencies from a former parent, sister brand or TSA run quietly until their owner stops supporting them, as Voyager did.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Forgotten inherited dependencies.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Rebrands priced as marketing projects miss the engineering they touch, as mobile.de's two-week rebrand after eight years of debt removal shows.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous mistake.",
+            "introduces": "Rebrands priced as marketing.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cav",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale history is an input to four standing decisions: know the owner's horizon, make separability a non-functional requirement, separate enabling layers from the product edge, and keep a sediment register.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "E5",
+          "E4"
+        ],
+        "how": "Turns separability and the sediment reading into standing decisions."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The owner's horizon comes first because separability follows from it; separability before the choice of what to share, because it is the constraint that choice works under; the register and the measures last, because they keep the first three decisions current. Asking for separability before the owner's horizon would give the reader a requirement with no reason."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The seven mistakes.",
+        "introduces": "The standing decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p68",
+          "controlling_idea": "At group scale history is an input to four standing decisions.",
+          "function": "claim"
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "The architecture function should ask for the owner's capital strategy in writing and revisit platform topology when it changes, as Veldmark's March 2027 decision record does.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2027 decision record: any brand may be sold within five years.",
+              "source": "scenario-ledger.md",
+              "shows": "The owner's horizon written down as a design assumption."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four decisions.",
+            "introduces": "The first: the owner's horizon.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Separability should be a non-functional requirement: no shared platform goes live without a written answer to how a brand's slice would be handed to a buyer in six months.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The owner's horizon.",
+            "introduces": "The requirement it imposes on shared platforms.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Share enabling layers and decide per capability at the product edge, because sharing infrastructure paid while converging whole product platforms was slow and often reversed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Separability as a requirement.",
+            "introduces": "Where to share at all.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "A sediment register records for each major system its wave, assumption, owner, consumers and fate, turning 'why is it like this?' from folklore into a decision record.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where to share.",
+            "introduces": "How to keep the history usable.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Four measures show whether these decisions hold: duplicated engineering, dependencies a sale would break, run costs per brand without allocation arguments, and whether the platform plan changed within a quarter of each deal.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four decisions.",
+            "introduces": "What to watch to see whether they hold.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Nine questions take the sediment reading and the separability rule into a strategy review or due-diligence meeting.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "E3",
+          "E5"
+        ],
+        "how": "Gives the reader the chapter's questions to use."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions that test them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p74",
+          "form": "list",
+          "controlling_idea": "Nine questions, from which strategy created each system to what the last rebrand cost, take the chapter into a strategy review or due-diligence meeting.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From History to Capabilities",
+    "synthesis": "The industry's record and Ingrid's diagram tell one story from two sides: every layer was deposited by a strategy that was defensible when it was made, and every group that shared a layer later had to separate it under a different owner, so the sediment reading and the separability rule are one discipline, looking back and looking forward.",
+    "so_what": "A Chief Architect who reads the landscape this way stops treating duplicates as mistakes to remove and starts treating each shared platform as something a future owner may have to divide, which is a decision made at design time, not at signing.",
+    "callback": {
+      "to": "Henrik's question in the opening scene: if our owner sells a brand in 2030, which of the platforms we are about to build will we have to take apart?",
+      "how": "The reader can now answer it: none of them, if each carries the separability rule from its first design review, because that is what Adevinta and AVIV lacked when their owners changed."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Before deciding what to share, describe what the marketplaces do independently of their systems, which is the next chapter's capability map."
+    },
+    "hand_off": {
+      "to": "business-capabilities",
+      "relationship": "problem_solution",
+      "carries_over": "The history, which explains how the systems got here but not what they should become.",
+      "introduces": "A description of what the marketplace does that is independent of its systems: the capability map, value streams and heat map."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The waves, the sediment reading, Veldmark's decisions and the standing decisions.",
+      "introduces": "What they add up to, and Henrik's question answered.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p75",
+        "controlling_idea": "Read together, the industry's record and Ingrid's diagram say that every layer was right when deposited and every shared layer had to be separated under a new owner, so Henrik's question is answered at design time: no Common Ground platform has to be taken apart if each carries the separability rule.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p76",
+        "controlling_idea": "The history explains how the systems got here but not what they should become, so deciding what to share needs a description of what the marketplaces do independent of their systems, which business-capabilities builds.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The answer to Henrik's question.",
+          "introduces": "The question it leaves open, what to share, and the next chapter that answers it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Marketplace models and the endpoint ladder.",
+      "covered_in": [
+        "marketplace-taxonomy"
+      ]
+    },
+    {
+      "topic": "Liquidity economics and why leadership is local; stated briefly only.",
+      "covered_in": [
+        "liquidity-and-network-effects"
+      ]
+    },
+    {
+      "topic": "The full Adevinta, OLX, eBay Classifieds and AVIV stories.",
+      "covered_in": [
+        "case-adevinta",
+        "case-olx",
+        "case-ebay-classifieds",
+        "case-aviv"
+      ]
+    },
+    {
+      "topic": "Payment, shipping and buyer-protection design.",
+      "covered_in": [
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "The method for consolidating platforms and designing multi-country platforms.",
+      "covered_in": [
+        "platform-consolidation",
+        "multi-country-platforms"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "mobile.de ownership after the 2025 dual-track process is unclear (Bundeskartellamt names 'Oak Germany Buyer GmbH' in October 2026); re-check before publication. (Carried over from spec.md; needs an external check, not a decision.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter by waves rather than by company, so companies appear as evidence for architectural questions, consistent with the book's company-neutral stance."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Introduced 'architectural sediment' and a sediment register as the chapter's practical tool, linking history to decisions rather than narrating it."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Wrote Veldmark's fictional history (newspaper origin of Tradeyard, copy-paste Belgium and Portugal, acquired Poland, Motorvane's single vertical platform) to mirror the waves; appended the new canonical facts to the scenario ledger."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated the transactional pivot only as a thread through the consolidation wave and handed it to transactions-and-payments."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the timeline, per-wave, owned-terms, Veldmark, trade-off-table and diagram/apparatus criteria were inventories of contents and are dropped (format stays governed by the style guide); their reader outcomes are carried by the journal spec's intent and AC-1 to AC-3. No acceptance criteria were added beyond the journal spec's.",
+      "rejected": [
+        "Carrying the six success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims E1 to E5 written here (the journal spec gives none for this post) from the parts of the thesis: five waves, each method's layer, the sediment reading, capital strategy faster than platforms, separability by design. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so length.max_words is the published prose length (8,495 words by check_draft's count) plus 5%: 8,919."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Introduction: the method paragraph (published p03) becomes the roadmap paragraph, naming the sections in order and keeping the evidence labels, so a reader of the opening can predict the sections (AC-2).",
+      "rejected": [
+        "Adding a fourth introduction paragraph for the roadmap (length, and the method paragraph already half-did it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conclusion split into a synthesis paragraph that answers Henrik's question from the scene (callback) and the published hand-off paragraph, because the published one-paragraph conclusion only handed off.",
+      "rejected": [
+        "Keeping the single hand-off paragraph (no synthesis or callback)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Parker quotation moved, unchanged with its citation, from the 'categories as the unit of the business' bullet to the 'minimal, monolithic stacks' bullet, with one sentence saying what it shows (small teams ran large sites); the categories bullet keeps the post's unbundling point and citation. (Escalation item 1; draft fault.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Veldmark's wave labels aligned with the section's own rule (label by strategy, not date): the 2023-2025 acquisitions are Wave 2 buy-and-keep under a Wave 4 (private-equity) owner, and Common Ground is Veldmark's Wave 3; board table: Search 'Wave 1 monolith and Wave 2 copies (Solr), Wave 2 acquisitions (Elasticsearch in Poland, OpenSearch at Hearthly)', Data warehouses 'Waves 1-2, including the 2023-2025 acquisitions', Keybridge 'Wave 2 acquisition (2024), kept separate'. Ledger: Solr for NL/BE/PT, Elasticsearch 7 for PL, OpenSearch at Hearthly. (Escalation item 2; corroborated.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p06: 'four identity systems' now has four origins (an organic launch, an automotive build, two recent purchases); 'a country acquisition' dropped because Tradeyard Poland runs on Yardstick and the ledger lists own accounts per brand (Tradeyard, Motorvane, Hearthly, Keybridge). (Escalation item 3.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p31: Wave 3's 'from around 2016' anchored with two 2016 events the chapter already states (OLX Group consolidation; Schibsted's 'one global product and tech organization' heading); no new company statement. (Escalation item 4.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims E1 to E5 (agent-written; the journal spec gives none for this post): accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "'A rule I use:' in The Chief Architect's View stays as published: accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes (merge p44 into the Adevinta break-up paragraph; repeated separability rule in p54/p56/p63/p70/p75 and 'share enabling layers' in p35/p56/p71; merging the sediment section into the Veldmark section; loose failure-mode order) not taken, keeping the published text (rule: keep the published text when no option is clearly better); accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Single-reader points from rounds 2-3 (Trader in Canada ownership unverified so nothing added; Frontier Car Group; timeline before the waves; 'as of October 2026'; two-sentence AVIV subsection; restated separability rule; position of Vertical Differences and Failure Modes) left as published; accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length: max_words raised from 8,919 to 9,000 (+0.9%, within the 10% allowance) to fit the escalation fixes (Parker sentence, Veldmark strategy labels, Wave 3 anchor), which brought the draft to 8,993 words; the chapter remains above the style guide's 8,500-word ceiling for earned depth; accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Source caveats carried over from spec.md resolved by keeping the published wording, which already labels them: Schibsted's copy-paste rollout and the 2016 heading are attributed to secondary sources; the chapter says Adevinta's unified-platform delivery and AVIV's integrated-platform scope are not public; founding dates are attributed to Wikipedia; accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, and the next chapter's transition_in used as the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark, marketplace-taxonomy, liquidity-and-network-effects, business-capabilities, case-adevinta, vertical-requirements",
+      "contributed": "Terms already defined, the Veldmark cast and systems, the non-goal boundaries."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md; research briefs adevinta, olx, ebay-classifieds, real-estate-portals, automotive, monetization-economics",
+      "contributed": "Veldmark facts and the dated company evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta annual reports 2019 and 2023, strategic report 2025, press releases 2021-2024, tech blog 2023-2024",
+      "contributed": "The consolidation and break-up record."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay 8-K (2004) and releases (2008, 2015); eCG brand pages (snapshots); Marktplaats Technology (2015); Berlin Tech Blog (2019, 2025)",
+      "contributed": "eBay's buy-and-keep record, Voyager, Kleinanzeigen's architecture and migrations."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Tech (2018, 2023, 2026), OLX Group releases (2020, 2026), Naspers (2022), News24 (2023), Wamda (2020)",
+      "contributed": "OLX's roll-up, mergers and retreat."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove and Autotrader results (2026); Immowelt (2015); KKR (2025); Online Marketplaces (2021, 2025, 2026); Scout24 (2025); AutoScout24 (2025); Vinted (2022, 2026)",
+      "contributed": "Vertical margins, AVIV's integration and reversal, platform buyers, recommerce."
+    },
+    {
+      "kind": "external",
+      "ref": "CMA decision (2021); Bundeskartellamt (2026); NYU Stern on Seamans and Zhu (2013); Parker (2010); Wikipedia entries for founding dates",
+      "contributed": "Remedies, mobile.de's parent, print's decline, category unbundling, founding dates."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: Parker quotation moved to the stacks bullet; Veldmark wave labels by strategy (prose and board table); four origins for four identity systems; Wave 3 start anchored; open items moved to the decision log. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored the author's first-person 'A rule I use:' (the style guide allows it); the agent's 'The rule this book recommends:' reverted. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3 (ESCALATE, budget spent, 14 pass, 5 fail, all draft faults): colon added in p29 after the round; remaining failures in open_questions. Check report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (REVISE, 10 pass, 19 fail): draft-only fixes in p06, p08 (lead-in), p10 (EMPG and Domain glossed), p23, p28, p29, p38 subheading, p39, p57 (quotation marks narrowed to the source wording), p68, p70. Spec unchanged apart from this line. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (REVISE, 10 pass, 23 fail): p05, p09, p44 and p48 controlling ideas and p44 transition_in reworded to the revised prose (layers four plus the program; waves numbered; mobile.de introduced as part of the break-up; layers labeled by strategy). Order unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes): p07 names Mateus Carvalho and Henrik de Boer, p47 names the sediment table, rationales added for wave3, wave4, failure and cav; order unchanged. index.md: p03 rewritten as the roadmap, conclusion synthesis paragraph p75 added. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 7,848 to 7,837 words; excerpt and first KEY POINT name the chapter's five waves; lead names what the chapter builds on and which chapters use it; 'What Wave 1 left in the systems' made a subheading; teaser first sentences replaced. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editor: reconciled with multi-country-platforms (copies folded back into one codebase 2016-2018, origin of the country branches). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: timeline checked against the six case pages; eight countries; AVIV CEO quote corrected (no 'unified'); mobile.de and Marktplaats 2004 dates separated; OLX Autos revenue dated; Central Asian sales as agreements; separability decision record dated March 2027. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 9000
+  }
+}

@@ -1,0 +1,475 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-4",
+  "journal": "listing-systems-architecture",
+  "part": "part-4",
+  "title": "Part IV — DISCOVERY: Matching Intent to Inventory",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-4-intro/index.md) and its former spec.md (accepted 2026-10-21), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part IV's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its three supporting claims are written here from the part's thesis and flow. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's claim in three bullets. Units added to the published page to meet the contract: the roadmap paragraph (p03), the lead-in to the chapter table (p04) and a synthesis, callback and hand-off in a closing paragraph under 'Where to begin' (p07, grown from 'By the end of Part IV… Begin with [[search-architecture]]'), the shape the Part II and Part III introductions now share.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part IV's argument: discovery is one pipeline with six surfaces, every surface is a read model of the listing stream that must honor removals faster than insertions, structure beats cleverness, and order is a policy with owners.",
+        "The six chapters in reading order and the question each answers, and the Veldmark discovery decisions of 2027 they follow."
+      ],
+      "can_do": [
+        "Pick the Part IV chapter that answers the discovery problem in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects, principal engineers, and search, data and ML leads (the journal's readers) who have read Part III and are about to start Part IV, or who arrive with a discovery problem in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; how to make and defend an architecture decision; percentiles such as p95.",
+        "Part III's supply chain: listings published through a publication pipeline within a freshness target, removals propagated to every copy, and listings of the same thing grouped into entity clusters (part-3, publication-pipeline, entity-resolution).",
+        "Part II's categories, attributes and location model (part-2).",
+        "What a read model is: a copy of listing data built from the listing event stream and owned by its consumer, never the system of record (bounded-contexts, where-listing-systems-go-wrong).",
+        "The fifteen named failure patterns, among them Search as System of Record, Multiplier Creep and Ghost Inventory (where-listing-systems-go-wrong).",
+        "Veldmark in outline: a fictional group of four brands (Tradeyard, Motorvane, Hearthly, Keybridge), Ingrid Halvorsen its Group Chief Architect and Tomasz Wiśniewski its head of the group search platform (meet-veldmark)."
+      ],
+      "does_not_know": [
+        "Relevance model, ranking policy, relevance floor and paid placements such as top listings (owned by ranking; the page names them and points to the chapter).",
+        "Compiling a query into categories and attribute filters, embeddings and language models as layers over it (owned by query-understanding).",
+        "Listing Search API v1, the group's search contract (owned by search-architecture).",
+        "The geo query compiler and draw-your-area search (owned by map-search).",
+        "The saved-search service and alert matching (owned by saved-searches-and-alerts).",
+        "The risk gate (owned by trust-and-safety-architecture, Part V)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the six chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next six chapters tell you, in order?",
+        "expected": "How to build the search index and its contract for millions of short-lived listings; how short, ambiguous queries become structured searches; how results are ordered for buyers and sellers, including paid visibility; how to recommend items that may be sold tomorrow; how to search by place on a map, by drawn area and by commute; how to notify users within minutes when a matching listing appears."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a situation the chapter table lists, the reader names the chapter to open.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Paid listings crowd your first results page and nobody can explain why a listing is third; separately, your alert digests advertise listings that are already sold. Using only this page, which chapter do you open for each?",
+        "expected": "Ranking for the paid listings and the unexplained position; saved searches and alerts for the digests."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader can say which earlier parts discovery reads from and which later parts constrain or supply it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: what does discovery take from earlier parts of the book, and which later parts constrain it or supply what it needs?",
+        "expected": "From Part II the categories, attributes and location model; from Part III the publication pipeline and entity clusters. Part V puts its risk gate in front of search and alerts; Part VI sells the paid placements ranking must blend and account for; Part VII supplies the event backbone, experimentation and ML platform."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this part argue, and in what order should its chapters be read?",
+    "claim": "Part IV argues that discovery is one pipeline with six surfaces, not six products: search, query understanding, ranking, recommendations, the map and alerts read the same listing stream and taxonomy, each must say whether a listing is still available, who decided its position and whether it led to a contact, and each is judged on contacts; its six chapters are read in an order where each reuses what the one before established, starting with the search index every other surface queries and ending with alerts, which reuse all of them.",
+    "disputed_by": "The common practice of building search, recommendations, maps and alerts as separate products on separate copies of the data, each tuned to its own metric (clicks, sends, revenue per search), so the discovery chapters are independent topics a reader may consult in any order.",
+    "so_what": "A reader who accepts it reads search-architecture first, or opens the one chapter that answers the discovery problem in front of them, and asks of every surface how fast it forgets a sold listing and who owns the order it shows.",
+    "how_why": "Query understanding compiles words into the structured query the search contract accepts; ranking orders what that retrieval returns; recommendations reuse ranking's machinery without a query; map search compiles places as query understanding compiles words; alerts store normalized queries and areas and run them in reverse over the same index. Veldmark's 2027 discovery decisions each turn one surface (five of the six) into a shared, owned component on that pipeline.",
+    "supporting_claims": [
+      {
+        "id": "PIV-1",
+        "claim": "The six chapters take the surfaces in an order where each reuses what the one before established, and each is the chapter to open first for a recognizable symptom."
+      },
+      {
+        "id": "PIV-2",
+        "claim": "Discovery sits between the book's other parts: it reads Part II's categories, attributes and location model and Part III's publication pipeline and entity clusters, and Parts V, VI and VII constrain or supply it."
+      },
+      {
+        "id": "PIV-3",
+        "claim": "Veldmark starts 2027 with three search engines and a search brown-out and, over the year, decides one change for each surface except query understanding, in chapter order."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states that discovery is one pipeline with six surfaces that read the same stream, forget sold listings quickly and are judged on contacts, gives the reading order of the six chapters and the Veldmark decisions they follow.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "p03 and the chapter table in p04: the six chapters in the order each reuses the one before"
+      }
+    ],
+    "rationale": "The page opens on what makes listing discovery different (a high-write system judged by how fast listings appear and disappear), states the part's claim (one pipeline, six surfaces, three questions), then narrows to the six chapters in the order each reuses the one before, and to one row per chapter with the symptom that sends a reader there. It then widens once to place discovery in the book, shows Veldmark's 2027 decisions in chapter order, and ends with a short synthesis that answers the three questions for the whole pipeline and hands off to the first chapter. The order of the chapters is stated before the table because the rows only make sense once the reader knows that each surface builds on the last; the connection section follows the table because it says what the chapters read from Parts II and III and what later parts impose; the Veldmark section follows the connection because its decisions put the pipeline's shared components into practice, one per chapter; the conclusion comes last and holds no new material. Put Veldmark first and its policy, carousel and compiler arrive before the reader knows which surface each belongs to; put the connection first and it names inputs and constraints before the reader knows which chapters use them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Listing discovery looks like web search but behaves like a high-write operational system: documents live for days, most queries contain no text, and it is judged by how fast a new listing appears and a sold one disappears."
+    },
+    "bridge": {
+      "from_reader_world": "Part III's supply: clean, deduplicated and searchable within a freshness target.",
+      "to_topic": "The other side of the market: the buyer who types three words, draws a shape on a map or saves a search and waits."
+    },
+    "thesis_statement": {
+      "text": "Discovery is one pipeline with six surfaces, not six products: each reads the same stream and taxonomy and must answer three questions: is this listing still available, who decided its position, and did it lead to a contact.",
+      "placement": "KEY POINTS callout; paragraph p02 (bold phrase)"
+    },
+    "roadmap": {
+      "placement": "IN THIS PART callout; paragraph p03",
+      "promises": [
+        {
+          "promise": "Six chapters, in the order each builds on the last, with the reason for each position: the search index and its contract first, then query understanding, ranking, recommendations, map search, and alerts last; a table says when to open each.",
+          "kept_in": [
+            "chapters"
+          ]
+        },
+        {
+          "promise": "The page then places the part in the book and follows Veldmark through it.",
+          "kept_in": [
+            "connects",
+            "veldmark"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part IV turns from Part III's clean, searchable supply to the buyer's side of the market, where listing discovery looks like web search but behaves like a high-write operational system: documents live for days, most queries contain no text, and it is judged by how fast a new listing appears and a sold one disappears.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The buyer who types three words, draws a shape on a map or saves a search and waits; documents that live for days and queries without text.",
+            "shows": "Discovery serves several kinds of buyer intent over short-lived inventory, so its measure is freshness in both directions, not text relevance alone."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The part's claim is that discovery is one pipeline with six surfaces, not six products: each reads the same stream and taxonomy and must answer three questions: is this listing still available, who decided its position, and did it lead to a contact.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: one listing stream branching into six discovery surfaces that converge on buyer contacts.",
+            "shows": "Every surface reads the same stream, must forget a sold listing quickly and is judged by the contacts it produces."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "A system judged by how fast listings appear and disappear (named again as what every surface is judged on).",
+          "introduces": "The part's answer: one pipeline with six surfaces and three questions each must answer.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The six chapters take the surfaces in the order each builds on the last: search first, because every other surface queries its index and contract; query understanding, which decides which listings a query can reach; ranking, which orders them; recommendations, which reuse ranking's machinery without a query; map search, which compiles places as query understanding compiles words; and alerts last, because they reuse every surface before them. The page then places the part in the book and follows Veldmark.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The six surfaces of the one pipeline.",
+          "introduces": "The six chapters in reading order, the reason for that order, and what the rest of the page does.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the six chapters answers one question and is the one to open first for a recognizable symptom.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "PIV-1"
+        ],
+        "how": "Lists the chapters in reading order with the question each answers and the symptom that sends a reader to it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The six chapters in order.",
+        "introduces": "One row per chapter: its question and when to open it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Each row of the table gives a chapter's question and the symptom that should send a reader to that chapter first.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six rows in reading order: search-architecture (choosing an engine, planning a reindex or sizing for the evening peak), query-understanding (high zero-result rates, or synonyms in scattered config files), ranking (paid listings crowd the first page, or nobody can explain position 3), recommendations (carousels show sold items, or new listings never appear in them), map-search (map traffic dominates, or polygon queries break the latency budget), saved-searches-and-alerts (alerts on a cron job, or digests advertising listings already gone).",
+              "shows": "The reader can go from the problem in front of them to the chapter that answers it, and see the order in which the questions build."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connects",
+      "heading": "How this part connects",
+      "controlling_idea": "Discovery reads what Parts II and III built, and three later parts constrain or supply it.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "PIV-2"
+        ],
+        "how": "Says what discovery reads from earlier parts and what each later part imposes on or supplies to it."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The six chapters and the surfaces they design.",
+        "introduces": "Where those surfaces sit in the book: the parts they read from and the parts that constrain or supply them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Discovery reads the categories, attributes and location model from Part II and the publication pipeline and entity clusters from Part III; Part V puts its trust platform's risk gate (glossed as able to hold a risky listing back) in front of search and alerts, Part VI sells the paid placements ranking must blend and account for, and Part VII supplies the event backbone, experimentation and ML platform the chapters assume.",
+          "function": "context"
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "The Veldmark thread",
+      "controlling_idea": "Veldmark starts 2027 with three search engines and a search brown-out caused by an index that could not be rebuilt beside the live one, and over the year decides five changes, one for each surface except query understanding, in chapter order.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "PIV-3"
+        ],
+        "how": "Shows the pipeline's shared components as dated Veldmark decisions, in chapter order."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The pipeline and the parts it reads from and depends on.",
+        "introduces": "Veldmark's 2027 discovery changes, one surface each (none for query understanding on this page).",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Veldmark (fictional), whose brands run three search engines, shows the pipeline being built: a reindex writing into the live index browned out Tradeyard NL search on 17 January 2027, the cost of an index that cannot be rebuilt beside the live one, and over 2027 its Group Chief Architect, search platform team and brands decide one change for each surface except query understanding, listed in chapter order.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three search engines; Sunday 17 January 2027 Tradeyard NL brown-out, about 9% of searches failed for 48 minutes. Decisions, in chapter order: shared search platform on OpenSearch (14 September 2027), every application moving to Listing Search API v1 first, Motorvane on Elasticsearch until a 2029 review (search-architecture); Ranking policy v1 (June 2027): at most four paid listings in the first 20 positions, top listings only above a relevance floor, live for Tradeyard NL and BE on 1 December 2027 (ranking); rebuilt Motorvane similar-vehicles carousel, new listings with no carousel impression 41% to 8% (recommendations); geo query compiler for Hearthly's draw-your-area search (map-search); group saved-search service targeting five minutes p95 from searchable to alert for 46 million saved searches (saved-searches-and-alerts).",
+              "source": "_research/scenario-ledger.md (Four of everything; recurring example 5, the Sunday-evening brown-out; timeline 14 Sep 2027; ranking, recommendations, map-search, saved-searches-and-alerts and search-architecture lines; Saved searches and alerts row); brown-out cause: search-architecture line ('The 17 Jan 2027 brown-out reindex wrote into the live Solr collection')",
+              "shows": "The brown-out shows what search costs when the index is not a read model that can be rebuilt beside the live one; the five changes show the pipeline's surfaces being built one by one, in the order the chapters take them."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to begin",
+    "synthesis": "Read together, the six chapters answer the three questions once for the whole pipeline rather than six times: the listing stream says whether a listing is still available, a policy with named owners decides its position, and contacts judge every change.",
+    "so_what": "A fix made once in the shared pipeline reaches every surface.",
+    "callback": {
+      "to": "The three questions of p02 (is this listing still available, who decided its position, did it lead to a contact).",
+      "how": "The closing paragraph answers each question once for the whole pipeline and restates the part's test: for each surface, how fast it forgets a sold listing and who owns the order it shows."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with search-architecture and read the chapters in order, or open the chapter the table names for the discovery problem in front of you."
+    },
+    "hand_off": {
+      "to": "search-architecture",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first claim, that every discovery surface is a read model of the listing stream that must honor removals faster than insertions, and the 17 January 2027 brown-out it names.",
+      "introduces": "The search index as the first and busiest of those read models: its document, topology, write and read paths, reindexing, capacity and the contract in front of the engine."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The chapters, their place in the book and Veldmark's decisions.",
+      "introduces": "What the six chapters amount to together, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p07",
+        "controlling_idea": "Read together, the six chapters answer the three questions once for the whole pipeline (the stream says whether a listing is available, a policy with named owners (the KEY POINTS callout's 'order is a policy with owners') decides its position, contacts judge every change), so a fix made once reaches every surface; a reader should end Part IV able to say, for each surface, how fast it forgets a sold listing and who owns the order it shows, and begins with search-architecture, the first and busiest read model.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Engine comparisons, ranking methods or alert designs, and defining the terms the chapters own; the page names them and points to the chapter.",
+      "covered_in": [
+        "search-architecture",
+        "query-understanding",
+        "ranking",
+        "recommendations",
+        "map-search",
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "External factual claims; the page cites no company facts and needs no sources. The Airbnb map-traffic figure is left to map-search.",
+      "covered_in": [
+        "map-search"
+      ]
+    },
+    {
+      "topic": "Veldmark's numbers beyond the brown-out and the headline of each decision; the rest stay in the chapters."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled on RECONCILED's part introductions with this book's callout set and a chapter table."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Failure patterns: Search as System of Record, Multiplier Creep and Ghost Inventory, the three that recur across most of the part's chapters."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "The Airbnb map-traffic figure from map-search is left to that chapter to avoid an external claim here."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, chapter-table, argument-statement, connection, Veldmark-facts, hand-off and word-count criteria were inventories of contents or format and are dropped as criteria (format stays governed by the style guide, Veldmark facts by the ledger, the hand-off is conclusion.hand_off, the argument is p02 and the KEY POINTS callout, the 800-word limit is length.max_words). They are replaced by the journal spec's AC-1 to AC-3 and one added minor criterion, AC-4 (what discovery reads from and which later parts constrain or supply it), which tests the connection section.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims PIV-1 to PIV-3 written here, since the journal spec's entry for this post has none: the question is the entry's question; the claim condenses the part thesis to what this page argues (one pipeline with six surfaces and the reading order). For the author to confirm.",
+      "rejected": [
+        "Copying the part thesis whole, which this page summarizes but does not argue."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units added so the page carries the part opening: a roadmap paragraph (p03) giving the chapters in order with the reason, as the journal spec's opening roadmap and the part's flow rationale ask; a one-sentence lead-in to the chapter table (p04); and a closing paragraph under a new 'Where to begin' heading (p07) with synthesis, callback and hand-off, matching the Part II and Part III introductions. The Veldmark decisions are listed in chapter order (the OpenSearch decision moved first, after the brown-out it answers), wording unchanged.",
+      "rejected": [
+        "Leaving the roadmap to the IN THIS PART callout and the table alone: neither gives the reason for the order.",
+        "Keeping 'The Veldmark thread' as the closing heading, which would leave the page's synthesis inside an example section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric: sound with notes. Taken: p03 cut to one sentence on the order (search first, alerts last) so the order is not stated twice before the table; the conclusion's 'owned policy' became 'a policy with named owners', calling back to the KEY POINTS bullet 'Order is a policy with owners'. Thesis rubric: pass on all four questions; minor notes (long claim sentence; how_why does not support 'judged on contacts'; so_what lets a reader open one chapter first) left for the author."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 2 (ESCALATE on spec faults, corroborated by both flow readers): p03 restored to give the reason for every chapter's position, not only the first and last (reverses the flow-rubric cut, which both readers found left the middle order unexplained); p06 no longer promises 'a shared component with an owner and a date' for five of six surfaces (the carousel is Motorvane's own, and three bullets carry no date or owner) and instead says five changes, one surface each, in chapter order, naming query understanding as the surface without one.",
+      "rejected": [
+        "Adding a query-understanding decision to the Veldmark list: the ledger has Tradeyard bike-query results but no group decision, and the page lists decisions only.",
+        "Listing the decisions in date order: the readers' alternative, but it would break the chapter-order mapping the section uses."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: max_words set to 1,000 by check_draft's count, as for the Part II and Part III introductions (the old 800 was prose without callouts). The draft is 1,068, so the length check still fails; the author decides between a raised limit and cuts."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "max_words raised from 1,000 to 1,100 (+10%, resolve-brief rule 2) instead of cutting: the page is 1,068 words by check_draft's count, the extra being the roadmap, table lead-in, closing and reader-driven glosses; no author text cut. Part I's limit is also 1,100."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The three close fixes made after round 3 (p02 opens on the problem; p06 'one change for each surface except query understanding'; p05 glosses the risk gate) are kept and are checked in round 4."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The thesis and supporting claims PIV-1 to PIV-3 written for this intro are accepted under the author's delegation, 2026-11-12; the thesis-rubric minor notes (long claim sentence; how_why does not support 'judged on contacts'; so_what near the 'any order' view) are left as they are, the thesis being consistent with the page and ledger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The reworded WHY ARCHITECTS SHOULD CARE callout, the KEY POINTS removal wording ('must remove a sold listing faster than they add a new one'), the brown-out cause clause in the Veldmark lead and the closing heading 'Where to begin' are accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Single-reader minor findings left unfixed, keeping the published text (rule 8): the geo query compiler bullet has no date or outcome; the three questions are recalled far below where they are asked; the KEY POINTS removal wording is not explained nearby; the Ranking policy v1 bullet (June) follows the September bullet because the list is in chapter order. Accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-4 and its post entry part-4; the entries for professional-seller-tooling and search-architecture)",
+      "contributed": "Intent outcome, AC-1 to AC-3 and role (post entry); the part's opening (hook, bridge, roadmap), thesis and flow; the previous chapter's hand-off and the first chapter's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "search-architecture, query-understanding, ranking, recommendations, map-search, saved-searches-and-alerts",
+      "contributed": "The chapters summarized, in their questions and the symptoms that send a reader to them (KEY POINTS and lead paragraphs)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Every Veldmark figure, name and date."
+    },
+    {
+      "kind": "internal",
+      "ref": "config.yaml, PLAN.md",
+      "contributed": "Chapter order and titles."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/part-4-intro/spec.md (accepted 2026-10-21, removed 2026-11-12)",
+      "contributed": "Non-goals, decision log, sources and changelog carried over."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); added roadmap (p03), table lead-in (p04) and a closing synthesis and hand-off under 'Where to begin' (p07); Veldmark decisions listed in chapter order. (AI-mediated session) After draft check round 1: Veldmark lead names the brands, Ingrid's role and the brown-out's cause; 'paid top listings'; 'the group search contract, Listing Search API v1'; KEY POINTS removal wording; WHY ARCHITECTS callout clarified; p02 opening picks up p01. After round 2 (spec changed, see decision_log): p03 gives every chapter's position; Veldmark lead says five changes in chapter order; 'before any engine changes'; 'agreed June 2027'. After round 3 (close fixes, unchecked): p02 opens on the problem; Veldmark lead 'one change for each surface except query understanding'; risk gate glossed. Escalation resolved under the author's delegation (2026-11-12): max_words raised to 1,100; author-confirm items and the written thesis accepted; open questions closed."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Term alignment with the glossary: 'projection' to 'read model', 'copy register' to 'consumer registry', 'filter compiler' to 'query compiler', where they occur on this page. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 641 to 642 words; headings unchanged (shared with sibling part intros); 'sets requirements forward' replaced, since Part VII supplies discovery rather than depending on it; 'the same questions' made 'three questions'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 1 inline illustration (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: made the Ranking policy v1 summary match the ledger (paid cap plus relevance floor) and credited the brands for the carousel decision. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 1100
+  }
+}

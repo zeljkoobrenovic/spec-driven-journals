@@ -1,0 +1,2113 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "long-term-evolution",
+  "journal": "listing-systems-architecture",
+  "part": "part-8",
+  "title": "Built to Be Replaced: Evolving a Marketplace Platform Over a Decade",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-4, thesis and role are copied from the journal spec. The conclusion was extended in this pass to carry Part VIII's and the journal's closing.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The book's argument restated part by part: each part as a stage of the liquidity machine, the guarantee it must give, the liquidity metric it protects and the failure pattern when it does not, and the four ideas that run through all parts.",
+        "Stressor analysis, attractors and residues; the three rates of change (contracts and identifiers, engines, content); portability of listing data and events; the centralization pendulum and the cost to reverse; technical debt as a liquidity tax; the twelve marketplace fitness functions; the architecture function's own evolution."
+      ],
+      "believe": [
+        "A target state assumes a known future; a marketplace group should design against stressors instead.",
+        "What lasts a decade is a few contracts, identifiers and measures, and a group should steer by fitness functions tied to matches rather than by program milestones."
+      ],
+      "can_do": [
+        "Run a stressor analysis on a marketplace group and rank components by the residues they carry.",
+        "Estimate what a carve-out of one brand would cost and which residues would shorten it.",
+        "Define marketplace fitness functions with owners, counter-metrics and drills."
+      ]
+    },
+    "audience": {
+      "who": "Group Chief Architects, CTOs and CPOs of multi-country, multi-vertical marketplace groups, and the architects who will inherit their decisions.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are, and how to make and defend an architecture decision.",
+        "The earlier chapters of the book, or how to navigate to them: liquidity per cell, the failure patterns, the listing event contract, Veldmark and Common Ground."
+      ],
+      "does_not_know": [
+        "Residuality theory: stressor, attractor, residue, naive and residual architecture.",
+        "Fitness functions from evolutionary architecture."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a ten-year platform plan, the reader replaces its target state with a stressor analysis and a fitness scorecard and says where long-term investment belongs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace group presents a ten-year target-state diagram with one shared product platform for all brands, tracked by program milestones. Its owner may sell a brand within three years, a new platform law is expected, and a fifth of one brand's search traffic may soon arrive through an AI assistant. Using only this chapter: what do you put in place of the plan, and where should the long-term investment go?",
+        "expected": "A stressor analysis (capital, regulation, channel, supply, adversarial, supplier and physical-world stressors and their combinations) that finds the residues needed to survive them; investment in the top layer that survives most stressors (the listing event contract, stable identifiers, identity with pairwise identifiers, tenant-partitioned data, governed metrics), with engines chosen for replaceability and content changed as data; the cost to reverse written into each sharing decision, so product platforms are shared last; a separability estimate and a yearly tenant-exit tabletop; and a dozen fitness functions, each with an owner, a counter-metric and a failure pattern, with drills for rebuild and separability, reviewed quarterly instead of milestones."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Three moves: the book's argument restated (a liquidity machine), stressor analysis adapted from residuality theory, and marketplace fitness functions; then what lasts and what gets replaced, portability, the centralization pendulum, debt and the architecture function; evidence from the documented reversals of marketplace groups (Schibsted, Adevinta, Prosus, Zillow) and the fictional Veldmark's stressor workshop and scorecard; a hand-off to the cases of Part IX."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The chapter's final section performs the journal's closing: it synthesizes the parts as stages of the liquidity machine, restates the introduction's central claim, and returns to the introduction's opening question of why a site whose every team reports green loses contacts per listing to a smaller competitor.",
+        "check": "conclusion_calls_back_to_introduction",
+        "method": "rubric",
+        "severity": "major"
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given three decisions, the reader places each in its rate of change and says how it may change.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: in which layer do these three belong, and how may each be changed: the group listing ID format, the managed search engine, and a brand's package prices?",
+        "expected": "The ID format is contracts and identifiers (ten years or more; changed only by new versions beside old ones with deprecation windows); the search engine is engines and implementations (three to eight years; replaced behind the search contract with parallel run and parity checks); package prices are content and policy (weeks to two years; released as data with experiments and review)."
+      },
+      {
+        "id": "AC-6",
+        "statement": "The reader explains why a stressor workshop combines stressors and what Veldmark's combined scenario found.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: why does a stressor analysis combine several stressors into one scenario, and what did Veldmark's combined scenario find?",
+        "expected": "Combined stressors test the decomposition: if the platform survives by composing residues it already has, the decomposition is probably right. Veldmark's July 2030 scenario (selling Hearthly Spain, a generated-photo rental ring, an AI assistant partner) found one missing residue: source-tenant provenance on every entry of the shared block list, plus a tested per-tenant export of T&S cases and evidence."
+      },
+      {
+        "id": "AC-7",
+        "statement": "The final section performs Part VIII's closing: it states what the five chapters do together, says why it matters and returns to the four questions the part introduction ends on (Part VIII AC-4, checked here).",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the final section state something about Part VIII that no single chapter states, say why it matters, and return to the four questions the part introduction ends on (what to change first, who owns it, how you will know it worked, what must stay true)?",
+        "expected": "The five chapters answer the four questions as one method (consolidation sequence and migration waves; one owning team and the advice process; liquidity gates, relevance parity and the scorecard; the top-layer contracts and identifiers); change sequenced this way keeps throughput while owners, laws and channels change; the four questions are named."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does a Chief Architect keep a marketplace platform coherent over ten years of acquisitions, verticals, regulations and technology shifts?",
+    "claim": "Over a decade a Chief Architect should not steer toward a target state. Instead: write down the argument the platform serves (turning fresh, trustworthy supply into matches, cell by cell, at a cost the business can carry); run a stressor analysis every year and after every capital event to find the few structures that survive many stressors (the listing event contract, stable identifiers, identity with pairwise identifiers, tenant-partitioned data) and spend design attention there, choosing engines for replaceability and changing content as data; write the cost to reverse into every sharing decision, so that moving a capability between central and local control is a costed, reversible decision rather than a reorganization; and steer by about a dozen marketplace fitness functions, each with an owner, a counter-metric and the failure pattern it guards against, with drills for rebuild and separability, reviewed every quarter in place of program milestones.",
+    "disputed_by": "The standard architecture-program practice of drawing a ten-year target-state diagram, executing it as a program with milestones, fixing once what is central and what is local, and reporting progress by milestones delivered, listings and visits.",
+    "so_what": "A Chief Architect who accepts this owns the argument and the top layer of contracts and identifiers and leaves engines to platform teams and content to brands; keeps the stressor table in the architecture repository and re-runs it after every change of owner, portfolio or law; makes separability a review criterion like security, proved by a yearly tenant-exit tabletop; and shows the board the stressor table and the separability estimate once a year and the fitness scorecard every quarter.",
+    "how_why": "Between 2016 and 2026 Schibsted pitched one global product and tech organization, demerged Adevinta, which bought eBay Classifieds Group, set out to converge two of its largest platforms, was taken private and moved to a decentralized, standalone model; Prosus exited OLX Autos and Zillow closed Zillow Offers. None had the decade it planned. At Veldmark's November 2027 stressor workshop, 11 of 14 stressors touched the listing event contract and core, 8 identity, 8 the data platform and 2 the media service; a combined scenario of selling Hearthly Spain amid a generated-photo fraud ring found one missing residue, source-tenant provenance on the shared block list. With the separability residues, a 2030 Hearthly carve-out needs transitional services for seven capabilities for about nine to twelve months; without them, an estimated twenty months or more. The advice forum adopted a twelve-function fitness scorecard on 8 December 2027.",
+    "supporting_claims": [
+      {
+        "id": "L1",
+        "claim": "The book's argument defines what must stay true: a listing marketplace is a liquidity machine whose every part designs one stage with a guarantee, a protected liquidity metric and a failure pattern, and four ideas run through all the parts."
+      },
+      {
+        "id": "L2",
+        "claim": "Target states fail in marketplace groups because ownership, regulation and demand channels change within a decade, so a group should plan for properties, finding them with stressor analysis and checking them with fitness functions."
+      },
+      {
+        "id": "L3",
+        "claim": "Decisions change at three rates; design attention belongs disproportionately on the top layer of contracts and identifiers, with engines chosen for replaceability and content changed as data, and portable data and events keep the systems replaceable."
+      },
+      {
+        "id": "L4",
+        "claim": "A stressor analysis, run every year and after every capital event, finds the residues that survive many stressors, ranks components by the residues they carry, and turns a carve-out question into a labeled estimate, so separability is designed in and tested before it is needed."
+      },
+      {
+        "id": "L5",
+        "claim": "Because the swing between central and local control is driven by forces architecture does not control, the cost to reverse belongs in every sharing decision, with contracts shared first and product platforms last."
+      },
+      {
+        "id": "L6",
+        "claim": "A group steers by about a dozen marketplace fitness functions, each with an owner, a counter-metric and a failure pattern, with drills for rebuild and separability, reviewed every quarter in place of program milestones, and classifies its debt and measures its architecture function by the same instrument."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Restates the book's argument as the liquidity machine, turns it into a stressor analysis and a fitness scorecard for steering the platform over a decade, closes Part VIII and carries the journal's closing, handing off to Part IX as evidence.",
+    "supports": [
+      "P8-5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "argument, concepts, lasts, stressors: each supplies what the next applies (criteria, vocabulary, layers, then the workshop)"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "tradeoffs to questions: the book's fixed closing sections for every chapter"
+      }
+    ],
+    "rationale": "The scene poses the problem (a sound design facing an unknown future). The argument comes next because it defines what must stay true; the concepts then supply the vocabulary; the layering sorts Veldmark's decisions before the workshop tests them, because the residue count is read against the layers. Portability and the pendulum generalize the separability residues the workshop found. The scorecard comes before debt because debt items are classified by the fitness function they hurt; placed first, the debt register would name functions the reader has not met. The architecture function comes last of these because it owns the argument, the stressor table, the scorecard and the debt register. Placed before the argument, the stressor workshop would have no criteria; placed before the stressor analysis, the scorecard's separability drill would have no reason. The house closing sections follow, then the conclusion carries Part VIII's and the journal's closing."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "In the ten years from 2016 to 2026, Schibsted pitched 'one global product and tech organization', demerged its international marketplaces as Adevinta, Adevinta bought eBay Classifieds Group, set out to merge two of its largest product platforms, was taken private, then moved to 'a decentralised, standalone operating model' and sold businesses; Prosus exited OLX Autos; Zillow closed Zillow Offers. None of them had the decade they planned for."
+    },
+    "bridge": {
+      "from_reader_world": "Architecture books and programs that end with a target state: the clean diagram of what the platform will look like once the program is done.",
+      "to_topic": "Groups whose decades did not go to plan turn the question into what must stay true while everything else changes, and how the group will know."
+    },
+    "thesis_statement": {
+      "text": "Ask not what the platform should look like in ten years but what must stay true while everything else changes and how you will know: restate the argument, design against stressors rather than toward a target state, and steer by marketplace fitness functions rather than program milestones.",
+      "placement": "KEY POINTS callout (three bullets) and paragraph p02 (the bold question and the three moves)."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p02, which names the three moves and the sections between and after them; paragraph p03 names the Veldmark example.",
+      "promises": [
+        {
+          "promise": "The worked example of Veldmark.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Restate the book's argument: a liquidity machine.",
+          "kept_in": [
+            "argument"
+          ]
+        },
+        {
+          "promise": "Stressor analysis, adapted from residuality theory.",
+          "kept_in": [
+            "concepts",
+            "stressors"
+          ]
+        },
+        {
+          "promise": "Separate what must outlive every system from what should be replaced.",
+          "kept_in": [
+            "lasts"
+          ]
+        },
+        {
+          "promise": "Keep data portable and design for separability as well as sharing.",
+          "kept_in": [
+            "portable"
+          ]
+        },
+        {
+          "promise": "Manage the swing between central and local control.",
+          "kept_in": [
+            "pendulum"
+          ]
+        },
+        {
+          "promise": "Technical debt as a liquidity tax and the architecture function's own evolution.",
+          "kept_in": [
+            "debt",
+            "function"
+          ]
+        },
+        {
+          "promise": "Marketplace fitness functions.",
+          "kept_in": [
+            "concepts",
+            "scorecard"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "tradeoffs",
+            "vertical",
+            "failures",
+            "view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The documented record of marketplace groups from 2016 to 2026 argues against ending with a target state: every group had a credible architecture plan at the start of the decade and none had the decade it planned for.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Schibsted pitched 'one global product and tech organization' (widely reported), demerged Adevinta, which bought eBay Classifieds Group, set out to merge two of its largest product platforms, was taken private and moved to 'a decentralised, standalone operating model' and sold businesses; Prosus exited OLX Autos; Zillow closed Zillow Offers.",
+            "shows": "Shows that ownership, strategy and portfolio changed within one decade in each group, so no target state drawn at the start could have held.",
+            "source": "Adevinta Strategic Report 2025 (2026); News24 (2023); Zillow 8-K (2021)"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The Chief Architect's question is therefore not what the platform should look like in ten years but what must stay true while everything else changes and how the group will know, and the chapter answers it in three moves (the book's argument, stressor analysis, marketplace fitness functions) with what lasts, portability and separability, the central-local swing, technical debt and the architecture function's evolution between and after them, and trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask at the end.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The record of groups whose decades did not go to plan.",
+          "introduces": "The question that record forces on a Chief Architect, the three moves that answer it and the order of the remaining sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter closes Part VIII: it builds on the four earlier chapters of the part and on the platform chapters of Part VII, follows the fictional Veldmark with numbers taken from earlier chapters, and leaves Part IX's cases to test the argument against real groups.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's three moves.",
+          "introduces": "Where the chapter sits in the book: what it builds on, whose example it uses and what follows it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Investor's Question",
+      "controlling_idea": "Two questions put to Veldmark in November 2027, what separating Hearthly would cost and what stops Common Ground from becoming another Yardstick, both ask how Common Ground holds up in a world it was not designed for.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "L2"
+        ],
+        "how": "Gives the chapter's problem a concrete case: a sound 2027 design facing an unknown future."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The questions arrive in order (investor, then CEO), Ingrid diagnoses them, then acts; reversing would show the workshop before the reader knows what it is for."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Chief Architect's question: what must stay true while everything else changes.",
+        "introduces": "Veldmark's investor and CEO asking that question about Common Ground.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Ten months after approving Common Ground, Veldmark's private-equity owner asks what it would cost to separate Hearthly, or Hearthly Spain alone, from the platforms being built if it decides to sell in 2030.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Board review on Tuesday 9 November 2027; the operating partner's two-line follow-up for the board meeting on Tuesday 14 December 2027; Common Ground costs €140 million and is meant to save €38 million a year from 2030.",
+              "shows": "Shows the question arriving from the owner, with the programme's own numbers, as a capital-event stressor."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Henrik adds his own question: after a year of 2027 decisions, what stops Common Ground from turning into another Yardstick by 2037?",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 2027 decisions from the capability map in March to the ML and trust-and-safety platforms in November.",
+              "shows": "Shows how many long-lived decisions were taken in one year, which is why their reasons may be forgotten."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The investor's question passed to Ingrid.",
+            "introduces": "A second question from the CEO about the same decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Both questions ask how Common Ground holds up in a world it was not designed for: it was designed against the 2027 problems and has not been tested against those of 2030 or 2035.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four of everything, a six-minute publication time, duplicates, payment-link phishing, a monolith that deploys twice a week.",
+              "shows": "Shows the problem list Common Ground was designed against, which says nothing about a change in the group's shape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The two questions.",
+            "introduces": "What they have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "list",
+          "controlling_idea": "In the four weeks before the board meeting Ingrid writes down the argument behind Common Ground, runs a two-day stressor workshop and has the architecture advice forum adopt a twelve-function fitness scorecard.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The stressor workshop in Rotterdam on Thursday 18 and Friday 19 November 2027 with the brand CTOs, platform leads, Aisha Rahman, Lucía Ortega, Priya Raman, Olivier Petit and a partner from the investor's portfolio team, working through fourteen stressors; the scorecard adopted on Wednesday 8 December 2027.",
+              "shows": "Shows the three outputs the chapter is built from and when each was produced."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The diagnosis that Common Ground was never tested against a changed world.",
+            "introduces": "What Ingrid does about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The stressor table answers the investor, the scorecard answers Henrik, and both rest on the argument.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Ingrid's three outputs.",
+            "introduces": "Which output answers which question, and that the argument comes first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "argument",
+      "heading": "The Argument: A Liquidity Machine",
+      "controlling_idea": "A listing marketplace is a liquidity machine: each part of the book designs one stage, with the guarantee it must give, the liquidity metric it protects and the failure pattern when it does not, and four ideas run through all the parts.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "L1"
+        ],
+        "how": "States the book's argument part by part, which defines what must stay true over the decade."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The claim first, then the part-by-part table, then the four ideas the table shares, then their use as criteria; the criteria make sense only after the table."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Both answers rest on the argument.",
+        "introduces": "The argument itself.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A listing marketplace sells matches, and listings, search, trust and monetization are stages of one pipeline whose throughput is liquidity, which is local, measured per cell and the only thing that compounds into network effects.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A seller wants a buyer, a dealer wants leads, an agency wants mandates, a buyer wants the right item, car or home before somebody else.",
+              "shows": "Shows that every side of the marketplace wants a match, not a listing or a search."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Read that way, every part of the book describes one stage of the machine, the guarantee that stage must give and the way it fails.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the liquidity machine, from supply to matches and money, with outcomes and paid effects flowing back.",
+              "shows": "Shows the stages as one pipeline the platform carries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The machine whose throughput is liquidity.",
+            "introduces": "Each part of the book as one of its stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The table states the argument part by part: for each of the eight parts, the stage, the guarantee, the liquidity metric it protects and the failure pattern when it does not.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Parts I to VIII with stage, guarantee (with the chapters that design it), protected metric and failure patterns.",
+              "shows": "Shows that every chapter of the book designs one guarantee of one stage, so the chapters read as one argument."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Each part as a stage.",
+            "introduces": "The part-by-part mapping.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "Four ideas run through all eight parts and outlast any particular system: the listing is an offer with one owner, content is data while engines are shared, every consequential decision leaves evidence, and the marketplace measures matches rather than activity.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Ghost Inventory and Search as System of Record as unregistered copies; share platforms, not products as the second idea applied to a group.",
+              "shows": "Shows each idea tied to failures and decisions the reader has met."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The part-by-part table.",
+            "introduces": "What the parts have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "These four ideas are the criteria for the rest of the chapter: a decision that serves them should survive the decade, and one that served only the 2027 problem list should be easy to replace.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four ideas.",
+            "introduces": "Their use as criteria for sorting decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Stressors, Residues and Fitness Functions",
+      "controlling_idea": "Target states fail in marketplace groups, so the chapter plans for properties instead, using stressor analysis, adapted from residuality theory, to find what survives, and marketplace fitness functions to check it still holds.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "L2"
+        ],
+        "how": "Defines the two tools the chapter uses in place of a target state."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Why target states fail comes first so the vocabulary arrives as the answer; stressors before fitness functions because the first finds what must hold and the second checks it; the stance last because it summarizes both."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The argument as the criteria for what must stay true.",
+        "introduces": "The vocabulary for the second and third moves: why target states fail, stressor analysis for planning against stressors, and fitness functions for measuring.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "A target-state architecture is useful for communication but dangerous as a plan in a marketplace group, because ownership changes, regulation arrives on fixed dates with uncertain scope, and demand channels move.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shared platforms valued in a 2021 synergy case became separation costs in 2025 at Adevinta; the DSA, DAC7, P2B, the AI Act and the GPSR changed what marketplaces must store, show and report between 2019 and 2026; organic search brought 46% of Tradeyard's web sessions in 2026 while marketplaces began publishing search inside AI assistants.",
+              "shows": "Shows each of the three reasons with a dated case, regulation or Veldmark figure."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The alternative is not to stop planning but to plan for properties that must hold in many possible futures and to treat any specific system as replaceable.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Why target states fail.",
+            "introduces": "What to plan for instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "list",
+          "controlling_idea": "Residuality theory, developed by Barry M. O'Reilly from 2020, gives the vocabulary for that plan: stressor, attractor, residue, and naive versus residual architecture.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "O'Reilly's articles from 2020 and his 2024 book Residues: Time, Change, and Uncertainty in Software Architecture.",
+              "shows": "Shows where the terms come from and that the chapter uses them in simplified form."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Planning for properties.",
+            "introduces": "The vocabulary for doing it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The two Productscape domain models the book started from ran exactly this exercise, and their residual architectures summarize Parts II to VI reached from the other direction.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The general-listings model's residual architecture 'separates actor, identity evidence, account, role, listing, ...'; the real-estate model's property identity persists 'while risk, value, financing, listing authority, and transaction readiness change independently'.",
+              "shows": "Shows that stressing a naive design produces the same separations the book argued for stage by stage."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The residuality vocabulary.",
+            "introduces": "Two worked applications of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Two properties make the method useful at group scale: residues recur across unrelated stressors, and combined stressors test the decomposition.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: many stressors, the same few residues (event contract, identifiers, tenant-separable data, entitlement ledger).",
+              "shows": "Shows residues recurring across unrelated stressors."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The domain models' combined tests.",
+            "introduces": "The two properties that make the method work for a group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Stressor analysis, as this book defines it, lists stressors for a group, records for each the attractor, what breaks and the surviving residue, and counts which components carry the most residues, which then deserve the most care.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The vocabulary and its two properties.",
+            "introduces": "The practice the chapter calls stressor analysis.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The fitness function, the concept behind the third move, comes from evolutionary architecture: an objective, preferably automated check that an architecture still has a property it was designed to have.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Ford, Parsons, Kua and Sadalage, Building Evolutionary Architectures (2017; 2nd ed. 2022); Auto Trader's 2026 post on ArchUnit tests in the build.",
+              "shows": "Shows the concept's origin and a code-level marketplace example."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Stressor analysis, the first concept.",
+            "introduces": "The concept behind the third move.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "A marketplace fitness function measures a stage of the liquidity machine and differs from a business KPI by having an architectural owner and remedy, and from an SLO by measuring the whole machine.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'A sold listing disappears from every registered consumer within two minutes at p95'; 'no more than four paid listings in the first twenty results'.",
+              "shows": "Shows what such a statement looks like."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Fitness functions in general.",
+            "introduces": "The marketplace form the chapter uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The chapter's stance is that systems are built to be replaced while contracts, identifiers and measures are built to last, because when a system's internals become everyone's interface it cannot be replaced.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick: 214 columns in the ads table read by 38 modules, a digest reading a MySQL replica, ranking boosts in Solr configuration.",
+              "shows": "Shows a system whose internals became the group's contract, which is why it is the problem of 2027."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Stressor analysis and fitness functions.",
+            "introduces": "The stance both serve, named in the chapter's title.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lasts",
+      "heading": "What Lasts and What Gets Replaced",
+      "controlling_idea": "The 2027 decisions sort into three rates of change, and design attention belongs disproportionately on the top layer of contracts and identifiers, with engines chosen for replaceability.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "L3"
+        ],
+        "how": "Applies 'built to be replaced' to Veldmark's decisions and says where design attention goes."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole sorting first, then the top layer, then the middle layer, then the test that applies both."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The stance: systems are replaced, contracts and identifiers last.",
+        "introduces": "Veldmark's 2027 decisions sorted by how long they should last.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "Before the workshop, Ingrid's paper sorts the 2027 decisions into three layers by how long they are meant to last (contracts and identifiers, engines and implementations, and content and policy), a starting hypothesis the stressor analysis then tests.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three layers with Veldmark decisions, expected life (ten years or more; three to eight years; weeks to two years), how each changes and owner.",
+              "shows": "Shows which decisions are load-bearing and which are bets to revisit on schedule."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: three rates of change.",
+              "shows": "Shows the layers stacked, top layer changing only by versioned contract."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The top layer deserves a disproportionate share of design attention, because a wrong field in the listing event envelope costs more over a decade than a wrong search engine.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The envelope copied into 23 consumer groups at go-live; the engine replaceable behind the search contract in a year.",
+              "shows": "Shows why the top layer is costlier to get wrong."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three layers.",
+            "introduces": "Where design attention should go first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The middle layer should be chosen for replaceability as much as for fit, and its revisits are scheduled rather than left open.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "September 2027: every product application on Listing Search API v1 before any engine change; the deferred Vespa evaluation and the 2029 reviews of Motorvane's Elasticsearch and Hearthly's cloud.",
+              "shows": "Shows a decision that turned the engine into a replaceable middle-layer choice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The top layer.",
+            "introduces": "The middle layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Every forum proposal should be tested by which layer it belongs in and whether it lets the layer below change without touching the layer above.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A brand's ranking rule in the event envelope fails; so does a consumer reading the engine's internal document format.",
+              "shows": "Shows two proposals the test rejects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The layers and their rules.",
+            "introduces": "A single test for new proposals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stressors",
+      "heading": "Stressor Analysis for a Marketplace Group",
+      "controlling_idea": "Veldmark's stressor workshop shows the method: stressors from seven families, a table of attractors, breaks and residues, a residue count per component, a combined stressor that finds a missing residue, and a labeled carve-out estimate.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Runs the stressor analysis on Veldmark and answers the investor's question with it."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "single stressors, then the count across components, then a combined scenario"
+          }
+        ],
+        "rationale": "Follows the workshop as it ran: method, families, table, count, combined scenario, then the answer to the investor; the estimate depends on the residues the earlier steps found."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The layering of Veldmark's decisions.",
+        "introduces": "The workshop that tests them against stressors.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "The workshop's value comes from the breadth of the stressors and the honesty of the 'what breaks' column, not from its loop, which is simple.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: stressor analysis as Veldmark runs it, with combined stressors as the check.",
+              "shows": "Shows the loop."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The stressors are drawn deliberately from seven families, because architects left alone list mostly technical risks.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Capital and portfolio, regulation, demand channel, supply ecosystem, adversarial, technology and suppliers, physical world and markets, each with marketplace examples.",
+              "shows": "Shows the breadth that keeps the list from being only technical."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Breadth as the source of value.",
+            "introduces": "The seven families that give it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Veldmark's table shows ten of the fourteen stressors, each with the attractor, what breaks in the 2027 design, the residue that survives and its status.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "S1 to S10, from the sale of Hearthly to a competition complaint against Keybridge, with status integrated, already survived, partly integrated or open.",
+              "shows": "Shows the method applied row by row to a group."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The seven families.",
+            "introduces": "Veldmark's stressors drawn from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The four stressors not shown were a transactional pivot at Tradeyard, a model withdrawal, Polish data localization and a professional boycott at Motorvane, three survived and one open.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Survived by the profile register and transaction context, the AI gateway, price-as-data and the lead ledger; localization open, low likelihood.",
+              "shows": "Shows the rest of the fourteen and how each was covered."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The ten rows shown.",
+            "introduces": "The four not shown.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Three readings of the table matter more than any row: most residues already existed, the open residues cluster, and S1 is the stressor the 2027 design made worse, which argues for paying the small early price of separability.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Eight of ten stressors fully or partly covered by 2027 decisions; open residues in tenant-scoped exports, media provenance and dated facts on the canonical property.",
+              "shows": "Shows the decomposition is sound and where new investment is needed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "All fourteen stressors.",
+            "introduces": "What the table as a whole shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The second exercise counts, per Common Ground component, how many of the fourteen stressors touch it, which ranks components by how much of the group's future they carry.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Listing event contract and core 11, identity 8, data platform 8, T&S platform 7, Tally 5, search 5, taxonomy and Place 4, AI gateway 3, media 2.",
+              "shows": "Shows which components carry the most residues."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stressor table.",
+            "introduces": "The second exercise, counting residues per component.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The ranking matches the layering of Figure 3 and tells the board where Common Ground's quality budget belongs: the event contract, identity, the data platform and the T&S platform's tenancy model.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The residue count.",
+            "introduces": "What it means for where to invest.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "On the second afternoon the workshop combines three stressors in July 2030: the sale of Hearthly Spain, a generated-photo rental fraud ring and an AI assistant partner sending a fifth of its search traffic.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "July 2030 combined scenario.",
+              "shows": "Shows the combined test that checks the decomposition."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The first day's single stressors and the count.",
+            "introduces": "The second afternoon's combined scenario.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Walked through the existing residues, the sale, the fraud and the channel are each covered by pairwise identities, tenant-partitioned data, actor-graph scoring and per-brand channel contracts.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The sale: pairwise identifiers, tenant-partitioned Iceberg tables, vm:hearthly:es identifiers; the fraud: actor graph and bank liaison feed; the channel: per-channel attribution under the 2028 contract.",
+              "shows": "Shows the platform surviving by composing residues it already has."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The combined scenario.",
+            "introduces": "How each of its three parts is met.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "One residue is missing: the shared block list records no source tenant for its entries and the T&S platform has no tested per-tenant export, and both went onto the 2028 backlog.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three parts that are covered.",
+            "introduces": "The one gap the combination exposes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "That is what the combined test is for: it found a cheap residue, one field and one export, in 2027 instead of an expensive one during a carve-out.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The missing residue.",
+            "introduces": "Why finding it now matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Ingrid answers the investor with a labeled estimate: with the separability residues a 2030 carve-out of Hearthly needs transitional services for seven shared capabilities for about nine to twelve months, without them twenty months or more, at a small incremental cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Seven capabilities named; nine to twelve months versus twenty or more; incremental cost small against €140 million because most residues are design rules.",
+              "shows": "Shows the stressor analysis turning the investor's question into a number."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The residues the workshop confirmed and added.",
+            "introduces": "The answer to the investor's question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The board accepts the paper and adds a yearly separability tabletop for Hearthly Spain from the third quarter of 2028.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Ingrid's estimate.",
+            "introduces": "The board's response.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "portable",
+      "heading": "Keeping Listing Data and Events Portable",
+      "controlling_idea": "Portability, the practical form of 'built to be replaced', comes from eight rules from earlier chapters, accepts lock-in deliberately with an exit estimate, and at its strongest is separability, whose cost Adevinta's 2025 decentralization documents.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "L3",
+          "L4"
+        ],
+        "how": "Turns the surviving residues into rules for portable data and events, and shows the cost of separation from the public record."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The rules, then the qualification about managed services, then the strongest form, then the documented cost; the evidence closes the section because it argues for the rules."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The separability residues and the board's tabletop.",
+        "introduces": "The general rules that keep data and events portable.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Portability means the group's listings, accounts, events and evidence can move to a new system, owner or cloud without being reverse-engineered, and eight rules from earlier chapters provide it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight rules (own the identifiers, one replayable event contract, one system of record per fact, open formats by tenant and time, pairwise identifiers, entitlement ledger, contracts in front of engines, configuration over code) with where each is designed and the stressors it answers.",
+              "shows": "Shows each rule tied to its chapter and to stressors."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Portability does not mean avoiding managed cloud services but accepting lock-in deliberately, with an exit estimate and a contract that makes the exit possible.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kafka on Confluent Cloud, Amazon OpenSearch Service, Snowflake compute; a managed service called directly from forty product services as 'a decision nobody made'.",
+              "shows": "Shows the difference between deliberate and accidental lock-in."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The rules.",
+            "introduces": "What portability does not require.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Separability is the strongest form of portability; Veldmark wrote it into Tenancy model v1 in June 2027, and the stressor workshop tests the exit paths rather than trusting the documents.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tenancy model v1 adopted Wednesday 9 June 2027: tenant code mandatory in every identifier, event, API call, log, metric and cost tag; documented exit path for every shared capability.",
+              "shows": "Shows separability decided early and then tested."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Portability in general.",
+            "introduces": "Its strongest form.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Adevinta's 2025 strategic report documents what separation costs: parallel running of central and local services, paid in money, carbon and engineering attention.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'evolved from a centralised structure to a decentralised, standalone operating model'; 'a temporary spike linked to our ongoing decentralisation, which required parallel running of central and local services during a transitional period'.",
+              "shows": "Shows the cost of separation in a real group's own words.",
+              "source": "Adevinta, Strategic Report 2025 (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Separability as a designed property.",
+            "introduces": "A documented case of separating without it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pendulum",
+      "heading": "Managing the Centralization Pendulum",
+      "controlling_idea": "The swing between central and local control is driven mostly by forces architecture does not control, so architecture's job is to make each swing cheaper by writing the cost to reverse into every sharing decision.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "L5"
+        ],
+        "how": "Adds the long-term stance on the pendulum without re-teaching multi-country-platforms."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The pendulum and its drivers, then the question that changes the decision, then the rule, then the practices that apply it."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The cost of separation.",
+        "introduces": "The swing between central and local control that causes such separations.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "Groups swing between local autonomy and central platforms, driven mostly by capital strategy, market maturity and leadership, so architecture's job is to make each swing cheaper.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Schibsted's 2016 'one global product and tech organization'; Adevinta's 2019 rule to centralize where 'investment requirements are large and the technology is uniform'; its 2023 convergence into 'a unified global platform'; its 2025 decentralization.",
+              "shows": "Shows the swing in one lineage of groups over a decade.",
+              "source": "Adevinta Annual Reports 2019 and 2023; Strategic Report 2025"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the centralization pendulum.",
+              "shows": "Shows the forces and the contract bar that softens each swing."
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "At the forum the question becomes what reversing a sharing decision in four years would cost, and the answer depends on what is shared.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Contracts and vocabularies, engines as multi-tenant platforms, infrastructure and tooling, product platforms: value of sharing, cost to reverse and long-term stance for each.",
+              "shows": "Shows that reversibility falls from contracts to product platforms."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The pendulum's drivers.",
+            "introduces": "The question that keeps a swing cheap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Share platforms, not products sits in the first three rows, Adevinta's 2023 convergence sat in the fourth, and the cost to reverse should be written into every sharing decision, most reversible forms first.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Adevinta's 2023 convergence decision, which the public record does not show completed before the 2025 reversal.",
+              "shows": "Shows the riskiest row in a documented case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four kinds of sharing.",
+            "introduces": "Where Veldmark and Adevinta sit among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "form": "list",
+          "controlling_idea": "Three practices keep the pendulum cheap at Veldmark: a tenant-exit test for every shared platform, brands keeping the capability to build product, and adoption measured rather than mandated below the contract layer.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The annual separability tabletop; stream-aligned teams in the brands; Keybridge's distribution stack as a deliberate duplicate and Motorvane's Elasticsearch as a dated one.",
+              "shows": "Shows each practice in use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The rule to cost reversal.",
+            "introduces": "The practices that apply it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scorecard",
+      "heading": "Marketplace Fitness Functions: The Scorecard",
+      "controlling_idea": "Veldmark's twelve-function scorecard, with baselines, targets, kinds, owners and failure patterns, works because of five design choices: few functions with owners, targets where the remedy lives, counter-metrics beside metrics, drills that count, and versioned definitions.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "L6"
+        ],
+        "how": "Gives the steering instrument and the design choices that make it hold up."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole scorecard, then the five choices in turn; the loop closes the section because it shows the scorecard in use."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Cost to reverse and the tenant-exit test, which protect the group when it changes shape.",
+        "introduces": "The third move: the scorecard that measures whether the machine still works in the meantime.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "The scorecard adopted on 8 December 2027 has twelve functions in four groups, each with a definition, a 2027 baseline, a target, a kind, an owner and the failure pattern it guards against.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "F1 publication freshness to F12 separability and registration, in supply, matching, trust, and economics and evolvability groups, with Veldmark baselines from earlier chapters.",
+              "shows": "Shows a complete marketplace scorecard with numbers."
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Five design choices in the scorecard are the parts other groups tend to get wrong.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The scorecard.",
+            "introduces": "The design choices behind it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Keep the functions few, each with one owner who can act on it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Twelve as about as many as a quarterly review can discuss; F6 owned by the Group CPO because its remedies are often commercial.",
+              "shows": "Shows the limit and an owner chosen by remedy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Five choices announced.",
+            "introduces": "The first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Set targets where the remedy lives: the center sets definitions and cell keys, the brands set targets for market outcomes.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "F5 and F6 have no central target; time to first contact in a rural Portuguese district depends on supply and marketing more than latency.",
+              "shows": "Shows why a central target would be gamed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Owners.",
+            "introduces": "Targets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Put counter-metrics next to the metrics so nobody improves one by weakening another.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "F1 beside F2 and F8; F7 beside VAS revenue per search.",
+              "shows": "Shows paired metrics that expose a trade-off."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Targets.",
+            "introduces": "Counter-metrics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Count drills as fitness functions: rebuildability and separability can only be shown, and a drill not run in two quarters is a failure.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Monitored metrics.",
+            "introduces": "Properties that can only be drilled.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Keep the scorecard versioned in the architecture repository and computed from the governed metrics catalog, so that the steering loop, not a target diagram, is the long-term plan.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: the steering loop, from fitness functions through the quarterly review and stressor updates to decision records.",
+              "shows": "Shows the loop that replaces the target diagram."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Drills.",
+            "introduces": "Versioning and the loop the scorecard feeds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "debt",
+      "heading": "Technical Debt as a Liquidity Tax",
+      "controlling_idea": "Over a decade, the technical debt that matters is the debt that slows a stage of the liquidity machine or hides its true state, so each debt item names the fitness function it hurts and competes for funding through the same liquidity case as features.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "L6"
+        ],
+        "how": "Connects debt to the fitness functions, making the debt register an investment ranking."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The classification, then the rules for using it, then its limit."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The steering loop, in which a failing fitness function becomes a debt item.",
+        "introduces": "Technical debt, the main way architecture loses coherence over a decade, classified by the fitness function it hurts.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "Over a decade the debt that matters in a marketplace slows a stage of the liquidity machine or hides its true state, so classifying debt by the fitness function it hurts turns the register into an investment ranking.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Structural, copy, policy, definition, schema and model debt, each with a Veldmark 2027 example, what it taxes and the fitness function that exposes it.",
+              "shows": "Shows each kind of debt as a tax on a stage."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 7: debt as toll booths on the liquidity conveyor.",
+              "shows": "Shows debt slowing and hiding the machine's flow."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Two rules make the register useful: every item names the fitness function it hurts with an estimate in the business's currency, and debt competes with features through the same liquidity case.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The phishing rule three days late to Tradeyard BE and never to PL/PT; Ranking policy v1 framed as debt repayment and justified by search sessions with a contact up 5.3%, at a cost of 2.5% of VAS revenue per search.",
+              "shows": "Shows an item stated as an effect and a debt repayment funded as a liquidity improvement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Debt classified by fitness function.",
+            "introduces": "The two rules that make the classification useful.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Debt never reaches zero and should not, but fitness functions keep deliberate debt from becoming invisible debt.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Rules for funding repayment.",
+            "introduces": "The limit of repayment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "function",
+      "heading": "The Architecture Function's Own Evolution",
+      "controlling_idea": "The architecture function must itself change from founding to building to stewardship, becoming smaller in decisions and larger in evidence, and should measure its own fitness.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "L6"
+        ],
+        "how": "Applies the chapter's steering to the architecture function, the owner of the scorecard."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Three phases in time order, then the measures that tell which phase the function is in."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The scorecard, the stressor table and the debt register.",
+        "introduces": "The architecture function that owns them, which must change too.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "controlling_idea": "An architecture function right for a group's founding year is usually wrong for its fifth, and Veldmark's 2027 founding phase produced mostly the top layer.",
+          "function": "claim",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Capability map, context map, profile register, twelve principles, the weekly advice forum; 74 cross-brand decision records by 31 December 2027 with a median of nine working days.",
+              "shows": "Shows what the founding phase produced."
+            }
+          ]
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "In the building phase, 2028 to 2030, the work shifts to platform teams, the function holds the contracts steady, and the danger is the Forced Fit.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The founding phase.",
+            "introduces": "The building phase.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "After 2030, in the stewardship phase, the function becomes smaller in decisions and larger in evidence, leaving most design decisions to teams through the advice process.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The building phase.",
+            "introduces": "The stewardship phase.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "The architecture function measures itself with five fitness functions of its own, from decision lead time to the survivability of the record.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Decision lead time; share of decisions taken by teams; exceptions and deliberate duplicates; revisits on schedule; survivability of the record, which answers Henrik's question.",
+              "shows": "Shows the function's own scorecard and closes Henrik's question."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three phases with different jobs.",
+            "introduces": "How the function knows it is in the right one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The main tension is between synergy and separability, and the defensible position is to take synergy where it is large and the technology uniform and to buy separability cheaply at design time for all of it.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "L5"
+        ],
+        "how": "Weighs the chapter's choices against their alternatives."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The chapter's recommendations.",
+        "introduces": "The conditions under which their alternatives are right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p62",
+          "controlling_idea": "Every shared platform saves money while the group holds together and costs money when it comes apart, so take synergy where large and uniform and buy separability cheaply at design time.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five choices (how to plan, how much to share, separability, fitness functions, who sets targets) with when each option is right.",
+              "shows": "Shows the conditions for each alternative before naming the main tension."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vertical",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Long-term stressors and the fitness functions that matter most differ by vertical, so a single group scorecard needs vertical parameters.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L6"
+        ],
+        "how": "Shows how the scorecard and the stressor list must vary by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Trade-offs at group level.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p63",
+          "controlling_idea": "The dominant stressors, the most important fitness functions, the entity that must outlive listings, what separability protects and the time windows differ across general classifieds, automotive, real estate and professional SaaS and jobs.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tradeyard, Motorvane, Hearthly, Keybridge and jobs across five dimensions.",
+              "shows": "Shows the differences side by side."
+            }
+          ]
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "That is why a single group scorecard needs vertical parameters.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A 90-second publication target is worth much in Tradeyard NL's dense goods cells and less in Hearthly's property cells; 1.7 listings per property means nothing for city bikes.",
+              "shows": "Shows the same function worth different amounts by vertical."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The vertical table.",
+            "introduces": "What it means for the scorecard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failures",
+      "heading": "Failure Modes",
+      "controlling_idea": "Five failure modes undo long-term evolution: the frozen target state, synergy without separability, contracts that drift into internals, scorecard decay and the permanent founding phase, each with a remedy from the chapter.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L4",
+          "L6"
+        ],
+        "how": "Names how the chapter's methods fail and the remedy for each."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One mode per paragraph, from how the group plans, to what it shares, to the contract it keeps, to how it measures, to who decides; each mode undoes one of the chapter's tools and its remedy points back to it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How the methods should work across verticals.",
+        "introduces": "How they fail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "controlling_idea": "The frozen target state: a first-year plan becomes the definition of success and is defended rather than revised; remedy, plan in stressors and fitness functions.",
+          "function": "description"
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Synergy without separability: shared platforms mix tenants because the business case counted only savings, and the first carve-out takes two years; remedy, tenant-exit tests before they are needed.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The first failure mode.",
+            "introduces": "The second.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Contracts that drift into internals: the event contract acquires brand-specific fields until it is as hard to change as Yardstick's tables; remedy, review every contract change against the layering rule.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The second failure mode.",
+            "introduces": "The third.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Scorecard decay: functions lose owners or are redefined to look better; remedy, owners, versioned definitions, counter-metrics and drills that fail when not run.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The third failure mode.",
+            "introduces": "The fourth.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "The permanent founding phase: the function keeps deciding everything and becomes a bottleneck and a mandate; remedy, measure the function's own fitness and shift decisions to teams.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The fourth failure mode.",
+            "introduces": "The fifth.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Over a decade the Chief Architect owns the argument, the top layer, the stressor analysis and the scorecard, makes separability and the cost to reverse review criteria, and knows who decides and what to watch.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L1",
+          "L3",
+          "L4",
+          "L5",
+          "L6"
+        ],
+        "how": "Turns the chapter into the decisions the Chief Architect holds at group level."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The argument first because every other decision cites it; then the layer it protects, the analysis and criteria that keep it, the instrument that measures it, and finally who decides and what to watch."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "Methods, trade-offs and failure modes.",
+        "introduces": "The decisions the author would hold at group level.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p70",
+          "controlling_idea": "Over a decade the Chief Architect owns very few systems and a handful of things that outlast all of them.",
+          "function": "context"
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Own the argument: write down in one page what the platform is for and have every top-layer decision cite it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The handful of things that outlast systems.",
+            "introduces": "The first: the argument.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "Own the top layer, and only the top layer by default, leaving engines to platform teams and content to brands.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The argument.",
+            "introduces": "The top layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Run a stressor analysis every year and after every capital event, and spend quality where the residue count is high.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The top layer.",
+            "introduces": "The stressor analysis.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "Make separability a review criterion like security, answered in the decision record before a shared platform is built and proved by the yearly tabletop.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stressor analysis.",
+            "introduces": "Separability as a review criterion.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Write the cost to reverse into every sharing decision next to the synergy case.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Separability.",
+            "introduces": "Cost to reverse.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "Steer by the scorecard: a dozen fitness functions with owners, baselines, targets, counter-metrics and failure patterns, reviewed quarterly.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Cost to reverse.",
+            "introduces": "The scorecard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "Decision rights are split: the Group Chief Architect owns the argument, top layer, stressor analysis and scorecard definitions; the CTO investments and unit costs; the Group CPO market outcomes; platform owners their engines; the board sees the stressor table and the separability estimate yearly.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The decisions held at group level.",
+            "introduces": "Who holds each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p78",
+          "controlling_idea": "Watch the trend of the twelve functions, open residues, drills not run, the age of deliberate duplicates and the function's own lead time, and fix the scorecard first if it is green while users complain.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader apply the chapter to their own group.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L1",
+          "L3",
+          "L4",
+          "L6"
+        ],
+        "how": "Turns the chapter into a review the reader can run."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that test whether one's own group has made them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p79",
+          "form": "list",
+          "controlling_idea": "Ten questions, from stating the platform's purpose in matches to whether every debt item names its fitness function, let a reader check their own group against the chapter.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Argument to Evidence",
+    "synthesis": "Part VIII's five chapters answer the part introduction's four questions as one method (what to change first: the consolidation sequence and migration waves ordered by risk to liquidity; who owns it: one owning team per capability and the advice process; how you will know it worked: liquidity gates, relevance parity and the fitness scorecard; what must stay true: the top-layer contracts and identifiers that survive the stressors), and the book's parts map to the stages of one liquidity machine, each with its guarantee, protected metric and failure pattern, so the chapters read as one argument rather than a set of topics.",
+    "so_what": "A group can measure every quarter, with marketplace fitness functions, whether its machine still turns fresh, trustworthy supply into matches, instead of steering by program milestones, and change sequenced, owned and measured this way keeps the machine's throughput while owners, laws and channels change.",
+    "callback": {
+      "to": "The introduction's central claim, restated in the same words, its warning that the synthesis was left to this chapter, and its opening question: why a smaller competitor turns its listings into more contacts per listing while every team's report is green; and the Part VIII introduction's four questions.",
+      "how": "The reader now sees that the scorecard measures the machine at the hand-offs where the general manager's contacts were lost (publication freshness, removal propagation, ghost share, duplicate exposure, paid share, time to first contact), which no team's own report measured."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Steer the platform by a small set of marketplace fitness functions, each with an owner and a counter-metric, re-run the stressor analysis every year, and test the argument against the public cases in Part IX."
+    },
+    "hand_off": {
+      "to": "part-9",
+      "relationship": "contrast",
+      "carries_over": "Veldmark is fictional and shows how the argument plays out, not that it is right; whether it is right is a question for evidence, so read the cases as a set of stressors that actually arrived and as a check on which residues survived.",
+      "introduces": "The dated public record of six real groups and portals, read as stressors that actually arrived, with fact, interpretation and inference kept apart."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter and Part VIII.",
+      "introduces": "What the part and the book add up to, and where the argument goes next.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p80",
+        "controlling_idea": "Part VIII's five chapters answer the four questions its introduction ended on (what to change first, who owns it, how you will know it worked, what must stay true) as one method, and change sequenced, owned and measured that way keeps the machine's throughput while owners, laws and channels change, so it does not depend on the decade going to plan.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p81",
+        "controlling_idea": "This book has argued that a listing marketplace is a liquidity machine judged by how reliably it turns fresh, trustworthy supply into matches with demand, and this chapter's table, the synthesis the book's introduction left to it, maps every part to a stage, a guarantee, a protected metric and a failure pattern so the chapters read as one argument.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "Part VIII as one method.",
+          "introduces": "The whole book as one argument.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p82",
+        "controlling_idea": "That answers the general manager's question from the book's introduction: the scorecard measures the machine at the hand-offs where a smaller competitor wins more contacts per listing, which no team's green report measured, so a group that reviews it every quarter sees the loss before the competitor's chart shows it.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Publication freshness, removal propagation, ghost share, duplicate exposure, paid share of the first page and time to first contact set against the introduction's six-minute publication, sold bike in the alert e-mail, flat listed three times and half-paid first page.",
+            "shows": "Shows each loss in the opening scene matched by a fitness function."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The book's argument and its part-by-part synthesis.",
+          "introduces": "What it answers: the question the book opened with.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p83",
+        "controlling_idea": "Veldmark, however, is fictional and shows how the argument plays out, not that it is right; whether it is right is a question for evidence, which Part IX's cases supply as stressors that actually arrived and a check on which residues survived.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "case",
+            "what": "Adevinta, OLX, eBay Classifieds Group, AVIV, the property portals and the automotive marketplaces.",
+            "shows": "Shows where the evidence comes from."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The answer the book gives through Veldmark.",
+          "introduces": "The limit of a fictional example and the real record that tests it.",
+          "form": "sentence",
+          "placement": "both"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The tenancy model and the documented history of central versus local platforms.",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    },
+    {
+      "topic": "Consolidation sequence and synergy cases.",
+      "covered_in": [
+        "platform-consolidation"
+      ]
+    },
+    {
+      "topic": "Team topology and the advice process.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    },
+    {
+      "topic": "Migration techniques (strangler, parallel run, relevance parity).",
+      "covered_in": [
+        "modernization-and-migration"
+      ]
+    },
+    {
+      "topic": "AI governance.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
+    },
+    {
+      "topic": "Journey SLOs and unit-cost definitions (reused here as fitness functions).",
+      "covered_in": [
+        "reliability-and-scale"
+      ]
+    },
+    {
+      "topic": "Company case detail.",
+      "covered_in": [
+        "case-adevinta",
+        "part-9"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Placed the synthesis of the book's argument near the start rather than at the end, so the stressor analysis and the scorecard can be judged against it; the end keeps a short restatement and the bridge to Part IX. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made the investor's carve-out question the scene, because capital events are the dominant documented stressor for marketplace groups and the one Common Ground's 2027 design made worse. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Built the scorecard only from baselines already in the ledger and earlier chapters; added the stressor workshop, the scorecard adoption, the separability estimate and the tabletop to the ledger. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated the centralization pendulum through 'cost to reverse' to avoid re-teaching multi-country-platforms. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the argument table and figure, the residuality vocabulary with dated sources, the three rates of change, the stressor workshop, portability with Adevinta 2025 evidence, cost to reverse, the twelve-function scorecard and the Part IX bridge were inventories; they are now covered by the journal's AC-1 to AC-4 and the added AC-5 to AC-7 (all minor), and the dated-source and ledger-match criteria are left to the sources list and the ledger.",
+      "rejected": [
+        "Keeping the inventory criteria as written."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Extended the conclusion from two to four paragraphs so it carries Part VIII's closing (the four questions), the journal's closing (synthesis, callback to the central claim and to the general manager's question) and the contrast hand-off to Part IX; added one roadmap sentence to p02 so the introduction announces every section.",
+      "rejected": [
+        "Moving the Part VIII closing into the Chief Architect's View section (it would sit outside the conclusion the rubric checks)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit set to 10,227 (the published 9,740 words by check_draft's count plus 5%), since spec.md set none."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over citation notes (O'Reilly's Procedia papers not cited; the 2022 year of Building Evolutionary Architectures 2nd edition; Schibsted's 2016 quote labeled 'widely reported'; residue counts and the carve-out estimate as Veldmark illustrations) closed: the published wording and citations are kept as they are (resolve rules 4 and 8), accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes closed by keeping the published text (rule 8): the full central-claim sentence stays in the introduction and conclusion only; the three-move framing stays, with the pendulum named in the roadmap; the Productscape paragraph p17 stays; no gloss of 'separability' in the stressor section (owned by multi-country-platforms); the sharing table is not named in p45; the steering-loop clause in p57 is kept; accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 blocking failures fixed in the draft, accepted under the author's delegation, 2026-11-12: (1) the portability opener now carries over the separability residues and the tabletop as one case of portability; (2) p22 opens 'Both concepts serve the stance...' and says stressor analysis finds what must last and fitness functions check it still holds; (3) the roadmap sentence in p02 now names the sections in plain order instead of before/after phrasing; (4) a one-line reminder of what a marketplace fitness function is added at the start of the scorecard (p51) rather than moving p20-p21, which would break the concepts section's prerequisite order; (5) the debt table's last column uses the scorecard's own names (F10 'Change lead time for content', F12 'Separability and registration', 'Ghost share'), and the measures outside the scorecard are kept and labeled 'supporting measure' (no published measure cut); (6) the Failure Modes lead-in is folded into the first mode, which now opens with its bold name like the other four.",
+      "rejected": [
+        "Moving p20-p21 into the scorecard section.",
+        "Cutting the non-scorecard measures from the debt table (published text)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Pendulum bullet wording 'Below it' (corrected from 'Above it' in round 2 to agree with 'below the contract layer') accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Ledger correction (rule 3): stressor table row S5 now reads 'Open', because the table is the November 2027 workshop's and the ledger dates the external assistant channel decision record to February 2028 (ai-in-listing-systems); the published fact that the February 2028 decision record closed S5 is kept, moved into p31's open-residues reading. p31's open-residues cluster now also lists S7's open dealer migration playbook, matching the table.",
+      "rejected": [
+        "Dropping the February 2028 reference (published fact)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Henrik's question stays answered twice (the scorecard in the scene, p08; the survivability of the record among the function's own measures, p61), since both are published and both are in the spec; the second answers it for the record, the first for the platform. Kept under rule 8, accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor notes closed without change (rule 8): 'The second concept' beside 'The second move' (p14, p20) keeps the published wording; the 'of 14' counts are explained by p30, which names the four stressors not shown; modalities stay empty (no modality files). accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "length.max_words raised from 10,227 to 10,400 (+1.7%, within the 10% allowed) for the round-3 fixes, which bring the draft to 10,305 words (resolve rule 2)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-4 escalation, exception authorized by the coordinator: p57's prose now states that the steering loop, not a target diagram, is the long-term plan (AC-3 blocker); the S5 closure moved out of p31's November 2027 open list into a following sentence saying it was settled later, in February 2028; the concepts section opener now says it gives the vocabulary for the second and third moves, and p20 calls the fitness function the concept behind the third move; p23 frames the layering as Ingrid's starting hypothesis that the stressor analysis tests. No published fact cut."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, AC-1 to AC-4, thesis, role, the Part VIII closing and the journal closing this page carries, Part IX's transition_in."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/productscape-digest.md §8",
+      "contributed": "Residuality stressors, naive and residual architectures."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md including all Additions by chapter",
+      "contributed": "Every Veldmark figure, date and name."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-adevinta.md Parts 1 and 5; brief-olx.md; brief-real-estate-portals.md (Zillow Offers); brief-automotive.md (Auto Trader ArchUnit)",
+      "contributed": "The documented record of marketplace groups."
+    },
+    {
+      "kind": "internal",
+      "ref": "KEY POINTS and Chief Architect's view sections of every chapter in Parts I-VIII; posts/introduction/index.md; posts/part-8-intro/index.md",
+      "contributed": "The part-by-part synthesis, the introduction's central claim and opening question, Part VIII's four questions."
+    },
+    {
+      "kind": "external",
+      "ref": "O'Reilly, Residues (Leanpub, 2024); O'Reilly, Cutter Consortium (2020)",
+      "contributed": "Residuality theory."
+    },
+    {
+      "kind": "external",
+      "ref": "Ford, Parsons, Kua, Sadalage, Building Evolutionary Architectures (2017; 2nd ed. 2022)",
+      "contributed": "Fitness functions."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Report 2019, Annual Report 2023, Strategic Report 2025, 2021 and 2024 press releases; Zillow 8-K (2021); News24 on OLX Autos (2023); Auto Trader UK Engineering (2026); European Parliament Legislative Observatory on the GPSR (2023)",
+      "contributed": "Dated company and regulatory evidence."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round-4 fixes before round 5: p57 loop sentence, S5 closure placement, move numbering in concepts and p20, p23 hypothesis framing; spec p20, p23 and the concepts transition updated."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "ESCALATE items resolved under the author's delegation: six round-3 blocking failures fixed in the draft; S5 status corrected to the ledger; p31 open residues completed; word limit raised to 10,400; open questions moved to the decision log."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check, three rounds (REVISE 17/14, REVISE 15/3, ESCALATE 15/10). Draft revisions between rounds: figure numbers 6 and 7 swapped after the scorecard moved; IN THIS CHAPTER list reordered to match the body; roadmap sentence rewritten to place the sections around the three moves; scene tense made present; opening sentences added for the transitions into concepts, stressors, scorecard, trade-offs (paragraph moved above its table), failure modes and questions; debt table labeled with scorecard F-numbers and a header note; pendulum bullet 'Above it' corrected to 'Below it' to agree with 'below the contract layer'; conclusion contrast sentence names Veldmark as the source of every answer. Spec: figure numbers in p48/p57 evidence updated; remaining failures recorded in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes): scorecard section moved before the debt section, with the three affected transitions rewritten; conclusion now names the book's introduction and calls back to the chapter's opening (a decade that did not go to plan); failure-modes rationale corrected."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): reconstructed 83 paragraphs from the published text; conclusion extended to carry Part VIII's and the journal's closing; roadmap sentence added to the introduction. spec.md removed."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 4 mermaid diagrams with generated illustrations; consistency fix to the scorecard intro; sharpening pass 7,081 -> 7,046 prose words; cross-chapter consistency sweep. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass; 3 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 10400
+  }
+}

@@ -1,0 +1,747 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/18-search-architecture/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/18-search-architecture/index.md",
+  "spec_sha": "f7db45816680afe3",
+  "draft_sha": "3561b8c1d939d4b5",
+  "run_at": "2026-11-12T22:02:03+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "search index as the first read model of Part IV's discovery surfaces, linking to later chapters",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "how listing search differs from web search: browse-heavy, high-write, judged on two freshness numbers",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "core principle: index as a disposable, rebuildable read model",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter's sections and evidence base",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Engines and a Sunday Evening ¶1",
+      "summary": "Veldmark's three engines across brands and its query load",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Engines and a Sunday Evening ¶2",
+      "summary": "January 2027 Sunday brown-out and its three combined causes",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Engines and a Sunday Evening ¶3",
+      "summary": "slow six-minute insertion latency illustrated by the Rotterdam bike, with a 90-second target",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Three Engines and a Sunday Evening ¶4",
+      "summary": "Chief Architect's three framing questions about what is required, shared and variable",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶1",
+      "summary": "definition of search document / definition of index",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶2",
+      "summary": "index alias and atomic swaps",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶3",
+      "summary": "browse versus text queries and Vinted's dedicated browse index",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶4",
+      "summary": "filters versus scoring and why filters stay cacheable",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶5",
+      "summary": "facets as counts over the full match set and their cost",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶6",
+      "summary": "freshness split into insertion and removal latency",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶7",
+      "summary": "update storms as non-content bursts of writes",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶8",
+      "summary": "reindexing and why even shard changes require it",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Search Layer Is ¶9",
+      "summary": "search contract in marketplace terms with engine adapters",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Index as a Rebuildable Read Model ¶1",
+      "summary": "reference architecture with write and read paths",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Index as a Rebuildable Read Model ¶2",
+      "summary": "component ownership table and hydration defined",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Index as a Rebuildable Read Model ¶3",
+      "summary": "rule one: only rebuildable data enters the index, per Vinted's CDC pipeline",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Index as a Rebuildable Read Model ¶4",
+      "summary": "rule two: read-path status recheck to close index lag",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Index as a Rebuildable Read Model ¶5",
+      "summary": "rule three: engine-neutral contract enabling side-by-side engines",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶1",
+      "summary": "one denormalized document per listing to avoid joins",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶2",
+      "summary": "grouping fields by source and change rate",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶3",
+      "summary": "long-tail attributes colliding with mapped-field limits",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶4",
+      "summary": "three attribute mapping designs and their costs",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶5",
+      "summary": "schema-driven promotion rule for typed versus flattened attributes",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Designing the Listing Search Document ¶6",
+      "summary": "normalize attribute values upstream to keep facets clean",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Index Topology: How to Partition ¶1",
+      "summary": "topology options seen in public record",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Index Topology: How to Partition ¶2",
+      "summary": "three questions guiding partitioning and the typical multi-country answer",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Index Topology: How to Partition ¶3",
+      "summary": "Belgium example: language fields rather than language indices",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Index Topology: How to Partition ¶4",
+      "summary": "shard sizing per partition as a capacity decision",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶1",
+      "summary": "refresh and soft-commit mechanics and default intervals",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶2",
+      "summary": "refresh frequency trading freshness against query performance",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶3",
+      "summary": "ordered, idempotent writes via listing-owned version sequence",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶4",
+      "summary": "unversioned deletes resurrecting sold listings",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶5",
+      "summary": "non-text update sources and partial-update cost in Lucene versus Vespa",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶6",
+      "summary": "five mitigations for update storms",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶7",
+      "summary": "Tradeyard's view-counter writes as wasteful load",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Write Path: Near-Real-Time Indexing and Update Storms ¶8",
+      "summary": "measuring freshness per write and with synthetic probes",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶1",
+      "summary": "Vinted's faceted-search costs and tactics",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶2",
+      "summary": "five transferable facet lessons",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶3",
+      "summary": "four cache layers with distinct invalidation",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶4",
+      "summary": "application caching traded against freshness, made safe by recheck",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶5",
+      "summary": "Veldmark's p99 latency budget as an illustration",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Read Path: Facets, Caching and Latency Budgets ¶6",
+      "summary": "budget forcing trade-offs for new costly steps",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Zero-Downtime Reindexing ¶1",
+      "summary": "why reindexes recur and the alias-swap baseline",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Zero-Downtime Reindexing ¶2",
+      "summary": "five practices for safe reindexing",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Zero-Downtime Reindexing ¶3",
+      "summary": "quarterly rebuild drill as test against index-as-record",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Capacity Planning for Evening Peaks ¶1",
+      "summary": "predictable evening and campaign peaks",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Capacity Planning for Evening Peaks ¶2",
+      "summary": "engine-request fan-out per results page and resulting peak load",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Capacity Planning for Evening Peaks ¶3",
+      "summary": "five capacity-planning practices",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶1",
+      "summary": "Lucene engines dominate, Vinted's Vespa as exception",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶2",
+      "summary": "Elasticsearch/OpenSearch licensing history no longer differentiates",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶3",
+      "summary": "Vinted's search-scaling timeline 2017 to 2025",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶4",
+      "summary": "Vinted's gains confounded by hardware and topology changes",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶5",
+      "summary": "order in which hard search problems surfaced",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶6",
+      "summary": "choose by workload, team and cloud fit; criteria table",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Choosing an Engine: What the Public Record Shows ¶7",
+      "summary": "when Vespa versus Lucene-family engines make sense",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's September 2027 Search Platform Decision ¶1",
+      "summary": "search platform team's four-option proposal",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's September 2027 Search Platform Decision ¶2",
+      "summary": "chosen option and its three conditions",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's September 2027 Search Platform Decision ¶3",
+      "summary": "new insertion path timing and 15-second index budget",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's September 2027 Search Platform Decision ¶4",
+      "summary": "tighter removal target and stale copies outside the index",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's September 2027 Search Platform Decision ¶5",
+      "summary": "risk-ordered migration plan and analyzer parity",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "no option is universal; contract and drill allow later change",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "shared engine but per-vertical document schemas",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "introduction of four recurring failures",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "index-only fields becoming unrebuildable",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "per-user filters ruining cache hit ratios",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "analyzer drift in engine migration",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "deep pagination by scrapers and capping it",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "platform versus marketplace ownership split",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "five prioritized non-negotiable decisions",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "decision rights among platform, marketplace teams and CTO",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "metrics to watch and periodic engine review",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "ten design-review questions",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "From Engine to Intent ¶1",
+      "summary": "answers to the three framing questions; process over engine",
+      "matched_spec_paragraph": "p77"
+    },
+    {
+      "draft_locator": "From Engine to Intent ¶2",
+      "summary": "hand-off to query understanding",
+      "matched_spec_paragraph": "p78"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 78 outline summaries match the controlling idea of the aligned spec paragraph (p01-p78) in spec order; e.g. Concepts ¶1 'search document / index' = p09, Choosing an Engine ¶2 'licensing no longer differentiates' = p54, Failure Modes ¶2-5 = p68-p71.",
+      "criterion": "AC-3",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: What a Listing Search Layer Is ¶1",
+      "quote": "Ingrid's questions need precise terms. **Search document.** The denormalized representation of one listing in the index",
+      "finding": "The outliner needed two summaries ('definition of search document / definition of index'). The spec pairs the two terms as one idea (the unit and the set that holds it), but the draft runs the section bridge, a bold-headed 'Search document.' entry and a separate bold 'index' definition into one unit, so it reads as two glossary entries; flow reader A (point f) also found the start of the glossary hard to see here.",
+      "fault": "draft",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Every other unit (77 of 78) received a single-idea summary.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: scene and concepts to S1/S2/S4/S6, architecture to S2/S6, document to S3, topology and read path/reindexing/capacity to S5, write path to S4, engine and in-practice to S6, closing group to all six. The licensing paragraph (Choosing an Engine ¶2) supports S6 (engine judged by fit, not licence).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table is framed by a sentence stating what it shows (component table 'what each component owns and what it must not own'; topology 'most of the options in use'; caches 'each has its own invalidation story'; engines 'what is documented, with dates'; criteria followed by 'None of these is decisive alone'; trade-offs and verticals tables stated). Figures 1-6 carry explanatory captions. Quotations (Solr cache clearing -> 'At peak, warming never caught up'; nested 'typically expensive'; mapping limit; Rightmove ad break -> 'capacity planning belongs on the same calendar'; Vinted 'boring') are followed by what they show. Vinted's confounded figures are explicitly qualified. The 'Vespa benchmark' sentence qualifies evidence never presented; it is recorded under flow_is_followable.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Read every transition_in at its boundary (77 boundaries). Each opening sentence carries the declared relationship and known information, e.g. p06 time 'The case for change arrived on Sunday 17 January 2027', p07 'The same review listed a slower problem', p09 'Ingrid's questions need precise terms', p20 'Three boundary rules matter more than the components', p27 'The workable design is a promotion rule', p34 'The trade-off is direct', p38 'Whatever the engine, five mitigations recur', p56/p57 contrast 'cannot be credited... What the series does show', p63 'Removal gets a tighter target', p67 'Each of these choices can fail', p77 'Ingrid's three questions now have answers', p78 'still has to understand what people type'. Weakest, still acceptable: p03 'The argument rests on one principle' leaves the cause_effect link to the high-write store implicit; p50 and p60 open on new material with the link carried by the heading.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers describe the declared order (prerequisite order: scene, vocabulary, architecture, then large-to-small design from document to capacity, engine last, then the decision and a grouped closing set) and say the roadmap announces it; neither marks any section's position unclear. Points not counted as material because neither reader reported difficulty: forward references to the September 2027 decision in the latency budget and rebuild drill (A i, B d: 'Both are fine as forward references' / 'I did not get lost'); 'read model' in the opening (B j; on audience.already_knows); optional moves of Trade-offs or Vertical Differences (preferences).",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: What a Listing Search Layer Is ¶9",
+      "quote": "Vinted's 2024 account of its Vespa migration credits a \"search contract\" in a Go gateway with letting the engine change without changing product applications",
+      "finding": "Vespa is named in Concepts, Architecture, the topology table and the write path before the chapter says what it is (an engine outside the Lucene family that updates in-memory fields in place, given only at the update-storms paragraph). Both readers carried an unexplained name for three sections.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point a: 'Vespa is used several times before it is explained. It first appears in the Concepts section (\"Vinted's 2024 account of its Vespa migration credits a 'search contract'...\")... Until then I knew only that Vespa was another engine.'",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "The Write Path: Near-Real-Time Indexing and Update Storms ¶2",
+      "quote": "Freshness then has to be bought elsewhere: with an engine that updates in place, or with a read-path recheck for the fields that matter.",
+      "finding": "'An engine that updates in place' arrives before the reader knows why in-place updates matter (immutable Lucene segments, explained two subsections later); both readers had to re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point b: '\"In place\" is used before it is explained... The reason in-place updates matter... comes only two subsections later, under Update storms. I re-read this sentence after reaching that explanation.'",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "Choosing an Engine: What the Public Record Shows ¶3",
+      "quote": "Visibility of changes fell to 5 seconds from the refresh interval described under the Write Path",
+      "finding": "The timeline's 5-second visibility and the write path's 'Vinted's figure of 4.64 seconds p99 from Flink to Vespa' describe the same 2024 move without saying how they relate (rounded figure, or different measurements); both readers stopped to reconcile them.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point i: 'The 2024 freshness figure appears in two forms... I stopped to check whether these were the same measurement... the text does not connect them.'",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "Choosing an Engine: What the Public Record Shows ¶3",
+      "quote": "Earlier sections used several of its steps; here they are in order, with what those sections left out.",
+      "finding": "The Vinted timeline restates steps already used (2017 hot nodes, 2021 offset versioning and browse index, 2023 CDC, the 300-second refresh) with pointers back, so readers skim for the new figures or look back to recall the pointed-to number. The spec (p55 controlling idea and evidence) declares exactly this recap-with-pointers timeline, so the difficulty comes from the declared content.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, point e: 'The Vinted migration subsection mostly repeats what I had already read... The new facts... are mixed into a recap. I had to skim to find what was new.' (Reader A, point d: 'The 2024 bullet's \"300-second\" origin is also only pointed back to... so I had to look back to recall the number.')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Designing the Listing Search Document ¶4",
+      "quote": "each nested object becomes a hidden Lucene document",
+      "finding": "Lucene is used (here, then 'In Lucene-based engines') before the chapter says Elasticsearch, OpenSearch and Solr all sit on it; the 'Lucene family' contrast with Vespa depends on it. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/13/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Four failures, all touched on in earlier sections, recur often enough to deserve a name, a symptom and a check.",
+      "finding": "Reader A expected the failure modes to be the three named patterns in the opening callout (Search as System of Record, Ghost Inventory, Attribute Junkyard); only the first maps, and the reader had to work out that these four are a separate list. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/13/paragraphs/2",
+      "draft_locus": "Failure Modes ¶3",
+      "quote": "Vinted accepted slightly inaccurate facet counts to keep a per-user filter out of facet queries.",
+      "finding": "A section that claims to gather failures 'all touched on in earlier sections' introduces a fact the facet section never gave. The spec places this evidence here (p69) while p67 declares everything as already touched on. Reported by one reader only.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "the three agency listings of one Lyon apartment, the example in [[entity-resolution]]",
+      "finding": "The Lyon apartment is presented as familiar but has not appeared in this chapter; reader A briefly lost the thread. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/4",
+      "draft_locus": "In Practice: Veldmark's September 2027 Search Platform Decision ¶5",
+      "quote": "timed with Yardstick's search extraction in the fourth quarter of 2028",
+      "finding": "Names an extraction project the chapter has not mentioned before; reader A briefly lost the thread. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: What a Listing Search Layer Is ¶3",
+      "quote": "Vinted, whose engineering blog is the most detailed public record of a listing search estate and this chapter's main public case (its steps are gathered in order under Choosing an Engine), split",
+      "finding": "The long parenthetical forward pointer pulls the reader out of the browse/text definition. Reported by one reader only (A e).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: What a Listing Search Layer Is ¶1",
+      "quote": "Ingrid's questions need precise terms. **Search document.** The denormalized representation of one listing in the index",
+      "finding": "The first two definitions share the bridge sentence's paragraph, while every other term gets its own bold-led paragraph, so the start of the glossary is hard to see. Reported by one reader only (A f).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Designing the Listing Search Document ¶2",
+      "quote": "Kept off the text path; see update storms",
+      "finding": "The field-group table uses 'external version' (explained later) and 'the text path' (never named anywhere) with forward pointers; reader B met terms it could not yet place. Reported by one reader only (B c).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "Choosing an Engine: What the Public Record Shows ¶4",
+      "quote": "Vespa's own 2024 benchmark against Elasticsearch is a vendor benchmark.",
+      "finding": "Qualifies a benchmark the chapter never presented; reader B re-read the preceding bullets looking for it. Reported by one reader only (B f).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "Choosing an Engine: What the Public Record Shows ¶5",
+      "quote": "Facets were the last workload Vinted moved.",
+      "finding": "'Facets last' is stated three times (engine table, here, criteria table 'Vinted moved facets last'); by the third it reads as repetition. Reported by one reader only (B g).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Choosing an Engine: What the Public Record Shows ¶2",
+      "quote": "Licensing no longer separates Elasticsearch from OpenSearch: both are now available under open-source terms with different governance.",
+      "finding": "The licensing paragraph sits between the engine table and the Vinted case and reads as an aside; option B's 'licensing and cost negotiated per deployment' does not draw on it. The spec places p54 here. Reported by one reader only (B h).",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term other than those failed below is given at or before first use: search document, index alias, browse query, facet, insertion and removal latency, update storm, reindexing, search contract (Concepts); refresh/soft commit (write path, with the scene's commit mechanism explained in place); external versioning (write path); mapping limits, nested and flattened fields (document); promotion rule; rebuild drill. Read models/CQRS and the event contract are named with links to their chapters as the spec allows. 'Lucene' (flow reader A, point b) is not counted: the audience knows Elasticsearch and Solr in general, which carries their shared Lucene base.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: What a Listing Search Layer Is ¶9",
+      "quote": "Vinted's 2024 account of its Vespa migration credits a \"search contract\" in a Go gateway",
+      "finding": "Vespa is not in audience.already_knows (only Elasticsearch, Solr, Kafka) and is used here, in Architecture ('Solr, Elasticsearch, OpenSearch or Vespa syntax'), in the topology table and in the write path before the update-storms paragraph explains it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, point a: 'Vespa is named several times before the chapter says what it is... A reader who does not know Vespa carries an unexplained name for three sections.'",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "The Write Path: Near-Real-Time Indexing and Update Storms ¶2",
+      "quote": "with an engine that updates in place",
+      "finding": "'Updates in place' is used before the immutable-segment mechanism that gives it meaning is explained (p37).",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point b: '\"In place\" is used before it is explained.'",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Designing the Listing Search Document ¶2",
+      "quote": "Keyword; sequence used as external version (see the write path)",
+      "finding": "'External version' (external versioning is on audience.does_not_know) is used in the field-group table before the write path defines it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point c: '\"External version\" is explained later... in both rows I met a term I could not yet place.'",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Designing the Listing Search Document ¶2",
+      "quote": "Kept off the text path; see update storms",
+      "finding": "'The text path' is never defined or named elsewhere in the chapter; the pointer leads to update storms, which does not use the term.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, point c: '\"the text path\" is never named as such anywhere.'",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with a bridge from Part III's publication pipeline and a direct claim (listing search behaves like a high-write operational store), states the principle and a roadmap; it is none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "'From Engine to Intent' answers Ingrid's three questions with specifics drawn from the body, introduces no new subtopic, holds no new evidence, does not open with 'in conclusion' and ends on a problem_solution hand-off to query understanding rather than a rephrased thesis.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "The conclusion states what no single section does: the answers to the three questions name no engine (must-be-true: listing-owned version, sourced documents, removal lane and objective, quarterly drill; shared: engine operations, indexer, contract, capacity; different: schemas, analyzers, ranking), and why it matters: the brown-out came from how the index was run, and the 2029 review becomes an adapter change rather than a rewrite.",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to the scene's Sunday-evening brown-out ('came from how the index was run at the peak, not from which engine ran it') and to Ingrid's three questions, as callback.to names.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro-only reader predicted, in order: Veldmark's three engines and the Sunday brown-out, the terms, the index as rebuildable read model, document, topology, write path, read path with facets and caching, reindexing, capacity, engine choice last, the September 2027 decision, trade-offs, vertical differences, failure modes, Chief Architect's view and review questions; evidence: public engineering accounts with Vinted above all, engine documentation and fictional Veldmark; tone declarative and practitioner-facing. Matches the roadmap and AC-2's expected answer (Tradeyard is not named but the brown-out is).",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Engine to Intent ¶1",
+      "quote": "What must be true of any index: every document comes from the event stream and the system of record under a listing-owned version, removals take their own lane and objective, and a quarterly drill proves the rebuild.",
+      "finding": "The cold reader names the three individually harmless causes (campaign ~30% above peak, a reindex committing into the live collection, commits clearing the filter and query-result caches browse traffic needed), the alias reindex with versioned backfill away from the peak planned with marketing, and decides the search contract and an index rebuildable from the event stream before any engine change, with engine choice then a workload decision via shadow traffic. It does not name the regular rebuild drill or removal latency as its own objective among the pre-engine decisions, two of the four the expected answer lists. The draft states them (conclusion, Chief Architect's decisions) but never gives the spec's takeaway as a course of action tied to engine change ('... prove the rebuild every quarter and give removal its own lane before deciding any engine change'); the decision's three conditions (p61) list only the contract, sourced documents and Vespa deferral, so a reader does not attach the drill and removal lane to 'before the engine'.",
+      "fault": "draft",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader uses the promotion rule (typed fields only for keys the category schema flags as filter, facet or sort; the rest in one flattened field, exact-value only), names the attribute dictionary as decider with promotion a reviewed schema change ('No engineer maps a field that the schema does not flag'), cites the 1,000-field default mapping limit with memory, merge and cluster-state costs, nested objects as hidden Lucene documents (30 attributes -> 31 documents), and normalized dictionary values upstream. Matches the expected answer.",
+      "criterion": "AC-4",
+      "severity": "minor"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader names the unversioned late 'price changed' applied after 'sold' (Ghost Inventory, hard to test as a race), a per-listing monotonic sequence owned by the aggregate as external version for every write including deletes (not Kafka offsets, which break on repartitioning), removals on a priority lane ahead of fan-out, bulk feeds in their own rate-limited lane, removal latency measured per operation and reason as a named objective (10 s p95 at Veldmark), and a read-path status recheck. Matches the expected answer.",
+      "criterion": "AC-5",
+      "severity": "minor"
+    }
+  ]
+}

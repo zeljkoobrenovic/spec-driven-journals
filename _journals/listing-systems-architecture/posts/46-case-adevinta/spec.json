@@ -1,0 +1,1817 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-adevinta",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "Adevinta: From Schibsted's Copy-Paste Model to a Portfolio Platform",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four acceptance criteria, the thesis and the role are copied unchanged from the case-adevinta entry in journal-spec.json. A roadmap paragraph (p03) and a conclusion section (p62, p63; p63 is the published closing paragraph moved under its own heading) were added.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Adevinta's five dated phases: the Schibsted federation; selective centralization under the 2019 rule (centralize where 'investment requirements are large and the technology is uniform'); absorbing eBay Classifieds (2021–2023); verticals and the 2023 convergence decision; decentralization and break-up (mid-2024 to 2026).",
+        "The layer map of what was shared when, the documented wins (a voluntary Kubernetes platform grown from about 1,500 to more than 4,000 developers, ten experimentation tools reduced to one, shared OCR and media services) and where the public evidence stops (product layers, the fate of the leboncoin–Kleinanzeigen convergence and of SCHIP)."
+      ],
+      "believe": [
+        "Deciding what to share by layer held up; converging product platforms is a separate investment with its own scope and stage gates.",
+        "When ownership can change, separability is a design requirement reviewed like security."
+      ],
+      "can_do": [
+        "Apply the two-part test (large investment, uniform technology) to a proposal for a new shared capability.",
+        "Ask of each shared capability what a departing tenant takes, what is switched off and what runs twice meanwhile."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, platform-engineering leads and engineering directors deciding what to share across marketplaces after acquisitions, or preparing for a possible divestment.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision.",
+        "Part IX's evidence rules and its first lesson, from part-9.",
+        "Global components, tenancy and consolidation sequencing, from multi-country-platforms and platform-consolidation."
+      ],
+      "does_not_know": [
+        "Adevinta's corporate history and its brands.",
+        "Adevinta-internal names: SCHIP, FIAAS, Houston, Fisher, YAMS, EU5."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a group's proposal to share several capabilities and converge two product platforms, the reader sorts the proposal by layer using Adevinta's dated record and says what the convergence needs before it is funded.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A group proposes to share its cloud platform, its experimentation tool, an image-recognition service and, in a second stage, to merge its two largest generalist marketplaces onto one product platform. Its owner is a private-equity fund. Using only this chapter: which parts does Adevinta's record support, what does it say about the merger, and what must every shared part be able to do?",
+        "expected": "The cloud platform, experimentation and narrow ML service pass the 2019 test (large investment, uniform technology) and match Adevinta's documented wins, grown by voluntary adoption. The merger matches the 2023 decision to make leboncoin and Kleinanzeigen 'a unified global platform', last reported 'progressing well' in May 2024 and followed by the 2025 decentralization; it needs its own investment case with scope, stage gates and exit criteria. Every shared capability must be tenant-separable (account boundary per tenant, tenant-scoped data with contracts, portable deployment, clear code ownership), because under private-equity ownership Adevinta localized intellectual property and sold Spain as a carve-out."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+        "expected": "Three questions asked of each phase (what was shared, at which layer, what the sharing cost when the strategy changed); evidence from Adevinta's annual and strategic reports, releases and tech blog, strongest on infrastructure, data and organization and weakest on core product layers; an argument for sharing the uniform, expensive layers first, treating product convergence as a separate decision and designing every shared layer so a tenant can leave; a final comparison with Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every statement about Adevinta's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how Adevinta builds or runs a system without a dated source, or a company fact with no source and year?",
+        "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What did Adevinta share across its marketplaces in each phase from the 2019 demerger to the 2025–2026 break-up, at which layer, and what did the sharing cost when its capital strategy changed?",
+    "claim": "Adevinta's record supports deciding what to share by layer: its 2019 test, centralize where 'investment requirements are large and the technology is uniform', put infrastructure, data, experimentation and narrow machine-learning services on shared platforms that grew by voluntary adoption, whereas its 2023 decision to turn the leboncoin and Kleinanzeigen platforms into 'a unified global platform' was last reported 'progressing well' in May 2024 and then overtaken by the 2025 move to standalone marketplaces, in which central functions were ramped down, intellectual property was localized and central and local services ran in parallel. Since the record never reports the convergence completed or its savings realized, product-platform convergence needs its own investment case with scope and stage gates; and since a change of owner forced that unwinding, every shared capability must be designed to be separable.",
+    "disputed_by": "The reading that Adevinta's 2025 reversal shows central platforms were a mistake and a group should keep its marketplaces independent; or the opposite reading that the convergence was sound and only the new owners interrupted it, so a group should still aim at one product platform for its generalist marketplaces.",
+    "so_what": "A Chief Architect writes the two-part test into the group's architecture principles and makes every proposal for a shared capability answer both halves; measures a platform by how many tenants choose it and funds migration engineers rather than deadlines; requires any product-platform convergence to state its capabilities, markets, stage gates and exit criteria before it is staffed; and reviews every shared capability for separability (one account boundary per tenant, tenant-scoped data with contracts, deployment that runs outside the platform, clear ownership of code and models).",
+    "how_why": "Demerged from Schibsted in April 2019 as a federation of locally built sites, Adevinta adopted a 'centralised strategy to data and analytics' while keeping product autonomy; its Common Platform served about 1,500 engineers in January 2020 and, as SCHIP, more than 4,000 developers in June 2023, with no mandate in the record. It bought eBay Classifieds Group in June 2021, targeting €130–165 million of run-rate cost synergies, and moved most EU5 platforms to AWS in 2023. The convergence decision came the same year; the take-private settled in May 2024; from July 2024 a new operating model 'empowering local marketplaces' ramped down central functions, localized intellectual property and ran central and local services in parallel, and Adevinta Spain was sold to EQT (announced July 2025, completed February 2026). The case is strongest on infrastructure and weakest exactly where the convergence bet was placed, so its completion cannot be judged from the public record.",
+    "supporting_claims": [
+      {
+        "id": "A1",
+        "claim": "Adevinta's 2019 rule, centralize where 'investment requirements are large and the technology is uniform', put infrastructure, data, experimentation and narrow machine-learning services on shared platforms that grew by voluntary adoption and harvested local inventions; these are the record's documented wins."
+      },
+      {
+        "id": "A2",
+        "claim": "The 2023 decision to turn the leboncoin and Kleinanzeigen platforms into 'a unified global platform' was last reported 'progressing well' in May 2024 and then overtaken by the 2025 move to standalone marketplaces, so product-platform convergence needs its own investment case with scope and stage gates."
+      },
+      {
+        "id": "A3",
+        "claim": "Under private-equity ownership from 2024, the 2025 move to standalone marketplaces ramped down central functions, localized intellectual property and ran central and local services in parallel: a change of owner forced the unwinding of shared platforms."
+      },
+      {
+        "id": "A4",
+        "claim": "Because a change of owner forced that unwinding, every shared capability must be designed to be separable: one account boundary per tenant, tenant-scoped data with contracts, portable deployment, clear code ownership."
+      },
+      {
+        "id": "A5",
+        "claim": "The record is strongest on infrastructure, data and organization and weakest at the product layer, where the convergence bet was placed: it never reports the convergence completed or its savings realized."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "The fullest public test of the centralization pendulum: what sharing by layer delivered, what product convergence left unproven, and what a change of owner made shared platforms cost.",
+    "supports": [
+      "P9-1",
+      "P9-2",
+      "P9-5"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "layer-map to evidence-stops: cross-phase views (by layer, by inferred architecture, by option, by vertical, by risk, by gap)"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "chief-architect to questions: rules from the record, their test against the book and Veldmark, and questions for the reader's group"
+      }
+    ],
+    "rationale": "Reading rules and the timeline come first because every later sentence is a dated fact, a reading or an inference. The five phases run in time order because the case's teaching value is the movement of the shared/local line over time (decision of 2026-10-19); read out of order, the 2025 reversal would have no convergence to reverse. The cross-phase views come only after all five phases, because each one (the layer map, the trade-offs, the verticals) uses facts from every phase; the evidence limits close that group so the rules that follow do not outrun them. The author's rules, the comparison and the questions come last because they apply what the record has shown."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "Adevinta changed its platform strategy several times in seven years, in public: demerged from Schibsted in 2019 as a federation of locally built sites, it bought eBay Classifieds Group in 2021, announced in 2023 that two of its largest generalist platforms would become one, and from mid-2024, under new private-equity owners, ramped down central functions, moved capabilities and intellectual property to the marketplaces and sold businesses."
+    },
+    "bridge": {
+      "from_reader_world": "A Chief Architect deciding what a group of marketplaces should share, under owners who may buy or sell them.",
+      "to_topic": "One group ran the whole centralization pendulum and wrote much of it down, so each phase can be asked what was shared, at which layer and what the sharing cost when the strategy changed."
+    },
+    "thesis_statement": {
+      "text": "Share the uniform, expensive layers first, treat product-platform convergence as a separate decision, and design every shared layer so a tenant can leave.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02."
+    },
+    "roadmap": {
+      "placement": "Paragraph p03, after the three questions.",
+      "promises": [
+        {
+          "promise": "Set the reading rules and the limits of the evidence.",
+          "kept_in": [
+            "how-to-read"
+          ]
+        },
+        {
+          "promise": "Give the dated timeline.",
+          "kept_in": [
+            "timeline"
+          ]
+        },
+        {
+          "promise": "Follow the five phases in order, from the Schibsted federation to the break-up.",
+          "kept_in": [
+            "phase-1",
+            "phase-2",
+            "phase-3",
+            "phase-4",
+            "phase-5"
+          ]
+        },
+        {
+          "promise": "Look across the phases: a layer map, a labeled reference architecture, the trade-offs, the verticals, the failure modes and where the evidence stops.",
+          "kept_in": [
+            "layer-map",
+            "reference-architecture",
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "evidence-stops"
+          ]
+        },
+        {
+          "promise": "End with the author's decision rules, a comparison with the book's patterns and with Veldmark, and questions to ask.",
+          "kept_in": [
+            "chief-architect",
+            "comparison",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Adevinta ran the whole centralization pendulum in public, from a 2019 federation through a 2021 acquisition and a 2023 convergence decision to a reversal from mid-2024, and its value is that it wrote much of it down.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Demerged from Schibsted 2019; eBay Classifieds Group bought 2021; 2023 announcement that two generalist platforms would become one; from mid-2024 central functions ramped down and businesses sold.",
+            "source": "Timeline sources",
+            "shows": "Shows the full swing the chapter reads."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter asks three questions of each phase, what was shared, at which layer and what the sharing cost when the strategy changed, and argues for sharing the uniform layers first, treating product convergence separately and designing every shared layer so a tenant can leave.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "A pendulum written down in public.",
+          "introduces": "The questions asked of it and the argument it supports.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The evidence, Adevinta's reports, releases and engineering blog, is strongest on infrastructure, data and organization and weakest on core product layers, and the chapter reads it through reading rules and a timeline, the five phases, views across them, and the author's rules, a comparison with Veldmark and questions.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The three questions and the argument.",
+          "introduces": "The evidence and the route through the chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Case",
+      "controlling_idea": "The case keeps documented fact, the author's reading and labeled inference apart, and its evidence is strongest on infrastructure and weakest on the product layer.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Sets the evidence rules and says where the record is thin before any fact is used."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the rules every Part IX case follows, to how far this case's evidence reaches, to the one fictional element and where it appears. The rules must come first because the limits are stated in their terms."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction's promise of a dated public record and its route.",
+        "introduces": "The rules for reading that record and its known limits.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Part IX cases separate three kinds of statement: a documented fact carries its source and publication year, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and an inference appears only in a callout labeled INFERENCE, NOT DOCUMENTED.",
+          "function": "definition"
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "The case is strongest on infrastructure, data and organization and weakest exactly where the 2023 convergence bet was placed, so every statement about what Adevinta runs is true at the date of its source and no later.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Almost no public detail on how leboncoin, Kleinanzeigen, Marktplaats or mobile.de run search, ranking, listings or messaging; since the 2024 take-private, accounts only as Aurelia UK Feederco Ltd's strategic report without the revenue mix; most engineering detail describes central platforms the 2025 decentralization may have split or retired.",
+              "source": "Adevinta Tech Blog 2022-2026; Strategic Reports 2024 and 2025",
+              "shows": "Shows where the evidence is thin and why each statement is dated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The three kinds of statement.",
+            "introduces": "How unevenly the documented facts are spread across layers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Veldmark, the book's fictional group, appears only in the final comparison and is a composite, not a disguised Adevinta.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Adevinta's documented record and its limits.",
+            "introduces": "The fictional group and where it enters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "Timeline: Adevinta in Dated Events",
+      "controlling_idea": "Adevinta's record from 2006 to March 2026 is a dated sequence of demerger, acquisition, divestments, convergence decision, take-private, decentralization and sale.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A5"
+        ],
+        "how": "Gives every later phase its dated anchor."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The rule that every fact carries its date.",
+        "introduces": "The dated events themselves.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "The timeline gives each event the date of its cited release or report, with ownership and portfolio as of October 2026, and Figure 1 shows each phase moving the line between shared and local to a different layer.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline from leboncoin's 2006 launch through the 2019 demerger, the 2021 eCG acquisition, the 2023 convergence decision, the 2024 take-private, the July 2024 operating model, the 2025 sales and the 3 March 2026 Spanish branch.",
+              "source": "Adevinta and Schibsted/Vend releases, annual and strategic reports, trade press",
+              "shows": "Shows the sequence the five phases follow, each event with its source type."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: each phase moved the line between shared and local to a different layer.",
+              "shows": "Shows the chapter's organizing idea before the phases are read."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-1",
+      "heading": "Phase 1: The Schibsted Federation (Before 2019)",
+      "controlling_idea": "The Schibsted era left a federation of national sites, documented as a portfolio but not as a build, whose most durable shared abstraction was a local invention.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A5"
+        ],
+        "how": "Shows the starting point the later sharing worked from and where the record is lore."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The timeline's first entries.",
+        "introduces": "The phase before the demerger.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The public record documents the Schibsted-era portfolio of national generalist sites but not how it was built; the shared Blocket-derived code base is widely repeated but unverified, so it stays lore.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "leboncoin (launched 2006), Subito, InfoJobs, Segundamano; the 2012 Nieman Lab '28 countries on the Blocket platform' could not be retrieved.",
+              "source": "Adevinta Annual Report 2023; Wikipedia",
+              "shows": "Shows what is documented and what is only repeated."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "My reading is that a copied starting code base is the classic origin of the Copy-Paste Country, and that the later phases tried to recover the economics copying gave away without losing local autonomy.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A shared starting code base evolved locally.",
+            "introduces": "What such an origin leads to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The group's most durable shared abstraction, FIAAS, was a local invention at FINN.no promoted to group level.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "FINN's 2017 KubeCon talk: about 350 microservices, 1,200 deployments a week, about 147 lines of Kubernetes configuration replaced by a short file; open-sourced 2019; a 2023 Adevinta post still calls it the 'Golden Path'; FINN.no stayed with Schibsted.",
+              "source": "FINN.no, KubeCon EU 2017; Adevinta Tech Blog 2023",
+              "shows": "Shows sharing that started as a local tool and was adopted, not imposed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Copying as the origin of duplication.",
+            "introduces": "A shared abstraction that came from one site and spread.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "What is documented about the federation, the author's reading of the copied code base, then FIAAS, the local invention that outlived the era and leads into Phase 2's platform. FIAAS last lets the next section pick it up."
+      }
+    },
+    {
+      "id": "phase-2",
+      "heading": "Phase 2: Selective Centralization (2019–2020)",
+      "controlling_idea": "In 2019 Adevinta centralized only where investment was large and technology uniform, and its platform grew under that rule by voluntary adoption.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "A1"
+        ],
+        "how": "States the two-part test and the first documented win under it."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The rule as stated, the money behind it, the author's reading of it, then the platform built under it, how it was offered and how it grew. The reading needs the quotation; the growth needs the design choices that explain it."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The federation that Schibsted left.",
+        "introduces": "The first choices of the listed company.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Adevinta's first annual report, for 2019, centralized data and analytics because there 'investment requirements are large and the technology is uniform', while keeping local autonomy in product and technology.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"...we are adopting a centralised strategy to data and analytics. This one area where investment requirements are large and the technology is uniform...\"",
+              "source": "Adevinta Annual Report 2019",
+              "shows": "States the rule in the company's own words."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The same report backed the rule with centrally developed 'scalable components' and central losses, for a group whose €680 million of 2019 revenue came mostly from France and Spain.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "2019 revenue €680 million: France €357 million, Spain €182 million, Brazil equity-accounted, 'Global Markets'.",
+              "source": "Adevinta Annual Report 2019",
+              "shows": "Shows the size and concentration of the group the rule applied to."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The 2019 rule.",
+            "introduces": "The investment and the revenue it applied to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "I read this as the strongest decision rule in the record, because it names two conditions, large investment and uniform technology, and accepts that product surfaces fail them.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the 2019 rule as a two-stage test.",
+              "shows": "Shows why product surfaces stayed local."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The rule as the report stated it.",
+            "introduces": "Why it is the record's strongest decision rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The Common Platform, written up in January 2020, was a platform-as-a-service for about 1,500 engineers in about 20 marketplaces built from ordinary tools.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Spinnaker, FIAAS, self-run Kubernetes on EC2, Prometheus.",
+              "source": "Galo Navarro, 2020",
+              "shows": "Shows the platform's ordinary building blocks."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule for what to centralize.",
+            "introduces": "The platform built under it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Its design choices were less ordinary: voluntary adoption, ten-minute onboarding, embedded engineers for large migrations and a bridge that moved services without code changes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"You prefer to do the plumbing yourself? It's your call, we respect that.\"; about 200 Spanish microservices; Eurek8s.",
+              "source": "Galo Navarro, 2020",
+              "shows": "Shows a platform that made adoption cheap rather than compulsory."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The ordinary tools.",
+            "introduces": "The unusual way it was offered.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The platform grew from about 1,500 to more than 4,000 developers as SCHIP by June 2023 with no documented mandate, the clearest counter-example to the Forced Fit in the book's research.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "SCHIP, a multi-tenant Kubernetes distribution, 'more than 4,000 developers' and about 5,000 applications (June 2023).",
+              "source": "Adevinta Tech Blog, 2023",
+              "shows": "Shows voluntary adoption scaling through the eCG integration."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Voluntary adoption made cheap.",
+            "introduces": "The growth it produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "heading": "Phase 3: Absorbing eBay Classifieds (2021–2023)",
+      "controlling_idea": "Absorbing eBay Classifieds doubled the group and its stacks, and the consolidation the record documents sits at the uniform layers, with one product component.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A1"
+        ],
+        "how": "Shows what sharing by layer consolidated after the acquisition, and what it left unknown."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p20-p25: consolidation layer by layer (infrastructure, data, overarching components with the dispute back office beside its table row, then experimentation and machine learning)"
+          }
+        ],
+        "rationale": "The deal, what was removed from it and what it cost come first because they set the scope; the layers then follow the blog's four layers, with the dispute back office directly after the shared-services table that lists it (round-3 readers both read the later position as a jump backwards), and experimentation and machine learning last as the two consolidations documented end to end. The ML Golden Path (August 2024) sits here although it postdates the phase, because it completes the same consolidate-and-harvest path; its date is in the paragraph."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "A platform that grew without a mandate.",
+        "introduces": "The acquisition that doubled the group it served.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "The eBay Classifieds Group acquisition, completed on 25 June 2021, roughly doubled the group and targeted run-rate cost synergies of €130–165 million, with every acquired brand on its own stack.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "#1 positions in 16 countries, about three billion monthly visits, pro forma 2019 revenue about €1.6 billion; mobile.de, eBay Kleinanzeigen, Marktplaats, 2dehands/2ememain, Kijiji, Gumtree, Automobile.it.",
+              "source": "Adevinta release, 2021",
+              "shows": "Shows the scale and the number of stacks the integration faced."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Regulators and strategy removed part of the integration scope before integration began, so the scope is not known at signing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "CMA-required sales of Shpock and Gumtree UK with Motors.co.uk (2021); Denmark to Schibsted; 2022 sales of Australia, South Africa, Mexico; 2023 exit from Hungary; focus on 'five core European markets'.",
+              "source": "Adevinta releases 2021-2022",
+              "shows": "Shows overlapping platforms leaving before anyone integrated them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The scale the deal brought.",
+            "introduces": "The parts removed before integration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The 2023 annual report shows what integration cost, but whether the synergy target was met, and how much came from technology, is not public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€69 million eCG integration expenses in 2023; €15 million rebrand of eBay Kleinanzeigen; €22 million verticalization.",
+              "source": "Adevinta Annual Report 2023",
+              "shows": "Shows the cost side of the synergy case and where its outcome stops being public."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The scope that remained.",
+            "introduces": "What integrating it cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The engineering blog documents consolidation at four layers.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Unpublished synergy outcomes.",
+            "introduces": "The layers the engineering blog does document.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Infrastructure and cloud were consolidated: EU5 onto AWS, SCHIP onto EKS at 2,000+ nodes across 25 marketplaces, and 732 AWS accounts and 425 Google Cloud projects mapped to teams and cost centers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "'to a single public cloud vendor' (AWS), Canada to Google Cloud; 30+ clusters (2023), 'over 2,000 Kubernetes nodes' in 30 clusters 'across 25 marketplaces' (2024); 732 AWS accounts, 425 Google Cloud projects (Dec 2024), fewer than 150 in 2019.",
+              "source": "Annual Report 2023; Adevinta Tech Blog 2023-2024",
+              "shows": "Shows the infrastructure layer consolidated and governed per team."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four layers.",
+            "introduces": "The first: infrastructure and cloud.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Data ran on a central event platform while Adevinta Spain built a data mesh whose contracts cut the time to usable data from about five days to about 30 minutes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Nearly a billion events a day over Kafka (2022); Databricks lakehouse with data mesh principles and immutable data contracts (2024).",
+              "source": "Adevinta Tech Blog 2022, 2024",
+              "shows": "Shows a shared data substrate with domain-owned products."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Infrastructure.",
+            "introduces": "The data layer.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Chat and moderation were consolidated without a published architecture, while several narrower shared services are documented with their scale.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Shared services: Text in Image OCR, image models, YAMS media, dispute back office, Houston experimentation, each with scale and date.",
+              "source": "Adevinta Tech Blog 2023-2024",
+              "shows": "Shows uniform, high-volume services shared across marketplaces."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Data.",
+            "introduces": "The overarching components.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The dispute back office is the only cross-marketplace product component with a published architecture, built to normalize each marketplace's events into a common model.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kafka, SQS or REST events normalized behind a Kotlin API, extensible micro-frontend; 'We couldn't hardcode anything… or make any assumptions.'",
+              "source": "Adevinta Tech Blog, 2023",
+              "shows": "Shows what a shared product component had to do to fit many marketplaces."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3 and an INFERENCE, NOT DOCUMENTED callout: per-tenant ingestion, canonical model, extensible front end; the component is only as good as the worst tenant's events.",
+              "shows": "Shows, labeled as inference, why product components move integration work into event contracts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The narrow shared services in the table, among them the dispute back office.",
+            "introduces": "The one product component with a published design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Experimentation is the best-documented consolidation: ten A/B tools in 22 marketplaces became one platform through a build-buy-bridge decision, around a statistics package harvested from Marktplaats.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Houston chosen over buy with a third-party bridge; 2023 benchmark of 21 companies; Fisher used in more than 90% of Marktplaats experiments within a year, then group-wide.",
+              "source": "Adevinta Tech Blog 2023-2024",
+              "shows": "Shows a shared capability grown from a local one by a recorded decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The documented shared services and the one product component.",
+            "introduces": "The consolidation documented end to end: experimentation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Machine learning followed the same path, with the 2024 ML Golden Path replacing scattered tooling with one workflow and a catalog that accepts promoted components.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "'a set of scattered tooling' replaced by one workflow on SCHIP and a central catalog (August 2024).",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Shows the same consolidate-and-harvest shape at the ML layer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Experimentation's path.",
+            "introduces": "The same path for machine learning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "heading": "Phase 4: Verticals and the Convergence Bet (2023 to Mid-2024)",
+      "controlling_idea": "In 2023 Adevinta moved the shared line up to the product platform itself, a step of a different kind that fails the uniform-technology condition and whose completion the record never reports.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A5"
+        ],
+        "how": "States the convergence decision, why it differs, and where its record stops."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The strategy and revenue mix set the context; then the decision, its last progress report, the author's reading of it and what the rationale actually supports; last, the capability the rationale names first. The reading must follow the documented decision so it is not mistaken for it."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "Consolidation of the uniform layers through 2023.",
+        "introduces": "The 2023 strategy that went further.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "The 2023 annual report describes the Growing at Scale strategy and a vertical operating model for a group with €1,826 million of revenue.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2023 revenue by segment and type (classifieds, advertising, transactional), total €1,826 million; EBITDA €651 million.",
+              "source": "Adevinta Annual Report 2023",
+              "shows": "Shows where the group's money came from when the convergence was decided."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The segment table, from the 2023 report's segment note, shows mobile.de's dealer listings earning about as much classifieds revenue as the whole French segment and transactions at about 6% of group revenue, while the convergence that follows concerns leboncoin and Kleinanzeigen, not mobile.de.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The 2023 segment table.",
+            "introduces": "Its source and what two of its figures show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "In 2023 Adevinta decided to share the product itself, turning the leboncoin and Kleinanzeigen platforms into 'a unified global platform'.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"...the compelling case for stronger consolidation prompted a change in this strategy... transforming the two platforms into a unified global platform to support Adevinta's generalist marketplaces.\"",
+              "source": "Adevinta Annual Report 2023",
+              "shows": "States the convergence decision and its rationale in the company's words."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The vertical organization and revenue mix.",
+            "introduces": "The decision to share the product, not only components.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The last public word on the convergence, in May 2024, was 'progressing well and according to plan', and no later source describes its delivery, architecture or fate.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'the creation of a multi-tenant platform'; 'Platform convergence project progressing well and according to plan.'",
+              "source": "Annual Report 2023, CEO letter; Adevinta Q1 2024 release",
+              "shows": "Shows where the public record of the convergence ends."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The 2023 decision.",
+            "introduces": "The last public statement on it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "My reading is that the convergence was a different kind of step from everything before it, because a generalist product platform for France and Germany fails the uniform-technology condition.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The documented decision and its last progress report.",
+            "introduces": "The author's reading of what kind of step it was.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Adevinta's rationale argues for shared capabilities behind two products more than for one product platform, and the record does not say which was built.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Why the platform fails the second condition.",
+            "introduces": "What the stated rationale does support.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The transactional journey, named first in the rationale, is the best-documented capability at marketplace level, with similar flows run on national contracts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "leboncoin, Kleinanzeigen, Marktplaats and mobile.de transactional records with providers and dates.",
+              "source": "Annual Reports 2019 and 2023; Kleinanzeigen help page; onlinemarketing.de 2020; t3n 2023; AVROTROS Radar 2022",
+              "shows": "Shows the flows are alike while providers and contracts are national."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The capabilities the rationale names.",
+            "introduces": "The first of them, as documented.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Transactions grew revenue and costs together.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rising 'direct costs from transactional services'; two-point fall in France's EBITDA margin; transactional revenue +31% in Q1 2024.",
+              "source": "Annual Report 2023; Q1 2024 release",
+              "shows": "Shows the transactional journey's economics."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4 and an INFERENCE, NOT DOCUMENTED callout: the provider holds funds, the marketplace owns the state machine; similar everywhere, national underneath.",
+              "shows": "Explains, labeled as inference, why the capability looked centralizable in 2023 and local again in 2025."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The transactional flows.",
+            "introduces": "What they did to revenue and costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-5",
+      "heading": "Phase 5: Decentralization and Break-Up (Mid-2024 to 2026)",
+      "controlling_idea": "Under its new owners Adevinta decentralized to standalone marketplaces, and the strategic reports show what unwinding a shared platform cost.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A3"
+        ],
+        "how": "Documents the reversal and its costs, and gives the author's reading of why it happened."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stated move, how it was organized, what it cost, what was left, and then why: the reading comes last so it rests on the documented costs."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The convergence last reported in May 2024.",
+        "introduces": "What the new owners did from July 2024.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "In July 2024, two months after the take-private settled, Adevinta started a new operating model, which the 2025 report describes as a move from a centralized structure to standalone marketplaces.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"The Group has evolved from a centralised structure to a decentralised, standalone operating model... ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property...\"",
+              "source": "Strategic Reports 2024 and 2025",
+              "shows": "States the reversal in the company's words."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The group carried out the move knowing its risks: it created standalone local teams while its own 2024 risk register named operational and data decentralization as risks.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'standalone teams across core functions to strengthen local market ownership'; 'operational decentralisation (which may affect areas such as… trust and fraud) and data decentralisation'.",
+              "source": "Strategic Reports 2024 and 2025",
+              "shows": "Shows the reversal was organized and its risks foreseen."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The stated move.",
+            "introduces": "How it was organized and what risks were named.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "The strategic reports, not the engineering posts, show what decentralizing a shared platform cost: central and local services run in parallel, intellectual property localized in new legal entities, a carve-out with advisors, a smaller group and infrastructure owned by the marketplaces.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Parallel running (cloud emissions 'more than doubled'); IP localized and a Spanish branch for Kleinanzeigen.de GmbH (3 March 2026); a carve-out with EY; Spain sold 27 February 2026 with a gain of about €1.1 billion; headcount 4,439; leboncoin's own infrastructure team.",
+              "source": "Strategic Report 2025; EQT 2025; Adevinta Tech Blog 2026; leboncoin tech blog 2026",
+              "shows": "Shows each kind of cost decentralization carried."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The decision to decentralize.",
+            "introduces": "What carrying it out cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The 2025 accounts show a smaller group of six remaining businesses with €1,891 million of revenue from continuing operations.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Revenue €1,891 million; adjusted EBITDA €865 million (€970 million including Spain); portfolio as of October 2026.",
+              "source": "Strategic Report 2025; Adevinta Brands page",
+              "shows": "Shows the group the reversal left."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The costs.",
+            "introduces": "The group that remained.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "My reading is that the reversal was economic before it was technical: a shared platform that was a synergy asset becomes a separation cost when value is realized by selling marketplaces, so platform topology must match the capital strategy.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: the same shared platform as synergy asset and as separation cost.",
+              "shows": "Shows the same topology priced two ways."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The reversal and its costs.",
+            "introduces": "Why the economics flipped.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "layer-map",
+      "heading": "The Layer Map: What Was Shared, When",
+      "controlling_idea": "Across the five phases the uniform layers stayed shared until 2024, and the product platform is the only layer whose convergence was announced.",
+      "function": "synthesis",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A2"
+        ],
+        "how": "Pulls the phases into one view by layer."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The five phases.",
+        "introduces": "One view of them by layer.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "The layer map pulls the five phases into one view at the layers Figure 1 introduced, where a blank means no public evidence either way.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Layer map: compute, cloud accounts, data, narrow ML and media, experimentation, chat and moderation, generalist product platform, across 2019-2026.",
+              "source": "The sources of the five phases",
+              "shows": "Shows the shared line rising to the product layer in 2023 and the record going quiet after 2025."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reference-architecture",
+      "heading": "A Reference Architecture for the Shared Platform",
+      "controlling_idea": "A labeled reference architecture shows why a pooled platform couples its tenants, and the record suggests much of the separability needed in 2025 was built for other reasons.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "A4",
+          "A5"
+        ],
+        "how": "Reasons about coupling and separability where the record stops, labeled as inference."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The layer map's shared layers and its blanks.",
+        "introduces": "How a platform of those layers couples tenants, by inference.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The public posts never describe the whole platform, so a labeled inference fills the gap only to reason about coupling and separability.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: a hub-and-spoke internal developer platform whose savings ('up to €30,000 per month', October 2024) and coupling are both fleet-level.",
+              "source": "Adevinta Tech Blog, 2024, for the savings",
+              "shows": "Shows, labeled as inference, why pooling and blast radius come together."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The engineering posts confirm the fleet-level coupling.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "A renamed metrics component broke tenants' dashboards (2023); an Argo CD ApplicationSet began deleting applications across 30+ clusters (2024); the 2025 PlatformCon retrospective and Hyrum's Law.",
+              "source": "Adevinta Tech Blog 2023-2024; PlatformCon 2025",
+              "shows": "Shows documented incidents that crossed marketplace boundaries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The inferred coupling.",
+            "introduces": "Documented incidents that confirm it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "My reading is that most of the separability the 2025 transition needed was already present, built for chargeback, data quality and portability.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Coupling across tenants.",
+            "introduces": "The separability already present.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The labeled inference first, so the reader has the model of fleet-level coupling; then the documented incidents that confirm it; then the author's reading of what that platform already offered for separation. The reading needs both the model and the evidence before it."
+      }
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs the Case Illustrates",
+      "controlling_idea": "The right line between shared and local depends on the layer, on how uniform the technology is, and on how long the group expects to own each tenant.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A2",
+          "A3"
+        ],
+        "how": "Compares the five sharing options the record shows."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Separability built for other reasons.",
+        "introduces": "The options a group chooses between, with the ownership horizon as a condition.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "Once separability can be built in, the question is when to share at all, and the right line between shared and local depends on the layer, on how uniform the technology is, and on how long the group expects to own each tenant, the last condition being the one the record adds to the 2019 test.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five options: share infrastructure, narrow services, product components, converge product platforms, decentralize; what the record shows, when each is right and when it fails.",
+              "source": "The phases above",
+              "shows": "Shows the options side by side, not as a maturity ladder."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in the Record",
+      "controlling_idea": "Generalist, automotive and real-estate marketplaces behaved differently under one strategy, and what was built inside a marketplace left with it.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A3",
+          "A4"
+        ],
+        "how": "Shows separability mattering most where businesses are likeliest to be sold."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The ownership horizon as a condition.",
+        "introduces": "How it differed by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Under one group strategy, Adevinta's generalist, automotive and real-estate marketplaces differed in scale, revenue model and which were sold or put up for sale, and so in how separable a shared capability had to be.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Generalist (58 million and 88 million live ads, 2025), automotive (mobile.de 1.6 million listings, 140 million monthly visits, 2025), real estate (Spanish portals to Scout24).",
+              "source": "Adevinta Brands page; Scout24 2025",
+              "shows": "Shows where separability matters most."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "A capability built inside a marketplace leaves with that marketplace, while one built centrally has to be split or licensed.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "coches.net's natural-language car search (November 2024), about €19 a day, built locally on group infrastructure, went with Spain to EQT.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Shows a local capability leaving cleanly with its marketplace."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Differences by vertical.",
+            "introduces": "One capability that left with its vertical business.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes the Record Exposes",
+      "controlling_idea": "Sharing capabilities across marketplaces, and splitting them again, exposes five risks a Chief Architect can name in advance.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Turns the record into nameable risks."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Capabilities that leave with a marketplace or must be split.",
+        "introduces": "The risks that sharing and splitting capabilities expose.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "form": "list",
+          "controlling_idea": "Sharing capabilities across marketplaces, and splitting them again, exposes five risks: synergy cases counting only entry cost, convergence without an exit criterion, fleet coupling, trust and fraud weakened by decentralization, and tool sprawl after acquisitions.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "evidence-stops",
+      "heading": "Where the Public Evidence Stops",
+      "controlling_idea": "Eight questions, from the fate of the convergence to SCHIP's after decentralization, have no public answer, and the chapter does not fill them with inference.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "A5",
+          "A2"
+        ],
+        "how": "States the limits of the record so no lesson outruns its evidence."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Risks the record exposes.",
+        "introduces": "What the record does not answer.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "No public source answers the open questions, from whether the unified global platform shipped to what separation cost, and the chapter does not fill them with inference.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight questions with what is public and what is not.",
+              "source": "The sources above",
+              "shows": "Shows exactly where each part of the record ends."
+            }
+          ]
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Two further gaps, the mobile.de process and the OLX Brasil joint venture, are volatile as of October 2026.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The eight open questions.",
+            "introduces": "Two more that may change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Adevinta's record gives five decision rules: share by layer, grow by adoption, fund convergence separately, design for separability and expect owners to reverse strategy.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Turns the record into the author's labeled rules."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "What the record shows and where it stops.",
+        "introduces": "The rules the author takes from it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "Of the five decision rules Adevinta's record gives, the first is to decide what to share by layer, writing the 2019 two-part test into the group's architecture principles.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Grow platforms by adoption and harvest local inventions, measuring a platform by how many tenants choose it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first rule, the layer test.",
+            "introduces": "The second rule, from the documented successes.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Treat product-platform convergence as its own investment case, with scope, stage gates and a plan that survives a change of owner.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Platforms grown by adoption.",
+            "introduces": "The third rule, for convergence.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Make separability a design requirement reviewed like security, asking of each shared capability what a departing tenant takes, what is switched off and what runs twice.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: separability designed in through four connectors.",
+              "shows": "Shows the four properties that let a tenant leave."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Convergence as its own case.",
+            "introduces": "The fourth rule, for owners who may sell.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Expect owners to reverse platform strategy within a year, and keep the platform cheap to reshape in either direction.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Separability.",
+            "introduces": "The fifth rule.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The layer test comes first because the other four rules apply it: adoption is how layers that pass it grow, convergence is the case that fails it, separability and owner reversals are what the ownership horizon adds. Read in another order, the later rules would lack the test they qualify."
+      }
+    },
+    {
+      "id": "comparison",
+      "heading": "Comparing the Case to the Book's Patterns and to Veldmark",
+      "controlling_idea": "Adevinta's record supports most book patterns it touches, leaves the rest untested, and makes separability a costed question for Veldmark.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "A4",
+          "A3"
+        ],
+        "how": "Tests the book's patterns and Veldmark's choices against the case."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The author's rules.",
+        "introduces": "How the book's patterns and Veldmark's choices fare against the case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "controlling_idea": "Adevinta's record supports most book patterns it touches, leaves two untested, and adds capital strategy as a stressor.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven book patterns with Adevinta's record and a verdict each.",
+              "source": "The phases above",
+              "shows": "Shows the verdict for each pattern, with patterns the record only fails to contradict marked 'Not contradicted'."
+            }
+          ]
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Veldmark's 2027 program sits close to Adevinta's 2019 rule and further from its 2023 plan.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five Veldmark choices with their Adevinta parallels and what the case suggests.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows what the case sharpens in Common Ground; each Veldmark brand is glossed where the table first names it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The book's patterns.",
+            "introduces": "The fictional group's 2027 choices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Separability becomes a costed question when Veldmark's investor asks in November 2027 what a 2030 sale of Hearthly would cost.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "By then Hearthly uses Veldmark ID, shared OpenSearch, the Confluent backbone and the catalog and entitlement service while on Google Cloud.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows each shared dependency needing a handover, a transitional service or a switch-off date."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Veldmark's private-equity ownership.",
+            "introduces": "A concrete sale question.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "The answer is not to share less but to make each shared capability tenant-separable from its first release, which Ingrid Halvorsen prices for the board.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Transitional services for seven shared capabilities for about nine to twelve months with the rules, more than twenty months without (labeled estimate, December 2027).",
+              "source": "scenario-ledger.md; long-term-evolution",
+              "shows": "Shows the price of separability designed in versus retrofitted."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The cost question of a Hearthly sale.",
+            "introduces": "The architectural answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Nine questions let a reader test a group's sharing decisions against the case.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "A1",
+          "A2",
+          "A3",
+          "A4"
+        ],
+        "how": "Turns the thesis into review questions."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The comparison with Veldmark.",
+        "introduces": "Questions for the reader's own group.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "Nine questions put the rules and the comparison to the reader's own group: the two-part test, adoption versus mandate, convergence scope, the cost of a tenant's exit, per-tenant scoping, local inventions, the synergy case, pooled trust signals and blast radius.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Adevinta to OLX",
+    "synthesis": "Asked of every phase, the opening's three questions add up to one rule: what was shared held where the 2019 test said it would (uniform, expensive layers grown by adoption); the layer mattered most when the line moved up to the product platform, which fails the uniform-technology test and is never shown finished; and the cost was set by the owner, not the architecture, since the same layers were synergy in 2021 and separation in 2025. So: share by layer, fund product convergence as its own case, and design each shared layer for a tenant's exit.",
+    "so_what": "A Chief Architect can apply the rule from the public record alone, without knowing how Adevinta's convergence ended: share by layer, fund product convergence as its own case with scope and stage gates, and size every shared layer for the day a tenant leaves.",
+    "callback": {
+      "to": "The hook: Adevinta ran the whole centralization pendulum and wrote much of it down.",
+      "how": "The reader can now say what each swing of the pendulum shared, at which layer and at what cost, and why the last swing's outcome is unknown."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Put the two-part test and the separability question to every shared capability; read case-olx next for what happens when the portfolio, not the platform strategy, changes."
+    },
+    "hand_off": {
+      "to": "case-olx",
+      "relationship": "elaboration",
+      "carries_over": "Adevinta's closing: one group ran the whole centralization pendulum in public; the next case follows a group that built regional platforms across several continents, verticalized and retreated, a different route through the same questions.",
+      "introduces": "The question Adevinta leaves open: what happens to a shared platform when the portfolio, not the platform strategy, changes, and how a listing stack is improved in place while it does."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole case, from the phases to the questions.",
+      "introduces": "What the three questions add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p62",
+        "controlling_idea": "The opening's three questions add up to one rule, share by layer, fund product convergence as its own case and design each shared layer for a tenant's exit, because what was shared held where the 2019 test said, the product layer was the one that failed it, and the owner set what sharing cost.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "A1",
+            "A2",
+            "A3",
+            "A4"
+          ],
+          "how": "Synthesizes the chapter and calls back to the hook."
+        }
+      },
+      {
+        "id": "p63",
+        "controlling_idea": "Adevinta shows one group running the whole pendulum in public, and case-olx follows a group that built regional platforms, verticalized and retreated, taking up the question Adevinta's record leaves undocumented: what happens to a shared platform when the portfolio changes.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "A3"
+          ],
+          "how": "Hands off to case-olx."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One group's full pendulum.",
+          "introduces": "The different route and open question of the next case.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A company profile or an investment view; no judgement on whether the owners' decisions were right."
+    },
+    {
+      "topic": "Re-teaching tenancy models, consolidation sequencing, team topologies or payments design.",
+      "covered_in": [
+        "multi-country-platforms",
+        "platform-consolidation",
+        "organizing-marketplace-engineering",
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "eBay Classifieds Group before 2021, and OLX.",
+      "covered_in": [
+        "case-ebay-classifieds",
+        "case-olx"
+      ]
+    },
+    {
+      "topic": "leboncoin's, Kleinanzeigen's or mobile.de's search and ranking engines, for which no public evidence was found."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Did the 'unified global platform' for leboncoin and Kleinanzeigen ship in any form? Revisit if Adevinta or either marketplace publishes on it.",
+    "Outcome of the reported mobile.de IPO-or-sale process and the willhaben sale completion date (both volatile as of October 2026; the web-search quota ran out before they could be rechecked).",
+    "Whether the €130–165 million eCG synergy target was reported as achieved.",
+    "Primary documentation of the Schibsted-era 'Blocket platform' model."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the case as five dated phases plus a cross-phase layer map, rather than by capability, because the case's teaching value is the movement of the shared/local line over time."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated the 2023 convergence as unverified in outcome: quoted the decision and the May 2024 progress line, and refused to infer its architecture.",
+      "rejected": [
+        "Presenting it as a failure, which the record does not show."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Framed the reversal as capital strategy changing platform economics, labeled as the author's reading.",
+      "rejected": [
+        "A 'centralization was wrong' conclusion."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Veldmark comparison to raise separability (Veldmark is also private-equity owned), with a hypothetical Hearthly sale built only from ledger facts; no new canonical facts added to the ledger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the timeline, phase-quotes, inference-callout, evidence-stops, trade-off table, vertical table, diagrams/final-comparison and questions/sources criteria were inventories of contents and are replaced by the journal spec's AC-1 to AC-4 (reader outcomes: sorting a proposal by layer, predicting the chapter from its opening, the reverse outline, and the fact/inference labeling rubric, which absorbs the inference-callout criterion). No criteria were added.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so max_words is the published prose length by check_draft's count (7,038) plus 5%, 7,390."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims A1 to A5 written here from the thesis (the journal spec gives none for this post): the 2019 test and its wins, the convergence as a separate bet, the reversal as capital strategy, separability, and the limits of the evidence. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p03) so a reader of the opening can predict the evidence and the route, and a conclusion section 'From Adevinta to OLX' with a synthesis paragraph (p62) and the published closing paragraph (p63) extended with the question case-olx takes up, as the journal spec's hand-off declares. No company fact was added.",
+      "rejected": [
+        "Leaving the hand-off as the last paragraph of Questions to Ask, with no synthesis or callback."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): merged the segment table's source line into the paragraph that reads the table (p28 into p29), and the one-line announcement of five rules into the first rule (p51 into p52); p38's controlling idea now names the decentralization costs; section flows added for phase-1, reference-architecture and chief-architect, and phase-3's rationale explains the August 2024 ML Golden Path. Words unchanged in substance; no fact moved or cut.",
+      "rejected": [
+        "The structural merges listed in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate; one failure at fault in the spec: the synthesis said 'one rule seen from two ends' after three questions, corroborated by both flow readers). Changed conclusion.synthesis and p62 to 'the three questions add up to one rule'. Draft revised at the failing units: roadmap names where the evidence is strongest and weakest; EU5 glossed in the timeline; timeline's Jan 2020 entry called the write-up of the 2019 talk (as Phase 2 says); 'was not known at signing' and the divestment generalization marked 'my reading'; verticalization glossed; 'AR 2023' spelled out; C2C expanded; sibling book named as RECONCILED; source dates added in the sentence for Fisher (2023), the dispute back office (February 2023), the mitigations (the 2023 and 2024 posts), the mobile.de valuation (Financial Times, October 2025, already the timeline's source) and FINN.no's staying with Schibsted (the 2019 demerger of the non-Nordic marketplaces, already in the timeline); opening sentences for p29-p30, Trade-offs (p45 moved before its table), Verticals, Failure Modes and Questions; Veldmark's brands, Common Ground and Veldmark ID glossed from the ledger. Words paid by shortening this pass's own roadmap and conclusion; max_words not raised.",
+      "rejected": [
+        "Raising max_words.",
+        "Paraphrasing the repeated 2023 'historically... chat and moderation' quotation (published text; one reader only)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate; one failure at fault in the spec: p37's controlling idea joined two claims). p37 rewritten as one idea (the move carried out knowing its risks), and the failure-modes lead-in and transition reworded so all five risks fit (one reader's spec-fault note). Draft revised at the corroborated units: roadmap 'the reading rules'; FINN.no's staying with Schibsted moved to where FIAAS is introduced and FIAAS's Adevinta role pointed at Phase 2; layer-map column relabeled 2023-2024 (its cells hold October and December 2024 figures) and 1,157 shown as 732 + 425; Figure 3's last caption sentence labeled 'By inference'; Veldmark's brand glosses moved to the start of p58; conclusion names the opening's three questions, adds the convergence half of the rule and states the so-what plainly. No company fact added, changed or removed.",
+      "rejected": [
+        "Sourcing or relabeling the five remaining AC-4 statements on inference (recorded in open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3 (escalate: one corroborated failure at fault in the spec, the dispute back office separated from its table row; and draft-fault failures after the last round). Close-out without a fourth round: moved the dispute back office paragraph (p26, with Figure 3 and its callout) directly after the shared-services table, as both readers proposed, and rewrote the two transitions that move changes; split the stacked FIAAS sentence; p29's link to the convergence stated (leboncoin and Kleinanzeigen, not mobile.de); the layer-map lead-in now says what the table shows; p47 opens with the coches.net example; the vague closing sentence cut; the questions lead-in shortened to stay within max_words. No company fact added, changed or removed. The check report is stale after these edits.",
+      "rejected": [
+        "A fourth round.",
+        "Raising max_words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims A1 to A5 accepted under the author's delegation, 2026-11-12. Thesis-rubric failure fixed inside the post spec's own supporting claims (thesis unchanged): A2 no longer adds 'fails the uniform-technology condition'; A3 no longer adds 'platform topology must match the capital strategy' or the Spain carve-out; A4 drops 'much of it existed for other reasons'; A5 now backs the claim's 'never reports the convergence completed or its savings realized' instead of stating evidence discipline."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "AC-4 items, accepted under the author's delegation, 2026-11-12: interpretation labeled 'my reading' in place, wording otherwise as published: Phase 3 'each with its own stack'; layer-map Data cell 'federated data products on a shared substrate'; Veldmark table 'mobile.de stayed the most distinct, most monetized and most separable asset'. Kept as published and listed for the author (facts with no source elsewhere on the page; no source added): Phase 1 Subito, InfoJobs and Segundamano in the Schibsted-era portfolio; Phase 3 the 2022 South Africa sale and the 2023 Hungary exit; book-patterns table 'adoption slow'; leboncoin's 'Adyen reported as payment partner' (Wikipedia, n.d., read October 2026, as in the source list)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Book-patterns table vs P9-5, accepted under the author's delegation, 2026-11-12: 'Consolidate enabling layers first, core product last' relabeled from 'Supported, by both the success and the reversal' to 'Not contradicted; the product step's outcome is not public', since the record never reports the convergence's outcome; 'Put language models in front of structured search' relabeled from 'Supported' to 'Not contradicted' (the record shows the build, not the result). Other rows keep 'Supported' (documented wins: voluntary platform growth, Spain's data contracts and time to usable data, the documented decentralization costs). The lead sentence and p57's controlling idea now say 'supports most ... leaves two untested'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Veldmark name burst (round 3, both readers), accepted under the author's delegation, 2026-11-12: the sentence listing four brands and Yardstick removed from p58's opening; each name is glossed where the table first uses it (Tradeyard the generalist brand, Hearthly real estate, Motorvane automotive, Keybridge the software brand for estate agents, Yardstick Tradeyard's old monolith). Common Ground kept. No Veldmark detail cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Vertical Differences opening (round 3, one reader), accepted under the author's delegation, 2026-11-12: p46 now opens on what the table shows (scale, revenue model, which marketplaces were sold or put up for sale) and why it matters (how separable a shared capability had to be), instead of 'how long the group would keep a marketplace'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 data paragraph, accepted under the author's delegation, 2026-11-12: 'owned by the verticals' read as Adevinta Spain's verticals, the subject of the cited December 2024 post; wording clarified to 'Its domain data products were owned by Adevinta Spain's verticals'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept as published under the author's delegation, 2026-11-12 (rule: keep the published text where no option is clearly better): the hand-off's 'question Adevinta leaves open' (follows the journal spec's case-olx transition_in); 'seven shared capabilities' (ledger estimate, labeled, developed in long-term-evolution); the documented ARM/AMD savings inside the reference-architecture INFERENCE callout (published callout); the flow-rubric merges not taken (shared Part IX headings); the round-2 minor findings (repeated 2023 quotation, 'Eurek8s', unnumbered rules, late country glosses, How to Read clause)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities: none of the planned checklist, summary, dialog or comics exists; modalities stays empty until they are written. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised from 7,390 to 7,450 (+0.8%, within the 10% allowed under the author's delegation, 2026-11-12) to fit the 'my reading' labels, the in-table Veldmark glosses and the rewritten Vertical Differences opening (draft 7,411 words). No published text cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: hand-off 'the question Adevinta leaves open' → 'the question Adevinta's record leaves undocumented … a shared platform': Phase 5 shows the portfolio changing, so the question is not open, only undocumented."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "multi-country-platforms, platform-consolidation, organizing-marketplace-engineering, data-platform, experimentation, ml-platform, transactions-and-payments, long-term-evolution",
+      "contributed": "Patterns the case tests."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md",
+      "contributed": "Common Ground decisions used in the comparison."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-adevinta.md, brief-platform-data-ml.md, brief-monetization-economics.md",
+      "contributed": "Evidence base (no eBay Classifieds brief existed when the page was written)."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (case-adevinta, part-9, case-olx entries)",
+      "contributed": "Intent, acceptance criteria, thesis, role and the hand-off relationship."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Reports 2019 and 2023; Aurelia UK Feederco Ltd Strategic Reports 2024 and 2025",
+      "contributed": "Strategy, segment revenue, convergence and decentralization quotes (re-verified 19 October 2026)."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta press releases 2021-2025",
+      "contributed": "Acquisition, synergies, divestments, Q1 2024 convergence statement (re-verified)."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog 2022-2026; Galo Navarro's 2020 write-ups",
+      "contributed": "Platform, data, ML, experimentation and dispute-component evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Kleinanzeigen and AVROTROS Radar pages",
+      "contributed": "Buyer-protection flows."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalations auto-resolved under the author's delegation: supporting claims aligned with the thesis; AC-4 interpretation labeled 'my reading'; two pattern verdicts relabeled 'Not contradicted' per P9-5; Veldmark names glossed in the table; Vertical Differences opening and p46 rewritten; open_questions reduced to four research follow-ups. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): sections and paragraphs reconstructed from the published text; roadmap paragraph and a two-paragraph conclusion added; spec.md removed. Flow rubric (sound with notes): two one-line units merged into their neighbours. Round 1 draft check: escalate on a spec-fault wording in the synthesis (fixed in spec); draft-fault units revised. Round 2: escalate on a spec-fault paragraph (p37, fixed in spec); corroborated draft units revised. Round 3: escalate; close-out fixes applied (dispute paragraph moved beside its table, five local rewrites); check report stale."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 3 keeps a Kafka wordmark beside the 'Kafka' label (attempt 2). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Trade-offs heading capitalized as in the 45 chapters. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Restored three renamed headings flagged by the cross-chapter consistency check: Trade-Offs the Case Illustrates and Vertical Differences in the Record, which every Part IX case shares, and A Reference Architecture for the Shared Platform, which matches 50-case-property-portals. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,355 → 6,240 prose words; 6 headings renamed to state their content; evidence limits moved from the intro into How to Read This Case; buried points moved to paragraph openings; contested-layers row rewritten from the 2024 risk register. No facts, sources or links removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: re-verified 10 load-bearing claims; dated the Kleinanzeigen provider history (OPP 2020-2023, Adyen per 2026 help page) and Marktplaats OPP (2022); aligned the Hearthly-sale worked question with long-term-evolution; expanded OCR/EU5; American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7450
+  }
+}

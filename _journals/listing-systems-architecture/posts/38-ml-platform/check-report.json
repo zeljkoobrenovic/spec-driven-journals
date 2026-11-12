@@ -1,0 +1,554 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/38-ml-platform/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/38-ml-platform/index.md",
+  "spec_sha": "6c44659ce3056f4d",
+  "draft_sha": "7437fecd9c67a1be",
+  "run_at": "2026-11-12T22:28:21+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the chapter will cover and the Valuo storyline",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: models drive key decisions and degrade silently",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "ML failures are mostly architecture and governance failures",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three takeaways: tier by decision, platform on features/labels, inform is not commit",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Marketplace models pile up unplanned and become unmanageable",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Chapter scope and boundaries against neighbouring chapters",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Valuo as the running example: one model, three different decisions",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections / evidence sources used",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 146 Models and One Price Badge ¶1",
+      "summary": "Veldmark's first model inventory exposes ownership and monitoring gaps",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 146 Models and One Price Badge ¶2",
+      "summary": "Three requests that would use Valuo in different ways",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 146 Models and One Price Badge ¶3",
+      "summary": "Judge each use by who loses money when the estimate is wrong",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: Use Cases, Decision Tiers and the Platform ¶1",
+      "summary": "Glossary of core ML platform terms",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Use Cases, Decision Tiers and the Platform ¶2",
+      "summary": "Governance follows the decision; four decision tiers",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Use Cases, Decision Tiers and the Platform ¶3",
+      "summary": "Key properties of tiers: per use, promotion is a relaunch, gates erase labels",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Use Cases, Decision Tiers and the Platform ¶4",
+      "summary": "Use-case table by tier, serving mode and label source",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Use Cases, Decision Tiers and the Platform ¶5",
+      "summary": "Public evidence that portfolios concentrate in trust/safety and search",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶1",
+      "summary": "Seven components of a listings ML platform",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶2",
+      "summary": "Batch or event-triggered scoring stored on the listing is the default",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶3",
+      "summary": "Zillow floor-plan detection as lifecycle-attached batch inference",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶4",
+      "summary": "In-engine scoring for ranking models",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶5",
+      "summary": "No classifieds firm has documented a feature store",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶6",
+      "summary": "Listing-intrinsic features make a feature store unnecessary for many models",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶7",
+      "summary": "Rule for when to adopt a feature store; log features at prediction time",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶8",
+      "summary": "Marketplace labels are biased proxies",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶9",
+      "summary": "Label pipelines need ownership because labels set what is optimized",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: What an ML Platform for Listings Contains ¶10",
+      "summary": "Four listing-specific drift sources to monitor",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶1",
+      "summary": "The public record of marketplace ML platforms is thin and dated",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶2",
+      "summary": "Adevinta's golden path: one way to register and deploy, not one runtime",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶3",
+      "summary": "OLX consolidating ranking code across brands / OLX choosing team ownership over runtime efficiency",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶4",
+      "summary": "OLX learned offline evaluation is not sufficient",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶5",
+      "summary": "Seller price guidance in non-property marketplaces",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶6",
+      "summary": "Published valuation error and why on-market error is lower / data licenses now govern model training",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶7",
+      "summary": "Zillow Offers wind-down and its stated causes",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "What Marketplaces Have Documented ¶8",
+      "summary": "Four architectural lessons from Zillow Offers for commit-tier models",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶1",
+      "summary": "Valuo's design and back-tested accuracy",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶2",
+      "summary": "Lyon apartment worked example of the badge",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶3",
+      "summary": "Forum turns the badge into explicit rules",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶4",
+      "summary": "Two badge rules enforced by architecture: data exclusion and clean label",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶5",
+      "summary": "Badge launch under the platform decision as a district-randomized experiment",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶6",
+      "summary": "Guaranteed-offer product declined as an unvalidated commit-tier use",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶7",
+      "summary": "Lender license sent to review with separate model evidence under the AI Act",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶8",
+      "summary": "AI Act high-risk dates and credit scope",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: Valuo and the Pricing Hint ¶9",
+      "summary": "Motorvane rating shows undeclared consumers raising a model's tier",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Shared, Per-Brand or Per-Market Models ¶1",
+      "summary": "Deciding model by model whether to share across brands",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Shared, Per-Brand or Per-Market Models ¶2",
+      "summary": "Rule: share platform and registry, share only generic models",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Veldmark's hybrid platform: registration first, migration later",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Main ML cost drivers and architectural cost controls",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Verticals differ in consequence, labels and regulation, esp. jobs",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Failure modes as missing parts of the design",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Architect owns the inventory and enforces registration",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Governance depth scales with tier, with concrete gates per tier",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Registry lifecycle states for every model",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Make label events part of other teams' contracts",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Fund the platform as a product measured by adoption",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Tier promotion committing money needs a board-level decision",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶7",
+      "summary": "Indicators to watch",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten design-review questions",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "From Models to Many Markets ¶1",
+      "summary": "Synthesis: tiers, platform and governance answer who bears the error",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "From Models to Many Markets ¶2",
+      "summary": "Hand-off to generative AI and multi-country chapters",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 55 aligned units' independent summaries match the controlling ideas of their spec paragraphs (p01-p55) in spec order; the five introduction callouts are thesis/roadmap placements and match no paragraph (null).",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The three units the outliner marked two_ideas each carry the single controlling idea the spec declares: Introduction ¶4 (p04) is one roadmap naming sections and evidence kinds; Documented ¶3 (p25) is unified by its opening sentence 'OLX shares code and tools across brands but decides team ownership case by case'; Documented ¶6 (p27) is unified as what a valuation product depends on ('A valuation product depends on data rights as well as accuracy'), which the spec's controlling idea bundles.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim S1-S6 as declared in its spec paragraph's advances_thesis; no paragraph is off-thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/documented/paragraphs (p29)",
+      "draft_locus": "What Marketplaces Have Documented ¶7",
+      "quote": "It also records that Zillow converted \"only about 10% of the serious sellers who ask for a Zillow Offer\"",
+      "finding": "The paragraph ends on this quotation and no sentence says what the 10% conversion figure shows; the next paragraph's four lessons do not refer to it (lesson 2 on selection would be the natural home). Every other quotation, table and figure is followed or captioned by a sentence saying what it shows.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions (paragraph p02-p37, p44, p40, p47-p52, p55; section starts concepts, architecture, documented, valuo, sharing, trade-offs, failure-modes, ca-view, questions; conclusion) express their relationship and pick up the declared known information at the boundary between the aligned units.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/valuo/paragraphs (p38) transition_in: similarity",
+      "draft_locus": "In Practice: Valuo and the Pricing Hint ¶8 -> ¶9 (Motorvane)",
+      "quote": "Motorvane showed the pattern earlier in 2027.",
+      "finding": "Declared similarity carrying Valuo's three uses decided by tier, introducing a vehicle model whose second use nobody decided. 'The pattern' names no pattern: the preceding unit is the AI Act regulation note, and the paragraph's own point (an undeclared consumer moving a model up a tier) is not a pattern the Valuo case showed. Both flow readers read it as a new lesson rather than 'the same pattern'. The opening must say which similarity (one model, several consumers, each with its own tier) it picks up.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/trade-offs/paragraphs (p42) transition_in: additional_support",
+      "draft_locus": "Trade-offs ¶1 (build-or-buy table) -> ¶2 (What ML costs)",
+      "quote": "ML cost in marketplaces is dominated by three items: GPU training and serving for image and language models, scoring the whole inventory repeatedly, and the people who maintain models nobody uses.",
+      "finding": "Declared additional_support carrying the platform and build-or-buy choices. The paragraph opens as a stand-alone topic and never ties cost to those choices, which is why both flow readers found the cost subsection out of place under Trade-offs.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/verticals transition_in: sequence",
+      "draft_locus": "Trade-offs ¶2 -> Vertical Differences ¶1",
+      "quote": "Verticals differ in consequence, labels and regulation, as the table shows.",
+      "finding": "Declared sequence carrying the group-wide platform and cost decisions into how the verticals differ. The section opens on a bare table and its first sentence refers only to that table; nothing picks up the group-wide decisions, so both flow readers could not say why the section sits here ('its position is reasonable but not argued').",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the organising principle as problem -> concepts -> design -> evidence -> application -> options -> guidance -> close, agreeing with the declared prerequisite_order with problem_solution and grouping; no section's position is 'unclear' to either reader. Material lost-thread points are listed as separate failures.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/architecture/paragraphs (p17, p18)",
+      "draft_locus": "Architecture: The feature store question ¶5-¶6",
+      "quote": "Since most listing models read the listing itself, feature stores are the most oversold part of ML platforms in this industry.",
+      "finding": "The premise is asserted as a reason in p17's opening clause, a paragraph of company evidence follows, and p18 then restates it as the explanation ('Many listing models do not need one, because they consume listing-intrinsic features'). Both readers re-read the opening sentence. The spec order (claim, evidence, why) is sound; the draft's opening clause pre-empts p18. Bridge from serving modes without stating the reason, and let p18 give it.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 5 ('The opening premise is only established two paragraphs later ... the claim reads as unsupported when it first appears')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/documented (p23, p28)",
+      "draft_locus": "What Marketplaces Have Documented ¶1 and ¶5",
+      "quote": "Beyond platforms, marketplaces also use models to give sellers price guidance, though they rarely publish how accurate it is.",
+      "finding": "The section switches midway from platform evidence (Adevinta, OLX) to pricing and valuation products, and readers only saw on reaching Zillow Offers that the second half builds toward it. The spec's grouping is sound; the draft never announces the two halves (p23 speaks only of 'what marketplaces have actually built') nor says the pricing evidence leads to the commit-tier case.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 7 ('switches here from platform evidence ... to use-case evidence ... I had to reset what this section was collecting')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/valuo/paragraphs (p35); /sections/trade-offs/paragraphs (p41); flow.rationale",
+      "draft_locus": "In Practice ¶5 and Trade-offs ¶1",
+      "quote": "under Veldmark's ML platform decision of **Tuesday 9 November 2027**, which made one group model registry and one prediction-log standard mandatory for every production model (its options are weighed under Trade-offs)",
+      "finding": "The case launches under a decision whose reasoning comes two sections later, and Trade-offs then re-announces it ('The decision of Tuesday 9 November 2027, under which the Valuo badge launched'), so readers meet it twice out of order. The spec requires it: p35's controlling idea names the 9 November decision while the flow places Trade-offs after the Valuo section. Either drop the decision from p35's controlling idea or move the platform-strategy decision before the case.",
+      "fault": "spec",
+      "corroborated_by": "flowB item 2 ('This decision appears here before the reader knows it exists ... the decision still arrives out of order')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/valuo/paragraphs (p38); /sections/valuo/flow",
+      "draft_locus": "In Practice: Motorvane: the same pattern in vehicles",
+      "quote": "Motorvane showed the pattern earlier in 2027.",
+      "finding": "After the three Valuo decisions and the regulation note, the section steps back to April 2027 for a new lesson (undeclared consumers raise a model's tier); both readers read it as an appendix and both proposed moving it (into Concepts beside 'Tiers attach to uses', before the badge rules, or into Failure Modes). The difficulty comes from the position the spec gives p38 (section flow: 'Motorvane closes'), which the sharing section's transition also relies on.",
+      "fault": "spec",
+      "corroborated_by": "flowB item 8 ('Its point ... belongs to the tier idea ... Coming after the regulation note, it reads like an appendix to the section')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/trade-offs/paragraphs (p41)",
+      "draft_locus": "Trade-offs ¶1, bridge to the build-or-buy table",
+      "quote": "The table below applies the same logic to capabilities: build what differentiates, buy what is commodity.",
+      "finding": "The logic just stated is 'registration first, migration later' (govern before migrating); build-what-differentiates is a different rule, so 'the same logic' points at nothing and both readers re-read the paragraph looking for it.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 10 ('The bridge does not match what precedes it')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/trade-offs/paragraphs (p42)",
+      "draft_locus": "Trade-offs: What ML costs: GPUs, rescoring and unused models",
+      "quote": "ML cost in marketplaces is dominated by three items",
+      "finding": "The cost subsection presents no options and reads as a separate topic under a Trade-offs heading. The spec places it there as support for the platform and build-or-buy choices; the draft never makes that link (see the p42 transition failure).",
+      "fault": "draft",
+      "corroborated_by": "flowB item 11 ('sits under Trade-offs but is not a trade-off between options')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ca-view/paragraphs (p48)",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "quote": "The registry enforces the same lifecycle for every model, with the tier deciding how heavy each gate is.",
+      "finding": "Every other paragraph of the section opens with a bold imperative; this descriptive paragraph and Figure 6 break the run between 'Scale governance' and 'Decide who owns labels', and both readers paused. The spec's order is fine; the paragraph can be cast as the same kind of directive.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 12 ('interrupts the run of bold-led directives ... the pattern breaks for a moment')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/valuo/paragraphs (p38)",
+      "draft_locus": "In Practice: Motorvane ¶ (last sentence)",
+      "quote": "That second consumer is exactly what Priya's inventory did not record in September;",
+      "finding": "Presented as a callback, but the scene listed only missing owners, monitoring and reproducibility, never unrecorded consumers; reader B went back to check and found nothing. Reported by one reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Terms the audience does not know (decision tiers, feature store, golden path, point-in-time correctness, training-serving skew, drift kinds, model registry, model cards, prediction log, DVF, iBuying, Zillow Offers, AI Act Annex III, Digital Omnibus, Hearthly Direct, the 9 November decision) are defined at or before first use; Julien Marchand, the Keybridge neutrality decision and the P2B Regulation are in audience.already_knows. Paragraph openings start from known material.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/valuo/paragraphs (p38)",
+      "draft_locus": "In Practice: Motorvane ¶",
+      "quote": "the cut arrives in that day's 17:00 DMS snapshot",
+      "finding": "DMS (dealer management system) is never expanded in the chapter and is not in audience.already_knows. Reported by one flow reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on the intriguing example the spec declares (the unplanned accumulation of models), bridges to the chapter's question, states the thesis in the callouts and gives a roadmap; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new idea or evidence, does not end on a restated thesis alone (it ends on the hand-off), and is none of the four weak types.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p54 joins tier, platform (labels, log, registry) and the promotion rule into one answer that no section states, shows it in Valuo, and says why it matters: 'Without an inventory like Priya's, a group cannot tell which models already commit money.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p54 returns to Ingrid's 8% question ('They answer Ingrid's question of who loses money when the estimate is 8% wrong') and to the unplanned portfolio via Priya's inventory, as callback.to declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted all eleven sections in the actual order (scene, use cases and tiers, platform, documented record ending on Zillow Offers, Valuo's pricing hint with the other two requests, sharing, trade-offs, verticals, failure modes, Chief Architect's view, questions), the themes the expected answer names (governance by tier; features, labels and prediction log as hard parts; inform versus commit with Zillow Offers), the evidence (OLX, Adevinta, Uber, Airbnb engineering posts, Zillow filings, ML research, EU AI Act, fictional Veldmark) and a declarative practitioner tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader classified by decision (badge inform; guaranteed offer commit; bank license credit-adjacent and commit-like, sent to review), shipped the badge under the expected rules (interval width and comparables threshold, thresholds from the interval, explanation, labels from recorded sale prices only, pipeline-enforced exclusion, weekly segment monitoring, named owners, district-randomized experiment), declined the offer until back-tested on resale over a holding period and on accepting owners with a capital limit and independent sign-off, and required registration with owner, consumers, tiers and a prediction log. Small gaps against expected: registration's label definition and cost were not named, and independent sign-off was attached to the offer rather than stated for the mortgage input (the chapter's lender paragraph frames it as review with separate evidence).",
+      "severity": "major"
+    }
+  ]
+}

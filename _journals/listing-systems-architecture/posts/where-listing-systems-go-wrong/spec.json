@@ -1,0 +1,3277 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "where-listing-systems-go-wrong",
+  "journal": "listing-systems-architecture",
+  "part": "preface",
+  "title": "Unlisted: Fifteen Ways Listing Systems Go Wrong",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (unit for unit, in its own order except where the decision log records a move) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criterion AC-1, thesis and role are copied unchanged from the post's entry in journal-spec.json. Each pattern subsection's seven units (quote with figure, what it looks like, why it happens, what it costs, an illustration, the remedy direction, where this book helps) are paragraphs of the one section 'Fifteen Patterns to Recognize'; tables, figures and the matrix are evidence.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The fifteen pattern names, with the warning signs and mechanism of each.",
+        "That the patterns form chains, and which patterns start most chains."
+      ],
+      "believe": [
+        "Each pattern is the residue of locally reasonable decisions, and its cost shows up as lost liquidity rather than in a project budget."
+      ],
+      "can_do": [
+        "Name the pattern behind a described failure and look upstream for the missing contract, owner or metric definition that started its chain.",
+        "Find the chapters that address a given pattern."
+      ]
+    },
+    "audience": {
+      "who": "Experienced architects and engineering leaders working on listing marketplaces: chief and enterprise architects of marketplace groups, principal and staff engineers, search, data and ML leads, platform-engineering leads, product and engineering directors of classifieds, real-estate, automotive, jobs and recommerce marketplaces, and technology leaders integrating acquired marketplaces.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision.",
+        "From the introduction: the liquidity-machine claim, liquidity as the chance that a listing and a buyer find each other quickly, Veldmark in one paragraph, and a short list of pattern names."
+      ],
+      "does_not_know": [
+        "Marketplace economics: liquidity, network effects, multi-homing.",
+        "Search and ML vocabulary: learning to rank, percolation, hybrid retrieval.",
+        "Regulatory detail: DSA statements of reasons, DAC7, P2B.",
+        "Vertical specifics: VINs, property and vehicle feed standards.",
+        "What the pattern names mean (Ghost Inventory, Feed Roulette and the rest).",
+        "Platform vocabulary not yet defined in reading order: contract, read model, entitlement, system of record as used here."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a failure the page does not describe, a reader names the pattern and the upstream cause to fix first.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A dealer's nightly feed arrives with half its cars missing, and the next morning those cars are gone from search and from saved-search alerts. Using only this page: which patterns are these, and where would you fix it first?",
+        "expected": "Feed Roulette leading to Ghost Inventory (or a removal problem); fix the feed contract first, so it says what an absent car means, rather than patching search or alerts."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a symptom the page describes only in passing, the reader names the pattern, its upstream patterns and the chapters to read.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Paid listings fill more and more of the first page while contacts per search fall. Using only this page: which pattern is this, which patterns upstream feed it, and which chapters would you read?",
+        "expected": "Multiplier Creep, fed by Vanity Liquidity and Billing by Guesswork (the monetization chain); chapters such as ranking, monetization-models, products-and-entitlements, experimentation, advertising-platforms and marketplace-regulation."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader of the opening alone (callouts and paragraphs before the first heading) can predict the page's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this page discuss, in what order, and with what kind of evidence?",
+        "expected": "Fifteen patterns described one by one (quote, signs, mechanism, cost, Veldmark illustration, remedy, chapters), then the chains between them, the first indicators, the chapter matrix, and how to use the names; evidence from dated public sources and a fictional group."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "In which recurring ways do listing systems lose liquidity, and what do the failures have in common?",
+    "claim": "Listing systems lose liquidity in fifteen recurring patterns, and what they have in common is that each began as a locally reasonable decision under one team's target and that they travel in chains that start at a missing contract, a vanity metric or a hand-off nobody owns.",
+    "disputed_by": "The view that each marketplace failure is a separate defect or a single bad decision in the system that showed the symptom, to be fixed there.",
+    "so_what": "Faced with a symptom, the reader names the pattern and breaks the chain at its origin, usually with a contract, an owner or a metric definition, instead of funding a downstream fix that will have to be made again.",
+    "how_why": "A team that hard-codes the first category tree, accepts a dealer's feed as it is or adds one more ranking boost makes a sensible choice under its own target; the cost is paid later in contacts that never happen, alerts for sold items and scams in the inbox, where no project budget records it. A feed with no contract for absence produces Ghost Inventory downstream, and a vanity metric licenses Multiplier Creep.",
+    "supporting_claims": [
+      {
+        "id": "W1",
+        "claim": "Listing systems lose liquidity through fifteen recurring patterns, each recognizable by observable warning signs, so a team can name the one in front of it."
+      },
+      {
+        "id": "W2",
+        "claim": "Each pattern begins as a locally reasonable decision under one team's target, so it is explained by its mechanism (incentives, ownership gaps, missing contracts, the wrong metric), not by blame."
+      },
+      {
+        "id": "W3",
+        "claim": "Each pattern's cost lands as lost liquidity, trust, speed and money, far from the project that caused it, and the public record documents that cost where anyone has published it."
+      },
+      {
+        "id": "W4",
+        "claim": "The patterns travel in chains that start at a missing contract, a vanity metric or a hand-off nobody owns, so a downstream fix returns unless the chain is broken at its origin."
+      },
+      {
+        "id": "W5",
+        "claim": "Each pattern has a remedy direction, a first indicator to measure and chapters that address it, so a reader can go from a named pattern to the place in the book that fixes it."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the book its shared names for failure, so every chapter can open by naming the patterns it works on.",
+    "supports": [
+      "PF-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "Fifteen Patterns to Recognize: four families in pipeline order, data (the way in and the copies), marketplace (where buyers meet listings), portfolio and measurement (beneath every stage)."
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "Each pattern's seven units: quote, signs, mechanism, cost, illustration, then remedy and chapters."
+      }
+    ],
+    "rationale": "Each section uses what the one before supplied. The chains need every pattern's name and mechanism; the indicators are read 'with the mechanism in mind' and serve the chains' advice to look upstream; the matrix uses the column codes of names the reader now knows and sits beside the indicators as the second per-pattern reference; the closing habits ask the reader to pair each pattern with its indicator and to look upstream, so they need both. The indicators come before the matrix because they confirm which pattern is active, and the matrix then says where to read about it. With the chains first, the reader would meet fifteen names linked by arrows before knowing any of them; with the matrix before the patterns, its codes would be unreadable."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "Sold bikes stay in alert e-mails. One flat appears three times. A dealer's stock vanishes overnight. A ranking boost added in 2021 is still there, and nobody can say what it costs."
+    },
+    "bridge": {
+      "from_reader_world": "The introduction's liquidity machine, which turns fresh, trustworthy supply into matches, and the symptoms readers see in their own marketplaces.",
+      "to_topic": "Those symptoms are losses of coherence that recur as fifteen named patterns."
+    },
+    "thesis_statement": {
+      "text": "Most patterns are the residue of locally reasonable decisions by teams accountable for one stage, and they accumulate into chains that start at a missing contract, a vanity metric or a hand-off nobody owns.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p005."
+    },
+    "roadmap": {
+      "placement": "Paragraph p006, after Figure 1.",
+      "promises": [
+        {
+          "promise": "Describe the fifteen patterns in four families, each with signs, mechanism, cost, illustration, remedy and chapters.",
+          "kept_in": [
+            "patterns"
+          ]
+        },
+        {
+          "promise": "Show the chains between the patterns.",
+          "kept_in": [
+            "chains"
+          ]
+        },
+        {
+          "promise": "Give the first indicator to ask for each pattern.",
+          "kept_in": [
+            "indicators"
+          ]
+        },
+        {
+          "promise": "Map the chapters that address each pattern.",
+          "kept_in": [
+            "matrix"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p001",
+        "controlling_idea": "The introduction's liquidity machine turns fresh, trustworthy supply into matches, and this page names the ways that machine loses liquidity so the rest of the book can point back to them.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "W1"
+          ],
+          "how": "Places the patterns as ways the machine from the previous page loses liquidity."
+        }
+      },
+      {
+        "id": "p002",
+        "controlling_idea": "Such a machine rarely fails dramatically; what fails is coherence, seen in sold bikes in alert e-mails, one flat listed three times, a dealer's stock vanishing overnight and a 2021 ranking boost nobody can price.",
+        "function": "example",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Sold bikes stay in alert e-mails; one flat appears three times; a dealer's stock vanishes overnight; a ranking boost added in 2021 is still there and nobody can say what it costs.",
+            "shows": "Loss of coherence is undramatic and spread across systems, which is why it needs names."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "W1"
+          ],
+          "how": "Shows the symptoms the patterns name."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The machine and its liquidity.",
+          "introduces": "How it fails: slowly, by losing coherence, not dramatically.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p003",
+        "controlling_idea": "The page names the fifteen failure patterns seen most often, as shorthand that lets a review move straight to mechanism and remedy and that every chapter's opening callout links back to.",
+        "function": "claim",
+        "advances_thesis": {
+          "supports": [
+            "W1",
+            "W5"
+          ],
+          "how": "States that the patterns are a shared, recognizable vocabulary tied to chapters."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The symptoms of lost coherence.",
+          "introduces": "Names for them, used across the book.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p004",
+        "controlling_idea": "Each pattern is described the same way: a role's quote, the warning signs, the mechanism, the cost with a public example where one exists, a fictional Veldmark illustration, the remedy direction and the chapters.",
+        "function": "description",
+        "advances_thesis": {
+          "supports": [
+            "W1",
+            "W3",
+            "W5"
+          ],
+          "how": "Announces the anatomy every pattern subsection follows."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The fifteen names.",
+          "introduces": "The fixed anatomy of each description, and what is invented.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p005",
+        "controlling_idea": "None of the patterns implies incompetence: most are the residue of reasonable decisions by teams accountable for one stage, and they accumulate into chains that start at a missing contract, a vanity metric or a hand-off nobody owns; no team accountable for one stage sees a whole chain, which is why they need a name and an owner.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: three engineers each make a small sensible change; together the changes jam the listing conveyor.",
+            "shows": "The failure is the accumulation, visible only to someone accountable for the whole marketplace."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "W2",
+            "W4"
+          ],
+          "how": "States the page's thesis."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The mechanism named in each description.",
+          "introduces": "What the mechanisms have in common: locally reasonable decisions, accumulating in chains.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p006",
+        "controlling_idea": "The page first describes the fifteen patterns in four families, then shows the chains between them, gives the first indicator to ask for each, maps the chapters that address each, and ends with how to use the names.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "W1",
+            "W4",
+            "W5"
+          ],
+          "how": "Gives the order in which the page establishes its claims."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The thesis.",
+          "introduces": "The order of the page.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "patterns",
+      "heading": "Fifteen Patterns to Recognize",
+      "controlling_idea": "Each of the fifteen patterns has warning signs, a mechanism rooted in one team's reasonable choice, a cost in liquidity, trust, speed and money, a remedy direction and chapters that address it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "W1",
+          "W2",
+          "W3",
+          "W5"
+        ],
+        "how": "Establishes each pattern's signs, mechanism, cost and remedy."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Families in pipeline order let the reader place each pattern in the machine before its details; within a pattern the fixed anatomy moves from symptom to cause to cost to remedy, so every description can be compared with the others."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The names and the roadmap.",
+        "introduces": "The families, then each pattern in turn.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p007",
+          "controlling_idea": "The fifteen patterns fall into four families, data, marketplace, portfolio, and measurement and control, and each has a one-line warning sign.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table of the fifteen patterns with one warning sign each.",
+              "shows": "A reader can match a symptom to a name at a glance and has a gloss for every name used later."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives every pattern a name and a recognizable sign before any is described in depth."
+          }
+        },
+        {
+          "id": "p008",
+          "controlling_idea": "The families strike at different points of the pipeline: the data family on the way in and in published copies, the marketplace family where buyers meet listings, and the portfolio and measurement families underneath every stage.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: where each pattern strikes along the liquidity pipeline.",
+              "shows": "Portfolio and measurement patterns are conditions that make every stage worse, not stages."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Locates each pattern in the liquidity machine."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four families.",
+            "introduces": "Where along the pipeline each family strikes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p009",
+          "controlling_idea": "Costs are described along four dimensions: liquidity, trust, speed and cost (money spent or refunded).",
+          "function": "definition",
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Defines the dimensions each cost paragraph uses."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The families and where they strike.",
+            "introduces": "How their costs will be measured.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p010",
+          "controlling_idea": "A category product manager's promise of a new category 'in about six weeks, once search, SEO and the app team have each done their part' shows a delay accepted as normal.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"We can have the new category live in about six weeks...\" (a category product manager), with Figure 3: the category tree wired into six consumers while an E-bikes leaf waits six weeks.",
+              "source": "Composite quote attributed to a role",
+              "shows": "The delay is treated as routine and spread across teams, so no one sees it as a design fault."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows The Category Straitjacket as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four cost dimensions.",
+            "introduces": "The next pattern, The Category Straitjacket, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p011",
+          "controlling_idea": "In a straitjacketed marketplace category identifiers are hard-coded in every consumer and the tree is not versioned, so a new leaf takes weeks, catch-all leaves grow and country trees drift.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of The Category Straitjacket."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What The Category Straitjacket looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p012",
+          "controlling_idea": "Hard-coding the first tree was cheap when it rarely changed, but every consumer copied its identifiers and a category is really a schema key, so with no owner of the taxonomy as versioned reference data no one designs change as a migration.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains The Category Straitjacket by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p013",
+          "controlling_idea": "The Straitjacket costs liquidity, trust, speed and money, and even a well-run marketplace pays heavily for one large re-categorization.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Mercari (2024) re-assigned more than 3 billion items and estimated that LLM labeling of all of them would cost about US$1 million and take about 1.9 years, so it labeled a sample and propagated labels with a nearest-neighbor model.",
+              "source": "Mercari Engineering, 2024",
+              "shows": "A large taxonomy change is a program with a measurable price, even at a well-run marketplace."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices The Category Straitjacket and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p014",
+          "controlling_idea": "Tradeyard's four country trees and six-week lead time make the November 2027 bikes split a large migration, after which a new leaf takes two days.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four trees of 1,420, 1,380, 980 and 760 leaves; six weeks per category; bikes in 19 leaves with about 640,000 listings; the 1 November 2027 split re-classifies about 410,000 listings, rewrites about 1.3 million saved searches, needs about 2,300 redirects and 2,900 landing pages; Fatbikes added in two days a month later.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "The cost of the hard-coded tree and the payoff of a versioned one, in one brand's numbers."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows The Category Straitjacket in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p015",
+          "controlling_idea": "The remedy is to treat the taxonomy as versioned reference data with one owner, referenced by stable identifier, changed through published mappings and a tested migration runbook.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for The Category Straitjacket."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p016",
+          "controlling_idea": "Five chapters address the Straitjacket: the versioned tree and runbook, attributes tied to categories, query classifiers, the redirect registry and vertical trees.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address The Category Straitjacket."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p017",
+          "controlling_idea": "A feed-integration engineer's 'put it in the extra-fields column for now; we'll clean the data up after launch' shows the shortcut that fills the Junkyard.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Just put it in the extra-fields column for now...\" (a feed-integration engineer), with Figure 4: fuel under four spellings, so a petrol filter finds one car.",
+              "source": "Composite quote attributed to a role",
+              "shows": "The cleanup is always deferred, and the cost of deferral lands on buyers who filter."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows The Attribute Junkyard as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address The Category Straitjacket.",
+            "introduces": "The next pattern, The Attribute Junkyard, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p018",
+          "controlling_idea": "In the Junkyard attributes are free-form keys with no attribute dictionary, so one fact arrives under several keys and filters, facets and feeds disagree.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of The Attribute Junkyard."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What The Attribute Junkyard looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p019",
+          "controlling_idea": "Flexible storage makes a new key free, every team and feed adds its own, a straitjacketed tree pushes new facts into free keys, the channels validate differently, nobody owns the dictionary, and generative assistants now add keys faster than sellers.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains The Attribute Junkyard by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p020",
+          "controlling_idea": "The Junkyard hides listings from filters and blocks attribute-based rules, and while no marketplace has measured its own junkyard, eBay's public taxonomy API shows what the remedy looks like.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay's Taxonomy API publishes per leaf category each aspect's data type, requiredness, controlled or free values, cardinality and an expectedRequiredByDate for new mandatory aspects.",
+              "source": "eBay Taxonomy API specification, n.d.",
+              "shows": "A governed attribute dictionary is a published, per-category contract, the opposite of free-form keys."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices The Attribute Junkyard and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p021",
+          "controlling_idea": "Tradeyard's 3,900 attribute keys, most of them rarely used, mean a frame-size filter hid three quarters of Dutch bikes.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "3,900 keys in 2026, 41% used on fewer than 0.1% of listings; about 610 worth promoting to typed index fields in 2027; frame size present on 23% of Dutch bike listings before the extraction pilot.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "The Junkyard's cost in one number a buyer feels: three quarters of the inventory invisible to a filter."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows The Attribute Junkyard in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p022",
+          "controlling_idea": "The remedy is one attribute dictionary per vertical, the same validation on every channel, provenance on every value, and deliberate promotion and retirement of keys.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for The Attribute Junkyard."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p023",
+          "controlling_idea": "Five chapters address the Junkyard: the dictionary, normalization with provenance, category-scoped schemas, typed index fields and constrained AI assistants.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address The Attribute Junkyard."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p024",
+          "controlling_idea": "A listing-service engineer's 'It's marked sold in the database. Whatever the alert e-mail said this morning isn't our service' shows that each team owns only its own copy.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"It's marked sold in the database...\" (a listing-service engineer), with Figure 5: Femke's bike leaves search a minute after it sells but goes to 214 users in the next morning's digest.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Removal is correct at the source and wrong in the copies nobody owns."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Ghost Inventory as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address The Attribute Junkyard.",
+            "introduces": "The next pattern, Ghost Inventory, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p025",
+          "controlling_idea": "Ghost Inventory is sold, expired or removed listings that stay visible in search, carousels, alert digests, caches, SEO pages, partner feeds and contact buttons, and nobody can state removal latency beyond the search index.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Ghost Inventory."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Ghost Inventory looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p026",
+          "controlling_idea": "Removal is the change teams design least: publication gets a pipeline and a target, unpublication gets a flag, each consumer copies state on its own schedule, feeds omit deletes and offline sellers never mark items sold.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Ghost Inventory by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p027",
+          "controlling_idea": "Ghosts waste contacts and alerts, look like scams and charge professionals for dead leads, and although no marketplace publishes a ghost rate, downstream channels already punish staleness.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Google's job-posting guidance: \"Failure to take timely action on expired jobs may result in a manual action\".",
+              "source": "Google Search Central, page updated 2026",
+              "shows": "A search engine penalizes stale listings, so ghosts cost traffic as well as trust."
+            },
+            {
+              "kind": "fact",
+              "what": "Google Merchant Center expires product data 30 days after its last refresh.",
+              "source": "Google Merchant Center Help, n.d.",
+              "shows": "Downstream channels enforce freshness the marketplace itself may not."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Ghost Inventory and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p028",
+          "controlling_idea": "Femke's bike, listed on a Sunday evening and sold the next day, is removed from search within a minute yet still reaches 214 users the next morning, and an audit finds about 41,000 Dutch ghosts a week.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listed on the evening of Sunday 7 March 2027; sold on Monday 8 March 2027 at 18:10, removed from search at 18:11; a digest built at 17:30 from a replica snapshot goes to 214 users at 07:00 on Tuesday; about 41,000 Dutch listings a week still in a downstream copy 24 hours after ending; at Motorvane the Essen Golf's removal arrives 26 hours late and three enquiries arrive in between.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Removal can be fast at the source and slow in every copy that does not listen for it."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Ghost Inventory in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p029",
+          "controlling_idea": "The remedy is to make removal a lifecycle event with a latency objective per registered consumer, re-check availability at send time, reconcile feeds and serve correct status codes for gone pages.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Ghost Inventory."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p030",
+          "controlling_idea": "Seven chapters address Ghost Inventory, from removal objectives and ordered events to staleness budgets on read models (copies of listing data shaped for one consumer), alert re-checks, feed reconciliation, gone pages and serving-time filters.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Ghost Inventory."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p031",
+          "controlling_idea": "A real-estate product owner's 'Three agencies hold the mandate, so three listings is correct. Isn't it?' shows a duplicate defended as correct.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Three agencies hold the mandate...\" (a real-estate portal product owner), with Figure 6: one Lyon flat at €389,000 arriving three times and stacking three pins on one building.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Duplicates feel legitimate to the people who produce them."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Seeing Double as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Ghost Inventory.",
+            "introduces": "The next pattern, Seeing Double, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p032",
+          "controlling_idea": "Seeing Double is the same item or property appearing many times, from reposts, two channels, several agencies holding a mandate, or stolen photos.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Seeing Double."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Seeing Double looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p033",
+          "controlling_idea": "Duplicates are rewarded, feeds lack stable keys, and nobody owns showing a thing once because deduplication looks cosmetic rather than like entity resolution, with abusive and legitimate duplicates mixed up.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Seeing Double by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p034",
+          "controlling_idea": "Duplicates split demand, inflate supply, hide fakes and multiply processing, and property portals productize the presentation problem.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "In 2021 Idealista launched a duplicate-control tool that groups listings of one property, including those on other portals, and notifies users of price changes, removals and new duplicates (trade-press report).",
+              "source": "Online Marketplaces, 2021",
+              "shows": "Duplicates are common enough in property that a portal built a product to manage them."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Seeing Double and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p035",
+          "controlling_idea": "Hearthly France has 1.7 listings per property, one Lyon flat arrives three times, and photo-match alerts on stolen photos are closed as legitimate duplicates.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "1.9 million listings for about 1.12 million properties in 2026; a 68 m² Lyon flat at €389,000 from three agencies through two vendors and Keybridge in May 2027; 11 photo-match alerts in the Barcelona ring closed as legitimate duplicates.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Legitimate and abusive duplicates look alike until someone owns the difference."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Seeing Double in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p036",
+          "controlling_idea": "The remedy is to separate abusive duplicates, which go to enforcement, from legitimate ones, which are clustered and shown once, with cluster identity kept outside the index and the representative chosen by quality.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Seeing Double."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p037",
+          "controlling_idea": "Six chapters address Seeing Double: matching and clustering, perceptual hashes, precise location, repeated partner records, map clustering and stolen photos as fraud.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Seeing Double."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p038",
+          "controlling_idea": "An on-call engineer's 'The dealer's file looked fine last night. We'll find out what happened when support opens' shows that nobody checks a feed before it changes live stock.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"The dealer's file looked fine last night...\" (an ingestion on-call engineer), with Figure 7: a truncated file unpublishing 38,400 Motorvane listings at 02:40.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Feeds are trusted until the partner's customers report the damage."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Feed Roulette as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Seeing Double.",
+            "introduces": "The next pattern, Feed Roulette, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p039",
+          "controlling_idea": "Feed Roulette is ingesting professional and partner feeds without a feed contract, so records skip validation, writes are not idempotent, partners get no error report and nothing guards a truncated file.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Feed Roulette looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p040",
+          "controlling_idea": "Feeds are integrated one partner at a time as code adapters, rejecting a paying customer's data feels risky, full snapshots are easy and dangerous, error reporting has no owner and vendors do the minimum.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Feed Roulette by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p041",
+          "controlling_idea": "Feed Roulette loses the professional stock that is most of the supply in automotive and real estate, and because dealers multi-home, lost confidence moves stock to competitors; public partner APIs show the remedy.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Bundeskartellamt (2026): \"many platforms offer dealers data export to other platforms\"; dealer multi-homing treated as a competitive constraint.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "A dealer who loses confidence in one platform's feed can shift attention to another."
+            },
+            {
+              "kind": "source",
+              "what": "mobile.de's Seller API makes creation idempotent through an insertion request ID, answers a retry with 303 to the existing ad, and returns stable error keys; RFC 9457 standardizes problem details.",
+              "source": "mobile.de Seller API documentation, n.d.; IETF, 2023",
+              "shows": "A feed contract with idempotency and machine-readable errors exists in public practice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Feed Roulette and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p042",
+          "controlling_idea": "Truncated files for 286 Motorvane dealers unpublish 38,400 listings overnight, a fifth return with new identifiers, and a few Hearthly vendors cause most incidents.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Monday 8 March 2027, 02:40 CET: files for 286 dealers; 38,400 listings unpublished by 02:55, about 1,900 with paid top placements; complete files at 09:40; a fifth back with new identifiers; more than 600 support calls; about 30 of 160 Hearthly vendors cause most incidents.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "One unguarded snapshot damages stock, paid placements and identifiers at once."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Feed Roulette in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p043",
+          "controlling_idea": "The remedy is a contract for every channel: an envelope, schema versions, stable error codes, per-run reports, stable keys, a mass-change guard and reconciliation.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p044",
+          "controlling_idea": "Five chapters address Feed Roulette: feed contracts and guards, shared validation, integration partners, partner error views and automotive dealer APIs.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Feed Roulette."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p045",
+          "controlling_idea": "A search engineer's 'Don't touch the Solr collection. Some of those fields only exist there' shows an index that has become the only copy.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Don't touch the Solr collection...\" (a search engineer), with Figure 8: teams writing counters and fixes into Solr, and a Sunday reindex pushing p99 latency to about 7 seconds.",
+              "source": "Composite quote attributed to a role",
+              "shows": "The index holds data nothing else holds, so it cannot be rebuilt safely."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Search as System of Record as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Feed Roulette.",
+            "introduces": "The next pattern, Search as System of Record, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p046",
+          "controlling_idea": "A system of record is the one authoritative copy from which other copies are rebuilt; when search becomes it, the index holds data that exists nowhere else, 'published' means 'in the index', other services query it, and a rebuild is an event or impossible.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Search as System of Record."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Search as System of Record looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p047",
+          "controlling_idea": "The index is the fastest complete view, so teams write counters, enrichment, flags and fixes into it directly, skipping the system of record, and no event stream carries enough to rebuild it.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Search as System of Record by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p048",
+          "controlling_idea": "An index that cannot be rebuilt degrades search at peaks, cannot explain missing listings and blocks schema and engine change, while rebuilding from an event stream is a documented alternative.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay Kleinanzeigen (2019) rebuilt its Elasticsearch cluster, then more than 34 million live ads, from a compacted Kafka topic in under 30 minutes, for recovery and schema changes.",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "A rebuildable index is proven at large scale."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Search as System of Record and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p049",
+          "controlling_idea": "A Sunday-evening reindex into Tradeyard's live Solr pushes p99 latency to about 7 seconds, and the review finds Yardstick writing millions of updates a day straight into Solr.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sunday 17 January 2027, 20:35 CET: p99 from about 400 ms to about 7 seconds for 48 minutes, about 9% of searches failing; about 9 million Solr updates a day, about 6.4 million of them view counters; 'published' defined as 'present in Solr'.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Writing straight into the index turns a routine rebuild into an outage at the busiest hour."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Search as System of Record in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p050",
+          "controlling_idea": "The remedy is to treat the index as a read model rebuilt from the system of record and its events, keep unique data out of it, drill rebuilds and put a contract in front of the engine.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Search as System of Record."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p051",
+          "controlling_idea": "Six chapters address Search as System of Record: the rebuildable index, the record-versus-read-model split, the replayable stream, 'published' defined outside the index, rebuilds off peak and the owner of listing truth.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Search as System of Record."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p052",
+          "controlling_idea": "A monetization product manager's 'It's only a small multiplier' shows how each boost looks harmless on its own.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"It's only a small multiplier...\" (a monetization product manager), with Figure 9: five paid layers since 2016 leave paid listings with 38% of Tradeyard Netherlands' first-page positions.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Each boost is small; the sum is the problem."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Multiplier Creep as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Search as System of Record.",
+            "introduces": "The next pattern, Multiplier Creep, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p053",
+          "controlling_idea": "Multiplier Creep is visibility products implemented as uncapped multipliers, re-dated timestamps and reserved slots, until the default sort turns into a price list.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Multiplier Creep."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Multiplier Creep looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p054",
+          "controlling_idea": "Monetization sells visibility against a revenue target while another team owns relevance, neither owns the trade-off, boosts are never reviewed together and buyer-randomized tests miss the cost to sellers.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Multiplier Creep by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p055",
+          "controlling_idea": "Creep degrades relevance and organic exposure and carries legal risk in the EU, while two public designs rank paid listings under relevance instead of multiplying scores.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Omnibus Directive (EU) 2019/2161, Annex I point 11a, since 28 May 2022: undisclosed paid ranking is always unfair; P2B Regulation (EU) 2019/1150, since 12 July 2020, requires disclosure of main ranking parameters (repeal proposed November 2025).",
+              "source": "European Union; European Commission",
+              "shows": "Undisclosed or unbounded paid ranking is a legal as well as a commercial risk."
+            },
+            {
+              "kind": "source",
+              "what": "eBay (2020) ranks promoted listings with organic results so the top can show no ads; OLX (2025) uses a separate 'VAS LTR' objective balancing relevance and paid visibility.",
+              "source": "eBay Inc., 2020; OLX Tech Blog, 2025",
+              "shows": "Paid placement can be governed by relevance rather than multiplied into it."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Multiplier Creep and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p056",
+          "controlling_idea": "Tradeyard's five paid layers took paid listings to 38% of the first page while contacts fell, and a capped ranking policy with a relevance floor reversed most of it at a small revenue cost.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Layers in 2016, 2019, 2021 (×1.8), 2023 and 2025 (×1.3); paid share 12% in 2021 to 38% in 2026; sessions with a contact 10.6% to 9.4%; new private listings without contact in 48 hours 24% to 33%; policy v1 on 1 December 2027: paid share 17%, sessions with a contact 9.9%, visibility revenue per search down 2.5%.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "The trade-off can be measured and bounded, and bounding it costs little revenue."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Multiplier Creep in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p057",
+          "controlling_idea": "The remedy is to carry paid effects as bounded fields, place paid listings under a relevance floor with caps, test with two-sided guardrails and label paid placement everywhere.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Multiplier Creep."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p058",
+          "controlling_idea": "Six chapters address Multiplier Creep: paid-organic blending, the liquidity-revenue tension, explicit paid effects, sponsored units, two-sided experiments and disclosure duties.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Multiplier Creep."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p059",
+          "controlling_idea": "A growth lead's 'Launch the category first. Trust and safety can add a queue once we see what comes in' shows safety deferred behind launch.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Launch the category first...\" (a growth lead), with Figure 10: alerts fan new listings out before any risk check, and the review queue sits behind publication.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Safety is planned as a later queue rather than part of the flow."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Moderation as an Afterthought as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Multiplier Creep.",
+            "introduces": "The next pattern, Moderation as an Afterthought, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p060",
+          "controlling_idea": "Moderation as an Afterthought is trust and safety added after launch as a queue: checks only at creation, image checks after going live, alerts before any risk check, and DSA statements of reasons produced after the fact.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Moderation as an Afterthought."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Moderation as an Afterthought looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p061",
+          "controlling_idea": "Trust and safety is treated as a cost center while launches belong to growth teams, serial checks slow publication, policies are unversioned and regulation is treated as reporting.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Moderation as an Afterthought by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p062",
+          "controlling_idea": "Afterthought moderation delivers fraud fast and slows honest listings, and its gaps are visible from outside, as a French court and a UK consumer test showed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "December 2015: a Paris court found leboncoin's claim that all ads passed validation misleading, while confirming its hosting-provider status.",
+              "source": "Clubic, 2015",
+              "shows": "Claiming checks that do not happen is itself a liability."
+            },
+            {
+              "kind": "case",
+              "what": "December 2024: Which? found Gumtree blocked a first scam ad but edited versions passed review 'in minutes'.",
+              "source": "Which?, 2024",
+              "shows": "Checks at creation only are not enough."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Moderation as an Afterthought and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p063",
+          "controlling_idea": "Tradeyard's sampled prevalence of violating listings is three times the assumed rate, a phishing rule takes days to reach one country and never reaches two, and a fake-rental ring triggers tens of thousands of alerts.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "94% of decisions automated, 6% (about 138,000 a week) to human review, about 210 moderators; sampled prevalence about 0.6% against an assumed 0.2%; median time to action 3 hours 10 minutes; the rule written on 7 March after the phishing link that reached Femke (told under Fast Mail for Fraudsters) in Belgium on Wednesday, never in Poland or Portugal; 180 Barcelona listings produce about 41,000 alert notifications.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Moderation outside the flow is slow, uneven across countries and beaten by alert fan-out."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Moderation as an Afterthought in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p064",
+          "controlling_idea": "The remedy is trust and safety as a platform inside the flow: risk-tiered parallel checks, re-scoring on edit, a gate before alerts, enforcement as events, recorded statements of reasons and sampled prevalence.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Moderation as an Afterthought."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p065",
+          "controlling_idea": "Seven chapters address the pattern: the moderation pipeline, risk tiers, the alert gate, DSA records, verification, image screening and AI-assisted flows.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Moderation as an Afterthought."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p066",
+          "controlling_idea": "A messaging-team lead's 'Messaging is a delivery problem. Fraud is for trust and safety, once users report it' shows delivery and safety owned apart.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Messaging is a delivery problem...\" (a messaging-team lead), with Figure 11: a fake payment link from a domain registered that day reaches Femke at 20:11 and only her report stops it.",
+              "source": "Composite quote attributed to a role",
+              "shows": "The fastest channel has no safety owner."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Fast Mail for Fraudsters as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Moderation as an Afterthought.",
+            "introduces": "The next pattern, Fast Mail for Fraudsters, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p067",
+          "controlling_idea": "Fast Mail for Fraudsters is chat built for speed alone: instant links, no domain-age check, anyone may message anyone, payment off the platform and user reports as the only control.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Fast Mail for Fraudsters."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Fast Mail for Fraudsters looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p068",
+          "controlling_idea": "In contact-ending models money moves off the platform and fraud closes in the conversation, messaging teams are measured on delivery, privacy concerns stop scanning, and identity is checked at sign-up rather than first contact.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Fast Mail for Fraudsters by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p069",
+          "controlling_idea": "Inbox fraud makes sellers and buyers wary and pushes platforms toward reimbursement, as UK bank data shows, while platforms that fight back act before delivery.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "UK Finance (2026): 175,809 purchase-scam cases and £118.1 million of losses in 2025, 71% of authorised push payment scam cases; a call to legislate seller verification (a lobbying position as of October 2026).",
+              "source": "UK Finance, 2026",
+              "shows": "Marketplace fraud is large and the pressure to fund protection is growing."
+            },
+            {
+              "kind": "source",
+              "what": "OLX (2026): fraudulent images are about 30% of fraud cases in Poland, and suspicious chat images are blocked before reaching users.",
+              "source": "OLX Group, 2026",
+              "shows": "Controls in the delivery path are practiced."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Fast Mail for Fraudsters and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p070",
+          "controlling_idea": "On the evening she lists her bike, a fake Safe Deal link reaches Femke because its domain was registered that day, only her report stops it, and Tradeyard receives about 41,000 such reports a year.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sunday 7 March 2027: 14 conversations in 24 hours; fake link at 20:11; report at 20:19; suspension at 20:26; a new rule then withholds 37 similar messages; about 41,000 payment-link phishing reports in the Netherlands and Belgium in 2026.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Without checks in the delivery path the victim is the detector."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Fast Mail for Fraudsters in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p071",
+          "controlling_idea": "The remedy is safety in the delivery path: tokenized links, domain-age checks, contextual warnings, held first contacts, step-up verification and protected payment where the model allows.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Fast Mail for Fraudsters."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p072",
+          "controlling_idea": "Five chapters address the pattern: safety scanning, risk scoring, first-contact identity, protected payment and why contact-ending models concentrate fraud.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Fast Mail for Fraudsters."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p073",
+          "controlling_idea": "A group product director's 'Poland has its own release train' shows a fix that stops at a country border.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Poland has its own release train...\" (a group product director), with Figure 12: the March 2027 anti-phishing rule reaches the Netherlands on Sunday, Belgium on Wednesday, and Poland and Portugal never.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Each country copy has its own release path, so shared fixes do not travel."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows The Copy-Paste Country as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Fast Mail for Fraudsters.",
+            "introduces": "The next pattern, The Copy-Paste Country, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p074",
+          "controlling_idea": "The Copy-Paste Country is each market running its own copy of the code or reference data, so improvements are built several times or not at all and versions drift.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of The Copy-Paste Country."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What The Copy-Paste Country looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p075",
+          "controlling_idea": "Copying a working site was the fastest market entry, local autonomy is a real strength, and nobody was funded to build the configuration design sharing needs.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains The Copy-Paste Country by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p076",
+          "controlling_idea": "Copies cost speed, money, safety and the features small markets cannot afford, and the public record of two groups shows the pattern and its price.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Annual Report 2019: local autonomy as \"one of our historic success formulas\"; Adevinta Tech Blog (2024): in 2021 its 22 marketplaces used ten A/B testing tools.",
+              "source": "Adevinta, 2020; Adevinta Tech Blog, 2024",
+              "shows": "Autonomy that once drove growth later meant the same tool built ten times."
+            },
+            {
+              "kind": "source",
+              "what": "OLX (2025): learning-to-rank projects across teams caused \"duplicated efforts\" and were centralized with brand-level configuration.",
+              "source": "OLX Tech Blog, 2025",
+              "shows": "The way out is configuration over shared code."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices The Copy-Paste Country and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p077",
+          "controlling_idea": "Tradeyard's four countries share a brand but run four trees, two search engines and their own address handling, and one phishing rule shows the cost in a week.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Trees of 1,420, 1,380, 980 and 760 leaves; Solr in the Netherlands, Belgium and Portugal, Elasticsearch in Poland; the March 2027 rule in the Netherlands on Sunday, Belgium on Wednesday, never Poland or Portugal.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "A shared brand without a shared platform leaves safety uneven."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows The Copy-Paste Country in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p078",
+          "controlling_idea": "The remedy is one codebase per capability with country differences as configuration, local policy kept local, and good local inventions harvested into the platform.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for The Copy-Paste Country."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p079",
+          "controlling_idea": "Six chapters address the pattern: tenancy and configuration, harmonized trees, one place model, country rules as configuration, where copying came from and two groups working out of it.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address The Copy-Paste Country."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p080",
+          "controlling_idea": "A corporate-development lead's 'Let's not touch their stack for now' shows integration deferred without an end date.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"They're profitable and the deal closed last month...\" (a corporate-development lead), with Figure 13: four identity systems, four trust-and-safety stacks and three warehouses, so a phisher banned on one brand stays active on another.",
+              "source": "Composite quote attributed to a role",
+              "shows": "'For now' becomes permanent."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Deal-Shaped Architecture as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address The Copy-Paste Country.",
+            "introduces": "The next pattern, Deal-Shaped Architecture, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p081",
+          "controlling_idea": "Deal-Shaped Architecture is acquired marketplaces keeping their whole stacks indefinitely, so the group pays for every capability several times and cannot answer group-level questions.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Deal-Shaped Architecture."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Deal-Shaped Architecture looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p082",
+          "controlling_idea": "Deal teams protect revenue, acquired leaders are rewarded for their own growth, synergy cases do not fund a sequence, and competition remedies can forbid integration.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Deal-Shaped Architecture by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p083",
+          "controlling_idea": "Kept stacks cost money, cross-brand fraud defense, speed and cross-brand features, and the size of the prize is public.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta's June 2021 completion of the eBay Classifieds Group acquisition targeted run-rate cost synergies of €130–165 million after three years; its later consolidation of ten experimentation tools shows the work involved.",
+              "source": "Adevinta, 2021; Adevinta Tech Blog, 2024",
+              "shows": "Duplicated stacks are worth hundreds of millions to remove, and removing them is real engineering."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Deal-Shaped Architecture and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p084",
+          "controlling_idea": "Veldmark enters 2027 with four of everything, dealers paying twice and a phisher no system connects, and Common Ground is funded to reduce the run cost.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four identity systems, four trust-and-safety stacks, three search engines, three clouds, four product catalogs, three warehouses; about 2,900 Polish dealers on both brands, about 40% paying both; Common Ground approved January 2027 with €140 million for 2027–2030, targeting €38 million a year.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "The duplication has a price in money and in fraud no system can see."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Deal-Shaped Architecture in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p085",
+          "controlling_idea": "The remedy is a dated, owned decision per capability to keep, share or replatform, generic capabilities first and product surfaces last, with shared services kept separable.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Deal-Shaped Architecture."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p086",
+          "controlling_idea": "Seven chapters address the pattern: the consolidation sequence, the capability map, one identity, one catalog model, shared definitions, separability over a decade and the public record of one large integration.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Deal-Shaped Architecture."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p087",
+          "controlling_idea": "A central platform director's 'The group platform is the standard from the first quarter' shows adoption by decree.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"The group platform is the standard from the first quarter...\" (a central platform director), with Figure 14: a list-shaped search platform would have missed Hearthly, where 61% of French search sessions open the map.",
+              "source": "Composite quote attributed to a role",
+              "shows": "A mandate replaces fit as the measure of success."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows The Forced Fit as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Deal-Shaped Architecture.",
+            "introduces": "The next pattern, The Forced Fit, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p088",
+          "controlling_idea": "The Forced Fit is a central platform imposed on markets it was not designed for, adopted on paper and routed around in practice.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of The Forced Fit."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What The Forced Fit looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p089",
+          "controlling_idea": "Synergy pressure makes a mandate look fastest, the platform is shaped by its first tenant, sharing infrastructure is confused with sharing product, and the platform team is rewarded for migrations.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains The Forced Fit by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p090",
+          "controlling_idea": "Forced platforms stall roadmaps, degrade vertical features and double the bill, and the public record shows mandates that reversed alongside one platform adopted voluntarily.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay's Product-Based Shopping Experience required catalog association from 2018; eBay's documentation says the mandate was rolled back, without a date.",
+              "source": "eBay PBSE playbook, n.d.",
+              "shows": "A mandate that did not fit was withdrawn."
+            },
+            {
+              "kind": "quotation",
+              "what": "Adevinta's 2023 annual report planned \"a unified global platform\"; its 2025 strategic report describes \"a decentralised, standalone operating model\"; completion is not publicly documented and the change followed a new owner.",
+              "source": "Adevinta, 2024; Adevinta, 2026",
+              "shows": "The central-local pendulum swings within a few years."
+            },
+            {
+              "kind": "source",
+              "what": "A 2020 talk described Adevinta's platform-as-a-service reaching about 1,500 engineers through voluntary adoption.",
+              "source": "Navarro, 2020",
+              "shows": "Adoption can be earned rather than mandated."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices The Forced Fit and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p091",
+          "controlling_idea": "Hearthly's map-heavy search shows what a list-shaped shared platform would miss, so the geo query compiler becomes part of the shared platform and the ML decision follows the same reasoning.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "September 2027 decision; 61% of French sessions open the map; about 2,700 of 4,200 peak requests per second are map requests; drawn areas median 146 vertices; November 2027 ML decision: one registry, Hearthly keeps Vertex AI and Keybridge Azure Machine Learning until the golden path is better.",
+              "source": "Scenario ledger (fictional Veldmark); framing of the map-search decision",
+              "shows": "Fit is designed in by configuring a shared platform per brand, not by exceptions."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows The Forced Fit in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p092",
+          "controlling_idea": "The remedy is platforms run as products with earned adoption, mandates only for narrow contracts, sharing platforms not products, and vertical differences as configuration.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for The Forced Fit."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p093",
+          "controlling_idea": "Eight chapters address the pattern: shared cores, platform teams, adoption sequence, what verticals share, two platforms built to be adopted, the long-term split, and two cases that test the pendulum.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address The Forced Fit."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p094",
+          "controlling_idea": "A general manager's 'Live listings are up eight percent and sessions are at a record' shows activity read as health.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Live listings are up eight percent...\" (a marketplace general manager), with Figure 15: live listings rise while Tradeyard's contact index falls from 100 to 37.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Activity can grow while matches fall."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Vanity Liquidity as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address The Forced Fit.",
+            "introduces": "The next pattern, Vanity Liquidity, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p095",
+          "controlling_idea": "Vanity Liquidity is reporting activity such as listings, visits and messages sent instead of outcomes such as qualified contacts per listing and time to first contact.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Vanity Liquidity."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Vanity Liquidity looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p096",
+          "controlling_idea": "Activity metrics are easy to count and sit in one team's system, while outcome metrics need joins and agreed definitions, and the classifieds transaction is often invisible.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Vanity Liquidity by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p097",
+          "controlling_idea": "Measuring activity approves noise over matches and sells exposure that does not convert, and two OLX posts show both the alternative and the trap.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX (2022) trained ranking on seller contacts and checked that unique contacted sellers rose; OLX (2026) found naive comparisons understated boost packages that matched estimates, validated by an A/B test, put at 17.6% to 97.4% uplift.",
+              "source": "OLX Tech Blog, 2022 and 2026",
+              "shows": "Outcome labels work, and a metric without causal design can point the wrong way."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Vanity Liquidity and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p098",
+          "controlling_idea": "Veldmark's brands count contacts three ways, a common definition cuts Tradeyard's index to 37, and a bump price approved on a one-sided test lost contacts per bump, for a reason never established.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three definitions in March 2027; qualified contact v1.0 replay: Tradeyard's contact index (weekly contacts, 100 under the old definition) 100 to 37, Motorvane 86, Hearthly 106; Femke's 52 'contacts' and 13 qualified; bumps up 48% in a seller-randomized test, control sellers' contacts per bump fell unwatched and the cause was never established, contacts per bump down 31% after rollout.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Without one governed definition, decisions follow numbers that do not measure matches."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Vanity Liquidity in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p099",
+          "controlling_idea": "The remedy is governed liquidity metrics with owners, every objective naming the liquidity metric it protects, and experiments, models and products judged on qualified contacts and sales with two-sided guardrails.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Vanity Liquidity."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p100",
+          "controlling_idea": "Eight chapters address the pattern: the liquidity metrics, the contact definition, outcome-based experiments, contact labels in ranking, revenue plans on contacts, qualified leads, model-specific outcomes and fitness functions.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Vanity Liquidity."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p101",
+          "controlling_idea": "A dealer-support agent's 'Is this dealer allowed 150 cars or 163? It depends which service you ask' shows entitlements with no single answer.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"Is this dealer allowed 150 cars or 163?...\" (a dealer-support agent), with Figure 16: 163 cars in the feed, 150 published, €117 overage billed for 13 never live.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Each service computes the seller's rights differently."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Billing by Guesswork as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Vanity Liquidity.",
+            "introduces": "The next pattern, Billing by Guesswork, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p102",
+          "controlling_idea": "Billing by Guesswork is entitlements checked ad hoc in many services with their own logic and paid flags stored on listings, so nobody can show sold versus delivered.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Billing by Guesswork."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Billing by Guesswork looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p103",
+          "controlling_idea": "The first visibility product was a cheap listing flag, each later product added conditions where needed, and catalog, entitlements and billing belong to different teams and acquired brands.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Billing by Guesswork by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p104",
+          "controlling_idea": "Guesswork overbills professionals, slows launches and lets paid effects leak into ranking, and although no failure is published, two portals' results show how precisely entitlements must be counted.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove (2026): \"more than 50% of independent agents purchased incremental product above their package commitment\" in 2025.",
+              "source": "Rightmove, 2026",
+              "shows": "Bundles and metered extras share one invoice, so entitlements must be exact."
+            },
+            {
+              "kind": "source",
+              "what": "Autotrader (2026) explains revenue per retailer partly through a 'stock' lever, the number of paid vehicles advertised.",
+              "source": "Autotrader Group, 2026",
+              "shows": "When billing follows live inventory, inventory accuracy is billing accuracy."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Billing by Guesswork and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p105",
+          "controlling_idea": "Motorvane bills a dealer overage for cars the importer never published, and an audit finds 1,140 dealers overbilled by about €212,000.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Pro 150: 150 slots and 20 boosts for €1,450 a month, €9 per car overage; Autohaus Ruhrblick's August 2027 feed of 163 cars; 150 published; €117 for 13 never published; October 2027 audit over 14 months: 1,140 dealers, about €212,000, all credited.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Two services counting different things produce a bill nobody can defend."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Billing by Guesswork in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p106",
+          "controlling_idea": "The remedy is one service for products, entitlements and effects with an append-only ledger that every enforcement point reads, paid effects as events and billing from delivery.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Billing by Guesswork."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p107",
+          "controlling_idea": "Six chapters address the pattern: the entitlement ledger, revenue-model requirements, which account holds a right, seller views of usage, sponsored placements in the same ledger and paid state kept off the listing.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Billing by Guesswork."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p108",
+          "controlling_idea": "A data-science manager's 'The model has been running since 2021, and nobody has complained' shows silence taken as evidence of health.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"The model has been running since 2021...\" (a data-science manager), with Figure 17: 146 production models, 23 without an owner and 41 without monitoring.",
+              "source": "Composite quote attributed to a role",
+              "shows": "Absence of complaints is not evaluation."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Shows Set-and-Forget AI as a sensible-sounding statement by one role."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters that address Billing by Guesswork.",
+            "introduces": "The next pattern, Set-and-Forget AI, opened by a role's quote and its figure.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p109",
+          "controlling_idea": "Set-and-Forget AI is models making consequential decisions without evaluation sets, drift monitoring, prediction logs, owners or rollback, with uses that expand without new validation.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W1"
+            ],
+            "how": "Gives the warning signs of Set-and-Forget AI."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote.",
+            "introduces": "What Set-and-Forget AI looks like and its observable signs.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p110",
+          "controlling_idea": "Models ship as projects that end, governance platforms arrive after the models, uses expand quietly and adversaries make fraud labels stale.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W2"
+            ],
+            "how": "Explains Set-and-Forget AI by its mechanism, not by blame."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The signs.",
+            "introduces": "The incentives and ownership gaps that produce them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p111",
+          "controlling_idea": "Unwatched models turn errors into losses and unexplainable decisions, and Zillow Offers shows what happens when a model built to inform is used to commit capital.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "2 November 2021: Zillow's board wound down Zillow Offers, citing 'home pricing unpredictability'; a $304.4 million write-down; about 25% workforce reduction; shareholder letter: 'We have been unable to accurately forecast future home prices'.",
+              "source": "Zillow Form 8-K and shareholder letter, 2021",
+              "shows": "A model validated for one use failed when its use moved to committing capital."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3"
+            ],
+            "how": "Prices Set-and-Forget AI and grounds it in the public record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The mechanism.",
+            "introduces": "What it costs, with dated public evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p112",
+          "controlling_idea": "Veldmark's first model inventory finds unowned, unmonitored and irreproducible models, and a proposal to commit money on a valuation model built to inform is declined.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "September 2027: 146 models on four stacks, 23 without an owner, 41 without monitoring, 12 not reproducible; 'Hearthly Direct' offers at 94% of Valuo's estimate declined.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "Governance must follow the use, not the model."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W3",
+              "W1"
+            ],
+            "how": "Shows Set-and-Forget AI in the fictional Veldmark group."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The cost.",
+            "introduces": "A fictional Veldmark illustration with ledger figures.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p113",
+          "controlling_idea": "The remedy is one registry with owner, evaluation set, monitoring and rollback for every model, uses classified by decision tier, and re-validation when the use moves up a tier.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the direction of the remedy for Set-and-Forget AI."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The illustrated failure.",
+            "introduces": "The direction of the fix.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p114",
+          "controlling_idea": "Eight chapters address the pattern: the registry and tiers, ranking evaluation, adversarial drift, gated extraction, matcher evaluation, generative features, Zillow in context and automotive price ratings.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Points to the chapters that address Set-and-Forget AI."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The remedy direction.",
+            "introduces": "The chapters that carry it out.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chains",
+      "heading": "How the Patterns Reinforce Each Other",
+      "controlling_idea": "The patterns travel in four common chains, which start at a missing contract, a vanity metric or a hand-off nobody owns, so breaking a chain at its origin holds where a downstream fix does not.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "W4"
+        ],
+        "how": "Argues the chain claim of the thesis."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The claim, then four chains from the way supply enters (supply) through what is sold (monetization) and what reaches the inbox (trust) to how the group is built (portfolio), then the roots they share. The roots paragraph comes last because it generalizes over the four chains; placed first, it would name origins before the reader has seen any chain."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The fifteen patterns, each described alone.",
+        "introduces": "How they feed each other.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p115",
+          "controlling_idea": "The patterns feed each other in chains, so a downstream fix brings the symptom back: the supply and monetization chains start at a missing contract or a vanity metric, the trust and portfolio chains where no one owns a hand-off, and every chain persists until someone owns it, so the lasting fix is a contract, an owner or a metric definition.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 18: the patterns form chains that trace back to a missing contract, a missing owner or the wrong metric.",
+              "shows": "Downstream symptoms share upstream origins."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "States the chain claim."
+          }
+        },
+        {
+          "id": "p116",
+          "controlling_idea": "In the supply chain, Feed Roulette produces The Attribute Junkyard, Ghost Inventory and Seeing Double, so the chain is broken at the feed contract, not at the index.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "At Veldmark the truncated-snapshot incident of 8 March 2027 (told under Feed Roulette) shows how fast the gap spreads: one cut-short delivery unpublished 38,400 cars in fifteen minutes and about a fifth came back under new listing identifiers.",
+              "source": "Scenario ledger (fictional Veldmark)",
+              "shows": "One upstream gap creates three downstream fixes."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 19: three teams mop three puddles while a contract gate at the inlet keeps the floor dry.",
+              "shows": "Breaking the chain at its origin holds where downstream fixes do not."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "Shows the first chain and where to break it."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that patterns form chains.",
+            "introduces": "The first chain: supply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p117",
+          "controlling_idea": "In the monetization chain, Vanity Liquidity and Billing by Guesswork license Multiplier Creep, so the remedy is a measurement change and an entitlement change, not a ranking rewrite alone.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "Shows the second chain."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The supply chain.",
+            "introduces": "The monetization chain.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p118",
+          "controlling_idea": "In the trust chain, Moderation as an Afterthought and Seeing Double deliver fakes into Fast Mail for Fraudsters, so controls earlier in the flow help more cheaply than inbox scanning.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "Shows the third chain."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The monetization chain.",
+            "introduces": "The trust chain.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p119",
+          "controlling_idea": "In the portfolio pendulum, The Copy-Paste Country and Deal-Shaped Architecture provoke The Forced Fit, whose shadow stacks recreate the duplication, and the way off is to share platforms, not products.",
+          "function": "cause_effect",
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "Shows the fourth chain."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The trust chain.",
+            "introduces": "The portfolio pendulum.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p120",
+          "controlling_idea": "Three patterns sit at the roots of the supply and monetization chains: Vanity Liquidity, a measurement failure, and Feed Roulette and Billing by Guesswork, contract failures (no contract for what enters the platform or for what a paid product grants); The Category Straitjacket is a root of its own outside the four chains, pushing new facts into free attribute keys; the trust and portfolio chains start instead at a hand-off nobody owns; this is why the book defines liquidity metrics and contracts before search, ranking or AI.",
+          "function": "synthesis",
+          "advances_thesis": {
+            "supports": [
+              "W4"
+            ],
+            "how": "Names the root patterns the thesis points to."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four chains.",
+            "introduces": "What starts the chains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "indicators",
+      "heading": "First Indicators for Each Pattern",
+      "controlling_idea": "Each pattern has one first number to ask for and an owner of that number, to be read with the mechanism in mind rather than as a target.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "W5"
+        ],
+        "how": "Gives the measure that lets a reader confirm a pattern before funding a fix."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The advice to break chains at their origin.",
+        "introduces": "A number per pattern that shows which pattern is active.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p121",
+          "controlling_idea": "Each pattern has a first indicator to ask for and a typical owner of that number.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table of the fifteen patterns with the first indicator to ask for and the typical owner of the number.",
+              "shows": "A pattern can be checked with one number and taken to one owner before anyone argues about it."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Gives the reader a measure per pattern."
+          }
+        },
+        {
+          "id": "p122",
+          "controlling_idea": "The indicators are not targets, because a number can improve for the wrong reason, so each is read with the pattern's mechanism in mind.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Duplicate rates can fall because clustering hides legitimate listings; moderation backlogs can shrink because thresholds were loosened.",
+              "shows": "An indicator without the mechanism can reward the wrong change."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Warns against gaming the indicators."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The indicators.",
+            "introduces": "Why they are not targets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "matrix",
+      "heading": "The Patterns Across the Book",
+      "controlling_idea": "Every chapter of the book is mapped to the patterns it addresses, so the reader can find all the help for one pattern, and the densest columns need a group-level owner.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "W5",
+          "W4"
+        ],
+        "how": "Connects each pattern to the chapters that remedy it."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "A per-pattern reference: the indicator and its owner.",
+        "introduces": "A second per-pattern reference: the chapters.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p123",
+          "controlling_idea": "A matrix maps each of the 51 chapters to the patterns it addresses, with ● for a main concern named in the chapter's opening callout and ○ for a pattern treated in passing.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Chapter-by-pattern matrix with column codes for the fifteen patterns.",
+              "shows": "Reading down a column lists every chapter that names a pattern."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "W5"
+            ],
+            "how": "Lets the reader find every chapter for a pattern."
+          }
+        },
+        {
+          "id": "p124",
+          "controlling_idea": "Counted from the matrix, Ghost Inventory (19 chapters), Deal-Shaped Architecture and Vanity Liquidity (17 each) are the densest columns, main concerns in seven or eight of the nine parts, which shows they need an owner at group level, not only in one team.",
+          "function": "analysis",
+          "advances_thesis": {
+            "supports": [
+              "W4",
+              "W5"
+            ],
+            "how": "Draws a finding from the matrix."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "How to read the matrix.",
+            "introduces": "What its densest columns show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Using the Patterns",
+    "synthesis": "The fifteen patterns are one failure seen fifteen times: variation that accumulated under separate targets instead of being decided, owned and measured; the remedy is the same in each case, a contract, an owner or a metric definition placed at the origin of the chain.",
+    "so_what": "A reader facing a symptom can name the pattern, ask for its indicator and fund the upstream fix instead of a downstream one that will have to be made again.",
+    "callback": {
+      "to": "The opening symptoms: sold bikes in alert e-mails, one flat three times, a dealer's stock vanishing overnight, a 2021 boost nobody can price.",
+      "how": "The last paragraph names them as Ghost Inventory, Seeing Double, Feed Roulette and Multiplier Creep, each with an upstream cause."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Use the names in design reviews, steering committees and portfolio reviews: name the mechanism, pair it with a measure and look upstream first."
+    },
+    "hand_off": {
+      "to": "meet-veldmark",
+      "relationship": "example",
+      "carries_over": "The fifteen pattern names, and the Veldmark illustrations used one at a time.",
+      "introduces": "The whole group whose marketplaces show every pattern in 2027, and the program that sets out to fix them."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The patterns, their chains, indicators and chapters.",
+      "introduces": "How to use the names.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p125",
+        "controlling_idea": "The names are meant for rooms where decisions are made: design reviews, steering committees and portfolio reviews.",
+        "function": "recommendation"
+      },
+      {
+        "id": "p126",
+        "controlling_idea": "Three habits keep the names useful: name the mechanism, not the person; pair every pattern with its indicator; and look upstream before funding a downstream fix, because the cheapest fix is usually a contract, an owner or a metric definition.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Where to use the names.",
+          "introduces": "How to use them without blame.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p127",
+        "controlling_idea": "Variation is legitimate when it was decided, owned and measured, and each of the fifteen patterns is a variation that accumulated instead.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Three agencies listing one flat shown once; a legally required country rule as configuration; paid placement that is labeled, bounded and measured.",
+            "shows": "The same behavior is or is not a pattern depending on whether someone decided, owns and measures it."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The habits.",
+          "introduces": "When duplication, divergence and paid visibility are not patterns at all.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p128",
+        "controlling_idea": "The symptoms the page opened with are now named patterns with upstream causes, and the next page shows the group whose marketplaces show all fifteen at once.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The test of decided, owned and measured.",
+          "introduces": "The callback to the opening symptoms and the hand-off to Veldmark.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "length": {
+    "max_words": 13300
+  },
+  "non_goals": [
+    {
+      "topic": "Detailed remedies, such as feed contracts, paid-organic blending, the entitlement ledger and model governance.",
+      "covered_in": [
+        "listing-ingestion",
+        "ranking",
+        "products-and-entitlements",
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Prevalence statistics for patterns where none is published (for example ghost-listing rates)."
+    },
+    {
+      "topic": "An introduction to Veldmark.",
+      "covered_in": [
+        "meet-veldmark"
+      ]
+    },
+    {
+      "topic": "A reading guide.",
+      "covered_in": [
+        "introduction"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The matrix was drawn from the plan before chapters 3, 29, 39 and Parts VIII and IX (other than Adevinta) had callouts; those chapters now exist, and the matrix has not yet been re-checked against their opening callouts. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the RECONCILED anatomy (quote, signs, mechanism, cost, illustration, remedy, chapters) but replaced its control/audit cost dimensions with liquidity, trust, speed and cost, because the book's thesis is that architecture should be judged by liquidity."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Attributed quotes to roles rather than to cast members, so the patterns read as industry behavior rather than as Veldmark history."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Built the closing matrix with chapters as rows and pattern codes as columns (● main concern from the chapter's callout or the plan, ○ treated in passing), because fifteen patterns by fifty-one chapters reads best down columns."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Named Vanity Liquidity and the contract failures (Feed Roulette, The Category Straitjacket) as root patterns, to motivate Parts I–III before discovery and AI."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the pattern-name/heading, callout-format, summary-table, per-pattern-anatomy, public-example, Veldmark-figures, diagram/matrix and hand-off criteria were inventories of contents or format and are dropped (format and names stay governed by the style guide, figures by the ledger, the hand-off by conclusion.hand_off); the reader outcomes they served are carried by the journal spec's AC-1 and two minor criteria added here, AC-2 (from a symptom to pattern, upstream patterns and chapters) and AC-3 (the opening predicts the sections).",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims W1 to W5 written here (the journal spec gives none for this post) from the thesis and the old intent: recognizable patterns, locally reasonable mechanisms, costs far from the cause, chains from a contract or metric, and remedies with indicators and chapters. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The conclusion is the published 'Using the Patterns' section, moved after 'The Patterns Across the Book' so the two per-pattern reference tables (indicators, matrix) sit side by side and the page ends on how to use the names; the matrix section's closing hand-off paragraph moves to the end of the conclusion and gains a callback to the opening symptoms. 'Four chains appear most often.' joins the chain section's first paragraph. A lead-in sentence is added before the indicators table and a roadmap paragraph (p006) after Figure 1.",
+      "rejected": [
+        "Keeping the published order, which ended the page on the matrix (evidence in the conclusion) and put the usage advice before the matrix it refers past."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric applied: the roots paragraph now says how The Category Straitjacket feeds a chain; the chain section's rationale and the post rationale now say what would break if reordered; p009 names cost as money. Glosses added at first use for terms not defined earlier in reading order: contract and vanity metric (KEY POINTS and p005), Ghost Inventory and Feed Roulette in KEY POINTS, read model, a real-estate mandate, DSA statements of reasons, relevance floor, learning to rank, authorised push payment scams, perceptual hashes and golden path."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length: length.max_words raised from 9,600 to 13,300, the published page's count by check_draft.py (12,667, which counts tables, callouts and link URLs) plus 5%, in the spirit of brief rule 2; nothing cut, because the words are pattern descriptions, real-company citations and chapter links. Resolves the round-3 length failure."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis 'most chains start at a missing contract or a vanity metric' (round-3 item a, thesis-rubric note): thesis not changed because it is copied from the journal spec; a rewording ('chains that start at a missing contract, a vanity metric or a hand-off nobody owns') proposed to the orchestrator as a journal-spec edit. The published KEY POINTS wording is kept until that edit is applied. The roots paragraph (p120) now names its roots as those of the supply and monetization chains and of the Junkyard, and says the trust and portfolio chains start at a hand-off nobody owns."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "'The truncated-snapshot incident of 8 March 2027 produced all three in one morning' (p116, round-3 item b) corrected to the ledger's [listing-ingestion] line: 38,400 listings unpublished by 02:55 and about a fifth back under new listing IDs; the ledger records no unvalidated values or ghost listings that morning."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "KEY POINTS link 'Vanity Liquidity licenses ... Set-and-Forget AI' (published, removed in an earlier pass) kept removed: neither the Set-and-Forget AI section nor the chain section nor the ledger ties Set-and-Forget AI to Vanity Liquidity."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Matrix-density sentence (p124) corrected to the matrix's own counts of ● (Ghost Inventory 19, Deal-Shaped Architecture 17, Vanity Liquidity 17, The Forced Fit 13, Set-and-Forget AI 11); Set-and-Forget AI replaced by Deal-Shaped Architecture and the reason adjusted to 'the group's portfolio decisions'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Bump-test clause 'as the extra test bumps pushed their listings down' removed: the ledger's [experimentation] line records control sellers' contacts per bump falling 9%, unwatched, but not the mechanism; 'whose contacts per bump fell' (published wording) kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 single-reader points fixed because cheap and plainly right: 'the account that sent Femke the phishing link'; 'contact index' glossed at first use; the introduction's 'need a name and an owner' now follows from the chains sentence. Kept as published (rule 8): Keybridge keeping Azure Machine Learning, the DSA clause, 52 contacts vs 14 conversations, the shared platform before Common Ground."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims W1 to W5 (agent-written) accepted under the author's delegation, 2026-11-12. W5's place among the supporting claims (thesis-rubric note) kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken (brands and Femke before meet-veldmark, Billing by Guesswork among the roots, matrix finding in the conclusion, p009 placement): published order kept under rule 8, accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The Forced Fit illustration framing the group geo query compiler as the alternative to a list-only API accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities: one illustration per pattern; checklist, summary, dialog and comic not written (scope note carried over from spec.md)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator, under the author's delegation: the KEY POINTS bullet and the intro sentence now say chains start at a missing contract, a vanity metric or a hand-off nobody owns, matching the corrected thesis and the page's four chains."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 4 (corroborated flow findings), under the author's delegation: Billing by Guesswork is now named among the roots (reverses the earlier flow-rubric note that kept it out) and The Category Straitjacket is called a root outside the four chains; Femke's dates told in order in p028; p063 says the phishing attempt is told under Fast Mail for Fraudsters; p098 says the cause of the control sellers' fall was not established (no cause invented). W4, the thesis statement, p005 and the chains section's controlling idea aligned with the corrected thesis."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, AC-1, thesis, role, and the neighbours' transitions."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/style-guide.md",
+      "contributed": "Pattern names and warning signs."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Veldmark facts, including the additions by chapter."
+    },
+    {
+      "kind": "internal",
+      "ref": "FAILURE PATTERNS callouts of the published chapters in posts/; PLAN.md for chapters not yet written",
+      "contributed": "The pattern-to-chapter matrix and the 'Where this book helps' lines."
+    },
+    {
+      "kind": "internal",
+      "ref": "Research briefs: adevinta, ebay-classifieds, olx, listing-data-ingestion, platform-data-ml, search-discovery, trust-safety-regulation, monetization-economics, real-estate-portals, automotive",
+      "contributed": "Public examples per pattern."
+    },
+    {
+      "kind": "external",
+      "ref": "Zillow Form 8-K and shareholder letter (2021); Adevinta annual reports 2019 and 2023, strategic report 2025, acquisition release 2021, tech blog 2024; Navarro (2020)",
+      "contributed": "Set-and-Forget AI and the portfolio patterns."
+    },
+    {
+      "kind": "external",
+      "ref": "Mercari Engineering (2024); eBay Taxonomy API, PBSE playbook and promoted-listings post (2020); mobile.de Seller API; Berlin Tech Blog (2019); OLX Tech Blog (2022, 2025, 2026); OLX Group (2026)",
+      "contributed": "Data, marketplace and measurement patterns."
+    },
+    {
+      "kind": "external",
+      "ref": "Omnibus Directive 2019/2161; P2B Regulation page (European Commission); RFC 9457; Google Search Central and Merchant Center; Bundeskartellamt (2026)",
+      "contributed": "Regulation, standards and downstream channel rules."
+    },
+    {
+      "kind": "external",
+      "ref": "UK Finance Annual Fraud Report (2026); Which? (2024); Clubic (2015); Online Marketplaces (2021); Rightmove (2026) and Autotrader (2026) results",
+      "contributed": "Trust and monetization evidence."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round-4 fixes: p028, p063, p098, p120 controlling ideas or evidence reworded; KEY POINTS gloss The Attribute Junkyard and Multiplier Creep; W4, thesis statement, p005 and chains section aligned with the corrected thesis ('a missing contract, a vanity metric or a hand-off nobody owns'). length.max_words unchanged (draft at 11,2xx of 13,300). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator: thesis and two prose sentences aligned on the chain origins. Check report stale; re-check needed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 ESCALATE items under the author's delegation (see decision_log): max_words raised, p116, p120, p124 and the p098 evidence corrected to the ledger and the matrix, single-reader points fixed; index.md revised to match. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: pattern-to-chapter matrix regenerated from every chapter's FAILURE PATTERNS callout (14 rows changed; ● now means named in the callout only), 'Where this book helps' lines extended for Ghost Inventory, the portfolio patterns, Vanity Liquidity and Set-and-Forget AI; timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 10,466 → 10,499 prose words; opening ties the page to the introduction's liquidity argument; 'First indicators for each pattern' promoted to its own H2 section; three small cuts. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); known differences: Figure 2 arrows behind boxes; Figure 4 a missing arrow label and a line through a box. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed nine of the fifteen patterns (author's choice): The Duplicate Echo → Seeing Double, Index-as-Database → Search as System of Record, Paid-Rank Drift → Multiplier Creep, The Scam Inbox → Fast Mail for Fraudsters, The Country Fork → The Copy-Paste Country, The Acquisition Archipelago → Deal-Shaped Architecture, The Platform Mandate → The Forced Fit, Entitlement Spaghetti → Billing by Guesswork, The Unwatched Model → Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Added 14 inline illustrations, one per pattern that lacked one; figures renumbered 1–19; each pattern figure moved to just after the section's opening quote (author's request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 3 (ESCALATE, budget spent), cheap fixes without another round: the forward references to Fast Mail in the Ghost Inventory and Moderation illustrations replaced by ledger facts (Femke listed the bike on 7 March and sold it on 8 March); the Fast Mail illustration's delivery clause restored to the ledger wording; 'the Essen Volkswagen Golf' made indefinite; 'three marketplace brands'; system of record defined at the start of its pattern. check-report.json (round 3) is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2 (ESCALATE: three corroborated flow failures at fault in the spec): p115 now says which chains start at a contract or metric and which at an unowned hand-off; the Junkyard's mechanism (p019) names the Straitjacket as a source of free keys, so the roots paragraph's link is made earlier; the Ghost Inventory and Fast Mail illustrations (p028, p070) now say how Femke's two dates relate. index.md revised for the round-2 draft faults (family rows in the summary table, split sentences in the Straitjacket, Multiplier Creep and Vanity Liquidity illustrations, glosses for transfer service provider and export jobs). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1 (ESCALATE: one flow_is_followable failure at fault in the spec, the shift from 'contract or vanity metric' to 'contract, owner or metric'): the chain section's first paragraph (p115) now states that chains start at a missing contract or vanity metric and persist for want of an owner, so the remedy triad is introduced where it is first used; the roots paragraph names three roots. index.md revised for the round-1 draft faults. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    }
+  ]
+}

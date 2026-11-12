@@ -1,0 +1,1967 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "listing-ingestion",
+  "journal": "listing-systems-architecture",
+  "part": "part-3",
+  "title": "Many Doors In: Forms, APIs and Bulk Feeds",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the listing-ingestion entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04), a split of the two key-design rules into p24 and p25, lead-in paragraphs for the trade-off table (p46) and the vertical table (p48), and a synthesis paragraph (p70) before the hand-off. After the flow rubric, the one-sentence 'Four lessons recur' paragraph was merged into p15 (no p16) and the insertion-flow metric (p36) moved before the architectural list (p35).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The four channel types (insertion flow, partner API, bulk feed, replication from an external system of record) and where the truth about a listing lives in each.",
+        "Full-snapshot versus delta semantics, why neither suffices alone, and the clauses of a feed contract beyond schema: identity, semantics, field ownership, timeliness, media, errors, limits, reconciliation and change management."
+      ],
+      "believe": [
+        "Most ingestion incidents are a contract question nobody asked, and drift between partner state and platform state is a normal operating condition."
+      ],
+      "can_do": [
+        "Draw the 'many doors, one write path' architecture and separate external key, request idempotency key and record sequence.",
+        "Design a mass-change guard and a reconciliation schedule, and decide what a group shares across brands (contract, error catalog, validator, guards) and keeps local (adapters)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a truncated snapshot and a vendor that never sends deletes, the reader states what the platform does tonight and what the contract must say.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A real-estate software vendor sends nightly full files for 300 agencies; tonight's files are 70% shorter than yesterday's. The same vendor's delta channel never sends deletes. Using only this chapter: what happens tonight, and what must the feed contract say?",
+        "expected": "A mass-change guard, with thresholds per seller size, holds each agency's run instead of removing the missing listings, and the vendor learns of it through the same report as any other outcome; the run is confirmed or superseded by a complete resend, and the external-key mapping survives. The contract states absence semantics (absence from a snapshot means removal; a delta says nothing about absent fields), field ownership, a removal deadline (status changes as deltas within minutes, measured from the partner's timestamp), errors from a stable catalog, and scheduled reconciliation of the delta channel against a full list of live external keys at least weekly. Every channel ends in the same idempotent command keyed by the partner's reference."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The 8 March 2027 Motorvane incident in which truncated files unpublished 38,400 listings; the four channels, snapshots and deltas, and the feed contract; the contracts real marketplaces publish; the 'many doors, one write path' architecture with identity, ordering, field ownership, reconciliation and the mass-change guard, errors, back-pressure, media and the insertion flow; the Essen Golf through a feed and Hearthly's 160 vendors; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask. Evidence: published partner contracts and standards (Rightmove RTDF, RESO, mobile.de Seller API) and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a re-sent car after a feed outage and a sold car that stayed listed for a day, the reader explains both from the keys and the contract.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A dealer's car vanished during a feed outage and was re-sent two days later; another dealer's sold car stayed listed for 26 hours although nothing malfunctioned. Using only this chapter: what decides whether the re-sent car gets its old listing back, which three kinds of key are involved and what each is for, and why did the sold car stay listed?",
+        "expected": "The mapping from the partner's external key to the listing ID is listing data kept on the listing and not purged on removal, so the re-sent car gets its old listing ID, URL, favorites and price history. The three keys: the external key (per integration and seller, identifies the partner's listing across sends), the request idempotency key (per request, short-lived, makes a retried create safe) and the record sequence (per external key, orders updates). The sold car stayed because a daily snapshot is a 24-hour removal SLA by construction that nobody chose; the fix is a hybrid contract with status changes sent as deltas within 15 minutes."
+      }
+    ],
+    "audience": {
+      "who": "Chief and enterprise architects, principal engineers and engineering leads responsible for supply, partner integrations and pro-seller platforms in classifieds, real-estate and automotive marketplaces.",
+      "already_knows": [
+        "APIs, HTTP status codes, queues, batch processing, idempotency in general, OAuth and TLS.",
+        "From earlier pages: the listing as an aggregate with commands, versions and an external key (listing-aggregate); compiled category schemas (attribute-schemas); integration principals and sellers (sellers-and-accounts); Veldmark, its brands, cast, the advice forum and the Common Ground program (meet-veldmark); the failure-pattern names (where-listing-systems-go-wrong); Part III as one supply chain (part-3)."
+      ],
+      "does_not_know": [
+        "Ingestion channel, feed contract, full snapshot and delta feed (defined here).",
+        "Dealer management system (DMS), transfer service provider, multiple-listing service (MLS), IDX, OpenImmo, RESO and Rightmove's Real Time Datafeed.",
+        "Mass-change guard, scheduled reconciliation, ingestion record, field ownership and seller locks (defined here).",
+        "PKCE, DVLA write-off categories, NAR's delayed-marketing listings and DSA Article 30 trader traceability."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How should a marketplace accept supply from private sellers, professionals and partners at scale?",
+    "claim": "Ingestion is a boundary capability governed by contracts, not a set of importers: the insertion flow, partner APIs, bulk feeds and replication should each end in the same idempotent command on the listing service, validated against the same compiled schema and keyed by the partner's own reference, under a feed contract that states what absence means, who owns each field, how fast removals must arrive, how errors are reported and how both sides reconcile; snapshot channels run behind a mass-change guard, delta channels reconcile on a schedule, and a group shares the contract, error catalog and validator while keeping adapters local to each partner ecosystem.",
+    "disputed_by": "The common practice of building an importer per channel or per partner, owned by the team that serves that customer, treating a feed as a schema to parse and each incident as a bug in that importer; and, at group level, the alternative of one shared group importer for every brand.",
+    "so_what": "A Chief Architect who accepts this contracts a removal latency per channel and measures it per vendor, publishes feed health to partners and sellers as a commercial metric, certifies vendors against a sandbox before issuing credentials, and versions the contract like an API program. Veldmark adopts Supply Contract v1 in September 2027: one ingestion-record envelope, one error catalog in RFC 9457 format, mandatory mass-change guards and brand-local adapters.",
+    "how_why": "On 8 March 2027 an importer that treated every vehicle missing from a truncated file as sold unpublished 38,400 Motorvane listings for 286 dealers, and a fifth came back with new IDs because the key mapping had been purged; one guard would have turned that into 286 held runs and one call to the vendor. The Essen Golf stayed listed 26 hours after its sale because a daily snapshot is a 24-hour removal SLA nobody chose. Some of Hearthly's 160 vendors never send deletes, and Tradeyard's CSV importer validates differently from its web form, so the same listing passes one door and fails the other.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Channels differ in where the truth about a listing lives: only the insertion flow keeps it inside the marketplace, and for partner APIs, bulk feeds and replication the central problem is keeping a copy aligned with a source the marketplace does not control."
+      },
+      {
+        "id": "S2",
+        "claim": "A feed contract is much more than a schema: it states absence semantics (snapshot or delta, neither sufficient alone), identity, tenancy, field ownership, removal timeliness, errors, limits, reconciliation and change management, and real marketplaces' published contracts encode these clauses."
+      },
+      {
+        "id": "S3",
+        "claim": "Every door should end in one write path: adapters emit a channel-neutral ingestion record that one validator, reconciler and command gateway handle with idempotent commands keyed by the partner's reference, with the external-key mapping kept as listing data, and the insertion flow uses the same validator."
+      },
+      {
+        "id": "S4",
+        "claim": "Drift between partner state and platform state is a normal operating condition, so snapshot channels run behind a mass-change guard, delta channels reconcile on a schedule, removal latency is a contracted number, and errors return to partners as stable, per-record reports."
+      },
+      {
+        "id": "S5",
+        "claim": "A group shares the contract, error catalog, validator and guards while keeping adapters local to each partner ecosystem, applies the same contract to group-owned vendors, and governs ingestion like an API program with partner health published as a commercial metric."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Sets the first link of the supply chain: the boundary where outside systems write into the listing model, and the contract and write path every later link relies on.",
+    "supports": [
+      "P3-1"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "scene, concepts and public contracts: the problem, then the vocabulary, then evidence, before the design that uses all three"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "in-practice: the design is run on Motorvane's volumes and the Essen Golf, then on Hearthly's vendors"
+      }
+    ],
+    "rationale": "The scene poses the problem as three incidents and Ingrid's three-part question. The concepts give the words the answer needs (channels, where the truth lives, snapshot and delta, the contract), and the public contracts show that operators already wrote those clauses down, so the architecture can be presented as the design that enforces them. In practice tests the design on real volumes and shows a removal deadline nobody chose; trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions are judgements about a design the reader has already seen. Moving the architecture before the concepts would use snapshot, delta and the contract before they are defined; moving the public contracts after the architecture would present evidence for decisions already taken; moving the Golf before the architecture would show components the reader cannot yet name."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A private seller photographs a city bike in the app; a dealer's management system pushes 200 cars every evening; an agency's CRM sends a flat to fifteen portals at once; a developer uploads a spreadsheet of new-build units; a partner API creates listings for a fleet of rental vans; each door tends to grow its own idea of what a listing is."
+    },
+    "bridge": {
+      "from_reader_world": "The integrations and importers every marketplace team builds, one per customer and per era.",
+      "to_topic": "Ingestion as the first link of Part III's supply chain: the boundary where outside systems write into the listing model and every later link relies on what it accepts."
+    },
+    "thesis_statement": {
+      "text": "Many doors, one write path: every channel should end in the same idempotent command, validated by the same compiled schema and keyed by the partner's reference, under a feed contract that says what absence means, who owns each field, how fast removals arrive and how both sides reconcile, because partner and platform state will drift.",
+      "placement": "KEY POINTS callout (all three bullets); restated in the architecture section's p21."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, after the neighbors paragraph, naming the sections in order.",
+      "promises": [
+        {
+          "promise": "Start with the 8 March 2027 incident and the question it raised.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the channels, snapshot and delta semantics and the feed contract.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Read the partner contracts real marketplaces publish.",
+          "kept_in": [
+            "public-contracts"
+          ]
+        },
+        {
+          "promise": "Answer with many doors and one write path.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Test the design on the Essen Golf and Hearthly's vendors.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "End with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Supply arrives through more doors than a product team counts, each built at a different time for a different customer, and each tends to grow its own idea of what a listing is.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A private seller's city bike in the app; a dealer system pushing 200 cars each evening; an agency CRM sending a flat to fifteen portals; a developer's spreadsheet of new-build units; a partner API creating rental vans.",
+            "shows": "Five doors with different users and rhythms, which is why one listing can come to mean different things."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Ingestion, the first link of Part III's supply chain, is the boundary where outside systems write into the listing model, described by three terms this chapter owns (ingestion channel, feed contract and delta feed against full snapshot).",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The doors and the many ideas of a listing.",
+          "introduces": "Ingestion as the boundary that turns outside supply into listing commands, and the three terms the chapter owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Five neighboring chapters own what ingestion does not, and Veldmark, the book's fictional group, supplies the worked examples.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What this chapter owns.",
+          "introduces": "What the neighbors own: the aggregate, schemas, normalization, publication and pro tooling.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts with the 8 March 2027 incident, defines the channels, snapshot and delta semantics and the feed contract, reads the partner contracts real marketplaces publish, answers with many doors and one write path, tests the design on the Essen Golf and Hearthly's vendors, and ends with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The chapter's sections named in order, with the incident and the worked examples.",
+            "shows": "Lets a reader of the opening predict the chapter."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The boundary, its terms and its neighbors.",
+          "introduces": "The order in which the chapter answers how the boundary should work.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Morning 38,400 Cars Disappeared",
+      "controlling_idea": "Three Veldmark brands meet the same root problem from three sides (a truncated snapshot removing stock, deletes that never arrive, and two doors that validate differently), and none can say for each door what the contract is, who owns the truth and how it would know its copy were wrong.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Poses the problems the contract, the guard and reconciliation answer."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item: the 8 March 2027 incident.",
+        "introduces": "The incident itself and the forum it reached.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On 8 March 2027 Motorvane's importer, doing what it was built to do, treated every vehicle missing from a vendor's truncated nightly files as sold and unpublished 38,400 listings for 286 dealers, a fifth of which came back with new IDs because the key mapping had been purged.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "02:40 CET files for 286 dealers cut short; 38,400 listings unpublished by 02:55; about 1,900 paid top placements lapsed; more than 600 support calls; complete files resent at 09:40; about a fifth returned with new listing IDs.",
+              "source": "scenario-ledger.md, listing-ingestion line on 8 Mar 2027",
+              "shows": "Absence treated as removal without a guard, and a key mapping held as importer state, turn a vendor fault into a platform outage."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "At the advice forum the other brands showed the same root from different sides: Hearthly's feeds from about 160 vendors include some that never send deletes and leave ghosts, and Tradeyard's CSV importer validates differently from its web form.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly: 84% of 2.6 million live listings via feeds from about 160 vendors; a few percent of live listings estimated to be ghosts. Tradeyard: a 2014-era CSV importer that validates differently from the web form.",
+              "source": "scenario-ledger.md, supply mix",
+              "shows": "Lost deletes and inconsistent doors are contract problems, not one importer's bug."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Motorvane's incident brought to the forum.",
+            "introduces": "Hearthly's opposite problem and Tradeyard's two doors, from the same root.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Ingrid's question was not which technology to use but, for each door, what the contract is, who owns the truth and how the platform would know its copy were wrong; no brand could answer for all its channels.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Three brands' problems.",
+            "introduces": "The one question they share, which the rest of the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Doors, Contracts and the Truth Outside",
+      "controlling_idea": "Where the truth about a listing lives decides each channel's design; when it lives outside, absence semantics (snapshot or delta) and a feed contract much wider than a schema decide whether the platform's copy stays aligned.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the channels, the semantics and the contract the thesis relies on."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's three-part question.",
+        "introduces": "The vocabulary needed to answer it: channels, where the truth lives, snapshots, deltas and the contract.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Channels and where the truth lives come first because snapshot and delta semantics only matter when the truth is outside; the contract follows because it is where those semantics are written down, and its commercial weight comes last because it needs the contract defined."
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Of the four channels (insertion flow, partner API, bulk feed and replication from an external system of record), where the truth lives decides the design: when the marketplace holds it, ingestion is a user-experience and validation problem; when a dealer's DMS, an agency's CRM or an MLS holds it, the central problem is keeping a copy aligned with a source the marketplace does not control.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four kinds of ingestion channel: insertion flow, partner API, bulk feed and replication, with who uses each, how data moves, rhythm and where the truth lives.",
+              "shows": "Only the insertion flow keeps the truth inside the marketplace; the other three hold copies."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Scraping is not a fifth channel, because a group that wants partner supply should offer a contract, and syndication is ingestion's mirror image, covered elsewhere.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The four channels.",
+            "introduces": "What is deliberately not a channel here.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A full snapshot means absence is removal: it heals any earlier mistake with the next complete file, but a truncated file looks exactly like a dealer who sold everything.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Channels whose truth lives outside.",
+            "introduces": "The first of the two ways a partner can send that truth: the full snapshot.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A delta feed sends only creates, updates and explicit deletes; it is fast but not self-healing, so lost deletes and misdirected deletes make the two sides drift.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The snapshot's self-healing and its danger.",
+            "introduces": "The delta's speed and its drift.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Neither suffices alone, so the dependable pattern, visible in public contracts, is incremental changes for speed plus periodic full reconciliation for correctness.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Rightmove's RTDF is incremental but offers GetBranchPropertyList as a snapshot to check that nothing is still live that should have been removed (v1.4.1, 2023).",
+              "source": "Rightmove RTDF specification v1.4.1, 2023",
+              "shows": "A real portal pairs deltas with a reconciliation snapshot."
+            },
+            {
+              "kind": "source",
+              "what": "RESO Web API replication: full dataset first, then recent changes (n.d.).",
+              "source": "RESO Web API, n.d.",
+              "shows": "The US standard uses the same pattern."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: truncated snapshot, lost delete, and deltas plus reconciliation.",
+              "shows": "Shows both failure shapes and the combined remedy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The snapshot's and the delta's weaknesses.",
+            "introduces": "The combined pattern and public evidence for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A feed contract is everything both sides must agree on for a channel to be operable, and schema validity is perhaps a third of it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eleven clauses (scope and tenancy, identity, semantics, field ownership, schema and version, timeliness, media, errors and feedback, limits, reconciliation, change management), each with its question and what goes wrong without it.",
+              "shows": "Each failure in the scene maps to a missing clause, not to a parsing error."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Snapshot or delta as a semantic choice.",
+            "introduces": "The contract where that choice and the other agreements are written down.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The contract is a product artifact too: partners judge a marketplace by its feed's predictability, and because dealers multi-home, the feed is where an automotive marketplace competes for the dealer's attention.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Productscape model measures: partner integration reliability, certification lead time, validation error recurrence.",
+              "source": "Productscape domain models, n.d.",
+              "shows": "Feed quality is a partner-facing product measure."
+            },
+            {
+              "kind": "source",
+              "what": "Bundeskartellamt, October 2026: dealers multi-home and many platforms offer data export to other platforms.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "Automotive inventory is rarely exclusive, so the feed's quality is competitive."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The contract's clauses.",
+            "introduces": "Why the contract matters commercially, not only technically.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "public-contracts",
+      "heading": "The Public Contracts: What Real Marketplaces Publish",
+      "controlling_idea": "The partner contracts real marketplaces publish encode four lessons: the partner's key is the listing's identity at the boundary, creates must be safe to retry, tenancy is part of the contract, and validation rules carry policy.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Grounds the contract and the write path in what operators have published."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The feed contract as concept and product.",
+        "introduces": "Evidence from the contracts real marketplaces publish.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "Few marketplaces publish their pipelines, but several publish detailed partner contracts, which are good evidence of what operators learned, and four lessons recur across them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six public contracts (Rightmove RTDF, mobile.de Seller-API and XML upload, Autotrader UK, OpenImmo, RESO, eBay Sell Feed and Inventory APIs) with vertical, transport, identity and notable rules, each dated or marked n.d.",
+              "shows": "Different verticals converge on partner keys, tenancy, idempotency and reconciliation."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The partner's key is the listing's identity at the boundary: scoped to the integration and seller, it is what makes a re-sent record an update rather than a duplicate.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove uses Agent_Ref to decide whether a property is new; an update must 'provide the same Agent_Ref'. mobile.de's bulk format carries the dealer's seller-inventory-key and the dealer's customer number on every ad.",
+              "source": "Rightmove RTDF 2023; mobile.de upload interface XML, n.d.",
+              "shows": "Real contracts key listings by the partner's own reference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The table of contracts and the four lessons it announces.",
+            "introduces": "The first: identity.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Creates must be safe to retry, and one listing's requests must not run in parallel.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "mobile.de's X-Mobile-Insertion-Request-Id returns HTTP 303 to the ad already created on a retry; GET, PUT and DELETE are idempotent, POST is not; clients must not send parallel requests for the same ad.",
+              "source": "mobile.de Seller-API, n.d.",
+              "shows": "Idempotent create and per-listing serialization are written into a real contract."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Identity.",
+            "introduces": "The second lesson: retries and concurrency.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Tenancy is part of the contract: both Rightmove and mobile.de separate the integration principal (the vendor) from the seller it acts for.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rightmove's network and branch IDs with sales and lettings channels, rejecting a channel the branch lacks; mobile.de access only for transfer service providers and self-uploading dealers, each seeing only linked sellers.",
+              "source": "Rightmove RTDF 2023; mobile.de Seller-API, n.d.",
+              "shows": "Scope is enforced per vendor and per seller."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Retries.",
+            "introduces": "The third lesson: who may write for whom.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Validation rules are where policy lives, so the feed contract is a compliance surface: a field the law requires must be required in the feed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Autotrader errors reject a price below a minimum of 75 and DVLA category A or B write-offs; Rightmove 1.4.0 (April 2022) added ground rent, service charge and council-tax band, 1.4.1 (November 2023) utilities, parking, flood risk and accessibility.",
+              "source": "Autotrader developer portal, n.d.; Rightmove RTDF 2023",
+              "shows": "Schema versions track regulation and commercial policy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Tenancy.",
+            "introduces": "The fourth lesson: policy in validation.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Many Doors, One Write Path",
+      "controlling_idea": "Every channel ends in the same idempotent, validated command keyed by the partner's reference, with keys, ordering, field ownership, a mass-change guard, scheduled reconciliation, error reports and back-pressure built into one write path that the insertion flow shares.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the design the thesis prescribes and the controls for drift."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The contract clauses and the lessons of the public contracts.",
+        "introduces": "The design that enforces them: one write path behind many doors.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p26 to p31: the life of a record from ordering through ownership, reconciliation and the guard to the report back to the partner"
+          }
+        ],
+        "rationale": "The overall shape and its record come first, then identity, because ordering, ownership and reconciliation all key on it; the guard and reconciliation follow the reconciler that hosts them; errors, load and media are what surrounds a run. The insertion flow comes last, its funnel view and metric before its architecture, so the partner path runs unbroken and the section ends on the claim that the human door uses the same path, which needs the path described; its opening sentence names it as the first door of the channel table."
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "The channel determines the transport and the rhythm, never the meaning: every channel ends in the same small set of listing commands, validated by the same compiled schema, reporting through the same error catalog.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: adapters turn each transport into one ingestion record, glossed in the caption as one channel-neutral envelope per partner listing; change detection, validation, reconciliation and the guard sit before the listing service; errors return through one report format.",
+              "shows": "The many-doors, one-write-path shape."
+            },
+            {
+              "kind": "table",
+              "what": "Components and responsibilities: channel adapters, ingestion record log, change detection, validator, reconciler, mass-change guard, command gateway, run reports, feed operations console, each with what it must not do. The adapters row names the two authentication options (mutual TLS or OAuth 2.0) that the trade-off table weighs.",
+              "shows": "Each component has one job and a stated limit, so business rules cannot scatter."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The ingestion record is the key internal abstraction: channel-neutral, so one reconciler, validator and report format serve every partner, which is what Veldmark's parse-then-write importers lacked.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The record's fields; a Rightmove-style JSON call, an OpenImmo ZIP and a Tradeyard CSV row look identical after the adapter.",
+              "shows": "Channel differences end at the adapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The components.",
+            "introduces": "The record that flows between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Ingestion has three kinds of key (external key, request idempotency key and record sequence), and confusing them causes most duplicate and overwrite bugs.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Key, scope, purpose and example for each; the request-key example names mobile.de's insertion request ID and a Stripe idempotency key.",
+              "shows": "The three keys differ in scope and lifetime."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ingestion record, which carries an external key.",
+            "introduces": "The three keys and why they must not be confused.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The mapping from external key to listing ID is listing data, not importer state: kept on the listing and kept through removals, it returns a reappearing car's old ID, URL, favorites and price history.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Motorvane's March incident became a duplicate problem because the importer purged the mapping when it unpublished the cars.",
+              "shows": "Where the mapping lives decides whether an outage also creates duplicates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The external key.",
+            "introduces": "The first of three design rules that follow from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "There is no standard HTTP idempotency header, so the platform must define one in its own contract.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The IETF Idempotency-Key draft reached version 07 in October 2025 and expired without becoming an RFC.",
+              "source": "IETF Datatracker, 2025",
+              "shows": "Partners cannot be pointed to a standard."
+            },
+            {
+              "kind": "fact",
+              "what": "Stripe's documented idempotency semantics: keys up to 255 characters, results stored once execution begins, keys pruned after at least 24 hours, a mismatch error if parameters differ.",
+              "source": "Stripe idempotent requests, n.d.",
+              "shows": "A workable model for the semantics the platform's own header must document."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first rule, on the external key.",
+            "introduces": "The second rule, on the request key.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25a",
+          "controlling_idea": "One seller arriving through two doors is still one listing: ingestion matches the same seller's strong key (VIN, agency reference) across integrations and merges at the boundary, leaving cross-seller duplicates to entity resolution.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A dealer switching DMS vendors whose old and new vendors both send stock for a week; a car sent through a vendor and through the pro tool.",
+              "shows": "Each integration brings its own external key, so the external key alone cannot recognize the same car."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first two rules, on the external key and the request key.",
+            "introduces": "The third rule: the same seller's listing across channels.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "Out-of-order updates are kept in order by three rules: serialize per listing, apply only newer partner versions, and use expected versions on commands.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "mobile.de's no-parallel-requests rule; Rightmove's Update_Date.",
+              "shows": "Public contracts already rely on serialization and partner timestamps."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The record sequence key.",
+            "introduces": "How ordering is enforced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Feed-driven listings have three writers (the feed, the seller in the pro tool and the platform), so the contract must say who owns each field or the evening snapshot reverts the dealer's noon price cut.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Field groups with default owner and whether the feed may overwrite: identity facts, price and media (unless the seller locks), visibility products via product calls only, moderation state never, enriched values never directly, lifecycle clock indirectly.",
+              "shows": "Ownership is decided per field group, not per channel."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: field lanes owned by the feed, the seller's lock or the platform.",
+              "shows": "Shows the lock holding the price cut against the snapshot."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Ordering between writes of one channel.",
+            "introduces": "Conflicts between different writers of one listing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The reconciler turns a run into changes: it applies a delta run's operations and, for a snapshot run, computes per seller the difference that becomes removals, which is where the guard sits.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the life of a snapshot run, with a run beyond thresholds held and reported.",
+              "shows": "Shows where the guard intervenes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who may change which field.",
+            "introduces": "How a run becomes changes at all.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A mass-change guard holds a seller's snapshot run whose effect exceeds thresholds set by seller size, and it would have turned Motorvane's 38,400 removals into 286 held runs and one call to the vendor.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A small dealer selling three of eight cars on a Saturday is normal; an agency losing 60% overnight is not. Held runs are confirmed by the partner or an operator, or superseded by a complete resend.",
+              "shows": "Thresholds must scale with seller size."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Where the guard sits.",
+            "introduces": "What it holds and how a held run is released.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Delta channels need the reverse control, scheduled reconciliation: at least weekly, daily for high-value verticals, the platform compares the partner's live keys with its own and routes the differences through the same guard and pipeline.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The guard on snapshot channels.",
+            "introduces": "The control delta channels need instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Partners experience a marketplace through its error reports, so a report is per run and per record, with stable codes from one validator, warnings as a third outcome, asynchronous results for files, and malformed input answered as the sender's error.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove's warning tier: 'the call has been successful, but one of the business rules has failed'.",
+              "source": "Rightmove RTDF 2023",
+              "shows": "A warning lets the platform accept and still tell the sender."
+            },
+            {
+              "kind": "source",
+              "what": "RFC 9457 problem details (July 2023) with an errors array of JSON Pointers; mobile.de's 400 with an errors array.",
+              "source": "RFC 9457, 2023",
+              "shows": "Standard envelopes exist; stable codes matter more than the envelope."
+            },
+            {
+              "kind": "source",
+              "what": "eBay Sell Feed API: each upload a task with an ID, status and result file.",
+              "source": "eBay Sell Feed API, n.d.",
+              "shows": "The model for run IDs and run reports."
+            },
+            {
+              "kind": "case",
+              "what": "Adevinta's InfoJobs media service returned 500 for files that were two PDFs joined together.",
+              "source": "Adevinta Tech Blog, 2025",
+              "shows": "Answering bad input with 5xx hides a partner's bug in the platform's error budget."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Changes computed, held or applied.",
+            "introduces": "How partners learn the outcome.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "Feed traffic is spiky, so per-partner queues, honest rate limits, quotas checked against entitlements and priority by effect keep one partner from starving the rest and removals from waiting behind creates.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Autotrader's 'dynamic reputation scoring' of inbound connections.",
+              "shows": "Real platforms rate-limit by partner behavior."
+            },
+            {
+              "kind": "case",
+              "what": "Motorvane's importer skipped over-quota cars while its billing export counted every feed row, so dealers were billed for cars never published (2027), told in its own sentence after the rule.",
+              "source": "products-and-entitlements",
+              "shows": "Quota must come from the entitlement service, not the importer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Errors flowing back to partners.",
+            "introduces": "Load flowing in from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Media dominates feed bytes, but ingestion only references media; its decision is whether a listing may go live before its images are processed.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Rightmove pulls media by URL, up to 999 items and 20 MB per image, and does not re-retrieve images with the same Media_Update_Date; mobile.de pre-uploads images and references them by ID.",
+              "source": "Rightmove RTDF 2023; mobile.de Seller-API, n.d.",
+              "shows": "Both models keep image work out of the ingestion path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Load from records.",
+            "introduces": "The heaviest part of that load: media.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The insertion flow is a conversion funnel in which every step that asks a casual seller for something they lack loses supply.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Productscape seller-journey pains: forced account creation, mobile uploads over weak connections, a rejection 'with an unclear reason'.",
+              "source": "Productscape domain models, n.d.",
+              "shows": "Where the funnel loses sellers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The partner records and the machinery around them.",
+            "introduces": "The first door in the channel table, the human one, on the same path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The funnel metric that matters is published-and-contacted, not form completion, because asking for less can move the problem downstream.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Tradeyard measures start-to-publish rate and first contact within 48 hours side by side.",
+              "shows": "Two measures together catch a faster but emptier funnel."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The insertion flow as a funnel.",
+            "introduces": "The funnel metric that matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Architecturally the insertion flow is a channel like the others: drafts are listing state, the category selects the schema, the form uses the same validator and command gateway, and assistance only suggests values whose provenance is recorded.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "OLX (2026): several tabs resuming the same upload duplicated objects; solved with the Web Locks API.",
+              "source": "OLX Engineering, 2026",
+              "shows": "Even one browser needs upload coordination."
+            },
+            {
+              "kind": "source",
+              "what": "eBay's photo-based listing tool (September 2023); Kleinanzeigen photo suggestions excluding vehicles and intangibles (trade press, November 2025).",
+              "source": "eBay 2023; mobiFlip 2025",
+              "shows": "Assistance is mainstream and stays a suggestion layer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The funnel view and its metric.",
+            "introduces": "The same flow seen as a channel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: The Essen Golf Comes In Through a Feed",
+      "controlling_idea": "Motorvane's feed volumes and the Essen Golf's life through a daily snapshot show that most records are unchanged and that a contract's rhythm silently sets its removal deadline, while Hearthly's 160 vendors show why the contract must be explicit and measured per vendor.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Tests the write path on real volumes and shows the removal deadline as a contract term and vendor compliance as something to measure."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The write path as designed.",
+        "introduces": "The write path under Motorvane's and Hearthly's real supply.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "comparison",
+            "applies_to": "Hearthly after Motorvane: breadth of vendors after depth of volume"
+          }
+        ],
+        "rationale": "Volumes first so the Golf's run makes sense; then the Golf's create, price change and sale in date order, because the 26-hour lag only reads as a contract fault after the earlier steps worked; Hearthly last, because its problem is breadth rather than one listing."
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Motorvane is the clearest case because most of its supply arrives by machine, and nightly snapshots carry well over a million records although only about 30,000 dealer listings a day are new.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1.45 million live listings; 91% from 21,400 dealers; 88% of dealer listings via DMS feeds (about 1.16 million); about 210,000 new dealer listings a week.",
+              "source": "scenario-ledger.md, supply mix",
+              "shows": "Snapshot volume is driven by stock size, not change."
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Most feed records are unchanged, so content-hash change detection drops about 91% of snapshot records before validation and leaves about 100,000 changed records a day for the rest of the pipeline.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Re-sending every car every night.",
+            "introduces": "The first design fact it yields.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The Golf enters through Autohaus Ruhrblick's 17:00 snapshot on 14 April 2027 and is searchable at 17:05 after change detection, validation, reconciliation, the listing service, enrichment and publication.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Time-stamped steps from snapshot arrival (148 vehicles within a 150-slot package) to publication, with 145 records skipped, 2 price changes, 1 create, 31 attributes from VIN decoding and a €22,800 market-value estimate.",
+              "source": "scenario-ledger.md, Essen Golf and listing-ingestion lines",
+              "shows": "Each component of the write path doing its job on one run."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Volumes and change detection.",
+            "introduces": "One car through one run.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Over the next ten days the Golf draws 23 raw leads, 19 after removing repeat contacts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "23 raw leads (14 e-mails, 7 calls, 2 test-drive bookings); 19 deduplicated.",
+              "source": "scenario-ledger.md, editor line on Essen Golf leads",
+              "shows": "What a live feed listing is worth, which is what a ghost or a lost listing costs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The Golf live.",
+            "introduces": "What a live listing earns.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "A price cut entered at 11:20 reaches Motorvane in the 17:00 snapshot, nearly six hours later, which is acceptable for a price cut.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Price cut to €21,400; price-drop alerts to 1,180 watchers shortly after 17:00.",
+              "source": "scenario-ledger.md",
+              "shows": "A snapshot's rhythm sets the delay of every change it carries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The Golf's first ten days.",
+            "introduces": "The first change after creation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Sold at 15:10 on 29 April and recorded the next morning, the Golf left search 26 hours after the sale although no component misbehaved, because a daily snapshot is a 24-hour removal SLA nobody chose.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Removed at 17:10 on 30 April; meanwhile searchable, in a morning alert digest, three more enquiries.",
+              "source": "scenario-ledger.md",
+              "shows": "The ghost was in the contract, not the code."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Six hours acceptable for a price cut.",
+            "introduces": "The same rhythm unacceptable for a sale.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Motorvane's fix is a hybrid contract: snapshots for completeness, status changes as Seller API deltas within 15 minutes, vendors that cannot comply labeled, and the forecourt-to-DMS gap left to a one-tap sold action in the dealer app.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The 26-hour ghost.",
+            "introduces": "The contract change that removes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Hearthly's problem is breadth: about 160 vendors for 36,500 agencies fall into about 40 reliable, 90 with recurring warnings and 30 that cause most incidents, including those that never send deletes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "160 vendors, 36,500 agencies in France and Spain; 40 / 90 / 30 vendor classes; Casavista's importer since 2025.",
+              "source": "scenario-ledger.md, listing-ingestion line",
+              "shows": "Contract compliance varies by vendor, so the contract must be explicit and measured."
+            },
+            {
+              "kind": "case",
+              "what": "Two real-estate software vendors and Keybridge supplied the Lyon apartment's three listings in May 2027.",
+              "source": "scenario-ledger.md, Lyon apartment",
+              "shows": "One property reaches Hearthly through several vendors."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Motorvane's depth of volume through few vendors.",
+            "introduces": "Hearthly's breadth of vendors.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each major ingestion choice (transport, semantics, acceptance, media, authentication, standards and group ownership) has conditions under which each option is right, and standards belong behind adapters because they change slowly.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Shows when the recommended options hold and why standards stay adapters."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design and its worked examples.",
+        "introduces": "The choices behind it and when the alternatives win.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Seven decisions shape an ingestion design, and each option in them is right under stated conditions.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven decisions with two options each and when each is right, including RFC 9700's OAuth best practice (no password grant, PKCE for public clients) and shared contract with local adapters at Veldmark.",
+              "source": "RFC 9700, 2025",
+              "shows": "No option is right everywhere; the conditions decide."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Standards change slowly, so a receiver must run adapters for two generations of a standard for years, which is why the standard should be an adapter into the platform's own contract.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "OpenImmo XML dates from 2001 and its incompatible REST and JSON successor was expected to reach final release at the end of 2026; Rightmove dropped XML in 2019.",
+              "source": "OpenImmo, n.d.",
+              "shows": "Generations of a standard overlap for years."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The standards row of the table.",
+            "introduces": "Why it favors adapters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in dominant channel, where the truth lives, identity anchor and removal pressure, and each adds content the contract must carry: embargo flags in US real estate, closure in jobs and trader traceability in the EU.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Shows where the truth lives per vertical and which clauses each vertical adds."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Choices that hold across verticals.",
+        "introduces": "How the verticals differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "General classifieds, real estate, automotive and jobs differ in which door dominates, where the truth lives, what anchors identity and how hard removal presses.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven dimensions across four verticals, with Tradeyard 78%, Hearthly 84% and Motorvane 88% as dominant-channel figures.",
+              "source": "scenario-ledger.md, supply mix",
+              "shows": "The same architecture meets different hardest problems per vertical."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "US real estate adds visibility: embargo and visibility flags must travel as data on each record and be honored as a compliance control.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "NAR's multiple-listing-options policy, effective 25 March 2025, allows delayed-marketing exempt listings whose IDX and syndication marketing is postponed.",
+              "source": "NAR, n.d.",
+              "shows": "Visibility can be restricted by policy, not ranking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's real-estate column.",
+            "introduces": "One clause real estate adds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Jobs add expiry as a hard requirement, so a jobs feed that cannot express closure is a search-engine risk.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Google: failure to remove expired job postings 'may result in a manual action'.",
+              "source": "Google Search Central, 2026",
+              "shows": "Closure must be expressible in the feed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Real estate's clause.",
+            "introduces": "Jobs' clause.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "In the EU, trader traceability adds a rule to every feed channel: no vendor may create listings for a trader whose traceability data is incomplete.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "DSA Article 30, applicable since 17 February 2024: collect and make best efforts to verify trader information before use.",
+              "source": "Regulation (EU) 2022/2065",
+              "shows": "Regulation becomes a blocking rule in ingestion."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Jobs' clause.",
+            "introduces": "A rule that applies to every vertical in the EU.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Nine common mistakes undo the design, each the reverse of a rule the chapter states in its contract clauses, architecture or Chief Architect's view.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows what happens when each rule is skipped."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design, its options and its vertical variants.",
+        "introduces": "How it fails in practice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Guard and reconciliation failures come first because they are the scene's incidents; identity and validation follow, then feedback and load, then change and compliance, following the order of the contract's clauses: absence and drift (semantics, reconciliation), identity, validation, feedback and load, then change and compliance."
+      },
+      "paragraphs": [
+        {
+          "id": "p51a",
+          "controlling_idea": "The design fails in practice when one of its rules is skipped, and each failure below is one such rule.",
+          "function": "transition"
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Absence treated as truth without a guard lets a truncated snapshot remove a seller's stock, so every snapshot channel needs a guard whose thresholds have an owner.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The Motorvane incident in one sentence.",
+              "shows": "Ties the failure to a case or published practice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announcement that each failure is a skipped rule.",
+            "introduces": "The first failure: absence treated as truth.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Deltas without reconciliation accumulate ghosts invisibly, so the reconciliation report is the primary health signal for delta partners.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "An external-key mapping held by the importer and cleaned up on removal turns a re-sent listing into a new one, so the mapping stays on the listing until it is purged.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Two channels for one seller without recognition create duplicates, so ingestion merges the same seller's strong keys at the boundary and leaves cross-seller duplicates to entity resolution.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Different validation behind different doors teaches sellers to pick the lenient door, which one validator compiled from one schema ends.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Tradeyard's CSV importer and web form.",
+              "shows": "Ties the failure to a case or published practice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Errors that surface only in support tickets make every fix a conversation, while machine-readable run reports for vendor and seller cost less.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Partner bugs counted against the platform (5xx for bad input, retry storms, one backlog delaying everyone) are avoided by classifying errors at the boundary and isolating partners.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Breaking changes by surprise break every vendor at once, so new requirements are published as recommended first with an effective date and a fixed notice period.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "eBay's expectedRequiredByDate; Autotrader's 30-day minimum.",
+              "shows": "Ties the failure to a case or published practice."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Regulatory fields left optional in the feed publish non-compliant ads at feed speed, so legally required fields block in the validator, versioned by effective date.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "The reverse of one of the chapter's rules."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way the design is undone.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale ingestion is a set of contracts and the discipline to operate them: share the contract and keep adapters local, contract removal latency, publish partner health, own each door, govern change, hold the group's own vendor to the same contract and keep the evidence.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4"
+        ],
+        "how": "States the group-level decisions the thesis's so-what names."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions a Chief Architect takes so they do not recur.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "controlling_idea": "At group scale ingestion is a set of contracts and the discipline to operate them, and Veldmark's decisions generalize.",
+          "function": "claim"
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Share the contract, not necessarily the importer: Veldmark's Supply Contract v1 (September 2027) shares one envelope, one RFC 9457 error catalog, field-ownership defaults, mandatory guards and weekly reconciliation, and a validator library, while adapters stay local.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Motorvane's German, Dutch, Polish and Austrian DMS vendors, Hearthly's French and Spanish agency-software vendors and Tradeyard's own pro sellers share almost nothing.",
+              "source": "scenario-ledger.md, Supply Contract v1 line",
+              "shows": "A single group importer would serve three unrelated ecosystems."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions generalize.",
+            "introduces": "The first: what to share.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Make removal latency a contracted number per channel, measured from the partner's own timestamp to the listing leaving search.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to share.",
+            "introduces": "The second decision: removal latency.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "Treat partner health as a commercial metric and give the same numbers to partner and seller, because dealers blame the marketplace for empty lead inboxes.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Removal latency.",
+            "introduces": "The third decision: partner health.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "Decide who owns each door, with a contract owner and a partner-operations function that certifies vendors against a sandbox before issuing credentials.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "mobile.de requires transfer service providers with more than ten customers to supply contacts, software details, VAT ID and customer numbers before access.",
+              "source": "mobile.de Seller-API manual, n.d.",
+              "shows": "Access gated on accountability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Partner health.",
+            "introduces": "The fourth decision: ownership.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Govern contract changes like an API program, because a breaking change is paid for by 160 vendors and 36,500 agencies.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Ownership.",
+            "introduces": "The fifth decision: change.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Hold the group's own vendor to the same contract: Keybridge, which also publishes to Hearthly's competitors, integrates with Hearthly through the same public contract, credentials, limits and error catalog as every other vendor.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Change governance, including who learns of schema changes first.",
+            "introduces": "The sixth decision: neutrality for the group's own vendor.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Applies the same contract to group-owned vendors."
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Keep the ingestion record log as evidence for dealer, billing and regulatory disputes, retained for their windows with personal data minimized.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Neutrality for the group's own vendor.",
+            "introduces": "The seventh decision: evidence.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "What to watch: listings past their freshness SLA, held runs, reconciliation drift, the partners with most warnings and sold-to-gone latency, because duplicates or ghosts upstream of search usually start as a feed change.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The seven decisions.",
+            "introduces": "The measures that show whether they hold.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions turn the chapter's rules into checks a design review can apply to any ingestion setup.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Puts each rule in a form a reviewer can test."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that test whether a design meets them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p69",
+          "form": "list",
+          "controlling_idea": "Ten questions cover where the truth lives, absence, the key mapping, one validator, field ownership, removal latency, partner feedback, isolation under load, legal fields and equal terms for group-owned integrations.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Accepted to Usable",
+    "synthesis": "None of Veldmark's incidents was an importer bug: the 38,400 removals, the Golf's 26 hours, Hearthly's ghosts and Tradeyard's two validators were each a contract clause nobody wrote, and the guard, the reconciliation schedule, the key mapping and the shared validator are those clauses in running form.",
+    "so_what": "An architect's lever on ingestion is the contract per door rather than the importer technology, so Ingrid's three-part question can be answered for every door before the next incident.",
+    "callback": {
+      "to": "The opening's doors, each growing its own idea of what a listing is (p01), and Ingrid's question in the scene (p07).",
+      "how": "The doors now share one write path and one contract each, and the question has an answer per door."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "For each door, write down the contract, who owns the truth and how the platform would know its copy were wrong."
+    },
+    "hand_off": {
+      "to": "normalization-and-enrichment",
+      "relationship": "contrast",
+      "carries_over": "The records ingestion accepted, and the Essen Golf that arrived through its dealer's feed on 14 April 2027.",
+      "introduces": "The gap between accepted and usable (wrong-locale prices, makes spelled five ways, addresses without coordinates, a car described only by its VIN) and the question of which values the seller said and which the platform derived."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter: the incidents, the contract and the write path.",
+      "introduces": "What they amount to, and what remains after acceptance.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p70",
+        "controlling_idea": "None of Veldmark's incidents was an importer bug but a contract clause nobody wrote, and the guard, reconciliation, key mapping and shared validator are those clauses in running form, so the opening's doors can share one write path and Ingrid's question can be answered per door.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p71",
+        "controlling_idea": "Accepted records are not yet usable (wrong-locale prices, makes spelled five ways, addresses without coordinates, a car described only by its VIN), and the next chapter follows the same Golf to a consistent, enriched listing that records which values the dealer said.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The records the boundary accepts.",
+          "introduces": "What they still lack, and the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The listing aggregate's identity, invariants and lifecycle.",
+      "covered_in": [
+        "listing-aggregate"
+      ]
+    },
+    {
+      "topic": "Attribute dictionaries and compiled category schemas.",
+      "covered_in": [
+        "attribute-schemas"
+      ]
+    },
+    {
+      "topic": "Value normalization, enrichment and attribute provenance.",
+      "covered_in": [
+        "normalization-and-enrichment"
+      ]
+    },
+    {
+      "topic": "Cross-seller duplicates and canonical entities (only same-seller, cross-channel merges are covered here).",
+      "covered_in": [
+        "entity-resolution"
+      ]
+    },
+    {
+      "topic": "Freshness SLAs end to end and unpublish propagation.",
+      "covered_in": [
+        "publication-pipeline"
+      ]
+    },
+    {
+      "topic": "Dealer and agent products built on the channels; media processing; outbound syndication.",
+      "covered_in": [
+        "professional-seller-tooling",
+        "media-pipeline",
+        "event-driven-listings"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "mobile.de's full-versus-delta semantics for its XML upload are documented on a page the research did not fetch; the chapter does not state them. (Carried over from spec.md.)",
+    "The French agency-software export landscape (passerelles) is described only as industry practice; no current vendor or format facts were verified. (Carried over from spec.md.)",
+    "The DSA Article 30 wording was read at summary level; check the article text on EUR-Lex before print. (Carried over from spec.md.)",
+    "Kleinanzeigen's photo-to-listing evidence is trade press, not a company engineering source. (Carried over from spec.md.)",
+    "The four checklist, summary, dialog and comics modalities listed (unchecked) in spec.md do not exist; modalities is empty. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around where the truth lives per channel rather than around transports, because the system-of-record question separates a UX problem (insertion flow) from a reconciliation problem (feeds).",
+      "rejected": [
+        "Sections per transport (API, file, replication)."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used publicly documented partner contracts (Rightmove RTDF, mobile.de Seller-API, Autotrader, OpenImmo, RESO, eBay Feed API) as the evidence base, since marketplaces rarely publish internal pipelines; inferences about internals were avoided."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Opened with a fictional truncated-snapshot incident (Motorvane, 8 March 2027) and explained the ledger's 26-hour Golf removal as a contract consequence (daily snapshot equals a 24-hour removal SLA), resolved by a hybrid snapshot-plus-status-delta contract."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended a shared group contract (Supply Contract v1) with local adapters instead of a single group ingestion platform, consistent with 'share platforms, not products'; treated Keybridge neutrality as an ingestion-contract requirement.",
+      "rejected": [
+        "One group ingestion platform for all brands."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: 5 (three keys, mapping survives removals) and 6 (guard, reconciliation, 8 March incident and the Golf's 26-hour lag) rewritten as AC-4 (minor, added for this post, not in the journal spec); 1 (channel table), 2 (snapshot versus delta with RTDF and RESO), 3 (contract clauses) and 4 (draw the architecture) dropped as inventories covered by AC-1 and AC-2; 7 (trade-off table) dropped as an inventory; 8 (dated sources) dropped as a criterion because it is the house evidence rule, not a reader outcome."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1, moved the insertion flow (p34, p36, p35) to follow the ingestion record (p22): both flow readers found it out of place at the end of the architecture section, after media. Order, transitions and the section flow reason changed; intent, thesis and role unchanged.",
+      "rejected": [
+        "Keep the insertion flow last in the architecture section.",
+        "Give the insertion flow its own section before In Practice."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 2, restored the insertion flow to the end of the architecture section: round-1 readers (both) wanted it earlier, round-2 readers (both) wanted it back at the end. The original order is kept and p34 opens by naming the insertion flow as the first door of the channel table on the same path, which answers round 1's complaint that it arrived as a change of topic.",
+      "rejected": [
+        "Keep the round-1 position after the ingestion record.",
+        "A separate section for the insertion flow (would add a section and words over the limit)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so the limit is the published prose length plus 5% (8,057 words by check_draft.py, which counts callouts and tables; limit 8,460)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Insertion-flow placement (round-1 readers wanted it earlier, round-2 readers wanted it back at the end): kept at the end of the architecture section, the published position, by the rule that an ambiguous item with no clear better option keeps the published text. Resolved under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Move the insertion flow after the ingestion record (p22).",
+        "A separate section for the insertion flow."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moved the Keybridge neutrality paragraph (p45) from In Practice to the Chief Architect's View as decision 6, after change governance and before evidence (now 7), because readers in rounds 2 and 3 both asked for it there beside question 10. The restored Lyon sentence stays in In Practice, now in p44 as evidence that one property reaches Hearthly through several vendors, where it glosses Keybridge. In-practice and ca-view controlling ideas, p45, p67 and p68 transitions updated; S5 moves to ca-view only. Resolved under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Keep p45 in In Practice (spec order)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added p25a to the architecture's identity rules: the same-seller, cross-channel merge at the boundary (the flow rubric's note), so failure mode p55 reverses a stated rule. 'Two design rules' became 'Three'. Resolved under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "DSA trader traceability (p51) stays under Vertical Differences (single-reader, minor note; keeps the published text). Resolved under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Move p51 to the contract or failure-modes section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Fixed the round-3 corroborated draft faults: the failure-modes lead is its own paragraph (new transition unit p51a); the Stripe idempotency details moved from the key table cell into p25 as a model for the platform's own header (nothing cut); the Motorvane billing incident has its own sentence in the quota bullet (ledger: importer skipped over-quota cars while the billing export counted feed rows); the adapters row names mutual TLS and OAuth 2.0 before the trade-off row; Figure 2's caption glosses 'ingestion record' at first use. Also glossed 'share platforms, not products' in p62 from the ledger's Common Ground line (single-reader minor). Resolved under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Raised length.max_words from 8,460 to 8,700 (2.8%, within the 10% allowance) to pay for p25a, p51a, the moved Stripe sentence and the glosses (draft at 8,591 by check_draft.py)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes (claim length, missing general reason in how_why) and the remaining flow-rubric notes not taken (change detection paragraph, gloss of reconciler and error catalog, cutting the 23 leads, the breaking-change rule in architecture, citing public contracts in the key paragraphs, merging p34 and p36, so-what in the synthesis, the five neighbor pointers, 'Common Ground review'): accepted as is under the author's delegation, 2026-11-12; the thesis stays as copied from the journal spec."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of normalization-and-enrichment."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/_research/scenario-ledger.md",
+      "contributed": "Veldmark figures: supply mix, the 8 March 2027 incident, the Essen Golf timeline, change detection, Hearthly's vendor classes and Supply Contract v1."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-listing-data-ingestion.md, brief-real-estate-portals.md, brief-automotive.md, productscape-digest.md",
+      "contributed": "Feed specifications, idempotency, error formats, public partner contracts, dealer-feed inference and integration-partner measures (carried over from spec.md)."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, attribute-schemas, entity-resolution, part-3",
+      "contributed": "Terminology, ownership boundaries and the part's chain."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove, Real Time Datafeed Specification v1.4.1 (2023)",
+      "contributed": "The most detailed public portal ingestion contract."
+    },
+    {
+      "kind": "external",
+      "ref": "mobile.de, Seller-API and Upload interface XML (n.d.)",
+      "contributed": "Transfer service provider access model, idempotent create, per-ad serialization."
+    },
+    {
+      "kind": "external",
+      "ref": "IETF, RFC 9457 (2023) and RFC 9700 (2025)",
+      "contributed": "Error envelope and OAuth best practice."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: p45 moved to the Chief Architect's View, p25a (same-seller merge) and p51a (failure-modes lead) added, round-3 draft faults fixed, insertion flow and DSA placement kept, max_words 8,460 to 8,700. Draft check round 4 follows. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored the published sentence that two vendors and Keybridge supplied the Lyon apartment's three listings in May 2027 (ledger, Lyon apartment). Check report stale."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: labeled the Golf's 23 leads as raw (19 deduplicated), expanded PKCE and DVLA, American spelling, timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,806 to 6,826 words; outline unchanged; opening places the chapter as the first link of Part III's supply chain; Vertical Differences paragraph split in three; topic sentences brought forward in six paragraphs. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (budget spent); three cheap close-out fixes applied without another round (p14 evidence order, p17 'First,', p45 Lyon aside cut). Report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (ESCALATE on one corroborated spec-fault result): both round-2 flow readers found the insertion flow, placed after the ingestion record in round 1, broke the partner walk-through and asked for it at the end of the section, its original place. Restored the original order (p34, p36, p35 last in the architecture section) with p34's transition now naming it the first door of the channel table; p23's transition restored. Re-validated. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (ESCALATE on two spec-fault results, both corroborated or outliner-flagged): p02's controlling idea made single (the boundary, described by its three terms); the insertion-flow units (p34, p36, p35) moved from the end of the architecture section to right after the ingestion record (p22), with p34's and p23's transitions rewritten. Re-validated; draft units moved to match. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes applied: p16 merged into p15; p36 moved before p35; failure-modes controlling idea and flow reason reworded. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published article; status draft. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8700
+  }
+}

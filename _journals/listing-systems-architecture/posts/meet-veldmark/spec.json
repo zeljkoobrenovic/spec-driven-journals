@@ -1,0 +1,1159 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "meet-veldmark",
+  "journal": "listing-systems-architecture",
+  "part": "preface",
+  "title": "Meet Veldmark: Four Brands, One Platform to Build",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the acceptance criterion AC-1, the thesis and the role are copied unchanged from the meet-veldmark entry in journal-spec.json; the conclusion realises the Preface's closing (synthesis, so-what, callback, takeaway) from the same file. Two units were added by this conversion: a roadmap paragraph in the introduction (p03) and a closing section (p32, p33) that carries the Preface closing; the old hand-off paragraph moved into it.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Veldmark's four brands and their business models, its volumes, systems landscape and people.",
+        "Its eight 2027 problems and the Common Ground program.",
+        "The recurring worked examples whose numbers the chapters share."
+      ],
+      "can_do": [
+        "Recognize a Veldmark problem, person or worked example when a chapter cites it, and check its figures against this page."
+      ]
+    },
+    "audience": {
+      "who": "Experienced architects and engineering leaders working on listing marketplaces: chief and enterprise architects of marketplace groups, principal and staff engineers, search, data and ML leads, platform-engineering leads, product and engineering directors of classifieds, real-estate, automotive, jobs and recommerce marketplaces, and technology leaders integrating acquired marketplaces.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision.",
+        "From the introduction: the liquidity-machine claim, liquidity as the likelihood of a match per place and category, the general manager's scene, and that Veldmark is the book's fictional group.",
+        "From where-listing-systems-go-wrong: the fifteen failure-pattern names and one Veldmark illustration for each."
+      ],
+      "does_not_know": [
+        "Marketplace economics: liquidity, network effects, multi-homing.",
+        "Search and ML vocabulary: learning to rank, percolation, hybrid retrieval.",
+        "Regulatory detail: DSA statements of reasons, DAC7, P2B.",
+        "Vertical specifics: VINs, property and vehicle feed standards."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page can name at least four of Veldmark's eight 2027 problems and, where the page names one, the failure pattern each is an instance of.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: name four of Veldmark's eight 2027 problems and, for each, the pattern it is an instance of.",
+        "expected": "Four of: Four of everything (Deal-Shaped Architecture); Six minutes to searchable; Six weeks for a category (The Category Straitjacket, The Attribute Junkyard); Duplicates at Hearthly (Seeing Double); Payment-link phishing (Fast Mail for Fraudsters); Yardstick; Keybridge neutrality; Overlap in Poland (Deal-Shaped Architecture)."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a chapter's figures for a worked example, the reader checks each against this page and corrects the ones that disagree.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: a chapter says Femke's Rotterdam bike sold for €225 on Monday 8 March 2027, with a Safe Deal buyer fee of €12.65, after a reservation at 16:32. Which of these figures agree with this page, and what should the others be?",
+        "expected": "The €225 price and the date agree; the buyer fee should be €11.95 (5% of €225 plus €0.70); the reservation was at 14:02."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which group do the book's examples come from, and what state are its systems in?",
+    "claim": "The book's examples come from Veldmark, a fictional composite marketplace group whose four brands work and are profitable while running three or four separate identity, trust-and-safety, search and data systems beneath them, so that most of its eight 2027 problems are instances of the named failure patterns, which its Common Ground program answers by sharing platforms beneath the brands, not products.",
+    "disputed_by": "The reading that a group with slow publication, duplicates, phishing and four identity systems has eight separate problems, or should consolidate onto one brand's stack and one product.",
+    "so_what": "The reader can take each chapter's scene as one more view of a single group, check any figure against this page, and ask of each Common Ground decision what the equivalent decision would be in their own group.",
+    "how_why": "Tradeyard grew country by country on one codebase, Motorvane was built for professional supply, and Hearthly and Keybridge arrived by acquisition with their own clouds and stacks; each choice fitted its moment, and together they left three clouds, three search engines and four identity systems. The brands differ in supply, money and risk, so sharing the product would force one marketplace's physics on the others.",
+    "supporting_claims": [
+      {
+        "id": "MV1",
+        "claim": "The book's examples come from one fictional composite group, Veldmark, described once with fixed figures, people and stories so every chapter can draw on the same facts."
+      },
+      {
+        "id": "MV2",
+        "claim": "Veldmark's four brands are working, profitable businesses that differ in who supplies the listings, how the money is made and what risk they carry."
+      },
+      {
+        "id": "MV3",
+        "claim": "Each phase of Veldmark's history left its own stack, so the brands run three or four separate identity, trust-and-safety, search and data systems with almost nothing shared beneath them."
+      },
+      {
+        "id": "MV4",
+        "claim": "Most of Veldmark's eight 2027 problems are instances of the named failure patterns, and none is a technology problem alone."
+      },
+      {
+        "id": "MV5",
+        "claim": "Common Ground answers the problems by sharing platforms beneath the brands, not products, which leaves each brand its own physics."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Supplies the one group, with fixed figures, problems and decisions, that every chapter's scene and worked example draws on, and performs the part's closing.",
+    "supports": [
+      "PF-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "Eight Problems Veldmark Starts 2027 With, then The Common Ground Program"
+      },
+      {
+        "pattern": "large_to_small",
+        "applies_to": "the group as a whole, then its brands, systems and people, then single listings in The Recurring Worked Examples"
+      }
+    ],
+    "rationale": "Each section supplies what the next one uses. The glance gives size and ownership and names the brands; the history explains why almost nothing is shared and introduces the brands as they arrived; the brands section then says what each one sells, and the volumes size them. The systems landscape is described after the brands because its table is organized by brand and its three facts depend on what each brand is. The people come after the systems they own. The eight problems need the brands, the systems and Ingrid; the program answers the problems, so it follows them; the worked examples replay problems and program decisions in single listings, so they need both; how the chapters use Veldmark needs the problems and examples it maps. Put the problems before the systems and the reader would meet Yardstick, Solr and Keybridge's neutrality as names without a referent; put the program before the problems and 'share platforms, not products' would answer nothing."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "This book tests its argument against one fictional group, detailed enough to be realistic and consistent enough to be followed across fifty chapters; a toy marketplace is too simple and a real company's internals cannot be verified."
+    },
+    "bridge": {
+      "from_reader_world": "The previous page illustrated each failure pattern with one scene from Veldmark at a time.",
+      "to_topic": "This page shows the whole group once, as the reference every chapter's scene draws on, and labels it fictional."
+    },
+    "thesis_statement": {
+      "text": "Veldmark is a fictional composite whose four brands differ in supply, money and risk and run four of almost everything beneath them; its 2027 problems are the failure patterns at work, and Common Ground answers them by sharing platforms, not products.",
+      "placement": "KEY POINTS callout (three bullets) and paragraph p01, which says the failure patterns appear here as Veldmark's 2027 problems."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03, which lists the page's sections in order and says the page ends by drawing the Preface together.",
+      "promises": [
+        {
+          "promise": "The group at a glance and how it came to be.",
+          "kept_in": [
+            "glance",
+            "history"
+          ]
+        },
+        {
+          "promise": "Its four brands and the volumes they carry.",
+          "kept_in": [
+            "brands",
+            "volumes"
+          ]
+        },
+        {
+          "promise": "Its systems and the people who own them.",
+          "kept_in": [
+            "systems",
+            "people"
+          ]
+        },
+        {
+          "promise": "The eight problems it starts 2027 with and the Common Ground program that answers them.",
+          "kept_in": [
+            "problems",
+            "program"
+          ]
+        },
+        {
+          "promise": "The worked examples the chapters reuse, and how the chapters use the group.",
+          "kept_in": [
+            "examples",
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The book tests its argument against one fictional group, realistic and consistent across the chapters, and this page is that group's reference, where the failure patterns appear as its 2027 problems.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A toy marketplace (one listing table and a search box) is too simple to show why hard decisions are hard; a real company's internals cannot be verified and its choices do not transfer.",
+            "shows": "Why one invented but detailed group serves the book better than either alternative."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Veldmark Group is fictional: a composite of patterns common in the classifieds industry, not a portrait of any real company, while the real companies the book discusses appear under their own names with dated sources.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The borrowed patterns: a horizontal brand grown country by country on one codebase, a vertical brand for professional supply, acquisitions with their own clouds, a transactional product on a contact marketplace, a private-equity owner wanting growth and efficiency; Adevinta, OLX, Kleinanzeigen, Rightmove and Auto Trader named as real companies discussed elsewhere.",
+            "shows": "The group is built from industry patterns, and real companies are kept apart from it."
+          }
+        ],
+        "transition_in": {
+          "relationship": "emphasis",
+          "carries_over": "One fictional group as the book's test bed.",
+          "introduces": "The label that it is fictional and what it is composed of.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The page describes the group in the order a newcomer needs it, from the group at a glance to how the chapters use it, and ends by drawing the three preface pages together.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The page's sections in order: glance and history; brands and volumes; systems and people; the eight problems and Common Ground; the worked examples and how the chapters use them; a closing on the Preface.",
+            "shows": "Lets a reader of the opening predict the page."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Veldmark as a fictional composite.",
+          "introduces": "The order in which the page describes it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "glance",
+      "heading": "The Group at a Glance",
+      "controlling_idea": "Veldmark is a profitable, privately held group of €1.31 billion revenue in eight countries that shares almost nothing beneath its brands, so it pays for most capabilities several times.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "MV2",
+          "MV3"
+        ],
+        "how": "Shows the brands as working businesses and names the cost the rest of the page explains: almost nothing shared."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The page's map.",
+        "introduces": "Its first item: the group's size, ownership and footprint.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Veldmark is a privately held, multi-country, multi-vertical group in Rotterdam whose private-equity owner wants growth and a lower run cost at once, which makes clean boundaries between brands a strategic asset.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Glance table: revenue €1.31 billion; adjusted EBITDA about €470 million (about 36%); about 5,200 employees, 1,450 in product and technology, 1,150 engineers; 8 countries and ten country marketplaces plus Keybridge in three; about 17.25 million live listings; about 57 million monthly active users; shared services Veldmark Ads and SAP S/4HANA finance only.",
+              "source": "scenario-ledger.md, 'The group' and the [editor] eight-countries line",
+              "shows": "The group's scale and how little it shares."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "The margin is typical of mature classifieds, and the table's last row matters most: with almost nothing shared, the group pays for search, moderation, identity, media and data several times over.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The glance table.",
+            "introduces": "Which of its rows matters most to this book.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "heading": "How Veldmark Came to Be",
+      "controlling_idea": "Each phase of Veldmark's fictional history, country copies, a separate automotive build and acquisitions with their own clouds, left a layer in the systems.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "MV3"
+        ],
+        "how": "Explains why the group runs several of each system: every decision fitted its moment."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "A group that pays for most capabilities several times.",
+        "introduces": "The history that produced it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Veldmark's history is fictional, but its shape follows the industry's: launch, copy to new countries, build a vertical, acquire portals, add payments.",
+          "function": "description",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline: Tradeyard NL 2004; Yardstick 2006; Motorvane DE 2008; Tradeyard BE 2009 and PT 2014 on their own copies of Yardstick, PL 2012 by purchase with its own Elasticsearch; Hearthly 2023; Keybridge and Safe Deal NL 2024; Casavista, the private-equity majority and Safe Deal BE 2025; Hearthly.es and Safe Deal PL 2026; Common Ground January 2027.",
+              "source": "scenario-ledger.md, brands table and the [industry-evolution] origins line",
+              "shows": "Each brand and system arrived at a different time by a different route."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Each phase left a layer in the systems: four category trees in one monolith deployed per country, a separate automotive stack, Google Cloud and Azure from the acquisitions, and payments on a contact marketplace never designed to know when something was sold.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The phases of the timeline.",
+            "introduces": "What each left behind in the systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "brands",
+      "heading": "Four Brands, Four Business Models",
+      "controlling_idea": "Veldmark's four brands differ in who supplies the listings, where the marketplace's job ends and how the money is made, with Veldmark Ads the one shared exception.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "MV2"
+        ],
+        "how": "Shows the four marketplace physics that sharing the product would force together."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The brands as history assembled them.",
+        "introduces": "What each one is and how it makes money.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole portfolio in one table, then its total, then the four features that recur across the book, then the one shared unit; the features need the table's terms."
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Veldmark runs four businesses and one shared advertising unit that differ in who supplies the listings, where the marketplace's job ends and how the money is made.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Brand table: Tradeyard €410M (VAS €150M, pro subscriptions €135M, Safe Deal €75M, insertion fees €50M); Motorvane €360M (dealer subscriptions €238M, depth/VAS €52M, leads and financing €40M, private-seller fees €30M); Hearthly €395M (agency subscriptions €270M, new-build €55M, Valuo €40M, rental services €30M); Keybridge €45M from 9,800 agencies; Veldmark Ads €100M.",
+              "source": "scenario-ledger.md, 'Brands and business models'",
+              "shows": "Four different ways of turning listings into money."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The five lines add up to €1.31 billion, with no brand above a third of revenue.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Tradeyard about 31%, Hearthly 30%, Motorvane 27%, Veldmark Ads 8%, Keybridge 3%.",
+              "source": "scenario-ledger.md sum line",
+              "shows": "No single brand's model dominates the group."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: four different buildings on one shared ground plate.",
+              "shows": "One group, four marketplace physics."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The revenue column of the brand table.",
+            "introduces": "The total and each brand's share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "Four features of the brand portfolio recur throughout the book: Tradeyard is a contact marketplace with a transactional product inside it, Motorvane and Hearthly are professional-supply businesses, Hearthly's Valuo product turns listings into a data product, and Keybridge must stay neutral.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Safe Deal in NL, BE and PL on Adyen for Platforms, fee 5% plus €0.70, 11.6 million transactions, about €1.02 billion GMV, €75 million revenue (about €59 million buyer fees, €16 million label margin); Motorvane's 21,400 dealers supply 91% of listings, 88% via DMS feeds; Hearthly's 36,500 agencies supply 84% via about 160 software vendors; Valuo trained on DVF open data plus listing data; Keybridge publishes to Hearthly's competitors.",
+              "source": "scenario-ledger.md and the [editor] Safe Deal line",
+              "shows": "Each feature is a business fact that later chapters turn into an architectural constraint."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four brands and their revenue.",
+            "introduces": "The four features of them the book returns to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Veldmark Ads is the exception to 'four of everything': one ad stack sells inventory on all three marketplaces.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Four brands each with their own model.",
+            "introduces": "The one unit they already share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "volumes",
+      "heading": "Volumes Every Design Is Sized Against",
+      "controlling_idea": "The 2026 volumes give each brand the scale every design in the book is sized against, and ratios between places matter more than totals.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "MV1",
+          "MV2"
+        ],
+        "how": "Fixes the figures chapters reuse and shows the brands' scale."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four brands and their models.",
+        "introduces": "Their size in listings, users, queries, alerts, media and moderation.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "The four brands differ as much in volume as in model, and these rounded 2026 figures are what every design in the book is sized against.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Volumes table: 17.25M live listings with brand and country splits; new listings per week; monthly active users; supply mix; search 9,000 queries/s average and 31,000 peak on Sunday evenings; 46 million saved searches and 38 million alerts a day; 6.4 billion images; 40 million indexed URLs; 94% automated moderation and 210 moderators; 1.7 listings per property at Hearthly France; four Tradeyard trees and 3,900 attribute keys.",
+              "source": "scenario-ledger.md, 'Volumes' and the [liquidity-and-network-effects] and [saved-searches-and-alerts] lines",
+              "shows": "The canonical figures each chapter's design is sized against."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Two caveats govern how to read the volumes: the Sunday-evening peak is a Veldmark illustration, and ratios matter more than totals.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Tradeyard NL and PT have almost the same monthly users per live listing (2.3 and 2.5), yet a new Dutch listing gets its first contact in a median of 2.6 hours and a Portuguese one in 19.",
+              "source": "scenario-ledger.md, [liquidity-and-network-effects] line",
+              "shows": "Similar totals hide different liquidity, which is why targets name the liquidity metric they protect."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The table of totals.",
+            "introduces": "The limits on reading it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "systems",
+      "heading": "The Systems Landscape",
+      "controlling_idea": "The 2027 estate is the product of the history, with almost nothing shared between the brands' stacks, and three facts in it shape most of the book.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "MV3"
+        ],
+        "how": "Shows the three or four separate systems per area that the thesis names."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The volumes the brands carry, and the history that left a layer per phase.",
+        "introduces": "The 2027 estate that carries those volumes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "The 2027 baseline estate that carries these volumes is the product of that history.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: three marketplaces on three stacks and two clouds, an agent CRM on a third cloud, only advertising and finance shared.",
+              "shows": "The landscape at a glance."
+            },
+            {
+              "kind": "table",
+              "what": "Systems table by area and brand: core application, search, events, identity, trust and safety, data and media for Tradeyard, Motorvane, Hearthly and Keybridge.",
+              "source": "scenario-ledger.md, 'Systems landscape (2027 baseline)'",
+              "shows": "Three or four separate systems in each area."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "form": "list",
+          "controlling_idea": "Three facts in the landscape shape most of the book: Yardstick does almost everything for Tradeyard, Motorvane is modern but self-contained, and Hearthly and Keybridge kept their clouds.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Yardstick's ads table has 214 columns read by 38 modules; it deploys twice a week and blocks about 140 Tradeyard engineers.",
+              "source": "scenario-ledger.md, problem 6 and the [bounded-contexts] line",
+              "shows": "Why every Tradeyard capability must first be extracted."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The landscape table.",
+            "introduces": "The three facts in it that matter most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "heading": "The People",
+      "controlling_idea": "Each fictional person owns something the architecture depends on, and most of the book's tensions are between their legitimate goals.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "MV1"
+        ],
+        "how": "Fixes the cast every chapter's scene uses."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The systems and brands just described.",
+        "introduces": "The people who own them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "Each person owns something the architecture depends on, and most of the book's tensions are between their legitimate goals.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Cast table: seventeen people with role, pronouns and what they own, starting with Ingrid Halvorsen, Group Chief Architect from Monday 1 February 2027, reporting to Mateus Carvalho.",
+              "source": "scenario-ledger.md, 'Cast' and the [editor] start-date line",
+              "shows": "Who owns which system, decision or promise."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The recurring customers, Femke, Autohaus Ruhrblick and Agence Rhône Habitat, are fictional too.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The staff cast.",
+            "introduces": "The three customers who recur.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "problems",
+      "heading": "Eight Problems Veldmark Starts 2027 With",
+      "controlling_idea": "Ingrid arrives at a working, profitable group with eight problems, most of them instances of the named failure patterns and none a technology problem alone.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "MV4"
+        ],
+        "how": "Ties the group's problems to the patterns the previous page named."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "Ingrid Halvorsen and the systems she inherits.",
+        "introduces": "Her starting position in February 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "form": "list",
+          "controlling_idea": "When Ingrid arrives the group works and is profitable, but eight problems define her starting position, most of them instances of the named patterns.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Four of everything (Deal-Shaped Architecture); six minutes to searchable, target 90 seconds p95 by end 2028; six weeks for a category, target 2 days (Category Straitjacket, Attribute Junkyard); 1.7 listings per property at Hearthly (Seeing Double); payment-link phishing (Fast Mail for Fraudsters); Yardstick blocks Tradeyard; Keybridge neutrality; overlap in Poland, about 2,900 dealers on both brands, about 40% paying both (Deal-Shaped Architecture).",
+              "source": "scenario-ledger.md, '2027 situation' and the [sellers-and-accounts] line",
+              "shows": "Each problem is a pattern at work in one group."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: four islands with their own towers, joined by one thin bridge.",
+              "shows": "Four of everything."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "None of the problems is a technology problem alone: each also has a product, commercial or portfolio cause.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Phishing exists because messaging was built as a feature, not a trust surface; neutrality is a commercial promise with no architecture yet; the Polish overlap is a portfolio decision systems cannot make.",
+              "shows": "The fixes need decisions beyond technology."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The eight problems.",
+            "introduces": "What they have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "program",
+      "heading": "The Common Ground Program",
+      "controlling_idea": "Common Ground answers the problems with €140 million of shared platform capabilities beneath brands that keep their own products, under new governance and a dated sequence of decisions.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "MV5"
+        ],
+        "how": "States the program and its principle, share platforms, not products."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The eight problems.",
+        "introduces": "The program approved to answer them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Goals, principle and governance, then the standing cloud decision, then the dated decisions by year; the decision table needs the goals, the forum it names and the cloud stance behind its AWS choices."
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "In January 2027 the board approved Common Ground, €140 million over 2027–2030, with three goals: shared platform capabilities, Yardstick retired by the end of 2029, and run costs cut by €38 million a year by 2030.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Capabilities: Veldmark ID, trust and safety, media, search, messaging, product catalog and entitlements, event backbone, data platform, taxonomy and attribute service; strangler milestones Q2 2028, Q4 2028, end 2029.",
+              "source": "scenario-ledger.md, 'Common Ground program' and 'Canonical decisions'",
+              "shows": "What the program builds and by when."
+            }
+          ]
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The governing principle is share platforms, not products, and the hard design work is deciding which part of each capability is shared.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A shared trust-and-safety pipeline serving local policies; a shared search engine with brand-specific relevance; a shared entitlement ledger with brand-owned packages and prices.",
+              "shows": "Sharing the machinery leaves each brand its own product."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: brands keep what buyers and sellers see; Common Ground builds beneath; Keybridge stays outside.",
+              "shows": "The principle as a picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The goals.",
+            "introduces": "The principle that governs how they are pursued.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Common Ground is also a governance change: from April 2027 architecture principles, a weekly open advice forum and mandatory decision records for cross-brand decisions.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The program as platforms and a principle.",
+            "introduces": "Its governance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "One standing decision frames the rest: AWS is the primary cloud from 2027, Hearthly stays on Google Cloud through 2028 and Keybridge on Azure, and the book treats a multi-cloud group as normal.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The program's goals, principle and governance.",
+            "introduces": "The standing cloud decision that frames the dated ones.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The dated decisions the chapters rely on run by year from January 2027 to 2030, in Figure 5's four plateaus, each worked in a named chapter.",
+          "function": "evidence",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Decision table: capability map 31 Mar 2027; Keybridge neutrality Mar 2027; advice forum Apr 2027; context map May 2027; Veldmark ID and Ranking policy v1 Jun 2027; event backbone 1 Jul 2027; shared search 14 Sep 2027; taxonomy service, Tally and retention schedule Oct 2027; bikes split 1 Nov 2027; shared trust and safety Nov 2027; 2028 milestones; Yardstick decommissioned end 2029; €38 million a year by 2030.",
+              "source": "scenario-ledger.md, 'Canonical decisions' and chapter additions",
+              "shows": "Where each chapter's scene sits in the 2027 timeline."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: Common Ground's four plateaus.",
+              "shows": "Each step must leave every marketplace working."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The standing cloud decision.",
+            "introduces": "The dated decisions, year by year.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "examples",
+      "heading": "The Recurring Worked Examples",
+      "controlling_idea": "Five stories with fixed facts let a reader follow single listings across many chapters, and the Rotterdam bike is the book's spine.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "MV1",
+          "MV4"
+        ],
+        "how": "Fixes the stories every chapter reuses and shows the problems in single listings."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The problems and the program's decisions.",
+        "introduces": "Single listings that show them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "All five stories in one table, then the spine in detail, then the other four by role, then the smaller stories the chapters own."
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Five stories recur throughout the book with facts that never change, so a reader can follow one listing across many chapters.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Worked-examples table: the Rotterdam city bike, the Essen Volkswagen Golf, the Lyon apartment, the Barcelona fake-rental ring and the Sunday-evening brown-out, each with canonical facts and the chapters that use it.",
+              "source": "scenario-ledger.md, 'Recurring worked examples' and the [editor] bike and Golf lines",
+              "shows": "The figures a reader can check a chapter against."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The Rotterdam bike is the book's spine: in about 24 hours one €240 listing exposes a different weakness in almost every system it passes through.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's €240 bike: batch delays behind the six minutes; a messaging check that ran after delivery; a rule that reached Belgium three days late; an analytics extract that recorded the sale as 'expired'; a digest that never asked whether the bike was still for sale (the 214 Tuesday e-mails in the table); seven copies found by Femke's erasure request six months later.",
+              "source": "Veldmark illustration, scenario-ledger.md",
+              "shows": "Ordinary local decisions add up to the failure patterns."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The five stories.",
+            "introduces": "The one that matters most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The other four stories each carry one theme: the Golf professional supply, the Lyon apartment property identity, the Barcelona ring uncombined signals and the brown-out harmless things becoming an incident at peak.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Golf's slow feed, disputed lead count, a carousel recommending a sold car and the Pro 150 package (150 slots for €1,450 a month) billing for cars never shown.",
+              "source": "Veldmark illustration; [editor] Pro 150 line",
+              "shows": "The Golf does for professional supply what the bike does for private sellers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The bike as the spine for private sellers.",
+            "introduces": "The same role played by the other stories for other themes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Smaller stories are introduced by the chapters that own them.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "38,400 Motorvane cars unpublished by truncated files; Tradeyard's boost archaeology; Priya Raman's 146 production models; the Utrecht cargo bike in December 2027.",
+              "source": "scenario-ledger.md additions",
+              "shows": "Where to look for stories this page does not detail."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The five recurring stories.",
+            "introduces": "The smaller ones this page only points to.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chapters",
+      "heading": "How the Chapters Use Veldmark",
+      "controlling_idea": "Each chapter opens with a Veldmark scene, the eight problems map to the chapters that pose and work them, and three conventions keep the facts consistent.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "MV1"
+        ],
+        "how": "Shows how the one group serves every chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The problems and the worked examples.",
+        "introduces": "How the chapters use them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Each chapter opens with a 2027 Veldmark scene that poses its question, and the eight problems map to the chapters that pose them and those that work them.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Problem-to-chapter table: for each of the eight problems, where it is posed and where it is worked.",
+              "shows": "A reader can go from a problem to its chapters."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The book's parts follow a listing from its business through its model, supply, discovery, trust, money and platform; Part VIII follows Common Ground as a program, and Part IX leaves Veldmark to test the book against real groups.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Chapters that pose and work single problems.",
+            "introduces": "The two parts that use Veldmark differently.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Three conventions hold throughout: Veldmark is labeled fictional in each chapter, its facts come from one canonical record, and new details never contradict this page.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "How the chapters use Veldmark.",
+            "introduces": "The rules that keep its facts consistent.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From the Preface to Part I",
+    "synthesis": "The claim, the patterns and the group are one argument at three sizes: Veldmark's eight 2027 problems are instances of the named patterns, the patterns are the ways the liquidity machine loses matches at its boundaries, and Common Ground's principle, share platforms, not products, is the book's claim written as a program.",
+    "so_what": "The reader can take every chapter's opening scene as one more view of a known group with a known list of problems, and can expect each chapter to explain a decision about a boundary, not a product choice.",
+    "callback": {
+      "to": "The general manager's scene in the introduction: six minutes from submission to searchable and a sold bike still in Tuesday's alert e-mails.",
+      "how": "They return as Veldmark's problem 2 and as the €240 Rotterdam city bike in 214 alert e-mails, now with names, owners and figures attached."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin Part I as Ingrid Halvorsen began in February 2027: ask what kind of marketplace each part of the group actually is, and why the answer decides the architecture."
+    },
+    "hand_off": {
+      "to": "part-1",
+      "relationship": "elaboration",
+      "carries_over": "The preface's claim that a listing marketplace is a liquidity machine, the fifteen failure patterns and the fictional group Veldmark.",
+      "introduces": "The business before the systems: what kind of marketplace each part of Veldmark is, what it sells and how that decides the architecture."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole page and the two preface pages before it.",
+      "introduces": "What the three pages say together, and where the reader goes next.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p32",
+        "controlling_idea": "The three preface pages make one argument at three sizes, and the general manager's six minutes and sold bike return here as Veldmark's problem 2 and Femke's €240 bike in 214 alert e-mails.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The introduction's liquidity-machine claim; the fifteen patterns as ways the machine loses matches at boundaries; Veldmark's problems as instances; Common Ground's principle as the claim written as a program.",
+            "shows": "How the three pages fit together, which no single section says."
+          }
+        ]
+      },
+      {
+        "id": "p33",
+        "controlling_idea": "Every chapter's scene is therefore one more view of a known group and a decision about a boundary, and Part I begins where Ingrid began: by asking what kind of marketplace each part of Veldmark is.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The one argument at three sizes.",
+          "introduces": "What it lets the reader expect of every chapter, and where to start.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "length": {
+    "max_words": 5000
+  },
+  "non_goals": [
+    {
+      "topic": "Industry history and real-company evidence.",
+      "covered_in": [
+        "industry-evolution",
+        "case-adevinta",
+        "case-olx",
+        "case-ebay-classifieds",
+        "case-aviv",
+        "case-property-portals",
+        "case-automotive"
+      ]
+    },
+    {
+      "topic": "Marketplace classification and the profile register.",
+      "covered_in": [
+        "marketplace-taxonomy"
+      ]
+    },
+    {
+      "topic": "Capability map and context map details.",
+      "covered_in": [
+        "business-capabilities",
+        "bounded-contexts"
+      ]
+    },
+    {
+      "topic": "The internals of each Common Ground platform (owned by the Part II–VII chapters)."
+    },
+    {
+      "topic": "Chief Architect role and governance in depth.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Followed the shape of RECONCILED's Meet Northmere (glance, brands, landscape, people, problems, program, examples, how chapters use it) so the two books' running examples read alike; kept the house callouts and a failure-pattern callout. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the page to scenario facts only, with no real-company claims, so the Sources section needs almost no external evidence (DVF is the one real dataset cited). (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Included a dated decision table drawn from chapters' ledger additions, so readers can place each chapter's scene in the 2027 timeline; detail stays in the owning chapter. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Stated the Sunday-evening peak explicitly as a Veldmark illustration, per the writer brief. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the fictional-labeling, brand-table, context-diagram, cast-table, Common Ground, worked-example and problem-map criteria were inventories of contents and are dropped; their facts are now paragraph evidence checked against the ledger. The 'eight problems tied to patterns' criterion is replaced by the journal spec's AC-1. The hand-off criterion is replaced by conclusion.hand_off. The spec set no word limit, so length.max_words is the published draft's 4,701 counted words plus 5% (4,936).",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added AC-2 (minor, cold reader): checking a chapter's bike figures against this page, which tests the outcome's can_do ('check its figures against this page') that AC-1 does not reach."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims MV1 to MV5 written here (the journal spec gives none for this post) from the thesis's parts: one fictional group with fixed facts; brands that differ and work; a history that left several of each system; problems as pattern instances; the program's principle. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p03) to the introduction, because the IN THIS CHAPTER callout did not announce the history, the glance or how the chapters use Veldmark, and a closing section, 'From the Preface to Part I' (p32, p33), because the page carries the Preface's closing and the published page ended on a hand-off with no synthesis or callback. The heading follows the house 'From <X> to <Y>' hand-off form.",
+      "rejected": [
+        "Making 'How the Chapters Use Veldmark' the conclusion: its problem-to-chapter table is body evidence and would make a weak conclusion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corrected two statements toward the [editor] ledger line that the Belgian and Portuguese copies of Yardstick were folded back into one codebase in 2016–2018, with database and deployment still per country: the Copy-Paste Country callout said the sites 'run on their own copies of Yardstick' in 2027, and the history paragraph said 'country copies of one monolith'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric verdict sound with notes; order unchanged. p10 and p26 wording adjusted as noted under open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 3 (spec fault, corroborated by both flow readers): moved the standing cloud decision (now p23) before the dated decision table (now p24) in The Common Ground Program; transitions and section rationale rewritten.",
+      "rejected": [
+        "Keeping the cloud paragraph last, where readers in rounds 1-3 read it as stray."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: Ingrid's start date (Mon 1 Feb 2027) and reporting line to Mateus Carvalho stay as written; they match the [meet-veldmark] ledger line, and consistency-issues item 20 already rules that ch. 24 is the one to fix."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: Motorvane's origin stays as published ('launches in Germany in 2008'), with no founded-or-acquired claim, since the ledger gives none."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: AC-1 stays copied unchanged from the journal spec; its statement (which chapter poses and works each problem) disagrees with its probe and expected answer (the pattern each problem is an instance of). A consistent statement wording is proposed to the orchestrator for the journal spec; the page supports both readings (problem list with patterns, and the problem-to-chapter table)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: four page details with no ledger line and no contradiction stay as published and are proposed as ledger additions: Motorvane's separate dealer-portal login; Motorvane's Snowflake as a separate account and model; Mateus Carvalho owns the cloud decision; Tomasz Wiśniewski was formerly Tradeyard's search lead."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: the thesis is copied from the journal spec and is not changed; the rubric notes (three ideas in one claim; how_why names 'three clouds') do not justify a rewording."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: the flow-rubric notes not taken stay not taken (recurring customers stay in The People; p05 and p14 both note little is shared; p23 names its chapters before the problem-to-chapter map); the supporting claims MV1-MV5, the added roadmap paragraph p03, the closing section 'From the Preface to Part I', AC-2 and the corrected Copy-Paste Country wording are accepted."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated round-3 finding (Parts VIII and IX named without the part structure): p30 now opens with one sentence giving the book's part structure (Part I the business, Parts II-VII model, supply, discovery, trust, money and platform, Part VIII the Chief Architect's agenda), taken from the part titles in config.yaml. length.max_words raised from 4,936 to 5,000 (1.3%) to fit it, since the draft stood at the limit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated round-3 finding (KEY POINTS capability list shorter than the program section's): the author's callout is kept; one clause ('shared capabilities beneath the brands, among them ...') marks its list as a selection, so it no longer reads as a different program. Adding media, messaging and the product catalog to the callout was rejected as lengthening a skim bullet.",
+      "rejected": [
+        "Listing all ten capabilities in the KEY POINTS bullet."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Single-reader minors from round 3 left as published (rule: keep the published text when no clear better option): 'four of everything' before problem 1, 'contact marketplace' before p10, 'review tool', 'boost archaeology', 'cannot share features', the 214 ads-table columns, and no line on how Tradeyard and Motorvane became one group (the ledger does not say)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, AC-1, thesis, role, the Preface closing this page carries, and the transitions of the previous and next pages."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "All facts, including every 'Additions by chapter' and [editor] line, and the rulings on country count, start date, bike reservation time and Golf leads."
+    },
+    {
+      "kind": "internal",
+      "ref": "Existing chapters' opening scenes (01–46)",
+      "contributed": "Checked for the facts they rely on. (Carried over from spec.md.)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/finance-systems-architecture/posts/meet-northmere",
+      "contributed": "Structural model (RECONCILED's Meet Northmere). (Carried over from spec.md.)"
+    },
+    {
+      "kind": "external",
+      "ref": "Demandes de valeurs foncières (DVF), DGFiP, data.gouv.fr — https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres/",
+      "contributed": "The real dataset behind the fictional Valuo."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Tradeyard country history aligned with industry-evolution (BE and PT on their own copies of Yardstick; PL by acquisition); Ruhrblick's Pro 150 package named; all figures checked against the ledger and editor lines; American spelling (program). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 2,754 to 2,740 prose words; lead now states the page's place in the Preface; a few sentences tightened; no headings changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Title changed from 'Four Marketplaces' to 'Meet Veldmark: Four Brands, One Platform to Build'; permalink unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; added a roadmap paragraph and a closing section that carries the Preface closing; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (REVISE): p14's controlling idea shortened (the 'almost nothing shared' point stays with p05 and Figure 2) to keep the draft within the word limit; index.md revised on the units named in the report. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 2 and 3 (REVISE, ESCALATE); revisions between rounds on the named units; after round 3 the cloud paragraph moved before the decision table and five cheap wording fixes applied; report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: open questions moved to the decision log; p30 gains the part structure and the KEY POINTS capability list is marked as a selection; max_words 4,936 -> 5,000. Draft check round 4 follows. (AI-mediated session)"
+    }
+  ]
+}

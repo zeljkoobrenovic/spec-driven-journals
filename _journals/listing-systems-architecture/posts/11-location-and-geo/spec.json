@@ -1,0 +1,1711 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "location-and-geo",
+  "journal": "listing-systems-architecture",
+  "part": "part-2",
+  "title": "Where Is It? Location, Geocoding and Privacy",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the location-and-geo entry in journal-spec.json. Units added by this conversion: a lead paragraph for the Trade-offs section (p51) and a synthesis paragraph (p63) before the hand-off in the closing section; the introduction's third paragraph gained the roadmap.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Country-shaped addresses, geocoding outputs, gazetteers and place hierarchies, precision levels and geo indexes.",
+        "The three representations per listing (restricted precise point, public point, place IDs) and the semantics of radius, polygon and place searches."
+      ],
+      "believe": [
+        "Location is a small subsystem, not a field, and geocoding is a licensing decision before it is a technical one."
+      ],
+      "can_do": [
+        "Find where their platform leaks a private seller's location, including through distances and API payloads.",
+        "Check whether their stored coordinates are licensed for storage, and why their filters, maps and landing pages disagree."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a location leak that the listing page did not show, the reader explains how it happened and what the model changes.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace shows only a postcode district on private sellers' listings, yet a buyer turned up at a seller's door. Using only this chapter: how could that happen, and what does the location model change?",
+        "expected": "The precise point (a postcode centroid) was returned in an API payload and used for distances shown to one decimal, so a payload read or three searches located the door. Store a restricted precise point, derive a public point deterministically by precision policy, and compute every shown distance, map pin, feed and payload from the public point only, enforced on the server and checked by a weekly exposure scan with a target of zero."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Veldmark's five answers to 'where is it?'; what location means: kinds, addresses, geocoding, gazetteers, precision, geo indexes; three representations and their services, the public point and the rule for distances; radius, polygon and place semantics; geocoding providers and licences; the Rotterdam bike, the Lyon apartment, the Barcelona ring and quality metrics; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: provider terms, standards and documentation, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do you model and process location so search, maps, trust and analytics work across countries?",
+    "claim": "A listing's location is a small subsystem, not a field: it stores a restricted precise point, a public point derived from it deterministically by a group precision policy, and stable place IDs from a versioned gazetteer, so radius search, landing pages, duplicate detection, fraud signals and analytics each read the representation meant for them; distances, map pins, payloads, feeds and structured data are computed from the public point only, enforced on the server; and geocoder licence terms are recorded with every coordinate, because storage rights depend on provider, country and use.",
+    "disputed_by": "The view that location is one coordinate field, geocoded once and read by every consumer, with privacy handled by what the listing page displays and geocoder choice a matter of price and accuracy.",
+    "so_what": "A group that accepts this runs one gazetteer and geocoding gateway (Veldmark Place, approved in May 2027), makes the precision policy group policy with brand parameters, chooses providers per country and use behind the gateway and reviews their licences in every acquisition, and publishes location quality weekly, with a precise-point exposure target of zero and any exposure treated as a privacy incident.",
+    "how_why": "Tradeyard showed '3014 Rotterdam' on the page but returned the seller's postcode centroid to six decimals in its search API and showed distances to one decimal, so a stranger found a seller's door; Hearthly Spain showed exact pins for private landlords. Search radius, landing pages, duplicate detection and fraud each need a different representation: the Barcelona ring's 35%-below-market signal exists only because rent medians are computed per small H3 cell.",
+    "supporting_claims": [
+      {
+        "id": "L1",
+        "claim": "A listing's location is a small subsystem, not a field: it has several kinds, country-shaped addresses, geocoder results that carry match level, confidence and provenance, a gazetteer of administrative and marketplace places, a precision scale and geo indexes for different jobs."
+      },
+      {
+        "id": "L2",
+        "claim": "Location is stored as three representations, a restricted precise point, a public point derived from it deterministically by policy, and place IDs with all ancestors from a versioned gazetteer, each read by the consumers meant for it."
+      },
+      {
+        "id": "L3",
+        "claim": "Privacy is enforced on the server: every distance, pin, payload, event, feed and structured-data field a buyer or partner can read is computed from the public point, and internal reads of the precise point are purposeful and logged."
+      },
+      {
+        "id": "L4",
+        "claim": "Radius, place and polygon queries agree only when each reads a declared representation (a curated search origin, stored place IDs, public points) from one gazetteer shared across countries."
+      },
+      {
+        "id": "L5",
+        "claim": "Geocoding is a licensing decision before it is a technical one: providers are chosen per country and per use, and the licence terms are recorded with every stored coordinate."
+      },
+      {
+        "id": "L6",
+        "claim": "At group scale location needs one owner: one gazetteer and geocoding gateway, a group precision policy with brand parameters, providers behind the gateway, and published quality metrics."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Models location as three representations under a precision policy and a governed gazetteer, which search, maps, alerts, duplicate detection and fraud later read.",
+    "supports": [
+      "P2-5"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "practice: the model tested on three Veldmark cases and quality metrics"
+      }
+    ],
+    "rationale": "Each section supplies what the next needs. The scene poses the problem; the concepts give the vocabulary; the licences say what the geocoder outputs just defined may be stored and shown, which the architecture's gateway and provenance then rely on; the architecture combines concepts and constraints into three representations and the distance rule; query semantics are decisions about those representations; the Veldmark cases run the whole model; trade-offs, vertical differences, failure modes, the Chief Architect's decisions and review questions are judgements about a model the reader has now seen. Moving the architecture before the concepts would use match levels, places and precision levels before they are defined, and moving the licences after it would describe a licence-aware gateway before the licences."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A buyer searching 'within 10 km of Utrecht' gets a bike 14 km away; 'apartments in Lyon' leaves out Villeurbanne; a private seller's home can be worked out from distances in the app."
+    },
+    "bridge": {
+      "from_reader_world": "Search bugs the reader has seen: wrong radius results, missing landing-page listings.",
+      "to_topic": "They come from how location was modeled, and in Part II's model location is a governed subdomain on which search, maps, alerts, duplicates, fraud and SEO build."
+    },
+    "thesis_statement": {
+      "text": "Location is not an attribute but a small subsystem: three representations under a precision policy and a gazetteer, privacy enforced on the server, and licences recorded with every coordinate.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03.",
+      "promises": [
+        {
+          "promise": "Veldmark's five answers to 'where is it?'",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The concepts: kinds of location, addresses, geocoding, gazetteers, precision and geo indexes.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Geocoding licences.",
+          "kept_in": [
+            "licences"
+          ]
+        },
+        {
+          "promise": "The three representations and the services behind them.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "The semantics of radius, polygon and place queries.",
+          "kept_in": [
+            "semantics"
+          ]
+        },
+        {
+          "promise": "The Rotterdam bike, the Lyon apartment and the Barcelona fake-rental ring through the model.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A marketplace's wrong answers to 'where is it?' look like search bugs but come from how location was modeled.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A bike 14 km away in a 'within 10 km of Utrecht' search; Lyon flats in Villeurbanne left out of 'apartments in Lyon'; a private seller's home worked out from distances in the app.",
+            "shows": "Three visible failures of different kinds, none of them a ranking problem, so the cause must lie in the model."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Location is not an attribute but a small subsystem in Part II's model of a listing that references governed subdomains, one whose design decides whether a private seller's home stays private and on which search, maps, alerts, duplicate detection, fraud and SEO all build.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Failures that come from how location was modeled.",
+          "introduces": "What location is in the book's model: a subdomain and a subsystem, with what it builds on and what builds on it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter follows Veldmark, whose listing brands hold five different ideas of what a location is, from those five answers through the concepts, the licences, the three representations and query semantics, to three Veldmark cases and the trade-offs, vertical differences, failure modes, Chief Architect's view and review questions, with evidence from providers' terms, standards, documentation and Veldmark.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Location as a subsystem.",
+          "introduces": "The running example and the order of the chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\"",
+      "controlling_idea": "A privacy complaint at Tradeyard and an inventory of five brand answers show that one location field read by every consumer leaks private locations, leaves licences unknown and blocks group search.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3"
+        ],
+        "how": "Poses the problem the three representations and the server-side rule solve."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The chapter's plan, starting with Veldmark's five answers.",
+        "introduces": "The complaint that started Ingrid's review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "One concrete leak first, then its mechanism, then the five brands' answers, then what those answers prevent at group level; the inventory reads as a diagnosis only after the reader has seen how one of its rows let a stranger find a door."
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "A Tradeyard seller in Rotterdam found a stranger at her door although the listing page showed only '3014 Rotterdam'.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lucía Ortega brings Ingrid Halvorsen the complaint in late March 2027; the page showed only the postcode district.",
+              "shows": "Sets a puzzle the page alone cannot explain.",
+              "source": "scenario-ledger: location-and-geo"
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "The leak came from the system behind the page: distances computed from the full six-character postcode centroid and that centroid returned to six decimals in the search API, so a payload read or three searches located the door.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Distances to one decimal ('2.3 km') from the centroid of a six-character postcode; the centroid in the JSON payload to six decimal places.",
+              "shows": "The page blurred the location but the API and the distances did not.",
+              "source": "scenario-ledger: location-and-geo"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: three distance circles intersect at the seller's front door.",
+              "shows": "Shows trilateration from rounded distances."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The puzzle of how he found her.",
+            "introduces": "The reconstruction by Daan Visser's team.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Each Veldmark brand captures, stores, shows and geocodes location differently, including exact pins for private landlords at Hearthly Spain.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five rows: Tradeyard NL/BE, Tradeyard PL/PT, Motorvane, Hearthly FR, Hearthly ES, by capture, storage, public display and geocoder.",
+              "shows": "The problem is not one brand's bug but five unrelated models."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One brand's leak.",
+            "introduces": "How every brand handles location.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Each answer was reasonable alone, but together they leave Veldmark unable to say what location data it publishes about private individuals, whether its coordinates were licensed for storage, or to run one map, one cross-border search or one rent comparison.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The five answers.",
+            "introduces": "What they cost the group, and the model the rest of the chapter proposes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: What \"Location\" Means for a Listing",
+      "controlling_idea": "Location is a subsystem of distinct concepts: kinds of location, country-shaped addresses, geocoder outputs, gazetteers and place hierarchies, a precision scale and geo indexes.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "L1"
+        ],
+        "how": "Defines the parts the subsystem is made of."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Five inconsistent answers and the model Ingrid's team proposes.",
+        "introduces": "The vocabulary that model is built from.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Kinds of location first (what is being located), then the address as captured, then geocoding that turns it into coordinates with a match level, then the places those coordinates fall in, then precision (which needs places to name its levels), then geo indexes that query all of it. Precision before places would leave its levels undefined; indexes first would index something not yet described."
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "A listing can carry four kinds of location, item, seller, handover and service area, and confusing them is the first modeling mistake; a kind says what is located, while the three representations say how precisely one location is stored and shown.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Kind, definition, example, who needs it, for the four kinds.",
+              "shows": "Each kind has different consumers, so one field cannot serve them all."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "For goods, item and seller location usually coincide, which is why systems store one field, but they part often enough to matter, and shipping turns item location from a hard filter into a delivery-cost input.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A dealer group with ten branches, an item at a parent's house, a property listed by an agency elsewhere, shipped items; Tradeyard Safe Deal parcels.",
+              "shows": "Shows when the single field breaks."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Four kinds.",
+            "introduces": "Why systems usually store one, and when that breaks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "There is no universal address model: postcodes alone differ in shape and meaning across Veldmark's countries, so address formats must be data per country.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Postcode shapes and specificity for NL, BE, DE/AT, FR, ES/PT/PL with consequences.",
+              "shows": "Postcodes cross municipal borders, cover several communes or a street segment, so code cannot hard-wire one shape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What is being located.",
+            "introduces": "How its address is captured.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Industry practice parses free-text addresses into components before matching, and libpostal does it well enough but heavily enough to run as a shared service.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "libpostal: 99.45% full-parse accuracy on held-out data, '60+ languages', model about 1.8 GB.",
+              "shows": "Parsing is solved well enough to rely on, and its size makes it a shared service.",
+              "source": "libpostal README, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Country-shaped addresses.",
+            "introduces": "How free text becomes components.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "Geocoding and reverse geocoding are inexact, so every geocoder result must keep its match level, confidence and provenance, and the licence makes provenance mandatory for location.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Parsed address components.",
+            "introduces": "Turning them into coordinates, and what to keep with the result.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "A gazetteer is a reference dataset of named places with stable IDs, names, geometries and parent relations, and OpenStreetMap's admin levels and Who's On First show the design space.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OSM admin_level 2 to 10, meanings varying by country (Berlin at 4); Who's On First stable 64-bit IDs, multiple hierarchies, query by ID not name.",
+              "shows": "Admin levels cannot serve as a cross-country hierarchy without mapping; stable IDs and multiple parents are possible.",
+              "source": "OpenStreetMap Wiki n.d.; Who's On First n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Coordinates.",
+            "introduces": "The places they fall in.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Marketplaces need places with several parents and places no administration defines, so the gazetteer holds administrative places and curated marketplace places.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Lyon 7e in the commune, the Métropole and the Rhône; 'Randstad', 'Costa del Sol', 'Eixample'.",
+              "shows": "Shows why one administrative tree is not enough."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two public models.",
+            "introduces": "What a marketplace needs from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Listings reference places by ID and carry all ancestor IDs, so 'all listings in Rotterdam' is a term filter and renaming a place changes no listing.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A gazetteer of administrative and marketplace places.",
+            "introduces": "How listings point at it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Location precision is the level of detail at which a location is known, stored or shown, and Veldmark adopts a six-level scale from P0 country to P5 exact.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "P0 to P5 with Tradeyard NL and Hearthly FR examples.",
+              "shows": "Gives policies a shared vocabulary across countries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Places and hierarchies.",
+            "introduces": "Levels of detail named after them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Precision applies three times, capture, stored and display, and the Rotterdam mistake was letting display precision follow stored precision with only the page template blurring it.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six levels.",
+            "introduces": "The three moments they apply to, and the Rotterdam case read in those terms.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "form": "list",
+          "controlling_idea": "A geo index makes spatial queries cheap, and four families matter in listing systems: engine-native types, geohash, H3 and S2.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic BKD trees and tessellation; geohash cell-edge problem; H3 (Uber 2018) 16 resolutions, 36.13 km² at res 6 to 0.105 km² at res 9; S2 levels 0 to 30, Hilbert ordering; Airbnb 2026 uses S2 cells as a feature.",
+              "shows": "Each family has a different strength.",
+              "source": "Elastic n.d.; Uber 2018; H3 docs n.d.; S2 n.d.; Airbnb 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Locations, places and precision.",
+            "introduces": "The data structures that query them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The four index families are complementary: engine-native types serve queries, H3 serves aggregation and privacy, and S2 or geohash serve key-value lookups.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Four index families.",
+            "introduces": "The job each one serves, with a pointer to the trade-offs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "licences",
+      "heading": "Geocoding Providers and Licences",
+      "controlling_idea": "Geocoding and map-data licences decide what a marketplace may store, so providers are chosen per country and use, the licence is recorded with every coordinate, and most groups end up with a mix whose volumes are smaller than feared.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L5"
+        ],
+        "how": "Shows the terms that make geocoding a licensing decision and the rule that follows."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The concepts, including geocoder results that record provider and licence.",
+        "introduces": "The constraint to know before designing: what the providers' licences allow a marketplace to store and show.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The terms first, as dated evidence; then the rule they force; then the build-versus-buy mix that follows; then the cost reassurance. The rule before the terms would ask the reader to accept a constraint without seeing it."
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "Geocoding and map-data licences differ in ways that decide what a marketplace can store, as the providers' terms in October 2026 show, so the constraint must be known before the design.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Google (storage restricted, place IDs storable, display on a Google Map), Mapbox (temporary not cacheable, permanent=true paid), Nominatim public (1 request/second, no bulk), OSM data (ODbL share-alike), Pelias (MIT), national registers (BAG public domain mark, BAN Licence Ouverte 2.0, OS Open UPRN about 40 million locations).",
+              "shows": "Storage, display and share-alike rights vary by provider, with consequences for a listing database.",
+              "source": "Provider pages, checked October 2026"
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The provider is chosen per country and per use, and the licence is a property of every stored coordinate, because storage, autocomplete and base maps are different uses with different terms.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Terms that differ by provider.",
+            "introduces": "The rule they force.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Most groups end up with a mix: self-hosted national registers where open, a commercial geocoder with storage rights elsewhere, and an open-data gazetteer extended with curated places.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Provider per country and use.",
+            "introduces": "The mix that results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The volumes that drive geocoding cost are smaller than feared, because most private listings are geocoded from a postcode lookup and full-address geocoding is concentrated in feeds whose results can be stored.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The mix of providers.",
+            "introduces": "What it costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Three Representations and the Services Behind Them",
+      "controlling_idea": "The location value object has three parts read by different consumers, produced by six components, with the public point derived deterministically and every buyer-facing distance, event and search field computed from the public side.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3"
+        ],
+        "how": "Sets out the three representations and the server-side rule that keeps the precise point private."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The concepts and the licence constraints.",
+        "introduces": "The model assembled from them: one value object and the services behind it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "p27-p31: the distance rule, the internal exception and the event and search document that carry it out"
+          }
+        ],
+        "rationale": "The value object first, because every later paragraph refers to its three parts, followed directly by why its precise part is restricted (personal data) and then how the parts derive from each other; then the components that produce the parts; then the one derivation that decides privacy (the public point), closed by Airbnb's documented example of the same separation; then the rule for distances that depends on it; then the event and search document that carry the result downstream. Starting with the search document would show fields before the reader knows which part they come from, and the components before the classification would present a restricted store with no reason for it."
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "controlling_idea": "With the concepts and licence constraints in place, location inside the listing aggregate is a value object with three parts, precise location, public location and place references, written together but read by different consumers.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Part, contents, classification, readers for the three parts.",
+              "shows": "Each part has its own classification and readers; clients and partners never read the precise part."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "A private seller's precise location is personal data while the gazetteer is not, which the GDPR states and which reference models such as Productscape show is easy to get wrong.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "GDPR Art. 4(1): location data as one of the identifiers that make a person identifiable.",
+              "shows": "The precise part carries a legal classification the other parts do not.",
+              "source": "GDPR Art. 4(1), unofficial reproduction"
+            },
+            {
+              "kind": "source",
+              "what": "Productscape real-estate model classifies geo reference data as non-personal and listings with a private owner's location as 'possible-personal'; the general-listings model's own review notes its non-personal classification is wrong for private sellers.",
+              "shows": "Even reference models get the classification wrong for private sellers.",
+              "source": "productscape-digest"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three parts and their classifications in the table.",
+            "introduces": "Why the precise part is restricted: it is personal data for private sellers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Each part can be recomputed from the one above it, which makes policy changes and boundary reforms backfills rather than migrations.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three parts and the restriction on the precise one.",
+            "introduces": "How each part derives from the one above, which makes changes backfills.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Six components produce and guard the three parts: country address capture, a geocoding gateway, a gazetteer service, a place resolver, a precision policy engine and a restricted location store.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: location enters as text and leaves as two products; everything right of the policy engine sees only what the policy allows.",
+              "shows": "Shows the flow through the components and the audited path to the restricted store."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The value object and its classification.",
+            "introduces": "The services behind it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "list",
+          "controlling_idea": "The precision policy can derive the public point by snapping to an H3 cell centre or by a seeded offset, and the offset must be deterministic or repeated versions average back to the true point.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "H3 res 7 average edge 1.41 km, res 8 0.53 km.",
+              "shows": "Gives the scale of a snapped public point.",
+              "source": "H3 docs n.d."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: seeded offset versus redrawn pins that average back to the house.",
+              "shows": "Shows why determinism is required."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The precision policy engine.",
+            "introduces": "How it derives the public point.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Both methods need two refinements: the public point must stay inside the public place, and in sparse areas the policy coarsens until the area holds a minimum number of addresses.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Two derivation methods.",
+            "introduces": "Refinements that apply to both.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Airbnb's documented obfuscation shows the principle that the exact address is released for a reason, to a known person, not at publication.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'within about a half mile (less than 1 kilometer) of the street address'; 'guests don't receive the address until their reservation is confirmed'.",
+              "shows": "A large public platform separates public and precise location in the same way.",
+              "source": "Airbnb, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Deriving a public point.",
+            "introduces": "A documented public example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Distances shown to buyers and distance sorting must be computed from the public point and rounded to its precision, because precise distances turn three searches into a location.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The public point.",
+            "introduces": "The rule for every distance a buyer sees, back to the Rotterdam case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Internal consumers such as duplicate detection and fraud models need the precise point, and read it from the restricted store with every read logged.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one precise point, many audiences.",
+              "shows": "Shows public consumers on the derived side and internal models with a documented purpose on the precise side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Buyer-facing distances from the public point.",
+            "introduces": "Internal consumers that need the precise one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The listing event carries the public part and the place references, not the precise part, so the event stream and every downstream copy stay free of precise private locations.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Femke's bike listing existed in seven copies.",
+              "shows": "Erasing a precise point from seven copies is harder than never writing it there.",
+              "source": "listing-data-management; scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which consumers read which part.",
+            "introduces": "How the parts travel downstream in events.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "form": "list",
+          "controlling_idea": "The search document holds the public point, all place IDs and ancestors, H3 cell IDs and the display label and level.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The event contract.",
+            "introduces": "The search document built from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "For real estate the search document may also hold a precise point that is never returned and is used for polygon queries only where the agency chose exact display, and map-search owns the query design.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The public search document.",
+            "introduces": "The real-estate exception and the pointer to map search.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "semantics",
+      "heading": "Radius, Polygon and Place: Getting the Semantics Right",
+      "controlling_idea": "Each kind of location query hides a decision, and the model makes each one explicit: a curated search origin, administrative and marketplace places, names on IDs, place filters on stored IDs and polygons on public points, one model across borders, and the routing provider's terms as a constraint.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Shows that filters, maps and landing pages agree only when each query reads a declared representation."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The three representations and what the search document holds.",
+        "introduces": "The decisions hidden in the queries that read them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One query type per paragraph, from the simplest (radius origin) to the widest in scope (cross-border), with travel time last because it moves beyond the location model to a provider constraint and echoes the licences section. The place-versus-polygon rule needs the administrative and marketplace places and the names-on-IDs rule before it; placed earlier, it would use place IDs whose meaning had not been settled for the buyer's words."
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "Each kind of location query hides a decision that becomes a visible bug if left implicit.",
+          "function": "claim"
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A radius needs an origin, and Veldmark's gazetteer stores a curated reference point for every place used as a search origin.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Rotterdam's municipality includes Hoek van Holland about 30 km from the centre, so its geometric centroid can fall somewhere unhelpful.",
+              "shows": "A centroid is not always a sensible origin."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Hidden decisions.",
+            "introduces": "The first: where a radius starts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "'In Lyon' can mean the commune, the metropolis or a buyer's mental map, so the gazetteer offers an administrative and a marketplace place and query understanding chooses.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Villeurbanne, a separate commune inside the Métropole de Lyon.",
+              "shows": "A single silent choice leaves out flats buyers expect."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: commune outline, neighbouring commune, dashed marketplace place.",
+              "shows": "Shows the two kinds of place side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where a radius starts.",
+            "introduces": "What a place name means.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Names belong to place IDs, with aliases, so bilingual and alternative names resolve to one place.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Brussels-Capital Region's 19 municipalities with French and Dutch names; 'Elsene' and 'Ixelles'; 'The Hague', 'Den Haag', ''s-Gravenhage'.",
+              "shows": "One place can have several names."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which place a name means.",
+            "introduces": "Several names for one place.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Place filters use stored place IDs and polygons use public points, with the real-estate exact-display case as the one exception, and the listing page names the stored place, so what the buyer sees matches the filter that found it.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Names on IDs.",
+            "introduces": "Polygons and places, which can disagree at boundaries.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A cross-border radius is possible only with one coordinate system, gazetteer and index across countries, so a country fork rules it out before anyone decides whether it is wanted.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Motorvane in Germany, the Netherlands, Poland and Austria; a buyer in Aachen searching within 50 km covers parts of three countries.",
+              "shows": "Cross-border search is a real product question the model can foreclose."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Queries within one country.",
+            "introduces": "Queries that cross a border.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Travel-time search shows that the routing provider's commercial model is an architectural constraint like the geocoder's licence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Rightmove's 'My Places' uses the TravelTime API; the vendor case study says Rightmove chose a fixed annual licence with unlimited requests to avoid pay-as-you-go cost growth.",
+              "shows": "Commercial terms shaped the design.",
+              "source": "TravelTime, n.d., vendor case study"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Distance-based queries.",
+            "introduces": "Commute time, and the provider terms behind it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice at Veldmark",
+      "controlling_idea": "Three Veldmark cases and a weekly quality report show the model at work: the Rotterdam bike's public point reveals no more than a district, the Lyon apartment's agencies' choices are honoured consistently, the Barcelona ring is caught partly through location signals, and quality is measured.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3",
+          "L6"
+        ],
+        "how": "Applies the representations, the distance rule and the published metrics to fictional cases."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The model, its providers and its query semantics.",
+        "introduces": "The model run end to end on Veldmark's three cases, starting with a private seller like the one in the scene.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "the three cases, March, May and July 2027"
+          }
+        ],
+        "rationale": "The private-seller case first because it answers the scene's complaint; the agency case adds place hierarchies, seller choice and duplicates; the fraud case adds location as a trust signal; the quality metrics close because they measure everything the cases used. Putting the metrics first would measure a pipeline the reader has not seen run."
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "Replayed under the policy adopted later in 2027, Femke's bike, another private seller's listing in Rotterdam, is captured, geocoded, placed, given a P3 public point, indexed and searched in six steps, with a 2.6 km buyer seeing 'about 3 km'.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€240 city bike on Sunday 7 March 2027 at 19:42; postcode centroid; H3 res 7 public point inside 3014; 312 saved searches.",
+              "shows": "Each step uses one representation and the distance rule.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "source",
+              "what": "ExifTool GPSLatitude and GPSLongitude tags.",
+              "shows": "Photos carry coordinates the media pipeline must strip.",
+              "source": "ExifTool n.d."
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Nothing a buyer sees reveals more than the district, and the precise centroid exists only in the restricted store.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The real 20:11 fake payment link of that evening, introduced as a risk that is not a location one and pointed to messaging-and-leads; under the replayed model a would-be visitor finds nothing more precise than a 5 km² cell.",
+              "shows": "Separates the location fix from the other risks of the evening.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Six steps.",
+            "introduces": "What they guarantee.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "form": "list",
+          "controlling_idea": "The Lyon apartment's three agency listings are parsed, geocoded to one building, placed, clustered into one property, shown at the coarsest agency choice and valued from the precise point.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three-room 68 m² flat in Lyon 7e, May 2027, three agencies via two vendors and Keybridge; Agence Rhône Habitat P4, others P3; Valuo €372,000 to €401,000.",
+              "shows": "Shows place hierarchy, seller choice, duplicates and valuation reading the right representation.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A private seller's postcode.",
+            "introduces": "Professional feeds with full addresses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Agencies hide the street for privacy and for business, and the portal's job is to honour the choice consistently, including in the map, structured data and alert e-mail.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The agencies' display choices.",
+            "introduces": "Why they choose and what the portal owes them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "form": "list",
+          "controlling_idea": "The Barcelona ring was detected through photo matches and price anomalies, and location is part of both signals.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "July 2027: 26 accounts, 180 fake rentals in Eixample, about 35% below market; rent medians per H3 res 8 cell (0.737 km²); stolen photos from other districts.",
+              "shows": "Price anomalies need a small consistent grid, and distance between matched listings strengthens a photo match.",
+              "source": "scenario-ledger; H3 docs n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Location serving search and privacy.",
+            "introduces": "Location serving fraud detection.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "After the incident Aisha Rahman's team adds two location signals for new accounts, far-from-history listings and bursts in one district, which work in combination.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Location in the detected signals.",
+            "introduces": "Signals added afterwards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Ingrid's team publishes a small set of location quality metrics weekly per brand and country, and they show how differently the brands start, from Tradeyard NL's postcode centroids to Hearthly FR's rooftop points, with exposure held at zero.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Match-level mix, low-confidence rate, coordinate defects, place drift and precise-point exposure for Tradeyard NL and Hearthly FR, Q3 2027.",
+              "shows": "Gives the model measurable health signals, with exposure targeted at zero.",
+              "source": "Veldmark illustrative baselines"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three cases.",
+            "introduces": "How the group measures all of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Swapped coordinates are a perennial defect because GeoJSON and WKT order longitude first, and the check for them is trivial while the damage without it is not.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic documentation on coordinate order.",
+              "shows": "The cause of the swap is a standards convention.",
+              "source": "Elastic n.d."
+            },
+            {
+              "kind": "example",
+              "what": "A Lisbon listing with swapped coordinates lands in the Indian Ocean.",
+              "shows": "Makes the defect concrete."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The metrics table, labelled illustrative.",
+            "introduces": "Its coordinate-defects row and why swapped coordinates keep recurring.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Three choices recur, where to store location, which geo index serves which job and how to derive the public point, and each has a right answer that depends on the job.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3"
+        ],
+        "how": "Compares the three representations with simpler options and the public-point methods by privacy risk."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The model at work in Veldmark's cases.",
+        "introduces": "The choices behind it, compared.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Three choices recur in location design, where to store location, which geo index fits which job and how to derive the public point, and the tables give each a job-dependent answer: three representations for multi-country groups, engine-native types for queries and H3 for aggregation, and a public point coarsened in sparse areas.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Where to store location: single point, precise plus public, three representations, property-first.",
+              "shows": "The three representations fit multi-country groups with landing pages; simpler options fit narrower cases."
+            },
+            {
+              "kind": "table",
+              "what": "Which geo index for which job: engine-native, tile aggregations, H3, S2 or geohash, place-ID filter, H3 plus address ID.",
+              "shows": "Each job has a best fit and an option to avoid."
+            },
+            {
+              "kind": "table",
+              "what": "Public-point methods: label only, H3 snap, seeded offset, circle of uncertainty.",
+              "shows": "Each method trades privacy against map quality."
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "A privacy circle centred on the real address gives the address away as its centre, so the circle must be centred on the public point.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The public-point methods table.",
+            "introduces": "Its last row, a classic mistake.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The three choices and their verdicts first, with the tables as evidence; then the one row of the public-point table that is a common mistake. The warning before the comparison would single out a method the reader has not yet seen beside its alternatives."
+      }
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Location carries the most weight in real estate, is most often personal data in general classifieds, and sits in between in automotive.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L1",
+          "L3"
+        ],
+        "how": "Shows how the same model is parameterized per vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Trade-offs that apply to every vertical.",
+        "introduces": "How the verticals differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "Real estate is where location carries the most weight, general classifieds where it is most often personal data, and automotive sits in between.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven dimensions across general classifieds, real estate, automotive, and jobs and services.",
+              "shows": "Defaults, search role, duplicate role and regulation differ by vertical."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Nine recurring failures, from side-door leaks to imposing one country's address model, each have an architectural control.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "L3",
+          "L4",
+          "L5"
+        ],
+        "how": "Names what goes wrong when one of the chapter's rules is missing."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "How verticals differ.",
+        "introduces": "What goes wrong in any of them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "form": "list",
+          "controlling_idea": "Nine failure modes, side-door leaks, distance trilateration, non-deterministic jitter, licence debt, name-based matching, stale place references, centroids treated as precise, exploding polygons and one country's model imposed on another, each have a control.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Nobody owns location end to end, so at group scale it needs one owner and four explicit decisions, with signals to watch and a limit to where the design is worth it.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L6"
+        ],
+        "how": "Turns the model into the group decisions the thesis's so-what names."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Failure modes that cross teams.",
+        "introduces": "Who should own location and what they decide.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The ownership gap first, because the decisions answer it; then the four decisions in dependency order (the gateway and gazetteer that the policy, providers and metrics run on); then long-term signals, which can change those decisions; then the boundary of applicability, which qualifies all of them. A decision before the gap would answer a problem not yet stated, and the policy before the gateway would put it in a service that does not yet exist."
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "In most organizations nobody owns location end to end, so at group scale it needs one owner and four explicit decisions.",
+          "function": "claim"
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Decision 1 puts one gazetteer and geocoding gateway, Veldmark Place, under group platform engineering, because place IDs are the shared language across search, alerts, landing pages, analytics and fraud.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Approved at the architecture advice forum in May 2027; inside the Common Ground taxonomy and attribute platform under Yara Mendes; live for Tradeyard in October 2027, Hearthly and Motorvane in 2028.",
+              "shows": "A dated decision with an owner and rollout.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four decisions.",
+            "introduces": "The first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Decision 2 makes the precision policy group policy with brand parameters, with the restricted-store rule non-negotiable and Hearthly Spain's exact pins fixed in the first release.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The shared gateway and gazetteer.",
+            "introduces": "The policy that runs inside it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Decision 3 chooses providers per country and use behind the gateway and reviews the licence register at renewals and in every acquisition.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "When Veldmark bought Casavista in 2025, nobody asked what its coordinates were licensed for.",
+              "shows": "Due diligence is where licence debt is found or missed.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The policy.",
+            "introduces": "The providers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Decision 4 publishes location quality weekly beside publication-time and duplicate-rate metrics, with precise-point exposure targeted at zero and treated as a privacy incident.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The providers.",
+            "introduces": "How the whole is measured.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Over the long term, open registers, shipping, regulators' interest and AI search agents will change what location means and what a leak costs.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Decisions for now.",
+            "introduces": "Signals to watch over years.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The design is too much for a single-country marketplace of businesses at public addresses, but necessary as soon as private sellers appear.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Where the design is going.",
+            "introduces": "Where it is not worth it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions turn the chapter into a design review of a group's location handling.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3",
+          "L4",
+          "L5",
+          "L6"
+        ],
+        "how": "Gives the reader the model as review questions."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions a reader can take into a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p62",
+          "form": "list",
+          "controlling_idea": "Ten review questions test public exposure, distance computation, deterministic derivation, coordinate licences, place IDs, place meaning, internal reads, match levels, cross-border search and defect monitoring.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Place to Seller",
+    "synthesis": "The five answers in Ingrid's table failed for one reason: each brand stored one location and let every reader take what it needed. That fault let a stranger reach the Rotterdam door and left coordinates nobody could say were licensed; the Lyon page that left out Villeurbanne had a different cause, no place references to choose between, and the same model's third representation fixes it. Three representations under a group policy, one gazetteer and a licence on every coordinate answer all three.",
+    "so_what": "The group fixes location once, as a shared service, instead of five brand fixes, and can then answer the regulator, the licensor and the cross-border buyer.",
+    "callback": {
+      "to": "The Rotterdam seller who found a stranger at her door, and the five answers to 'where is it?'.",
+      "how": "The reader can now say what the Rotterdam payload would carry under the model: a cell centre and a district, never a doorstep."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Store three representations, compute everything public from the public point on the server, and record the licence with every coordinate."
+    },
+    "hand_off": {
+      "to": "sellers-and-accounts",
+      "relationship": "additional_support",
+      "carries_over": "The location chapter's precision choice that each agency makes in its account settings, and the four subdomains already modeled.",
+      "introduces": "The last subdomain the listing references: the people and organizations that supply it, from a private seller to an agency network with franchisees."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the complaint to the review questions.",
+      "introduces": "The answer to the five answers.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p63",
+        "controlling_idea": "The five answers failed for one reason, one location read by every consumer, which caused the leak and the unlicensed coordinates; the Villeurbanne gap had a different cause (no place references) that the same model's place references fix, so the Rotterdam payload would now carry a cell centre and a district, never a doorstep.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p64",
+        "controlling_idea": "Location says where a listing is, not who sells it, and even the precision rule depends on the seller's type and an agency's account settings, so the last subdomain the listing references, who lists, comes next.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "The location model and the agencies' precision choices.",
+          "introduces": "Who lists: the last referenced subdomain.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Polygon, isochrone and map-clustering query design and map ranking.",
+      "covered_in": [
+        "map-search"
+      ]
+    },
+    {
+      "topic": "Parsing locations out of search queries.",
+      "covered_in": [
+        "query-understanding"
+      ]
+    },
+    {
+      "topic": "The general enrichment pipeline and attribute provenance.",
+      "covered_in": [
+        "normalization-and-enrichment"
+      ]
+    },
+    {
+      "topic": "Duplicate-detection algorithms beyond location as a blocking key.",
+      "covered_in": [
+        "entity-resolution"
+      ]
+    },
+    {
+      "topic": "EXIF stripping and image processing.",
+      "covered_in": [
+        "media-pipeline"
+      ]
+    },
+    {
+      "topic": "Erasure across copies and read-model design in general.",
+      "covered_in": [
+        "listing-data-management"
+      ]
+    },
+    {
+      "topic": "The regulatory catalogue (DSA, GDPR detail).",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Google's historically cited latitude-longitude caching window was not found on the policy page fetched in October 2026; the chapter cites only the current page. Re-check the service-specific terms before print. (Carried over from spec.md.)",
+    "Whether an enriched gazetteer built partly on OpenStreetMap is a 'derivative database' under the ODbL is left to legal review; the chapter says so rather than answering it. (Carried over from spec.md.)",
+    "Belgian, Polish, Portuguese and Spanish national address and cadastral registers were not verified in this session and are not named. (Carried over from spec.md.)",
+    "A minimum-address-count rule for sparse areas is recommended without a published benchmark; consider adding one if a source appears. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric note not taken: the Failure Modes list could cite where each control was introduced, and the Questions list restates much of it; kept as reference apparatus per house chapter shape. (accepted under the author's delegation, 2026-11-12; rule 8: published text kept.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric note not taken: swapped coordinates (p50) is a failure mode not in the Failure Modes list. (accepted under the author's delegation, 2026-11-12; rule 8: published text kept.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric note not taken: the Rotterdam complainant in the scene is unnamed (she listed a sofa) and is not Femke (a bike); naming her would need a ledger entry. (accepted under the author's delegation, 2026-11-12; rule 8: published text kept.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric note: supporting claim L6 (one owner at group scale) backs the thesis's so_what rather than the claim itself; the claim is copied from the journal spec and was not changed. (accepted under the author's delegation, 2026-11-12; rule 8: published text kept.)"
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (a), p44: the 20:11 fake payment link is a published, ledger-backed Veldmark detail and stays (rule 7). Fixed the missing setup instead: the sentence now opens 'Not every risk Femke met that evening was a location one', in past tense as the real event, and the scammer clause is marked as the replayed model. Evidence 'what' updated.",
+      "rejected": [
+        "Cutting the clause or moving it to messaging-and-leads (cuts a published Veldmark detail)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (b), p22: the Productscape evidence is published and stays in place (rule 7, rule 8: both orders were tried). The paragraph now opens its second half with 'Reference models show how easily this classification goes wrong', names whose review notes they are, and p21 opens 'Back to the table's order' to return the reader to the table. p22 controlling idea reworded to match.",
+      "rejected": [
+        "Moving the Productscape evidence to Sources or dropping it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation (c), conclusion: the synthesis and p63 no longer call Villeurbanne the same fault as the leak and the licences. The leak and the unlicensed coordinates come from one stored location; the Villeurbanne gap had a different cause (no place references) that the same model's third representation fixes. Callback to the Rotterdam payload kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft faults left after round 3, fixed in prose without reordering: Trade-offs lead now gives the public-point table its verdict (each method trades privacy against map quality; a snapped or seeded point, coarsened in sparse areas) and p52 names the table it reads; Vertical Differences opens by contrasting itself with the vertical-neutral trade-offs and ties property-first and the Lyon clustering to real estate (kept after Trade-offs: the declared contrast order is sound, and moving it would break the Trade-offs lead's link to the cases); Femke's walk-through is stated plainly as a replay before the steps; p08 says kinds and representations are different axes; 'Geo service' became 'the location components below'; 'radius of uncertainty' is glossed as the circle a map draws around the public point; Figure 2's caption numbers the components it names; 'the January backfill' became 'since place IDs were recomputed in January'; 'agencies with fourteen branches' now names Agence Rhône Habitat (ledger: a network of 14 branches), already met in the Lyon case. Minor: p18 lead reworded."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Restored two author sentences cut in an earlier pass (rule 7): 'It is also one of the few listing fields that is personal data almost every time a private seller is involved.' (end of p02) and 'The trade-offs section compares them job by job.' (end of p19). length.max_words raised from 8,134 to 8,350 (+2.7%, within the 10% allowance) to make room for these and the fixes above."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Q3 2027 quality metrics beside Veldmark Place's 2028 go-live for Hearthly: no contradiction; the metrics are published by Ingrid's team per brand and measure each brand before it moves to the shared service. Published text kept (rule 8; accepted under the author's delegation, 2026-11-12)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric note on supporting claim L6 (backs the so_what): thesis copied from the journal spec, not changed (rule 6; accepted under the author's delegation, 2026-11-12)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate, two spec faults corroborated by both flow readers): the personal-data paragraph p22 now comes directly after the value-object table and before the recomputation paragraph p21 (transitions rewritten); in the Lyon walk-through (one unit, p45) duplicate detection now precedes the precision step, so the clustered property exists before its display rule. Intent, thesis and role unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate, spec fault): both flow readers found the licences section late because the architecture's geocoding gateway already relies on licence terms. Moved 'Geocoding Providers and Licences' from after the query semantics to directly after the concepts; rewrote the transitions into licences, architecture and practice, p38's forward reference, the roadmap order, and the post and semantics flow rationales. Intent, thesis and role unchanged.",
+      "rejected": [
+        "Keeping the order and adding a forward reference from the gateway paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Acted on the flow rubric (sound with notes): p36 names the real-estate exact-display exception so it no longer contradicts p31; p38 points forward to the licences section; the Trade-offs lead p51 gives each of the three choices its verdict; section flow reasons corrected for architecture, semantics and the Chief Architect's view (pattern relabelled prerequisite_order)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of spec.md not carried over as such: the journal entry's AC-1 to AC-3 replace them. 'Explain the three representations', 'state the distance rule' and 'resolve radius, polygon and place semantics' are covered by AC-1 and the reverse outline; 'compare providers', 'choose a geo index' and the inventory criteria (named cases, tables, diagrams, Chief Architect's view, questions) were dropped as contents rather than reader outcomes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Trade-offs gains a one-sentence lead (p51) so its three tables belong to a unit that names the three choices, and the closing section gains a synthesis paragraph (p63) with a callback to the Rotterdam complaint; both are minor, post-level additions not in the journal spec."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around three location representations rather than around providers or index types, because the privacy, licensing and filter-consistency failures all trace back to storing one field for every consumer."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Opened with a fictional Veldmark privacy complaint (distance and API leakage) instead of a search-quality bug, because it makes the precise/public split concrete and is the failure most readers have not considered."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Adopted a six-level precision scale (P0-P5) as a teaching device and as Veldmark's policy vocabulary.",
+      "rejected": [
+        "OSM admin levels, which vary by country."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept travel-time and polygon search to short summaries with links to map-search to avoid re-teaching what that chapter owns."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of sellers-and-accounts."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, categories-and-taxonomies, media-pipeline, entity-resolution, map-search, fraud-prevention, multi-country-platforms",
+      "contributed": "Neighbouring ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-listing-data-ingestion.md Part 7; _research/brief-search-discovery.md Part 3; _research/brief-real-estate-portals.md C.8 and D; _research/brief-trust-safety-regulation.md 5.10; _research/productscape-digest.md 5.3-5.5",
+      "contributed": "Address parsing, geocoding licences, hierarchies, H3/S2, obfuscation; personal-data classification."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Veldmark names, dates and figures for the three cases and Veldmark Place."
+    },
+    {
+      "kind": "external",
+      "ref": "Google Geocoding policies (2026), Mapbox Geocoding, OSMF Nominatim policy, OSM copyright",
+      "contributed": "Licensing constraints."
+    },
+    {
+      "kind": "external",
+      "ref": "Airbnb location guidance (2025)",
+      "contributed": "The documented obfuscation example."
+    },
+    {
+      "kind": "external",
+      "ref": "Uber H3 (2018), H3 resolution table, S2 documentation, Elastic geo-shape docs",
+      "contributed": "Geo indexing."
+    },
+    {
+      "kind": "external",
+      "ref": "Kadaster BAG, data.gouv.fr Base Adresse Nationale, OS Open UPRN",
+      "contributed": "National registers."
+    },
+    {
+      "kind": "external",
+      "ref": "GDPR Art. 4(1)",
+      "contributed": "Location data as personal data."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: p44 setup, p22 framing, conclusion synthesis reworded, draft faults on the public-point table, Vertical Differences lead, replay tense, kinds vs representations and five unexplained terms; two cut author sentences restored; max_words 8,134 to 8,350."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 3 (escalate): two close fixes without a further round ('Radius filters can use the public point too'; Vertical Differences lead sets itself against the trade-offs); remaining failures recorded in open_questions. Check report is therefore stale by these two sentences."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: p22 and p21 swapped; Lyon steps 4 and 5 swapped; prose fixes for the trade-off tables' reading, the typed-address bridge, the coordinate-defects link, Femke named only in her own case and marked as a different seller, the replay timeline, the res-7 cell area, the metrics lead, and the closing callback (now the Villeurbanne page)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: licences section moved before the architecture (spec fault); prose revised for missing section and paragraph transitions, unexplained Veldmark names, the quality-metrics table reading, the real-estate search-document exception, the Rotterdam radius example and the Lyon step order."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec, paragraph level); spec.md removed. Prose revised to match: roadmap added to p03, Trade-offs lead p51, synthesis paragraph p63 and a rewritten hand-off p64."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations; consistency fix to the scene heading ('Five Answers'); sharpening pass 6,540 to 6,550 prose words; cross-chapter consistency sweep. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass (eight countries, Motorvane's markets, copy count tied to Femke's erasure case); 3 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8350
+  }
+}

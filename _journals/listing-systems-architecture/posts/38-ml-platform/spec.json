@@ -1,0 +1,2084 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "ml-platform",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "Models in Production: ML Platforms and Use Cases",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the ml-platform entry in journal-spec.json; the supporting claims and audience are this spec's own. Units added by this conversion: introduction roadmap p04, and a conclusion widened from one paragraph to two (p54 synthesis and callback, p55 hand-off).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The use-case portfolio (category prediction, attribute extraction, image classification, fraud scoring, ranking, recommendations, price estimation and AVMs, lead scoring) and the four decision tiers: inform, order, gate, commit.",
+        "What an ML platform for listings contains: point-in-time-correct features, labels from moderation, contacts and sales, training and serving, a prediction log joined to outcomes, monitoring, a model registry and lifecycle.",
+        "The documented record, including Zillow Offers' 2021 wind-down; shared, per-brand and per-market models; the EU AI Act as it touches marketplaces."
+      ],
+      "believe": [
+        "The decision a model makes, not its algorithm, sets the governance it needs.",
+        "An estimate accurate enough to inform is not accurate enough to commit money."
+      ],
+      "can_do": [
+        "Assign a tier to each consumer of a model and set the gates for each tier.",
+        "Write display, label and data-exclusion rules for a consumer-facing estimate.",
+        "Decide when a model may move to a higher tier and who absorbs the loss if it is wrong."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, heads of data and ML, ML platform leads, and product leaders who own valuation, pricing or trust models. They know ML in general; they need the marketplace-specific decisions and the group-level governance.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; machine learning in general (training, evaluation, serving).",
+        "From earlier chapters: Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly and Keybridge, the cast (Ingrid Halvorsen, Priya Raman, Claire Fontaine, Julien Marchand, Lucía Ortega), the architecture advice forum, Valuo, the Lyon apartment, the Essen Golf and the Keybridge neutrality decision (meet-veldmark); entity resolution and canonical clusters; the category taxonomy and the bikes split; learning to rank, LambdaMART and the P2B Regulation (ranking); DSA statements of reasons (trust-and-safety-architecture); the AI Act (media-pipeline, marketplace-regulation); the listing event stream and ListingUpdated (event-driven-listings); the lakehouse and governed metrics (data-platform); interference and cluster randomization (experimentation); the failure patterns Set-and-Forget AI, The Forced Fit and Vanity Liquidity."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: ML capability, ML platform, feature store, model governance, automated valuation model, the four decision tiers (inform, order, gate, commit), prediction log.",
+        "ML-operations vocabulary: training-serving skew, data, concept and label drift, point-in-time correctness, model registry, model cards, golden path, hidden feedback loops and undeclared consumers.",
+        "France's DVF transaction data, iBuying and the Zillow Offers wind-down, AI Act Annex III and the Digital Omnibus dates.",
+        "Veldmark's model inventory, the pricing-hint rules, Hearthly Direct and the ML platform decision of 9 November 2027."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given one model and three proposed uses, the reader assigns tiers and decides each use.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A property portal's valuation model has a median error of about 7% for off-market homes. Three proposals arrive: a badge comparing each asking price with the estimate, a guaranteed purchase offer at 94% of the estimate funded by a partner, and a bank licensing estimates for mortgage pre-approval. Using only this chapter: how do you classify and decide each, and what does the platform need before the badge ships?",
+        "expected": "Classify by decision: the badge informs, the offer and the mortgage input commit money. The badge ships under rules: shown only when the prediction interval is narrow enough and comparables suffice, thresholds from the interval, an explanation, training labels from recorded sale prices only (never badged asking prices), excluded data enforced in the pipeline, monitoring by segment, named owners, and a district-randomized experiment. The guaranteed offer is declined until back-tested on resale over a holding period and on accepting owners, with a capital limit; the mortgage input needs commit-tier validation and sign-off independent of the builders. Before any of it, the model is registered with an owner, tier, label definition, monitor and cost."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Which models matter and what platform runs them; governance by decision tier; features, labels and prediction logs as the hard parts; informing versus committing, with Zillow Offers as the documented case. Then 146 models and one price badge at Veldmark, concepts, platform architecture, the documented record, Valuo and the pricing hint, shared versus per-brand models, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: OLX and Adevinta engineering sources, Zillow filings and shareholder letters, Uber engineering, the EU AI Act, model-card research, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which ML capabilities matter in listing marketplaces, and what platform runs them responsibly?",
+    "claim": "The ML capabilities that matter in a listing marketplace are the ones that make its decisions about listings, buyers and money (category and attribute prediction, image classification, fraud scoring, ranking and recommendations, price estimates and valuations, lead scoring), so a marketplace should classify each production model by the decision it makes (informs, orders, gates or commits), not by its algorithm, and let that tier set the depth of validation, monitoring and approval; run every model on one shared path whose first services are point-in-time-correct features, labels taken from moderation decisions, contacts and sales, and a prediction log joined to outcomes; make registration with an owner, a tier per consumer, a label definition, a monitor and a cost a condition of production access; and move a model to a higher tier only with a new validation regime, new owners and a limit on the money it can commit, because an estimate accurate enough to inform a buyer is not accurate enough to commit money.",
+    "disputed_by": "The view that model governance should scale with the model's sophistication, that each brand's data-science team chooses its own training stack and monitoring, and that a model validated for one use can be reused for a more consequential one once it scores well offline.",
+    "so_what": "A Chief Architect who accepts this owns the inventory and the tier rules rather than the models; withdraws production credentials from unregistered models after a deadline; turns tiers into gates (segment evaluation for inform, two-sided experiments for order, sampled labels, appeals and statements of reasons for gate, independent validation and capital limits for commit); makes label events part of the producing teams' contracts; funds the platform as a product measured by adoption; and treats any promotion to commit as a board-level decision.",
+    "how_why": "Veldmark's first inventory in September 2027 found 146 production models on four training stacks, 23 without an owner, 41 without monitoring beyond uptime and 12 that could not be retrained. Valuo, the same model behind three requests, has a median absolute error of 7.4% off-market and 2.3% for listed homes; the badge shipped under eight rules (shown only when the interval width is at most 12% of the midpoint with at least eight comparable sales, DVF prices as the only labels, Keybridge data rejected by a lineage tag), while Hearthly Direct's guaranteed offer at 94% of the estimate was declined because Valuo had never been back-tested on resale or on owners who would accept. Zillow's 2021 wind-down of Zillow Offers is the documented case of an estimate used to commit. Registration became a condition of production access on 9 November 2027.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The ML capabilities that matter in a listing marketplace are the models that make its decisions about listings, buyers and money, and in most groups they have accumulated team by team into a portfolio nobody can list, own or reproduce."
+      },
+      {
+        "id": "S2",
+        "claim": "Governance follows the decision a model makes (inform, order, gate or commit), not its algorithm, and because one model can serve several consumers at different tiers, the tier is assigned per consumer and every consumer must be declared."
+      },
+      {
+        "id": "S3",
+        "claim": "The listing-specific hard parts of an ML platform are point-in-time-correct features, labels from moderation decisions, contacts and sales, and a prediction log joined to outcomes; most listing models are scored on events and stored on the listing, and an online feature store pays only for real-time behavioral features."
+      },
+      {
+        "id": "S4",
+        "claim": "An estimate accurate enough to inform is not accurate enough to commit money: moving a model to the commit tier needs a new validation regime (forward back-tests on the population that accepts), new owners and a limit on the money it can commit, as the Zillow Offers record and Veldmark's two declined Valuo uses show."
+      },
+      {
+        "id": "S5",
+        "claim": "For a consumer-facing estimate, the validation the inform tier sets takes the form of written display, label and data-exclusion rules, with labels taken from recorded sales and the label and exclusion rules enforced by the pipeline rather than by policy, and the estimate is launched as an experiment randomized by area."
+      },
+      {
+        "id": "S6",
+        "claim": "Every model runs on one shared path in the sense that it registers in one registry and logs and is monitored to one standard, with registration (owner, tier per consumer, label definition, monitor and cost) a condition of production access; training and serving migrate to the golden path when it is better, so the platform is adopted rather than forced, and model weights are shared only where the task is generic."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Governs the models that now make most of the changes the platform measures, by the consequence of their errors.",
+    "supports": [
+      "P7-6"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses the inventory and Valuo's three requests; the Valuo section answers them after the tiers, platform and documented record have been built"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "sharing, trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene comes first because its inventory and three requests are the problems the chapter solves. The concepts follow because every later section uses the tiers. The platform comes before the documented record so the reader can place each public account in a part of the platform. The documented record ends on Zillow Offers because its lessons are the rules the Valuo section applies to the commit-tier requests; placed after Valuo, the decline of Hearthly Direct would rest on reasons the reader has not met. Sharing follows Valuo and Motorvane because they are the per-brand models it judges; the judging sections come last because they apply the whole design."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A category predictor arrived with a new insertion flow, a fraud model after a bad quarter, a learning-to-rank model when the search team hired its first data scientist, a price estimate because a competitor had one; a few years later nobody can list them all."
+    },
+    "bridge": {
+      "from_reader_world": "Architects who know APIs, event streams and search engines see each model as one team's component on that team's stack.",
+      "to_topic": "In a marketplace group those models make decisions about listings, buyers and money, so the question is which decisions they make and what platform and governance run them."
+    },
+    "thesis_statement": {
+      "text": "Classify every model by the decision it makes (inform, order, gate, commit), build the platform first around features, labels and a prediction log, and promote a model up a tier only with a new validation regime, new owners and a capital limit, because an estimate good enough to inform is not good enough to commit.",
+      "placement": "KEY POINTS callout (all three bullets) and WHY ARCHITECTS SHOULD CARE callout; p03 states the contrast in Valuo's case."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which lists the sections in order and names the kinds of evidence.",
+      "promises": [
+        {
+          "promise": "Veldmark's 146-model inventory and the three requests for Valuo.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The use cases and the four decision tiers.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The parts of an ML platform for listings: serving, features, labels and monitoring.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "What marketplaces have documented, up to the Zillow Offers wind-down.",
+          "kept_in": [
+            "documented"
+          ]
+        },
+        {
+          "promise": "Valuo's pricing hint and the fate of the other two requests.",
+          "kept_in": [
+            "valuo"
+          ]
+        },
+        {
+          "promise": "Sharing models across brands, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "sharing",
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Every listing marketplace above a modest size runs dozens of models that arrived one at a time on whatever stack each team knew, so a few years later the group has more models than anyone can list, training data nobody can reproduce, and a valuation model pulled into decisions it was never validated for.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A category predictor with a new insertion flow, a fraud model after a bad quarter, a learning-to-rank model with the first data scientist, a price estimate because a competitor had one.",
+            "shows": "Shows how a portfolio accumulates without being planned."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Opens on the unplanned portfolio the chapter turns into a governed one."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter turns that accumulation into a portfolio with a platform under it: it builds on data-platform and experimentation, feeds multi-country-platforms, leaves the use cases to the chapters that own them, and owns what they share: the ML platform, the feature store question, model governance and the AVM.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Links to data-platform, experimentation, multi-country-platforms, ranking, recommendations, fraud-prevention, normalization-and-enrichment and ai-in-listing-systems.",
+            "shows": "Tells the reader what is assumed, what is owned elsewhere and what this chapter owns."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3"
+          ],
+          "how": "Places the chapter in the reading order and sets its boundaries."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "An accumulation of models nobody planned.",
+          "introduces": "The chapter's answer: a portfolio with a platform under it, and its boundaries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The argument runs through one model: Veldmark's Valuo, Hearthly's AVM in France, is asked in 2027 to badge every listing, power a guaranteed offer and feed a bank's mortgage decisions, and the model is the same in all three while the decisions are not.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Valuo's three requests: a price-position badge, a guaranteed-offer product and a bank's mortgage input.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Shows one model serving decisions with different consequences."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S4"
+          ],
+          "how": "States the chapter's central contrast in the case it follows."
+        },
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The portfolio and the governance the chapter owns.",
+          "introduces": "The single model the argument follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter first sets the scene at Veldmark, then defines the use cases and the four decision tiers, describes the parts of an ML platform for listings, reviews what marketplaces have documented up to the Zillow Offers wind-down, follows Valuo's pricing hint, and closes with sharing models across brands, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, using engineering posts, filings, research, EU law and the fictional Veldmark as evidence.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The section list in order and the evidence types (OLX and Adevinta engineering, Zillow filings and shareholder letter, Uber and Airbnb engineering, ML-systems research, the EU AI Act, Veldmark).",
+            "shows": "Lets a reader predict the chapter from its opening."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces the sections in order and the kinds of evidence."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The one model the argument follows.",
+          "introduces": "The order in which the chapter makes the argument.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: 146 Models and One Price Badge",
+      "controlling_idea": "Veldmark's first inventory shows an unowned, unmonitored portfolio, and three requests for the same Valuo model show that the consequence of its error, not the model, differs by use.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "how": "Gives the problem the chapter solves in measured form and the case it follows."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The inventory comes first because it shows the portfolio problem in numbers; the three requests narrow it to one model; Ingrid's question about each request closes the scene because it is the principle that organizes the rest of the chapter. Placed earlier, the question would have no requests to apply to."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The portfolio problem and the one model the argument follows.",
+        "introduces": "Veldmark's inventory and the three requests.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Priya Raman's first group model inventory for Veldmark, compiled by asking around, finds 146 production models on four training stacks, 23 without a named owner, 41 without monitoring beyond uptime and 12 that could not be retrained, none of which was known before.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Monday 20 September 2027, Priya Raman: 146 models (Tradeyard 71, Motorvane 38, Hearthly 29, Keybridge 8); SageMaker, Kubeflow, Vertex AI and Azure ML; 23 ownerless, 41 unmonitored, 12 not reproducible; six weeks to compile.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows that nobody could list, own or reproduce the group's models."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Measures the unplanned portfolio at Veldmark."
+          }
+        },
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "Three requests arrive the same month, all involving Valuo: a pricing-hint badge on every French sale listing, a guaranteed purchase offer at 94% of the estimate, and a French bank's license for mortgage pre-approval.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Claire Fontaine's badge (below, in line, above); Hearthly Direct at 94% funded by a property-investment partner with a share of resale margin; the bank's license.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows one model proposed for three uses."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Sets out the three uses the chapter decides."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The inventory presented that month.",
+            "introduces": "The three requests for one of those models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Ingrid asks, before any technology is discussed, who loses money and how much if the estimate is 8% wrong, and because the answers differ (a misled buyer, a partner's balance sheet, a household's mortgage) the chapter is organized around the consequence of error, not the algorithm.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: one valuation model feeding a badge, a guaranteed offer and a mortgage input, with the weight of an error growing.",
+              "shows": "Shows the same model carrying three different stakes."
+            },
+            {
+              "kind": "reasoning",
+              "what": "The three answers to Ingrid's question.",
+              "shows": "Shows that consequence, not the model, distinguishes the uses."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "States the organizing principle of the chapter in the scene."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three requests.",
+            "introduces": "The question that tells them apart.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Use Cases, Decision Tiers and the Platform",
+      "controlling_idea": "A marketplace's models are classified by the decision each makes into four tiers that set governance and attach to uses, and the common use cases fall mostly into the gate and order tiers.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the vocabulary and the tiers every later section uses."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The terms come first because the tiers and the portfolio use them; the tiers come before their three properties, and both before the portfolio table, which assigns a tier to each use case; public evidence on concentration closes the section. Placed before the tiers, the portfolio table would have no tier column to read."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Ingrid's question: the consequence of error organizes the chapter.",
+        "introduces": "The terms and the tiers that express consequence.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "form": "list",
+          "controlling_idea": "The chapter's terms are ML capability, model (with its lineage), ML platform, feature store, training-serving skew, drift, automated valuation model and model governance.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Uber Engineering 2017 on Michelangelo as the reference feature-store account (online features in Cassandra, same pipelines for training and serving).",
+              "shows": "Grounds the feature-store definition in a documented system, labeled as older evidence."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S3"
+            ],
+            "how": "Defines the vocabulary used in every later section."
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "A model's governance follows the decision it makes, and the chapter sorts those decisions into four tiers (inform, order, gate, commit), each with its own examples, bearer of error and required governance.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tier table: what the model does, marketplace examples, who bears the error, governance it needs (P2B transparency for order, DSA statements of reasons for gate, capital limits and independent review for commit).",
+              "shows": "Shows governance rising with the consequence of error."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "States the tier classification at the center of the thesis."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The terms, including model governance.",
+            "introduces": "The classification that sets governance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "Three properties of the tiers matter: they attach to uses rather than models, moving up a tier is a new launch, and gate models erase the evidence for their own labels unless passed and blocked items are sampled.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Valuo is inform on a listing page and commit inside a purchase offer; a moderation model that rejects a listing removes the evidence of whether it was right.",
+              "shows": "Shows why the registry must record consumers and why gate labels need sampling."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Draws the consequences of the tiers that the rest of the chapter applies."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four tiers.",
+            "introduces": "What follows from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The common ML use cases of listing marketplaces map to a lifecycle stage, a tier, a serving mode, a label source and an owning chapter, and labels are listed because a classifieds marketplace often never sees the sale.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Portfolio table: category prediction, attribute extraction, image classification, duplicate detection, moderation and fraud, ranking, recommendations, query understanding, price estimation, AVM, lead scoring, demand insight.",
+              "shows": "Shows that every use case can be placed in a tier and has a label source that is often a proxy."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2",
+              "S3"
+            ],
+            "how": "Inventories the portfolio by tier and label."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Tiers attach to uses.",
+            "introduces": "The common uses, each with its tier.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Public evidence shows such portfolios are concentrated in trust and safety and in search and recommendations, which matches Veldmark's inventory: 58 of 146 models are gate-tier and 39 order-tier.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OLX Tech 2020: 'more than 40 machine learning services'; 'more than half of the models we use in production are in the trust and safety and search and recommendations areas' (may be superseded).",
+              "shows": "Shows the concentration in a real marketplace."
+            },
+            {
+              "kind": "statistic",
+              "what": "Veldmark: 58 gate-tier trust-and-safety models, 39 order-tier search and recommendation models.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the same concentration in the scenario."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2"
+            ],
+            "how": "Shows where the portfolio concentrates, and so where governance weight lies."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The portfolio table.",
+            "introduces": "How concentrated real portfolios are.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: What an ML Platform for Listings Contains",
+      "controlling_idea": "An ML platform for listings has seven parts, and the listing-specific design lies in event-triggered scoring stored on the listing, a conditional feature store, labels from proxies with known biases, and monitors for four listing-specific drift sources.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Specifies the platform and its hard parts."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The seven parts come first so each subsection can name its part; serving comes next because it decides whether features must be online; the feature store follows because it depends on that answer; labels follow features because a model needs both; monitoring comes last because it watches features, labels and predictions together. Reversed, the feature-store rule would come before the reader knows most models are scored on events."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The use cases and tiers.",
+        "introduces": "The platform that runs them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "The platform has seven parts (data access, training orchestration, model registry, serving, features, labels, and the prediction log with monitoring), and the last three are where listing marketplaces need specific design.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the listing-specific parts are label pipelines, shared feature definitions and the prediction log.",
+              "shows": "Shows where listing design concentrates."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Names the components and marks the listing-specific ones."
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Because a listing changes rarely compared with how often it is viewed, batch or event-triggered scoring with the result stored on the listing is the default serving mode for most listing-level models.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A Tradeyard listing published once, edited a few times and viewed hundreds of times; rescoring on ListingUpdated.",
+              "shows": "Shows why scoring on change beats scoring on view."
+            },
+            {
+              "kind": "table",
+              "what": "Serving modes: batch, event-triggered asynchronous, synchronous endpoint, in-engine scoring; when each fits, examples and main risk.",
+              "shows": "Shows that only request-time inputs need synchronous serving."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Sets the default serving mode."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Serving as one of the seven parts.",
+            "introduces": "Which serving mode most listing models need.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Zillow's 2020 floor-plan detection shows the event-triggered mode in practice: inference attached to the media lifecycle as batch jobs, chosen because a live endpoint took far longer to create.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Zillow Tech Hub 2020: panoramas land in storage, a workflow launches batch-transform jobs for window and door detection; endpoint about ten minutes to create versus a one-to-two-minute batch start (current state not public).",
+              "shows": "Shows the pattern chosen for cost and simplicity."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Documents the default serving mode."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Event-triggered scoring as the default.",
+            "introduces": "A documented case of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "In-engine scoring is the documented pattern for ranking, and the platform's job there is to keep the model's features fresh in the index and its version in the registry.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX Tech 2022: LambdaMART trained with XGBoost, run inside Solr's learning-to-rank plugin, some features 'refreshed periodically (e.g. CTR)' (current setup may differ).",
+              "shows": "Shows the model living in the engine."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Documents the in-engine mode and the platform's role in it."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The event-triggered mode.",
+            "introduces": "The in-engine mode for ranking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Feature stores are the most oversold part of ML platforms in this industry: no classifieds company has documented one, and the documented platforms work without one or with stores under another name.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog 2024 (Kubeflow, MLflow, no feature store); OLX Tech 2025 (ScyllaDB and DynamoDB as an online store without the name).",
+              "shows": "Shows the public record of classifieds platforms without a feature store."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Challenges the default assumption that a platform starts with a feature store."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Serving modes that read scores stored on the listing.",
+            "introduces": "The feature store, usually assumed necessary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Many listing models need no feature store because their features are intrinsic to the listing, and a store pays only for aggregated behavioral features shared by several models and, almost always, for real-time behavioral features.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Feature kinds: listing-intrinsic, aggregated behavioral (batch), real-time behavioral (streaming); where each lives without a store and when a store pays.",
+              "shows": "Shows that the need depends on the kind of feature."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Says when a feature store is worth its cost."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "No classifieds feature store is documented.",
+            "introduces": "Why many listing models do not need one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The rule is to build or buy an online feature store when real-time behavioral features drive a gate-tier or order-tier model, and until then to standardize feature definitions in the lakehouse and log features at prediction time, which solves training-serving skew.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbnb's Chronon README: features defined once, point-in-time-correct backfills, consistency job comparing backfills with logged fetches.",
+              "shows": "Shows the full version of the idea that logged features approximate."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Gives the decision rule for the feature store."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three feature kinds.",
+            "introduces": "The rule that follows from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "A classifieds marketplace usually never sees the sale, so its labels come from proxies (contacts, delisting, moderator decisions, registered transaction prices), each with its own bias.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OLX Tech 2022: ranking trained on purchases 'or messages/calls to sellers' because 'transactions aren't always confirmed'.",
+              "shows": "Shows contacts used as labels and why."
+            },
+            {
+              "kind": "example",
+              "what": "Delisting after contact as a sale proxy; the 'mark as sold' button; moderators blind to what they did not see; DVF lagging the market by months.",
+              "shows": "Shows the bias of each proxy."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Names the label proxies and their biases."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Features, the inputs a model needs.",
+            "introduces": "Labels, the outcomes it learns from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The label pipeline is a product with an owner, a definition and a delay, because choosing the label is choosing what the marketplace optimizes, which is the mechanism behind Vanity Liquidity.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A ranking model trained on clicks learns to produce clicks.",
+              "shows": "Shows the label deciding the objective."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S6"
+            ],
+            "how": "Makes labels an owned contract."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Every label is a biased proxy.",
+            "introduces": "Why the label pipeline needs an owner and a contract.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "Beyond generic drift, listing marketplaces have four drift sources that need explicit monitors: taxonomy and schema changes, seasonality and market shifts, adversarial drift and feedback loops.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's bikes split on Monday 1 November 2027 gives every category-using model a new value.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows taxonomy change as drift."
+            },
+            {
+              "kind": "quotation",
+              "what": "Sculley et al., NeurIPS 2015: 'hidden feedback loops' and 'undeclared consumers'.",
+              "shows": "Names the feedback-loop and consumer problems from research."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Specifies what the monitoring part must watch."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Labels, the last input to training.",
+            "introduces": "Monitoring what changes after deployment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "documented",
+      "heading": "What Marketplaces Have Documented",
+      "controlling_idea": "The public record shows group platforms built around one way of registering, deploying and observing models, valuation offered as a product with measured error, and in Zillow Offers the documented cost of using an estimate to commit money.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Grounds the platform and the commit-tier rule in dated public evidence."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "small_to_large",
+            "applies_to": "p28, p27, p29, p30: from price guidance outside property to valuation error as a measured product, then the Zillow Offers wind-down and its lessons"
+          }
+        ],
+        "rationale": "Platform evidence (Adevinta, OLX) comes first because it builds on the architecture just described; pricing and valuation evidence follows, price guidance outside property before property valuation so that the published error figures lead straight into the Zillow case, ending on the Zillow Offers case because its lessons set up the Valuo decisions in the next section. Placed before the valuation evidence, the Zillow case would lack the on-market and off-market error figures its lessons rely on."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The platform as designed in this chapter.",
+        "introduces": "What marketplaces have actually published.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "The public record on marketplace ML platforms is thin and uneven: Adevinta and OLX publish the most, Zillow, Rightmove and the motor portals publish outcomes but little about how, so the evidence is dated.",
+          "function": "context",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Frames the reliability of the evidence that follows."
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Adevinta's golden path shows that a group platform means one way of registering, deploying and observing models, not one serving runtime.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Tech Blog 2024: Kubeflow Pipelines, MLflow, a project template and CLI; 'Do not hide external tools'; 'Use it quickly first, learn it progressively later'.",
+              "shows": "Shows a golden path built for adoption."
+            },
+            {
+              "kind": "statistic",
+              "what": "Adevinta 2023: GPU serving with scale-up under three minutes; OCR service at 330 million requests a month, about twelve times cheaper than the external API.",
+              "shows": "Shows several serving runtimes under one group platform."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S6"
+            ],
+            "how": "Documents a group platform and its lessons."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The record is thin.",
+            "introduces": "The richest account, Adevinta's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "OLX consolidated its ranking models into one repository with per-brand configuration and built its other models on a shared set of tools, while choosing team ownership over runtime efficiency for recommendations.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OLX Tech 2025: 'duplicated efforts'; 'all LTR projects within a single repository' with hierarchical configuration per brand; 2023 MLflow, FrejaML, Airflow; 2025 recommendations p99 under 10 ms.",
+              "shows": "Shows the pattern the sharing section returns to."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Documents shared-model-with-local-configuration and team-owned services."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Adevinta's group platform.",
+            "introduces": "OLX's consolidation of ranking models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "OLX's embedding-model selection shows that offline evaluation is necessary and never sufficient for order-tier models.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "OLX Tech 2025: filtered leaderboards, own offline set, fine-tuned winner, lost the first A/B test because it ignored location and price; 'similarity is not relevance'.",
+              "shows": "Shows offline wins failing online."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows why order-tier models need online tests."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "OLX's platform pieces.",
+            "introduces": "OLX's model-selection discipline.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Pricing guidance outside property is documented by OLX for Otomoto and by Airbnb, while motor-portal price ratings are undocumented, so the chapter offers a labeled reference architecture.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX Tech 2020 (Otomoto price range); KDD 2018 Airbnb three-stage pricing; mobile.de, AutoScout24, Auto Trader UK methodology not public.",
+              "shows": "Shows what is known and labels the inference."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Extends valuation evidence to goods, vehicles and stays."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "OLX's platform and model-selection evidence.",
+            "introduces": "Price guidance products in goods, vehicles and stays, where the method is published or not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Valuation is sold as a product with a measured error that is much lower for listed homes, because the model sees the asking price, and listing licenses now govern training as well as display.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Zillow FY2025 10-K: Zestimate 'our patented proprietary automated valuation model', 2025 median error 1.8% listed and 7.2% off-market; risk of limits on licensed data 'such as model training'. Meilleurs Agents: self-reported 6% median error for 2021.",
+              "shows": "Shows on-market estimates graded on an easier test and training rights as a license term."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S5"
+            ],
+            "how": "Gives the error figures and the licensing constraint the Valuo case uses."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Price guidance outside property, whose accuracy is unpublished.",
+            "introduces": "Property valuation, where the error is published.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Zillow wound down Zillow Offers in November 2021 after it could not forecast home prices, with a $304.4 million inventory write-down and about a 25% workforce reduction.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Zillow 8-K and shareholder letter, 2 November 2021: 'wind down Zillow Offers operations'; 'home pricing unpredictability, capacity constraints and other operational challenges'; '$304.4 million write-down of inventory'; 'unable to accurately forecast future home prices at different times in both directions'; 'too risky, too volatile'; 'only about 10% of the serious sellers'.",
+              "shows": "Shows the documented outcome in the company's own words."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Documents the case of an estimate used to commit money."
+          },
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Valuation as a product that informs.",
+            "introduces": "The documented case of valuation used to commit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "form": "list",
+          "controlling_idea": "Four architectural lessons follow, as the author's interpretation: the forward forecast was the binding problem, selection makes error one-sided, operational capacity couples to model error, and the commit tier needs its own validation regime.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: owners accept overvalued offers and decline the rest.",
+              "shows": "Shows how selection turns symmetric error into loss."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Turns the case into the rules applied to Valuo."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The documented Zillow Offers facts.",
+            "introduces": "The lessons drawn from them, labeled as interpretation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "valuo",
+      "heading": "In Practice: Valuo and the Pricing Hint",
+      "controlling_idea": "Valuo's pricing hint ships as an inform-tier use under written rules enforced by the pipeline, while the guaranteed offer is declined and the lender license sent to review under the AI Act's postponed dates, and Motorvane's price rating shows an undeclared consumer moving a model up a tier.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "how": "Applies tiers, platform and the commit rule to the three requests from the scene."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Valuo's metrics come first because every rule uses them; the Lyon apartment shows one badge before the rules generalize it; the rules come before their enforcement and launch; the two declined uses follow the badge because they are judged against what the badge's validation does not cover, and the regulation note follows the lender license because that decision rests on its dates and scope; Motorvane closes as a second vertical showing tier creep through an undeclared consumer. Placed before the badge, the declined uses would have no validated use to contrast with."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The Zillow Offers lessons and the platform design.",
+        "introduces": "How Veldmark answers the three requests from the scene.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Valuo estimates French residential values from DVF transactions and Hearthly listings, rescored weekly and on listing events, with a median absolute error of 7.4% off-market and 2.3% for listed properties and an 80% prediction interval on every estimate.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "October 2027 back-test: 7.4% off-market, 2.3% listed; 80% intervals; Google Cloud stack.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the same easier-test gap as the Zestimate."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Gives the model's measured accuracy, the basis for every rule."
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "For the canonical Lyon apartment, the €389,000 asking price falls inside Valuo's €372,000 to €401,000 interval, so the badge reads in line with the estimate.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three-room 68 m² flat in Lyon 7e, class D, listed May 2027 by three agencies clustered into one property; interval width €29,000, 7.5% of the €386,500 midpoint.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the threshold rule at work."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows one badge computed from the interval."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Valuo's interval.",
+            "introduces": "One listing's badge.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Before anyone builds the badge, the forum turns it into eight rules covering when to show it, thresholds, coverage, explanation, labels, data exclusion, monitoring and owners.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Rules of Monday 4 October 2027: interval width at most 12% of midpoint and at least 8 comparable DVF sales within 18 months; thresholds from the interval; about 71% coverage; explanation link; DVF prices only as labels; reject Keybridge-tagged data; weekly error by arrondissement and price band; owners named including Julien Marchand.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows each rule with its reason."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Sets the display, label and data-exclusion rules for a consumer-facing estimate."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One badge.",
+            "introduces": "The rules that govern every badge.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Two of the rules are enforced by the architecture rather than by policy: the Keybridge exclusion as a lineage tag the training pipeline checks, and the label rule, which cuts the feedback loop at its source.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the label rule cuts the loop from asking prices back into training.",
+              "shows": "Shows the feedback loop cut."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the pricing hint as event-triggered inference stored on the listing read model, every score logged with its version.",
+              "shows": "Shows the serving mode and prediction log in this case."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows the rules turned into pipeline controls."
+          },
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The eight rules.",
+            "introduces": "The two that the pipeline enforces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The badge goes live in Lyon and Bordeaux on Monday 22 November 2027, under the ML platform decision of 9 November 2027 that made one registry and one prediction-log standard mandatory, as an experiment randomized by city district, because a badge on one listing changes how buyers judge its neighbors.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "District randomization in Lyon and Bordeaux.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows interference handled as experimentation taught."
+            },
+            {
+              "kind": "scenario",
+              "what": "The ML platform decision of Tuesday 9 November 2027 (one group model registry and one prediction-log standard mandatory), named here so the launch is told after the decision it ran under; its options are weighed in Trade-offs.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Keeps the timeline forward: the platform decision precedes the launch in the text as in the scenario."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Launches the inform-tier use with the right experiment."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rules and their enforcement.",
+            "introduces": "The launch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Hearthly Direct is declined because a guaranteed offer is a commit-tier use for which Valuo was never back-tested on resale over a holding period or on the owners who would accept, and the partner's losses would return through the revenue share.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Ingrid's written decision record; a referral to an independent buyer that prices its own offers as the only way the idea may return.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the commit tier refused without its validation regime."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Applies the commit-tier rule and the Zillow lessons."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The badge, which shipped.",
+            "introduces": "The guaranteed offer, which did not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The lender license, a commit-tier credit input, goes to review because creditworthiness evaluation is high-risk under the AI Act and counsel must decide whether a property estimate falls under it, so the architecture prepares a separate model version with its own model card, segment error report and bias test either way.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "AI Act Annex III: 'AI systems intended to be used to evaluate the creditworthiness of natural persons'; stand-alone obligations from 2 December 2027 after the 2026 amendment; Lucía Ortega's point.",
+              "shows": "Shows the regulatory exposure of the mortgage use."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Shows a commit-tier use prepared for regulation before the legal answer."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The declined guaranteed offer.",
+            "introduces": "The second commit-tier request, the lender license.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The Digital Omnibus on AI postponed the high-risk obligations to 2 December 2027 for stand-alone systems and 2 August 2028 for embedded ones, and Annex III point 5(b) covers creditworthiness except fraud detection, to be checked with counsel.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Regulation (EU) 2026/1744, published 24 July 2026; European Parliament Legislative Train, September 2026; AI Act Annex III.",
+              "shows": "Shows the verified dates and scope."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Dates and scopes the regulation the lender decision relies on, before the jobs models also use it."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lender paragraph's AI Act creditworthiness rule and its 2 December 2027 date.",
+            "introduces": "The regulation behind the date and its scope.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Motorvane's market-value model shows the same pattern in vehicles: it is inform-tier for buyers but order-tier in practice because ranking uses the rating as a feature, an undeclared consumer that moves a model up a tier without anyone deciding it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Essen Golf: €22,800 rating against €21,900 on Wednesday 14 April 2027; cut to €21,400 on Thursday 22 April, received in that day's 17:00 DMS snapshot, whose import triggers the rescore; alerts to 1,180 watchers.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a rating consumed by ranking."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows tier creep through an undeclared consumer."
+          },
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Valuo's three uses, each decided by its tier, ending with the regulation behind the lender review.",
+            "introduces": "A vehicle model, earlier in 2027, whose second use nobody decided.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "Shared, Per-Brand or Per-Market Models",
+      "controlling_idea": "A group decides model by model whether to share it, sharing the platform and registry everywhere and models only where the task is generic.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Sets the sharing rule for models across brands."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four options, whose table places Valuo and the vehicle price rating as per-brand models, come before the rule that chooses among them; stated first, the rule would name choices the reader has not seen."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Valuo and Motorvane, two per-brand models in different verticals.",
+        "introduces": "Whether a group should share models across brands.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "A group has to decide model by model whether to share it, choosing among one shared model, a shared model with per-market configuration, a per-brand model on the shared platform and a per-brand model on a local stack.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Options with when each fits, examples (image quality; OLX ranking per brand; AVM and price rating; Valuo on Vertex AI) and main risk.",
+              "shows": "Shows each option's fit and risk."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Lays out the sharing options."
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The rule for Veldmark is to share the platform and the registry everywhere, share models where the task is generic, and never force a vertical model onto a shared code base, because vertical models look for different things.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Tradeyard's payment-link phishing and Hearthly's fake rentals: share features, label infrastructure and monitoring, not weights.",
+              "shows": "Shows why fraud models stay per vertical."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Gives the sharing rule."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options.",
+            "introduces": "The rule that chooses among them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Veldmark chooses a hybrid platform, registry and monitoring first and migration later, builds what differentiates and buys commodity models, and controls cost through architecture.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S3"
+        ],
+        "how": "Weighs platform strategies, build or buy, and cost."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Platform strategy first because it frames build-or-buy per capability; cost last because the controls it names (events, stored scores, retirement, cost in the registry) depend on both; placed first, the cost controls would refer to a registry and serving choices not yet decided."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Sharing decided model by model.",
+        "introduces": "The platform strategy that sharing runs on, and its costs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Of the platform strategies, Veldmark chooses the hybrid: one mandatory registry and monitoring standard over heterogeneous training and serving, because registration first and migration later avoids The Forced Fit; capabilities are then built where they differentiate and bought where they are commodity.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Platform strategy table: managed suite per brand, one suite group-wide, open-source golden path, hybrid.",
+              "shows": "Shows why the hybrid fits groups after acquisitions."
+            },
+            {
+              "kind": "scenario",
+              "what": "Decision of Tuesday 9 November 2027: MLflow registry and prediction-log standard mandatory; AWS golden path for Tradeyard and Motorvane; Hearthly keeps Vertex AI, Keybridge Azure ML.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the hybrid applied."
+            },
+            {
+              "kind": "table",
+              "what": "Build or buy per capability: ranking, AVM and price rating, OCR and vision, fraud scoring, text extraction.",
+              "shows": "Shows build-or-buy decided by differentiation."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Records the platform decision and the build-or-buy judgement."
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "ML cost is dominated by GPU work, repeated rescoring and unused models, and at Veldmark about €11.2 million a year, so the effective controls are architectural, including showing each model's cost next to its owner.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€11.2 million a year in 2027, about €3.1 million image inference.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the scale of ML cost."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S6"
+            ],
+            "how": "Shows cost controlled by serving design and registration."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Platform and build-or-buy choices.",
+            "introduces": "What ML costs and how to control it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in their highest-consequence models, label quality and regulatory exposure, and Veldmark's jobs models are high-risk under the AI Act.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Shows where tiers and regulation bite per vertical."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Group-wide platform and cost decisions.",
+        "introduces": "How the verticals differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "The jobs row matters for Veldmark because any model in Tradeyard's small jobs sections that ranks candidates or filters applications is high-risk under the AI Act from 2 December 2027, so the cheapest option may be not to build one.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vertical table: highest-consequence models, label quality, inputs, price model use, regulatory exposure (Annex III jobs quote), data rights.",
+              "shows": "Shows the verticals' different tiers and exposure."
+            },
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's jobs sections in Poland and Portugal.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the exposure inside the group."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Applies the vertical table to Veldmark."
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "The common failures are a missing inventory, undeclared consumers, tier creep, training on one's own influence, silent taxonomy breaks, gate models without sampled labels, monitoring the service instead of the model, licensed data in the wrong pipeline, and a platform built before demand.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Names each failure the design prevents."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design and its trade-offs.",
+        "introduces": "What goes wrong without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "form": "list",
+          "controlling_idea": "Each failure mode is a missing part of the design, from the model nobody can list to a platform built before demand.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Priya's 23 ownerless models as Set-and-Forget AI; Zillow Offers as tier creep; the Keybridge commitment as the casualty of untracked lineage.",
+              "shows": "Ties each failure to a case."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2",
+              "S3",
+              "S4",
+              "S6"
+            ],
+            "how": "Restates the design as the failures it prevents."
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect owns the inventory and the tier rules rather than the models, turns tiers into gates, assigns label ownership, funds the platform by adoption and treats promotion to commit as a board-level decision.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the chapter into the Chief Architect's decisions."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Registration comes first because every other control needs the inventory; tier gates next, then the lifecycle that applies them; label ownership, funding and tier promotion follow; the indicators close because they watch all of the above; listed earlier, they would measure decisions the reader has not yet seen."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "The group architect owns the rule that every production model is registered with an owner, a tier per consumer, a label definition, a monitor and a cost, enforced at Veldmark by withdrawing production credentials after a deadline.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Registration a condition of production access on 9 November 2027; deadline 31 March 2028 for the 146 existing models.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the enforcement."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Makes registration a condition of production access."
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Governance scales with the tier, not with the model's sophistication, and the tiers translate into concrete gates documented with model cards.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A gradient-boosted badge needs light review; a simple rule that suspends accounts needs a heavy one; gates per tier.",
+              "shows": "Shows sophistication and consequence diverging."
+            },
+            {
+              "kind": "source",
+              "what": "Mitchell et al., 2018, model cards.",
+              "shows": "Gives the documentation format."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Turns tiers into gates."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Registration.",
+            "introduces": "What each tier's registration requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The registry enforces the same lifecycle for every model, with the tier deciding how heavy each gate is and a drift alert sending a production model back to shadow.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: lifecycle states with tier-dependent evidence at each transition.",
+              "shows": "Shows one path, different evidence."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Shows tier gates applied through one lifecycle."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Gates per tier.",
+            "introduces": "The lifecycle that applies them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Label events should be part of the producing teams' published contracts, so a change in how moderators record decisions is reviewed as a change to every model that learns from them.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S6"
+            ],
+            "how": "Assigns label ownership."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The model lifecycle.",
+            "introduces": "The labels that feed it, owned by other teams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The platform is funded as a product measured by adoption, because if adoption stalls the platform is not yet better and a mandate will not fix that.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Measures the platform by use."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Label ownership.",
+            "introduces": "How the platform itself is funded and judged.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Promotion up a tier is a board-level decision when money is committed, with the Hearthly Direct record as the template.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Hearthly Direct decision record: what the model was validated for, what the new use requires, who absorbs the loss, what limit applies.",
+              "shows": "Gives the template."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Applies the commit rule at the top of the group."
+          },
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Platform funding.",
+            "introduces": "The most consequential decision: promotion to commit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The indicators to watch cover ownership, monitoring, logging, speed to production, label delay, cost, segment error for consumer-facing models and realized loss against the limit for commit uses.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4",
+              "S6"
+            ],
+            "how": "Lists the measures that show the governance works."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The Chief Architect's decisions.",
+            "introduces": "The indicators that show whether they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions test whether a group can list its models, knows their labels and consumers, controls feedback, tier creep, licensed data and AI Act exposure, and knows what each model costs.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the chapter into a design-review checklist."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions a review asks.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "form": "list",
+          "controlling_idea": "A design review asks ten questions, from whether every model, owner, consumer and tier can be listed today to which models have no consumer left.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2",
+              "S3",
+              "S4",
+              "S6"
+            ],
+            "how": "Gives the checklist."
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Models to Many Markets",
+    "synthesis": "The tier says who bears an error, the platform's labels, prediction log and registry are what let anyone measure that error for each consumer, and promotion to a higher tier is allowed only when that measurement exists for the new use; Valuo shows all three in one model.",
+    "so_what": "The expensive errors sit in the uses nobody classified: a group that cannot list its models cannot tell which of them already commit money.",
+    "callback": {
+      "to": "Ingrid's question in the scene (if the estimate is 8% wrong, who loses money, and how much?) and the unplanned portfolio of the opening.",
+      "how": "The conclusion answers the question for Valuo's three uses with the tier, the platform and the promotion rule."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Register every model with an owner, a tier per consumer, a label, a monitor and a cost, and promote none to commit without a new validation regime and a limit."
+    },
+    "hand_off": {
+      "to": "multi-country-platforms",
+      "relationship": "elaboration",
+      "carries_over": "Ml-platform's closing: its table of shared, per-brand and per-market models only touched how one platform serves many markets.",
+      "introduces": "The tenancy model that answers that question for every capability: tenants, configuration, extension points, release rings and exit paths."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the 146-model inventory to the review questions.",
+      "introduces": "What the design adds up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p54",
+        "controlling_idea": "The chapter treated models as a portfolio, and its parts add up to one answer to Ingrid's question: the tier says who bears an error, the platform's labels, log and registry let anyone measure it, and promotion waits for that measurement, as Valuo showed with one badge shipped and two commit-tier proposals declined or diverted; it matters because a group that cannot list its models, as Veldmark could not before Priya's inventory, cannot tell which already commit money.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Ingrid's 8% question; the badge with uncertainty rules, clean label and enforced exclusion; Hearthly Direct declined and the lender license diverted to review.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the scene."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Joins the sections into one answer and returns to the scene."
+        }
+      },
+      {
+        "id": "p55",
+        "controlling_idea": "Generative models reuse this platform and are taken up by ai-in-listing-systems, while the next chapter, multi-country-platforms, takes up the question the sharing table only touched: how one platform serves many countries, brands and verticals without forcing them into one product.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S6"
+          ],
+          "how": "Hands off to the next chapter."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The sharing decision as one part of the answer.",
+          "introduces": "The wider question of one platform for many markets.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Learning-to-rank design and paid-organic blending.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Candidate generation and similar listings.",
+      "covered_in": [
+        "recommendations"
+      ]
+    },
+    {
+      "topic": "Risk scoring and fraud signals.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    },
+    {
+      "topic": "Attribute extraction and enrichment pipelines.",
+      "covered_in": [
+        "normalization-and-enrichment"
+      ]
+    },
+    {
+      "topic": "Experiment design and interference.",
+      "covered_in": [
+        "experimentation"
+      ]
+    },
+    {
+      "topic": "Lakehouse, tracking plan and governed metrics.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Generative AI, agents and AI governance beyond models.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
+    },
+    {
+      "topic": "How one platform serves many countries and brands (tenancy).",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Whether a property AVM used inside a mortgage decision falls under AI Act Annex III point 5(b) is unresolved; the chapter says so and leaves it to counsel.",
+    "No classifieds company has publicly documented a feature store; if one appears, update the feature-store section.",
+    "Motor price-rating methodologies (mobile.de, AutoScout24, Auto Trader UK) remain undocumented; the chapter offers a labeled reference-architecture inference only.",
+    "Zillow Tech Hub posts are cited via the Medium publication (RSS-read); the individual floor-plan post URL could not be fetched directly."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around decision tiers (inform, order, gate, commit) instead of a catalog of algorithms, because governance and validation depend on consequence of error, and Valuo shows one model in three tiers."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Presented the feature store as conditional, since none is documented at classifieds and most listing features are intrinsic to the listing record; logged features at prediction time are the default."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made Valuo the single worked example, with Motorvane's Golf rating as a short second case of an undeclared consumer; added Veldmark's model inventory, ML platform decision and pricing-hint rules to the ledger."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Digital Omnibus postponed dates (verified on the European Parliament Legislative Train, September 2026) rather than the original AI Act dates."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria rewritten: the eight inventory criteria (tier table, portfolio table, serving and feature tables, label proxies and drift sources, Zillow facts, Valuo walk-through, platform trade-offs, AI Act dates) are replaced by the journal entry's outcome criteria AC-1 (one model, three proposed uses: classify, decide and say what the platform needs first), AC-2 (the opening predicts the sections) and AC-3 (reverse outline). No criteria added."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities set to none: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists in the post folder."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "No word limit was set in spec.md; max_words set to the published prose length by check_draft's count (7,270) plus 5%, 7,634."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric (fresh agent, thesis object only): pass on all four tests; it noted the claim is long. On its notes about this spec's own supporting claims, S5 was tied to the claim's tier-set validation and recorded-sale labels, and S6 was reworded so 'one shared path' means one registry, prediction log and monitoring standard, with migration of training following adoption. Intent, thesis and role unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved p28 (price guidance outside property) before p27 (valuation as a product) so the published error figures lead into the Zillow Offers case, rewriting both transitions; restated the Vertical Differences flow (the comparison table is p43's evidence); corrected p13's list of seven parts; named the lender license as a commit-tier credit input in p37; the conclusion's so-what now calls back to Priya's 146-model inventory."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the reorder (sound with notes): named Priya Raman in p05's controlling idea and added what would break to the flow reasons of sharing, trade-offs and ca-view. Other notes recorded under open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (REVISE, all blocking failures at fault in the draft): opening sentences added or adjusted to express the declared transitions of Architecture, What Marketplaces Have Documented, the Zillow Offers paragraph, Valuo, Sharing, Trade-offs, Vertical Differences, Failure Modes, the Chief Architect's View and Questions; unifying sentences in the OLX consolidation and valuation paragraphs; the build-or-buy table explained in p41; one-clause glosses for golden path, point-in-time-correct, model cards, two-sided metrics and shadow; the lender paragraph names the Digital Omnibus on AI and points to Vertical Differences; in the Motorvane paragraph 'Priya's registry' became 'Priya's inventory', because the registry was only decided on 9 November 2027 (ledger [ml-platform] lines). Prose trimmed to stay within max_words. Spec units unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (ESCALATE on one spec-fault finding, corroborated by both flow readers: the lender paragraph pointed three sections ahead to the regulation note for its dates): moved p44, the regulation note, from Vertical Differences into the Valuo section directly after the lender paragraph p37, rewrote the transitions of p44 and p38, and updated the Valuo and Vertical Differences controlling ideas and flow reasons. Draft-fault fixes in the same pass: the feature-store contrast opening p17, the Sharing opening sentence, the Trade-offs opening (split, and the 9 November decision placed before the badge launch), the lifecycle states named in p48 from Figure 6, and 'Earlier' signalling the April date in p38. Intent, thesis and role unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric after moving p44 (sound with notes): Sharing flow relabelled comparison, Chief Architect's View flow relabelled prerequisite_order, Vertical Differences left without a section flow. Draft check round 3: ESCALATE (17 pass, 12 fail; one corroborated spec-fault on the 9 versus 22 November order, recorded in open_questions for the author); closing fixes to p17, p38 and p41 applied without another round."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) to the introduction so the opening predicts the sections (AC-2), and widened the conclusion from one paragraph to two so that it synthesizes, calls back to Ingrid's question and hands off to multi-country-platforms."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation (\"auto resolve all ESCALATE topics\"), 2026-11-12: the 9 versus 22 November order. Of the two options, the Valuo section now mentions the 9 November 2027 ML platform decision in the launch paragraph p35 (controlling idea and evidence updated), and Trade-offs p41 refers back to it ('under which the Valuo badge launched') instead of 'before the badge launch'. No unit moved; the roadmap and the section order are unchanged, so AC-2's expected answer needs no edit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Timeline correction (rule: figures follow the ledger), 2026-11-12: the Essen Golf's price cut of Thursday 22 April 2027 no longer triggers the rescore through a `ListingUpdated` event, which the ledger dates to Listing event contract v1 live from 1 July 2027 [event-driven-listings]. p38 now has the cut arrive in that day's 17:00 DMS snapshot and its import trigger the rescore, as the [listing-ingestion] Essen Golf feed-timing line states. 'The rating moves up a band' became 'the rating improves', since bands are not defined (round-3 minor point)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken in earlier passes (merging Sharing into Trade-offs; removing the portfolio/labels and tier-statement overlaps; moving the creditworthiness clause; naming brands in the scene; merging or moving the regulation note; moving p12; merging p17 and p18) accepted as declined under the author's delegation, 2026-11-12: each keeps the published text and section structure (rule: ambiguous items keep the published text)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 minor single-reader points, fixed cheaply under the author's delegation, 2026-11-12: p10's 'Gate models generate their own labels' became 'erase the evidence for their own labels' (the spec's own wording); p13 says the portfolio 'should run' on one platform, so it reads as the target design; the sharing table says 'while Hearthly stays on Google Cloud', matching p41. The regulation-note placement point was left as published. p41 opens with 'Whatever a group shares runs on one platform' to express its declared elaboration from Sharing before naming the hybrid choice. AC-1's two gaps (capital limit, independent sign-off not restated in the Valuo decisions) recorded, not acted on: the criterion passed."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "max_words raised from 7,634 to 7,700 (under 1% of the 10% allowed) to fit the 9 November mention in p35 and the snapshot clause in p38 without cutting published text."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, and multi-country-platforms' transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Part 10 and Part 9; _research/brief-real-estate-portals.md A.4, B.1, C.9, Part D; _research/brief-olx.md 4.3 to 4.11",
+      "contributed": "Evidence on ML platforms, AVMs, Zestimate, Zillow Offers, Meilleurs Agents and OLX ML."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "All Veldmark figures ([ml-platform] lines; the Lyon apartment; the Essen Golf; the bikes split; the Keybridge neutrality decision)."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark, entity-resolution, categories-and-taxonomies, experimentation",
+      "contributed": "Cast, recurring examples, canonical clusters, the taxonomy change process and district randomization."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta, OLX, Zillow and Uber engineering posts; Zillow SEC filings (2021, 2026)",
+      "contributed": "The documented record of marketplace ML platforms and of Zillow Offers."
+    },
+    {
+      "kind": "external",
+      "ref": "EU AI Act Annex III; European Parliament Legislative Train on the Digital Omnibus on AI",
+      "contributed": "High-risk categories and postponed dates."
+    },
+    {
+      "kind": "external",
+      "ref": "Sculley et al. (2015); Mitchell et al. (2018); Airbnb KDD 2018 pricing paper; Airbnb Chronon README",
+      "contributed": "Hidden feedback loops and undeclared consumers; model cards; pricing guidance; point-in-time features."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: hedged pre-2023 OLX and Airbnb evidence as possibly superseded, standardized Sources headings; verified Zillow 10-K, Digital Omnibus on AI and Annex III quotes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,393 to 6,414 prose words; Valuo worked example lifted to its own H2; opening names what the chapter builds on and feeds; six topic sentences tightened. Spec unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); known differences recorded in spec.md. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline); spec.md removed. Roadmap paragraph and two-paragraph conclusion added; p28 moved before p27 and the regulation note p44 moved into the Valuo section after the flow rubric and draft check; three draft-check rounds, ending ESCALATE on one spec-fault finding. Status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: the 9 November 2027 platform decision named in the Valuo launch paragraph; the April Golf rescore runs through the DMS snapshot import; minor reader points fixed; max_words 7,700; draft check round 4. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7700
+  }
+}

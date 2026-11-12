@@ -1,0 +1,682 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/14-normalization-and-enrichment/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/14-normalization-and-enrichment/index.md",
+  "spec_sha": "fa8912abc59e6634",
+  "draft_sha": "3f3da3747a24d3f6",
+  "run_at": "2026-11-12T21:54:22+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the reader will learn in this chapter",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Missing or wrong values hide listings from filtering buyers",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Many writers per listing need provenance and versioning",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: canonical plus original, provenance precedence, budgeted replayable pipeline",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Accepted listings arrive in messy forms that downstream systems need uniform",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Definitions of normalization, enrichment and attribute provenance",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "What neighboring chapters own versus this chapter",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter and its evidence sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Which of These Values Did Anybody Say? ¶1",
+      "summary": "Tradeyard bike listings lack frame sizes and nowhere to store derived values",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Which of These Values Did Anybody Say? ¶2",
+      "summary": "Motorvane Golf decoded values silently replaced dealer values and could not be safely re-run",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Which of These Values Did Anybody Say? ¶3",
+      "summary": "Ingrid's question: who said each value, what was done, may we change it",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: Canonical Values, Derived Facts and Their Origins ¶1",
+      "summary": "Normalized values stay seller statements; derived values are platform assertions",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Canonical Values, Derived Facts and Their Origins ¶2",
+      "summary": "Store canonical and original value side by side, using standard unit and currency codes",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Canonical Values, Derived Facts and Their Origins ¶3",
+      "summary": "Provenance record per value, illustrated by the Golf's ambiguous power",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Canonical Values, Derived Facts and Their Origins ¶4",
+      "summary": "Closed vocabulary of seven source classes",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Canonical Values, Derived Facts and Their Origins ¶5",
+      "summary": "Division of responsibility for holding, governing and producing provenance",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Normalization: Ten Deterministic Steps ¶1",
+      "summary": "Normalization as ten small deterministic rules",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Normalization: Ten Deterministic Steps ¶2",
+      "summary": "Design rules: versioned tested normalizers, flag failures, owned mapping tables",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Enrichment: Facts Nobody Typed ¶1",
+      "summary": "Four jobs of enrichment and the enrichers that do them",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Enrichment: Facts Nobody Typed ¶2",
+      "summary": "Vehicle registries and decoders available to marketplaces",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Enrichment: Facts Nobody Typed ¶3",
+      "summary": "Decoders return candidate sets and change with supplier releases",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Enrichment: Facts Nobody Typed ¶4",
+      "summary": "French real-estate registries show authoritative is not clean",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Enrichment: Facts Nobody Typed ¶5",
+      "summary": "Public evidence on model-based enrichment and its lessons",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶1",
+      "summary": "Rule 1: enrichers write back to the listing, not the index",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶2",
+      "summary": "Rule 2: pure enrichment steps with idempotency keys and input fingerprints",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶3",
+      "summary": "Rule 3: enrichers declare dependencies and re-run affected subgraphs",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶4",
+      "summary": "Rule 4: derived values never silently overwrite asserted ones",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶5",
+      "summary": "Rule 5: which steps block publication",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶6",
+      "summary": "Blocking steps must fit the publication latency budget",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶7",
+      "summary": "Why enrichers change and the re-processing question it raises",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶8",
+      "summary": "Release gate with value-churn metric and per-version rollback",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶9",
+      "summary": "Listing quality score built from four dimensions",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶10",
+      "summary": "Uses of the quality score and not rewarding guessed values",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶11",
+      "summary": "Human decisions on values as labels, by source",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: A Replayable Pipeline That Writes Back ¶12",
+      "summary": "Label quality risk and the gold sample",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶1",
+      "summary": "Golf's values traced from feed to listing",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶2",
+      "summary": "Enrichment raised Golf's completeness and filter visibility",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶3",
+      "summary": "Provenance fixes the wrong-derivative power and valuation problem",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶4",
+      "summary": "Design of Tradeyard's bike-extraction pilot",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶5",
+      "summary": "Pilot results enabled the bikes category split",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶6",
+      "summary": "Lyon flat's address and area enrichment before clustering / verifying, not deriving, the legally required energy class",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶7",
+      "summary": "Never invent legally mandated disclosures; verify and flag",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: The Essen Golf and Three Other Cases ¶8",
+      "summary": "Machine translation in Belgium handled as provenance-tracked enrichment",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Cost of Enrichment at Scale ¶1",
+      "summary": "Illustrative Veldmark enrichment cost model",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Cost of Enrichment at Scale ¶2",
+      "summary": "Cost is driven by re-processing and people, not per-call inference",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Seven open design choices and when each option fits",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "How normalization and enrichment differ per vertical",
+      "matched_spec_paragraph": "p42a"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Seller presence decides whether suggestions can work",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Introduces eight recurring enrichment failures",
+      "matched_spec_paragraph": "p43a"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "Derived values indistinguishable from asserted ones",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Re-running enrichment overwrites seller corrections",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Enrichment stored only in the search index",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Silent numeric misparses need plausibility checks",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Models released without gates or owners",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Unknown values forced into known enumerations",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Failure Modes ¶8",
+      "summary": "Enrichment changing legal disclosures",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Failure Modes ¶9",
+      "summary": "Cost surprises from stacked backfills",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Group-level decisions prevent failures better than team care",
+      "matched_spec_paragraph": "p51a"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Make provenance a group standard early",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Share generic enrichers, keep domain ones local",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "All enrichers, including rules, under model governance",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Precedence policy decided per attribute in the dictionary",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Budget re-processing explicitly each quarter",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶7",
+      "summary": "Enrichment as a liquidity lever measured by findability",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶8",
+      "summary": "Metrics to watch",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions on provenance, pipeline, disclosures and cost",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "From Clean Records to Duplicates ¶1",
+      "summary": "Ingrid's question answered yes across the cases",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "From Clean Records to Duplicates ¶2",
+      "summary": "Original value, provenance and precedence work only together, so agree them early",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "From Clean Records to Duplicates ¶3",
+      "summary": "Hand-off to entity resolution of duplicate listings",
+      "matched_spec_paragraph": "p62"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 65 aligned units' outline summaries match the controlling ideas of their spec paragraphs, in spec order; the five callouts carry the thesis and roadmap as the spec places them.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only Hearthly ¶1 (p37) was marked two_ideas (address/area enrichment vs verifying the energy class). Its topic sentence 'Enrichment did three things before entity resolution clustered the three listings' unifies them, and the spec's controlling idea for p37 deliberately holds both ('normalized ... and assigned its area, but verified rather than derived its energy class'). Not a second controlling idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim through its section (scene N2/N3, concepts N1/N2, normalization N1/N2, enrichment N1/N4, architecture N3/N4, cases N2-N4, cost N5, trade-offs/verticals N3/N4, failures and CA view N2-N5); intro and conclusion units are framing. The Google bullet inside p19 is only loosely tied (see the flow result) but the paragraph traces to N4.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table (concepts, source classes, ten steps, enrichers, blocking steps, quality dimensions, Golf, cost, trade-offs, verticals) is introduced or followed by a sentence saying what it shows; Figures 1-4 have explanatory captions; the provenance record is explained by the sentences before it; the mobile.de and Ingrid quotations are glossed; the model-evidence bullets are framed by the lead sentence stating the pattern they support (Adevinta and Mercari re-categorization also explain themselves). The cost table's 'multiplier' reading is raised under flow (B13).",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Architecture: A Replayable Pipeline That Writes Back ¶1",
+      "quote": "Five rules keep the enrichment pipeline replayable.",
+      "finding": "Declared problem_solution carrying 'many enrichers, registry and model, each with its own version' into 'the pipeline that runs them safely', as a sentence at the start. The section opens with Figure 2 and then 'Five rules keep the enrichment pipeline replayable', which states the solution without picking up the problem (many versioned enrichers writing to one listing) from the enrichment section.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/8",
+      "draft_locus": "Architecture: A Replayable Pipeline That Writes Back ¶9",
+      "quote": "A **listing quality score** summarizes how usable a listing is for discovery and trust.",
+      "finding": "Declared sequence carrying 'enrichers that change values across the stock' into 'a measure of how usable the result is'. After the rollback paragraph the subsection opens straight on the score's definition with no phrase linking it to the enriched stock the previous paragraphs change; flow-B independently found the subsection's position unexplained.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "In Practice: The Essen Golf and Three Other Cases ¶6",
+      "quote": "The **68 m² three-room flat in Lyon 7e, offered at €389,000 with energy class D**, was listed in May 2027 by three agencies",
+      "finding": "Declared contrast ('values the platform may fill' -> 'a value it must not fill') at the start of the paragraph. The paragraph opens by describing the flat; the contrast appears only in its fourth sentence ('verified, rather than derived'). Only the subheading ('the Lyon apartment's disclosures') hints at it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other 52 declared transitions are expressed at their boundaries (e.g. 'The same week' similarity, 'Ingrid's question turns on this distinction' problem_solution, 'Where no registry exists' contrast, 'Real estate has registries too' similarity, numbered/bold-name sequences in rules, failure modes and CA view, 'Scaled up from these cases' cause_effect, 'Ingrid's question now has the answer yes' conclusion_summary, the entity-resolution hand-off).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: Canonical Values, Derived Facts and Their Origins ¶3",
+      "quote": "The registry section below explains why decoders return such candidate sets, and the Golf case shows what went wrong before this record existed.",
+      "finding": "Both flow readers stopped at the provenance subsection: the Golf power example arrives before its context, with two forward references in one paragraph, and the same power story is then retold in the registry lessons, the Golf case and Figure 4 caption. The spec's p10 controlling idea requires the Golf power example in the provenance definition, ahead of the registry section that explains candidate sets, so the order itself causes it.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item B4 (flow-A items A2, A3)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice: The Essen Golf and Three Other Cases ¶1",
+      "quote": "VIN decode; together with the five values the decoder confirmed or resolved above (make, model, generation, engine and power), **31 attributes**",
+      "finding": "The scene says decoding 'had filled 31 attributes'; the Golf table says decoding supplied 26 further values plus five confirmed. Both readers had to re-read to reconcile 26+5=31 and the meaning of 'filled'.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B11 (flow-A item A4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Enrichment: Facts Nobody Typed ¶5",
+      "quote": "The last two cases add two lessons: enrichers depend on each other, and large receivers classify for themselves.",
+      "finding": "The lead sentence points ahead to bullets the reader has not met, and the Google receiver-side classification bullet ('Large receivers of supply increasingly classify items themselves rather than trust the sender.') is never connected to any later rule, case or trade-off; the mobile.de bullet is about enricher ordering, not models. Both readers found it bolted on.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B6 (flow-A item A5)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice: The Essen Golf and Three Other Cases ¶1",
+      "quote": "Motorvane's decoder is a licensed vehicle-specification service; its supplier is not named here.",
+      "finding": "A stray aside between the sentence introducing the Golf table and the table itself; both readers found it interrupts the lead-in and does nothing for the case.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B10 (flow-A item A9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "The Cost of Enrichment at Scale ¶1",
+      "quote": "Scaled up from these cases, calls times price per call is usually the smallest number on the enrichment bill.",
+      "finding": "Both readers had to re-read the cost section's opening: 'calls times price per call' works as an unmarked noun phrase. Both also flagged 'At about 2,000 tokens per call' next to a price quoted per thousand calls, which sends the reader looking for a calculation that is not there.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B12 (flow-A item A10)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "It then defines the three terms, lists ten normalization steps",
+      "finding": "The paragraph before has just defined the three terms, so the roadmap's 'then defines the three terms' reads oddly, and the Concepts section reads as a second definition rather than an expansion. Both readers reported the double definition.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B3 (flow-A item A15)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Clean Records to Duplicates ¶2",
+      "quote": "without any one, Motorvane's corrected decode still overwrites dealers' fixes.",
+      "finding": "Both readers found the closing chain does not hold: the original value makes re-normalization replayable, but its absence would not cause the corrected decode to overwrite dealers' fixes (provenance and the policy prevent that). The spec's conclusion synthesis states the same claim ('Remove any one and the Golf's decoder correction cannot be applied without trampling dealers' fixes'), so the overstatement comes from the spec.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item B16 (flow-A item A13)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/8",
+      "draft_locus": "Architecture: A Replayable Pipeline That Writes Back ¶9",
+      "quote": "A **listing quality score** summarizes how usable a listing is for discovery and trust.",
+      "finding": "The Quality scores subsection sits between re-processing and human correction loops without an evident reason: flow-B calls its position unclear ('reads as a side topic'), flow-A calls it 'plausible but loose' and notes its example ('23 of 26 recommended used-car attributes present') uses Golf numbers before the Golf case gives them. The spec's architecture order (releases, quality scores, correction loops) puts it there.",
+      "fault": "spec",
+      "corroborated_by": "flow-B section account of Quality scores (flow-A section account, item A8)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Architecture: A Replayable Pipeline That Writes Back ¶8",
+      "quote": "Etsy's reported practice of halting production runs when precision or recall drifts from a baseline is the public precedent for the gate in Figure 3.",
+      "finding": "Flow-B (B9): the release gate relies on labels and an evaluation sample, but where labels come from and the gold sample are explained only two subsections later in Human correction loops. The spec orders releases before correction loops. Single reader; the audience knows ML basics, so minor.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "The Cost of Enrichment at Scale ¶2",
+      "quote": "**Re-processing is the multiplier**: an organization that changes its schema monthly and backfills each time pays the backfill cost twelve times a year",
+      "finding": "Flow-B (B13): twelve backfills at about €5,000 come to about €60,000 a year, roughly equal to the ongoing extraction cost (about €1,300 a week), so the table does not visibly support calling re-processing 'the multiplier'. Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "The rules leave seven choices open; the table says when each option is right.",
+      "finding": "Flow-A (A11): at least 'Where derived values live' (answer 'Always' for the system of record) is already settled by rule 1, and other rows repeat rule 5 and the bike case, so 'open' does not match. The spec's trade-offs section names system of record among the choices. Single reader.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Failure Modes ¶2",
+      "quote": "Once mixed, the two cannot be separated, and every later decision, including what to show, what to re-run and whose value to trust in a dispute, is made blind.",
+      "finding": "Flow-A (A12): the lead promises each failure 'named below with the rule that prevents it', but the first failure names no preventing rule; the other seven do. Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Architecture: A Replayable Pipeline That Writes Back ¶1",
+      "quote": "Five rules keep the enrichment pipeline replayable.",
+      "finding": "Flow-A (A7): Figure 2 opens the architecture section before any text, and its caption introduces 'commands with provenance', 'read models' and labels before rule 1 and the correction loops explain them. Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Which of These Values Did Anybody Say? ¶1",
+      "quote": "Tradeyard Netherlands' bike filters were part of the case for splitting the bikes category",
+      "finding": "Flow-B (B2): the link between the split and the missing frame sizes (the new categories' filters need frame size and electric assist) is only implied, so the reader re-read the sentence. Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers state the same organising principle (problem scene, then vocabulary, the two operations in pipeline order, architecture, cases, then cost and judgement), which agrees with the declared prerequisite_order with problem_solution and small_to_large; no top-level section is marked unclear and both say the roadmap matches. Brand/cast names (A1/B1, B14) are on the audience's already_knows list and not counted.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: Canonical Values, Derived Facts and Their Origins ¶3",
+      "quote": "alternatives:     registry_decode -> [96, 110]   (decoder licensed-vin@2027.04)",
+      "finding": "The example provenance record uses source-class values (`partner_feed`, `registry_decode`) and a field `asserted_by` before the source-class table defines the closed vocabulary, and `registry_decode` is not one of the seven classes (the table has `registry`); the difference between `source` and `asserted_by` is never explained.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item B5 (flow-A item A2)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given at first use: VIN (Introduction ¶1), HSN/TSN as German type-approval codes, DVF and DPE (registry section), Base Adresse Nationale (normalization table), OCR (Adevinta bullet), and the three chapter terms in Introduction ¶2. Veldmark brands and cast are in already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with an intriguing set of concrete accepted-but-unusable records (the declared hook); none of placeholder, restated question, dictionary, dawn-of-man or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Does not open with 'in conclusion', adds no new subtopic or body evidence, does not end on a restated thesis alone; it answers the scene's question, synthesizes and hands off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "¶2 states what no single section states (original, provenance and precedence only work together) and the so-what (agree the vocabulary and policy before enrichers multiply; budget re-processing as recurring). The overstated 'without any one' chain is recorded under flow.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "¶1 returns to Ingrid's question from the scene ('Ingrid's question now has the answer yes') and answers it for the Golf, the bikes and the Lyon flat, as callback.to declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted all sections in order (scene with bikes and Golf, definitions, ten normalization steps, registry decoding, model evidence, replayable pipeline with versioned enrichers, quality scores and correction loops, the four cases, cost, then trade-offs to questions), the evidence (public engineering posts, standards and registries, fictional Veldmark) and the tone, matching expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer matches expected: provenance with original and alternatives, per-attribute precedence keeping dealer values with the new decode as alternative, versioned idempotent decoder with fingerprints, active-first backfill inside a planned budget, shadow-test/gold sample gate, write-back via ApplyEnrichment not the index.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer matches expected: shows the agency's class D; energy class is a legal disclosure verified against the DPE register via the certificate number, mismatch flagged to the agency, never replaced or filled by the model; the model's C is not shown.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer matches expected: ~€5,000 model cost per backfill as smallest item multiplied by re-processing, ~33 reviewer-hours per release evaluation, ~270 reviewer-hours/week review as the largest; contained by active-first backfills, input fingerprints, small/self-hosted models with schema keys at request time, and a quarterly backfill plan with compute and review cost.",
+      "severity": "minor"
+    }
+  ]
+}

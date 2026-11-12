@@ -1,0 +1,2117 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "query-understanding",
+  "journal": "listing-systems-architecture",
+  "part": "part-4",
+  "title": "What Did They Mean? Query Understanding and Autocomplete",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria, the thesis and the role are copied unchanged from the query-understanding entry in journal-spec.json. Three units are added to the published text: a roadmap paragraph in the introduction (p04, for AC-2), a lead-in for the trade-offs table (p67) and a synthesis paragraph before the hand-off (p79).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The query-understanding pipeline from raw string to structured query (analysis per language, spelling and synonyms, query categorization, attribute extraction) and its ownership split: one vocabulary, many policies.",
+        "The confidence-to-action policy (filter, boost, suggest) with removable chips and the rule that adding an interpretation never increases results, the null-result recovery ladder, autocomplete, hybrid retrieval with its fusion methods, and the LLM query compiler with its validation step."
+      ],
+      "believe": [
+        "Meaning belongs in the attribute dictionary and the taxonomy, versioned with them, not in scattered synonym files.",
+        "Embeddings and language models are layers over the structured core, not replacements for it, and need per-market evaluation and owners."
+      ],
+      "can_do": [
+        "Add a query-understanding checklist (aliases, categorizer labels, evaluation sets) to a taxonomy release and test analyzers for token parity across engines.",
+        "Set confidence thresholds and a relaxation order for a category, and decide where dense retrieval or an LLM compiler would add recall without replacing filters."
+      ]
+    },
+    "audience": {
+      "who": "Search and ML leads, principal engineers and chief architects of classifieds, real-estate and automotive marketplaces deciding how far to invest in query understanding, dense retrieval and LLM search, and how to govern it across brands and languages.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes.",
+        "From earlier chapters: the taxonomy and attribute service, the bikes split on 1 November 2027, the search contract, analyzers, the search index as a read model, and Veldmark's cast and brands."
+      ],
+      "does_not_know": [
+        "Query categorization, query tagging, interpretation and calibrated confidence.",
+        "Dense retrieval, approximate nearest neighbor indices (HNSW, IVF) and fusion methods (RRF, score normalization).",
+        "LLM query compilers and the Model Context Protocol."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a category split and a query that comes in many spellings and languages, the reader designs how queries will land in the new category.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Next month your marketplace splits generic bike categories into e-bikes, city bikes and cargo bikes. Buyers write e-bike intent in eleven forms across two languages, and one similar term ('speed pedelec') legally means a moped. Using only this chapter: what do you build so that these buyers land in the e-bikes category, and how do you keep a wrong guess from hiding inventory?",
+        "expected": "One vocabulary entry in the taxonomy and attribute service with aliases per language and an explicit exclusion routing 'speed pedelec' to mopeds, read by both the tagger and the categorizer; analyzer fixes for hyphenated and compound forms, checked against a real-query test set; categorizer labels for the new category from the taxonomy mapping and backfilled attributes, registered as an owned, monitored model. Apply high-confidence interpretations as a filter shown as a removable chip, weaker ones as a boost and suggestion, never letting an added interpretation increase results, and recover from thin results with a defined ladder (widen the radius before broadening the category)."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Tradeyard's eleven ways to say e-bike before the November 2027 bikes split; from query string to structured query; shared vocabulary and local policy; language analysis per country; spelling and synonyms; query categorization and attribute extraction; null and low-result recovery; autocomplete; semantic and hybrid retrieval; natural-language search with LLMs; evaluation; the e-bike queries through the split; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: dated public engineering posts (Vinted, Adevinta, Airbnb and others), engine documentation and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How do you turn short, ambiguous queries into the right structured search?",
+    "claim": "In listing search, understanding a query mostly means compiling it into the marketplace's own categories and attribute filters: the vocabulary (aliases per language, exclusions such as 'speed pedelec') lives once in the taxonomy and attribute service, each marketplace applies interpretations by calibrated confidence (a filter shown as a removable chip at 0.85 or above at Tradeyard, a boost and suggestion below), thin results are recovered in a defined relaxation order, and dense retrieval and LLM query compilers are layers that emit the same validated filter form under the same per-market evaluation and ownership as any order-tier model.",
+    "disputed_by": "The view that query relevance is a text-matching and synonym-file problem tuned per site, and the newer view that embeddings or a language model should replace keyword and filter search with semantic retrieval.",
+    "so_what": "A Chief Architect who accepts this puts query aliases, categorizer labels and evaluation sets into every taxonomy release, registers every model in the query path as an order-tier model, routes natural-language features through the AI gateway with dictionary validation and the search contract, and watches null-result and chip-removal rates per market as the earliest sign that queries and catalog have drifted apart.",
+    "how_why": "Buyers type the marketplace's vocabulary in their own words: at Tradeyard NL about a quarter of 1.9 million weekly bike searches meant e-bike, in at least eleven forms that the old analyzer turned into four result sets sharing less than half their top 50. One vocabulary entry, analyzer fixes and a confidence policy sent 10 of the 11 variants to the new e-bikes category at the 1 November 2027 split, cut the null or under-five-result rate from 6.1% to 2.4% and raised e-bike search-to-contact by 11% relative, a gain from vocabulary and policy rather than from a model; the documented LLM search features at coches.net and leboncoin likewise compile natural language into the existing filter schema.",
+    "supporting_claims": [
+      {
+        "id": "Q1",
+        "claim": "Listing queries are requests for filters in the marketplace's own vocabulary, so treating them as text to match splits one intent into inconsistent result sets."
+      },
+      {
+        "id": "Q2",
+        "claim": "The vocabulary that queries compile to (categories, attribute values, aliases per language, exclusions) belongs once in the taxonomy and attribute service, versioned with it, while analyzers, spellers and synonyms handle only text."
+      },
+      {
+        "id": "Q3",
+        "claim": "Each marketplace applies interpretations by calibrated confidence, visibly and reversibly, and recovers thin results in a defined order, so a wrong guess costs a tap rather than hidden inventory."
+      },
+      {
+        "id": "Q4",
+        "claim": "Dense retrieval and LLM query compilers are layers over the structured core that fill recall gaps and compile language into the same validated filter form, not replacements for filters."
+      },
+      {
+        "id": "Q5",
+        "claim": "Every model in the query path needs per-market evaluation, an owner and a place in the taxonomy release, under the same governance as any order-tier model, because query understanding fails quietly."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Makes the part's 'structure beats cleverness' claim a design: words compile into the shared vocabulary under a confidence policy, with models layered on top.",
+    "supports": [
+      "P4-2"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "large_to_small",
+        "applies_to": "concepts and architecture: the whole compiler and its owners before any single step"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "analysis to autocomplete: the steps in the order a query meets them, then the two layers above them"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs to questions: the book's reference sections"
+      }
+    ],
+    "rationale": "The scene poses the problem: one intent, eleven forms, inconsistent results before a category split. Concepts name the steps and the architecture assigns their owners, so every later section can say whose rule it is. The steps then follow the order a query meets them, because each uses the output of the one before: analysis produces tokens, spelling and synonyms correct and equate them, categorization and tagging map them to structure, the confidence policy applies that structure, recovery handles what it filters out, and autocomplete reuses interpretations before the query is submitted. Hybrid retrieval and LLM search come after the structured core because they are layers that must respect it. Evaluation follows all the steps it measures, and the worked example applies them in order to the opening scene. Trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions test and govern the design. Putting the layers before the core would present embeddings and LLMs as the answer the chapter argues they are not."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "\"ebike gazelle\" means category e-bikes, brand Gazelle; \"golf 8 automatik\" means Volkswagen Golf, generation 8, automatic gearbox; \"T3 balcon Lyon 7\" means three main rooms, a balcony, Lyon's 7th arrondissement. None of these buyers is asking for text relevance."
+    },
+    "bridge": {
+      "from_reader_world": "A search layer that is fast, fresh and rebuildable behind its contract, as the previous chapter built it, still treats a query as text to match.",
+      "to_topic": "Query understanding compiles the query into the marketplace's own categories and attribute filters, with the taxonomy and attribute service supplying the vocabulary."
+    },
+    "thesis_statement": {
+      "text": "In listing search, understanding a query mostly means compiling it into the marketplace's own categories and attribute filters, from one vocabulary versioned with the taxonomy, applied by stated confidence with a way back, and with embeddings and LLMs as layers over that structured core.",
+      "placement": "KEY POINTS callout (all three bullets); introduction paragraphs p01 and p02 state the compilation claim."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Tradeyard's e-bike queries before the November 2027 bikes split.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The steps from query string to structured query and who owns each.",
+          "kept_in": [
+            "concepts",
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Each step in the order a query meets it: language analysis, spelling and synonyms, categorization and tagging with the confidence policy, recovery from thin results.",
+          "kept_in": [
+            "analysis",
+            "spelling-synonyms",
+            "categorization",
+            "recovery"
+          ]
+        },
+        {
+          "promise": "Autocomplete last among the steps, because it reuses all of them before the query is submitted.",
+          "kept_in": [
+            "autocomplete"
+          ]
+        },
+        {
+          "promise": "The two layers above: hybrid retrieval with embeddings and natural-language search with LLMs.",
+          "kept_in": [
+            "hybrid",
+            "llm"
+          ]
+        },
+        {
+          "promise": "Evaluation, and the e-bike queries through the split.",
+          "kept_in": [
+            "evaluation",
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "chief-architect",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A listing query is short, often misspelled and multilingual, and is usually a request for a filter in disguise: the buyer asks the marketplace to recognize its own vocabulary in their words, not for text relevance.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "\"ebike gazelle\" (category e-bikes, brand Gazelle); \"golf 8 automatik\" (Volkswagen Golf, generation 8, automatic); \"T3 balcon Lyon 7\" (three main rooms, balcony, Lyon 7th arrondissement).",
+            "shows": "Each query names values the marketplace already holds as categories and attributes."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Query understanding is the set of steps that turns the raw query string into a structured query; it is where Part IV's claim that structure beats cleverness becomes a design, compiling to the taxonomy and attribute service's vocabulary, between the search contract and the engine, within about 25 ms at Veldmark, and handing its output to ranking.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Queries as requests for filters in the marketplace's vocabulary.",
+          "introduces": "The name of the steps that recognize that vocabulary, where they sit between the search layer of the previous chapter and ranking, and what they compile to.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns three terms, query understanding, query categorization and hybrid retrieval, and treats autocomplete as part of query understanding because a good suggestion is a query the system already understands.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Query understanding as a defined layer.",
+          "introduces": "The terms the chapter owns and why autocomplete belongs to it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts with Tradeyard's e-bike queries before the November 2027 bikes split, defines the steps and their owners, follows them in the order a query meets them (language analysis, spelling and synonyms, categorization and tagging with the policy that turns guesses into filters, recovery from thin results), then autocomplete, which reuses all of them before the query is submitted, then the two layers above them (hybrid retrieval and LLM search), evaluation and the e-bike queries through the split, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The chapter's sections in order.",
+            "shows": "Lets a reader of the opening predict the chapter."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The terms the chapter owns.",
+          "introduces": "The order in which the chapter covers them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike",
+      "controlling_idea": "A month before the bikes split, Tradeyard's query logs show one e-bike intent written in at least eleven forms that the old analyzer turned into different result sets, so the new category would be missed by queries that did not resolve to it.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "Q1"
+        ],
+        "how": "Poses the chapter's question with Veldmark's numbers: text matching splits one intent into inconsistent result sets."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The decision date first, then what the logs showed, then why the existing analyzer failed, then why the split makes it urgent; the urgency only lands once the failure is shown."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Queries as requests for filters, and the roadmap.",
+        "introduces": "A dated Veldmark case in which one intent arrives in eleven forms.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On Monday 1 November 2027 Tradeyard's bike categories would be replaced by canonical leaves, the first change through the group taxonomy and attribute service, and Priya Raman and Tomasz Wiśniewski set out to answer whether buyers looking for e-bikes would land in the new e-bikes category.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Six country bike leaves in the Netherlands, mostly generic, replaced by canonical leaves for city bikes, e-bikes, cargo bikes, kids' bikes and more; a month of Tradeyard NL query logs.",
+              "source": "Scenario ledger: bikes split 1 Nov 2027; [query-understanding] line",
+              "shows": "Sets a dated decision the chapter's design must answer."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The logs showed that about a quarter of 1.9 million weekly bike searches meant e-bike, in at least eleven forms, one of which, 'speed pedelec', is legally a moped in the Netherlands.",
+          "function": "evidence",
+          "organization": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 380,000 live bike listings, about 214,000 landing in the new city-bike leaf and about 38,000 e-bikes; about 1.9 million weekly bike searches, a quarter with e-bike intent, in at least eleven listed forms.",
+              "source": "Scenario ledger, [query-understanding] and [editor] lines",
+              "shows": "One intent arrives in many spellings and languages, plus a look-alike that must not match."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The question the two set out to answer.",
+            "introduces": "What the query logs showed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The old Solr analyzer treated the variants so differently that one intent produced four result sets sharing less than half their top 50, with contact rates differing threefold.",
+          "function": "evidence",
+          "organization": "illustration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "'e-bike' split into 'e' and 'bike' and returned about 31,000 results, mostly ordinary bikes; 'ebike' about 2,100; 'elektrische fiets' about 18,400; 'elektrischefiets' 140.",
+              "source": "Veldmark illustration",
+              "shows": "Text matching, not buyer intent, decided what each variant found."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The eleven forms of one intent.",
+            "introduces": "What the existing analyzer did with them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Other countries added their own languages and unowned synonym files, and the split would make the problem visible because a query that did not resolve to the e-bikes category would miss every e-bike.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Dutch result sets.",
+            "introduces": "The same problem in Belgium, Poland and Portugal, and why the split raises the stakes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: From Query String to Structured Query",
+      "controlling_idea": "Query understanding is a sequence of named steps from text to structure, plus recovery and two layers on top, and the chapter uses each name in this sense.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "Q1"
+        ],
+        "how": "Gives the vocabulary for the pipeline that compiles queries into structure."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Terms in the order a query passes through them: text steps, then structure, then the combined interpretation, recovery and the two layers; each later term uses an earlier one."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Eleven forms of one intent that the analyzer handled inconsistently.",
+        "introduces": "The named steps that turn a query string into a structured query.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "Query normalization and analysis (normalization, lowercasing, accent folding, tokenization, stemming and decompounding per language) must agree between the query side and the index side, or matching fails silently.",
+          "function": "definition"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Spelling correction maps a misspelled token to an intended one, automatically or as a suggestion, against the marketplace's own vocabulary.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Analysis of the query text.",
+            "introduces": "Correcting tokens the analysis leaves misspelled.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Synonyms are equivalences and one-way expansions maintained per language and market.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Correcting a token.",
+            "introduces": "Equating tokens.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Query categorization predicts the category, or a ranked list of categories with probabilities, a query is about, as a classification problem whose label set is the taxonomy.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Text-level steps.",
+            "introduces": "The first step that maps to structure: the category.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Query tagging recognizes spans that name attribute values or places, as named-entity recognition against the attribute dictionary and the location model.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The category.",
+            "introduces": "Attribute values and places inside the query.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "An interpretation is the structured result of these steps, each element with a confidence, and one query may have several.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The individual steps.",
+            "introduces": "Their combined output.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Null and low-result recovery is what the system does when an interpretation returns nothing or too little.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The interpretation.",
+            "introduces": "What happens when it finds too little.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Hybrid retrieval runs lexical, structured and dense retrieval for one request and fuses the results.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The structured core.",
+            "introduces": "The first layer over it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "An LLM query compiler turns a natural-language request into the marketplace's existing structured query, which the classic engine executes.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Embedding-based retrieval.",
+            "introduces": "The second layer: language models.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Shared Vocabulary, Local Policy",
+      "controlling_idea": "Query understanding runs as a compiler inside the search API whose components have different owners, and the ownership split encodes the principle that the vocabulary is shared and the policy is local.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "Q2"
+        ],
+        "how": "States the one-vocabulary, many-policies split that the rest of the chapter applies."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole compiler at runtime first, then the owner of each step, then the principle the ownership split encodes; the principle cannot be stated before the owners are shown."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The named steps.",
+        "introduces": "How they are assembled into one layer and who owns each.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Query understanding runs inside the search API before retrieval, with model steps called through a cache so the models do their real work on the tail.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: query understanding as a compiler; each step adds structure with a confidence, the taxonomy and attribute dictionary supply the vocabulary, and chips let wrong guesses be undone.",
+              "shows": "Shows the steps in order and where the shared vocabulary enters."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Each step has its own owner and its own reason to change.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Component, owner and change trigger for analyzers, spelling vocabulary, synonyms, categorizer, tagger, interpretation policy and evaluation harness.",
+              "shows": "Different steps change for different reasons and belong to different teams."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The steps of the compiler.",
+            "introduces": "Who owns each and when it changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The table encodes a principle: the vocabulary is shared through the taxonomy and attribute service, while how aggressively each marketplace turns meanings into filters is a product decision it owns and tests.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The ownership table.",
+            "introduces": "The principle it encodes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "analysis",
+      "heading": "Language Analysis per Country",
+      "controlling_idea": "Most silent failures start in per-language analysis, so each mechanism needs a deliberate rule and every change needs a token-parity test.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "Q2"
+        ],
+        "how": "Shows that analyzers handle text and must stay in parity, while meaning comes from the dictionary."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The claim first, then the four mechanisms, then the multilingual case that combines them, then the migration rule that protects them all."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The compiler and its owners.",
+        "introduces": "The first step a query meets: analysis per language.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "Analysis is the source of most silent failures in query understanding, and four mechanisms matter for European listing marketplaces.",
+          "function": "claim"
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Tokenizers must handle hyphens, digits and units by indexing and querying several forms of a token and explicit patterns for units and model codes.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'e-bike' split to 'e' and 'bike' versus left unequal to 'ebike'; '28 inch', '28\"', '28 duim' for one wheel size.",
+              "shows": "Shows why one tokenization rule cannot serve all forms."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four mechanisms matter.",
+            "introduces": "The first: tokenization.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Accent and character folding should be asymmetric: Vinted indexes accented and folded forms so that an unaccented query matches both while an accented query matches only the accented form.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Vinted's 2026 autocomplete indexes accented and ASCII-folded forms across 24 languages; 'z' matches 'Zara' and 'Žalgiris', 'Ž' only the accented form.",
+              "source": "Vinted Engineering, 2026 (personalized search autocomplete)",
+              "shows": "A buyer who types the accent has asked for it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Tokenization.",
+            "introduces": "Folding.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Stemming helps recall and occasionally hurts precision, so brand and model names should be protected with a keyword list.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Folding.",
+            "introduces": "Stemming.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Decompounding must let buyers and sellers who split or join compounds differently meet, and its word list should come from the category vocabulary and attribute values.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic's hyphenation decompounder 'was built for Germanic languages' and keeps only sub-words in a supplied list ('Kaffeetasse' to 'Kaffee' and 'tasse').",
+              "source": "Elastic documentation, n.d.",
+              "shows": "The word list is the asset, and the marketplace can supply it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Stemming.",
+            "introduces": "Decompounding.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "In bilingual markets the system detects the query language, analyzes accordingly against language fields, and tags against one dictionary in both languages, which is a reason to localize the dictionary rather than the index.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Mechanisms within one language.",
+            "introduces": "Markets with two languages and one inventory.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Analyzer parity is a migration risk, so every engine or analyzer change should run a per-language test set of real queries and compare tokens before and after.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Vinted contributed Lucene analyzers to Vespa when it moved from Elasticsearch so language analysis carried over.",
+              "source": "Vinted Engineering, 2024",
+              "shows": "Even a successful migration had to preserve analysis explicitly."
+            },
+            {
+              "kind": "scenario",
+              "what": "Veldmark's test set is 5,000 queries per market across head, torso and tail.",
+              "source": "Scenario ledger",
+              "shows": "Gives the test a concrete size."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Analysis choices that differ per language.",
+            "introduces": "Why changing any of them is a risk to test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "spelling-synonyms",
+      "heading": "Spelling and Synonyms",
+      "controlling_idea": "Spelling correction and synonyms work best on the marketplace's own vocabulary, and synonyms should hold only text equivalence, with meaning left to the dictionary.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "Q2"
+        ],
+        "how": "Confines text configuration to text and moves meaning into the dictionary."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Two text-level tools grouped: generic fuzziness, then the marketplace speller that beats it, then synonyms and their rules. Vinted's exact-prefix evidence sits in the autocomplete section, where the system it comes from is described; here it was a forward reference (draft-check round 2)."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Analysis of tokens.",
+        "introduces": "Correcting and equating tokens.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Engine fuzziness is a cheap fallback but is blind to the marketplace's vocabulary.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elasticsearch AUTO fuzziness: no edits up to two characters, one for three to five, two for longer; it matches 'golf' to 'gold'.",
+              "source": "Elastic documentation, n.d.",
+              "shows": "Edit distance ignores whether the target is a real marketplace word."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A marketplace speller built daily from listings, successful queries and the attribute dictionary works better, auto-correcting only when the original returns few results and protecting brands and model codes.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Engine fuzziness blind to the vocabulary.",
+            "introduces": "A speller whose vocabulary is the marketplace's own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Three rules keep synonyms from rotting: apply them at search time, mine candidates from behavior and approve them by hand, and prefer structure to synonyms where structure exists.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elastic's synonym_graph filter is designed for search analyzers, handles multi-word synonyms and can be updateable.",
+              "source": "Elastic documentation, n.d.",
+              "shows": "Search-time synonyms change without a reindex."
+            },
+            {
+              "kind": "example",
+              "what": "'speed pedelec = e-bike' would send moped buyers into bicycles.",
+              "shows": "A wrong synonym's cost is invisible, so review is needed."
+            },
+            {
+              "kind": "example",
+              "what": "'e-bike' and 'elektrische fiets' tagged to the category rather than made textual synonyms.",
+              "shows": "Meaning belongs in categories and attributes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Spelling correction.",
+            "introduces": "Synonyms, the other place text configuration rots.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "categorization",
+      "heading": "Query Categorization and Attribute Extraction",
+      "controlling_idea": "Categories and attribute values are predicted against the taxonomy and dictionary, and a confidence policy decides whether each becomes a filter, a boost or a suggestion, always visibly.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "Q2",
+          "Q3"
+        ],
+        "how": "Shows the structural core of compilation and the policy that applies it."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Category, then attributes and places, then why both depend on the dictionary, then the policy that acts on their output and its invariants; the policy cannot be stated before the categorizer and tagger produce the confidences it acts on."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Text-level steps.",
+        "introduces": "The structural steps: category, attributes, and the policy that applies them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "Query categorization is a text classifier trained on behavioral query-category pairs that outputs a distribution over categories, not a single answer.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'golf' on Tradeyard is ambiguous between golf equipment and Volkswagen Golfs; 'golf tas' is not.",
+              "shows": "Why the output must be a distribution."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "form": "list",
+          "controlling_idea": "Three properties separate a production categorizer from a demo: it is versioned with the taxonomy (with mapping events as the bridge for new labels), calibrated, and monitored as an order-tier model.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Without the mapping-event bridge a taxonomy change is a relevance regression: The Category Straitjacket reaching search.",
+              "shows": "Ties the categorizer to the taxonomy release."
+            },
+            {
+              "kind": "scenario",
+              "what": "Veldmark classes search models as 'order' models that decide what buyers see (ml-platform).",
+              "shows": "Places the categorizer under model governance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What a categorizer is.",
+            "introduces": "What makes one fit for production.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Attribute tagging matches spans to dictionary values and aliases, with a sequence model for ambiguity, while location tagging relies on the gazetteer from the location model.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Lyon 7' an arrondissement; 'Den Bosch' for 's-Hertogenbosch; 'Essen' a city in Germany and a municipality in Belgium.",
+              "shows": "Places need their own resolver."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Predicting the category.",
+            "introduces": "Tagging attributes and places, the second structural output.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The dictionary is the hard dependency: a tagger can map only to an attribute that exists once with its aliases, so The Attribute Junkyard defeats query understanding before any model runs.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "One bike.wheel_size with aliases '28 inch', '28 duim', '28\"' versus four free-text keys.",
+              "shows": "Shows what the tagger needs to compile to."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The tagger's matching against dictionary values.",
+            "introduces": "What happens when the dictionary is missing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Verticals and markets change what a tag means, so these meanings belong in the dictionary per market, not in tagger code.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Hearthly France 'T3' is three main rooms, not three bedrooms; Hearthly Spain '3 habitaciones' is three bedrooms; Motorvane 'golf 8' is the eighth generation.",
+              "shows": "The same token shape carries different meanings per market."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The dictionary as the dependency.",
+            "introduces": "Per-market meanings it must hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The recommended policy maps each interpretation's confidence to an action, filter, boost or suggest, and shows every applied interpretation to the buyer as a removable chip.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "High (for example 0.85 or more, calibrated): filter with a removable chip; medium: boost and suggestion chip; low: suggest only; conflicting: both as options; with the risk if wrong for each.",
+              "shows": "Matches each action to the cost of being wrong."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The structured interpretations the categorizer and tagger produce.",
+            "introduces": "How they become part of the query.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Two invariants keep the policy honest: adding an interpretation must never increase the result count, and a chip the buyer removes is a training label.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted in 2025 reported that approximate retrieval could make results inconsistent with filters and set the goal that adding a filter should not increase results.",
+              "source": "Vinted Engineering, 2025",
+              "shows": "The invariant comes from a documented failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The confidence-to-action policy.",
+            "introduces": "The two rules that keep it honest.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "recovery",
+      "heading": "Null and Low-Result Recovery",
+      "controlling_idea": "Thin results should be recovered with an explicit ladder ordered from least to most change to what the buyer asked, never silently removing the buyer's own filters.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "Q3"
+        ],
+        "how": "Defines the relaxation order that makes interpretations safe."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole ladder, then the rule that bounds every step, then the one step with value beyond the search; the bound only makes sense once the steps are known."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Interpretations that may filter too much.",
+        "introduces": "What happens when they return too little.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "A null result is a failed match between demand and supply, often an artifact, so the recovery ladder should be explicit and ordered from least to most change.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven steps: correct spelling, drop the least-confident machine interpretation, all-terms to most-terms, widen the radius, broaden to the parent category, fill with dense retrieval, offer a saved search.",
+              "shows": "Each step changes the buyer's request a little more than the last."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The ladder never removes a filter the buyer chose without saying so, and a thin result is a chance to show labeled close alternatives.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbnb has published work on augmenting narrow searches with recommendations.",
+              "source": "Airbnb Tech, 2025",
+              "shows": "Supports showing close alternatives, labeled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ladder's steps.",
+            "introduces": "The rule that bounds it and the lesson from public work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The last step matters for liquidity because a saved search after a null result is standing demand alerts can serve.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The ladder as a whole.",
+            "introduces": "Why its last step matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "autocomplete",
+      "heading": "Autocomplete and Query Suggestions",
+      "controlling_idea": "Autocomplete reuses every earlier step to steer queries, before they are submitted, toward ones the system already understands, and for listings it should suggest only what returns inventory, attach interpretations and filter its candidates for safety.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "Q3"
+        ],
+        "how": "Applies interpretations before the query is typed in full."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The documented case, what its fuzzy cascade shows about correction, then the general rules drawn from it; the rules would be unsupported assertions without the case before them."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The steps from analysis to recovery, now all defined.",
+        "introduces": "Autocomplete, which reuses all of them at the earliest point, before the query is submitted.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Vinted's April 2026 account is the most complete public description of a marketplace autocomplete: candidates, ranking, matching, serving and results.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 125 million suggestions over more than 50 country-language combinations, query-log candidates about 2% of the pool and about half of clicks; LightGBM LambdaRank over 63 features; edge n-grams cutting matching p99 from about 220 ms to 25 ms; about 4,700 queries per second at 31 ms p99; debounce cut from 350 ms to 100 ms; suggestion use from under 8% to over 17% of sessions.",
+              "source": "Vinted Engineering, 2026 (personalized search autocomplete)",
+              "shows": "Shows autocomplete as a ranked, measured system, not a prefix lookup."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The same Vinted account shows that fuzzy correction is usually not needed, since its cascade stops early and most requests resolve at exact prefix.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Fuzzy cascade from exact prefix to edit distance 1 to 2, stopping at ten suggestions; about 62% of requests resolved at exact prefix.",
+              "source": "Vinted Engineering, 2026 (personalized search autocomplete)",
+              "shows": "Correction cost is paid only on a minority of requests."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: autocomplete as an offline pipeline that builds and scores candidates and an online path that matches and re-ranks per user.",
+              "shows": "Shows where interpretations can be attached."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Vinted's autocomplete system and its matching step.",
+            "introduces": "What its fuzzy cascade shows about how often correction is needed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "Three design rules follow for listing marketplaces: suggest only what returns inventory, attach interpretations to suggestions, and filter the candidate pool for safety.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Vinted's system and what its cascade shows.",
+            "introduces": "The rules a listing marketplace draws from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "hybrid",
+      "heading": "Semantic and Hybrid Retrieval",
+      "controlling_idea": "Dense retrieval is a capped layer that fills recall gaps under every buyer filter, fused with lexical results and handed to ranking, not a replacement for structured retrieval.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "Q4"
+        ],
+        "how": "Places embeddings as a layer over the structured core."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The cases, what their difference shows, how results are fused, then the recommendation and its costs; the recommendation rests on the cases and would read as opinion before them."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The structured core, from analysis to autocomplete.",
+        "introduces": "The first layer above it: embeddings.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Dense retrieval addresses vocabulary mismatch and image-led categories, and the 2023 to 2026 record shows how marketplaces use it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Vinted, November 2025: two-tower model with frozen multilingual CLIP query tower, HNSW in Vespa split by market blocs, RRF fusion in global ranking with a cap on dense-only matches, low-recall sessions filled first, about 50 A/B tests, about a month and 1 TB for image embeddings.",
+              "source": "Vinted Engineering, 2025",
+              "shows": "Dense retrieval used as a capped fill under filters."
+            },
+            {
+              "kind": "case",
+              "what": "Airbnb, January 2026: IVF over HNSW because HNSW memory grew under real-time updates and made filters hard; cluster IDs as a Lucene filter; listing tower in daily batch.",
+              "source": "Abdool et al., 2026",
+              "shows": "A different index choice for the same problem."
+            },
+            {
+              "kind": "case",
+              "what": "leboncoin, 2023 press report: CamemBERT retriever with ANN in Elasticsearch and a neural re-ranker; primary post unverified and about three years old.",
+              "source": "Le Monde Informatique, 2023",
+              "shows": "Shows an older, less certain data point, labeled as such."
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The two detailed cases reached different answers to the same problem for documented reasons, so the choice depends on filter selectivity, update rate and the engine in use.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vinted's and Airbnb's designs.",
+            "introduces": "Why neither is generally right.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Hybrid retrieval needs a way to merge lists whose scores are not comparable, and the Lucene world offers reciprocal rank fusion as the default and score normalization when weights are tuned per market.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "RRF (Elasticsearch RRF retriever, rank_constant default 60; OpenSearch score ranker from 2.19; Vespa at Vinted) against score normalization (OpenSearch normalization processor from 2.10, min_max and arithmetic_mean by default).",
+              "source": "Elastic and OpenSearch documentation, n.d.",
+              "shows": "Each method's engine support and when to prefer it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Dense and lexical retrieval run together.",
+            "introduces": "How their results are merged.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Fusion produces candidates and does not replace ranking, which takes the fused set.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Fusion methods.",
+            "introduces": "What fusion does not do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The recommendation is to use dense retrieval to fill recall gaps, not to replace structured retrieval, capping dense-only results and respecting every buyer filter.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The cases and fusion options.",
+            "introduces": "Where dense retrieval belongs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Dense retrieval has real costs and new failure modes, which is why it stays a capped layer.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Embeddings per listing, ANN memory, an embedding call per query; Vinted's tokenizer quirk flooding a brand-filtered 'zx750' query with about 7,000 extra dense matches.",
+              "source": "Vinted Engineering, 2025",
+              "shows": "Dense results fail in ways lexical results do not."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: a structured core with a capped dense ring and an LLM translator compiling into validated filters.",
+              "shows": "Shows both layers sitting on the structured core."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The recommendation to use dense retrieval.",
+            "introduces": "Its costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "llm",
+      "heading": "Natural-Language and Conversational Search with LLMs",
+      "controlling_idea": "In every documented case the LLM compiles language into the existing structured query, validated against the dictionary, and that pattern bounds its cost and risk.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "Q4"
+        ],
+        "how": "Shows language models as the second layer, emitting the same validated filter form."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The cases, how to read them, the pattern they share, its properties and limits, then external assistants as the same pattern outside the marketplace."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Dense retrieval as the first layer.",
+        "introduces": "Language models as the second.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Since 2023 several listing marketplaces have published natural-language search features, and none of the documented cases replaces retrieval with generation: the LLM compiles into the existing structured query or orchestrates existing search tools.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "coches.net 2024 (moderation call, Claude Haiku on Bedrock converting to filters, about 6,000/500 tokens, about 20,000 calls and about €19 a day, adoption 'still limited'); leboncoin 2024 assistant (GPT-3.5 Turbo to JSON for the search API, Assistants API rejected over storage); leboncoin cars 2024 (users 'are not aware of the benefits'); OLX Magic 2024 (agent with tools, about 5-10 s latency); Zillow 2023/2024 (no architecture published); Rightmove 2026 'Ask Rightmove' (about 40% time-on-site uplift, roughly double lead propensity, H1 2026).",
+              "source": "Adevinta Tech Blog 2024; ZenML 2024; MLOps Community 2024; HousingWire 2024; Rightmove plc 2026",
+              "shows": "Every documented case compiles to or calls the existing search."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Model names, prices and feature availability in the table are dated evidence, not current product facts.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table of cases.",
+            "introduces": "How to read its figures.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "In the shared pattern, the LLM receives the query, the market and a compact filter schema from the dictionary, returns a structured query that a validator checks against the dictionary, and the classic engine runs it with the filters shown as chips.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the LLM compiles, the engine retrieves, validation against the attribute dictionary keeps hallucinated values out, chips keep the interpretation editable.",
+              "shows": "Shows the validation step between model and engine."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The cases.",
+            "introduces": "The pattern they share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The pattern has five properties to defend in a design review: explainable results, no hallucinated listings, cacheable output, bounded cost for keyword queries, and saveable structured queries.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The compiler pattern.",
+            "introduces": "What it gives an architecture.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Its limits are latency and data protection, so the compiler should run only for queries that need it and query text falls under retention rules and provider terms.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "leboncoin rejected a hosted assistant API because messages would be stored on the provider's servers.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Provider terms shape the architecture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The pattern's properties.",
+            "introduces": "Its limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "External AI assistants have become a new client of marketplace search, which turns the search contract into an external product and the marketplace's validator into the line of defense.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "ImmoScout24's MCP server (launched November 2025) and app inside ChatGPT, described in two 2026 posts; Rightmove's FY2025 results report an app submitted to the ChatGPT ecosystem.",
+              "source": "Scout24 Engineering 2026; Rightmove plc 2026",
+              "shows": "Shows assistants already calling marketplace search."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The LLM compiler inside the marketplace.",
+            "introduces": "The same compiling done by an external model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation",
+      "heading": "Evaluating Query Understanding",
+      "controlling_idea": "Because query understanding fails quietly, evaluation must be a shared group asset with market-specific data, refreshed after every taxonomy release.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "Q5"
+        ],
+        "how": "Gives every step an offline and online measure and an owner."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The shared harness and its measures per layer, then two lessons on how to measure, then the refresh rule that ties evaluation to the taxonomy; the refresh rule needs the query sets the first paragraph introduces."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The steps and layers of query understanding.",
+        "introduces": "How to measure them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "controlling_idea": "Query understanding fails quietly, which makes evaluation the part teams skip, so the harness should be a shared group asset with market-specific data.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Offline and online measures for analysis, spelling, categorization, tagging, recovery, dense retrieval and the LLM compiler.",
+              "shows": "Every step has a measure."
+            }
+          ]
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Two lessons from the public record apply: replaying production traffic tracks A/B results better than logged-data recall, and a simple structured diff of expected and generated queries catches compiler regressions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbnb found offline recall on logged data tracked online results poorly and replayed traffic tracked A/B results better.",
+              "source": "Abdool et al., 2026",
+              "shows": "Logs only contain what users were shown."
+            },
+            {
+              "kind": "source",
+              "what": "leboncoin's deliberately simple structured-diff evaluation.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Cheap evaluation beats none."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The measures per layer.",
+            "introduces": "What the public record teaches about measuring them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Query sets must be refreshed on a schedule and after every taxonomy release, because the right answer changes the day a category appears.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Evaluation sets.",
+            "introduces": "Why they age with the taxonomy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split",
+      "controlling_idea": "Applied to the bikes split, one vocabulary, analyzer fixes, a prepared categorizer and a confidence policy sent 10 of 11 variants to the e-bikes category, a gain from vocabulary and policy rather than a model.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q5"
+        ],
+        "how": "Shows the whole design working on the opening scene's problem."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The plan's four parts in the order the sections taught them, then the outcome, what it shows, and the next projects that add the layers."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The design and its evaluation.",
+        "introduces": "The opening scene's question answered.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "Priya's and Tomasz's plan for 1 November had four parts, each applying a section of the chapter.",
+          "function": "transition"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "One vocabulary entry with aliases per language and an explicit exclusion routing 'speed pedelec' to mopeds was read by both the tagger and the categorizer.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Aliases 'ebike', 'e-bike', 'e bike', 'e-fiets', 'elektrische fiets', 'fiets met trapondersteuning', 'vélo électrique', 'rower elektryczny', 'bicicleta elétrica'; speed pedelec to mopeds.",
+              "source": "Veldmark illustration",
+              "shows": "One vocabulary, read by two models."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: one vocabulary entry sent 10 of the 11 variants to e-bikes and routed speed pedelec to mopeds.",
+              "shows": "Shows the effect of the entry."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four-part plan.",
+            "introduces": "The first part: vocabulary.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The Dutch analyzer was changed to index and query joined and split forms with a compound list from category labels and attribute values, and checked against the same 5,000-query test set on Solr and OpenSearch.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "'elektrischefiets' and 'damesfiets' decompose; 5,000-query Dutch test set.",
+              "source": "Scenario ledger",
+              "shows": "Applies the analysis section's rules."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Vocabulary.",
+            "introduces": "Analysis fixes.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Old bike listings were relabeled from mapping events and backfilled e-bike attributes, giving the categorizer labels before any buyer used the category, and the model was registered as an owned, monitored order-tier model.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motor position and battery capacity from the backfill; prediction-distribution monitor; Priya's team as owner; group registry decided on 9 November later made this mandatory.",
+              "source": "Veldmark illustration",
+              "shows": "Applies the categorizer properties."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Analysis fixes.",
+            "introduces": "The categorizer.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "An e-bike interpretation at calibrated confidence of at least 0.85 becomes a filter with a chip, between 0.5 and 0.85 a boost and suggestion, and fewer than 20 results within the radius triggers the ladder, widening the radius before broadening to all bikes.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Thresholds 0.85 and 0.5; fewer than 20 results.",
+              "source": "Scenario ledger [query-understanding] line",
+              "shows": "Applies the confidence policy and the ladder."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The categorizer.",
+            "introduces": "Policy and recovery.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The outcome was measured over four weeks after the split against four weeks before, on Tradeyard NL bike searches with e-bike intent.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Variants landing in e-bike inventory 4 of 11 to 10 of 11; top-50 overlap under 50% to about 90%; null or under-five rate 6.1% to 2.4%; chip-removal 3.8%; search-to-contact +11% relative.",
+              "source": "Scenario ledger [query-understanding] line",
+              "shows": "The plan worked on every measure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four parts of the plan.",
+            "introduces": "What they produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "These are Veldmark illustrations whose shape generalizes: the biggest gain came from vocabulary and policy, not a model, and the chip removals became a training signal.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Most removals came from 'e-bike accu' (battery) searches by buyers wanting parts, leading to an e-bike parts interpretation.",
+              "shows": "A removed chip is a label, as the policy section said."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The measured outcome.",
+            "introduces": "What it shows and how it fed back.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Two further projects show where Veldmark is going: Hearthly France tests an LLM compiler on long queries only, and Motorvane extends its tagger with generation codes.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 6% of Hearthly search traffic; 'T3 balcon Lyon 7 moins de 400k' compiles to rooms 3, balcony, Lyon 7e and a €400,000 ceiling and returns the Lyon apartment at €389,000; 'golf 8' as the Essen Volkswagen Golf's generation.",
+              "source": "Scenario ledger",
+              "shows": "The layers applied after the structured core is in place."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The bikes outcome.",
+            "introduces": "The next projects, which add the layers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each choice in the chapter, where meaning lives, how aggressive the policy is, how spelling is corrected, how retrieval runs and how natural language is handled, has conditions under which each option is right.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "Q2",
+          "Q3",
+          "Q4"
+        ],
+        "how": "Tests the design against its alternatives."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "One lead-in and one table; it follows the worked example so the reader judges the alternatives against a design already seen working."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's choices.",
+        "introduces": "The alternatives and when they are right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "controlling_idea": "Each design choice has an option that is right under some conditions and wrong under others, and the table pairs them.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Where meaning lives, interpretation policy, spelling, retrieval and natural language, each with two options and when each is right or wrong.",
+              "shows": "The chapter's recommendations have conditions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Real estate and automotive have the richest structured vocabularies, which favors tagging and LLM compiling, while general classifieds have the broadest, which favors categorization and autocomplete.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "Q2"
+        ],
+        "how": "Shows how the vocabulary shapes which lever matters per vertical."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "One table and its reading; it follows the general trade-offs because it shows how the same choices shift by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Trade-offs in general.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p68",
+          "controlling_idea": "Real estate and automotive have the richest structured vocabularies, making tagging and LLM compiling most effective there, while general classifieds have the broadest vocabulary, making categorization and autocomplete the main levers.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Typical query, hardest problem, what tagging maps to, spelling vocabulary, natural-language value and dense-retrieval value across general classifieds, real estate, automotive and jobs.",
+              "shows": "The levers differ by vertical."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Each failure breaks one of the chapter's rules, and its fix is the rule it breaks.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5"
+        ],
+        "how": "Shows what breaks when each rule is skipped."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "In the order the chapter taught the rules each failure breaks: analysis, synonyms, categorization, the confidence policy, autocomplete, dense retrieval and the LLM compiler."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the design does right.",
+        "introduces": "What goes wrong without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p69",
+          "controlling_idea": "Analyzer drift from an engine upgrade or analyzer change quietly changes results; keep token-parity tests in continuous integration.",
+          "function": "cause_effect"
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Synonyms as the dumping ground: every complaint becomes a synonym until nobody can explain the file; move meaning into the dictionary.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Taxonomy changes without a categorizer plan leave the categorizer predicting old categories; version models with the taxonomy.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "Invisible filters: applied interpretations without chips leave buyers unable to recover and the team unable to learn.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Autocomplete without live counts leads buyers to empty results or offensive strings; join inventory counts and filter candidates.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "Dense results that ignore filters return listings outside the buyer's filters; enforce filters on every path and test the invariant.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Unvalidated LLM output returns categories or values that do not exist; validate every output against the dictionary.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One failure.",
+            "introduces": "The next.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Query understanding is a group concern held by five decisions, one vocabulary with many policies, order-tier governance for every model, a query checklist in every taxonomy release, LLMs that compile while engines retrieve, and shared evaluation, watched through a few rates.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5"
+        ],
+        "how": "Turns the chapter into group decisions and signals."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The decisions first, then the signals that show whether they hold; a signal means nothing until the decision it monitors is stated."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Failures to avoid.",
+        "introduces": "Decisions to hold at group scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p76",
+          "form": "list",
+          "controlling_idea": "Query understanding is a group concern because it is where search meets the shared vocabulary, and five decisions hold the line at Veldmark.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "One vocabulary, many policies; every model in the query path an order-tier model; a query-understanding checklist in every taxonomy release; LLMs compile, engines retrieve, through the AI gateway with Lucía Ortega's data-protection review; evaluation as a shared asset.",
+              "source": "Veldmark illustration",
+              "shows": "Each decision applies one section at group scale."
+            }
+          ]
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "What to watch is null and low-result rates, chip-removal rates, the traffic share each layer touches, LLM cost per thousand queries and evaluation-set age, with a rising chip-removal rate after a taxonomy release as the earliest sign of drift.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions.",
+            "introduces": "The signals that show whether they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader test their own marketplace's query understanding in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "Q5"
+        ],
+        "how": "Hands the reader a review instrument."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "One list of questions, roughly in the order the chapter taught the steps."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions to put to one's own system.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p78",
+          "form": "list",
+          "controlling_idea": "Ten questions cover query mix, where meaning lives, which interpretations are filters, null results, new categories, token parity, autocomplete, dense filters, LLM validation and cost, and model owners.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Retrieval to Order",
+    "synthesis": "Every part of the chapter compiles the buyer's words into one form, a category and filters from one shared vocabulary applied with a stated confidence and a way back, which is why the e-bike gain came from vocabulary and policy rather than from a model, and why the layers above emit the same form.",
+    "so_what": "A taxonomy release without query aliases, categorizer labels and evaluation sets is a relevance regression, so the architect puts them into every release and watches chip-removal and null-result rates.",
+    "callback": {
+      "to": "The opening queries 'ebike gazelle', 'golf 8 automatik' and 'T3 balcon Lyon 7' as requests for filters in disguise.",
+      "how": "The conclusion returns to those buyers and says that each section compiled their words into the marketplace's filters."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Put query aliases, categorizer labels and evaluation sets into every taxonomy release, and watch chip-removal and null-result rates per market."
+    },
+    "hand_off": {
+      "to": "ranking",
+      "relationship": "sequence",
+      "carries_over": "The structured query and the candidates it retrieves, which say what the engine finds but not the order in which buyers see it.",
+      "introduces": "Ordering those candidates as a negotiation between relevance, freshness, seller fairness and paid visibility."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and the whole chapter.",
+      "introduces": "What the chapter's parts add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p79",
+        "controlling_idea": "The buyers in the opening were asking for filters, and every part of the chapter compiles their words into one form, a category and filters from one shared vocabulary applied with a stated confidence and a way back; that is why the e-bike gain came from vocabulary and policy, and why a taxonomy release without query aliases, categorizer labels and evaluation sets is a relevance regression.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p80",
+        "controlling_idea": "Query understanding decides what the engine retrieves but not the order in which buyers see it, which is a negotiation between relevance, freshness, seller fairness and paid visibility and the subject of the next chapter, ranking.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What the engine retrieves.",
+          "introduces": "The order of results, in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Engine, document and index design.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "Ordering of results, learning to rank and paid blending.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Category tree design and migrations; attribute dictionary design.",
+      "covered_in": [
+        "categories-and-taxonomies",
+        "attribute-schemas"
+      ]
+    },
+    {
+      "topic": "Geo semantics and map queries.",
+      "covered_in": [
+        "location-and-geo",
+        "map-search"
+      ]
+    },
+    {
+      "topic": "Recommendation candidate generation; ML platform governance.",
+      "covered_in": [
+        "recommendations",
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Broader AI strategy.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No primary source documents query categorization or spelling systems at OLX, Marktplaats, Kleinanzeigen or leboncoin; the chapter relies on reference-architecture reasoning there. (Carried over from spec.md.)",
+    "The leboncoin retriever details rest on a press report; the primary Medium post was not verifiable. (Carried over from spec.md.)",
+    "Outcome metrics for LLM search are thin (Rightmove's H1 2026 figures are the only quantitative claim); revisit when more are published. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the five corroborated round-3 draft faults under the author's delegation: p38 now names the path that adds listings back (a second retrieval path such as embedding search run without the filter); the p44 Vinted bullet splits the HNSW sentence and points RRF ahead to the Fusion subsection instead of glossing it; p61 introduces the Solr-to-OpenSearch move (Tradeyard NL, late 2028, per the ledger's search-architecture line) with a link to [[search-architecture]] before naming the OpenSearch analyzer; p62 marks the 9 November registry decision as eight days after the split and distinguishes the inventory (the list) from the registry; the Failure Modes framing sentence now precedes the first bold label so it reads as the list's lead-in. No unit added, dropped or reordered.",
+      "rejected": [
+        "Leaving the five faults open for the author.",
+        "Adding a separate lead-in unit to Failure Modes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Raised length.max_words from 6,921 to 7,000 (about 1.1%, within the 10% allowed under the author's delegation) to make the five fixes; no published text was cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor round-3 findings: 'head' and 'tail' glossed in p18; the p45 framing of the shared problem now attributes real-time updates to Airbnb. Kept as published: the 214,000 city-bike figure in p06 (ledger [editor] line), Figure 3 placement at p49, 'boosts' and 'chips' before the policy table, and the '4 of 11' table value. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken (merging p48/p49 and p46/p47, moving the Vinted exact-prefix evidence, trimming p53, splitting p40, reordering the questions list, adding failure modes for silent relaxation and stale evaluation sets, an autocomplete Concepts entry, an earlier setup sentence for the third decision): kept as published under the author's delegation, 2026-11-12, since each would change the author's published units."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate) found three failures at fault in the spec, all forward references corroborated by both flow readers: Vinted's exact-prefix evidence in the spelling section, the result-count invariant resting on dense retrieval, and RRF named before fusion. p30 moved from spelling-synonyms to autocomplete (after p42) with a new transition; the invariant (p38) and the Vinted case (p44) now explain the mechanism inline (a filter only removes listings unless another path adds some back; RRF merges lists by rank) instead of pointing ahead. Intent, thesis, role and criteria unchanged.",
+      "rejected": [
+        "Moving the fusion paragraphs before the cases, which would separate fusion from the cases whose lists it merges.",
+        "Moving the invariant into the dense-retrieval section, which would split the policy's two invariants."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate) found one failure at fault in the spec: the roadmap promised every step, autocomplete included, 'in the order a query meets them', while autocomplete comes after recovery. The roadmap promise and p04 now place autocomplete last among the steps because it reuses all of them before the query is submitted, and the autocomplete section's transition_in is now elaboration. Section order unchanged; intent, thesis, role and criteria unchanged.",
+      "rejected": [
+        "Moving autocomplete before language analysis, which would present it before the steps it reuses."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote the eight spec.md success criteria as outcomes: the pipeline and ownership split, the confidence policy, recovery ladder and the e-bike design are covered by the journal spec's AC-1 cold-reader probe; the opening's predictability by AC-2; the order of ideas by AC-3. Dropped the inventory criteria (Vinted and Airbnb comparison, fusion choice, LLM compiler pattern, dated claims and ledger agreement) as separate criteria: the first three are part of intent.outcome, and sourcing and ledger agreement are governed by the style guide and ledger, not by a reader check.",
+      "rejected": [
+        "Keeping the eight criteria as written, since most list what the chapter contains."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added three units to the published text: a roadmap paragraph (p04) so a reader of the opening can predict the sections, a lead-in for the trade-offs table (p67) so the table is introduced and read, and a synthesis paragraph (p79) so the conclusion synthesizes and returns to the opening before handing off to ranking.",
+      "rejected": [
+        "Leaving the conclusion as the single hand-off paragraph, which neither synthesizes nor calls back to the opening."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "From the flow rubric (sound with notes): failure modes reordered into the order the chapter teaches the rules they break; section flow patterns corrected for architecture, spelling and synonyms, and recovery; the confidence-policy paragraph names the removable chip before the invariants use it; the spelling section points ahead to the full Vinted autocomplete account. Thesis rubric passed; its note on Q5 was taken (order-tier governance named).",
+      "rejected": [
+        "Moving the Vinted exact-prefix evidence into the autocomplete section, which would change the author's paragraph order in two sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities left empty: spec.md listed checklist, summary, dialog and comics as unchecked boxes and none of those files exists."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Framed query understanding as compilation to filters rather than text relevance, because listing traffic is filter-heavy and the documented LLM cases all compile to filters. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made the e-bike variants the worked example (with the speed-pedelec exclusion) to tie the chapter to the 1 November 2027 bikes split owned by the taxonomy and attribute chapters. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated autocomplete inside this chapter, using Vinted's 2026 post as the single detailed case, rather than spreading thin across vendors. (Carried over from spec.md.)"
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept agentic assistants to one table row and a short section on external assistants as clients; ai-in-listing-systems owns the broader view. (Carried over from spec.md.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, the incoming transition and the hand-off relationship."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/19-query-understanding/spec.md (accepted 2026-10-21)",
+      "contributed": "Audience, non-goals, open questions, decision log, sources and changelog."
+    },
+    {
+      "kind": "internal",
+      "ref": "search-architecture",
+      "contributed": "Latency budget, analyzers, search contract."
+    },
+    {
+      "kind": "internal",
+      "ref": "attribute-schemas, categories-and-taxonomies, ml-platform",
+      "contributed": "Dictionary, bikes split, order-tier governance."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Veldmark's bikes-split query figures, thresholds and outcomes."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2024, 2025, 2026)",
+      "contributed": "Analyzer parity, dense retrieval, autocomplete."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog (2024)",
+      "contributed": "coches.net and leboncoin LLM search."
+    },
+    {
+      "kind": "external",
+      "ref": "Abdool et al., Airbnb (2026)",
+      "contributed": "IVF versus HNSW, replay evaluation."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove plc results (2026); Scout24 Engineering (2026); HousingWire (2024); OLX Magic talk (2024)",
+      "contributed": "LLM search features and external assistants."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic and OpenSearch documentation (n.d.)",
+      "contributed": "Synonyms, decompounding, fuzziness, RRF, normalization."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored the published link to the running example ('the generation of the Essen Volkswagen Golf'); a 2021 Golf is the eighth generation, so the published sentence was consistent with the ledger's 2021 model year. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: escalate (14 passed, 13 failed, all flow_is_followable). At close, Figure 2 moved after p30 and 'the Lyon apartment' changed to 'Veldmark's Lyon apartment'; remaining failures listed in open_questions. Check report stale after these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: p30 moved to the autocomplete section (spec fault, see decision log); prose revised at the failed units (roadmap wording, run-in lead-ins folded into the first definition and failure, inline glosses for two-tower, CLIP, HNSW, IVF, RRF and MCP, the registry sentence and the 'golf 8' sentence rewritten)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: roadmap promise, p04 and the autocomplete section's transition changed (spec fault, see decision log); prose revised at the failed units (lead-ins for Concepts, Vertical Differences, Failure Modes and Questions; table explanation in evaluation; forward references and garbled sentences fixed)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published index.md; spec.md removed. Status draft."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 1 kept attempt 3 with an extra arrow from the taxonomy and attribute dictionary to synonyms and expansions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: 'filter compiler' to the glossary's 'query compiler'; architecture section renamed 'Architecture: Shared Vocabulary, Local Policy'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,980 to 5,969 words; lead ties the chapter to Part IV's 'structure beats cleverness' argument; two paragraphs split. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: NL bike figures aligned with the editor line (380k bikes, 214k city bikes), Rightmove and Vinted claims tightened to source wording, Scout24 sources made specific, old evidence flagged, HNSW/CLIP expanded, AI-gateway links added. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: five draft fixes, two minor fixes, max_words 6,921 to 7,000, open questions reduced to the three sourcing notes."
+    }
+  ],
+  "length": {
+    "max_words": 7000
+  }
+}

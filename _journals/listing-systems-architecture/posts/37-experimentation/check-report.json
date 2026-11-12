@@ -1,0 +1,564 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/37-experimentation/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/37-experimentation/index.md",
+  "spec_sha": "ab7c0fd59c0d6cbb",
+  "draft_sha": "238f944b44e2cbe7",
+  "run_at": "2026-11-12T22:26:39+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: dissecting a misleading Veldmark experiment and the topics covered",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Biased experiments commit the business to changes with the opposite effect",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architecture determines which experiments a marketplace can run correctly",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: four platform contracts, randomization unit as design choice, guardrails and governance",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Vanity Liquidity and Multiplier Creep",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "SUTVA assumption fails in marketplaces because units compete",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Interference adds a transfer that can flip the sign of results",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter's place in the book: causal testing of changes, owned terms and boundaries",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter and its sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶1",
+      "summary": "Hypothesis that the bump product is overpriced for low-value goods",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶2",
+      "summary": "Design of the seller-randomized February bump price test",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶3",
+      "summary": "Test showed 18% revenue gain, leading to full rollout",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶4",
+      "summary": "After rollout revenue fell instead and bump value dropped",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶5",
+      "summary": "Control group data revealed the test measured a transfer, not an effect",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶6",
+      "summary": "Transition: rest of chapter is the fix Veldmark built",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What an Experiment Must Get Right ¶1",
+      "summary": "Definition of an online controlled experiment and key terms introduced",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What an Experiment Must Get Right ¶2",
+      "summary": "Definitions of primary metric and exposure",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Interference: Why Marketplace Tests Report the Wrong Number ¶1",
+      "summary": "Three mechanisms of interference, each pointing to a design",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Interference: Why Marketplace Tests Report the Wrong Number ¶2",
+      "summary": "Johari et al.: bias depends on which market side is scarce",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Interference: Why Marketplace Tests Report the Wrong Number ¶3",
+      "summary": "Airbnb meta-experiment shows interference bias is large",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶1",
+      "summary": "Designs trade bias against power, cost or speed",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶2",
+      "summary": "Listing/seller-side randomization: uses and bias for visibility changes",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶3",
+      "summary": "Buyer-side randomization: uses and bias in supply-constrained cells",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶4",
+      "summary": "Two-sided randomization and its costs",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶5",
+      "summary": "Cluster randomization: containing interference at a power cost, building cluster maps",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶6",
+      "summary": "Cluster tests for SEO changes that cannot be split by user",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶7",
+      "summary": "Switchback designs and carryover limits in listing marketplaces",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶8",
+      "summary": "Geographic experiments for market-level changes with wide uncertainty",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Designs for Two-Sided Markets ¶9",
+      "summary": "Interleaving as a ranking-model comparison method, not a policy design",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Metrics: Liquidity First, Revenue Second, Both Watched ¶1",
+      "summary": "Revenue alone is dangerous; metric hierarchy puts liquidity first",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Metrics: Liquidity First, Revenue Second, Both Watched ¶2",
+      "summary": "Metrics must be observed on both market sides",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Metrics: Liquidity First, Revenue Second, Both Watched ¶3",
+      "summary": "Guardrail metrics, including control-trend and congestion guardrails",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Metrics: Liquidity First, Revenue Second, Both Watched ¶4",
+      "summary": "Guardrails need near-real-time and final computation",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Metrics: Liquidity First, Revenue Second, Both Watched ¶5",
+      "summary": "Long-term holdouts and surrogate models for compounding effects",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Experimenting on Ranking and Prices ¶1",
+      "summary": "Ranking and pricing tests need ownership and pre-registered review",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Experimenting on Ranking and Prices ¶2",
+      "summary": "Ranking experiments are also monetization experiments",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Experimenting on Ranking and Prices ¶3",
+      "summary": "Price tests' concerns: supply elasticity, legal fairness, professional contracts",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Experimenting on Ranking and Prices ¶4",
+      "summary": "Price badges cause market-level interference, so test by district",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶1",
+      "summary": "Platform rests on four contracts plus a registry, which must agree",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶2",
+      "summary": "Assignment service: hashing plus marketplace needs (unit types, layers, server-side)",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶3",
+      "summary": "Exposure logging must be two-sided",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶4",
+      "summary": "Experiments must use governed metrics shared with the board",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶5",
+      "summary": "Analysis engine and its four trustworthiness capabilities",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶6",
+      "summary": "Early stopping is riskier for delayed marketplace metrics",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶7",
+      "summary": "Adevinta's consolidation from ten testing tools to one platform",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶8",
+      "summary": "Adevinta's statistics engine grew from one marketplace's package",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Four Contracts ¶9",
+      "summary": "Recommendation: centralize statistics and metric definitions first",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Experimentation Standard ¶1",
+      "summary": "Post-mortem framed the failure as a platform gap across fragmented tools",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Experimentation Standard ¶2",
+      "summary": "Six parts of Veldmark's experimentation standard v1",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Experimentation Standard ¶3",
+      "summary": "Design of the cluster-randomized bump retest in Belgium",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Experimentation Standard ¶4",
+      "summary": "Retest gave the right sign with wider intervals; price withdrawn",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Seven recurring choices with default answers",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Design costs differ by vertical",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Real estate experiments are underpowered and need special options",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "List of recognizable experimentation failure modes and fixes",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Chief Architect's five ordered decisions for the platform",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Decision ownership / metrics to watch, especially estimate-vs-rollout gap",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten questions to test the experimentation decisions",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "From Experiments to Models ¶1",
+      "summary": "Synthesis: why the bump test failed and the retest succeeded",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "From Experiments to Models ¶2",
+      "summary": "Hand-off to the ML platform chapter",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "criterion": "AC-3",
+      "finding": "All 55 paragraph summaries match the controlling ideas of p01-p55 in spec order (Architecture now after Experimenting on Ranking and Prices); the five callouts match no spec paragraph, as expected.",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/ca-view/paragraphs/1 (p52)",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "Who decides: the Head of Data & ML owns the engine, the methods and the cluster maps;",
+      "finding": "The reverse outliner needed two summaries (decision ownership / metrics to watch). The paragraph has two labelled parts, 'Who decides:' and 'What to watch:', and the spec's p52 controlling idea itself joins the two (ownership split ... and the estimate-to-rollout gap as report card). Fix by splitting p52 into two units or recasting it around one idea in the spec.",
+      "fault": "spec",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit aligns to a spec paragraph that supports S1-S5 or is an intro/scene/transition unit of its section; no orphan paragraphs.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Tables and figures have lead-ins or follow-up sentences saying what they show (bump table -> p07 arithmetic; retest table -> p46; design table 'coarser units mean less interference and less power'; Holtz quotation glossed and tied to the bump test).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Each declared boundary is expressed: e.g. 'Once the design fixes the unit' (metrics), 'Every design, metric and review above needs platform support' (architecture, cause_effect), 'The bump test is one case of interference' (elaboration), 'Ignore these defaults' (failure modes, contrast). p03's opening picks up interference only mid-paragraph ('changes that only looked like wins'); judged acceptable.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is defined at or before first use (SUTVA p01, interference p02, Concepts table for units/cluster/guardrail, primary metric and exposure p12, two-sided p23, carryover p31, synthetic control p32, interleaving p33, holdout glossed p36, SRM/CUPED/sequential in the p17 table). Both flow readers flagged Hearthly, Motorvane and Valuo as unglossed (A7, A11, B12), but audience.already_knows lists Veldmark's brands and Valuo, so they are known to the declared audience; a cheap gloss is still worth adding. Single-reader items (72-hour fraud restatement A9, Adevinta's 2025 decentralization A10, 'registered' before the registry B8) are not on does_not_know and are recorded under flow_is_followable.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/roadmap; /sections/architecture/paragraphs/8 (p21)",
+      "draft_locus": "Architecture: The Four Contracts ¶9",
+      "quote": "My reading of that path is the recommendation in this chapter's first key point",
+      "finding": "Both readers lost the map: the KEY POINTS and the IN THIS CHAPTER callout lead with the four contracts while the body reaches them in the sixth section, and p21's pointer sends the reader back to the first key point. Reorder the IN THIS CHAPTER callout to the body order and state the recommendation in p21 without pointing back to the key point.",
+      "fault": "draft",
+      "corroborated_by": "flow-B B15 (also B section 2, Architecture 'mildly unclear'; A1)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/scene/paragraphs/3 (p08)",
+      "draft_locus": "Setting the Scene at Veldmark: The Bump That Ate Itself ¶4",
+      "quote": "bump purchases were up only 22% on the same weeks of the previous year, not 48% (1.22 × 1.99 ÷ 2.49 ≈ 0.975), so revenue ran roughly €950,000 a year below the old price instead of €6.8 million above it",
+      "finding": "Both readers had to re-read the turn of the story: one sentence packs a new year-over-year baseline, an inline calculation and two euro figures. Split it so each comparison is its own sentence.",
+      "fault": "draft",
+      "corroborated_by": "flow-B B3 (A3)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/metrics/paragraphs/3 (p37)",
+      "draft_locus": "Metrics: Liquidity First, Revenue Second, Both Watched ¶4",
+      "quote": "That is why results are computed as a stream while a test runs",
+      "finding": "Both readers read 'That is why' as presupposing streaming computation that has not been introduced (it appears only in the Adevinta paragraph of Architecture). State it as a requirement ('so results must be computed as a stream while a test runs') rather than as an established fact.",
+      "fault": "draft",
+      "corroborated_by": "flow-B B7 (A5)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ranking-prices/paragraphs/1 (p40)",
+      "draft_locus": "Experimenting on Ranking and Prices ¶2",
+      "quote": "it was designed under the experimentation standard Veldmark adopted in June 2027, after the bump test, which this chapter sets out after the architecture.",
+      "finding": "Both readers stumbled: the sentence jumps the timeline to autumn 2027, names a standard not yet shown, ends in a navigational aside, and 'which' can attach to the bump test or the standard. Split the sentence and make the referent unambiguous (or shorten the aside).",
+      "fault": "draft",
+      "corroborated_by": "flow-B B10 (A6)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/architecture/paragraphs/1 (p14)",
+      "draft_locus": "Architecture: The Four Contracts ¶2",
+      "quote": "Veldmark learned this the hard way: the September 2027 ranking-policy experiment in [[ranking]] and the bump-price retest in the next section could not share Tradeyard NL's clusters.",
+      "finding": "Both readers stopped here: it is the first mention that a retest exists, buried in a bullet, and 'learned this the hard way' oversells a scheduling constraint that was avoided by moving the retest to Belgium. Drop the 'hard way' framing and introduce the retest plainly (reader A also read 'next section' as the next subsection).",
+      "fault": "draft",
+      "corroborated_by": "flow-B B11 (A8)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/practice/paragraphs/3 (p46)",
+      "draft_locus": "In Practice: Veldmark's Experimentation Standard ¶4",
+      "quote": "The €1.99 price had stayed live in the Netherlands until the retest's result was reviewed",
+      "finding": "Both readers were surprised that a price known since June to lose money stayed live until December; arriving as a past-perfect aside in the last story paragraph, it reads as an inconsistency. The draft could announce at the post-mortem (p43) that the price stayed live pending a retest, but no reason exists in the ledger (decision log 2026-11-12 declined to invent one), so whether this is fixable in the prose alone or needs a scenario decision is for the author.",
+      "fault": "unclear",
+      "corroborated_by": "flow-B B13 (A12)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/failure-modes/paragraphs/0 (p50)",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Ignore these defaults and experimentation fails in recognizable ways.",
+      "finding": "Reader B marked Vertical Differences' position unclear: 'these defaults' points back past the vertical table to the trade-off table. Reader A found the link clear. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1 (p02)",
+      "draft_locus": "Introduction ¶2",
+      "quote": "This is called **interference**: the outcome of a unit depends on the treatment of other units.",
+      "finding": "Reader B first read 'This' as naming the transfer, not the dependence that causes it. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ranking-prices/paragraphs/0 (p39)",
+      "draft_locus": "Experimenting on Ranking and Prices ¶1",
+      "quote": "The February bump test had neither, and the three cases below show what such a review must look for.",
+      "finding": "Reader B had to map 'neither' back to owner and registration/review, and 'registered' assumes a registry introduced only in Architecture. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/interference/paragraphs/2 (p24)",
+      "draft_locus": "Interference: Why Marketplace Tests Report the Wrong Number ¶3",
+      "quote": "Airbnb is a booking marketplace, not a classifieds site, but the mechanism, listings competing for the same guests, is the same one that undid Veldmark's bump test.",
+      "finding": "Reader B found Figure 2 (attached to this paragraph) retelling Figure 1's transfer/congestion story almost word for word, which felt like a step back. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/architecture/paragraphs/7 (p20)",
+      "draft_locus": "Architecture: The Four Contracts ¶8",
+      "quote": "All of these posts predate Adevinta's 2025 decentralization; whether Houston remains a group platform is not public.",
+      "finding": "Reader A noted Houston arrives as an end-of-sentence appositive in p19 and the 2025 decentralization is never explained. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2 (p03)",
+      "draft_locus": "Introduction ¶3",
+      "quote": "[[ranking]], [[recommendations]], [[monetization-models]] and [[ml-platform]] send their changes here to be tested.",
+      "finding": "Reader B found p03 carrying four jobs (hand-off, stakes, feeder chapters, owned and excluded terms), slowing the pace before the story. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/architecture/paragraphs/3 (p16)",
+      "draft_locus": "Architecture: The Four Contracts ¶4",
+      "quote": "including the 72-hour fraud restatement",
+      "finding": "Reader A could not tell what the 72-hour fraud restatement is; it depends on data-platform. One reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a direct statement of the SUTVA assumption, defines interference, places the chapter and gives a roadmap; none of the five weak patterns.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "p54 synthesizes the diagnosis and p55 hands off to ml-platform; no new subtopic, no rephrased thesis alone.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p54 joins seller assignment, the unwatched control and absent review into one diagnosis and says why it matters (experiments decide what ships; a user-only platform can commit the business to the wrong sign).",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'seller assignment broke the assumption this chapter opened with' and the February test: the declared callback.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the sections in the roadmap's order (test, terms, interference and designs, metrics and guardrails, ranking/price governance, four contracts, standard and retest, judging sections), the evidence kinds and the tone.",
+      "criterion": "intro_predicts_content",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "criterion": "AC-2",
+      "finding": "The cold reader's order matches the roadmap promises and the body. Note: AC-2's 'expected' as written still lists 'the four contracts' before interference (the pre-reorder order) and disagrees with the spec's own roadmap promises; the reader agrees with the roadmap. Update AC-2's expected answer (it is copied from journal-spec.json, so the journal spec too).",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "criterion": "AC-1",
+      "finding": "The cold reader named interference/transfer with the control's -9% as the tell, congestion at rollout, and designed a cluster (region × category) retest with governed metrics, control-trend and congestion guardrails, pre-registration, monetization and regulatory review, and wider intervals as the price of the right sign: matches the expected answer.",
+      "severity": "major"
+    }
+  ]
+}

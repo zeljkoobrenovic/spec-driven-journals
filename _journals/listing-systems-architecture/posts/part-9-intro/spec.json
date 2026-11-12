@@ -1,0 +1,585 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-9",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "Part IX — PRACTICE: How Others Built It",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-9-intro/index.md) and its former spec.md (accepted 2026-10-21), which it replaces; one spec paragraph per unit of the page, in the page's order. Intent outcome, AC-1 to AC-3 and role are copied unchanged from the post's entry in journal-spec.json; the introduction realises Part IX's opening (hook, bridge, roadmap) from the same file. The journal spec gives this post no thesis, so the thesis and its four supporting claims are written here from the part's thesis, flow and opening. The five callouts (IN THIS PART, WHY THE BUSINESS CARES, WHY ARCHITECTS SHOULD CARE, KEY POINTS, FAILURE PATTERNS) stand before the first paragraph and are kept as the house format; the KEY POINTS callout carries the part's three lessons and the IN THIS PART callout names the six cases in reading order. Units added to the published page to meet the contract, in the shape the Part II to VII introductions now share: the bridge sentence in p01, a roadmap paragraph (p02), a lead-in to the chapter table giving the reading order and its reason (p06), a lead-in to the side-by-side table (p07), and a closing paragraph under 'Where to begin' (p10) with synthesis, callback and hand-off, grown from the published last line of the Veldmark section. Every company name, date and dated statement is the published text; none was added.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part IX's argument: the public record supports sharing the uniform layers and treats product convergence as a separate, riskier bet; every shared dependency must survive a change of owner; contracts and models carry the vertical lessons.",
+        "The evidence rules of the cases (documented fact with source and year, the author's reading, labeled inference) and why the depth of each section follows the evidence, not the importance of the company.",
+        "The six cases in reading order, the question each answers and when to read it, and the four Veldmark choices the cases test."
+      ],
+      "can_do": [
+        "Tell, for any statement in a case, which of the three kinds it is.",
+        "Pick the case that speaks to the decision in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects, principal engineers and engineering leaders (the journal's readers) who have finished Part VIII and want evidence, not only argument, before adopting the book's platform, consolidation and model-governance recommendations, or who arrive with a decision in hand and want the case that speaks to it.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine (Elasticsearch, OpenSearch) and Kubernetes are; how to make and defend an architecture decision.",
+        "The book's argument as long-term-evolution restates it, and the chapters the cases test: multi-country-platforms (tenant separability, sharing beneath the product), platform-consolidation (acquired stacks, transitional services, separation costs), ml-platform (decision tiers, commit tier, Valuo), listing-ingestion (supply contracts, vendor and dealer feeds), vertical-requirements (licensed property supply, MLSs).",
+        "The fifteen named failure patterns, among them Deal-Shaped Architecture, The Forced Fit and Set-and-Forget AI (where-listing-systems-go-wrong).",
+        "Veldmark in outline: a fictional group of four brands (Tradeyard, Motorvane, Hearthly, Keybridge), Ingrid Halvorsen its Group Chief Architect, the Common Ground program (meet-veldmark)."
+      ],
+      "does_not_know": [
+        "The companies' dated histories beyond what the earlier chapters cited (owned by the six cases; the page gives each only as a dated line in the KEY POINTS and the side-by-side table).",
+        "The evidence rules of Part IX (owned by this page: documented fact with source and year, the author's reading, labeled inference).",
+        "Five-band price ratings (owned by case-automotive; the page names them as a published fact and their governance as a ranking-model question)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the six cases in reading order and the question each answers.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: which six cases follow, in what order, and what question does each answer?",
+        "expected": "Adevinta: what a full swing from federation to shared platform and back teaches; OLX: what happens to a platform as a portfolio shrinks to its local leaders; eBay Classifieds: how thin a shared layer can be and what a sale exposes; AVIV: how much of a property portal can be shared across countries; property portals: what licensed supply, durable properties and valuation models demand; automotive: what dealer-fed listing systems reveal through their public APIs."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given three sentences of the kinds the cases use, the reader classifies each as documented fact, the author's reading or labeled inference, and picks the case to open for a stated decision.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: how would you recognize a documented fact, the author's interpretation and a reference-architecture inference in the cases? And which case do you open if most of your supply arrives through vendor feeds, or if a brand may be sold?",
+        "expected": "A documented fact carries its source and publication year in the sentence or the timeline and is true at that date and no later; an interpretation is marked 'my reading' or sits in the Chief Architect's view; an inference appears only in a callout labeled 'INFERENCE, NOT DOCUMENTED' and describes how a group could be built, never how it is. Vendor feeds: case-automotive. A possible sale: case-ebay-classifieds."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader can say why the fictional Veldmark is kept out of the case narratives and what the cases do with its 2027 choices.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: where does Veldmark appear in the cases, why only there, and what do the cases do with Veldmark's 2027 choices?",
+        "expected": "Only in each case's final comparison, so the fiction is not read as a disguised real group and the real record is not stretched to fit the fiction; the cases test Veldmark's 2027 choices (share platforms, not products; the shared OpenSearch platform with Motorvane on Elasticsearch until a 2029 review; Supply Contract v1; Hearthly Direct declined) against the record and do not extend the scenario."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does this part argue, and in what order should its chapters be read?",
+    "claim": "Part IX argues that the dated public record of six marketplace cases supports the book's sharing pattern only up to the product layer: sharing the uniform layers held up while product convergence is a separate, riskier bet; every shared dependency must survive a change of owner; and the vertical lessons sit in contracts and models. Because those lessons are only as strong as their evidence, the cases are read under rules that keep dated fact, the author's reading and labeled inference apart, with fictional Veldmark only in each case's final comparison, and in an order that runs from whole groups to single verticals, starting with Adevinta.",
+    "disputed_by": "The view that real groups' histories teach little about architecture, because each turn was a capital or market decision, so the cases are company profiles a reader may skim in any order and cite at whatever strength suits the argument.",
+    "so_what": "A reader who accepts it reads each case statement as fact, reading or inference and cites it at that strength, opens the case that speaks to the decision in front of them, and ends Part IX able to say which of the book's patterns the record supports, which it only fails to contradict, and where it is silent.",
+    "how_why": "The six cases bought, merged, shared, sold and retreated in public. Adevinta's 2023 plan to turn two generalist platforms into one was reversed by 2025, and AVIV's 2021 goal of 'a European real estate marketplace' gave way to local autonomy; eBay's 2020–2021 sale and Adevinta's 2025 break-up turned shared platforms into transitional-service terms and separation costs; Zillow Offers wound down in November 2021. The evidence is uneven: Adevinta published a great deal, eBay Classifieds almost nothing as a group, and AVIV no engineering material at all.",
+    "supporting_claims": [
+      {
+        "id": "P9I-1",
+        "claim": "Part IX's cases are read under stricter evidence rules than Parts I–VIII: every statement is a dated fact, the author's reading or a labeled inference, the depth of each case follows its evidence, and Veldmark appears only in each case's final comparison."
+      },
+      {
+        "id": "P9I-2",
+        "claim": "The six cases are read from whole groups to single verticals, starting with Adevinta, and each is the one to open for a recognizable decision."
+      },
+      {
+        "id": "P9I-3",
+        "claim": "Read side by side, the six records give the part's three lessons: share the uniform layers and treat product convergence as a separate bet, design every shared dependency to survive a change of owner, and carry the vertical lessons in contracts and models."
+      },
+      {
+        "id": "P9I-4",
+        "claim": "The cases test the chapters the book's argument rests on and Veldmark's 2027 choices, without extending the scenario, and the toolkit turns the book's decisions into templates."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the three lessons the record gives, sets the evidence rules the cases follow, gives the reading order of the six cases and names the Veldmark choices they test.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "p06 and the chapter table: three multi-country groups (Adevinta, OLX, eBay Classifieds), then real estate (AVIV, the property portals), then automotive"
+      }
+    ],
+    "rationale": "The page opens on the argument the book closed and the question Part IX puts to it, then sets the evidence rules before any case is named, because every row that follows is a dated fact and the reader must know how to weigh it. It narrows to the six cases in reading order with the decision that sends a reader to each, then sets them side by side so the three lessons of the KEY POINTS can be read across the rows. It then shows, in one place, where the fictional Veldmark appears and the 2027 choices the cases hold against the record, widens once to the chapters the cases test and the toolkit, and ends with a short synthesis, the part's three-way test and the hand-off to Adevinta. Put the comparison before the chapter table and its rows arrive before the reader knows the cases; put the evidence rules after the tables and their dated facts are read before the reader knows what a date means; split Veldmark's place from its choices and the reader meets the fiction twice, far apart (both round-3 flow readers); put Veldmark before the cases and the fiction is met before the real record it is tested against."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Long-term-evolution closed the argument of this book. Part IX asks whether it survives contact with what real groups did."
+    },
+    "bridge": {
+      "from_reader_world": "Veldmark, the fictional group whose decisions showed how the argument plays out but not that it is right.",
+      "to_topic": "Groups that bought, merged, shared, sold and retreated in public, each case asking what was shared, at which layer and what it cost when the strategy changed."
+    },
+    "thesis_statement": {
+      "text": "Whether the argument survives contact with what real groups did; the three lessons the record gives.",
+      "placement": "KEY POINTS callout; paragraph p01 (bold phrase)"
+    },
+    "roadmap": {
+      "placement": "IN THIS PART callout; paragraph p02; the section headings",
+      "promises": [
+        {
+          "promise": "The evidence rules first.",
+          "kept_in": [
+            "read"
+          ]
+        },
+        {
+          "promise": "The six cases in reading order.",
+          "kept_in": [
+            "chapters"
+          ]
+        },
+        {
+          "promise": "The six side by side.",
+          "kept_in": [
+            "side"
+          ]
+        },
+        {
+          "promise": "The Veldmark choices the cases test.",
+          "kept_in": [
+            "veldmark"
+          ]
+        },
+        {
+          "promise": "Links to the rest of the book.",
+          "kept_in": [
+            "connects"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Long-term-evolution closed the book's argument and Veldmark showed how it plays out, not that it is right, so Part IX asks whether the argument survives contact with what real groups did, each case asking what was shared, at which layer and what it cost when the strategy changed.",
+        "function": "context"
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The page sets the evidence rules first, then gives the six cases in reading order and side by side, the Veldmark choices they test and their links to the rest of the book, and ends with where to begin.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The question Part IX asks and the three questions each case asks.",
+          "introduces": "The order in which the page answers it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "read",
+      "heading": "How to read the cases",
+      "controlling_idea": "The cases follow stricter evidence rules than Parts I–VIII: three kinds of statement, and depth that follows the evidence.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "P9I-1"
+        ],
+        "how": "Sets the three kinds of statement and says the evidence is uneven, so the depth of each case follows its evidence."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first promise, the evidence rules.",
+        "introduces": "The three kinds of statement.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The rule for every statement first, then how much evidence each case has."
+      },
+      "paragraphs": [
+        {
+          "id": "p03",
+          "controlling_idea": "Every statement in Part IX is one of three kinds: a documented fact with its source and year, the author's interpretation, or a reference-architecture inference in a labeled callout.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Three rows: documented fact (source and publication year in the sentence or timeline; 'true at the date of its source, and no later'); the author's interpretation ('my reading', or the Chief Architect's view, glossed as a section near the end of each case); reference-architecture inference (only in a callout labeled INFERENCE, NOT DOCUMENTED; how a group could be built, never how it is).",
+              "shows": "How a reader recognizes each kind of statement in a case."
+            }
+          ]
+        },
+        {
+          "id": "p04",
+          "controlling_idea": "The evidence is uneven and each case says where it stops, so the depth of each section follows the evidence, not the importance of the company.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Adevinta published a great deal, eBay Classifieds almost nothing as a group, and AVIV no engineering material at all.",
+              "shows": "Why some cases are thinner than the company's importance would suggest."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The kinds of statement a case may make.",
+            "introduces": "How much documented fact each case has.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "The six cases run from whole groups to single verticals, starting with Adevinta, and each is the one to open for a recognizable decision.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P9I-2"
+        ],
+        "how": "Gives the reading order with its reason and one row per case with its question and when to read it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The evidence rules every case follows.",
+        "introduces": "The six cases in reading order.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Under the evidence rules, the cases run from whole groups to single verticals (the groups Adevinta, OLX and eBay Classifieds, then real estate with the fourth group, AVIV, and the property portals, then automotive), and Adevinta comes first because its case is the first to ask the opening's three questions, which every later case asks again.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six rows in reading order: case-adevinta (deciding what a group platform should share), case-olx (weighing an inventory or transactional bet, glossed as owning the stock or taking part in the sale), case-ebay-classifieds (a brand may be sold, or a parent may leave), case-aviv (integrating acquired national portals), case-property-portals (models start to price, not describe), case-automotive (most supply arrives through vendor feeds), each with the question it answers.",
+              "shows": "The reader can go from the decision in front of them to the case that speaks to it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "heading": "The cases side by side",
+      "controlling_idea": "Read across, the six records give the part's three lessons.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "P9I-3"
+        ],
+        "how": "One row per case with its platform strategy, what the public record shows and the lesson, and a figure of the common lesson."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The six cases, one at a time.",
+        "introduces": "The six read across one another.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "Read across, the six rows give three lessons: share the uniform layers before the product, design every shared dependency to survive a change of owner, and carry the vertical lessons in contracts and models.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Company | platform strategy | what the public record shows | lesson, for Adevinta (selective centralization 2019, product convergence 2023, decentralization 2025; no public source shows the 2023 convergence completed), OLX Group (45 markets in 2018 to seven in the FY to March 2026; OLX Autos exited from 2023), eBay Classifieds (thin shared layer; sale completed June 2021 with transitional services), AVIV Group (2021 integration intent of unpublished scope; by December 2025 local autonomy with group functions where they 'create clear advantages'), property portals (four portals, with engines per advertiser, per listing or per lead; Zillow Offers wound down November 2021; supply licensed from MLSs and agents), automotive (feed contracts, change feeds and five-band price ratings in public).",
+              "shows": "Each lesson rests on dated public facts from at least one case."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: a building cross-section with solid shared lower floors, separate local product modules on top, a faded abandoned merged top floor, and one module lifted off cleanly by a crane.",
+              "shows": "The common lesson: shared uniform layers held up, product convergence was the riskier bet, and every shared dependency had to let a tenant leave."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "The Veldmark thread",
+      "controlling_idea": "Veldmark appears only in each case's final comparison, where Ingrid Halvorsen's team holds four 2027 choices against the record; the cases test the scenario and do not extend it.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "P9I-1",
+          "P9I-4"
+        ],
+        "how": "Says where Veldmark appears and why only there, and names the four Veldmark choices the cases' final comparisons test."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The six cases and the lessons they hold against the record.",
+        "introduces": "The fictional group the cases also test, and where it appears.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "The cases also test Veldmark, the book's fictional group, and it appears only in each case's final comparison, so the fiction is not read as a disguised real group and the real record is not stretched to fit the fiction.",
+          "function": "explanation"
+        },
+        {
+          "id": "p09",
+          "form": "list",
+          "controlling_idea": "In that final comparison Ingrid Halvorsen's team holds four 2027 choices against the record; the cases do not extend the scenario.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "'share platforms, not products' in Common Ground, every shared capability tenant-separable from its first release; the shared OpenSearch platform for Tradeyard and Hearthly (decided 14 September 2027), with Motorvane on Elasticsearch until a 2029 review; Supply Contract v1 (September 2027), one contract and validator for the group, adapters brand-local; 'Hearthly Direct' declined in 2027 as a commit-tier use of Valuo without validation.",
+              "source": "_research/scenario-ledger.md: Common Ground program (principle 'share platforms, not products'); industry-evolution line (March 2027 decision record: every Common Ground platform needs tenant-scoped data and a documented exit path); timeline 14 Sep 2027 (OpenSearch; Motorvane stays on Elasticsearch until a 2029 review); listing-ingestion line (Sep 2027 Supply Contract v1; adapters stay brand-local); ml-platform line ('Hearthly Direct' declined in 2027 as a commit-tier use without validation).",
+              "shows": "Each choice is one the cases test: sharing beneath the product, separability, a published supply contract, and governing a model by the decision it drives."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The final comparison where Veldmark appears.",
+            "introduces": "The four 2027 choices tested there.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Where Veldmark appears and why only there, then the four choices tested in that place."
+      }
+    },
+    {
+      "id": "connects",
+      "heading": "How this part connects",
+      "controlling_idea": "Each case links back to the chapters it tests and ends with a verdict table, and the toolkit then turns the book's decisions into templates.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "P9I-4"
+        ],
+        "how": "Names the chapters the cases test and the part that follows."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "The final comparison where Veldmark appears, which also holds each case's verdict table.",
+        "introduces": "Where the cases sit in the book: the chapters they test and the toolkit after them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Each case links back to the chapters it tests, chiefly multi-country-platforms, platform-consolidation, ml-platform and listing-ingestion, and ends with a verdict table in the same final comparison where Veldmark appears; the toolkit then turns the book's decisions into templates.",
+          "function": "context"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to begin",
+    "synthesis": "Read together, the cases show the argument surviving at the shared layers, in the supply contracts and in governed models, and the public record stopping short of the product layer.",
+    "so_what": "A reader can then say which of the book's patterns the public record supports, which it only fails to contradict, and where it is silent, and cite each at that strength.",
+    "callback": {
+      "to": "The opening (p01): whether the argument survives contact with what real groups did.",
+      "how": "The closing paragraph says where it survives and where the record stops."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "By the end of Part IX, say which of the book's patterns the public record supports, which it only fails to contradict, and where it is silent; begin with case-adevinta."
+    },
+    "hand_off": {
+      "to": "case-adevinta",
+      "relationship": "example",
+      "carries_over": "The part introduction's first key point, share the uniform layers and treat product convergence as a separate, riskier bet, with Adevinta's 2023 plan named as the convergence reversed by 2025; its evidence rules; and its instruction to begin with case-adevinta.",
+      "introduces": "The first and best-documented instance: one group's full swing from federation to shared platform and back, read phase by phase for what was shared, at which layer and at what cost."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The evidence rules, the six cases, their lessons, the Veldmark choices they test and the chapters they test.",
+      "introduces": "What the cases show together, the part's three-way test, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p10",
+        "controlling_idea": "Read together, the cases show the argument surviving at the shared layers, the supply contracts and governed models, and the record stopping short of the product layer, so by the end of Part IX the reader can say which patterns the record supports, which it only fails to contradict and where it is silent; the reader begins with case-adevinta.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-telling any case, or adding company facts not already sourced and dated in the case pages.",
+      "covered_in": [
+        "case-adevinta",
+        "case-olx",
+        "case-ebay-classifieds",
+        "case-aviv",
+        "case-property-portals",
+        "case-automotive"
+      ]
+    },
+    {
+      "topic": "New Veldmark decisions: Part IX tests the scenario, it does not extend it."
+    },
+    {
+      "topic": "External sources on this page; every company fact is taken from a case page's KEY POINTS or lead, where it is sourced and dated."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled on the Part II intro, with two additions the other part intros do not need: an evidence-reading table and a cross-case comparison table. Body runs near the 800-word ceiling as a result."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Failure patterns limited to Deal-Shaped Architecture, The Forced Fit and Set-and-Forget AI, the three that recur most across the six cases."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "No Sources section; every company fact in the intro is taken from a case page's KEY POINTS or lead, where it is sourced and dated."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, how-to-read, chapter-table, cross-case-table, connection, Veldmark-facts and hand-off/word-count criteria were inventories of contents or format and are dropped (format stays governed by the style guide; company facts by the case pages; Veldmark facts by the ledger; the hand-off is now conclusion.hand_off; the word count is length.max_words). They are replaced by the journal spec's AC-1 to AC-3 and one added minor criterion, AC-4 (where Veldmark appears and why, and what the cases do with its choices), which tests the how-to-read and Veldmark units.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims P9I-1 to P9I-4 written here, since the journal spec's entry for this post has none: the question is the entry's question; the claim condenses the part thesis to what this page argues (the three lessons, the evidence rules and the reading order). For the author to confirm.",
+      "rejected": [
+        "Copying the part thesis whole, which this page summarizes but does not argue."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: max_words 1,000 by check_draft's count (the old spec's 'about 800 words of body' was prose without callouts), as for the other part introductions. The published page already counted 1,018 by it; with the units added for the contract it counts more. No published fact, company name, date, link or Veldmark detail was cut to fit: the page is over the limit and the author decides."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units added so the page carries the part opening, in the shape the Part II to VII introductions share: a bridge sentence in p01 ('Veldmark showed how that argument plays out, not that it is right', from the journal spec's opening bridge), a roadmap paragraph (p02), a lead-in to the chapter table with the reading order and its reason (p06, from the part flow), a lead-in to the side-by-side table (p07), and a closing paragraph under a new 'Where to begin' heading (p10) with synthesis, callback and hand-off, grown from the published 'By the end of Part IX… Begin with [[case-adevinta]].' No statement about a real company was added. For the author to confirm.",
+      "rejected": [
+        "Keeping the part's test and the hand-off as the last line of the Veldmark section, which leaves the page without a conclusion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric: pass on all four questions; minor notes in open_questions. Flow rubric: sound with notes. Taken: p07 (side-by-side lead-in) now states the three lessons instead of pointing to the KEY POINTS, so the conclusion's synthesis draws them together rather than introducing them. Order unchanged, so no transition_in rewritten.",
+      "rejected": [
+        "Adding the three-way test to the how-to-read section (open_questions).",
+        "Merging 'How this part connects' into the chapters section (open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1: REVISE (pass 54, fail 13: length, seven corroborated flow failures, five minor). Revised, all fault draft: p06 says 'the three questions above'; p02 now says the page ends with where to begin; IN THIS PART groups the six cases as four groups and two cases that each cover several marketplaces (no name, date or fact changed); KEY POINTS names the two generalist platforms as leboncoin and Kleinanzeigen (the published wording of case-adevinta's KEY POINTS and the journal spec's AC-3 expected answer); FAILURE PATTERNS names the four group cases (Adevinta, OLX, eBay Classifieds, AVIV) as the four portfolios assembled by acquisition (the author's published 'four of the six' read as the four group cases; for the author to confirm); the property-portals strategy cell reads 'Four portals, with engines per advertiser, per listing or per lead' (it said four engines and listed three; case-property-portals' section 'Four Portals, Four Economic Engines' has four portals, Idealista's undisclosed); the Veldmark OpenSearch bullet puts '(decided 14 September 2027)' with the decision (ledger timeline 14 Sep 2027). For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2: REVISE (pass 28, fail 7: length, one transition, three corroborated flow failures, one corroborated known_before_new; one minor). Revised, all in units p06 and p08: p06 opens 'Under these rules' (carries over the evidence rules), names the grouping by case (the groups Adevinta, OLX and eBay Classifieds, then real estate with AVIV Group and the property portals, then automotive) instead of 'three multi-country groups', and spells out the three questions; the case-olx row glosses 'inventory or transactional bet' as 'owning the stock, or taking part in the sale'; p08 says the verdict table sits in the same final comparison where Veldmark appears (each case's section 'Comparing the Case to the Book's Patterns and to Veldmark'). No name, date or company fact changed. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3: ESCALATE (pass 29, fail 10; six blocking: length, one transition, three corroborated flow failures of which one is a spec fault, one corroborated known_before_new; four minor). No fourth round. Cheap, plainly right fixes applied afterwards, in p03, p06 and p09 only: the Veldmark thread opens 'The cases also test Veldmark, ...; they do not extend it' (was 'Veldmark, ..., is tested here, not extended'; link and all four choices unchanged); p06 names AVIV as the fourth group opening real estate and says Adevinta's case is the first to ask the opening's three questions (instead of spelling them out again); the evidence table glosses 'the Chief Architect's view' as 'a section near the end of each case' (all six cases have a section of that name). These edits make check-report.json stale by hash. The spec-fault order point and the length are left to the author (open_questions)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length: max_words raised from 1,000 to 1,250 under the author's delegation (\"auto resolve all ESCALATE topics\"). The published page already exceeded the part-intro norm (1,018 words by check_draft's count before any contract unit was added); the contract units, glosses and clarifications bring it to 1,239. Cutting published company statements, Veldmark details or links to fit is not allowed, so the limit moves instead.",
+      "rejected": [
+        "Cutting published text to meet 1,000.",
+        "Waiving the length check."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order (spec fault, corroborated by both round-3 flow readers): the Veldmark material is put together. p05 (where Veldmark appears and why only there) moves out of 'How to read the cases' to open 'The Veldmark thread', and the thread moves before 'How this part connects', so the verdict-table sentence in p08 ('the same final comparison where Veldmark appears') now points back to the section just read. The thread supports P9I-1 as well as P9I-4; transitions rewritten for veldmark (similarity, from the cases' lessons), p09 (elaboration, 'There, ...'), connects (place, from the final comparison); roadmap promises and p02 reordered; the published p05 sentences kept verbatim, joined to the thread's opening. No journal-spec expected answer is affected (AC-4 is a post criterion and its expected answer still holds).",
+      "rejected": [
+        "Moving only the thread before 'How this part connects' (leaves p05 in the evidence section, still apart from the choices).",
+        "Folding p05 into the thread but leaving the thread after 'How this part connects' (p08 would then refer forward to Veldmark's place)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Wording changes to published text, accepted under the author's delegation, 2026-11-12: the bridge sentence in p01 and roadmap p02; IN THIS PART grouping as four groups and two multi-marketplace cases; leboncoin and Kleinanzeigen named as the two generalist platforms; the property-portals strategy cell ('Four portals, with engines per advertiser, per listing or per lead'); '(decided 14 September 2027)' placed with the OpenSearch decision (ledger timeline 14 Sep 2027); the case-olx row gloss; p06 lead-in with AVIV as the fourth group; the Chief Architect's view gloss; the verdict-table sentence in p08; the Veldmark thread opening; the 'Where to begin' heading and closing paragraph. FAILURE PATTERNS 'The four group cases (Adevinta, OLX, eBay Classifieds, AVIV)' for the published 'Four of the six cases' is kept: exactly those four case pages (case-adevinta, case-olx, case-ebay-classifieds, case-aviv) list Deal-Shaped Architecture in their own FAILURE PATTERNS as acquisition-built portfolios, and case-property-portals and case-automotive do not."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis and supporting claims P9I-1 to P9I-4 written here (the journal spec gives this post none), accepted under the author's delegation, 2026-11-12. The thesis-rubric minor notes (disputed_by phrasing, a long claim, near-synonymous 'only up to the product layer' and 'a separate, riskier bet', P9I-4 without a clause in the claim, 'uniform layers' as book jargon) are recorded and not acted on: the thesis states nothing the page or ledger contradicts."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken, kept as decided (rule: keep the published text where no option is clearly better): the three-way test stays in the conclusion only; 'How this part connects' stays a section (structure shared by all part intros); the post-level label large_to_small stays, with the rationale saying where the page widens. Round-3 one-reader minors ('Under these rules', the case-olx 'Read it when' cell, the pointer only in the last sentence under 'Where to begin', the three lessons restated in several places) are recorded and not acted on; the 'same final comparison' minor is resolved by the move above."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-9 and its post entry part-9; the entries for long-term-evolution and case-adevinta)",
+      "contributed": "Intent outcome, AC-1 to AC-3 and role (post entry); the part's opening (hook, bridge, roadmap), thesis and flow; the first case's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "config.yaml, PLAN.md, and the KEY POINTS, leads, 'How to Read This Case' and Veldmark comparison sections of case-adevinta, case-olx, case-ebay-classifieds, case-aviv, case-property-portals and case-automotive",
+      "contributed": "Every company fact on the page, the evidence rules and the questions each case answers."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md; _research/consistency-issues.md items 18 and 25 (AVIV wording)",
+      "contributed": "Every Veldmark figure and date; the AVIV reading."
+    },
+    {
+      "kind": "internal",
+      "ref": "posts/part-9-intro/spec.md (accepted 2026-10-21, removed 2026-11-12)",
+      "contributed": "Non-goals, decision log, sources and changelog carried over."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: max_words 1,000 → 1,250; Veldmark material put together (p05 moved into the thread, thread moved before 'How this part connects'); roadmap reordered; open questions moved to the decision log. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); bridge sentence in p01, roadmap paragraph p02, table lead-ins p06 and p07, closing 'Where to begin' p10; after draft checks: case grouping, two platforms named, four group cases named, property-portal cell, OpenSearch date placement, OLX row gloss, verdict table tied to the final comparison, Chief Architect's view glossed, Veldmark thread opening. Round 3 ESCALATE (length; Veldmark section order). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 593 → 600 prose words; no headings renamed or sections moved; first sentence of 'How to read the cases' now states the three kinds of statement. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 1 inline illustration (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: AVIV reading softened per consistency-issues item 25 in key points, failure patterns and the comparison table. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 1250
+  }
+}

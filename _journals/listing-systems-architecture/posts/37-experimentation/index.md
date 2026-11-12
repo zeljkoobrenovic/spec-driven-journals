@@ -34,9 +34,11 @@ When SUTVA fails, the difference between treatment and control is not the effect
 
 [[data-platform]] gave Veldmark one definition of a contact and a log of exposures. This chapter asks the next question: did a change cause the movement? The answer decides which ranking, pricing and paid-product changes ship, and a wrong answer spends liquidity on changes that only looked like wins. [[ranking]], [[recommendations]], [[monetization-models]] and [[ml-platform]] send their changes here to be tested. The chapter owns three terms: **interference**, **cluster randomization** and **guardrail metric**. Offline evaluation of models belongs to [[ranking]] and [[ml-platform]].
 
+The chapter follows the Veldmark price test, then covers the terms, interference and the designs that contain it, metrics and guardrails, ranking and price experiments, the platform's four contracts, Veldmark's standard and retest, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. It draws on published marketplace research, Adevinta, eBay, OLX and Zalando, EU consumer law and Veldmark.
+
 ## Setting the Scene at Veldmark: The Bump That Ate Itself
 
-Veldmark is the fictional marketplace group this book follows (see [[meet-veldmark]]). In January 2027 Olivier Petit, VP Monetization, proposed a price test for Tradeyard Netherlands. A **bump**, the paid product that re-dates a listing so it reappears near the top of newest-first results ([[ranking]] describes the mechanics), cost €2.49. Olivier's hypothesis was that the bump was overpriced for low-value goods: many sellers of a €40 lamp or a €240 city bike would bump if it cost less, and volume would more than compensate.
+A test at Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), shows such a transfer. In January 2027 Olivier Petit, VP Monetization, proposed a price test for Tradeyard Netherlands. A **bump**, the paid product that re-dates a listing so it reappears near the top of newest-first results ([[ranking]] describes the mechanics), cost €2.49. Olivier's hypothesis was that the bump was overpriced for low-value goods: many sellers of a €40 lamp or a €240 city bike would bump if it cost less, and volume would more than compensate.
 
 The test ran from Monday 1 February to Sunday 28 February 2027. Half of Tradeyard NL's private sellers, chosen at random by account, saw a bump price of €1.99; the other half saw €2.49. The results looked decisive:
 
@@ -60,7 +62,7 @@ The rest of this chapter is the platform and the method Veldmark built so that t
 
 ## Concepts: What an Experiment Must Get Right
 
-An **online controlled experiment** randomly assigns units (users, sellers, listings, regions, time periods) to variants, exposes them to the variant's experience, measures outcomes, and attributes the difference to the variant. The standard reference, Kohavi, Tang and Xu's *Trustworthy Online Controlled Experiments* ([Cambridge University Press, 2020](https://experimentguide.com/)), covers the general practice. Five terms carry the marketplace-specific argument.
+Explaining what went wrong in the bump test, and building a platform that would have caught it, needs a few precise terms. An **online controlled experiment** randomly assigns units (users, sellers, listings, regions, time periods) to variants, exposes them to the variant's experience, measures outcomes, and attributes the difference to the variant. The standard reference, Kohavi, Tang and Xu's *Trustworthy Online Controlled Experiments* ([Cambridge University Press, 2020](https://experimentguide.com/)), covers the general practice. Five terms, including the three this chapter owns, carry the marketplace-specific argument.
 
 | Term | Definition | Why it matters in a marketplace |
 | --- | --- | --- |
@@ -72,53 +74,9 @@ An **online controlled experiment** randomly assigns units (users, sellers, list
 
 The **primary metric** (or overall evaluation criterion) is the one metric a test is designed and powered to move; choosing it before the test starts is the main protection against picking the metric that happened to win. **Exposure** is the moment a unit encounters the treatment, which is often much later than assignment: a seller assigned to a new bump price is exposed only when the price is shown.
 
-## Architecture: The Four Contracts
-
-An experimentation platform has four components. Each is simple; the hard part is making them agree on units, timestamps and definitions.
-
-![Diagram: The four contracts of an experimentation platform](assets/images/37-experimentation/fig02-four-contracts-experimentation-platform-registry-fixes.jpeg)
-**Figure 2:** *The four contracts of an experimentation platform. The registry fixes unit and metrics before launch; assignment and exposure share a unit identifier; metrics come from the governed layer; the analysis engine checks the experiment's health before it reports an effect.*
-
-### 1. Assignment
-
-The **assignment service** decides, deterministically, which variant a unit receives. The usual mechanism is a hash of the unit identifier and an experiment-specific salt, mapped to buckets; deterministic hashing means any service can compute the assignment without a lookup and the same unit always gets the same variant. Three marketplace requirements go beyond what generic tools offer.
-
-- **Several unit types.** The service must assign by buyer, by seller account, by listing, by cluster (a region × category cell from a published cluster map) and by time slot. A platform that knows only users and devices forces every experiment into the design that marketplaces most need to avoid.
-- **Layers for mutual exclusion.** Experiments that touch the same mechanism (two ranking changes, a ranking change and a bump-price change) must run in the same layer, so that a unit is in at most one of them, or be analyzed for interaction. Veldmark learned this the hard way: the September 2027 ranking-policy experiment in [[ranking]] and a bump-price retest could not share Tradeyard NL's clusters.
-- **Server-side evaluation for anything priced or ranked.** Assignment for prices, fees and ranking runs in the back end, never in the client, so a seller cannot see a different price by reinstalling the app and the treatment can be enforced where the money moves.
-
-### 2. Exposure logging
-
-The **exposure log** records when a unit encountered its variant. It is the `experiment_exposure` event defined in [[data-platform]]: experiment ID, variant, unit type and unit ID, time. Analyses should be restricted to exposed units (with the assignment as the randomization), because including the many assigned units that never reached the changed surface dilutes the effect. In marketplaces, exposure is two-sided. A ranking change exposes buyers who saw the page **and** sellers whose listings were moved; a test that logs only buyer exposure cannot compute seller-side outcomes.
-
-### 3. Metrics
-
-Experiments should consume the **governed metrics** of [[data-platform]], computed by the same code as the board pack, with experiment-specific metrics added in the registry. Shared code keeps tests and the business aligned. When the primary metric of a ranking test is "qualified contacts per searcher" and the board steers on "qualified contacts per live listing", both must use the same definition of a contact, including the 72-hour fraud restatement; otherwise a ranking change that surfaces scam-prone listings could win a test and lose the business.
-
-### 4. The analysis engine
-
-The **analysis engine** turns exposures and metric values into effects, intervals and decisions. Four capabilities separate a trustworthy engine from a dashboard.
-
-| Capability | What it does | Evidence |
-| --- | --- | --- |
-| **Sample ratio mismatch (SRM) check** | Tests whether the observed split matches the designed split; a mismatch means broken assignment or logging, and the result should not be read | Zalando's platform added SRM alerts after early analyses were corrupted ([Zalando Engineering, 2021](https://engineering.zalando.com/posts/2021/01/experimentation-platform-part1.html)) |
-| **Variance reduction** | Uses pre-experiment data to remove predictable variation; CUPED reduced variance by about 50% at Bing, "effectively achieving the same statistical power with only half of the users, or half the duration" | [Deng, Xu, Kohavi and Walker, WSDM 2013](https://exp-platform.com/Documents/2013-02-CUPED-ImprovingSensitivityOfControlledExperiments.pdf) |
-| **Valid early looks** | Sequential methods give p-values and intervals that stay valid when results are checked continuously | "Always valid" inference ([Johari, Pekelis and Walsh, 2015, revised 2019](https://arxiv.org/abs/1512.04922)); safe testing on 162 Vinted experiments needed fewer samples than classical tests ([Beasley, 2023](https://arxiv.org/abs/2310.20450)) |
-| **Cluster-aware inference** | Computes uncertainty at the randomization unit (cluster or time slot), not per user | Required for every design in the next section |
-
-The Vinted study adds a marketplace-specific nuance: agreement between sequential and classical tests was lower for long-delay metrics such as transactions and cancellations than for searches and sessions ([Beasley, 2023](https://arxiv.org/abs/2310.20450)). Contacts, sales and seller retention are exactly those delayed metrics, so **early stopping should be allowed on guardrails that signal harm, and used with care on the primary metric**.
-
-### What the documented classifieds platforms show
-
-Adevinta has published the most complete record of a classifieds group's experimentation platform. In 2021 its 22 marketplaces used ten different A/B testing tools; the 2024 account says this setup brought "inefficiencies, redundancy and escalating costs", and describes a cross-functional working group, a scoring matrix asking whether a tool would "support our needs in 3-5 years", and a hybrid decision: build the in-house platform and use a third-party tool in some marketplaces during the transition ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/from-ten-to-one-streamlining-experimentation-tooling-at-adevinta/)). A 2023 benchmark of 21 companies by experiments per tech full-time employee placed Adevinta in the "crawling" band and concluded that it should "keep building" its platform, Houston ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/benchmarking-on-experimentation-tooling/)).
-
-The statistics came from one marketplace. Fisher, a Python analysis package built at Marktplaats with CUPED and multiple-testing corrections, was used in more than 90% of Marktplaats experiments within a year, cutting hands-on analyst time to about three hours per experiment, and Nightingale, built on Fisher, was positioned to become the engine for all of Houston's statistical calculations ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/how-we-matured-fisher-our-a-b-testing-package/)). Adevinta also described computing results incrementally with Kafka Streams, keeping user-level aggregates and updating means and variances with a weighted Welford algorithm, so that rollout problems are visible in near real time without re-reading billions of events ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/an-alternative-approach-to-a-b-test-results-calculation-streaming/)). All of these posts predate Adevinta's 2025 decentralization; whether Houston remains a group platform is not public.
-
-My reading of that path is the first key point's recommendation: **centralize the statistics and the metric definitions before the user interface and the flag tooling.** Two marketplaces using different flag systems but the same engine and the same contact metric produce comparable results; two marketplaces using the same tool with different metric code do not.
-
 ## Interference: Why Marketplace Tests Report the Wrong Number
 
-Interference in a listing marketplace comes from three mechanisms, and each suggests a different design.
+The bump test is one case of interference, which in a listing marketplace comes from three mechanisms, and each suggests a different design.
 
 | Mechanism | Example | What a naive test measures |
 | --- | --- | --- |
@@ -126,19 +84,19 @@ Interference in a listing marketplace comes from three mechanisms, and each sugg
 | **Competition for scarce supply** | A ranking change sends treated buyers to the best Lyon apartments sooner; control buyers find them taken | Treated buyers' gain, which includes the listings control buyers lost |
 | **Market-level responses** | A price badge or price hint shifts asking prices, so the comparison set changes for everyone | Neither group's effect; the market is not the one that will exist at rollout |
 
-Johari, Li, Liskovich and Weintraub analyzed the first two mechanisms formally. In their model, randomizing customers is unbiased when the market is demand-constrained (buyers are scarce relative to listings, so treated and control buyers rarely compete for the same listing) and biased when it is supply-constrained; randomizing listings shows the reverse; and **two-sided randomization**, which treats a buyer-listing interaction only when both are treated and compares the four cells, can be close to unbiased at both extremes ([Johari et al., 2020, revised 2021](https://arxiv.org/abs/2002.05670)). The practical reading for marketplaces is that **the bias depends on which side is scarce, and that differs by category and city**: buyers are scarce for second-hand furniture in a small town and listings are scarce for rentals in central Barcelona.
+Johari, Li, Liskovich and Weintraub analyzed the first two mechanisms formally. In their model, randomizing customers is unbiased when the market is demand-constrained (buyers are scarce relative to listings, so treated and control buyers rarely compete for the same listing) and biased when it is supply-constrained; randomizing listings shows the reverse; and **two-sided randomization**, which treats a buyer-listing interaction only when both are treated and compares the four combinations of treated or control buyer and treated or control listing, can be close to unbiased at both extremes ([Johari et al., 2020, revised 2021](https://arxiv.org/abs/2002.05670)). The practical reading for marketplaces is that **the bias depends on which side is scarce, and that differs by category and city**: buyers are scarce for second-hand furniture in a small town and listings are scarce for rentals in central Barcelona.
 
-The bias can be large. In a 2020 meta-experiment on Airbnb's pricing tools, Holtz, Lobel, Liskovich and Aral ran the same treatment under listing-level randomization and under cluster randomization of listings, and estimated that "32.60% of the Bernoulli-randomized treatment effect estimate is due to interference bias", which they describe as a lower bound ([Holtz et al., 2020](https://arxiv.org/abs/2004.12489)). Airbnb is a booking marketplace, not a classifieds site, but the mechanism, listings competing for the same guests, is the same one that undid Veldmark's bump test.
+The bias can be large. In a 2020 meta-experiment on Airbnb's pricing tools, Holtz, Lobel, Liskovich and Aral ran the same treatment under listing-level randomization and under cluster randomization of listings, and estimated that "32.60% of the Bernoulli-randomized treatment effect estimate is due to interference bias" (Bernoulli-randomized meaning listing by listing), which they describe as a lower bound ([Holtz et al., 2020](https://arxiv.org/abs/2004.12489)). Airbnb is a booking marketplace, not a classifieds site, but the mechanism, listings competing for the same guests, is the same one that undid Veldmark's bump test.
 
 ![Diagram: How the bump test misled](assets/images/37-experimentation/fig03-how-bump-test-misled-under-seller.jpeg)
-**Figure 3:** *How the bump test misled. Under seller randomization, treatment sellers gained partly at control sellers' expense; at full rollout there was no one left to take from, and the transfer turned into congestion.*
+**Figure 2:** *How the bump test misled, by the same mechanism as Airbnb's listings. Under seller randomization, treatment sellers gained partly at control sellers' expense; at full rollout there was no one left to take from, and the transfer turned into congestion.*
 
 ## Designs for Two-Sided Markets
 
 Each design trades bias for power, cost or speed; the right one depends on the mechanism the change works through.
 
 ![Six tiles showing randomization by buyer, listing, buyer-listing pair, region-by-category cluster, time slot and city.](assets/images/37-experimentation/randomization-units-gallery.jpeg)
-**Figure 4:** *Each design splits the market along a different unit; the coarser the unit, the more interference it contains inside and the fewer units it leaves to learn from.*
+**Figure 3:** *Each design splits the market along a different unit; the coarser the unit, the more interference it contains inside and the fewer units it leaves to learn from.*
 
 ### Listing-side or seller-side randomization
 
@@ -164,7 +122,7 @@ Alternate the whole market (or a region) between variants over time slots, and c
 
 ### Geographic experiments
 
-Assign whole cities or countries, a coarse form of clustering. It suits market-level changes such as fees, policies or TV campaigns, but with so few units that the analysis relies on synthetic-control or difference-in-differences methods and on matched markets. Treat their results as estimates with wide uncertainty, not as A/B tests.
+Assign whole cities or countries, a coarse form of clustering. It suits market-level changes such as fees, policies or TV campaigns, but with so few units that the analysis relies on synthetic-control or difference-in-differences methods (a weighted mix of untreated cities as the comparison) and on matched markets. Treat their results as estimates with wide uncertainty, not as A/B tests. The table below compares the six designs: coarser units mean less interference and less power.
 
 | Design | Bias from interference | Power | Implementation cost | Fits |
 | --- | --- | --- | --- | --- |
@@ -176,15 +134,15 @@ Assign whole cities or countries, a coarse form of clustering. It suits market-l
 | Geographic | Low | Very low | Low to medium | Fees, policies, campaigns |
 
 ![Diagram: Choosing a randomization unit](assets/images/37-experimentation/fig05-choosing-randomization-unit-first-question-whether.jpeg)
-**Figure 5:** *Choosing a randomization unit. The first question is whether the change works by reallocating something units compete for; if it does, user-level randomization is the wrong default.*
+**Figure 4:** *Choosing a randomization unit. The first question is whether the change works by reallocating something units compete for; if it does, user-level randomization is the wrong default.*
 
-### Interleaving: power for ranking models
+### Interleaving: a ranking-model method, not a design
 
-For comparing two ranking models on the same traffic, **interleaving** merges both rankers' results on one page and credits each contact to the ranker that contributed the listing. Airbnb reported in 2025 that interleaving and counterfactual methods increased experiment sensitivity by up to 100×, depending on method and metric ([Zhang et al., 2025](https://arxiv.org/abs/2508.00751v1)). Because both rankers serve the same buyer on the same page, interleaving sidesteps buyer-side interference for model comparisons. It does not answer policy questions such as how many paid slots to show, whose effect is on the whole page; [[ranking]] uses it to pick candidates and a cluster test to decide policy.
+Interleaving is not a seventh way to split the market: it splits nothing. For comparing two ranking models on the same traffic, **interleaving** merges both rankers' results on one page and credits each contact to the ranker that contributed the listing. Airbnb reported in 2025 that interleaving and counterfactual methods increased experiment sensitivity by up to 100×, depending on method and metric ([Zhang et al., 2025](https://arxiv.org/abs/2508.00751v1)). Because both rankers serve the same buyer on the same page, interleaving sidesteps buyer-side interference for model comparisons. It does not answer policy questions such as how many paid slots to show, whose effect is on the whole page; [[ranking]] uses it to pick candidates and a cluster test to decide policy.
 
 ## Metrics: Liquidity First, Revenue Second, Both Watched
 
-The choice of primary metric decides what a marketplace learns to do. Revenue is the easiest primary metric to defend in a monetization review and the most dangerous one to optimize alone, because a marketplace can raise revenue for months by spending liquidity it will need later.
+Once the design fixes the unit, the choice of primary metric decides what a marketplace learns to do. Revenue is the easiest primary metric to defend in a monetization review and the most dangerous one to optimize alone, because a marketplace can raise revenue for months by spending liquidity it will need later. The hierarchy below puts liquidity first, monetization second, behavior as diagnostics and health as guardrails.
 
 ### A metric hierarchy for marketplace experiments
 
@@ -201,10 +159,10 @@ A marketplace experiment's metrics must be **observed on both sides**. A bump-pr
 
 A **guardrail metric** is a metric that must not degrade beyond a pre-set threshold for a change to ship. [[ranking]] lists the guardrails Veldmark applies to every ranking experiment: search-to-contact rate, new listings contacted, seller exposure concentration, paid-product delivery, paid share of first-page positions, contacts on unavailable listings, and ranking latency. Two more belong on every marketplace experiment, and Veldmark's bump test would have been stopped by either.
 
-1. **The control-trend guardrail.** Compare the control group's outcome with its own pre-period and with an untouched holdout. If control sellers' contacts per bump fall while treatment's hold, the treatment is taking from control. In the bump test this signal (−9%) was visible by the second week.
+1. **The control-trend guardrail.** Compare the control group's outcome with its own pre-period and with an untouched holdout (units kept unchanged). If control sellers' contacts per bump fall while treatment's hold, the treatment is taking from control. In the bump test this signal (−9%) was visible by the second week.
 2. **The congestion guardrail.** For any paid visibility product, track the resource it sells, here first-page time per bump, at the market level. A product whose unit value falls when more of it is sold must be tested by cluster.
 
-Guardrails need near-real-time computation for harm (a broken checkout, a spike in fraud reports) and final computation for the rest. That is the reason Adevinta's streaming computation exists, and it is why [[data-platform]] separates provisional from final metric values.
+Guardrails need near-real-time computation for harm (a broken checkout, a spike in fraud reports) and final computation for the rest. That is why results are computed as a stream while a test runs, and why [[data-platform]] separates provisional from final metric values.
 
 ### Long-term effects and holdouts
 
@@ -212,9 +170,9 @@ Marketplace effects compound. A ranking change that favors professional sellers 
 
 ## Experimenting on Ranking and Prices
 
-Ranking and pricing experiments are where marketplace experimentation becomes governance, because they change who gets exposure and who pays what.
+Ranking and pricing experiments are where marketplace experimentation becomes governance, because they change who gets exposure and who pays what; fee and trust-threshold tests do the same, deciding who may sell and at what cost. A test of this kind therefore needs an owner, and its unit, primary metric and guardrails must be registered and reviewed before it starts: a metric chosen after the results can be the one that happened to win, and a wrong unit cannot be repaired once the test has run. The February bump test had neither, and the three cases below show what such a review must look for.
 
-**Ranking.** Every ranking change reallocates exposure among sellers, and some of those sellers have paid for exposure. eBay's 2020 description (the current system is not public) of its unified ranker for promoted listings makes the coupling explicit: promoted and organic listings compete for the top slots in one ranker that balances relevance against cannibalization of gross merchandise bought ([eBay, 2020](https://innovation.ebayinc.com/stories/ebay-makes-promoted-listings-in-search-results-more-relevant-and-dynamic/)). For a classifieds marketplace, a ranking experiment is therefore also a monetization experiment and must report paid-product delivery as a guardrail. Veldmark's ranking-policy experiment, run from 6 September to 17 October 2027 in Tradeyard Netherlands with category × region clusters, is described in [[ranking]]; its design followed the standard below.
+**Ranking.** Every ranking change reallocates exposure among sellers, and some of those sellers have paid for exposure. eBay's 2020 description (the current system is not public) of its unified ranker for promoted listings makes the coupling explicit: promoted and organic listings compete for the top slots in one ranker that balances relevance against cannibalization of gross merchandise bought ([eBay, 2020](https://innovation.ebayinc.com/stories/ebay-makes-promoted-listings-in-search-results-more-relevant-and-dynamic/)). For a classifieds marketplace, a ranking experiment is therefore also a monetization experiment and must report paid-product delivery as a guardrail. Veldmark's ranking-policy experiment, run from 6 September to 17 October 2027 in Tradeyard Netherlands with category × region clusters, is described in [[ranking]]; it was designed under the experimentation standard Veldmark adopted in June 2027, after the bump test, which this chapter sets out after the architecture.
 
 **Prices.** Price experiments add three concerns.
 
@@ -223,6 +181,50 @@ Ranking and pricing experiments are where marketplace experimentation becomes go
 - **Professional contracts.** Dealers and agencies have contracts, and price tests for them are usually negotiation designs, not randomized tests. Causal methods on observational data are often the honest alternative. OLX described in 2026 how propensity-score matching corrected selection bias in package dashboards, estimating uplifts of +17.6% to +97.4% between package levels and validating them against a randomized test ([OLX Tech Blog, 2026](https://tech.olx.com/correlation-lied-to-us-rethinking-product-impact-with-causal-inference-5ba47181f7c5)); [[monetization-models]] discusses the commercial implications.
 
 **Price badges and valuations.** A badge such as "good price" or "below the Valuo estimate" changes how buyers judge the neighbors of the badged listing, which is market-level interference. Hearthly's pricing hint therefore goes live in Lyon and Bordeaux on 22 November 2027 as an experiment randomized by city district rather than by user, as [[ml-platform]] describes.
+
+## Architecture: The Four Contracts
+
+Every design, metric and review above needs platform support. An experimentation platform rests on four contracts: assignment, exposure logging, metrics and analysis. The registry in Figure 5 is not a fifth contract but the record all four read: it fixes each experiment's unit, metrics and owner before launch. Each contract is simple; the hard part is making them agree on units, timestamps and definitions.
+
+![Diagram: The four contracts of an experimentation platform](assets/images/37-experimentation/fig02-four-contracts-experimentation-platform-registry-fixes.jpeg)
+**Figure 5:** *The four contracts of an experimentation platform. The registry fixes unit and metrics before launch; assignment and exposure share a unit identifier; metrics come from the governed layer; the analysis engine checks the experiment's health before it reports an effect.*
+
+### 1. Assignment
+
+The **assignment service** decides, deterministically, which variant a unit receives. The usual mechanism is a hash of the unit identifier and an experiment-specific salt, mapped to buckets; deterministic hashing means any service can compute the assignment without a lookup and the same unit always gets the same variant. Three marketplace requirements go beyond what generic tools offer.
+
+- **Several unit types.** The service must assign by buyer, by seller account, by listing, by cluster (a region × category cell from a published cluster map) and by time slot. A platform that knows only users and devices forces every experiment into the design that marketplaces most need to avoid.
+- **Layers for mutual exclusion.** Experiments that touch the same mechanism (two ranking changes, a ranking change and a bump-price change) must run in the same layer, so that a unit is in at most one of them, or be analyzed for interaction. Veldmark learned this the hard way: the September 2027 ranking-policy experiment in [[ranking]] and the bump-price retest in the next section could not share Tradeyard NL's clusters.
+- **Server-side evaluation for anything priced or ranked.** Assignment for prices, fees and ranking runs in the back end, never in the client, so a seller cannot see a different price by reinstalling the app and the treatment can be enforced where the money moves.
+
+### 2. Exposure logging
+
+The **exposure log** records when a unit encountered its variant. It is the `experiment_exposure` event defined in [[data-platform]]: experiment ID, variant, unit type and unit ID, time. Analyses should be restricted to exposed units (with the assignment as the randomization), because including the many assigned units that never reached the changed surface dilutes the effect. In marketplaces, exposure is two-sided. A ranking change exposes buyers who saw the page **and** sellers whose listings were moved; a test that logs only buyer exposure cannot compute seller-side outcomes.
+
+### 3. Metrics
+
+Experiments should consume the **governed metrics** of [[data-platform]], computed by the same code as the board pack, with experiment-specific metrics added in the registry. Shared code keeps tests and the business aligned. When the primary metric of a ranking test is "qualified contacts per searcher" and the board steers on "qualified contacts per live listing", both must use the same definition of a contact, including the 72-hour fraud restatement; otherwise a ranking change that surfaces scam-prone listings could win a test and lose the business.
+
+### 4. The analysis engine
+
+The **analysis engine** turns exposures and metric values into effects, intervals and decisions. Four capabilities separate a trustworthy engine from a dashboard.
+
+| Capability | What it does | Evidence |
+| --- | --- | --- |
+| **Sample ratio mismatch (SRM) check** | Tests whether the observed split matches the designed split; a mismatch means broken assignment or logging, and the result should not be read | Zalando's platform added SRM alerts after early analyses were corrupted ([Zalando Engineering, 2021](https://engineering.zalando.com/posts/2021/01/experimentation-platform-part1.html)) |
+| **Variance reduction** | Uses pre-experiment data to remove predictable variation; CUPED reduced variance by about 50% at Bing, "effectively achieving the same statistical power with only half of the users, or half the duration" | [Deng, Xu, Kohavi and Walker, WSDM 2013](https://exp-platform.com/Documents/2013-02-CUPED-ImprovingSensitivityOfControlledExperiments.pdf) |
+| **Valid early looks** | Sequential methods give p-values and intervals that stay valid when results are checked continuously | "Always valid" inference ([Johari, Pekelis and Walsh, 2015, revised 2019](https://arxiv.org/abs/1512.04922)); safe testing on 162 Vinted experiments needed fewer samples than classical tests ([Beasley, 2023](https://arxiv.org/abs/2310.20450)) |
+| **Cluster-aware inference** | Computes uncertainty at the randomization unit (cluster or time slot), not per user | Required for every design described above |
+
+The Vinted study adds a marketplace-specific nuance: agreement between sequential and classical tests was lower for long-delay metrics such as transactions and cancellations than for searches and sessions ([Beasley, 2023](https://arxiv.org/abs/2310.20450)). Contacts, sales and seller retention are exactly those delayed metrics, so **early stopping should be allowed on guardrails that signal harm, and used with care on the primary metric**.
+
+### What the documented classifieds platforms show
+
+Adevinta has published the most complete record of a classifieds group's experimentation platform. In 2021 its 22 marketplaces used ten different A/B testing tools; the 2024 account says this setup brought "inefficiencies, redundancy and escalating costs", and describes a cross-functional working group, a scoring matrix asking whether a tool would "support our needs in 3-5 years", and a hybrid decision: build the in-house platform and use a third-party tool in some marketplaces during the transition ([Adevinta Tech Blog, 2024](https://adevinta.com/techblog/from-ten-to-one-streamlining-experimentation-tooling-at-adevinta/)). A 2023 benchmark of 21 companies by experiments per tech full-time employee placed Adevinta in the "crawling" band and concluded that it should "keep building" its platform, Houston ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/benchmarking-on-experimentation-tooling/)).
+
+The statistics came from one marketplace. Fisher, a Python analysis package built at Marktplaats with CUPED and multiple-testing corrections, was used in more than 90% of Marktplaats experiments within a year, cutting hands-on analyst time to about three hours per experiment, and Nightingale, built on Fisher, was positioned to become the engine for all of Houston's statistical calculations ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/how-we-matured-fisher-our-a-b-testing-package/)). Adevinta also described computing results incrementally with Kafka Streams, keeping user-level aggregates and updating means and variances with a weighted Welford algorithm, so that rollout problems are visible in near real time without re-reading billions of events ([Adevinta Tech Blog, 2023](https://adevinta.com/techblog/an-alternative-approach-to-a-b-test-results-calculation-streaming/)). All of these posts predate Adevinta's 2025 decentralization; whether Houston remains a group platform is not public.
+
+My reading of that path is the recommendation in this chapter's first key point: **centralize the statistics and the metric definitions before the user interface and the flag tooling.** Two marketplaces using different flag systems but the same engine and the same contact metric produce comparable results; two marketplaces using the same tool with different metric code do not.
 
 ## In Practice: Veldmark's Experimentation Standard
 
@@ -247,9 +249,11 @@ The bump retest ran under the new standard from Monday 6 September to Sunday 31 
 | Median first-page time per bump | 2.4 h | 1.5 h | −38% | — |
 | Qualified contacts per live listing (all listings) | 1.00 (index) | 1.00 | 0% | −2% to +2% |
 
-The cluster estimate (−3.3%) was close to what NL had experienced after rollout (about −2.5%) and nowhere near the February estimate (+18%). The intervals are much wider than in February, because 96 clusters carry far less information than hundreds of thousands of sellers; that loss of power is the price of an answer with the right sign. Olivier's team withdrew the €1.99 price in the Netherlands on Monday 6 December 2027 and started designing a different product, a bump with guaranteed first-page time, whose value does not collapse as more sellers buy it.
+The cluster estimate (−3.3%) was close to what NL had experienced after rollout (about −2.5%) and nowhere near the February estimate (+18%). The intervals are much wider than in February, because 96 clusters carry far less information than hundreds of thousands of sellers; that loss of power is the price of an answer with the right sign. The €1.99 price had stayed live in the Netherlands until the retest's result was reviewed; Olivier's team withdrew it on Monday 6 December 2027 and started designing a different product, a bump with guaranteed first-page time, whose value does not collapse as more sellers buy it.
 
 ## Trade-offs
+
+Seven choices recur in building marketplace experimentation; the table gives the default for each that follows from the sections above.
 
 | Decision | Option A | Option B | How to choose |
 | --- | --- | --- | --- |
@@ -262,6 +266,8 @@ The cluster estimate (−3.3%) was close to what NL had experienced after rollou
 | Long-term effects | Rely on short tests | Holdouts and surrogate models | Holdouts for any brand running dozens of ranking and visibility changes a year |
 
 ## Vertical Differences
+
+The scarce side, the natural cluster, outcome delay and traffic differ by vertical, so one design costs differently in each.
 
 | Concern | General classifieds | Real estate | Automotive | Jobs (where relevant) |
 | --- | --- | --- | --- | --- |
@@ -276,6 +282,8 @@ The real-estate row matters most for design. A district in Lyon has few listings
 
 ## Failure Modes
 
+Ignore these defaults and experimentation fails in recognizable ways.
+
 - **The transfer mistaken for an effect.** Seller- or buyer-randomized tests of visibility, ranking or price changes report the gain treated units took from control units. Watch the control trend; cluster when units compete.
 - **Revenue as the only primary metric.** Monetization tests approve changes that spend liquidity. Use liquidity guardrails on every monetization test.
 - **Sample ratio mismatch ignored.** A bot filter, a client crash or a redirect drops units from one variant, and the result is read anyway. Block results when SRM fires.
@@ -288,17 +296,19 @@ The real-estate row matters most for design. A district in Lyon has few listings
 
 ## The Chief Architect's View
 
-The Chief Architect's job is to make sure the experimentation platform can test what the business actually needs to decide: prices, visibility and paid products, not only page layouts. The decisions, in the order I would take them:
+The Chief Architect prevents these failures by making sure the experimentation platform can test what the business actually needs to decide: prices, visibility and paid products, not only page layouts. The decisions, in the order I would take them:
 
 1. **Fund one analysis engine and one exposure log for the group**, before standardizing flag tools or interfaces, and tie it to the governed metrics of [[data-platform]].
 2. **Make the randomization unit a platform capability.** Buyer, seller, listing, cluster and time slot, with published cluster maps owned as reference data.
-3. **Classify experiments by risk** and require pre-registration and review for anything that changes visibility, prices, fees or trust thresholds. Review is not bureaucracy when the alternative is a forecast that missed by nearly €8 million a year.
+3. **Classify experiments by risk** and require pre-registration and review for anything that changes visibility, prices, fees or trust thresholds. Review is not bureaucracy when the alternative is a forecast that missed by nearly €8 million a year (+€6.8 million forecast, about −€950,000 delivered).
 4. **Mandate the marketplace guardrails**: control trend, congestion, and the ranking set.
 5. **Keep a long-term holdout** and report cumulative effects annually.
 
 Who decides: the Head of Data & ML owns the engine, the methods and the cluster maps; product and monetization owners own hypotheses and primary metrics; the experimentation guild reviews designs; legal and regulatory review price and personalization tests; the Group Chief Architect owns the assignment and exposure contracts across brands. What to watch: experiments per year per brand and the share using non-user units; SRM rate; share of experiments with pre-registered primary metrics; the gap between experiment estimates and post-rollout effects, measured for every major launch; and how often a decision was reversed after rollout. The last metric is the platform's real report card. If it is high, the platform is producing confident answers to the wrong questions.
 
 ## Questions to Ask
+
+These test whether those decisions hold.
 
 1. Which units can our assignment service randomize today, and which experiments have we avoided because it cannot?
 2. For our last five pricing or visibility experiments, what happened to the control group's outcomes compared with its own pre-period?
@@ -312,6 +322,8 @@ Who decides: the Head of Data & ML owns the engine, the methods and the cluster 
 10. What share of our traffic sits in a long-term holdout, and what has it told us?
 
 ## From Experiments to Models
+
+In the February bump test, seller assignment broke the assumption this chapter opened with, no guardrail watched the control group, and no review asked whether a cheaper bump only moves first-page time between sellers. The retest gave the right sign because unit, guardrails and review were set before launch, at the price of wider intervals. Experiments decide which changes ship, so a platform that splits only users can commit the business to the wrong sign; the gap between estimate and rollout effect shows whether it does.
 
 The experiment platform and the data platform give Veldmark trustworthy measurements; most of the changes it measures are now made by models, from ranking and recommendations to valuation and fraud scoring. How those models are trained, served, monitored and governed is the subject of [[ml-platform]].
 

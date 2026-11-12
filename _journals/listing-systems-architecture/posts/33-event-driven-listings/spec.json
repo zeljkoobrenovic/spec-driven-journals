@@ -1,0 +1,2030 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "event-driven-listings",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "Every Change Is an Event: Event-Driven Listing Architecture",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the event-driven-listings entry in journal-spec.json. Four units are additions to the published text: the lead-ins to the trade-off table (p54) and the vertical table (p57), and the conclusion's synthesis (p68); p03 gains a roadmap sentence and p21 a gloss of 'tenant'. See decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between domain events, change events and commands; notification, event-carried state transfer and event sourcing; ordering, delivery guarantees and idempotency.",
+        "The listing event stream: components, the transactional outbox, change data capture behind a translator during migration, the event envelope (listing key, aggregate version, cause, public state), the event catalog, topics and retention.",
+        "Schema evolution under compatibility modes and the rules Veldmark publishes; replay, backfills and dead letters that cannot resurrect a sold listing; removal objectives separate from publication objectives."
+      ],
+      "believe": [
+        "The listing event is a published contract with one owner, not an integration detail, and change data capture is a source, not a contract.",
+        "Reliable publication and safe consumption are two halves, and neither alone gives correct downstream state."
+      ],
+      "can_do": [
+        "Review a listing event design and say what goes wrong at the weekly peak, during a backfill or after a schema change.",
+        "Design an envelope, a version-gated consumer and a replay path that keeps sold listings removed.",
+        "Decide which parts of the event contract a group sets centrally and which each brand keeps."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a stale downstream copy and a replay plan, the reader names the mechanism that fixes each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A listing sells at 18:10 and leaves search at 18:11, but the next morning's alert digest, built the afternoon before from a database replica, still features it. Separately, a team plans to rebuild the search index by replaying six months of listing events and fears that old events will bring sold listings back. Using only this chapter: what design fixes the digest, and what makes the replay safe?",
+        "expected": "One owned listing event stream emitted by the system of record through an outbox (or CDC behind a translator), to which the digest subscribes, so ListingSold removes the bike; and a derived artifact that re-checks listing state at send time. Consumers apply events only when the per-listing version is higher than the one they hold, events carry current public state, and the replay reads a compacted state topic where sold listings end in tombstones, so no old event resurrects a sold listing."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "A listing written once and read by ten or twenty systems, so the question is how changes move, not how they are stored; one published stream replacing private integrations; the chapter opening Part VII and owning the listing event, outbox and schema evolution, with copies and tracking left to the next chapters. Then the bike incident at Veldmark, event concepts, the stream's architecture, public evidence and Listing event contract v1, schema evolution, replay and dead letters, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: dated classifieds engineering sources (Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de), Confluent and Debezium documentation, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposal to publish after commit or to let consumers read raw change data capture, the reader names what breaks and the two designs that fix it, with their costs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A listing service commits a sale to its database and then sends a Kafka message from application code. Separately, the search and alert teams, tired of waiting, want to read Debezium change events from the monolith's listing table directly. Using only this chapter: what can go wrong in each case, and what should be built instead, at what cost?",
+        "expected": "A crash between commit and publish leaves the listing sold in the database and active everywhere else (and publishing first leaves consumers believing a change that never committed): the dual-write problem. A transactional outbox writes the event in the same transaction and a relay publishes it, at the cost of a write-path change, an extra table and at-least-once delivery. Raw change events make the producer's internal schema a public contract, so a column rename breaks every consumer; change data capture is allowed only as a source behind a translator (an anti-corruption layer) that emits the contract events, until the new service publishes the same contract through its own outbox."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given two schema changes, the reader says which the registry catches, which it cannot, and how each is made.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "On a listing event topic with many consumers, one brand wants to rename a field, and another wants to start sending a surface-area field as habitable surface instead of total surface. Using only this chapter: how should each change be made, and which of them would a schema registry stop?",
+        "expected": "Under full transitive compatibility only optional fields with defaults can be added or removed; a rename is done by adding the new field, populating both, deprecating the old one and removing it in a new major version (v2, by parallel run on a new topic). A change of meaning passes every registry check because the registry checks syntax, not semantics, so it is never made in place: it gets a new field with a new name, and every change is reviewed by people (at Veldmark, the advice forum's one-week event-catalog review)."
+      },
+      {
+        "id": "AC-6",
+        "statement": "No real company's internal listing event design is presented as fact; company evidence is dated and inferences are labeled.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the chapter describe any real company's listing event names, topics or consumer logic as documented fact beyond what its cited, dated sources say? Is every inference about a real company labeled as the author's?",
+        "expected": "Adevinta, Kleinanzeigen, Vinted, Adevinta Spain, AutoScout24 and mobile.de appear only through dated engineering posts and documentation; the chapter states that no classifieds company published its listing event names or topic layout, flags 2018, 2019 and 2022 evidence as older, and labels the version-check inference about Vinted's merged reindex topic as the author's."
+      }
+    ],
+    "audience": {
+      "who": "Chief and principal architects, event-platform and search leads in multi-brand marketplace groups who know Kafka and microservices but have not designed a cross-brand listing event contract.",
+      "already_knows": [
+        "APIs, databases, event streams (Kafka topics, partitions, consumer groups), search engines and Kubernetes (the book's baseline).",
+        "From earlier chapters: the listing aggregate, its lifecycle and invariants (listing-aggregate); published language and anti-corruption layers (bounded-contexts); the publication pipeline's stages (publication-pipeline); feed ingestion and content hashing (listing-ingestion); entity resolution; saved-search alerts and digests; Ghost Inventory and the other failure-pattern names.",
+        "Veldmark, its brands (Tradeyard, Motorvane, Hearthly, Keybridge), Common Ground, the architecture advice forum, Yardstick, Safe Deal, the cast (Ingrid Halvorsen, Sven Lindqvist, Daan Visser, Lucía Ortega), the Rotterdam bike, the Essen Golf and the Lyon apartment."
+      ],
+      "does_not_know": [
+        "The difference between domain events, change events and commands, and between event notification, event-carried state transfer and event sourcing.",
+        "The dual-write problem and the transactional outbox; change data capture behind a translator.",
+        "Version-gated apply, log compaction and tombstones, dead-letter queues.",
+        "Schema registry compatibility modes (BACKWARD, FORWARD, FULL, transitive).",
+        "Tenant as the platform term for one brand in one country, defined later by multi-country-platforms."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How should listing changes flow to search, trust, alerts, analytics and partners?",
+    "claim": "Listing changes should reach search, alerts, trust and safety, SEO, analytics and partners through one owned, versioned stream of listing events that only the listing's system of record emits: published in the same transaction as the change (a transactional outbox, or change data capture behind a translator while a monolith remains), keyed by listing ID with a strictly increasing per-listing version that consumers use to apply each change once and in order, carrying the listing's current public state so a consumer recovers from a lost message with the next one, evolved under full transitive schema compatibility with semantic changes reviewed by people, replayable from a compacted state topic, and held to a removal objective tighter than the publication objective (at Veldmark p99 under five seconds to topic and under thirty seconds to search deletion).",
+    "disputed_by": "The common practice of letting each downstream system poll the listing database or a replica, receive nightly dumps or messages the application sends after commit, or read change-data-capture rows as its contract, with each producing team choosing its own event names and payloads.",
+    "so_what": "A Chief Architect who accepts this decides centrally the envelope, the cross-brand listing identity, the event catalog, the compatibility rules, the removal service levels and per-topic access, and leaves each brand its internal events and its choice of outbox or CDC during migration; makes consumers register before they get access; and watches publication and end-to-end removal latency per tenant, consumer lag at the Sunday-evening peak and the count of consumers still reading producer tables.",
+    "how_why": "Femke's bike sold at 18:10 and left Solr at 18:11, but the next morning's digest, assembled from a MySQL replica the afternoon before, still featured it, and three people messaged her. Tradeyard NL alone had eleven readers of listing changes on five mechanisms, and nobody had the list. Replayed on Listing event contract v1, the ListingSold event at version 9 reaches the digest, which also re-checks state at send time. The contract went live on 1 July 2027 with 23 consumer groups and by the end of 2027 carried about 4.2 million events a day; content-hash suppression keeps about a million no-op updates a day off the stream. The Essen Golf's removal, reported by the dealer's feed 26 hours late, shows the limit: the stream makes copies as fresh as the source, not fresher.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Listing changes are a fan-out problem: one write has ten or twenty readers, and private integrations (polling, replica reads, nightly dumps, best-effort messages) leave nobody with the list of readers, so removals arrive late; the fix is a listing event defined as a domain event in the listing's published language, owned by its context, which change data capture can feed but never replace."
+      },
+      {
+        "id": "S2",
+        "claim": "Reliable publication means only the listing's system of record emits listing events, in the same transaction as the change: a transactional outbox as the target, change data capture behind a translator while a monolith remains, the two being stages of one migration rather than alternatives."
+      },
+      {
+        "id": "S3",
+        "claim": "Safe consumption needs a per-listing key and a strictly increasing per-listing version that consumers use to apply each change once and in order, and events that carry the listing's current public state plus the delta (no personal data), so a lost, duplicated or failed message is repaired by the next one."
+      },
+      {
+        "id": "S4",
+        "claim": "A contract that lives for years needs full transitive schema compatibility with human review of changes in meaning, breaking changes by parallel run, replay from a compacted state topic and a separate backfill topic gated by version so no replay resurrects a sold listing, and a removal objective tighter than the publication objective (at Veldmark, p99 under five seconds to topic and under thirty seconds to search deletion, against p95 under two seconds for publication)."
+      },
+      {
+        "id": "S5",
+        "claim": "Veldmark's Listing event contract v1 shows the design working and its limit: replayed on v1, the bike's ListingSold at version 9 reaches the digest, which also re-checks state at send time, while the Essen Golf's 26-hour-late removal shows the stream makes copies only as fresh as their source."
+      },
+      {
+        "id": "S6",
+        "claim": "Because the contract outlives the systems around it, a Chief Architect sets centrally the envelope, cross-brand identity, event catalog, compatibility rules, removal service levels and per-topic access, leaves brands their internal events and their outbox-or-CDC choice during migration, makes consumers register before access, and watches publication and removal latency, peak lag and consumers still reading producer tables."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Publishes the first platform contract, the listing event stream, that every later chapter of the part reads from.",
+    "supports": [
+      "P7-1"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "architecture, replay: the dual-write problem before the outbox, the backfill and dead-letter hazards before their controls"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene poses the question with a sold bike that a digest never heard about; concepts give the vocabulary (domain event, state transfer, key, version) the architecture needs; the architecture builds publication, envelope, catalog and topics from it; the in-practice section can then test the design on public evidence and on the bike and the Golf; schema evolution and replay come after the contract exists, because they govern how it changes and how its events are re-delivered; the judging sections generalize. Putting replay before the envelope would ask the reader to version-gate events before knowing they carry a version; putting the bike replay before the architecture would show a fix before its parts."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A listing is written by one party and read by many. The seller or a dealer's feed changes the price once; search must re-index it, saved-search alerts must decide whether to notify watchers, the market-value model must re-score it, the trust-and-safety system must check whether the change is suspicious, the sitemap must update lastmod, the warehouse must record it, and a partner syndication feed may need to carry it."
+    },
+    "bridge": {
+      "from_reader_world": "Architects whose marketplaces already move listing changes by polling, replica reads, nightly dumps and messages sent after commit, and who have just finished Parts IV to VI, which assumed those changes arrive.",
+      "to_topic": "Moving listing changes as one owned, published stream, the first platform contract of Part VII."
+    },
+    "thesis_statement": {
+      "text": "The listing event is a published contract with one owner; reliable publication (outbox, or change data capture behind a translator) and safe consumption (key, version, state) are two halves, and neither alone gives correct downstream state; carrying state and keeping history replayable turns rebuilds into routine operations.",
+      "placement": "KEY POINTS callout (three bullets) and the closing sentence of p02."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and the closing sentence of p03, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Start with an alert digest at Veldmark that did not know a bike was sold.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define what a listing event is and the properties consumers rely on.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Build the stream: outbox, change data capture, envelope, catalog, topics and removal objectives.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Set it against public evidence and Veldmark's Listing event contract v1.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Evolve the schema, and replay, backfill and handle dead letters safely.",
+          "kept_in": [
+            "schema",
+            "replay"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A listing is written by one party and read by many systems, so the architecture question is not how to store the listing but how to move its changes, because that movement decides freshness, removal latency and consistency.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "One price change by a seller or a dealer's feed must reach search, saved-search alerts, the market-value model, trust and safety, the sitemap's lastmod, the warehouse and a partner feed.",
+            "shows": "Shows the fan-out that makes moving changes, not storing them, the design problem."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The cheap ways of moving changes (polling, replica reads, nightly dumps, messages sent after commit) work until the readers multiply, so an event-driven architecture replaces many private integrations with one published stream owned by the system of record and designed like an external API.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Late removals, weekend-long reindexes and no agreement on which copy of a listing is right as readers grow.",
+            "shows": "Names what breaks when private integrations multiply, motivating one published stream."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The fan-out of one listing change to many readers.",
+          "introduces": "The cheap integrations most marketplaces start with, where they break, and the one published stream that replaces them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter opens Part VII by publishing the first of the platform's contracts, which turns the listing aggregate's lifecycle and the publication pipeline's stages into the stream search, alerts and trust already assumed; it owns the listing event, the outbox and schema evolution, leaves copies to listing-data-management and tracking events to data-platform, and lays out its sections in order.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "part-7's argument that a shared platform earns trust through contracts, not mandates; listing-aggregate and publication-pipeline as inputs; listing-data-management and data-platform as owners of neighbouring topics; the order of the sections.",
+            "shows": "Places the chapter in the part, keeps it from re-teaching its neighbours and tells the reader what comes in which order."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "One published stream owned by the system of record, and the part introduction's first key point that the platform is a set of published contracts starting with that stream.",
+          "introduces": "Where the chapter sits in Part VII, what it owns, what it leaves to neighbours, and the order of its sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold",
+      "controlling_idea": "In March 2027 an alert digest at Tradeyard NL features a bike that sold the evening before, because eleven readers of listing changes use five private mechanisms and nobody has the list.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Poses the chapter's question as a concrete Ghost Inventory incident caused by private integrations."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The incident note, then Sven's trace of its cause, then his inventory that generalizes it, then the question it raises and the program's answer; the inventory only makes sense after the trace shows one reader that was never told."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first promise and the claim that private integrations break as readers grow.",
+        "introduces": "The bike incident at Tradeyard NL.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "On 9 March 2027 Ingrid reads that Femke's €240 bike, sold on Monday for €225 through Safe Deal and removed from search a minute after it was marked sold, still appeared in Tuesday morning's alert digest, and three buyers messaged her.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listed Sunday, sold Monday for €225 via Safe Deal, marked sold 18:10, out of Solr 18:11, still in the next morning's digest; three messages to Femke.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "A sold listing still reaching buyers through one copy is the chapter's problem in one case."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Sven traces the cause: the digest assembled its candidates from a MySQL replica at 17:30 on Monday and sent them at 07:00, while the sale reached only the search indexer through a RabbitMQ message the digest never subscribed to, and nobody had a list of subscribers.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Digest job reading a replica of Yardstick's MySQL; RabbitMQ message after the sold flag commits; the digest not subscribed.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the failure came from how changes travel, not from search."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The digest that featured a sold bike.",
+            "introduces": "Why: a snapshot from a replica and a message the digest never received.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Sven's inventory finds eleven readers of listing changes at Tradeyard NL alone on five mechanisms, and across the group each brand uses a different messaging technology with its own event names.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Four RabbitMQ consumers, three replica pollers (1–15 min), two nightly CSV exports, one daily dump for Snowflake, one best-effort Kafka feed for trust and safety; Motorvane on MSK, Hearthly on Pub/Sub, Keybridge on Azure Service Bus.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "One unsubscribed reader is a symptom of many private integrations nobody governs."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: a listing database wired to eleven readers by mismatched mechanisms, with the digest never told.",
+              "shows": "Makes the scattered integrations visible at a glance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One reader that was never told about the sale.",
+            "introduces": "The full count of readers and mechanisms, at Tradeyard and across the group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Ingrid's question to the advice forum is the chapter's question, how listing changes should flow so that every reader sees every change once, in order and in time, and Common Ground's answer is a Kafka backbone on Confluent Cloud and Listing event contract v1, live on 1 July 2027.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Group event backbone on Kafka (Confluent Cloud on AWS) and Listing event contract v1, live 1 July 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the reader the answer the chapter will unpack and test."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Eleven readers, five mechanisms, four brands.",
+            "introduces": "The question this raises and the program's answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: What a Listing Event Is",
+      "controlling_idea": "A listing event is a domain event owned by the listing context, carrying state, keyed and versioned per listing, and it differs from change events, commands and thin notifications in who controls its shape.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Defines the listing event as a contract and the ordering, delivery and idempotency properties consumers rely on."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "What kind of event (ownership) comes first because it decides who may change the shape; what the event carries (state) next because the envelope depends on it; how it is delivered (order, duplicates, versions) last because version-gated apply assumes events carry a version and the key."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The forum's question and the contract that answers it.",
+        "introduces": "The terms the contract is built from, starting with what counts as an event.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "Three things are called events (domain events, change events and commands), and the difference matters because it decides who controls their shape.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Domain event, change event (CDC) and command or message, with definition, who decides the shape, and an example of each.",
+              "shows": "Shows that only a domain event's shape is set by the owning domain as a contract."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "A listing event is a domain event about one listing, emitted by the owning context whenever the aggregate passes an invariant-preserving transition, and it serves as the aggregate's published language.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Transitions submitted, published, updated, price changed, paused, reserved, sold, expired, removed; published language as defined in bounded-contexts.",
+              "shows": "Ties the event to the lifecycle readers already know and to the vocabulary other contexts use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three kinds of event.",
+            "introduces": "The book's definition of a listing event as a domain event.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Change data capture is a mechanism for getting events out of a legacy system, not a contract, because raw table changes make the producer's internal schema everybody's business.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Renaming a column in Yardstick should concern Daan Visser's team only; if eleven consumers parse the binlog of the ads table, it concerns everybody.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows how reading raw changes couples consumers to the producer's internals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The listing event as a domain event owned by the listing context.",
+            "introduces": "Change data capture, which looks similar but is a mechanism, not a contract.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "form": "list",
+          "controlling_idea": "Fowler separates event notification, event-carried state transfer and event sourcing, which trade payload size and privacy against callbacks, copies and the system of record.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Martin Fowler, 'What do you mean by \"Event-Driven\"?' (2017): notification makes consumers call back and hides the logical flow; state transfer means 'lots of data schlepped around and lots of copies'; event sourcing makes events the system of record, rarely worth it for listings.",
+              "source": "martinfowler.com, 2017",
+              "shows": "Gives the reader the three options the next paragraph chooses between."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What kind of event a listing event is.",
+            "introduces": "What it should carry: Fowler's three patterns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Listing events should carry state, because one popular change fans out to many readers at once and callbacks at the Sunday-evening peak would overload the listing service; which state is the envelope's question.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A price cut reaches search, alerts, valuation and analytics within seconds; a callback storm at peak.",
+              "shows": "Explains why state transfer suits listings better than notification."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Fowler's three patterns and their costs.",
+            "introduces": "The choice for listings and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "Consumers end up correct only through three properties: per-listing order from keying by listing ID, at-least-once delivery, and idempotency by version-gated apply.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Kafka order within a partition; Debezium's outbox router keys by aggregate ID, 'which preserves per-aggregate order'.",
+              "source": "Debezium documentation, n.d.",
+              "shows": "Grounds per-listing ordering in the documented behaviour of the tools."
+            },
+            {
+              "kind": "reasoning",
+              "what": "No end-to-end exactly-once across database, broker and search index; a consumer applies an event only if its version is newer than the one stored.",
+              "shows": "Shows why duplicates must be expected and how a version makes them harmless."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What a listing event carries.",
+            "introduces": "How it is delivered and how consumers stay correct.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Listing Event Stream",
+      "controlling_idea": "The stream has five components with one owner each; the outbox or a CDC translator guarantees publication, a shared envelope with key, version, cause and public state makes consumption safe, a short catalog limits the contract, two topics let consumers catch up or bootstrap, and removals get a tighter objective than publications.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Specifies how publication is guaranteed, what the envelope, catalog and topics give consumers, and how fast removals must arrive."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Components first so each later part has an owner; publication (outbox, then CDC as the legacy path) before the envelope, because the envelope's fields are written by the publication mechanism; the envelope before the catalog because every event type shares it; topics next because retention and compaction depend on the state block and the event types; the removal objective last, because it measures how fast the closures the topics carry must arrive."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The concepts: domain events, state transfer, order, duplicates and versions.",
+        "introduces": "The architecture that puts them to work.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "The architecture has five parts, each with one owner, and only the listing context produces listing events, so trust and safety emits a decision the listing context applies rather than a listing event of its own.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: one producer, one contract, many consumers; outbox, domain-event topic and compacted state topic.",
+              "shows": "Shows publication as part of the write and the state topic serving consumers built later."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Listing context, publication mechanism, event backbone, schema registry, consumers.",
+              "shows": "Gives each concern of the stream a single owner."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Publishing after a commit, or before it, creates the dual-write problem: a crash between the two steps leaves the database and every other copy disagreeing.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Commit then publish: listing sold in the database, active everywhere else, the bike's outcome from a different cause; publish then commit: consumers believe a change that never happened.",
+              "shows": "Shows why neither order of two separate writes is safe."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The publication mechanism, the second component.",
+            "introduces": "The problem it must solve: the dual write.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The transactional outbox writes the event into an outbox table in the same transaction as the change, and a relay publishes the rows, so a committed change cannot lose its event.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Debezium outbox event router: id for de-duplication, aggregatetype for the topic, aggregateid as key, type and payload; purpose to avoid inconsistencies between 'a service's internal state' and the events consumed.",
+              "source": "Debezium documentation, n.d.",
+              "shows": "Shows the mechanism is documented and what each column is for."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The dual-write problem.",
+            "introduces": "The outbox that solves it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "For listings the outbox gives three properties: the producer chooses the event shape, publication is at least once, and order follows commit order per listing.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "ListingSold with a sale channel and price instead of status=4; the relay can publish a row twice; order holds when the relay keeps table order and keys by listing ID.",
+              "shows": "Makes each property concrete for listing events."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "How the outbox works.",
+            "introduces": "What it gives a listing producer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The outbox costs a write-path change in every producer and a table to clean up, which is why legacy systems usually start elsewhere.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The outbox's properties.",
+            "introduces": "Its cost, and the reason legacy systems need another path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "A monolith whose write paths are scattered cannot get an outbox quickly, so table-level change data capture, which turns every row change into an event without touching application code, is the strangler's first tool.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Kleinanzeigen's search team used Debezium on existing Kafka Connect clusters to stream MySQL changes into a denormalized per-user object on a compacted topic, up to 50,000 messages per second on full re-consumption, and found it harder to troubleshoot because issues 'often arise at the infrastructure level rather than in the application code'.",
+              "source": "Adevinta Tech Blog, 2025",
+              "shows": "Shows CDC working at classifieds scale, and its operational cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Legacy systems cannot take the outbox's write-path change quickly.",
+            "introduces": "Change data capture as the way to get events out of Yardstick.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "A translator (an anti-corruption layer) is the only reader of the monolith's raw change events and emits the contract events, so that when the write path moves to a new service with its own outbox consumers do not notice, which makes CDC and outbox stages of one migration rather than alternatives.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five mechanisms (publish after commit, polling, raw CDC, CDC plus translator, outbox) with what each guarantees, costs and when it is right.",
+              "shows": "Places CDC plus translator as the migration stage and the outbox as the target."
+            },
+            {
+              "kind": "reasoning",
+              "what": "When the write path leaves the monolith, the new service publishes the same contract through its own outbox and consumers do not notice; modernization-and-migration uses this sequence.",
+              "shows": "Shows why the two are stages: consumers see one contract throughout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "CDC gets events out of a monolith without code changes.",
+            "introduces": "Why raw CDC still must not reach consumers, and the translator that stops it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Every listing event shares one envelope whose fields are chosen for what consumers need to be correct: identity and key, version, timing, tenant, cause, correlation, schema, public state and the change.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eleven fields: event_id, event_type, listing_id, listing_version, occurred_at/published_at, tenant, cause, correlation_id, schema_version, state, change, each with meaning and why consumers need it.",
+              "shows": "Ties each field to a consumer need such as de-duplication, version-gated apply or per-tenant objectives."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Tenant glossed as one brand in one country, with a pointer to multi-country-platforms.",
+              "shows": "Explains a term the reader meets here before the chapter that defines it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "How events are published, by outbox or translator.",
+            "introduces": "What every published event contains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The first of two envelope choices that need justification is that events carry both the delta and the full public state, so the alert matcher gets the price change it needs and a consumer that missed one event is repaired by the next: self-healing beats perfect delivery.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "PriceChanged with old and new price in change and the listing in state; about 4 KB on average at Veldmark without media; a missed ListingUpdated version 7 repaired by PriceChanged version 8.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the cost of the larger event and what it buys."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The envelope's fields.",
+            "introduces": "The first of the two choices that need arguing: delta plus state.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The second envelope choice is that the state block holds only public fields and what search and trust need, never seller contact data, which keeps personal data off the stream and shrinks the erasure problem.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The generic real-estate domain model: 'public fields can be published; draft, owner, and performance data remain internal and role-controlled'.",
+              "shows": "Shows the same line drawn independently for a listing entity."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Consumers that need contact data fetch it through an access-controlled API at the moment of use; erasure belongs to listing-data-management.",
+              "shows": "Says where contact data comes from instead and why that matters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first choice: state plus delta.",
+            "introduces": "The second: which state.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Contract v1 defines twelve event types (pausing and resuming are one type) and keeps the list short on purpose, because every new type is a cost for every consumer.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve rows (pause and resume share one) from ListingSubmitted to ListingErased, with when each is emitted and its main consumers.",
+              "shows": "Gives the reader the catalog and who depends on each event."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The envelope every event shares.",
+            "introduces": "The event types that use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Two exclusions are deliberate: a bump is a visibility change, not a lifecycle transition, and views, clicks and contacts are behavioral tracking events that belong to the data platform.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "mobile.de's Seller-API separates renewalDate from creationDate.",
+              "source": "mobile.de Seller-API, n.d.",
+              "shows": "Shows a published API treating a renewal as distinct from creation."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Tracking events would put billions of events on the stream removals depend on.",
+              "shows": "Explains the cost of mixing the two."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the catalog contains.",
+            "introduces": "What it leaves out, and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Tracking events would also bring a harder schema problem, because client analytics events ship in app binaries that cannot be recalled, one more reason to keep them off the listing stream.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted generated tracking code from schemas and repaired malformed web events on the server.",
+              "source": "Vinted Engineering, 2019",
+              "shows": "Shows the extra machinery client events need."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The exclusion of behavioral tracking events from the catalog.",
+            "introduces": "A second reason for it: client events are harder to evolve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "Veldmark runs two topics keyed by listing ID: an events topic retained 14 days for catching up, and a compacted state topic that lets a new consumer bootstrap from the latest state of every listing.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Log compaction keeps at least the last record per key, never reorders, a null value is a tombstone, tombstones removed after delete.retention.ms, 24 hours by default.",
+              "source": "Confluent documentation, n.d.",
+              "shows": "Explains why a compacted topic can serve as a current-state source."
+            },
+            {
+              "kind": "scenario",
+              "what": "listing.events.v1 (14 days) and listing.state.v1 (compacted).",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the concrete layout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The event types.",
+            "introduces": "Where they are stored and for how long.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Closed listings stay on the state topic for 30 days so consumers learn of the closure and erased ones are tombstoned at once, but a consumer offline longer than tombstone retention can miss a deletion, so the state topic does not replace reconciliation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sold, expired, removed listings kept 30 days then tombstoned; erased listings tombstoned immediately.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "States the retention rule and its gap."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The compacted state topic.",
+            "introduces": "How closed and erased listings leave it, and the gap that remains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Removal events get a tighter service level than publication events because a late removal costs more than a late publication, and Veldmark measures it end to end with a synthetic listing in each tenant.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Publication p95 under two seconds to topic; removals (ListingSold, ListingRemoved, ListingErased) p99 under five seconds to topic and under thirty seconds to search deletion, alarmed per consumer; synthetic listing created and removed every minute in each tenant.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the objectives and how they are checked."
+            },
+            {
+              "kind": "example",
+              "what": "A new listing searchable in two minutes instead of ninety seconds, against a scam listing still searchable half an hour after its account is suspended.",
+              "shows": "Shows the asymmetry of cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "How closed and erased listings leave the stream.",
+            "introduces": "How fast removals must arrive, which matters more than how fast publications do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Public Evidence and Contract v1",
+      "controlling_idea": "Classifieds companies have documented the plumbing around listing events but not the events themselves, and Veldmark's contract v1 shows the design working on the bike and its limit on the Golf.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S2"
+        ],
+        "how": "Tests the design against public evidence and against Veldmark's two recurring examples."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Three groups: public evidence first, so the reader sees what others documented before the Veldmark design; then the four design decisions and the go-live numbers they produced; then the two acceptance tests, bike before Golf, because the Golf shows the limit of what the bike shows working. Testing before the decisions would replay the bike on a contract the reader has not seen."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The architecture, described in general.",
+        "introduces": "What real marketplaces have documented and how Veldmark built it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "Public evidence on listing event models is thin, since no classifieds company published its event names or topic layout, but Adevinta, Kleinanzeigen, Vinted, Adevinta Spain and AutoScout24 documented the plumbing around them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta (2022, older): Kafka as 'the backbone of the data platform', nearly a billion events a day, mixed Avro and JSON, format inferred from the first byte.",
+              "source": "Adevinta Tech Blog, 2022",
+              "shows": "Shows mixed formats accumulate unless a contract forbids them."
+            },
+            {
+              "kind": "source",
+              "what": "Vinted (2023): CDC and Flink read models, batch reindex events merged with organic changes, visibility latency from up to seven minutes to about one.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "Shows an event-fed indexer cutting latency."
+            },
+            {
+              "kind": "source",
+              "what": "Vinted (2026): business events replacing synchronous calls between almost 300 domains, sagas, events that 'arrive late or in a different order than expected'.",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Shows ordering and lateness must be designed for."
+            },
+            {
+              "kind": "source",
+              "what": "Adevinta Spain (2024): immutable JSON data contracts, quarantine table, five days to about thirty minutes.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Shows contracts making data usable quickly."
+            },
+            {
+              "kind": "source",
+              "what": "AutoScout24 (2018, older): mostly synchronous services, 'some' Kafka.",
+              "source": "AutoScout24 Tech Blog, 2018",
+              "shows": "Shows event-driven flows are a choice, not a default."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Sven's team designs the contract from March to June 2027 with representatives of each brand and the first four consumers, and four decisions shape it.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Search, alerts, trust and safety and the warehouse as first consumers.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the contract was designed with its consumers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Public evidence that stops at the plumbing.",
+            "introduces": "Veldmark's own contract design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The first decision accepts one contract with three publication paths (CDC into a translator for Tradeyard, an outbox for Motorvane, an outbox and a Pub/Sub bridge for Hearthly), because each brand reaches v1 differently in 2027, while Keybridge stays off the stream.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tradeyard via Debezium CDC into Yardstick Relay (outbox in Q2 2028); Motorvane via outbox; Hearthly via Pub/Sub outbox and a bridge preserving the key; Keybridge neither publishes to nor consumes the stream.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the stages of S2 running side by side under one contract."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four decisions announced.",
+            "introduces": "The first: publication paths.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Keybridge gets no subscription to Hearthly's listing stream, because it sends listings to Hearthly's competitors and a subscription would break the March 2027 neutrality commitment.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Per-topic access control on the backbone; the decision record says so explicitly.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows topic access is a governance decision, not a default."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Keybridge row of the table.",
+            "introduces": "Why Keybridge is kept off the stream.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The second decision suppresses feed noise at the source: Motorvane's content hash stops about a million unchanged dealer listings a day from becoming no-op events.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 88% of Motorvane's dealer listings via DMS feeds; about 1.16 million re-sent daily, about 91% unchanged, about 100,000 real changes a day.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the size of the noise every consumer would otherwise pay for."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Publication paths.",
+            "introduces": "The second decision: feed noise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The third decision makes a strictly increasing listing version mandatory, which for Yardstick Relay means reading a sequence column added in April 2027 because MySQL timestamps were too coarse.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "updated_seq added to the listing table in April 2027; one-second timestamps; edits within a second common in bulk tools.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows what version-gated apply demands of a legacy producer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Feed noise.",
+            "introduces": "The third decision: versions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The fourth decision uses Avro schemas in Confluent Schema Registry under FULL_TRANSITIVE compatibility on the events topic, with a one-clause reason (independent upgrades and replays), set against the other modes in the schema section.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Avro, Confluent Schema Registry, FULL_TRANSITIVE on listing.events.v1.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Names the compatibility rule the schema section justifies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Versions.",
+            "introduces": "The fourth decision: schema format and compatibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "At go-live on 1 July 2027 the contract has 23 consumer groups, and by the end of 2027 it carries about 4.2 million events a day with a Sunday-evening peak near 1,100 per second under a p95 publication objective of two seconds.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "23 consumer groups; about 4.2 million events a day; peak about 1,100 per second; p95 under two seconds commit to topic; Tradeyard about 62% of events.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the scale the design must hold and why Tradeyard dominates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The four decisions made between March and June 2027.",
+            "introduces": "The contract at and after go-live.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Sven's team uses the March bike as v1's acceptance test, and replayed on the contract the sale reaches the digest as ListingSold at version 9, which removes the bike, while the digest also re-checks state at send time.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the bike's sale as one event with three consumers; the digest fixed twice over.",
+              "shows": "Shows the fix and why a derived artifact must re-check."
+            },
+            {
+              "kind": "table",
+              "what": "Event log from ListingSubmitted (v1, Sun 19:42) to ListingSold (v9, Mon 18:10, €225, Safe Deal) and a tombstone 30 days later, with what each consumer does.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows each consumer hearing the same facts in order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The contract live from July 2027.",
+            "introduces": "The March incident replayed on it as the acceptance test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Versions 4 to 7 are Femke's edits, and the log also shows what the stream does not do: it does not detect the phishing message or decide the sold page's SEO treatment; it makes every such system hear the same facts in the same order.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Phishing handled by messaging-and-leads and fraud-prevention; sold-page treatment by web-and-seo-architecture.",
+              "shows": "Draws the boundary of what the stream is responsible for."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The event log of the bike.",
+            "introduces": "What the gaps in it show and what the stream does not do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The Essen Golf shows the limit: the price cut reaches 1,180 watchers and the valuation model through one event, but the sale arrives from the dealer's feed 26 hours late, because the stream makes copies only as fresh as their source.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Price cut from €21,900 to €21,400 on Thursday 22 April 2027; 1,180 watchers alerted; sold 29 April; removal reported 26 hours later.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Separates upstream lateness (a feed-contract problem) from the stream's job."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The bike, where the contract fixes the stale digest.",
+            "introduces": "The Golf, where it cannot, because the source is late.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "schema",
+      "heading": "Schema Evolution",
+      "controlling_idea": "A listing schema with unknown consumers must evolve under full transitive compatibility, with changes in meaning reviewed by people and breaking changes made by parallel run.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Says how the contract changes for years without breaking consumers."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The modes before the choice of mode, since FULL_TRANSITIVE means nothing without them; the rules after the mode they implement; the change the rules cannot catch next; breaking changes last, after the rules that forbid them in place, since a parallel run is only needed for what the rules refuse."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The fourth design decision, FULL_TRANSITIVE compatibility, promised for this section.",
+        "introduces": "Why the contract needs it and how the schema changes over years.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "A listing event schema lives for years with consumers its producers have never met, which makes changing it safely the chapter's hardest operational discipline.",
+          "function": "claim"
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Confluent Schema Registry offers backward, forward and full compatibility, each optionally transitive, which differ in whether new consumers read old data, old consumers read new data, or both, against the last version or all of them.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "BACKWARD is the default and checked only against the latest version; transitive variants check all previous versions; FORWARD lets old consumers read new data; FULL means both; BACKWARD_TRANSITIVE recommended for Protobuf, a format the contract does not use.",
+              "source": "Confluent documentation, n.d.",
+              "shows": "Gives the reader the options the next paragraph chooses from."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Changing a long-lived schema safely.",
+            "introduces": "The compatibility modes a registry enforces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A multi-brand listing stream needs full transitive compatibility because producers and consumers upgrade independently and replay old events, and in Avro that allows little beyond adding or removing optional fields with defaults, which is the point.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Any consumer, on any schema version, can read any event on the topic.",
+              "shows": "Shows why independent upgrades and replay need both directions against all versions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The compatibility modes.",
+            "introduces": "The one a multi-brand stream needs, and its consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A change of meaning is the dangerous one because a registry checks syntax, not semantics, so Veldmark routes every contract change through the advice forum's one-week event-catalog review.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Veldmark's rules: optional field yes; new event type with four weeks' notice; enum value only with a default branch (strings, not Avro enums); rename no; change of meaning never in place; remove a required field or change a type means a new major version.",
+              "shows": "Turns full transitive compatibility into rules a producer can follow."
+            },
+            {
+              "kind": "example",
+              "what": "Hearthly sending surface_m2 as habitable instead of total surface passes every check and makes every valuation wrong.",
+              "shows": "Shows a breaking change no registry detects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Full transitive compatibility.",
+            "introduces": "Veldmark's published rules and the one change they cannot enforce by machine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "A breaking change means a new topic published in parallel until the consumer registry shows no v1 consumers, a deliberately high cost that keeps v2 rare; Veldmark expects v1 to last at least until Yardstick goes at the end of 2029.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "listing.events.v2 with double publication; v1 retired when no active v1 consumer groups remain; v1 expected to last until Yardstick's decommissioning at the end of 2029.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows how a breaking change is made and why it is rare."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Changes the rules allow or forbid in place.",
+            "introduces": "How a breaking change is made.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "replay",
+      "heading": "Replay, Backfills and Dead Letters",
+      "controlling_idea": "Replay, backfills and dead letters are designed so that no redelivered, backfilled or reprocessed event can bring a sold listing back.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S3"
+        ],
+        "how": "Shows how version gating and state-carrying events keep the stream safe on bad days and why removals are measured separately."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Why replay matters, its sources, the backfill hazard and the version gate that solves it, Veldmark's backfill topic; then dead letters, a second hazard that reuses the version gate and the state-carrying event, so it must come after them. Dead letters first would explain the trap before the version gate that defuses it."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Schema evolution: changing the contract safely.",
+        "introduces": "Replaying its events safely.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "A listing stream earns most of its value on bad days, when an index must be rebuilt, a new service bootstrapped or 300,000 wrong listings corrected, and each of these is a replay.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A search mapping change, a new recommendation service, an enrichment bug on 300,000 listings.",
+              "shows": "Shows replay is routine work, not an exception."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Three replay sources serve different purposes: the events topic for recent reprocessing, the compacted state topic for bootstrapping and rebuilds, and a backfill from the system of record for corrections.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Source, use and limit for each: 14-day retention; latest state only; load on the producer.",
+              "shows": "Shows which source fits which replay."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The replays a stream must support.",
+            "introduces": "The sources they read from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Backfills are where designs fail, because a backfilled event can overwrite a newer live one and resurrect a sold listing, and version-gated apply prevents it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A backfilled ListingUpdated, read before the sale, processed after a live ListingSold; it carries the version at which it was read, not newer than the one applied, so it is ignored.",
+              "shows": "Shows the hazard and how the version gate removes it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The three sources.",
+            "introduces": "The one where designs fail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Vinted's merged reindex topic is documented without saying how stale batch events are kept from overwriting newer state, so the author infers that any such design needs a version or timestamp check in the consumer.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted merged batch reindex events with organic changes on one topic.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "Shows a public design with the same hazard."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: a version gate in front of a consumer holding v9 Sold, bouncing a duplicate v9 and a backfilled v7.",
+              "shows": "Shows version-gated apply at a glance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The backfill hazard and the version gate.",
+            "introduces": "A documented design where the safeguard is not stated, with the author's labelled inference.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Veldmark publishes backfills to a separate topic that consumers read at lower priority and gate by version, so the alert matcher can ignore old changes and a rebuild can be throttled without slowing live publication.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "listing.backfill.v1, same schema, cause backfill.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the separation and what each consumer gains."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Backfills mixed with live changes on one topic.",
+            "introduces": "Veldmark's separate backfill topic.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "A dead-letter queue holds events a consumer could not process, and for listings it hides a trap: reprocessing an old version from it without a version check overwrites newer state.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Version 5 in the dead-letter queue, version 6 processed, version 5 reprocessed later.",
+              "shows": "Shows how a dead letter becomes a resurrection."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Backfills that overwrite newer state.",
+            "introduces": "Dead letters, which can do the same.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Two rules defuse it: because events carry full state, skipping a failed one is usually safe, and consumers that need every delta park the failing listing while others continue.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Version 6 contains everything version 5 did; the price-drop alert matcher parks per key so one broken listing does not stop the partition.",
+              "shows": "Shows how state transfer and per-key parking make dead letters safe."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The dead-letter trap.",
+            "introduces": "The two rules that handle it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs: Choosing the Shape of the Stream",
+      "controlling_idea": "Each shaping decision has conditions under which the other option is right, but for listings the state-carrying, typed, per-aggregate stream on one group backbone is usually the answer.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S2",
+          "S6"
+        ],
+        "how": "Says when the recommended design is right and when an alternative is."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design as recommended, section by section.",
+        "introduces": "The alternatives to each of its choices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Seven decisions shape the stream; the table says when each option is right and marks the one recommended for listings, while the broker choice depends on the group.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Event content, granularity, publication, topic layout, backfills, schema format and broker, each with two options and when each is right.",
+              "shows": "Shows the conditions under which each alternative wins."
+            }
+          ]
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Typed events win over one generic changed event when consumers need to know why a listing changed, which alerts, trust, regulatory reporting and analytics do, so a generic event is a first step and typed events the destination.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Search does not need the reason; alerts, trust and safety, reporting and analytics do; a generic event with cause and changed keys as a first step.",
+              "shows": "Explains the granularity row."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The seven decisions in the table.",
+            "introduces": "The first of two that need a note.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "One broker versus bridged brokers is a portfolio decision: Veldmark chose one backbone because Common Ground shares platforms beneath the brands, with Hearthly's bridge as a dated exception, and a group expecting to sell a brand should hesitate to entangle its events.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly's Pub/Sub bridge with a review date when its cloud choice is revisited after 2028; platform-consolidation discusses selling a brand.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the broker choice following the group's portfolio strategy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Typed versus generic events.",
+            "introduces": "The second note: one broker or several.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The source of events, their volume and the event that matters most differ by vertical, which changes which events carry the most risk.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S1"
+        ],
+        "how": "Shows how the same contract is weighted differently in each vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Trade-offs that hold across the group.",
+        "introduces": "Differences between verticals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "controlling_idea": "The contract is the same in every vertical, but the verticals differ in where events come from, how many each listing produces and which event matters most.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive and jobs compared on dominant source, volume per listing, the event that matters most, extra event types and main consumers beyond search.",
+              "shows": "Shows the contract's weight shifting by vertical."
+            }
+          ]
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "For a jobs board the latency from ListingExpired to the page change is an SEO risk, because Google may take manual action against sites that leave expired jobs up.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Expired jobs must be removed by setting validThrough in the past, returning 404 or 410, or removing the markup; 'failure to take timely action on expired jobs may result in a manual action'.",
+              "source": "Google Search Central, updated 2026",
+              "shows": "Shows an external party enforcing expiry latency."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The jobs column of the table.",
+            "introduces": "Why expiry latency matters there.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "In real estate the entity-resolution cluster is itself a stream, because consumers need both the listing events and the event saying three listings describe one property.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Lyon apartment listed by three agencies.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows an extra event type the vertical needs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Jobs.",
+            "introduces": "Real estate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Event-driven listing systems fail in recurring ways, each breaking one part of the design, and each failure has a named control.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Names the breakdowns the design prevents and the control for each."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design and its variations by vertical.",
+        "introduces": "What goes wrong when part of it is missing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "form": "list",
+          "controlling_idea": "Nine failures recur: the forgotten publisher, consumers on producer tables, ordering broken by re-keying, the unversioned upsert, semantic drift, snapshot consumers, missed tombstones, personal data on the stream and the stream as a dumping ground, each with its control.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The bike digest as a snapshot consumer; Hearthly's bridge contract test for re-keying; Ghost Inventory produced by the unversioned upsert.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Ties the failures to the chapter's cases."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The listing event contract outlives the systems around it, so the decisions about it are governance decisions: what the group sets, what brands keep, who decides, what to watch, and what the stream's success creates.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Turns the design into the decisions a Chief Architect owns."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Why it is governance first, then the book's standard questions in order (decide centrally, leave local, who decides, what to watch), and the long-term consequence last because it leads to the next chapter."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failures that come from missing parts of the design.",
+        "introduces": "Who must decide and watch what so they do not happen.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "controlling_idea": "The listing event contract is one of the few artifacts that outlive systems, so the decisions around it are governance decisions, not implementation details.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick gone by the end of 2029, Solr replaced by OpenSearch, the alert matcher rewritten; the contract survives.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows why the contract deserves governance."
+            }
+          ]
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "The group decides centrally the envelope, cross-brand identity, catalog, compatibility rules, removal service levels, per-topic access and the single-emitter rule, because they are cheap to decide once and expensive four times.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The contract as a governance matter.",
+            "introduces": "What the group should decide.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Brands keep their internal events, their choice of outbox or CDC during migration, their read models and brand-specific event types, so the group contract stays the narrow waist.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane's financing-partner events and Hearthly's mandate events stay local.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives examples of what stays out of the group contract."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the group decides.",
+            "introduces": "What it leaves to brands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "At Veldmark the event platform team owns the backbone and catalog, each brand's listing context owns its events' content, the forum reviews contract changes, the data protection officer signs off personal-data fields, and consumers register before access.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sven Lindqvist's event platform team; Lucía Ortega as group data protection officer; registration gives the list of readers the bike incident showed nobody had.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Names the owners and closes the gap the scene opened."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What is decided where.",
+            "introduces": "Who decides it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "The signals to watch are publication and end-to-end removal latency per tenant, consumer lag at the Sunday peak, consumers still reading producer tables, dead-letter rates, no-op updates and schema changes per quarter.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A rising share of ListingUpdated events that change nothing signals broken hash suppression; schema changes should be small and boring.",
+              "shows": "Explains what two of the signals reveal."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What they watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "The stream makes copies cheap and cheap copies multiply, each a place where stale or personal data can linger, which is why listing data management becomes a separate discipline.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A stream that works and is watched.",
+            "introduces": "The consequence of its success: many copies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions turn the chapter into a design review of any listing event stream.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the reader a review drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions and signals.",
+        "introduces": "Questions that test a design against them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "form": "list",
+          "controlling_idea": "Ten questions test who emits each transition, how a commit becomes an event, keying, version-gated apply, consumers on producer tables, compatibility and semantic review, rebuilds, end-to-end removal latency, personal data on the stream, and artifacts delivered later than computed.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Events to Copies",
+    "synthesis": "Reliable publication and safe consumption are two halves of one contract: the producer's half (one emitter, outbox or translator, key and version) makes every committed change one event in order, and the consumer's half (version-gated apply, state that heals, a separate backfill topic, a removal objective) makes sure no redelivery, replay or late batch undoes it; most listing incidents sit where one half is missing.",
+    "so_what": "A design with both halves catches the Sunday-peak, backfill and schema-change failures before buyers do, and lets a new consumer start without asking the producer.",
+    "callback": {
+      "to": "The hook: one listing written once and read by ten or twenty systems, and the scene's bike that a digest featured after it sold.",
+      "how": "The bike needed both halves: an event the digest heard, and a digest that re-checked state when it sent."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Review the next listing event design by asking which half it is missing."
+    },
+    "hand_off": {
+      "to": "listing-data-management",
+      "relationship": "cause_effect",
+      "carries_over": "The stream moves changes and makes copies cheap, but it does not decide where the copies live, how stale each may be, or how an erasure reaches them.",
+      "introduces": "Listing data management: the system of record and the registered copies, shown on the same bike held in seven places."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and every section before them.",
+      "introduces": "What the halves of the design add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p68",
+        "controlling_idea": "Reliable publication and safe consumption are two halves that only work together, as the bike shows, so a design with both catches failures before buyers do and a review should begin by asking which half a design lacks.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The bike: ListingSold reaching the digest, and the digest re-checking state at send time.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the opening and shows both halves at work."
+          }
+        ]
+      },
+      {
+        "id": "p69",
+        "controlling_idea": "The stream moves changes but does not decide where the copies live, how stale each may be or how an erasure reaches them, which listing-data-management takes up with the same bike held in seven places.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the two halves of the stream achieve.",
+          "introduces": "What the stream does not decide, and the chapter that answers it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Where copies live, consistency models, multi-region and GDPR erasure across copies.",
+      "covered_in": [
+        "listing-data-management"
+      ]
+    },
+    {
+      "topic": "Behavioral tracking events, warehouse and data products.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "The lifecycle state machine and invariants themselves.",
+      "covered_in": [
+        "listing-aggregate"
+      ]
+    },
+    {
+      "topic": "Publication stages and freshness SLAs; feed reconciliation.",
+      "covered_in": [
+        "publication-pipeline",
+        "listing-ingestion"
+      ]
+    },
+    {
+      "topic": "Search index design and reindexing mechanics; alert fan-out.",
+      "covered_in": [
+        "search-architecture",
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "The Yardstick strangler plan in full.",
+      "covered_in": [
+        "modernization-and-migration"
+      ]
+    },
+    {
+      "topic": "The tenancy model itself (tenant as brand × country, configuration, release rings).",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No classifieds company has published its listing event names or topic layout; revisit if one does.",
+    "Whether the Veldmark envelope should adopt CloudEvents attribute names for partner-facing webhooks (not decided; v1 is internal only).",
+    "Hearthly's Pub/Sub bridge is a stated exception; its review date depends on the post-2028 cloud decision."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended state-plus-delta events over thin notifications, because peak fan-out and self-healing dominate in listings; notification kept as the right choice only for sensitive or low-fan-out cases."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Presented CDC and outbox as stages (CDC behind a translator during migration, outbox as target) rather than alternatives, following the platform brief."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept behavioral tracking events off the listing stream and out of scope, to protect removal latency and keep data-platform's ownership clean."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the March 2027 bike digest incident as the motivating story and replayed it as v1's acceptance test, rather than inventing a new incident."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md's success criteria: the dual-write and CDC-as-source criteria became AC-4 (cold reader, minor); the schema-compatibility criterion became AC-5 (cold reader, minor); the evidence criterion became AC-6 (rubric, minor); the envelope and replay criteria are covered by the journal spec's AC-1; the ledger-match criterion was dropped (facts are governed by the scenario ledger, not by a reader outcome); the inventory criterion (tables, failure modes, view, questions) was dropped."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added three units to the published text: lead-ins to the trade-off table (p54) and vertical table (p57) so each table is introduced and explained, and a synthesis paragraph (p68); merged the one-sentence signpost 'Two choices in the envelope deserve justification.' into p23 (flow rubric note) so the conclusion synthesizes and calls back to the opening rather than only handing off. Added a roadmap sentence to p03 (the journal spec's AC-2 asks the opening to predict the sections) and a one-clause gloss of 'tenant' to p21, since multi-country-platforms defines it later."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric (fresh agent, thesis object only): pass; its note that no supporting claim carried the Veldmark removal targets was taken (S4 now states them). Flow rubric (fresh agent, --flow output only): sound with notes. Taken: the one-sentence signpost merged into p23; p20 refocused on the translator and migration staging so it no longer repeats p10; p31 now names the three publication paths including Hearthly's bridge, which the broker trade-off later refers to; the in-practice section's pattern relabelled as grouping; the schema and replay sections' reasons now say what would break. Order unchanged. Notes not taken are in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 escalated on spec faults (both flow readers): the removal service level (p53) was filed under replay and the client-analytics paragraph (p45) read as a digression at the end of schema evolution. Moved p53 to the end of the architecture section after the topics, and p45 into the event catalog after the exclusion of tracking events, with their transitions and the section ideas, flows and roadmap rewritten. FULL_TRANSITIVE before its explanation (also a spec fault) is handled in the draft with a one-clause gloss at p35 rather than a reorder. Intent, thesis, role and criteria unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 escalated on a spec fault (both flow readers): p48's evidence said a backfilled event carries the listing's current version, which contradicts Figure 4's backfilled v7 and makes correction backfills look useless. p48's evidence now says the event carries the version at which it was read, and the draft sentence was changed to match ('the listing's version *when it was read*'); the author should confirm this wording. Also reworded the failure-modes idea (each failure breaks one part of the design, not one half; a single-reader note) and the trade-off and vertical lead-ins and the conclusion so-what to match the revised draft. Round-2 draft fixes: the openings of Concepts, Architecture, In Practice and Replay now carry over the previous section; the Vinted 2026 quotes are explained; the Figure 2 caption points to the topics subsection; the 20:26 scam example is tied to the suspended account; the bike table's skipped versions are announced; the Chief Architect's opening no longer repeats its closing. Own additions trimmed to stay within the 7,778-word limit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so max_words is the published length by check_draft's count (7,408) plus 5%: 7,778."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation (\"auto resolve all ESCALATE topics\"): the backfill sentence now says the backfilled event carries the listing's version *when it was read*, because the published 'current version' contradicted Figure 4's alt text (a backfilled v7 bouncing off a consumer at v9, distinct from a duplicate v9) and p48's evidence; corrected under the internal-arithmetic rule."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Event-type count: the text now says twelve types, one per table row, with pausing and resuming one type with two names, matching the ledger's '12 domain event types', the twelve-row table and listing-aggregate; this supersedes the 2026-10-20 'thirteen' consistency fix. bounded-contexts still says thirteen; reported to the orchestrator as a ledger ruling."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The removal-objective example no longer reuses the phishing account's 20:26 suspension time for a hypothetical scam listing; it uses no clock time ('half an hour after its account is suspended'). The digest assembly time is now the ledger's 17:30 Monday (was 'Monday afternoon'), and Figure 3's caption says 'thirteen and a half hours' (17:30 to 07:00), matching saved-searches-and-alerts."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated flow points fixed in the draft without reordering, accepted under the author's delegation, 2026-11-12: FULL_TRANSITIVE at p35 now carries its one-clause reason; the versions 4-7 reason moved into the note before Figure 3; the Protobuf sentence marks Protobuf as a format the contract does not use; the Debezium outbox router and 'compacted topic' in Concepts and the CDC paragraph carry forward pointers; 'the bike problem in miniature' became 'the bike's outcome, from a different cause' (p15 evidence changed to match); 'Two exclusions' became 'Two boundaries'; the roadmap names the source kinds AC-2 expects (Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de, Confluent and Debezium documentation)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised by 10% under the delegation's rule 2, from 7,778 to 8,555, to make room for these fixes; no published text was cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken (removal objective placement, Keybridge paragraph, client-tracking paragraph, two-row prose of the trade-off and vertical tables, two-halves frame planted in KEY POINTS) are accepted under the author's delegation, 2026-11-12 as recorded; the order is unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities: none exists in the folder; left empty, accepted under the author's delegation, 2026-11-12; writing them stays a separate request."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate",
+      "contributed": "Lifecycle and invariants the events publish."
+    },
+    {
+      "kind": "internal",
+      "ref": "publication-pipeline",
+      "contributed": "Publication stages and freshness objectives."
+    },
+    {
+      "kind": "internal",
+      "ref": "bounded-contexts",
+      "contributed": "Published language and anti-corruption layers."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-data-management",
+      "contributed": "The next chapter, which inherits the copies this one creates."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Part 2; _research/brief-listing-data-ingestion.md Parts 5–6",
+      "contributed": "Platform and ingestion research behind the design."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "The bike and Golf timings, the 1 July 2027 go-live, Kafka on Confluent Cloud, contract v1's topics, volumes and objectives, Motorvane's feed figures."
+    },
+    {
+      "kind": "external",
+      "ref": "Debezium, Outbox Event Router (n.d.)",
+      "contributed": "Outbox columns and keying."
+    },
+    {
+      "kind": "external",
+      "ref": "Confluent, Schema Evolution and Compatibility; Log compaction (n.d.)",
+      "contributed": "Compatibility modes, tombstones."
+    },
+    {
+      "kind": "external",
+      "ref": "Martin Fowler, What do you mean by \"Event-Driven\"? (2017)",
+      "contributed": "Notification versus state transfer."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog (2022, 2024, 2025), Vinted Engineering (2019, 2023, 2026), AutoScout24 Tech Blog (2018), mobile.de Seller-API (n.d.), Google Search Central (2026)",
+      "contributed": "Documented Kafka, CDC, read models and contracts; bump versus creation; expired job postings."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: reverted the backfill-version wording to the published text; the suspected contradiction with Figure 4 is in open_questions for the author. Check report stale."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: corrected the Kleinanzeigen Debezium quote, fixed a table-row reference, flagged 2022 Adevinta evidence as older, expanded SLO, American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 2 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,291 → 6,324 prose words; lead places the chapter as Part VII's first contract; 1 heading renamed; 7 paragraph openings brought to their point; 2 paragraphs split. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: event catalog count corrected to thirteen types (pause and resume share a table row). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline): paragraph-level reconstruction, intent, thesis and role copied from journal-spec.json, success criteria rewritten as AC-4 to AC-6, three units added (two table lead-ins, a synthesis); after draft check round 1, p53 and p45 moved; three draft-check rounds run, escalated at round 3. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: backfill version wording, event count (twelve), 20:26 example, digest timing, corroborated flow points, AC-2 source kinds; max_words 8,555. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8555
+  }
+}

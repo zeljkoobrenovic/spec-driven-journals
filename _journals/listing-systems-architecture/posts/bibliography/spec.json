@@ -1,0 +1,1171 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "bibliography",
+  "journal": "listing-systems-architecture",
+  "part": "reference",
+  "title": "Bibliography: Sources and Evidence",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria and the role are copied unchanged from the bibliography's entry in journal-spec.json; the thesis question is copied from that entry and the claim is written here from the Reference part's supporting claim R-3. The conclusion performs the Reference part's closing (journal-spec.json, parts/reference/closing), which the published page did not. The ~600 source entries are list items inside the topic and chapter units and are not specified one by one.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The register's rules: 587 sources harvested from the Sources and Evidence sections of 55 pages, deduplicated, with stable R-numbers that are never reused; twelve evidence types and how to read each; thirteen topic sections (six of them company sections) and a Sources by Chapter list."
+      ],
+      "can_do": [
+        "Find the sources behind a chapter or a topic, and weigh a claim by the kind and age of the source behind it.",
+        "Tell documented facts (backed by a source here) from labeled inferences, the author's recommendations and the fictional Veldmark, which no source describes."
+      ]
+    },
+    "audience": {
+      "who": "Experienced architects and engineering leaders working on listing marketplaces: chief and enterprise architects of marketplace groups, principal and staff engineers, search, data and ML leads, platform-engineering leads, product and engineering directors of classifieds, real-estate, automotive, jobs and recommerce marketplaces, and technology leaders integrating acquired marketplaces.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "How to make and defend an architecture decision."
+      ],
+      "does_not_know": [
+        "Marketplace economics: liquidity, network effects, multi-homing.",
+        "Search and ML vocabulary: learning to rank, percolation, hybrid retrieval.",
+        "Regulatory detail: DSA statements of reasons, DAC7, P2B.",
+        "Vertical specifics: VINs, property and vehicle feed standards."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a company claim from a chapter, the reader finds its source in the register and says how far to trust it from its evidence type and year.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A chapter says a marketplace rebuilt its search index from an event log in under 30 minutes, citing a company engineering post from 2019. Using only this page: how do you find the entry, and how far should you rely on it for how that marketplace works today?",
+        "expected": "Through the Sources by Chapter list for the citing chapter or the topic section (company engineering for eBay Classifieds, Kleinanzeigen and Marktplaats); a company engineering post documents what the company said it built at that date and may describe a system since replaced, and a post more than about three years old is a record of its date, not of today."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone can say what the register includes and excludes and how to use it.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what does this register include and leave out, and how should you use it?",
+        "expected": "Only sources a page actually cited, each once, with its year, evidence type and citing pages, findable by topic or chapter; research conducted in October 2026, some facts known through secondary summaries, names as of 2026; research briefs and Veldmark are not sources; weigh claims by the kind and age of the source."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What must the book's source register record, and how must it be organised, for a reader to weigh any claim the book makes?",
+    "claim": "A claim in this book can be weighed only if every source behind it is listed once, under an identifier that never changes, with the year its citing chapter gave, its evidence type and the pages that cite it, findable by topic and by chapter; a source listed without its date and type lets an engineering post from one year stand for a system as it runs today.",
+    "disputed_by": "The view that a bibliography is an alphabetical, undated reading list kept for completeness, which a reader can skip without losing anything the chapters say.",
+    "so_what": "Before citing a source from the book in a decision record, a reader checks its year and evidence type here and follows a secondary entry to its primary source, and can tell which statements rest on no source at all (Veldmark, inferences, recommendations).",
+    "how_why": "Company engineering posts are the largest evidence type in the register (127 of 587), and each records one group's platform at one date; a filing records reported numbers, a regulation a requirement, trade press an event. Reading an entry's type and year tells the reader what the source can and cannot support, and the Cited in lines and Sources by Chapter connect each source to the argument that relies on it.",
+    "supporting_claims": [
+      {
+        "id": "B1",
+        "claim": "Every source a page cited appears once, with an identifier that is never renumbered or reused, and nothing is listed that no page cites."
+      },
+      {
+        "id": "B2",
+        "claim": "Each entry's year and evidence type say how far to trust the claim it supports: a company engineering post records one platform at one date, a filing reported numbers, a regulation a requirement."
+      },
+      {
+        "id": "B3",
+        "claim": "The register can be entered by topic, through a topic index of contiguous identifier blocks, or by chapter, through the identifiers each page cites."
+      },
+      {
+        "id": "B4",
+        "claim": "Documented facts are kept distinct from what no listed source supports: the internal research briefs, labeled inferences, the author's recommendations and the fictional Veldmark."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives every documented fact in the book a findable source of known kind and age, and performs the reference part's closing.",
+    "supports": [
+      "R-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "the thirteen topic sections (economics, six company sections, six technical topics)"
+      }
+    ],
+    "rationale": "The reading rules come first because an entry cannot be weighed before the reader knows what its year and type mean. The topic index comes before the topic sections it maps, and the sections follow in identifier order. Sources by Chapter comes after the entries because it lists identifiers that point into them. Put the chapter list first and the reader meets bare R-numbers with nothing to resolve them against; put the rules last and the first entries are read without knowing how far to trust them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "This page lists the external sources the chapters cite."
+    },
+    "bridge": {
+      "from_reader_world": "A reader who meets a company claim, a regulatory date or a practice recommendation in a chapter and wants to check it before relying on it.",
+      "to_topic": "Where the book's evidence comes from: each source once, with its year, evidence type and citing chapters, and how the October 2026 research, secondary summaries and 2026 naming shape what the entries say."
+    },
+    "thesis_statement": {
+      "text": "Sources are listed because they were cited, and their dates and evidence types tell the reader how far to trust a claim; documented facts, inferences and Veldmark are kept distinct.",
+      "placement": "KEY POINTS callout (all three bullets)."
+    },
+    "roadmap": {
+      "placement": "IN THIS SECTION callout and paragraph p02.",
+      "promises": [
+        {
+          "promise": "How to read an entry and how far each kind of evidence can be trusted.",
+          "kept_in": [
+            "how-to-read"
+          ]
+        },
+        {
+          "promise": "Find a source by topic: a topic index, then the thirteen topic sections that hold the entries.",
+          "kept_in": [
+            "topic-index",
+            "economics",
+            "adevinta",
+            "olx",
+            "ebay",
+            "aviv",
+            "automotive",
+            "other-marketplaces",
+            "search",
+            "trust",
+            "regulation",
+            "platform",
+            "web",
+            "method"
+          ]
+        },
+        {
+          "promise": "Find the sources a chapter rests on.",
+          "kept_in": [
+            "by-chapter"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The register records sources as the October 2026 research found them: consulted then, with access, version or update dates kept where a chapter recorded them, some facts known only through secondary summaries, and names as of 2026.",
+        "function": "context",
+        "organization": "description",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Research conducted in October 2026; some company pages blocked automated access; secondary summaries are a trade-press article or a third-party digest of an engineering post; Schibsted is now Vend, eBay Kleinanzeigen is now Kleinanzeigen, the former eBay Classifieds Group is part of Adevinta.",
+            "source": "The published page; the chapters' Sources and Evidence sections",
+            "shows": "The age and directness of the evidence are part of what each entry records, before the reader meets any entry."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The page opens with how to read an entry and each kind of evidence, then a topic index and the thirteen topic sections that hold the entries, then the sources each chapter cites, and closes by linking the register to the toolkit and glossary; the book's own research briefs are not listed.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "When and how the sources were consulted.",
+          "introduces": "How the page is laid out and what it leaves out.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Register",
+      "controlling_idea": "Each entry has a stable identifier, the year its citing chapter gave and an evidence type, and the type says how far the source can be trusted for a given kind of claim.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "B1",
+          "B2",
+          "B4"
+        ],
+        "how": "States the rules that make an entry usable for weighing a claim: one source once, a permanent identifier, a year, an evidence type, and what is deliberately not a source."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The roadmap's first item.",
+        "introduces": "How to read an entry.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "What gets an identifier (1.1) and what does not (1.2) must come first, because the counts in the evidence-type table (1.3) are counts of exactly those registered sources, R566 included; placed after the table, the exclusions read as a step back to the opening (draft check round 2), and placed before 1.1 they would exclude things from a register not yet described."
+      },
+      "paragraphs": [
+        {
+          "id": "p03",
+          "controlling_idea": "The 587 sources were harvested from the Sources and Evidence sections of 55 pages and deduplicated, and their R-numbers identify rather than rank and are never renumbered or reused.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "587 sources from 55 pages, deduplicated by normalized URL; new sources append from the next free R-number; a removed source's number is retired.",
+              "source": "The register's harvest",
+              "shows": "A reference to an identifier keeps meaning the same document, so records that cite R-numbers stay valid."
+            }
+          ]
+        },
+        {
+          "id": "p04",
+          "controlling_idea": "Only public sources get an R-number: the book's research briefs are working notes and are left out, with the public source behind any fact they collected listed instead; the one non-public entry is R566, Productscape, the author's domain models, listed because chapters cite it.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The sources that were harvested and given identifiers.",
+            "introduces": "What gets no identifier (the research briefs) and the one non-public source that does (R566).",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Each entry gives its title, publisher, the year the citing chapter gave, what it supports, an evidence type and its citing chapters, and the twelve evidence types each say how far a source can be trusted.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The evidence-type table: twelve types with counts (company engineering 127, filings 85, company documentation 38, technical documentation 100, standards 25, law and regulators 63, research 34, books 7, practitioner 34, news 59, encyclopedia 14, author's working model 1), what each is and how to read it.",
+              "shows": "The reader can weigh any entry by its type, for example a company engineering post as a record of what the company said it built at that date."
+            },
+            {
+              "kind": "reasoning",
+              "what": "A company engineering post more than about three years old is a record of that date, not of today.",
+              "shows": "The year matters most for the largest evidence type."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What gets an identifier.",
+            "introduces": "What each entry gives besides its identifier, and how far each evidence type can be trusted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "topic-index",
+      "heading": "Topic Index",
+      "controlling_idea": "Each topic is one contiguous block of identifiers, so a reader with a subject goes straight to its block and its most widely cited source.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "B3"
+        ],
+        "how": "Makes the register findable by topic."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Identifiers assigned in topic order.",
+        "introduces": "The topic blocks and how sources are placed in them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The placement rule comes first because it explains why a source sits where it does; the thirteen blocks then follow in identifier order, the same order as the sections below, so the index and the sections can be read side by side. Moved after the sections, the index would no longer tell the reader which block to open."
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Identifiers run in topic order, fixed when they were assigned: the company sections hold every evidence type a group published or was reported in, each source sits under the one topic it serves best, and the blocks run from economics through the company sections in case-chapter order to the technical topics in rough chapter order (Platform before Web because the topic list the identifiers were assigned from put them so) and architecture method last.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A source cited across several topics keeps one place; its Cited in line lists every chapter that uses it.",
+              "shows": "The reader knows where to look for a source and why it may sit under a topic other than the citing chapter's."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The Marketplace economics and business models block (R1–R8, 8 sources) covers two-sided market theory, network effects, marketplace metrics and the history of classifieds, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule that each topic is one contiguous block of identifiers.",
+            "introduces": "The first block, R1–R8.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The Company sources: Adevinta and Schibsted block (R9–R75, 67 sources) covers Adevinta, Schibsted (now Vend) and their brands, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R1.",
+            "introduces": "The block R9–R75.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The Company sources: OLX and Prosus block (R76–R133, 58 sources) covers OLX and its owner Prosus (and Naspers), and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R9.",
+            "introduces": "The block R76–R133.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The Company sources: eBay Classifieds, Kleinanzeigen and Marktplaats block (R134–R174, 41 sources) covers the former eBay Classifieds Group and its brands, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R76.",
+            "introduces": "The block R134–R174.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The Company sources: AVIV and property portals block (R175–R226, 52 sources) covers AVIV Group and other property portals, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R134.",
+            "introduces": "The block R175–R226.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The Company sources: automotive marketplaces block (R227–R262, 36 sources) covers automotive marketplaces, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R175.",
+            "introduces": "The block R227–R262.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The Company sources: other marketplaces block (R263–R327, 65 sources) covers other marketplaces the chapters use as comparisons, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R227.",
+            "introduces": "The block R263–R327.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The Search, ranking and recommendations block (R328–R390, 63 sources) covers search engines, query understanding, ranking, recommendations, geo and saved-search matching, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R263.",
+            "introduces": "The block R328–R390.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The Trust, safety and fraud block (R391–R406, 16 sources) covers fraud, scams, spam, identity assurance and account security, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R328.",
+            "introduces": "The block R391–R406.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The Regulation and standards block (R407–R489, 83 sources) covers laws, regulators, official datasets and technical standards, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R391.",
+            "introduces": "The block R407–R489.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The Platform, data, ML and experimentation block (R490–R528, 39 sources) covers event streaming, data platforms, media, payments platforms, experimentation and machine learning, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R407.",
+            "introduces": "The block R490–R528.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The Web, SEO and reliability block (R529–R565, 37 sources) covers search-engine optimization, structured data, web performance, crawler control, reliability and incident reports, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R490.",
+            "introduces": "The block R529–R565.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The Architecture method and organization block (R566–R587, 22 sources) covers domain-driven design, capability modeling, team design, decision records, migration patterns and long-term architecture method, and names its most widely cited source.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The block ending before R529.",
+            "introduces": "The block R566–R587.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "economics",
+      "heading": "Marketplace economics and business models",
+      "controlling_idea": "The 8 sources R1–R8 on two-sided market theory, network effects, marketplace metrics and the history of classifieds, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The topic index, whose first block is R1–R8.",
+        "introduces": "The entries R1–R8.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Entries R1–R8, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R1–R8 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "adevinta",
+      "heading": "Company sources: Adevinta and Schibsted",
+      "controlling_idea": "The 67 sources R9–R75 on Adevinta, Schibsted (now Vend) and their brands, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R9–R75.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "form": "list",
+          "controlling_idea": "Entries R9–R75, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R9–R75 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "olx",
+      "heading": "Company sources: OLX and Prosus",
+      "controlling_idea": "The 58 sources R76–R133 on OLX and its owner Prosus (and Naspers), each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R76–R133.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "Entries R76–R133, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R76–R133 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ebay",
+      "heading": "Company sources: eBay Classifieds, Kleinanzeigen and Marktplaats",
+      "controlling_idea": "The 41 sources R134–R174 on the former eBay Classifieds Group and its brands, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R134–R174.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Entries R134–R174, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R134–R174 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aviv",
+      "heading": "Company sources: AVIV and property portals",
+      "controlling_idea": "The 52 sources R175–R226 on AVIV Group and other property portals, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R175–R226.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "form": "list",
+          "controlling_idea": "Entries R175–R226, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R175–R226 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "automotive",
+      "heading": "Company sources: automotive marketplaces",
+      "controlling_idea": "The 36 sources R227–R262 on automotive marketplaces, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R227–R262.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "Entries R227–R262, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R227–R262 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "other-marketplaces",
+      "heading": "Company sources: other marketplaces",
+      "controlling_idea": "The 65 sources R263–R327 on other marketplaces the chapters use as comparisons, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R263–R327.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "Entries R263–R327, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R263–R327 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "heading": "Search, ranking and recommendations",
+      "controlling_idea": "The 63 sources R328–R390 on search engines, query understanding, ranking, recommendations, geo and saved-search matching, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R328–R390.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "Entries R328–R390, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R328–R390 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trust",
+      "heading": "Trust, safety and fraud",
+      "controlling_idea": "The 16 sources R391–R406 on fraud, scams, spam, identity assurance and account security, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R391–R406.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "Entries R391–R406, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R391–R406 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regulation",
+      "heading": "Regulation and standards",
+      "controlling_idea": "The 83 sources R407–R489 on laws, regulators, official datasets and technical standards, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R407–R489.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "Entries R407–R489, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R407–R489 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "platform",
+      "heading": "Platform, data, ML and experimentation",
+      "controlling_idea": "The 39 sources R490–R528 on event streaming, data platforms, media, payments platforms, experimentation and machine learning, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R490–R528.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "form": "list",
+          "controlling_idea": "Entries R490–R528, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R490–R528 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "web",
+      "heading": "Web, SEO and reliability",
+      "controlling_idea": "The 37 sources R529–R565 on search-engine optimization, structured data, web performance, crawler control, reliability and incident reports, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R529–R565.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Entries R529–R565, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R529–R565 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "method",
+      "heading": "Architecture method and organization",
+      "controlling_idea": "The 22 sources R566–R587 on domain-driven design, capability modeling, team design, decision records, migration patterns and long-term architecture method, each with its year, evidence type and citing chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "B2",
+          "B3"
+        ],
+        "how": "Lists the topic's sources in the form that lets a claim be weighed by kind and age."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The previous topic block.",
+        "introduces": "The entries R566–R587.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "Entries R566–R587, one per source, each giving identifier, linked title, publisher, year, what it supports, evidence type and citing chapters.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Entries R566–R587 as harvested from the chapters' Sources and Evidence sections.",
+              "shows": "Each claim in the citing chapters can be traced to a source of stated kind and year."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "by-chapter",
+      "heading": "Sources by Chapter",
+      "controlling_idea": "For each page in reading order, the identifiers it cites, so a reader starting from a chapter finds every source it rests on.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "B3"
+        ],
+        "how": "Makes the register findable by chapter."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The topic sections, which group sources by subject.",
+        "introduces": "The same sources grouped by the page that cites them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "form": "list",
+          "controlling_idea": "Where the topic sections group sources by subject, this list gives, for each page in reading order, the identifiers it cites; part introductions and the glossary cite none.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "One line per citing page with its count and identifiers, from introduction (3) to toolkit (12).",
+              "shows": "A reader starting from a chapter reaches every source behind it."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Template to Source",
+    "synthesis": "With this register the three reference pages form one chain: a template's field names a term, the term's glossary row names its owning chapter, and that chapter's line in Sources by Chapter names the dated sources behind it.",
+    "so_what": "A reader can trace any decision record built from the book back through its definitions to evidence of a known kind and age, and see which parts rest on fiction (Veldmark) or labeled inference rather than on sources.",
+    "callback": {
+      "to": "The toolkit's opening claim that each template leaves evidence someone else can check, and this page's KEY POINTS on keeping documented facts, inferences and Veldmark distinct.",
+      "how": "The reader now sees the register as the place where that check ends: the chain reaches dated evidence for documented facts and stops, by label, at Veldmark and the author's judgement."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Before citing a source in a decision record, check its year and evidence type in the register, and follow it to the primary source where the entry is secondary."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "A chapter's line of identifiers in Sources by Chapter.",
+      "introduces": "That line as the last link of the reference chain that starts in the toolkit.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p34",
+        "controlling_idea": "A chapter's line in Sources by Chapter is the last link of one reference chain from a toolkit template through a glossary definition to dated sources, which is how the toolkit's evidence 'someone else can check' is checked.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p35",
+        "controlling_idea": "Before citing a source from the book in a decision record, check its year and evidence type here and follow a secondary entry to its primary source.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The chain that reaches dated evidence.",
+          "introduces": "What the reader should do with it before citing.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p36",
+        "controlling_idea": "The chain stops where the evidence stops: Veldmark is fictional, and architectural recommendations and labeled inferences are the author's judgement.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the sources support.",
+          "introduces": "What no source supports.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Further reading or annotated reading lists; nothing is listed that no page cites."
+    },
+    {
+      "topic": "Verifying or rewriting the chapters' citations; missing URLs or years are reported to the chapter owners, not fixed here."
+    },
+    {
+      "topic": "Definitions of terms and templates.",
+      "covered_in": [
+        "glossary",
+        "toolkit"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Rerun the harvest (gen.py -> classify.py -> fix.py -> render.py in _research/bib-tools/) whenever a page's sources change; keep ids.json so existing identifiers do not shift. (Carried over from spec.md.)",
+    "Eight entries have no URL (among them the Prosus FY25 results booklet, the Schibsted Q3 2016 investor presentation, the eBay Classifieds Group archived pages, the two DDD books and Broder 1997), and the OLX duplicate-detection posts in media-pipeline are cited as known only through search summaries. Chapter owners should add primary URLs where they exist. (Carried over from spec.md.)",
+    "Several company engineering entries carry 'n.d.' (for example the Airbnb Tech guest-journey post, the Chronon and FIAAS repositories and the AVIV Group pages); the style guide asks for a year on company engineering evidence. (Carried over from spec.md.)",
+    "The harvest scripts (_research/bib-tools/classify.py, fix.py, render.py) and manuscripts/listing-systems/bibliography.md still name the six company topics 'Company engineering: ...'; update them to 'Company sources: ...' before the next harvest or manuscript export, or a rerun restores the old headings (outside this post's folder, so not changed here)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Generated the register by script from the pages' Sources and Evidence sections, so the Cited in lines and Sources by Chapter come from the actual citations."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Split multi-link source lines into one entry per URL, and merged one document cited under two URLs (the DSA, Omnibus and P2B texts; one Adevinta press release; the Base Adresse Nationale) into a single entry that keeps both links."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Put company-specific sources in six company sections and generic engine documentation and research papers, including company-authored papers, under the technical topic they inform."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the most common metadata wording across citing chapters and, where chapters gave different years, the most specific citation."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the callout-format, harvest-rule, identifier-registry, entry-format, thirteen-sections and Sources-by-Chapter criteria were inventories of contents or of the generation process and are dropped as criteria (the harvest and identifier rules survive as supporting claims B1 and B3 and in the decision log); the build criterion is not a reader outcome and is dropped; they are replaced by the journal spec's AC-1 to AC-3. No acceptance criteria were added.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Each topic section and Sources by Chapter is specified as one list unit; the ~600 entries are list items and are not specified or changed one by one.",
+      "rejected": [
+        "One spec paragraph per entry."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Transitions between the topic paragraphs of the index and between the topic sections are declared as sequence: the blocks are contiguous identifier ranges and the boundary is carried by the range in each label or heading, not by connecting words.",
+      "rejected": [
+        "Adding connecting sentences between topic blocks or entries."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a conclusion section, From Template to Source, to perform the Reference part's closing (synthesis of the toolkit-glossary-bibliography chain, so-what, callback to the toolkit's opening, takeaway), as the journal spec requires of this page; the published closing sentence on Veldmark moves into it as its last paragraph, so the page still ends with it. Added a roadmap paragraph (p02) to the introduction so a reader of the opening can predict the sections and knows the research briefs are not listed (AC-2).",
+      "rejected": [
+        "Leaving the Veldmark sentence as the second unit of Sources by Chapter and appending the closing after it, which would end the page on a different sentence."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so length.max_words is the published count plus 5% (22,548 by check_draft's count, limit 23,675)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims B1 to B4 written here (the journal spec gives none for this post) from R-3 and the published reading rules. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric applied: dropped the mislabeled 'chronological' additional pattern from the Topic Index flow and said what would break if the index moved."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1: p05's transition changed from contrast to elaboration (it now expands the opening's note on research briefs instead of restating it); p06's controlling idea now states the topic order and that it is fixed, because both flow readers could not place the company sections and the Platform/Web pair."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 2 (ESCALATE on four spec-fault flow findings, each corroborated by both flow readers): moved the research-briefs paragraph before the entry-and-evidence-type paragraph so the table leads into the Topic Index (p04 and p05 swapped and renumbered, transitions rewritten); p02 now announces the closing chain; p06 states that the company sections hold every evidence type and that they follow the Part IX case-chapter order. Intent, thesis, role and the journal's criteria unchanged.",
+      "rejected": [
+        "Renaming the six 'Company engineering: ...' headings so they no longer share the evidence type's name (left for the author: headings and their anchors are published)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric (question 1): thesis left unchanged because the question is copied from journal-spec.json; a rewording of the journal spec's thesis.question for the bibliography entry ('What must the book's source register record, and how must it be organised, for a reader to weigh any claim the book makes?') is passed to the orchestrator as a journal-spec edit. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Renamed the six 'Company engineering: ...' headings and their Topic Index labels to 'Company sources: ...' so they no longer share an evidence type's name (both round-3 flow readers read them as holding only that type). No page in the journal or in docs/ links to a bibliography.html# anchor, so no link breaks. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Topic Index ¶1 now gives the reason Platform, data, ML and experimentation precedes Web, SEO and reliability: the topic list the identifiers were assigned from (_research/bib-tools) put them in that order, and identifiers are frozen. Reordering the sections to chapter order was rejected: the blocks would no longer run in identifier order. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims B1-B4 (agent-written from the Reference part's R-3) accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The R10 sentence on Aurelia UK Feederco Ltd ('the company through which Adevinta has reported since private-equity investors bought it in 2024') is kept: _research/brief-adevinta.md records the Permira/Blackstone take-private settling in May 2024 and that the group now reports through Aurelia UK Feederco Ltd. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken (move the Veldmark sentence into How to Read; merge the Topic Index placement rule into How to Read ¶1; merge the thirteen Topic Index paragraphs into a table; cut the takeaway p35; the conclusion's reference chain relying on other pages): the published text and the Reference part's prescribed closing are kept (rule: keep the published text where no option is clearly better). Round-3 minor single-reader points (why architecture method comes last, standards under regulation, 'most specific citation', the Veldmark line repeating KEY POINTS) and entry-level points (year punctuation, 'current'/'updated' date forms, uneven '(older evidence)' flags, R134 not naming its marketplace) left as recorded in check-report round 3; entries are generated and not edited by hand. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 corroborated draft faults fixed by wording after round 3 (p04 marks R566 as the one exception; p02 announces one ending; p34 names the three reference pages; p06 glosses Part IX) accepted under the author's delegation, 2026-11-12; re-checked in round 4."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis question, role, and the Reference part's closing this page performs."
+    },
+    {
+      "kind": "internal",
+      "ref": "Every page's ## Sources and Evidence section; where-listing-systems-go-wrong for The Forced Fit",
+      "contributed": "The entries, Cited in lines and Sources by Chapter."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/finance-systems-architecture/_research/bib-tools/ and the RECONCILED bibliography",
+      "contributed": "Structural model and harvest tools."
+    },
+    {
+      "kind": "internal",
+      "ref": "toolkit, glossary",
+      "contributed": "The toolkit's opening claim (templates that leave evidence someone else can check) and the glossary's owning-chapter rows used in the closing chain."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial bibliography harvested from every page's Sources and Evidence section. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Term alignment with the glossary: 'projection' -> 'read model', 'copy register' -> 'consumer registry', 'filter compiler' -> 'query compiler', where they occur on this page. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; added the roadmap paragraph and the closing section the Reference part requires; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 revisions: p02 opener carries over p01 and points to How to Read for the briefs; p03 deduplication rule as a plain sentence; p04 introduces the evidence-type table; p05 expands the opening's note and names R566 as the one non-public entry; p06 states the topic order; Topic Index Adevinta block glosses Aurelia UK Feederco Ltd; p34 names the toolkit's claim instead of assuming the reader has read it. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 revisions: research-briefs paragraph moved before the evidence-type table and glosses Productscape (R566); p02 announces the closing; Topic Index ¶1 clarifies that company sections hold every evidence type and states the company-section order (Part IX case order) and that architecture method comes last; conclusion ¶1 split into shorter sentences; 'the single entry keeps both URLs'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check: three rounds (REVISE, ESCALATE, ESCALATE). After round 3, wording fixes in p02, p04, p06 and p34 with no further check, so the report is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: company headings renamed 'Company sources: ...'; Topic Index ¶1 gives the reason for the Platform/Web order; open questions moved to the decision log. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 23675
+  }
+}

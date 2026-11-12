@@ -1,0 +1,496 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/35-web-and-seo-architecture/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/35-web-and-seo-architecture/index.md",
+  "spec_sha": "b956ed26267285c1",
+  "draft_sha": "9bf725350913b08c",
+  "run_at": "2026-11-12T22:32:38+01:00",
+  "round": 5,
+  "verdict": "pass",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: crawl/index basics, landing pages, lifecycle, rendering, BFFs, Tradeyard cut",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Organic search as biggest, most fragile free acquisition channel",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Search engines as a silent client whose protocol must be designed",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: landing pages, lifecycle-driven URLs, SSR plus page ownership plus BFFs",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Ghost Inventory, Category Straitjacket, Vanity Liquidity",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Pages serve two audiences, humans and crawlers, so crawler handling is a revenue decision",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "SEO usually bolted on late; chapter defines SEO architecture as core from the start",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Links to neighbouring chapters / definition of contact and organic contact",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Chapter roadmap and evidence sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike ¶1",
+      "summary": "Veldmark review of Tradeyard's 40M indexed URLs and organic share",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike ¶2",
+      "summary": "Crawl audit breakdown of the indexed URLs",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike ¶3",
+      "summary": "Audit findings: few valuable pages, dead inventory indexed, crawl wasted, slow first crawl",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike ¶4",
+      "summary": "Femke's sold bike lingering in Google's index as a single-item example",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty Million URLs and a Sold Bike ¶5",
+      "summary": "Upcoming SPA rebuild and bikes category split, and Ingrid's guiding question",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: How a Listing Site Earns Organic Traffic ¶1",
+      "summary": "Four stages of search processing, each filtering pages",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: How a Listing Site Earns Organic Traffic ¶2",
+      "summary": "Crawl budget depends on perceived URL value and server health",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: How a Listing Site Earns Organic Traffic ¶3",
+      "summary": "Page types and their lifetimes and SEO roles",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: How a Listing Site Earns Organic Traffic ¶4",
+      "summary": "Definition of landing page and landing page generation",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: How a Listing Site Earns Organic Traffic ¶5",
+      "summary": "Stable landing URLs accumulate ranking value while listings are short-lived",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶1",
+      "summary": "Five-layer customer-facing stack and definition of BFF",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶2",
+      "summary": "Four jobs of the edge: routing, caching, bot rules, cheap redirects",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶3",
+      "summary": "Caching policy by page type with event-based purges",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶4",
+      "summary": "Rendering strategy as key decision; options compared",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶5",
+      "summary": "Public pages should be server-rendered; SPA rebuild would hurt",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶6",
+      "summary": "Mobile-first indexing requires mobile content parity",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶7",
+      "summary": "Marketplace evidence on page composition approaches",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶8",
+      "summary": "Trend toward page-level ownership; one team per URL pattern",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶9",
+      "summary": "Four shared SEO services: URL, landing registry, redirects, sitemaps",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Customer-Facing Stack ¶10",
+      "summary": "Identifiers behind slugs make redirects derivable",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶1",
+      "summary": "Three conditions for a landing page becoming rules",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶2",
+      "summary": "Indexability as a computed state, thresholds per vertical",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶3",
+      "summary": "Google faceted-navigation rules as the outer boundary",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶4",
+      "summary": "Spam policies as the inner boundary; supply rule avoids doorways",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶5",
+      "summary": "Landing page states, their responses, and hysteresis",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶6",
+      "summary": "Structural internal links and data-based generated copy",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Landing Pages: Generating the Durable SEO Inventory ¶7",
+      "summary": "Taxonomy changes as URL migrations handled via redirect registry and events",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Localization and Multi-Country Domains ¶1",
+      "summary": "hreflang reciprocity across country domains via the URL service",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Localization and Multi-Country Domains ¶2",
+      "summary": "Per-country landing registries sharing rules not data",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶1",
+      "summary": "Listing states and inferred response policy from Google rules",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶2",
+      "summary": "Grace period serves people, not indexing",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶3",
+      "summary": "Removal latency as a measured metric",
+      "matched_spec_paragraph": "p34a"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶4",
+      "summary": "Event-driven sitemaps under Google's limits",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶5",
+      "summary": "Sitemap sharding by page type, country and date",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Listing Pages Across the Lifecycle ¶6",
+      "summary": "IndexNow for other engines / Google Indexing API and expiry for job postings",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Structured Data: Saying What the Page Is ¶1",
+      "summary": "Structured data definition and its three uses for listing sites",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Structured Data: Saying What the Page Is ¶2",
+      "summary": "Schema types and their unstable search features",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Structured Data: Saying What the Page Is ¶3",
+      "summary": "Generate structured data from the visible page's read model, no hidden or private data",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Performance: Core Web Vitals as an Architecture Budget ¶1",
+      "summary": "Core Web Vitals metrics and thresholds",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Performance: Core Web Vitals as an Architecture Budget ¶2",
+      "summary": "Typical listing-page performance threats and QuintoAndar INP case",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Performance: Core Web Vitals as an Architecture Budget ¶3",
+      "summary": "Architectural consequences: owner budgets, ads budget, sized images",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Performance: Core Web Vitals as an Architecture Budget ¶4",
+      "summary": "Performance and crawl capacity as one budget",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶1",
+      "summary": "Apps engage, web acquires; serve both without duplication",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶2",
+      "summary": "BFF pattern and why app release delays make it relevant",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶3",
+      "summary": "Tradeyard without a BFF; mobile and web BFFs holding no business rules",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶4",
+      "summary": "Accepting duplication between BFFs; shared domain APIs, fast-changing BFFs",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶5",
+      "summary": "Server-driven insertion forms from attribute schema",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Apps: Backends-for-Frontends, Server-Driven UI and Deep Links ¶6",
+      "summary": "Deep links require apps to resolve canonical and retired URLs",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "AI Search and Answer Engines: A New Channel and a New Crawler ¶1",
+      "summary": "AI Overviews and assistants changed the results page",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "AI Search and Answer Engines: A New Channel and a New Crawler ¶2",
+      "summary": "AI search points: no special markup, Google-Extended separate, falling clicks",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "AI Search and Answer Engines: A New Channel and a New Crawler ¶3",
+      "summary": "Classifieds' advantage: answer engines cannot complete the transaction",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "AI Search and Answer Engines: A New Channel and a New Crawler ¶4",
+      "summary": "Practical moves for AI crawlers and Tradeyard's AI traffic figures",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Rebuilding Tradeyard's SEO Inventory ¶1",
+      "summary": "Five-part decision record for Tradeyard's web layer",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Rebuilding Tradeyard's SEO Inventory ¶2",
+      "summary": "Data-driven landing set of 2.4M combinations and handling of the rest",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Rebuilding Tradeyard's SEO Inventory ¶3",
+      "summary": "Cleanup of gone-listing pages and how Femke's bike would fare",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Rebuilding Tradeyard's SEO Inventory ¶4",
+      "summary": "Indexed URLs fell, organic contacts rose; board metric changed",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Rebuilding Tradeyard's SEO Inventory ¶5",
+      "summary": "Bikes split as first test of the redirect pipeline",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Gone-listing policy trade-off judged by conversion evidence",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Vertical variation and canonical URL for multi-agency real estate listings",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Recognizable failure modes of the customer-facing layer",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Share SEO rules and services group-wide, not pages",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Three decisions to set as group policy",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Ownership split and enforced redirect dependency for taxonomy changes",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Migrations require URL plan, redirect registry and baseline",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Metrics to watch and indexed count off the board pack",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions testing the decisions",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "From Pages to Data ¶1",
+      "summary": "Same architecture serves users and crawlers; answer to Ingrid's question",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "From Pages to Data ¶2",
+      "summary": "Metric change as decisive; hand-off to data platform chapter",
+      "matched_spec_paragraph": "p71"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 72 outlined units summarise the controlling idea of the spec paragraph aligned to them, in spec order (p01-p04, scene p05-p09, concepts p10-p14, architecture p16-p25, landing p26-p32, localization p50-p51, lifecycle p33-p37, structured data p38-p40, performance p41-p44, apps p45/p15/p46-p49, AI search p52-p55, worked p56-p60, p61, p62, p63, ca-view p64-p68, p69, conclusion p70-p71). The five callouts are apparatus and match no spec paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked two units. Introduction ¶3 (links to neighbouring chapters plus the definition of a contact) matches p03, whose controlling idea declares both the chapter's place and the gloss of 'contact'. Listing Pages Across the Lifecycle ¶6 (IndexNow / Indexing API for jobs) matches p37, whose controlling idea is that push notification varies by engine, naming both IndexNow and the job-posting Indexing API with its expiry rule. Both pass.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit serves a supporting claim: intro and concepts S1/S2, architecture S1/S4/S5, landing and localization S2/S3, lifecycle S3, structured data and performance S4, apps S5, AI search and worked example S6 with S2-S4, judging sections all, conclusion S1/S3/S4/S6. No orphan unit found.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table (audit, page types, rendering strategies, landing rules, lifecycle states, before/after, trade-offs, verticals) is introduced and followed by prose that draws its point (e.g. 'Three findings stand out', 'For public pages ... the decision is rarely in doubt', 'The number that went down'). Figures 1-5 carry explanatory captions tied to the claim; quotations from Google, web.dev, schema.org, Zalando, Subito, QuintoAndar, Cloudflare and Vinted are each followed by what they show, with dated or vendor evidence labelled.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in is expressed at its boundary, e.g. contrast p02 ('Most marketplaces discover this late ... This chapter takes the opposite view'), cause_effect concepts ('Each of the audit's problems ... follows from how a search engine works'), contrast lifecycle ('A landing page lasts for years; a listing lasts days or weeks'), additional_support structured data ('Beyond what each URL returns, a page can also say what it is'), example p46 ('Tradeyard shows what happens without one'), contrast p54, time p60 ('is the first test'), problem_solution p71 ('not a framework but a metric'). The landing section's elaboration of the registry is carried by the forward pointer '(next section)' in the registry item and the heading; the later app subsections (forms, deep links) are joined by subheadings and by 'waits for app adoption'. No boundary misstates its relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers describe problem -> concepts -> design -> proof -> judgement, matching the declared prerequisite_order with problem_solution (scene answered by the worked example) and grouping (judging sections); neither marks any section's position unclear, and both state there is no material lost-thread point. Minor points recorded by both readers but called minor by each: the Q4 2028 / strangler sentence at the start of the worked example reads awkwardly ('The reason is the strangler, which replaces Yardstick one capability at a time: it starts at the web layer'), and '41% of them parameterized facet URLs' precedes the page-type table. Single-reader minor points: intro ¶3 density, Subito sentence placement, surrogate key, the alert-digest sentence, localization splitting the landing/listing pairing. None is a material break, so none is recorded as a failure.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The terms on does_not_know are given before or at first substantive use: SEO architecture, crawl budget, landing page, landing page generation and BFF are defined; crawl/render/index/rank, soft 404, unavailable_after with X-Robots-Tag, hreflang, IndexNow, Indexing API, scaled content and doorway abuse, product snippets vs merchant listings, Google-Extended, the rendering models (table) and LCP/INP/CLS with thresholds are explained; 'contact' and 'organic contact' are glossed in intro ¶3. noindex and lastmod are not formally defined but are self-describing and made clear by context (thin pages 'noindex, follow, so users can still use them'; 'unchanged lastmod' after the sale; lastmod used only if accurate); no reader reported them. Terms the readers flagged as unexplained (Billing by Guesswork, Common Ground, Hearthly, Motorvane, Safe Deal, Ghost Inventory, Yardstick, enforcement overlay) are on audience.already_knows or from listing-aggregate; 'facet URL' and 'strangler' are standard vocabulary for this audience (web/SEO leads, chief architects) and are explained later in the chapter.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The opening is a direct statement of the two audiences with a revenue stake, a contrast with common practice, a scoped definition, a placement paragraph and a roadmap; no dictionary opening, funnel cliché, or announcement without a claim.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not merely restate sections, apologise, or open new topics; it synthesises the design, answers Ingrid's question and hands off to data-platform through the metric.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "From Pages to Data ¶1 synthesises the architecture (server-rendered pages owned by clear teams, URLs from identifiers, lifecycle rules from the event stream) and states the consequence (rendering change becomes a page team's decision within a group standard, the bikes split runs as a pipeline); ¶2 names the decisive change as a metric, organic contacts instead of indexed URLs, and why its definition matters.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'That is the answer to Ingrid's question' and 'Femke's bike would have answered noindex from the minute it left search instead of collecting 37 clicks over nine days' call back to the scene's question and the sold bike; 'two most demanding clients: people on phones and the crawlers' calls back to intro ¶1.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted all fifteen sections in the spec's order (scene with the 40M URLs and Femke's bike, concepts, stack, landing pages with localization, lifecycle, structured data, performance, apps, AI engines, worked example, trade-offs, verticals, failure modes, CA view, questions) and the evidence kinds (Google and web.dev documentation, schema.org, dated marketplace posts, fictional Veldmark), plus the thesis (landing pages as asset, lifecycle-driven URLs, server rendering, page ownership, BFFs). Its uncertainties (rendering and composition inside the stack section) do not contradict the roadmap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The AC-1 reader gave every expected element: a landing set from measured demand and live supply with a minimum-results rule over weeks and an attribute-depth limit, other search URLs noindex/404 and out of sitemaps; gone listings noindex during a grace period then 410, 200 with similar listings and unavailable_after for the few still ranking; canonical URLs, sitemaps and gone status driven by ListingSold and the four SEO services; rejection of the client-rendered rebuild in favour of server rendering with one owning team per URL pattern and a web and mobile BFF; and success judged by organic contacts per thousand organic sessions, not indexed URLs.",
+      "severity": "major"
+    }
+  ]
+}

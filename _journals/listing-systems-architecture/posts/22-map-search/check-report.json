@@ -1,0 +1,787 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/22-map-search/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/22-map-search/index.md",
+  "spec_sha": "daca16d6eb28aa9f",
+  "draft_sha": "129ebcc3af6b6179",
+  "run_at": "2026-11-12T22:05:26+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "what the chapter covers, via a Lyon search",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stakes of slow or cluttered maps and commute cost",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "why map traffic is a harder architectural problem",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three core claims: map differs, compile to primitives, precision/privacy/cost as inputs",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns the chapter tackles",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "place as the primary filter, so the map needs its own ranking",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "scope of the chapter and its neighbouring chapters",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Hearthly's draw-your-area feature as the case",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Polygon Problem at Hearthly ¶1",
+      "summary": "timing and request for a map-search session",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Polygon Problem at Hearthly ¶2",
+      "summary": "Hearthly's map usage and polygon latency figures",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Polygon Problem at Hearthly ¶3",
+      "summary": "agency duplicate-pin complaint and commute feature request",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Polygon Problem at Hearthly ¶4",
+      "summary": "Hearthly's map-shaped, cross-cloud traffic misfits the shared platform",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Polygon Problem at Hearthly ¶5",
+      "summary": "three guiding questions for the session",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Five Ways to Say \"Here\" ¶1",
+      "summary": "five place expressions differ in meaning and cost",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Five Ways to Say \"Here\" ¶2",
+      "summary": "definitions of geo terms used",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Five Ways to Say \"Here\" ¶3",
+      "summary": "engine geo field types and shape query mechanics",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Five Ways to Say \"Here\" ¶4",
+      "summary": "three semantic pitfalls between place expressions",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Map Is a Different Product ¶1",
+      "summary": "Airbnb evidence that maps need their own ranking",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Map Is a Different Product ¶2",
+      "summary": "portals value maps; applying Airbnb findings is an inference",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "The Map Is a Different Product ¶3",
+      "summary": "map as its own search client where ranking shifts to pin selection",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: A Geo Query Compiler in Front of the Engine ¶1",
+      "summary": "introducing the compiler-centred architecture",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: A Geo Query Compiler in Front of the Engine ¶2",
+      "summary": "responsibilities of each map-search component",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: A Geo Query Compiler in Front of the Engine ¶3",
+      "summary": "server, not clients, must own geo query construction",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: A Geo Query Compiler in Front of the Engine ¶4",
+      "summary": "a pan made cacheable by tile snapping",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: A Geo Query Compiler in Front of the Engine ¶5",
+      "summary": "debouncing, tile snapping and separate counts for pans",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Drawn Polygons: Normalize Before You Query ¶1",
+      "summary": "drawn polygons as the riskiest place query",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Drawn Polygons: Normalize Before You Query ¶2",
+      "summary": "six normalization steps for drawn shapes",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Drawn Polygons: Normalize Before You Query ¶3",
+      "summary": "simplification and caps cut Hearthly's polygon latency",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Drawn Polygons: Normalize Before You Query ¶4",
+      "summary": "within versus intersects is mostly a precision-rule decision",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶1",
+      "summary": "clustering as the presentation problem with three options",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶2",
+      "summary": "documentation behind the clustering options",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶3",
+      "summary": "mixing clustering approaches by zoom and using hexagons",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶4",
+      "summary": "count canonical properties, not listings",
+      "matched_spec_paragraph": "p24a"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶5",
+      "summary": "aggregations can expose exact seller locations",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Clustering: Three Ways to Show Ten Thousand Results ¶6",
+      "summary": "all client geometry derived from deterministic public points",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶1",
+      "summary": "two documented forms of commute search in property",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶2",
+      "summary": "two commute patterns usually needed together",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶3",
+      "summary": "isochrone filter versus per-listing travel time roles",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶4",
+      "summary": "routing provider pricing, limits and rights shape design",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶5",
+      "summary": "self-hosted routing trades fees for engineering",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶6",
+      "summary": "recommended isochrone cache key",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶7",
+      "summary": "origin snapping trade-off and cache expiry",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Commute Search: Isochrones and Travel Times ¶8",
+      "summary": "peak commute volume arithmetic drives the routing choice",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Neighborhood Data and Points of Interest ¶1",
+      "summary": "neighbourhood context is under-designed data",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Neighborhood Data and Points of Interest ¶2",
+      "summary": "four rules for neighbourhood data",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Performance and Caching at the Peak ¶1",
+      "summary": "map traffic share of the peak",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Performance and Caching at the Peak ¶2",
+      "summary": "ordered levers for peak map performance",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Performance and Caching at the Peak ¶3",
+      "summary": "event-driven tile invalidation against stale listings",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Performance and Caching at the Peak ¶4",
+      "summary": "keeping the map API and cache on Hearthly's cloud",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Worked Example: The Lyon Apartment on the Map ¶1",
+      "summary": "facts of the Lyon flat listed by three agencies",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Worked Example: The Lyon Apartment on the Map ¶2",
+      "summary": "step-by-step walk-through of a buyer's map search",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Worked Example: The Lyon Apartment on the Map ¶3",
+      "summary": "example shows value of the single compiler and of entity resolution",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "lead-in to the trade-offs table",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "saved geo searches become alert workloads",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "how place matters across verticals",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "common map-search design mistakes",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "share geo platform, keep map product per brand",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "decisions to bring to the architecture forum",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "natural-language search raises the compiler's value",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "design review questions for map search",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "From Maps to Standing Promises ¶1",
+      "summary": "answer: the server owns place through one compiler",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "From Maps to Standing Promises ¶2",
+      "summary": "hand-off to saved searches and alerts",
+      "matched_spec_paragraph": "p57"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 58 aligned units' outline summaries match their spec paragraphs' controlling ideas in spec order; the five callouts carry the roadmap and thesis as the spec's introduction places them.",
+      "criterion": "AC-3",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "quote": "Part IV argues that most discovery queries are filters in disguise, and that the platform should compile a buyer's words, places and saved searches into its own structure; this chapter does that for place.",
+      "finding": "The outliner needed two phrases. Besides p01's idea (place is the first filter, so the map needs its own ranking and evaluation, stated twice: at the opening and again after the place-first argument), the paragraph ends with a separate Part IV framing claim that p01 does not hold.",
+      "fault": "draft",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Worked Example: The Lyon Apartment on the Map ¶3 was marked two ideas (value of one compiler, value of entity resolution), but p46 declares both as one analysis, 'what the example shows', and the paragraph opens by announcing exactly that; it reads as one idea with two coordinated parts.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to one of S1-S6 or to the introduction/conclusion functions declared in the spec; no orphan paragraph.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/7/evidence/0",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶8",
+      "quote": "that is 270 requests per second, each needing an isochrone and a travel-time matrix for its pins",
+      "finding": "The arithmetic is correct (10% of 2,700 = 270; 30% misses of 270 = 81, about 80; 270 x 50 x 1-2 = 13,500-27,000), but the assumption behind it is not explained and contradicts the chapter: the commute table and p32 say an isochrone is computed once per search, while here every commute-session map request needs one. The spec's reasoning ('a new isochrone per parameter change and a matrix per page') is not stated, so a reader cannot see why 80 isochrones/s is the right load. The next sentence ('If each matrix times 50 pins (the largest list page)') does not parse and mixes map pins with a list page.",
+      "fault": "draft",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Other evidence items are followed or framed by a sentence saying what they show: the five-ways table (traps 'inside the table'), the list/map table ('Two consequences follow'), the commute-patterns table (next paragraph says why both are needed), the verticals table ('As the table below shows'), Figures 1-5, the Airbnb, Rightmove and TravelTime quotations, and the polygon figures (146->31 vertices, 1.8 s->240 ms, checked).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0/transition_in",
+      "draft_locus": "Introduction ¶1",
+      "quote": "[[recommendations]] showed that a surface buyers browse without typing a query still needs its own ranking and evaluation; the map is another such surface.",
+      "finding": "The similarity with recommendations is expressed, but the spec says the claim for the map is stated after the place-first argument; the draft states it at the start and again after the argument ('So the map, like the recommendation surfaces, needs its own ranking and evaluation'), so the opening sentence asserts before it argues.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Five Ways to Say \"Here\" ¶1",
+      "quote": "Buyers express place in five ways.",
+      "finding": "Declared: sequence, carrying over Ingrid's first question (which query shapes the map needs). The section opens with a bare statement; nothing ties the five expressions to the first question, so the reader is not told this section begins the answer.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Architecture: A Geo Query Compiler in Front of the Engine ¶1",
+      "quote": "The design I recommend puts a geo query compiler between the map clients and the engine, and gives each remaining map concern its own component with a narrow interface.",
+      "finding": "Declared: problem_solution, carrying over the map as a separate product with many small queries. The opening does not pick up the previous section's conclusion (a search client in its own right with its own query mix), so the compiler is not presented as the answer to that problem.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "Performance and Caching at the Peak ¶1",
+      "quote": "Map traffic peaks with all search traffic.",
+      "finding": "Declared: sequence, carrying over the compiler's inputs and the data around them and introducing the load all of it must carry at the peak. The opening follows the fair-housing rule with no link back to the compiler, polygons, clusters, commute and neighborhood layers it now has to size.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions (intro p02-p04, scene p06-p09, p11-p13, map-product and p15-p16, p18-p21, polygons and p28-p30, clustering and p23-p26, commute and p32-p47, neighborhood and p39, p41-p43, worked example and p45-p46, trade-offs, verticals, failure modes, CA view, questions, conclusion) express the declared relationship at the boundary; the hand-off links saved-searches-and-alerts.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "quote": "So the map, like the recommendation surfaces, needs its own ranking and evaluation",
+      "finding": "Both readers met the map-needs-its-own-ranking claim twice in one paragraph, before the reason and after it, and had to re-read to see the middle is the reason.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B1",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "quote": "Part IV argues that most discovery queries are filters in disguise",
+      "finding": "Both readers could not tell whether Part IV is this chapter's part; the sentence is tacked onto a paragraph about ranking.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B18",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "The Map Is a Different Product ¶1",
+      "quote": "The five expressions meet buyers on the map.",
+      "finding": "Reader A found the bridge weak and the section an interruption between the primitives and the compiler; reader B judged the position defensible but placed between Five Ways and the compiler, and both proposed moving it before Five Ways. The spec's order has a stated reason (vocabulary first, then the case for a separate architecture); the prose does not make it visible: the bridge names the five expressions but the section never uses them, and the next section does not pick up the map-as-product conclusion.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, section 2 (The Map Is a Different Product) and reordering suggestion 1",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "Clustering: Three Ways to Show Ten Thousand Results ¶6",
+      "quote": "(P3 district, P4 street or P5 exact address)",
+      "finding": "Both readers stopped at undefined precision labels. The levels are in audience.already_knows (location-and-geo) and are glossed inline, so the fix is one clause naming them as location-and-geo's precision levels.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B7",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Performance and Caching at the Peak ¶2",
+      "quote": "Approximate counts",
+      "finding": "Both readers met the Architecture subsection's choices (snap viewports to tiles; separate the count from the pins, approximate counts) again as Performance levers 1 and 3 and felt déjà vu. The repetition is in the spec's allocation (p21 and p41 both carry tile snapping and separate/approximate counts), and both readers' remedy is to merge the material: the difficulty comes from the plan, not the prose.",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, item B13",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Clustering: Three Ways to Show Ten Thousand Results ¶2",
+      "quote": "The sources for the table are documentation, all undated:",
+      "finding": "Both readers found the citation paragraph between the clustering table and 'The approaches combine.' broke the explanation. The spec places p23 (sources) between the table and p24 by design, so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, item B6",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶2",
+      "quote": "Behind both forms sit two patterns, which a platform will usually need together; My Places is per-listing travel time.",
+      "finding": "Both readers had to re-read to map the two documented forms onto the two patterns; Zillow's form is never mapped.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B8",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/7",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶8",
+      "quote": "If each matrix times 50 pins (the largest list page) to one or two of the user's places, that adds about 13,500 to 27,000 matrix elements per second.",
+      "finding": "Both readers could not parse 'If each matrix times' on first reading and had to work out the arithmetic; the sentence also mixes pins with a list page.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B9",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/7",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶8",
+      "quote": "With the cache in place, the commute arithmetic, not a feature comparison, decides the routing choice.",
+      "finding": "Both readers found the routing decision made in the caching subsection, away from the 'Routing providers are an architectural constraint' subsection where they expected it. The spec deliberately ends commute search with the arithmetic because it needs the cache hit rate, so the difficulty comes from the declared order (or from the subsection headings the spec's order produces).",
+      "fault": "spec",
+      "corroborated_by": "Flow reader B, item B11 (reader A, second half of A10)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Worked Example: The Lyon Apartment on the Map ¶2",
+      "quote": "It is not a record of what happened: the team takes an evening session from May 2027, when the flat was listed, and runs it through the target design of Figure 1, including the commute search that does not exist yet.",
+      "finding": "Both readers had to re-read to sort the timing (scene in September 2027, session from May 2027, commute search not yet built) and the hypothetical framing.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B14",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Worked Example: The Lyon Apartment on the Map ¶2",
+      "quote": "snaps the viewport to 9 square cache tiles (the cache keys) and, within them, asks for H3 hexagon aggregations (the cluster shapes shown on screen)",
+      "finding": "Both readers re-read the split between square cache tiles and hexagon clusters; the split was never stated as a design choice before the worked example uses it.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B15",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/13/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "the principle Veldmark adopted with Common Ground",
+      "finding": "Both readers met Common Ground as unintroduced (B adds 'building them four times' while only three brands are named in the chapter). Common Ground is in audience.already_knows, so the fix is a short gloss or link, not an introduction.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B17",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "Motorvane stays on Elasticsearch until a 2029 review",
+      "finding": "Both readers met Motorvane and its engine situation for the first time here, without context. Veldmark's brands are in audience.already_knows, so a short gloss suffices.",
+      "fault": "draft",
+      "corroborated_by": "Flow reader B, item B16",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Five Ways to Say \"Here\" ¶4",
+      "quote": "shown at the center of an H3 cell with an edge of about 1.4 km (resolution 7, see [[location-and-geo]])",
+      "finding": "Reader A only: H3 used before the chapter introduces it (Uber 2018 sentence comes in Clustering). H3 is in audience.already_knows.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture: A Geo Query Compiler in Front of the Engine ¶2",
+      "quote": "enforces the precision rule (which location field is matched and which is returned; see Clustering)",
+      "finding": "Reader A only: forward reference; the rule is stated in the privacy-trap subsection and the reader had to connect them.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶4",
+      "quote": "The rate limit alone rules it out as an uncached per-search call for a portal at Hearthly's peak",
+      "finding": "Reader A only: the claim relies on the 270/s figure that appears only a subsection later.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Performance and Caching at the Peak ¶1",
+      "quote": "Map requests are about 2,700 of Hearthly's 4,200 peak requests per second, because each session sends many of them.",
+      "finding": "Reader A only: repeats the scene's figure, and the Rightmove TV-ad-break peak is a different kind of peak; briefly lost which peak mattered.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "Performance and Caching at the Peak ¶4",
+      "quote": "Hearthly's cross-cloud constraint adds one more lever.",
+      "finding": "Reader A only: detached from the numbered levers; reads as an afterthought.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "quote": "built on content, availability and the contacts it leads to rather than on clicks, which reward what catches the eye rather than what a buyer pursues",
+      "finding": "Reader B only: dense extra claim not picked up later in that form.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "After Hearthly's polygon problem and its three questions, the chapter defines the five ways to say \"here\"",
+      "finding": "Reader B only: eleven items in two sentences; needed a re-read.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Clustering: Three Ways to Show Ten Thousand Results ¶1",
+      "quote": "which is Ingrid's second question",
+      "finding": "Reader B only: question 2 is answered in three places (ranking in Map Is a Different Product, grouping here, caching in Performance) and only this one is signposted; question 1 is never signposted as answered.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Drawn Polygons: Normalize Before You Query ¶1",
+      "quote": "it is the first input the compiler must tame: the most expressive place query and the most dangerous one",
+      "finding": "Reader B only: the phrase after the colon attaches across a clause; second read.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/7",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶8",
+      "quote": "each needing an isochrone and a travel-time matrix for its pins",
+      "finding": "Reader B only: the chapter says an isochrone is computed once per search, yet here every commute-session map request needs one; stopped to check the figure.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Neighborhood Data and Points of Interest ¶1",
+      "quote": "Travel time is one kind of place context; the neighborhood is the other.",
+      "finding": "Reader B only: thin bridge; the section answers none of the three questions and interrupts routing cost -> peak performance (reader A judged its position acceptable).",
+      "fault": "unclear",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Terms on does_not_know are introduced before or at first use (bounding box, map tile, isochrone, place ID, public point, geo_point/geo_shape, geotile_grid, geohex_grid, Douglas-Peucker, Valhalla, GTFS, NDCG). Terms the flow readers flagged (H3, P3-P5, Common Ground, Motorvane, Part IV) are in audience.already_knows.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "Commute Search: Isochrones and Travel Times ¶4",
+      "quote": "Per request, per element of a matrix, or a fixed license.",
+      "finding": "'Travel-time matrix' (on does_not_know) is used in the prose without a definition (origins x destinations, priced per element); the commute table may define it but was not visible to the judge, so 'never given' cannot be confirmed. Neither flow reader reported the term itself as unexplained.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with a direct, disputable statement about place-first discovery and a scoped case; none of the weak patterns.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers the three questions with a synthesis and hands off; no 'in conclusion', no new subtopic, no grab bag.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States what no single section does (one component fixes polygons, privacy, duplicates and routing cost at once) and why it matters (Hearthly moves onto the shared platform without The Forced Fit; new place interfaces need no client rebuild).",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Ingrid's three questions, the 1.8-second polygons and Agence Rhône Habitat's stacked pins; routing is answered as 'bought on a forecast of peak volumes', though the per-request quote is not named explicitly.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted all sections in the roadmap's order and the evidence (Airbnb, Zillow, Rightmove, engine and routing docs, fictional Veldmark) and tone; it could not say what the three questions are or what neighborhood data covers, which the roadmap promises but need not give.",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader built the compiler (place-ID filters, tile snapping, repair/simplify under a 64-vertex cap), pins from the public point counted per canonical property (one pin, three offers), cached isochrones keyed by a snapped origin plus matrices for pins on screen, and the routing choice from a peak-volume forecast against pricing and license. Matches expected; owner 'search platform' is implied by 'server-side' and not stated in the summary.",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named the cluster-of-one leak via centroids, heatmaps and vector-tile hits, the rule that every returned geometry comes from a deterministic public point, an API that cannot read the exact point, minimum counts per cell and a DPO-signed platform invariant. Matches expected.",
+      "criterion": "AC-4",
+      "severity": "minor"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader explained geography-led attention and pin selection, Airbnb's 2024 paper and 2025 review (80%, map-specific NDCG), the stated inference for portals, and contacts and saves per map session and time to shortlist. Matches expected; minor note that failure mode 9 says Airbnb's work 'shows' list metrics mislead without the inference caveat.",
+      "criterion": "AC-5",
+      "severity": "minor"
+    }
+  ]
+}

@@ -35,6 +35,8 @@ Churn changes a recommender's architecture more than its algorithms. The publish
 
 This chapter owns **candidate generation**, **similar listings** and **cold start**. Like the rest of [[part-4]], it treats discovery as a read model over the listing stream, judged on contacts. A recommendation module is a ranked list without a query, so it reuses the machinery of [[ranking]]. Its rule that every surface reads the same availability status as search returns in [[map-search]] and [[saved-searches-and-alerts]]. It leaves the ML platform underneath, feature stores and model governance, to [[ml-platform]], and the event stream that keeps everything fresh to [[event-driven-listings]].
 
+The chapter starts with Motorvane's sold Golf. It then covers the surfaces, why listings break the usual recommender, and the methods. The four-stage architecture and the events that keep it current follow, then cold start, feedback loops, evaluation, and consent and regulation, and Motorvane's rebuild of the carousel. The chapter closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. The evidence is published marketplace work, EU regulation and Veldmark's numbers.
+
 ## Setting the Scene at Veldmark: The Golf That Kept Being Recommended
 
 Motorvane is the automotive brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). Every vehicle detail page in Germany carries a carousel of ten "similar vehicles". It was built in 2020 as a nightly Spark job. The job computes item-to-item co-views (pairs of listings viewed in the same session), keeps the top ten neighbors for each listing and writes them to a key-value store that the detail page reads. It was cheap, it raised click-through when it launched, and nobody has looked at it closely since.
@@ -44,7 +46,7 @@ In May 2027, Felix Brandt, Motorvane's CTO, asked for a review after a complaint
 ![A timeline where a sold car vanishes from search after a late feed removal but lingers as a ghost in the carousel until the nightly job.](assets/images/21-recommendations/ghost-golf-in-the-carousel.jpeg)
 **Figure 1:** *Ghost Inventory in the carousel: the Golf's removal arrived 26 hours after the sale, search dropped it within minutes, and the nightly co-view lists kept it in other cars' carousels until the next run.*
 
-Priya Raman's team found that the Golf was not an exception. Their review of the carousel in Germany found (illustrative figures, like all Veldmark numbers):
+Priya Raman's data and ML team found that the Golf was not an exception. Their review of the carousel in Germany found (illustrative figures, like all Veldmark numbers):
 
 | Finding | Value |
 | --- | --- |
@@ -57,11 +59,11 @@ Priya Raman's team found that the Golf was not an exception. Their review of the
 
 The carousel starts 7% of leads, yet 41% of new listings get no impressions from it in their first 72 hours. A co-view recommender can only recommend listings that someone has already viewed together with something else. A car that arrived this morning has no co-views, so it appears in no carousel and gets none of the 12% of traffic the carousel distributes. Dealers pay for packages with listing slots ([[monetization-models]]). They notice when a new car gets less attention than an old one, and they do not care that the cause is an algorithm's data requirements.
 
-The question Felix put to Ingrid Halvorsen and Priya was practical: **how should Motorvane recommend cars that may be sold tomorrow and were not there yesterday?**
+The question Felix put to Ingrid Halvorsen, the group Chief Architect, and Priya was practical: **how should Motorvane recommend cars that may be sold tomorrow and were not there yesterday?**
 
 ## Recommendation Surfaces
 
-A **recommendation** is a list of listings, searches or sellers that the user did not explicitly request, chosen from what is known about the context, the user or both. Surfaces differ in what anchors them, which decides the method, the freshness requirement and the metric.
+Motorvane's carousel is one of several recommendation surfaces. A **recommendation** is a list of listings, searches or sellers that the user did not explicitly request, chosen from what is known about the context, the user or both. Surfaces differ in what anchors them, which decides the method, the freshness requirement and the metric.
 
 | Surface | Anchor | Latency budget | Freshness need | Primary outcome |
 | --- | --- | --- | --- | --- |
@@ -75,7 +77,7 @@ A **recommendation** is a list of listings, searches or sellers that the user di
 
 **Low-result fallback** is where recommendations protect liquidity most directly, and it gets less attention than it deserves. A buyer searching for a cargo bike within five kilometers of a small town may get three results. Similar listings slightly farther away, or in a neighboring category, turn a dead end into a contact. Airbnb describes "augmenting search with recommendations" when searches are too narrow ([Airbnb Tech, 2025](https://airbnb.tech/infrastructure/academic-publications-airbnb-tech-2025-year-in-review/)).
 
-**Recommendation e-mails** are where Ghost Inventory is most visible: a list computed at 02:00 and opened at 09:00 can be seven hours stale. The Rotterdam city bike that Femke sold on 8 March 2027 still appeared in Tradeyard's alert digest the next morning, and the same failure is waiting in every batch-built recommendation e-mail.
+**Recommendation e-mails** are where Ghost Inventory is most visible: a list computed at 02:00 and opened at 09:00 can be seven hours stale. The Rotterdam city bike that Femke, a private seller, sold on 8 March 2027 still appeared in the alert digest of Tradeyard, Veldmark's general-classifieds brand, the next morning, and the same failure is waiting in every batch-built recommendation e-mail.
 
 ## Why Listings Break the Usual Recommender
 
@@ -97,13 +99,13 @@ The consequence is a design principle: **the recommender must be able to describ
 
 ## Methods Under Churn
 
-For listings, what matters about each method family is how it treats a new listing and a sold one.
+For listings, what matters about each method family is how it treats a new listing and a sold one. Two terms first. A **two-tower** model has two encoders, one for the user or query and one for the item, trained so that matching pairs land close together in one vector space. A **content tower** is an item encoder that reads the listing's attributes, text and photos rather than its interaction history, so it can place a listing nobody has viewed yet. Only content-based methods, including embeddings with a content tower, place a new listing at once; only a live index drops a sold one.
 
 | Method | How it works | New listing | Sold listing | Cost | Marketplace evidence |
 | --- | --- | --- | --- | --- | --- |
 | **Content-based similarity** | Nearest neighbors on attributes, price, location, text, images | Works at once | Disappears if the index is live | Low | Zillow's listing-text embeddings for similar homes ([Zillow, 2021](https://medium.com/zillow-tech-hub/improving-recommendation-quality-by-tapping-into-listing-text-8407959b1711)) |
 | **Item-to-item collaborative filtering** (co-view, co-contact) | Listings that appear together in sessions | Absent until it collects co-views | Lingers until the next rebuild | Low; batch | Common baseline (industry practice) |
-| **Matrix factorization and graph methods** (alternating least squares (ALS), RP3beta, SLIM) | Latent factors or random walks over the user-item graph | Absent | Lingers | Medium; batch | OLX Jobs benchmark: online, RP3beta about 20% stronger than ALS on contacts ([Kwieciński et al., 2023](https://arxiv.org/abs/2301.07946)) |
+| **Matrix factorization and graph methods** (standard algorithms: alternating least squares (ALS), which factorizes the user-item matrix; RP3beta, a random walk over the user-item graph that damps popular items; and SLIM, which learns sparse item-to-item weights) | Latent factors or random walks over the user-item graph | Absent | Lingers | Medium; batch | OLX Jobs benchmark: online, RP3beta about 20% stronger than ALS on contacts ([Kwieciński et al., 2023](https://arxiv.org/abs/2301.07946)) |
 | **Session-based sequence models** (GRU4Rec and successors) | Predict the next item from the current session | Needs item representation | Lingers in vocabularies | Medium to high | GRU4Rec designed for short sessions where factorization fails ([Hidasi et al., 2015](https://arxiv.org/abs/1511.06939)) |
 | **Learned item embeddings** (item2vec-style, two-tower) | Embeddings from sessions, optionally with content towers | Works if a content tower exists | Disappears if the index is live | Medium; approximate-nearest-neighbor (ANN) serving | Airbnb listing embeddings ([Grbovic and Cheng, 2018](https://www.kdd.org/kdd2018/accepted-papers/view/real-time-personalization-using-embeddings-for-search-ranking-at-airbnb)); Vinted two-tower retrieval ([Vinted, 2023](https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/)) |
 | **Bandits and ensembles** | Choose among several sub-models online | Inherits | Inherits | Medium | FINN.no re-ranking proposals from several sub-models with bandits ([Eide and Zhou, 2018](https://arxiv.org/abs/1809.02130)) |
@@ -164,7 +166,7 @@ The **policy** then applies rules that a model should not learn:
 
 ## Keeping Recommendations Alive: Events and Serving-Time Checks
 
-Freshness runs in two directions, and removal matters more than insertion: a sold listing should become ineligible within minutes, as a new listing should become eligible. Both come from the listing event stream that already feeds search ([[event-driven-listings]]). The sequence below replays the Golf's sale in Motorvane's target design.
+Freshness runs in two directions, and removal matters more than insertion: a sold listing should become ineligible within minutes, as a new listing should become eligible. Both come from the listing event stream that already feeds search ([[event-driven-listings]]). The figure shows the two defenses that would have caught the Golf's sale.
 
 ![Diagram: Two defenses against Ghost Inventory](assets/images/21-recommendations/fig04-two-defenses-against-ghost-inventory-unpublish.jpeg)
 **Figure 4:** *Two defenses against Ghost Inventory. The unpublish event deletes the listing from the candidate indices, and the serving-time status check catches anything the indices still hold, such as precomputed co-view lists. Neither defense can fix a feed that reports the sale 26 hours late; that is an ingestion problem, owned by the feed contract.*
@@ -173,13 +175,13 @@ Three design points follow from the diagram.
 
 1. **Indices that cannot delete are a liability.** Vinted's experience with a periodically rebuilt Faiss index is the documented example. Choose ANN infrastructure that supports real-time upserts and deletes and filtering during the search, or accept that a serving-time filter will discard a growing share of candidates as the index ages.
 2. **Precomputed lists are acceptable only behind a live filter.** Co-view neighbors computed every few hours are fine as a candidate source, provided the filter checks every item against current status.
-3. **Late feeds are not a recommender problem, but recommenders amplify them.** The Golf's 26-hour removal lag comes from the dealer's DMS export schedule. The fix is in the feed contract and in "sold" signals from Motorvane's own dealer tooling ([[listing-ingestion]], [[professional-seller-tooling]]). A lead management system that knows the car was sold can unpublish it before the feed does.
+3. **Late feeds are not a recommender problem, but recommenders amplify them.** The Golf's 26-hour removal lag comes from the dealer's DMS export schedule. The fix is in the feed contract and in "sold" signals from Dealer Hub, Motorvane's dealer portal ([[listing-ingestion]], [[professional-seller-tooling]]). A lead management system that knows the car was sold can unpublish it before the feed does.
 
 E-mail and push recommendations need a **send-time check** as well: build the list in batch if necessary, but check availability again when the message is rendered or sent, and drop items that have become unavailable. For e-mail, rendering the card when the message is opened (a pixel-time or link-time check) is the stronger version. It needs care with e-mail clients that prefetch images.
 
 ## Cold Start in Three Forms
 
-**Cold start** is the problem of recommending without the interaction history that collaborative methods need. Marketplaces have three versions of it.
+**Cold start** is the problem of recommending without the interaction history that collaborative methods need. Cold start has three forms. The candidate sources above already give new listings a place; this section returns to them for the published evidence behind that choice, then covers the two forms the architecture has not yet addressed, new users and new markets.
 
 | Form | Example | Approach |
 | --- | --- | --- |
@@ -193,7 +195,7 @@ For anonymous users, the important architectural point is that **the session is 
 
 ## Feedback Loops and Exposure
 
-A recommender trained on its own output drifts toward what it already recommends. Popular listings collect more impressions, more clicks and more co-views, and so they get recommended more. Three effects are specific to listings.
+Feedback works against new listings. A recommender trained on its own output drifts toward what it already recommends. Popular listings collect more impressions, more clicks and more co-views, and so they get recommended more. Three effects are specific to listings.
 
 - **Popularity bias amplifies Ghost Inventory.** The most-viewed listings are often the best deals, and the best deals sell first. A popularity-heavy recommender is therefore biased toward listings close to being sold.
 - **Exposure from recommendations is supply-side value.** At Motorvane, a carousel that distributes 12% of detail-page traffic is a marketing channel, and dealers will judge whether it treats them fairly. Coverage, the share of live inventory recommended at least once a week, is a fairness metric as well as a quality metric.
@@ -205,9 +207,9 @@ The tools are the same as in ranking: exploration positions, logging of served c
 
 Click-through rate is the most common recommendation metric and one of the least useful. A carousel full of suspiciously cheap cars has excellent click-through.
 
-**Offline**, measure recall at k and normalized discounted cumulative gain (NDCG) against held-out contacts, not clicks, plus three distribution metrics: **coverage** (the share of inventory recommended), **novelty** (the share of recommended listings under 72 hours old) and **concentration** (the share of impressions going to the top sellers). Replay real traffic where possible. The ANN recall of the serving index is an engineering metric in its own right. Vinted accepted 60–70% recall because exact search cost more latency than it returned in user benefit ([Vinted, 2023](https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/)), and that is the right kind of decision: measured, explicit and revisited.
+**Offline**, measure recall at k (held-out contacts found in the top k) and normalized discounted cumulative gain (NDCG, which also rewards ranking them high) against held-out contacts, not clicks, plus three distribution metrics: **coverage** (the share of inventory recommended), **novelty** (the share of recommended listings under 72 hours old) and **concentration** (the share of impressions going to the top sellers). Replay real traffic where possible. The ANN recall of the serving index is an engineering metric in its own right. Vinted accepted 60–70% recall because exact search cost more latency than it returned in user benefit ([Vinted, 2023](https://vinted.engineering/2023/10/09/adopting-vespa-for-recommendation-retrieval/)), and that is the right kind of decision: measured, explicit and revisited.
 
-**Online**, run A/B tests on the outcomes that matter: contacts per session that started from the surface, contacts on recommended listings, and the guardrails below. Recommendation tests suffer less interference than ranking tests, because they redistribute less attention. They are not immune, though. A carousel change that sends more buyers to new listings takes attention from older ones, and a seller-level guardrail will catch that. Vinted reported that its dense retrieval in search reached full rollout only after about 50 A/B tests ([Vinted, 2025](https://vinted.engineering/2025/11/18/dense-retrieval/)). Iteration at that scale needs an experimentation platform, not a one-off launch test ([[experimentation]]).
+**Online**, run A/B tests on the outcomes that matter: contacts per session that started from the surface, contacts on recommended listings, and the guardrails below. Recommendation tests suffer less interference (test groups competing for the same listings) than ranking tests, because they redistribute less attention. They are not immune, though. A carousel change that sends more buyers to new listings takes attention from older ones, and a seller-level guardrail will catch that. Vinted reported that its dense retrieval in search reached full rollout only after about 50 A/B tests ([Vinted, 2025](https://vinted.engineering/2025/11/18/dense-retrieval/)). Iteration at that scale needs an experimentation platform, not a one-off launch test ([[experimentation]]).
 
 | Guardrail | What it protects |
 | --- | --- |
@@ -219,14 +221,14 @@ Click-through rate is the most common recommendation metric and one of the least
 
 ## Privacy, Consent and Regulation
 
-Recommendations are where a marketplace's behavioral data turns into visible decisions about a person, so the legal surface is larger than for search ranking.
+Evaluation says what to optimize; consent and law say what may be used. Recommendations are where a marketplace's behavioral data turns into visible decisions about a person, so the legal surface is larger than for search ranking.
 
 - **Consent for tracking and personalization.** Behavioral histories come from tracking, and in the EU, access to device storage for that purpose generally requires consent under the ePrivacy rules. Personalization based on profiles is processing of personal data under the GDPR, with its own legal-basis question. The architectural consequence is that **consent state must travel with the request**, and every surface needs a non-personalized mode: contextual (anchored on the listing or query), local and fresh. It must be good enough that users who decline are not punished with an empty page. [[data-platform]] owns the tracking plan and consent propagation.
-- **DSA transparency.** Article 27 of the Digital Services Act requires online platforms to set out the main parameters of their recommender systems in plain language in their terms, and to describe any options users have to change them. Article 38 requires very large online platforms to offer, for each recommender system, at least one option "which is not based on profiling" ([Regulation (EU) 2022/2065, Official Journal, 2022](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)). Few classifieds brands reach the very-large-platform threshold of 45 million average monthly active EU recipients. A non-profiling mode costs little if it is designed in, and the Article 27 duty applies to every online platform that is not a micro or small enterprise, whatever its reach.
+- **DSA transparency.** Article 27 of the Digital Services Act requires online platforms to set out the main parameters of their recommender systems in plain language in their terms, and to describe any options users have to change them. Article 38 requires very large online platforms to offer, for each recommender system, at least one option "which is not based on profiling" ([Regulation (EU) 2022/2065, Official Journal, 2022](https://eur-lex.europa.eu/eli/reg/2022/2065/oj)). Few classifieds brands reach the very-large-platform threshold of 45 million average monthly active EU recipients. Even so, a non-profiling mode costs little if it is designed in, and the Article 27 duty applies to every online platform that is not a micro or small enterprise, whatever its reach.
 - **Discrimination in housing and jobs.** In the United States, fair-housing rules prohibit advertising that indicates a preference on protected grounds ([24 CFR §100.75](https://www.law.cornell.edu/cfr/text/24/100.75), n.d.). A personalized recommender for housing listings must therefore be audited for disparate delivery: whether protected groups systematically see different listings. EU anti-discrimination law points the same way for jobs. In these verticals, prefer contextual signals (the listing, the stated search) over inferred demographics, and never infer special-category data.
 - **Retention and minimization.** Recommendation features rarely need years of history. Airbnb's 2026 personalization work used long-term sequences of up to 80 events over seven years and short-term sequences of up to 200 views over 21 days ([Airbnb Tech, 2026](https://airbnb.tech/ai-ml/personalizing-airbnb-search-by-learning-from-the-guest-journey/)). Its booking cycle is long. A classifieds buyer's intent changes faster, and most of the value is in the last days. Set retention per feature, not per data lake.
 
-**Cross-brand data** is a separate decision. Veldmark ID, the group identity approved in June 2027 for rollout in 2028, will make it technically possible to recommend Motorvane cars to a Tradeyard user who browsed car accessories. Whether that is allowed depends on consent scope, on the privacy notice of each brand, and, for Keybridge agency data, on the March 2027 neutrality commitment, which rules out using Keybridge data for Hearthly ranking or sales targeting. Lucía Ortega's team owns that answer. The architecture should make cross-brand features **opt-in at the feature level**, with lineage, so that the answer can be enforced.
+**Cross-brand data** is a separate decision, and the architecture should make cross-brand features **opt-in at the feature level**, with lineage, so that whoever decides can enforce the answer. Technically, cross-brand recommendation will be possible: Veldmark ID, the group identity approved in June 2027 for rollout in 2028, could recommend Motorvane cars to a Tradeyard user who browsed car accessories. Whether that is allowed depends on consent scope and on the privacy notice of each brand. For data from Keybridge, the group's agency software, it also depends on the March 2027 neutrality commitment, which rules out using Keybridge data for ranking or sales targeting at Hearthly, the group's real-estate portal. The team of Lucía Ortega, the group data protection officer, owns that answer.
 
 ## The Veldmark Rebuild: Similar Vehicles at Motorvane
 
@@ -255,9 +257,11 @@ The rebuilt carousel ran against the old one in an A/B test randomized by user i
 
 The last row is the one that would have killed the project if click-through had been the success metric. The new carousel shows fewer eye-catching popular cars and more new, comparable ones, so it is clicked slightly less and produces more leads. Felix's report to the group put the lesson in one line: **"We were optimizing the carousel for curiosity; the dealers pay us for leads."**
 
-If the Golf were listed under the new design, it would appear in other cars' carousels within minutes of becoming searchable at 17:05 on 14 April. It would leave every carousel within a minute of the dealer marking it sold in Dealer Hub. If the dealer does not use Dealer Hub, it would leave within a minute of the status delta that the group's Supply Contract v1 (September 2027) asks DMS vendors to send within 15 minutes of a sale ([[listing-ingestion]]). The 26-hour gap closes at the source, not in the recommender.
+If the Golf were listed under the new design, it would appear in other cars' carousels within minutes of becoming searchable on 14 April (at 17:05, just after the feed delivered it). It would leave every carousel within a minute of the dealer marking it sold in Dealer Hub. If the dealer does not use Dealer Hub, it would leave within a minute of a sold status update, which the group's Supply Contract v1 (September 2027) asks DMS vendors to send within 15 minutes of a sale ([[listing-ingestion]]). The 26-hour gap closes at the source, not in the recommender.
 
 ## Trade-offs
+
+Each choice has an alternative; the table says when each is right.
 
 | Decision | Option A | Option B | Choose A when | Choose B when |
 | --- | --- | --- | --- | --- |
@@ -270,6 +274,8 @@ If the Golf were listed under the new design, it would appear in other cars' car
 | Ownership | Per-brand recommenders | Shared candidate and serving platform with per-brand models | One brand; very different verticals | Several brands on the same event backbone and status model |
 
 ## Vertical Differences
+
+Beyond these trade-offs, verticals differ in what "similar" means, which signal carries a new listing and what can go wrong. Two cells need a decision beyond the model.
 
 | Dimension | General classifieds (Tradeyard) | Automotive (Motorvane) | Real estate (Hearthly) | Jobs |
 | --- | --- | --- | --- | --- |
@@ -285,6 +291,8 @@ The automotive cell "recommending competing dealers on a dealer's own page" is a
 At Hearthly, the duplicate filter has a fairness side. When the Lyon apartment's three agency listings are clustered into one canonical property, the recommender must choose one listing to show. The rule should match the one ranking uses for the cluster ([[ranking]]), or agencies will see inconsistent treatment across surfaces.
 
 ## Failure Modes
+
+Each failure below breaks one rule of this chapter:
 
 1. **Nightly lists, hourly inventory.** Recommendations computed once a day and served without an availability check. Warning sign: contacts on sold listings concentrated in recommendation surfaces and e-mails.
 2. **Behavior-only candidates.** New listings get no recommendation exposure until they have collected interactions elsewhere. Warning sign: the age distribution of recommended listings is far older than that of live inventory.
@@ -316,6 +324,8 @@ Recommendations look like a feature owned by a product squad. At group scale the
 
 ## Questions to Ask
 
+The chapter's rules, as review questions:
+
 1. What share of our live inventory appears in at least one recommendation module in a week, and how old is the average recommended listing compared with the average live listing?
 2. How long after a listing is sold or removed can it still be recommended, on each surface, including e-mail and push?
 3. Which candidate source serves a listing in its first hour, before it has any interactions?
@@ -328,6 +338,8 @@ Recommendations look like a feature owned by a product squad. At group scale the
 10. Who owns each production recommender today, and when was each last retrained and evaluated?
 
 ## From Lists to Maps
+
+The kettle recommender fails on listings because the item is new, unique and about to go, and each part of this chapter answers that: content places the Golf on its first day, events and one status filter remove it within a minute of the sold signal, and contacts, not clicks, judge the carousel. The gain came from plumbing, not a better model, so a group that shares the status read model and event stream gets most of it before any model is trained.
 
 Recommendations rank without a query. The next chapter, [[map-search]], ranks within a place, where the map is the interface and the geography is the main filter. It deals with polygons, clusters, commute times and the finding that list-based metrics do not describe how people look at a map. The same principles return there: content first, availability always, and measurement on matches rather than clicks.
 

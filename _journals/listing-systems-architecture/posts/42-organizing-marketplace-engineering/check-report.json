@@ -1,0 +1,2931 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/42-organizing-marketplace-engineering/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/42-organizing-marketplace-engineering/index.md",
+  "spec_sha": "9cea581df6f57a2e",
+  "draft_sha": "53ed9655f50147b1",
+  "run_at": "2026-11-12T22:38:21+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goal: design team topology and governance for a marketplace group, via Veldmark's first year",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business cost of organization: slow spread of improvements across brands",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Org chart shapes systems, so it is part of the architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: owners first, platforms earn tenants, govern by recorded decisions",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Forced Fit, Copy-Paste Country, Deal-Shaped Architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Assembled groups duplicate capabilities once per owning team",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Shared platforms need owners; chapter covers ownership, interaction, funding, decisions",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Definitions of marketplace team topology and architecture governance",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶1",
+      "summary": "Phishing incident handled well in the Netherlands",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶2",
+      "summary": "Rule reached Belgium late, never reached Poland, Portugal or Motorvane",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶3",
+      "summary": "Ingrid reads the incident as an org-chart problem and collects team lists",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "summary": "Overlaps exist because pieces are owned but no team owns the whole",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶5",
+      "summary": "CTO's question: who owns, uses and decides on shared platforms",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶1",
+      "summary": "Conway's law and the inverse Conway maneuver",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶2",
+      "summary": "Limits of the maneuver: code lags teams, cognitive load caps teams",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶3",
+      "summary": "Team Topologies' four team types and three interaction modes mapped to marketplaces",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶4",
+      "summary": "Interaction mode is temporary; endless collaboration or instant service are warning signs",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶5",
+      "summary": "Choice of axis for stream-aligned teams: country, journey or layer",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶6",
+      "summary": "Cut by journey within a brand; country team only for a different product",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶7",
+      "summary": "Same journey stays separate across brands; shared parts become platforms",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶8",
+      "summary": "Three things needing one owner: journeys, contexts, shared capabilities",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶9",
+      "summary": "What makes a team an owner",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶10",
+      "summary": "Five parts of governance, review least important",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶11",
+      "summary": "Nygard's architecture decision record format",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Concepts: Teams as Part of the Architecture ¶12",
+      "summary": "Harmel-Law's advice process and its supports",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶1",
+      "summary": "Layered topology of team types for a group, previewed in Veldmark's figure",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶2",
+      "summary": "Key properties: dependencies point down, specialists via platforms, enabling teams temporary",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶3",
+      "summary": "Five things distinguishing a platform team from shared services",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "summary": "Adevinta's voluntary platform shows adoption with migration help beats mandates",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "summary": "Veldmark's decision-rights matrix as the start of governance",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶6",
+      "summary": "Matrix features: brands record own exceptions; CTO decides sharing after forum",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶7",
+      "summary": "Advice process path keeps decisions with proposing teams",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶8",
+      "summary": "What the process keeps: public advice, records, review dates",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶9",
+      "summary": "Five common funding models for platforms",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶10",
+      "summary": "Match funding model to why a platform is shared",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶11",
+      "summary": "Cost attribution requires an ownership catalog first (Adevinta)",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶12",
+      "summary": "Few architects, placed where decisions happen",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: A Topology for a Group of Marketplaces ¶13",
+      "summary": "Berlin Tech Blog rule: architects leave team decisions to teams",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶1",
+      "summary": "Public evidence is partial and dated",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶2",
+      "summary": "Marktplaats moved to journey teams and OKRs",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶3",
+      "summary": "Vinted mapped domains before restructuring teams",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶4",
+      "summary": "AutoScout24 grew the new organization team by team",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶5",
+      "summary": "OLX journey squads plus a separate framework for cross-team initiatives",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶6",
+      "summary": "OLX data team took ownership of recommendations runtime",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶7",
+      "summary": "Adevinta harvested local inventions, then decentralized; leboncoin's platform ratio",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶8",
+      "summary": "eBay Classifieds Group as a coordinating federation",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶9",
+      "summary": "Common thread across the record, with no complete topology published",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "summary": "Three organization options brought to the forum",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "summary": "CTO's decision record: option B in five parts",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶3",
+      "summary": "Team API page shows each platform's interaction modes and no steady tenant yet",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶4",
+      "summary": "Collaboration time-boxed to two quarters per tenant",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶5",
+      "summary": "Phased funding: program build, showback, then usage or fixed allocation",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶6",
+      "summary": "Tally funded centrally so first tenants need not negotiate price",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶7",
+      "summary": "The open weekly forum and its decision log",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶8",
+      "summary": "First-year forum statistics as signs of health",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶9",
+      "summary": "Four principles that do most of the work",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶10",
+      "summary": "Separability principle stems from private-equity ownership",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶11",
+      "summary": "Replaying the phishing incident on the shared trust-and-safety platform",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Common Ground Organization Design ¶12",
+      "summary": "Ownership, not the rule engine, changed",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "When each of Veldmark's choices would be wrong",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Conditions shift by vertical on the supply side",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Commercial supply journeys and a visible SaaS boundary",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Nine recurring organizational failure modes and fixes",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Design ownership on the same map as the architecture",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Measure platforms by adoption and tenant cost",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Open forum, few executive escalations",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Expect centralization swings; make contracts durable",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Who decides what, plus indicators to watch",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten questions testing whether the design is in place",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "From Organization to Migration ¶1",
+      "summary": "Synthesis answering the CTO's question; start with catalog and matrix",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "From Organization to Migration ¶2",
+      "summary": "Organization does not move code; hand-off to migration chapter",
+      "matched_spec_paragraph": "p67"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Outline 'Assembled groups duplicate capabilities once per owning team' matches the controlling idea of p01, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outline 'Shared platforms need owners; chapter covers ownership, interaction, funding, decisions' matches the controlling idea of p02, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Outline 'Definitions of marketplace team topology and architecture governance' matches the controlling idea of p03, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Outline 'Roadmap of the chapter' matches the controlling idea of p04, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶1",
+      "finding": "Outline 'Phishing incident handled well in the Netherlands' matches the controlling idea of p05, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶2",
+      "finding": "Outline 'Rule reached Belgium late, never reached Poland, Portugal or Motorvane' matches the controlling idea of p06, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶3",
+      "finding": "Outline 'Ingrid reads the incident as an org-chart problem and collects team lists' matches the controlling idea of p07, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "finding": "Outline 'Overlaps exist because pieces are owned but no team owns the whole' matches the controlling idea of p08, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶5",
+      "finding": "Outline 'CTO's question: who owns, uses and decides on shared platforms' matches the controlling idea of p09, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶1",
+      "finding": "Outline 'Conway's law and the inverse Conway maneuver' matches the controlling idea of p10, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶2",
+      "finding": "Outline 'Limits of the maneuver: code lags teams, cognitive load caps teams' matches the controlling idea of p11, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶3",
+      "finding": "Outline 'Team Topologies' four team types and three interaction modes mapped to marketplaces' matches the controlling idea of p12, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶4",
+      "finding": "Outline 'Interaction mode is temporary; endless collaboration or instant service are warning signs' matches the controlling idea of p13, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶5",
+      "finding": "Outline 'Choice of axis for stream-aligned teams: country, journey or layer' matches the controlling idea of p14, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶6",
+      "finding": "Outline 'Cut by journey within a brand; country team only for a different product' matches the controlling idea of p15, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶7",
+      "finding": "Outline 'Same journey stays separate across brands; shared parts become platforms' matches the controlling idea of p16, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶8",
+      "finding": "Outline 'Three things needing one owner: journeys, contexts, shared capabilities' matches the controlling idea of p17, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶9",
+      "finding": "Outline 'What makes a team an owner' matches the controlling idea of p18, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶10",
+      "finding": "Outline 'Five parts of governance, review least important' matches the controlling idea of p19, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶11",
+      "finding": "Outline 'Nygard's architecture decision record format' matches the controlling idea of p20, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶12",
+      "finding": "Outline 'Harmel-Law's advice process and its supports' matches the controlling idea of p21, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶1",
+      "finding": "Outline 'Layered topology of team types for a group, previewed in Veldmark's figure' matches the controlling idea of p22, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶2",
+      "finding": "Outline 'Key properties: dependencies point down, specialists via platforms, enabling teams temporary' matches the controlling idea of p23, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶3",
+      "finding": "Outline 'Five things distinguishing a platform team from shared services' matches the controlling idea of p24, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "finding": "Outline 'Adevinta's voluntary platform shows adoption with migration help beats mandates' matches the controlling idea of p25, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "finding": "Outline 'Veldmark's decision-rights matrix as the start of governance' matches the controlling idea of p26, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶6",
+      "finding": "Outline 'Matrix features: brands record own exceptions; CTO decides sharing after forum' matches the controlling idea of p27, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶7",
+      "finding": "Outline 'Advice process path keeps decisions with proposing teams' matches the controlling idea of p28, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶8",
+      "finding": "Outline 'What the process keeps: public advice, records, review dates' matches the controlling idea of p29, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶9",
+      "finding": "Outline 'Five common funding models for platforms' matches the controlling idea of p30, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/9",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶10",
+      "finding": "Outline 'Match funding model to why a platform is shared' matches the controlling idea of p31, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/10",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶11",
+      "finding": "Outline 'Cost attribution requires an ownership catalog first (Adevinta)' matches the controlling idea of p32, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/11",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶12",
+      "finding": "Outline 'Few architects, placed where decisions happen' matches the controlling idea of p33, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/12",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶13",
+      "finding": "Outline 'Berlin Tech Blog rule: architects leave team decisions to teams' matches the controlling idea of p34, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶1",
+      "finding": "Outline 'Public evidence is partial and dated' matches the controlling idea of p35, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "In Practice: What the Public Record Shows ¶2",
+      "finding": "Outline 'Marktplaats moved to journey teams and OKRs' matches the controlling idea of p36, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "In Practice: What the Public Record Shows ¶3",
+      "finding": "Outline 'Vinted mapped domains before restructuring teams' matches the controlling idea of p37, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "In Practice: What the Public Record Shows ¶4",
+      "finding": "Outline 'AutoScout24 grew the new organization team by team' matches the controlling idea of p38, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5",
+      "finding": "Outline 'OLX journey squads plus a separate framework for cross-team initiatives' matches the controlling idea of p39, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "In Practice: What the Public Record Shows ¶6",
+      "finding": "Outline 'OLX data team took ownership of recommendations runtime' matches the controlling idea of p40, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "Outline 'Adevinta harvested local inventions, then decentralized; leboncoin's platform ratio' matches the controlling idea of p41, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "In Practice: What the Public Record Shows ¶8",
+      "finding": "Outline 'eBay Classifieds Group as a coordinating federation' matches the controlling idea of p42, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "In Practice: What the Public Record Shows ¶9",
+      "finding": "Outline 'Common thread across the record, with no complete topology published' matches the controlling idea of p43, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "finding": "Outline 'Three organization options brought to the forum' matches the controlling idea of p44, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "Outline 'CTO's decision record: option B in five parts' matches the controlling idea of p45, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶3",
+      "finding": "Outline 'Team API page shows each platform's interaction modes and no steady tenant yet' matches the controlling idea of p46, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶4",
+      "finding": "Outline 'Collaboration time-boxed to two quarters per tenant' matches the controlling idea of p47, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶5",
+      "finding": "Outline 'Phased funding: program build, showback, then usage or fixed allocation' matches the controlling idea of p48, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶6",
+      "finding": "Outline 'Tally funded centrally so first tenants need not negotiate price' matches the controlling idea of p49, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶7",
+      "finding": "Outline 'The open weekly forum and its decision log' matches the controlling idea of p50, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶8",
+      "finding": "Outline 'First-year forum statistics as signs of health' matches the controlling idea of p51, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/8",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶9",
+      "finding": "Outline 'Four principles that do most of the work' matches the controlling idea of p52, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/9",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶10",
+      "finding": "Outline 'Separability principle stems from private-equity ownership' matches the controlling idea of p53, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/10",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶11",
+      "finding": "Outline 'Replaying the phishing incident on the shared trust-and-safety platform' matches the controlling idea of p54, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/11",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶12",
+      "finding": "Outline 'Ownership, not the rule engine, changed' matches the controlling idea of p55, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Outline 'When each of Veldmark's choices would be wrong' matches the controlling idea of p56, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Outline 'Conditions shift by vertical on the supply side' matches the controlling idea of p57, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "Outline 'Commercial supply journeys and a visible SaaS boundary' matches the controlling idea of p58, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Outline 'Nine recurring organizational failure modes and fixes' matches the controlling idea of p59, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Outline 'Design ownership on the same map as the architecture' matches the controlling idea of p60, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Outline 'Measure platforms by adoption and tenant cost' matches the controlling idea of p61, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Outline 'Open forum, few executive escalations' matches the controlling idea of p62, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Outline 'Expect centralization swings; make contracts durable' matches the controlling idea of p63, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Outline 'Who decides what, plus indicators to watch' matches the controlling idea of p64, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Outline 'Ten questions testing whether the design is in place' matches the controlling idea of p65, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Organization to Migration ¶1",
+      "finding": "Outline 'Synthesis answering the CTO's question; start with catalog and matrix' matches the controlling idea of p66, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Organization to Migration ¶2",
+      "finding": "Outline 'Organization does not move code; hand-off to migration chapter' matches the controlling idea of p67, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5",
+      "finding": "The spec's controlling idea for p39 itself joins both OLX lessons (squads do not deliver cross-cutting hygiene; an outcome-tracked framework is a governance tool) as one idea, so the outliner's two parts are the declared idea.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "The spec's controlling idea for p41 declares Adevinta's three fragments and the post-decentralization leboncoin ratio together as one controlling idea (the pendulum and what followed it).",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "The spec's controlling idea for p64 declares 'who decides' and 'six signals' together as one closing summary idea.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "No other unit was marked two_ideas by the outliner.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Ties to S1 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Ties to S1, S3, S5 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Ties to S1, S5 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Ties to S1, S2, S3, S5 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶1",
+      "finding": "Ties to S1 (via section 'scene'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶2",
+      "finding": "Ties to S1 (via section 'scene'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶3",
+      "finding": "Ties to S1 (via section 'scene'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "finding": "Ties to S1 (via section 'scene'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶5",
+      "finding": "Ties to S1 (via section 'scene'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶1",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶2",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶3",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶4",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶5",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶6",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶7",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶8",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶9",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶10",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶11",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶12",
+      "finding": "Ties to S1, S2, S5 (via section 'concepts'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶1",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶2",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶3",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶6",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶7",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶8",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶9",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/9",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶10",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/10",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶11",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/11",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶12",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/12",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶13",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'architecture'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶1",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "In Practice: What the Public Record Shows ¶2",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "In Practice: What the Public Record Shows ¶3",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "In Practice: What the Public Record Shows ¶4",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "In Practice: What the Public Record Shows ¶6",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "In Practice: What the Public Record Shows ¶8",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "In Practice: What the Public Record Shows ¶9",
+      "finding": "Ties to S1, S2, S3 (via section 'record'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶3",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶4",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶5",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶6",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶7",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶8",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/8",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶9",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/9",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶10",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/10",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶11",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/11",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶12",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'worked-example'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Ties to S2, S3, S5 (via section 'trade-offs'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Ties to S2 (via section 'verticals'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "Ties to S2 (via section 'verticals'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'failure-modes'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Ties to S1, S3, S5 (via section 'ca-view'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Ties to S1, S3, S5 (via section 'ca-view'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Ties to S1, S3, S5 (via section 'ca-view'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Ties to S1, S3, S5 (via section 'ca-view'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Ties to S1, S3, S5 (via section 'ca-view'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Ties to S1, S2, S3, S5 (via section 'questions'); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Organization to Migration ¶1",
+      "finding": "Ties to S1, S3, S5 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Organization to Migration ¶2",
+      "finding": "Ties to S1 (via paragraph); the paragraph does the work its controlling idea assigns.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0/evidence/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "reasoning: A founding marketplace's engineering organization, the organizations acquisitions bring, a... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2/evidence/0",
+      "draft_locus": "Introduction ¶3",
+      "finding": "reasoning: Definitions of marketplace team topology and architecture governance; pointers to bounded-... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶1",
+      "finding": "scenario: Femke's city bike on Tradeyard NL; fake Safe Deal link at 20:11, report 20:19, suspension ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶2",
+      "finding": "scenario: Belgium on 10 March via the twice-weekly Yardstick deploy; Poland and Portugal never; the ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶3",
+      "finding": "table: Engineers, teams, how teams are cut and architecture function per brand: Tradeyard about 4... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "finding": "figure: Figure 1: one rule reaching four countries by different paths.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/evidence/1",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "finding": "fact: Capability map presented 31 March 2027 (business-capabilities).... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶1",
+      "finding": "source: Conway (1968): designs copy communication structures; four brands with four organizations ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶2",
+      "finding": "quotation: Team Topologies: \"Teams can only handle so much complexity before breaking down\"; a team o... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶3",
+      "finding": "table: Stream-aligned, platform, complicated subsystem and enabling teams with marketplace and Ve... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/evidence/1",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶3",
+      "finding": "table: Collaboration, X-as-a-Service and facilitation with when each fits.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶5",
+      "finding": "table: Country, journey and capability-layer teams with strength and weakness.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶6",
+      "finding": "scenario: Tradeyard Poland's vehicles and property sections with insertion fees.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶7",
+      "finding": "example: Motorvane dealer supply and Hearthly agency supply; shared supply contract, validator libr... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶10",
+      "finding": "table: The five parts, what each is and the failure when it is missing.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶11",
+      "finding": "source: Title, context, decision, status, consequences.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11/evidence/0",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶12",
+      "finding": "source: \"anyone can make an architectural decision\"; weekly open architecture advisory forum.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶1",
+      "finding": "figure: Figure 2: Veldmark's Common Ground team topology (target 2028), introduced as a preview of... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶2",
+      "finding": "example: Tradeyard's listing events via a contract; ranking models served through the search platfo... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶3",
+      "finding": "table: Each of the five, why it matters and the evidence that it is missing.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "finding": "source: Common Platform for about 1,500 engineers in about 20 marketplace companies, voluntary ado... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3/evidence/1",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "finding": "figure: Figure 3: a platform that earns tenants versus a fenced, mandated one.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "finding": "table: Veldmark's matrix adopted April 2027, revised September: sharing, contract, engine, brand ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶7",
+      "finding": "figure: Figure 4: the advice process applied to cross-brand decisions.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶8",
+      "finding": "figure: Figure 5: review board queue versus open advice forum.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶9",
+      "finding": "table: Central program budget, fixed allocation, showback, chargeback by usage, internal market, ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/9/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶10",
+      "finding": "reasoning: Charging per decision would tempt a brand to skip checks.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/10/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶11",
+      "finding": "source: Adevinta cloud governance, December 2024: \"You build it, you run it (and you pay for it)\",... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/11/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶12",
+      "finding": "table: Group Chief Architect, brand lead architect, platform architect, principal engineers: owns... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/12/evidence/0",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶13",
+      "finding": "quotation: \"A Software Architect should never make a decision that the team can effectively make on t... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶2",
+      "finding": "source: November 2017: Journey Teams, OKRs (at most three objectives, four key results), self-repo... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶3",
+      "finding": "quotation: \"It took us at least two years to understand the domains, as we identified almost 300 of t... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶4",
+      "finding": "source: Project Tatsu, began November 2014, one to eight teams, a team every two to three months (... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5",
+      "finding": "source: OLX Autos squads and chapters (2021, business since closed); OLX Motors Work Organization ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶6",
+      "finding": "source: July 2025: serving moved out of a shared backend service \"to gain greater autonomy and fle... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "source: FIAAS from FINN.no, Fisher from Marktplaats (2017-2023); Annual Report 2023 operating mode... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/evidence/1",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "reasoning: INFERENCE, NOT DOCUMENTED callout: organization moved first, platforms followed.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/evidence/2",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "reasoning: About ten infrastructure engineers for about 70 feature teams is about seven teams per eng... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7/evidence/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶8",
+      "finding": "source: Job postings 2009-2011, 2018 talk, Global Motors vertical with a shared partner API, joint... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "finding": "table: Options A, B, C with for and against.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "scenario: Five parts: one owning team per capability under Yara Mendes (Data & ML with Priya Raman);... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/evidence/1",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "reasoning: BY DECEMBER 2027 callout before the table: the nine program capabilities named (Veldmark I... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/evidence/2",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "table: March versus December 2027: engineers 1,150 to 1,200, teams 158 to 152, owned capabilities... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶3",
+      "finding": "scenario: Search platform, second half of 2027: collaboration with Tradeyard Portugal, facilitation ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶4",
+      "finding": "scenario: Two quarters per tenant; the forum's question when the box runs out.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶5",
+      "finding": "scenario: Units per thousand searches, per million events, per thousand stored images, per moderatio... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶6",
+      "finding": "scenario: Olivier Petit's condition; Motorvane Q1 2028, Tradeyard Q2 2028.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶7",
+      "finding": "table: Decision records by month, April to November 2027, linked to the chapters that tell them (... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶8",
+      "finding": "statistic: 74 records; median 9 working days; 6 to CTO; 2 to DPO; 3 superseded.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/8/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶9",
+      "finding": "table: Share platforms not products; one owner per context and capability; contracts before migra... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/10/evidence/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶11",
+      "finding": "scenario: Rule from trust operations in Lisbon; hashed block list approved by the DPO with two-year ... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0/evidence/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "table: Nine rows: axis by journey or country, central platform or lead brand, central specialists... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0/evidence/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "table: Five topics across four verticals.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0/evidence/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "example: Platform without product owner; mandate before platform (Forced Fit); reorganizing on a da... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0/evidence/0",
+      "draft_locus": "From Organization to Migration ¶1",
+      "finding": "scenario: The March 2027 rule; the November 2027 replay.... is stated with what it shows (lead-in, caption or following sentence).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶1",
+      "finding": "Section 'scene': example expressed at the boundary, picking up 'Ownership as the unit of design and the roadmap's first promise, the M'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶1",
+      "finding": "Section 'concepts': problem_solution expressed at the boundary, picking up 'Mateus's question about owners, users and decisions.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶1",
+      "finding": "Section 'architecture': elaboration expressed at the boundary, picking up 'The four team types and the five parts of governance.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶1",
+      "finding": "Section 'record': contrast expressed at the boundary, picking up 'The design as the author's recommendation.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "finding": "Section 'worked-example': example expressed at the boundary, picking up 'The design and the public fragments.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Section 'trade-offs': contrast expressed at the boundary, picking up 'The choices Veldmark made.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Section 'verticals': elaboration expressed at the boundary, picking up 'The conditions under which choices fail.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Section 'failure-modes': contrast expressed at the boundary, picking up 'The design and its fit by vertical.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Section 'ca-view': cause_effect expressed at the boundary, picking up 'The failure modes.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "These questions test whether that design is in place.",
+      "finding": "Declared cause_effect carrying over 'the Chief Architect's decisions and signals'. The opening refers to 'that design', which has no near antecedent after the Chief Architect's View (the last paragraph is about who decides and what to watch), so the carried-over decisions and signals are not picked up and the reader has to reach back to the whole topology (flowB B10).",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶2",
+      "finding": "contrast expressed at the boundary, picking up 'Groups whose capabilities are duplicated because several teams own the'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶3",
+      "finding": "elaboration expressed at the boundary, picking up 'Who owns which journey, capability and decision.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "finding": "sequence expressed at the boundary, picking up 'The two terms.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶2",
+      "finding": "contrast expressed at the boundary, picking up 'The rule worked in the Netherlands.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶3",
+      "finding": "contrast expressed at the boundary, picking up 'The uneven reach of the rule.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶4",
+      "finding": "cause_effect expressed at the boundary, picking up 'The team list.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late ¶5",
+      "finding": "cause_effect expressed at the boundary, picking up 'No team owned the whole of any shared capability.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶2",
+      "finding": "contrast expressed at the boundary, picking up 'The inverse Conway maneuver as a design tool.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶3",
+      "finding": "elaboration expressed at the boundary, picking up 'Skelton and Pais's principle on complexity.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶4",
+      "finding": "elaboration expressed at the boundary, picking up 'The three interaction modes.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶5",
+      "finding": "elaboration expressed at the boundary, picking up 'The stream-aligned team type.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶6",
+      "finding": "cause_effect expressed at the boundary, picking up 'The weaknesses of country and layer teams.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶7",
+      "finding": "contrast expressed at the boundary, picking up 'One journey team per journey within a brand.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶8",
+      "finding": "elaboration expressed at the boundary, picking up 'The shared part as a platform with an owner.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶9",
+      "finding": "elaboration expressed at the boundary, picking up 'The three kinds of thing to own.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶10",
+      "finding": "sequence expressed at the boundary, picking up 'Owners of journeys, contexts and capabilities.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶11",
+      "finding": "elaboration expressed at the boundary, picking up 'Decision records as one of the five parts.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11/transition_in",
+      "draft_locus": "Concepts: Teams as Part of the Architecture ¶12",
+      "finding": "additional_support expressed at the boundary, picking up 'Decision records.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶2",
+      "finding": "elaboration expressed at the boundary, picking up 'The topology in Figure 2.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶3",
+      "finding": "elaboration expressed at the boundary, picking up 'Platforms beneath the brands.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶4",
+      "finding": "example expressed at the boundary, picking up 'The five things a platform team needs.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/4/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "finding": "sequence expressed at the boundary, picking up 'The teams of the topology.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/5/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶6",
+      "finding": "elaboration expressed at the boundary, picking up 'The matrix.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/6/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶7",
+      "finding": "elaboration expressed at the boundary, picking up 'Exceptions decided by brands and sharing decided by the CTO.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/7/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶8",
+      "finding": "elaboration expressed at the boundary, picking up 'The advice path.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/8/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶9",
+      "finding": "contrast expressed at the boundary, picking up 'Governance through advice and principles.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/9/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶10",
+      "finding": "elaboration expressed at the boundary, picking up 'The five models.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/10/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶11",
+      "finding": "elaboration expressed at the boundary, picking up 'Usage pricing that makes cost visible.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/11/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶12",
+      "finding": "sequence expressed at the boundary, picking up 'Ownership mapped to teams and costs.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/12/transition_in",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶13",
+      "finding": "additional_support expressed at the boundary, picking up 'The architect roles.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶2",
+      "finding": "example expressed at the boundary, picking up 'Dated fragments.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶3",
+      "finding": "additional_support expressed at the boundary, picking up 'Journey teams at Marktplaats.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶4",
+      "finding": "additional_support expressed at the boundary, picking up 'Domains before teams.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5",
+      "finding": "additional_support expressed at the boundary, picking up 'Growing teams one at a time.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶6",
+      "finding": "additional_support expressed at the boundary, picking up 'Two OLX fragments.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "finding": "additional_support expressed at the boundary, picking up 'Single fragments from OLX.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶8",
+      "finding": "contrast expressed at the boundary, picking up 'Adevinta's swings between central and local.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8/transition_in",
+      "draft_locus": "In Practice: What the Public Record Shows ¶9",
+      "finding": "conclusion_summary expressed at the boundary, picking up 'The dated fragments.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "finding": "cause_effect expressed at the boundary, picking up 'The three options.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶3",
+      "finding": "elaboration expressed at the boundary, picking up 'One owning team per capability.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶4",
+      "finding": "elaboration expressed at the boundary, picking up 'Collaboration modes on the team API.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶5",
+      "finding": "sequence expressed at the boundary, picking up 'The decision record's ownership and collaboration rules.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶6",
+      "finding": "contrast expressed at the boundary, picking up 'Usage and fixed allocation from 2029.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶7",
+      "finding": "elaboration expressed at the boundary, picking up 'The decisions of Common Ground organization v1, from the options in Ma'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶8",
+      "finding": "time expressed at the boundary, picking up 'The forum's 2027 log, month by month.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/8/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶9",
+      "finding": "elaboration expressed at the boundary, picking up 'The decisions in the log.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/9/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶10",
+      "finding": "elaboration expressed at the boundary, picking up 'The four principles.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/10/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶11",
+      "finding": "time expressed at the boundary, picking up 'The forum's year.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/11/transition_in",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶12",
+      "finding": "conclusion_summary expressed at the boundary, picking up 'The replayed rule.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in",
+      "draft_locus": "Vertical Differences ¶2",
+      "finding": "cause_effect expressed at the boundary, picking up 'The vertical table.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/1/transition_in",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "sequence expressed at the boundary, picking up 'Ownership drawn and reviewed.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/2/transition_in",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "sequence expressed at the boundary, picking up 'Measuring platforms.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/3/transition_in",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "sequence expressed at the boundary, picking up 'The forum and escalation.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/4/transition_in",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "conclusion_summary expressed at the boundary, picking up 'The four recommendations.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in",
+      "draft_locus": "From Organization to Migration ¶2",
+      "finding": "contrast expressed at the boundary, picking up 'What the organization decides.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "From Organization to Migration ¶1",
+      "finding": "conclusion_summary: 'Mateus's question now has a three-part answer' returns to the scene and sums up the chapter.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "finding": "Both readers describe problem -> vocabulary -> general design -> public evidence -> applied case -> limits and judgement, which agrees with the declared prerequisite_order with problem_solution (scene/worked example) and grouping (judging sections). Neither reader marks any section's position unclear; both say the top-level order needs no change. Keybridge's neutrality in the Figure 2 caption (A1/B3) and Daan Visser (B7) are not failed: both are in audience.already_knows and the caption states the reason inline. B8 (axis recommendation in Concepts) is not material: the reader says it reads fine.",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "quote": "Veldmark's architecture advice forum, an open weekly meeting set up in April 2027 and described in the worked example, adopted it that month and revised it in September.",
+      "finding": "flowA A2: 'I had to re-read to tell whether the matrix is the general recommendation or Veldmark's record. The forum's setup is then told three times.' The general design section switches into Veldmark history with a forward reference. The spec prescribes this preview (p26 controlling idea), so the difficulty comes from the planned order.",
+      "fault": "spec",
+      "corroborated_by": "flowB item B1",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "quote": "In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring three organization options to the forum, whose twelve principles include \"share platforms, not products\".",
+      "finding": "flowA A3: 'The twelve principles are mentioned as if already known. They are introduced only near the end of the worked example... The worked example uses the forum and its principles before it describes them.' The spec's worked-example flow deliberately puts the forum and principles subsection after the decisions (round-3 ruling), so the difficulty comes from the order.",
+      "fault": "spec",
+      "corroborated_by": "flowB item B4",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2",
+      "quote": "> **BY DECEMBER 2027:** Of the nine capabilities the board's January 2027 program named (Veldmark ID, trust and safety, media, search, messaging, catalog and entitlements, event backbone, data platform, and taxonomy and attributes; part 1 adds the listing and developer platforms), eight had one owning team, and country-cut, overloaded and Yardstick-bound teams had fallen.",
+      "finding": "flowA A4: 'This is the hardest sentence in the chapter. \"part 1\" is unclear... The list of nine also does not match part 1's list... \"teams had fallen\" reads as if teams collapsed... I re-read it twice.' The spec's content is fine; the sentence packs a list, an unexplained cross-reference and an ambiguous verb.",
+      "fault": "draft",
+      "corroborated_by": "flowB item B5",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7 (INFERENCE callout)",
+      "quote": "Adevinta's 2023 reorganization by verticals preceded its plan to converge the leboncoin and Kleinanzeigen product platforms",
+      "finding": "flowA A7: 'The plan to converge the two product platforms is not mentioned anywhere in the body before this box (only in the source list), so the inference relies on a fact the reader has not been given.' Option C's '2023-style convergence bet' depends on it too. The documented fact belongs in the Adevinta paragraph before the inference.",
+      "fault": "draft",
+      "corroborated_by": "flowB item B6",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶2 (BY DECEMBER box and table)",
+      "quote": "| Common Ground capabilities with exactly one owning team | 0 of 9 | 8 of 9 (the data platform migration is still split with the brands) |",
+      "finding": "flowA A5: 'The worked example jumps to year-end results and then returns to earlier events, so its chronology breaks.' The spec places the year-end measures directly after the five parts, so the difficulty comes from the declared order. Reported by one reader only.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7",
+      "quote": "For organization design, three fragments matter.",
+      "finding": "flowA A6: 'The paragraph then gives four items... The leboncoin item does not fit the count, and I re-counted.' Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/9",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶10",
+      "quote": "The fourth principle comes from Veldmark's ownership: a private-equity owner might one day sell a brand",
+      "finding": "flowA A8: 'This chapter has not said that Veldmark is owned by private equity... This is minor.' Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Architecture: A Topology for a Group of Marketplaces ¶5",
+      "quote": "Governance starts with a table, not a forum.",
+      "finding": "flowB B2: 'The decision-rights subsection... relies on \"Veldmark's architecture advice forum\" and on \"after forum advice\" in the matrix. The next subsection... is where the forum's role is laid out.' The spec orders decision rights before the advice process (large_to_small), so the difficulty comes from the order. Distinct from A2/B1 (which concern the Veldmark-history switch); reported by one reader only.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "In Practice: What the Public Record Shows ¶5-6",
+      "quote": "A third OLX fragment concerns ownership",
+      "finding": "flowB B9: 'the takeaway comes before the last piece of evidence... The lessons look complete, and then a third fragment arrives. Minor.' Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "These questions test whether that design is in place.",
+      "finding": "flowB B10: '\"that design\" has no near antecedent. The reader has to reach back to the topology and governance as a whole. Minor.' Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Veldmark Worked Example: The Common Ground Organization Design ¶1",
+      "quote": "whose twelve principles include \"share platforms, not products\"",
+      "finding": "Veldmark's twelve principles are used as known when the options are put to the forum; they are introduced only in ¶9 ('Veldmark's principles fit on one page'). The spec's controlling idea for p44 and the worked-example flow prescribe this placement.",
+      "fault": "spec",
+      "corroborated_by": "flowA item A3",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice: What the Public Record Shows ¶7 (INFERENCE callout)",
+      "quote": "its plan to converge the leboncoin and Kleinanzeigen product platforms",
+      "finding": "The convergence plan is used as a known fact inside the inference, and later in Option C ('the 2023-style convergence bet'), but the body never states it; it appears only in the source list.",
+      "fault": "draft",
+      "corroborated_by": "flowA item A7",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "quote": "the team's cognitive load must fit",
+      "finding": "'Cognitive load as a design limit' is on audience.does_not_know. The term is used in KEY POINTS and later ('cognitive-load threshold', 'cognitive-load flag'), while the Concepts paragraph that explains the idea ('teams have a limited capacity for complexity') never names it; the term is glossed only in the December table row. No flow reader reported it.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The other does_not_know terms are defined at first use in the body: marketplace team topology and architecture governance (intro ¶3), inverse Conway maneuver (Concepts ¶1), team types and interaction modes (tables), team API (worked example ¶3), decision-rights matrix, advice process, the five funding models (table), Common Ground organization v1 and the 158-team baseline. Paragraph openings start from given information.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a direct, disputable statement (\"assembled, not designed\"), bridges to the book's platforms, defines the two terms and gives a roadmap; none of the weak patterns.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "No \"in conclusion\", no new subtopic, no stray evidence; it synthesizes and hands off.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States what no section states: the three parts depend on each other ('without owners the forum has nobody to advise, and without the forum and funding the owners have no tenants'), and why it matters (the rule reaches every tenant within an hour; each capability exists once).",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Mateus's question and the March rule replayed in November, as callback.to names.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the six-step order matching the roadmap promises (scene, concepts, topology with platform teams/decision rights/advice/funding/architects, public record, Common Ground first year, closing sections), the two terms, team types and interaction modes, platform teams earning tenants, and evidence from published classifieds groups plus fictional Veldmark.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader named the ownership defect (several teams each own a piece, nobody owns trust and safety for the brand or group) and every expected fix: one platform team running the pipeline as an internal product with a contract and written service level, policy local / mechanism central, journey not country cut, fixed allocation so no brand saves by skipping a check, and the cross-brand decision through the matrix and open forum with a record.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The cold reader chose journey within the brand with countries carried by market product leads and configuration, justified a country team only by a different product (Tradeyard Poland's sections with fees), not language, and chose fixed allocation for trust and safety because per-decision charging tempts a brand to skip checks.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Every real-company claim carries a date and a source (inline link, named report, or the case chapter it defers to: Adevinta 2019/2020 talk and SCHIP 2023 via case-adevinta, FIAAS/Fisher 2017-2023 via case-adevinta, eCG 2009-2011 postings and 2018 talk via case-ebay-classifieds); old evidence is flagged as old; the reading of Adevinta's reorganizations as Conway's law in reverse sits in an INFERENCE, NOT DOCUMENTED callout; the leboncoin figures are flagged as from the feed summary.",
+      "severity": "minor"
+    }
+  ]
+}

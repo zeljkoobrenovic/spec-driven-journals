@@ -1,0 +1,1694 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "listing-data-management",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "System of Record and Read Models: Listing Data Management",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21, revised 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the listing-data-management entry in journal-spec.json. Added units: the roadmap paragraph p04, lead-ins p40 (trade-off table) and p42 (vertical table), lead sentences to the failure-mode list (p44) and the questions (p51), and the synthesis paragraph p52; see decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "System of record, read models and copies; staleness budgets per read path and the consistency each reader needs (read-your-writes for sellers, bounded staleness for buyers, tighter limits for removals).",
+        "Partitioning by country, regions and tenancy; retention and archives across the life of a listing record, per data class.",
+        "Erasure as a workflow with receipts under GDPR Articles 12, 17 and 19; corrections, backfills and the consumer registry as a data contract."
+      ],
+      "believe": [
+        "A copy that cannot be rebuilt or cleaned is a liability, not an asset.",
+        "Retention and erasure are decided per data class, not per database."
+      ],
+      "can_do": [
+        "List every copy of a listing with its owner, source, staleness budget, rebuild path and retention rule.",
+        "Design an erasure workflow that closes only when every copy has answered deleted, anonymized, retained with a legal basis, or not held.",
+        "Decide which data-management rules are group decisions and which each brand keeps."
+      ]
+    },
+    "audience": {
+      "who": "Chief and principal architects, data and platform leads, and privacy engineers in multi-brand marketplace groups.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline), including CQRS and Kafka log compaction.",
+        "From earlier chapters: the listing aggregate and its lifecycle, the publication pipeline and its consumer registry, the listing event stream with its outbox, envelope, version gate, compacted state topic, backfill topic and ListingErased event (event-driven-listings), Safe Deal, VIN decoding, trust-and-safety cases and statements of reasons.",
+        "Veldmark, its brands (Tradeyard, Motorvane, Hearthly), Yardstick, Valuo, the cast (Ingrid Halvorsen, Lucía Ortega, Daan Visser, Sven Lindqvist, Aisha Rahman, Tomasz Wiśniewski), the Rotterdam bike and the failure-pattern names."
+      ],
+      "does_not_know": [
+        "System of record as defined here (one authoritative owner per fact) and the seven kinds of copy.",
+        "Staleness budget; read-your-writes, monotonic reads, bounded staleness and removal priority as user-facing promises.",
+        "Erasure case, erasure ledger and crypto-shredding.",
+        "The GDPR, DSA and Dutch retention rules as they bear on listing data."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an erasure request and a stale read path, the reader names the registry entry and workflow step that handle each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A seller who sold an item through the platform's payment service six months ago asks for her personal data to be erased. Her listing still exists in the listing database, a public sold page, the media store, the warehouse, a fraud case in which she reported a scammer, the payment records and an e-mail provider's logs, and finding these took two days. Separately, sellers complain that an edit they just saved is missing from their own listing page. Using only this chapter: how should the request be handled, and what fixes the sellers' complaint?",
+        "expected": "An erasure case that resolves the subject to identifiers, fans out an erasure event, and collects a receipt from every registered copy: the listing record anonymized, the public page answering 410 with the CDN purged and removal requested, media deleted, warehouse personal-data rows deleted, the fraud case retained under the legal-claims basis until a stated date, payment records retained for the legal period with restricted access, the e-mail provider instructed to delete; the case closes from the erasure ledger, and the consumer registry makes the next case need no search. Seller pages read from the system of record to guarantee read-your-writes, while buyer read models keep a stated staleness budget."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The stream makes copies cheap and cheap copies multiply, so the chapter asks where listing data lives and who owns each copy; one system of record and registered read models; consistency per read path; retention and erasure per data class. Then Femke's seven copies, concepts, architecture with the consumer registry as a data contract, partitioning and tenancy, retention and archives, erasure propagation, corrections and backfills, documented practice, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: GDPR articles, Dutch government guidance, Vinted and Adevinta engineering sources, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a set of stores that hold listing data, the reader says which can be rebuilt from the system of record and what governs each one that cannot.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A marketplace holds listing data in a MySQL read replica, a search index, a Redis cache, an archive of sold listings kept for disputes, a store of fraud-case evidence, a data warehouse and an e-mail provider's delivery logs. Using only this chapter: which of these can be dropped and rebuilt from the listing system of record, and what has to be written down for each one that cannot?",
+        "expected": "Replica, search index (a read model) and cache can be rebuilt (by the database, from events or a backfill, by expiry), so their problem reduces to freshness: owner, staleness budget, rebuild time, purge on removal. The archive (not after the system of record purges), the evidence store (no, by design), the e-mail provider's logs (external, no) and the warehouse's history from before the stream (only partly) cannot, so each needs an owner, a purpose, a retention period and a deletion path written down before it exists: legal basis and access control for evidence, a personal-data split and erasure job for the warehouse, a contract, notification duty and delete instructions for the external copy. Every copy must be either rebuildable or governed."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a multi-country group with all countries in one database, the reader chooses a partitioning scheme and a region strategy and says when the alternative is right.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A classifieds group runs four countries' listings in one database cluster; the largest country's weekly peak sets capacity and maintenance windows for the others. An engineer proposes hash-sharding all listings by listing ID across countries, and another proposes writing listings in several regions at once. Using only this chapter: what would you choose instead, and when would each proposal be right?",
+        "expected": "Partition by country first (a database or schema per country, country in every key, listing ID within it, hashing within a country only where one market is very large), because classifieds are country businesses and this isolates failures, peaks, maintenance, retention and residency. Global hashing fits one very large market or a cross-border catalog such as Vinted's. Keep a single writer per brand in one region with read models near it; multi-writer only when write latency or sovereignty demands it and the cost is accepted, as Vinted's 2026 post reasons. Replicas and backups in a second region inherit the source's retention and erasure obligations."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Where does listing data live, who owns it, and how do the copies stay consistent?",
+    "claim": "Each listing fact should have one system of record where a change becomes true, and every other store that holds listing data (search index, page cache, media, warehouse, trust-and-safety evidence, payment records, partner and e-mail copies) should be a copy registered before it gets access, with an owner, a source, a staleness budget per read path, a rebuild path and a retention rule per data class; consistency is then a written promise per read path (read-your-writes for sellers, bounded staleness for buyers, tighter limits for removals), and erasure is a workflow in which every registered copy returns a receipt (deleted, anonymized, retained with a named legal basis, or not held) to an erasure ledger before the case closes.",
+    "disputed_by": "The view that consistency is a property of the database and its replication settings, that each copy is the business of the team that made it, and that erasure is a delete statement against the main database, with code search used to find the rest.",
+    "so_what": "A Chief Architect who accepts this makes one system of record per fact, the consumer registry with registration before access, the consistency promise per read-path class, the retention schedule by data class, the erasure workflow and ledger, and a restore procedure that replays erasures into group decisions; has the architecture advice forum review every new kind of store; refuses a migration plan that lacks the registry and the ledger; and watches staleness per read path, unregistered consumer groups (target zero), erasure cases closed within deadline and the rebuild time of each read model, tested twice a year.",
+    "how_why": "When Femke asked on 6 September 2027 for her data to be erased, two engineers needed two days to list seven places that still held her bike six months after the sale: two public copies still showed personal data (her name and neighborhood on the sold page, home GPS in the original photos' EXIF), two could not be deleted by law (the fraud case, kept until March 2029, and the Safe Deal records, kept seven years), and one sat with the e-mail provider. Under the workflow each copy returned a receipt and the response went out on 15 September, nine days after the request. Tradeyard receives about 1,900 erasure requests a month, so the second request must take no investigation.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Each listing fact has one system of record where a change becomes true, written in one place per listing even across countries and regions, and every other store is a copy derived from it."
+      },
+      {
+        "id": "S2",
+        "claim": "Every copy is registered before it gets access, with an owner, a source, a staleness budget, a rebuild path and a retention rule; a copy that cannot be rebuilt must be governed, and corrections are made at the system of record, not in the copy."
+      },
+      {
+        "id": "S3",
+        "claim": "Consistency is a written promise per read path (read-your-writes for sellers, monotonic and bounded staleness for buyers, tighter limits for removals), implemented with a known mechanism and measured."
+      },
+      {
+        "id": "S4",
+        "claim": "Retention is set per data class, not per database, because one closed listing holds classes with different lawful lifetimes."
+      },
+      {
+        "id": "S5",
+        "claim": "Erasure is a workflow in which every registered copy returns a receipt (deleted, anonymized, retained with a named legal basis, or not held) to an erasure ledger before the case closes."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Registers every copy the stream makes possible, with the staleness, rebuild, retention and erasure promises that keep copies consistent and lawful.",
+    "supports": [
+      "P7-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene poses the question with seven copies; concepts supply the system of record, copy kinds and staleness budgets that every later section uses; architecture places the stores and the mechanisms and closes with the registry entry, whose fields it has just introduced and on which erasure relies; partitioning then places the system of record; retention sets the periods that erasure then applies; erasure needs both the registry and the retention schedule; corrections come last among the design sections because they reuse the registry and the backfill path. The public evidence follows the design sections it supports and precedes the judging sections, so it reads as support for decisions already explained rather than as an interruption (both flow readers in all three draft-check rounds found it unclear between architecture and partitioning). Putting erasure before retention would ask the reader to judge 'retained with legal basis' before knowing the periods; the retention section says the schedule was adopted after Femke's case and made its periods policy, so the dates run forward. The Vitess evidence sits in partitioning, where it is used."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "The event stream made it easy for any system to keep its own copy of a listing. The price of that independence is copies, and copies raise three questions events alone do not answer: which copy is right, how wrong may the others be, and how does a deletion reach all of them?"
+    },
+    "bridge": {
+      "from_reader_world": "Architects who have just built one owned listing event stream that search, alerts, trust and safety, SEO, analytics and partners consume.",
+      "to_topic": "The copies that stream creates, and who owns, bounds and cleans each one."
+    },
+    "thesis_statement": {
+      "text": "One system of record per listing and every other store a registered copy with an owner, source, staleness budget and rebuild path; consistency as a per-read-path promise; retention and erasure designed per data class, with a receipt from every copy owner.",
+      "placement": "KEY POINTS callout (three bullets), with WHY ARCHITECTS SHOULD CARE stating the problem."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which names the sections in order and the kinds of evidence.",
+      "promises": [
+        {
+          "promise": "Follow one sold bike Veldmark found in seven places.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the system of record, read models and consistency promises.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Show the architecture that keeps them, including the consumer registry.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Partition listing data by country and region.",
+          "kept_in": [
+            "partitioning"
+          ]
+        },
+        {
+          "promise": "Retain and archive closed listings per data class.",
+          "kept_in": [
+            "retention"
+          ]
+        },
+        {
+          "promise": "Propagate erasure to every copy.",
+          "kept_in": [
+            "erasure"
+          ]
+        },
+        {
+          "promise": "Correct errors at the source.",
+          "kept_in": [
+            "corrections"
+          ]
+        },
+        {
+          "promise": "Give the public evidence from Vinted and Adevinta behind the design.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The previous chapter's event stream lets every system keep its own copy of a listing, and those copies raise three questions events alone do not answer: which copy is right, how wrong may the others be, and how does a deletion reach all of them.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Search, alerts, trust and safety, SEO, analytics and partners each need listing data in a different shape and build it from the stream instead of calling the listing service at the Sunday-evening peak.",
+            "shows": "Shows that copies are the intended result of the stream, which is why their governance is a design question rather than an accident."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The answers to those three questions decide concrete outcomes: whether buyers see a price that changed ten minutes ago, whether a sold car appears in tomorrow's alert, whether the search index can be rebuilt after a bad mapping change, and whether an erasure request can be completed and proven within the month the law allows.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Four outcomes: a changed price, a sold car in an alert, a rebuild after a bad mapping change, an erasure within a month.",
+            "shows": "Ties each abstract question to a buyer, operations or legal consequence."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The three questions.",
+          "introduces": "What depends on their answers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns the listing system of record, read models and erasure propagation, builds on the lifecycle and the event contract, leaves the search index, analytical copies, legal obligations and failover to their chapters, and sets rules that web-and-seo-architecture and modernization-and-migration depend on.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "listing-aggregate and event-driven-listings are assumed; search-architecture, data-platform, marketplace-regulation and reliability-and-scale own neighboring topics; web-and-seo-architecture keeps a sold page's URL without the seller's data and modernization-and-migration carries the copy register and erasure ledger through Yardstick's retirement.",
+            "shows": "Places the chapter in the book and keeps it from re-teaching its neighbors."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Listing data management as the discipline that answers the questions.",
+          "introduces": "What this chapter owns and what it leaves to others.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter follows one sold bike that Veldmark found in seven places through the concepts, the architecture, partitioning, retention, erasure and corrections, then the public evidence behind them, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions, using GDPR, the Digital Services Act, Dutch record-keeping rules, Vinted and Adevinta sources and the fictional Veldmark as evidence.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The sections in order and the kinds of evidence the chapter uses.",
+            "shows": "Lets a reader of the opening predict the sections and the evidence."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's scope.",
+          "introduces": "The order in which it is covered.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Seven Copies of One Bike",
+      "controlling_idea": "In September 2027 one erasure request shows that nobody at Veldmark knew where a sold listing lived, and that its seven copies need different answers.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Poses the chapter's question as one concrete request that exposes every copy at once."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first promise: one sold bike in seven places.",
+        "introduces": "Femke's erasure request.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On Monday 6 September 2027 Femke asks Tradeyard to erase her personal data, and Lucía Ortega asks Ingrid Halvorsen to find every place her sold bike listing exists before anyone answers.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke, the Rotterdam seller whose €240 bike sold for €225 in March, closes her account and invokes GDPR Article 17; Lucía Ortega, group data protection officer, forwards it to Ingrid Halvorsen with a one-line note.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Turns the chapter's question into one request with a deadline."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Two days later Daan Visser and Sven Lindqvist list seven places that still hold the listing six months after the sale, each with a different store and owner.",
+          "function": "evidence",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven copies: Yardstick SoR, sold-listing page, media, Snowflake warehouse, T&S case, Safe Deal records, alert digest archive and e-mail provider logs, with store, contents and owner.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the sprawl a single sold listing leaves across teams and one third party."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Ingrid's question.",
+            "introduces": "The answer her team produces two days later.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Four observations make the list a design problem rather than a ticket: nobody had it, two public copies still show personal data, two copies must not simply be deleted, and one is held by a third party, which yields the chapter's question.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the sold bike with seven echo copies around it.",
+              "shows": "Summarizes the four observations visually: public, legally retained and third-party copies around one listing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The seven-row table.",
+            "introduces": "What the table reveals and the question it poses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: System of Record, Read Models and Copies",
+      "controlling_idea": "One system of record per listing fact, copies of seven kinds that are either rebuildable or governed, and consistency expressed as staleness budgets per read path.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Defines the vocabulary every later section uses."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The system of record comes first because copies are defined against it; the kinds of copy and the rebuildable-or-governed rule follow; consistency comes last because staleness is measured between the system of record and a copy."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The question the seven copies pose.",
+        "introduces": "The terms that answer it: system of record, copy kinds, staleness.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "form": "list",
+          "controlling_idea": "The listing system of record is the one store where a change becomes true, and it alone accepts writes, is complete for the listing's own data, and need not be one database as long as no listing is authoritative in two places.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Three properties as a list: only writer; complete (a field that exists only in a read model makes it unrebuildable); one owner per fact, with Tradeyard in Yardstick and Motorvane in its listing service during migration.",
+              "shows": "Makes 'system of record' testable rather than a label."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The listing system of record is authoritative for the listing only; the facts it references (seller account, paid products, canonical property, moderation decisions) have their own systems of record and are outside this chapter.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Links to sellers-and-accounts, products-and-entitlements, entity-resolution and trust-and-safety-architecture.",
+              "shows": "Bounds the definition so it is not read as 'one database for everything'."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The system of record's authority.",
+            "introduces": "Its limit: referenced facts with their own owners.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A read model is a rebuildable copy shaped for one way of reading, and in listing marketplaces CQRS is the only way one record can serve search, maps, alerts, detail pages and a warehouse, at the price Fowler names: many copies.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Martin Fowler (2017): event-carried state transfer means \"lots of data schlepped around and lots of copies\".",
+              "source": "martinfowler.com, 2017",
+              "shows": "Names the cost of the pattern from an established source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The system of record.",
+            "introduces": "The copies derived from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Not every copy is a read model: seven kinds of copy differ in whether they can be rebuilt from the system of record and so in the rule that governs each.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Replica, read model, cache, archive, evidence store, analytical copy and external copy, with definition, rebuildability, Tradeyard example and governing rule.",
+              "shows": "Shows that archives, evidence stores and external copies cannot be rebuilt and need their own rules."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Read models as rebuildable copies.",
+            "introduces": "Copies that are not rebuildable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The author's rule is that every copy must be either rebuildable, so its only problem is freshness, or governed, with an owner, purpose, retention and deletion path written down before it exists in the consumer registry that this chapter extends to every copy.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A rebuildable copy can be dropped and recreated; an archive, evidence store or external copy cannot.",
+              "shows": "Reduces the seven kinds to two governing regimes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The seven kinds of copy.",
+            "introduces": "The one rule that covers them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "Users experience staleness rather than database consistency, and four promises cover nearly every listing read path: read-your-writes, monotonic reads, bounded staleness and removal priority.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Each promise as a list item with the read path it serves and what breaking it produces (support tickets, distrust, a known maximum lag, showing what should be gone).",
+              "shows": "Translates consistency into promises a reader can assign to read paths."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Copies and their freshness problem.",
+            "introduces": "How freshness looks to users.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A staleness budget is the written maximum lag for one read path with the measurement that proves it, and it connects the event architecture to the user experience.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four promises.",
+            "introduces": "The budget that makes each one measurable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: One System of Record, Registered Read Models",
+      "controlling_idea": "Around one relational system of record sit stores with distinct roles, staleness budgets and removal paths, each consistency promise has a standard implementation, the search index must stay a rebuildable read model, and the consumer registry records every copy before it gets access.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Shows the concepts as stores, budgets and mechanisms the reader can build."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole store landscape first, then the mechanism for each promise in the order the concepts named them, then the one store most likely to break the rules, and last the registry entry that holds every store to them, so the erasure and correction sections can use the registry as known."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The concepts and the staleness budget.",
+        "introduces": "Where the stores sit and how each promise is kept; the section opens by saying the concepts now need stores.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "Listing marketplaces are polyglot by necessity: the author's generic domain model (not Veldmark's systems) puts one relational system of record with a search projection and a change event at the core, surrounded by store types each with a role, the staleness budget Veldmark sets for it across its brands (a year marking a target not yet met) and a removal path.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ten store types with what they hold, role, typical staleness budget at Veldmark (search additions 90 s p95, removals 30 s p99; cache 5 s; CDN 60 s; warehouse hourly) and how removal or erasure reaches them.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives every store a role, a budget and a removal path, which is what registration later records."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: one listing, many copies, each with a promise.",
+              "shows": "Shows read models fed from the stream, seller tools reading the system of record and the registry over all of them."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Read-your-writes for sellers is cheapest from the system of record or a synchronous replica, and where a read model is needed a returned listing version with fallback to the system of record keeps the promise exact.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A dealer's inventory screen backed by search because it filters 3,000 cars.",
+              "shows": "Shows when a read model is unavoidable and how the version token handles it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stores and their budgets.",
+            "introduces": "How each promise is kept, starting with read-your-writes; the paragraph opens by saying each promise has a standard implementation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Monotonic reads for buyers come from session affinity or, better, version-aware caches that never replace a newer version with an older one.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Version-aware caches also protect against backfills delivering old state late, described in event-driven-listings.",
+              "shows": "Explains why the second option is preferred."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Read-your-writes for sellers.",
+            "introduces": "Monotonic reads for buyers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Bounded staleness is measured, not assumed, with a synthetic listing per tenant created, repriced and removed every minute.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark's search team alarms when observed lag exceeds the budget; the same probe measures the CDN purge.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a budget turned into a measurement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Monotonic reads.",
+            "introduces": "Bounded staleness.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Removal priority puts removal events on the fast path everywhere, and a sold page kept for SEO is a different, policy-chosen page rather than the old page left in cache.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Copy 2 in Femke's case, the public sold page.",
+              "shows": "Connects the rule to the scene."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Bounded staleness.",
+            "introduces": "Removal priority, the last promise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The search index is the copy most likely to stop being a read model, and the test is whether it can be deleted and rebuilt from the system of record and the stream without loss.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted's 2024 move from Elasticsearch to Vespa behind a search contract in a Go gateway.",
+              "source": "Vinted Engineering, 2024",
+              "shows": "Shows the payoff of keeping the index replaceable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Read models in general.",
+            "introduces": "The read model most at risk: the search index (Search as System of Record).",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Every copy needs a registry entry: the consumer registry from publication-pipeline, which names a consumer, its events, its removal objective and its owner, is extended so that every store holding listing data also records its source, staleness budget, rebuild path, retention and erasure handler.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tradeyard search index NL entry: owner Tomasz Wiśniewski's group search platform; source listing.events.v1; budget 90 s p95 additions, 30 s p99 removals; rebuild 5 h 40 min; erasure handler delete on ListingErased.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a complete entry a team can be held to."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The index, and every copy, must stay rebuildable or governed.",
+            "introduces": "The registry entry that records how; it opens by saying every copy needs one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The registry is the data-contract idea applied to read models, and making registration a precondition for topic access keeps it true, with 64 copies registered by December 2027.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Spain (2024): immutable, versioned contracts with schema, personal-data fields, owner, service levels and retention.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Shows a comparable contract in practice."
+            },
+            {
+              "kind": "scenario",
+              "what": "64 registered copies of listing data across the group by December 2027; no entry, no credentials.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the registry at group scale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The registry entry.",
+            "introduces": "Data contracts elsewhere and how Veldmark enforces its own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "partitioning",
+      "heading": "Partitioning, Regions and Tenancy",
+      "controlling_idea": "Country is the natural tenancy boundary for listing data and each brand writes its system of record in one region, so isolation, residency and erasure duties follow the source.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Places the one system of record per listing: one country partition and one write region, with replicas inheriting its obligations."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The options table first, then the Veldmark case and the counter-case side by side, then regions, which builds on the partitioning choice."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The architecture's stores, now in place.",
+        "introduces": "How to divide the system of record across countries and regions, named in the opening as the first placement decision.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "Classifieds are country businesses, so country is the natural tenancy boundary and listing ID the partition key within it, and a database or schema per country fits most multi-country classifieds.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four partitioning choices (one database, per country, global hash, country then hash) with benefits, costs and when each is right.",
+              "shows": "Lets the reader choose a scheme by its costs."
+            }
+          ]
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Tradeyard shows the cost of one database for all countries, its new listing service will use one schema per country so a country can later move without a data migration, and Vinted met the same capacity pressure at larger scale inside one cross-border catalog.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick holds four countries in one MySQL cluster; the Netherlands' 6.1 million live listings and Sunday-evening peak set capacity for Portugal's 1.1 million; the new service in Q2 2028 uses one schema per country.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the first row's costs and the move to the second."
+            },
+            {
+              "kind": "source",
+              "what": "Vinted Vitess series (2023): 42 hand-managed servers, 23 vertical shards, a 3 TB table.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "Shows partitioning pressure under growth."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The table's first row.",
+            "introduces": "Tradeyard as a case of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "That makes Vinted, whose members widely buy across borders, the counter-case to country partitioning, with a single write primary and replicated projections, so the choice follows the business.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted's 2026 posts.",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Shows a valid different choice for a cross-border catalog."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vinted's scaling inside one cross-border catalog.",
+            "introduces": "Vinted as the counter-case to country partitioning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Each Veldmark brand writes its system of record in one EU location without multi-writer replication, following Vinted's documented reasoning, and every replica and backup in a recovery region inherits the source's retention and erasure obligations.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick in Amsterdam until moved to AWS eu-west-1, Motorvane on AWS eu-central-1, Hearthly on Google Cloud europe-west1.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows single-writer placement per brand."
+            },
+            {
+              "kind": "quotation",
+              "what": "Vinted (2026): a single write site \"avoided the complexity and operational cost of a fully sharded, multi-writer system\", \"hard to justify unless the business absolutely demands it\".",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Supplies the reasoning a classifieds group can borrow."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Partitioning within a region.",
+            "introduces": "Where the regions are and what replicas inherit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "retention",
+      "heading": "Retention, Archives and the Life of a Listing Record",
+      "controlling_idea": "A listing record holds data classes with different lawful lifetimes, so retention is a schedule per data class with its own lifecycle events, not one rule per database.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Establishes retention per data class and the events copies act on."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The legal pull in two directions first, then the schedule that resolves it, then the judgement rows, then the lifecycle that makes the schedule executable; the lifecycle cannot be read before the per-class periods exist."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Replicas and backups inherit retention obligations.",
+        "introduces": "What those obligations are, per data class; the opening sentence picks up the inherited obligations.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Storage limitation and accountability under GDPR, the DSA's complaint window and trader-data rule, and Dutch seven-year record keeping pull in different directions, so retention is set per data class and one listing touches several classes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "GDPR Art. 5(1)(e) and 5(2).",
+              "source": "gdpr-info.eu, unofficial reproduction",
+              "shows": "Requires keeping personal data no longer than necessary and proving it."
+            },
+            {
+              "kind": "source",
+              "what": "DSA Art. 20 (at least six months to complain) and Art. 30(5) (trader data six months after the relationship, then deleted).",
+              "source": "Official Journal, 2022",
+              "shows": "Requires keeping some classes for set periods."
+            },
+            {
+              "kind": "source",
+              "what": "Ondernemersplein: seven years for business administration.",
+              "source": "Netherlands government, n.d.",
+              "shows": "Requires keeping transaction records."
+            }
+          ]
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Veldmark's retention schedule sets a period and an end state for each data class of a closed listing; adopted in October 2027, a month after Femke's request, it made group policy of the periods her case had already used.",
+          "function": "example",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven classes: public content 13 months then anonymized; seller personal data until the sold page is retired, at most 13 months; original photos 90 days; listing history 13 months with seller ID; T&S evidence 24 months after case closure; transaction records 7 years; behavioral data per the tracking plan.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a schedule by class rather than by store."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule that retention is per data class.",
+            "introduces": "Veldmark's schedule as an instance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Two rows trade business value against privacy: anonymized price history survives because valuation models need it, and sold pages expire within 13 months even when they rank.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: four ribbons for photos, content, evidence and payments with 90 days, 13 months, 24 months and 7 years.",
+              "shows": "Shows the different clocks one closed listing runs on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The schedule.",
+            "introduces": "The two rows that are judgement calls.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The record's data lifecycle runs after the business lifecycle ends, through closing, archiving, erasure or anonymization and evidence holds, and each transition, including ListingErased, is an event copies follow without a separate integration.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: closing starts retention clocks; archiving reduces fields; erasure and anonymization remove identity; a hold pauses the clocks.",
+              "shows": "Shows the data states and that each transition is an event."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Retention periods per class.",
+            "introduces": "How a record moves through them as events.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "erasure",
+      "heading": "Erasure Propagation",
+      "controlling_idea": "GDPR's erasure articles describe a workflow in which every copy returns a receipt to an erasure ledger, which answered Femke in nine days and must answer the next request without investigation; backups, logs and immutable stores need their own mechanisms.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Turns erasure into a workflow with receipts and applies it to the seven copies."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Law, then the workflow it implies, then the workflow run on Femke's case in order of days; the stores the workflow cannot reach directly come last as a residual group, because they make sense only once the normal path is known."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The registry shown at the end of the architecture section, retention per data class and the ListingErased event.",
+        "introduces": "An erasure request, which tests both the registry and the schedule.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "GDPR sets deadlines, exceptions and notification duties for erasure: without undue delay, a response within one month extendable by two, exceptions for legal obligations and legal claims, and duties to inform other controllers and recipients.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "GDPR Art. 17(1), 12(3), 17(3), 17(2), 19.",
+              "source": "gdpr-info.eu, unofficial reproductions",
+              "shows": "Supplies the legal requirements the workflow must meet."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "form": "list",
+          "controlling_idea": "Read as architecture, those articles describe a six-step workflow (intake, scope resolution, fan-out, execution per copy, external copies, proof) that closes only when every registered copy has answered.",
+          "function": "process",
+          "organization": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: systems of record act first and emit events; every copy reports to the erasure ledger; the case closes when the ledger is complete.",
+              "shows": "Shows the workflow and the ledger as its proof."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The articles.",
+            "introduces": "The workflow they imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Femke's case came first: applied to her seven copies in September 2027, the workflow gives the outcomes sent to her, each with its basis, and the October schedule later adopted the same periods.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Anonymized SoR; sold page deleted with 410, CDN purge and removal request; media deleted; warehouse anonymized; T&S case retained to March 2029 under Art. 17(3)(e); Safe Deal records retained 7 years under Art. 17(3)(b); digest and e-mail logs deleted, provider confirmed day 9.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the four outcome types on real copies, including retention with a legal basis."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The workflow.",
+            "introduces": "The workflow applied to the seven copies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Lucía sends the response on 15 September 2027, nine days after the request, and with about 1,900 requests a month the next one must take no investigation.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Response on Wednesday 15 September 2027; two days of investigation the first time; about 1,900 erasure requests a month.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the cost of not having the registry and why it must be built."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The outcomes per copy.",
+            "introduces": "When Femke was answered and what the second case must cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "Backups, event logs and long-lived immutable stores resist erasure by design and are handled by expiry with ledger replay on restore, public-state-only events with tombstones, and crypto-shredding only where immutability is required.",
+          "function": "process",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Backups expire after 35 days at Veldmark; events topic 14 days; tombstone on the compacted state topic on ListingErased.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives each hard store a concrete mechanism."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Copies that a handler can clean.",
+            "introduces": "Stores that resist erasure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "corrections",
+      "heading": "Corrections and Backfills",
+      "controlling_idea": "Corrections are made at the system of record and flow to the copies through the backfill topic, never patched in a read model.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Keeps copies rebuildable by fixing errors only at the source."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Erasure as a change that must reach every copy.",
+        "introduces": "Corrections, which must reach them the same way ('Like erasures, corrections must reach every copy').",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Bulk errors are corrected at the system of record and flowed through the backfill topic, not patched in the read model that shows them.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "August 2027 Motorvane VIN-decoder release mapped fuel type wrongly on about 41,000 listings; fixed with cause = correction and the backfill topic; patching Motorvane's Elasticsearch index would have been a day faster and undone by the next feed update.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the rule on a real-sized correction and the cost of the shortcut."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: What Marketplaces Have Documented",
+      "controlling_idea": "The sparse public evidence from Vinted and Adevinta supports the design just described (single writers, external read models, compacted topics, personal-data splits), but no marketplace documents a full copy inventory, retention schedule or erasure workflow.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "how": "Grounds the design sections in dated public sources and marks which parts are judgement."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The design sections, from the system of record to corrections.",
+        "introduces": "What real marketplaces have published in support of it; the opening says the design rests partly on that evidence.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "form": "list",
+          "controlling_idea": "The design rests partly on public first-hand evidence, which is sparse: Vinted and Adevinta document a single writer with replicated projections, read models in external stores, compacted topics as views and a personal-data split in the analytical copy.",
+          "function": "evidence",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Vinted (2026): \"all writes happen in the primary site and read-only projections are replicated around the world\"; eventual consistency built in.",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Documents a single writer with team-owned projections."
+            },
+            {
+              "kind": "source",
+              "what": "Vinted (2023): Redis read models built by Flink from CDC; large Flink state avoided.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "Supports keeping read-model state in an inspectable store."
+            },
+            {
+              "kind": "source",
+              "what": "Kleinanzeigen via Adevinta (2025): compacted topic as a re-consumable view.",
+              "source": "Adevinta Tech Blog, 2025",
+              "shows": "Shows a cheap materialized view."
+            },
+            {
+              "kind": "source",
+              "what": "Adevinta Spain (2024): personal fields removed or split into a partitioned table to ease the right to be forgotten.",
+              "source": "Adevinta Tech Blog, 2024",
+              "shows": "Documents a personal-data split."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "No source documents a full copy inventory, retention schedule or erasure workflow, so those parts of the design are reference-architecture judgement tested against Veldmark.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the sources document.",
+            "introduces": "What they leave out, and which parts of the design are therefore judgement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Eight recurring decisions each have a default and a condition under which the alternative is right, and the most contested is whether sold pages stay public.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Turns the chapter's rules into choices with stated conditions."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The rules of the design sections, with the evidence behind them.",
+        "introduces": "The decisions a group applying the chapter's rules still faces and when each option is right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "Eight decisions recur when a group applies the chapter's rules, and for each the table says when each option is right, with the bold option as the author's default for a multi-country classifieds group.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seller-facing reads, detail pages, partitioning, regions, closed listings, erasure in backups and long-lived stores, analytical personal data and sold pages, each with two options and conditions.",
+              "shows": "Lets the reader choose per decision rather than adopt a blanket rule."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The sold-page row is the most contested: SEO value argues for keeping pages, and the data-management position is that the page's content follows the retention schedule even when its URL lives on.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The eight rows.",
+            "introduces": "The one most disputed in practice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in how much personal data a listing carries and what outlives it, and real estate shows that removing names does not anonymize price history.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Shows where retention and erasure rules bend by vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The general trade-offs.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The verticals differ in the share of personal data in listings, what outlives the listing, the hardest erasure problem, the read model that matters most and the value of the archive.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive and jobs compared on five aspects.",
+              "shows": "Shows that one schedule needs vertical adjustments."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "In real estate an address, surface and price history can identify an owner without a name, so anonymization must be tested against re-identification, with aggregation or a documented legitimate interest as the options.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly keeps anonymized price history for Valuo's estimates.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the case where the anonymization assumption fails."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The vertical table's real-estate column.",
+            "introduces": "The hardest case in detail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "The common failures are the chapter's rules broken one at a time, each with its control.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows what happens when each rule is missing."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The decisions and their conditions.",
+        "introduces": "What goes wrong when they are not made.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Ten failures recur, from the unregistered copy and Search as System of Record to anonymization that is not, and each breaks one rule of the chapter.",
+          "function": "analysis",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The unregistered copy, Search as System of Record, broken read-your-writes, replica flapping, caches without removal paths, retention by database, restore without replay, forgotten external copies, patching the read model, false anonymization.",
+              "shows": "Maps each rule to its failure and control."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "Data-management decisions are few but group-wide: what to decide centrally, what to leave local, who resolves conflicts, what to watch, and that copies outlive the systems that made them.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Converts the rules into group governance."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The book's standard order for this section: what to decide centrally, what to leave local, who decides on conflicts, what to watch, the long term."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failures.",
+        "introduces": "The few group decisions that prevent them; the opening says so.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "Preventing these failures takes few decisions, but they are group decisions, because every brand has the same obligations and the same copies.",
+          "function": "claim"
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The group decides centrally one system of record per fact, the registry with registration before access, consistency promises per read-path class, the retention schedule, the erasure workflow and ledger, and the restore procedure, with named owners and forum review of every new kind of store.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Event platform team runs the register; Lucía Ortega owns the retention schedule and erasure ledger; each copy owner owns its handler; the architecture advice forum reviews new kinds of store.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Names the owners."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Group decisions.",
+            "introduces": "Which ones.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Each brand keeps its system-of-record technology during migration, its read-model designs and its partitioning within the group's tenancy rule.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What is central.",
+            "introduces": "What stays local.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "When SEO, model accuracy or fraud prevention argue against privacy, a named owner decides with the data protection officer's sign-off, and the architecture makes that decision executable per data class.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Central and local decisions.",
+            "introduces": "Who resolves conflicts between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The Chief Architect watches staleness against budget, registry coverage with zero unregistered consumer groups, erasure cases closed within deadline, the oldest closed listing per store, read-model rebuild times tested twice a year, and fields that live only in a read model.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The decisions.",
+            "introduces": "The measures that show they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Copies outlive the systems that created them, so Yardstick's retirement by the end of 2029 must carry its archives, evidence and erasure history without their retention problems, and a migration plan without the registry and the ledger is not finished.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to watch now.",
+            "introduces": "The long-term consideration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten design-review questions test every rule of the chapter on a real system.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Gives the reader a review drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that test them in a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Ten questions test field ownership, rebuildability, staleness budgets, read-your-writes, removal reach, registry coverage, retention per class, erasure listing within an hour, restore replay and re-identification.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Internal Copies to Search Engines",
+    "synthesis": "The three questions the stream left open have one answer: a list kept before it is needed. With one system of record per fact, a registry entry per copy that states its staleness budget and retention, and a receipt from every copy for every erasure, the question that took two engineers two days takes none.",
+    "so_what": "About 1,900 erasure requests a month cannot each be an investigation; a group without the register will either miss its deadlines or keep data it cannot account for.",
+    "callback": {
+      "to": "The opening's three questions (which copy is right, how wrong may the others be, how does a deletion reach all of them) and Femke's seven copies found from memory and code search.",
+      "how": "The reader now sees that the registry, the staleness budget and the erasure ledger answer the three questions in turn, and that the seven copies were hard to find only because no list existed."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Register every copy, with its budget, rebuild path and retention, before the next store gets access."
+    },
+    "hand_off": {
+      "to": "web-and-seo-architecture",
+      "relationship": "place",
+      "carries_over": "The most valuable read model is the one search engines and answer engines build from Tradeyard's 40 million indexed URLs, whose consistency promises Google partly sets.",
+      "introduces": "The customer-facing web and the pages that represent listings to the outside world."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The questions and every section before them.",
+      "introduces": "What the chapter's rules add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p52",
+        "controlling_idea": "The three questions the stream left open have one answer, a register kept before it is needed, which turns Femke's two-day investigation into none and is the only way to handle about 1,900 requests a month.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Two engineers, two days, seven copies; about 1,900 erasure requests a month.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the scene and gives the so-what in numbers."
+          }
+        ]
+      },
+      {
+        "id": "p53",
+        "controlling_idea": "Not every copy is read by Veldmark's own systems: the most valuable read model is the one search engines build from 40 million indexed URLs, which web-and-seo-architecture takes up.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "Internal copies governed by the registry.",
+          "introduces": "The copy held outside the group by search engines.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The event contract, outbox and replay mechanics.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Search index internals and reindexing.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "The legal analysis of DSA, DAC7 and GDPR obligations.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "Tracking plans and data products.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Model-side anonymization.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Disaster recovery and multi-region failover.",
+      "covered_in": [
+        "reliability-and-scale"
+      ]
+    },
+    {
+      "topic": "SEO handling of sold pages.",
+      "covered_in": [
+        "web-and-seo-architecture"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No marketplace has published a full copy inventory or erasure workflow; revisit if one does.",
+    "The Veldmark retention periods (13 months for listing content, 24 months for T&S evidence) are illustrative; marketplace-regulation and trust-and-safety-architecture may refine them.",
+    "Re-identification risk of anonymized property price history needs a firmer treatment in ml-platform or case-property-portals.",
+    "The old spec.md listed four unchecked modalities (checklist, summary, dialog, comics); none exists in the folder, so modalities is empty here. Whether to write them is the author's call."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12. In Practice placement (both flow readers in all three rounds called it unclear; they converged on moving it after the design sections, before the judging sections): moved after Corrections and Backfills, before Trade-offs. Spec order, the in-practice, partitioning and trade-offs transitions, p04, p22, p23, the roadmap promise order and the flow rationale updated; the prose opener now says the design rests partly on this evidence and p23 says which parts are judgement. AC-2's expected order (copied from journal-spec.json, which this pass may not edit) still lists documented practice after architecture; the replacement text, which puts documented practice after corrections and backfills and the consumer registry in architecture, is handed to the orchestrator as a journal-spec edit, and AC-2 here follows once it is applied.",
+      "rejected": [
+        "Folding the In Practice bullets into the sections they support, which would merge units and drop a section the journal spec names.",
+        "Keeping the placement, which three rounds of readers found unclear."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Schedule dates (accepted under the author's delegation, 2026-11-12): ledger dates unchanged (response 15 September 2027, schedule October 2027). The order is now explicit in both places: p29 says the schedule was adopted a month after Femke's request and made policy of the periods her case had used; p34 opens 'Femke's case came first' and says the October schedule later adopted the same periods."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor flow points fixed (accepted under the author's delegation, 2026-11-12): p25/p26 now say Vinted met the capacity pressure inside one cross-border catalog and is therefore the counter-case to country partitioning (p26 links the 2026 post, since In Practice now comes later); the store-table lead says the budgets are those Veldmark sets across its brands and that a year marks a target not yet met; the trade-off row 'Erasure in immutable stores' relabelled 'Erasure in backups and long-lived stores' so it no longer contradicts its default; p37 says 'Motorvane's Elasticsearch index'. The earlier flow-rubric notes not taken (sold-page argument three times, 'per tenant' before tenancy, backfill topic without a pointer) are kept as published under rule 8."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Heading 'Corrections and Backfills' and the tombstone gloss accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "length.max_words raised from 6,704 to 7,000 (+4.4%, within the brief's 10% allowance) for the transition and date fixes above; no published fact, citation or callout was cut."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around one erasure request (Femke, Sept 2027) because erasure exposes every copy at once.",
+      "rejected": [
+        "Organizing it around a performance problem."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Classified copies into seven kinds with different governing rules, because archives, evidence stores and external copies cannot be rebuilt.",
+      "rejected": [
+        "A single 'read model' concept."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended country-first partitioning and single-writer regions for classifieds, presenting Vinted's cross-border catalog as the documented counter-case."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated crypto-shredding as a narrow tool for mandated immutability, not a default erasure strategy."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the copy-kinds criterion became AC-4 and the partitioning criterion AC-5 (both this pass's own, minor); read-your-writes, retention and erasure propagation are covered by the journal spec's AC-1. Dropped as inventories: the Veldmark-consistency criterion (a ledger check, not a reader outcome) and the list of tables and sections. The word limit is the published prose length (6,385 words by check_draft's count) plus 5%, since spec.md set none."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added the roadmap paragraph p04, lead-ins p40 and p42 before the trade-off and vertical tables, lead sentences to the failure modes (p44) and questions (p51), and the synthesis paragraph p52, so the opening predicts the sections and each boundary and the conclusion carry their declared transition, synthesis and callback. Moved Figure 4 after the paragraph that introduces it (p31). Rejected leaving sections to open on a bare table or list, which earlier LISTED draft checks failed."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric (fresh agent, thesis object only): pass on all six tests. Notes not acted on, because thesis and how_why live in journal-spec.json, which this pass does not edit: the claim is one long sentence, and how_why gives no evidence for the per-read-path consistency promise."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 escalated again on the same spec-fault flow findings, each reported by both flow readers. Changed the order within the brief's allowance: the registry entry (p38, p39, with the subheading 'The consumer registry as a data contract') moved from the corrections section to the end of the architecture section, so erasure relies on a registry already shown; the corrections section heading became 'Corrections and Backfills'; the Vitess partitioning evidence moved from the In Practice list into p25, where partitioning uses it, so In Practice covers only the stores already described; p34 now says the outcomes were those sent to Femke and the October 2027 schedule then made the same periods group policy (ledger dates unchanged). Draft fixes: the store table says the budgets are Veldmark's; 'beyond removal' says what the publication-pipeline entry holds; the trade-off lead says a row may have no bold default; the concepts section opens by saying the copies need names. Section order unchanged, so AC-2's expected order still holds; the IN THIS CHAPTER callout is unchanged.",
+      "rejected": [
+        "Moving In Practice after erasure, which would contradict AC-2's expected order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 escalated on four spec-fault flow findings, each reported by both flow readers: the consumer registry relied on in the architecture and erasure sections before its entry is shown; the In Practice section's placement unclear; the Vinted back-reference; and the October 2027 schedule applied to a 15 September response. Kept the section order, because the journal spec's AC-2 expects documented practice after the architecture and corrections after erasure, and changed paragraph ideas and transitions instead: p12 now lists the registry entry's fields; the in-practice transition says the evidence bears on the architecture and previews partitioning and erasure; p26 no longer points back; p34 applies 'the periods the October 2027 schedule then adopted' (the ledger dates the response 15 Sep 2027 and the schedule Oct 2027 and gives the same periods for Femke's case, so no date changed). Draft-fault fixes: section openings for architecture, partitioning, retention, erasure, corrections and the Chief Architect's view; the generic domain model glossed; the store table explained; the data states and evidence hold named in p31. Own additions (roadmap, synthesis, lead-ins) shortened to stay under max_words.",
+      "rejected": [
+        "Moving In Practice after erasure and the registry before erasure, which both flow readers suggested, because it would contradict the journal spec's AC-2 expected order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, flow outline only): sound with notes. Taken: the consumer registry is named in p12 as where a governed copy is recorded, so 'registered copy' is known before the architecture and erasure sections; the one-line signpost p16 merged into the read-your-writes paragraph p17; p26 points back to the Vinted evidence instead of re-establishing it; the retention and erasure sections are relabelled problem_solution and large_to_small; the erasure and post-level rationales now say why the residual stores and the evidence section sit where they do."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "event-driven-listings",
+      "contributed": "The event stream that creates the copies; ListingErased, the compacted state topic and the backfill topic."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate",
+      "contributed": "The business lifecycle the data lifecycle follows."
+    },
+    {
+      "kind": "internal",
+      "ref": "publication-pipeline",
+      "contributed": "The consumer registry this chapter extends."
+    },
+    {
+      "kind": "internal",
+      "ref": "search-architecture, marketplace-regulation, data-platform",
+      "contributed": "Neighboring ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Parts 2-4 and 8; _research/brief-trust-safety-regulation.md §5.1, §5.10; _research/productscape-digest.md §5",
+      "contributed": "Research behind the architecture and the regulatory obligations."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Femke's erasure request and seven copies, the October 2027 retention schedule, the copy register and its 64 copies, the August 2027 VIN-decoder correction, the per-country schema plan."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2023, 2024, 2026)",
+      "contributed": "Single writer, projections, read models, Vitess sharding, the search contract."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog (2024, 2025)",
+      "contributed": "Data contracts, personal-data split, compacted topics."
+    },
+    {
+      "kind": "external",
+      "ref": "GDPR Arts. 5, 12, 17, 19; DSA Arts. 20 and 30(5) (2022)",
+      "contributed": "Storage limitation, deadlines, erasure, notification; complaint window and trader data retention."
+    },
+    {
+      "kind": "external",
+      "ref": "Ondernemersplein (n.d.)",
+      "contributed": "Dutch seven-year record retention."
+    },
+    {
+      "kind": "external",
+      "ref": "Martin Fowler, What do you mean by \"Event-Driven\"? (2017)",
+      "contributed": "Event-carried state transfer and the cost of copies."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: In Practice moved after Corrections, schedule order made explicit, minor flow points fixed, max_words 6,704 to 7,000. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (pass 15, fail 11); four cheap draft fixes applied afterwards without a further round; remaining points in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (escalate on spec faults): registry entry moved into the architecture section, Vitess evidence moved into partitioning, corrections heading shortened, p22, p25, p34 and transitions changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (escalate on spec faults): paragraph ideas p12, p15, p26, p31, p34, p45 and six section transitions changed; order unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline): paragraph-level reconstruction, intent, thesis and role copied from journal-spec.json, success criteria rewritten as AC-4 and AC-5, roadmap, lead-in and synthesis units added. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep; sharpening pass 5,169 → 5,167 words; consumer registry and glossary term alignment; 3 mermaid diagrams replaced with generated illustrations. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review (media copy aligned with the media-pipeline ledger, Vinted quote and Vitess wording corrected, DSA Arts. 20(1) and 30(5) verified); 2 inline illustrations. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7000
+  }
+}

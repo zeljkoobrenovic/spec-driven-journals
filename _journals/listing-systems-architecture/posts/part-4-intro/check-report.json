@@ -1,0 +1,394 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/part-4-intro/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/part-4-intro/index.md",
+  "spec_sha": "2bd6964951939f94",
+  "draft_sha": "f62e563791881e76",
+  "run_at": "2026-11-12T21:53:31+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the part builds: the six discovery components, from index to alerts",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: discovery surfaces start contacts and decide which listings are seen and whether paid visibility pays",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architect stake: busiest read paths, whose indices teams are tempted to treat as the system of record | discovery couples taxonomy, events, ML and monetization on every query",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key claims: surfaces are rebuildable read models that remove sold listings fast; structured filters beat clever models; ordering is an owned, versioned policy judged on contacts",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three failure patterns the part counters (search as system of record, multiplier creep, ghost inventory) and the fix for each",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Hand-off from Part III's clean supply to the buyer side | listing discovery behaves like a high-write operational system, not web search",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Thesis: discovery is one pipeline with six surfaces sharing one stream and taxonomy, each answering the same three questions (available, who set position, did it lead to contact)",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap: why the chapters come in this order, each surface building on the previous",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶1",
+      "summary": "Lead-in to the chapter table of questions and when to read each",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "How this part connects ¶1",
+      "summary": "Dependencies on earlier parts and constraints/inputs from later parts (trust gate, paid placements, platform)",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "The Veldmark thread ¶1",
+      "summary": "Veldmark's January 2027 reindex brownout showing the cost of a non-rebuildable index | the 2027 decisions per surface (shared OpenSearch platform, ranking policy v1, carousel rebuild, geo compiler, saved-search service)",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Where to begin ¶1",
+      "summary": "Synthesis: answering the three questions once for the whole pipeline, what the reader should be able to say, and pointer to start with search architecture",
+      "matched_spec_paragraph": "p07"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "The outline's seven prose summaries match p01-p07 in order (hand-off and high-write nature; one pipeline, six surfaces, three questions; reason for chapter order; table lead-in; dependencies on earlier and later parts; Veldmark brown-out and 2027 decisions; synthesis and start with search-architecture). The five callouts are the house format and match no spec paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "WHY ARCHITECTS SHOULD CARE callout: both phrases (busiest read paths tempted to be system of record; coupling on every query) are reasons architects should care; one idea.",
+      "draft_locus": "Introduction callout (WHY ARCHITECTS SHOULD CARE)",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Introduction ¶1: the turn from Part III to the buyer side and the high-write nature are both in p01's single controlling idea (the bridge plus the hook).",
+      "draft_locus": "Introduction ¶1",
+      "spec_locus": "/introduction/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The Veldmark thread ¶1: brown-out and the five 2027 decisions are both in p06's controlling idea; the brown-out motivates the decisions.",
+      "draft_locus": "The Veldmark thread ¶1",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Context for the thesis: the buyer side and why discovery is judged on freshness.",
+      "draft_locus": "Introduction ¶1",
+      "spec_locus": "/introduction/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "States the thesis itself.",
+      "draft_locus": "Introduction ¶2",
+      "spec_locus": "/introduction/paragraphs/1",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Gives the reading order and its reason (PIV-1).",
+      "draft_locus": "Introduction ¶3",
+      "spec_locus": "/introduction/paragraphs/2",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Table lead-in; table carries PIV-1.",
+      "draft_locus": "Chapters in this part ¶1",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Carries PIV-2.",
+      "draft_locus": "How this part connects ¶1",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Carries PIV-3.",
+      "draft_locus": "The Veldmark thread ¶1",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Synthesis of the thesis's three questions and the hand-off.",
+      "draft_locus": "Where to begin ¶1",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "p01 example (buyer who types three words, draws a shape, saves a search; documents live for days) is tied to the claim that discovery is judged on appearance and disappearance.",
+      "spec_locus": "/introduction/paragraphs/0/evidence/0",
+      "draft_locus": "Introduction ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Figure 1's caption states what it shows (same stream, forget sold listings quickly, judged by contacts), matching p02's evidence.",
+      "spec_locus": "/introduction/paragraphs/1/evidence/0",
+      "draft_locus": "Introduction ¶2 (Figure 1)",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The chapter table is introduced ('Each row gives a chapter's question and when to open it.') and its order explained in Introduction ¶3; rows match the spec's six symptoms.",
+      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
+      "draft_locus": "Chapters in this part ¶1 (table)",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The brown-out is explained as 'the cost of an index that cannot be rebuilt beside the live one'; the five decisions are framed as one change per surface in chapter order; all ledger figures present.",
+      "spec_locus": "/sections/2/paragraphs/0/evidence/0",
+      "draft_locus": "The Veldmark thread ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "problem_solution: 'Built as separate products ... each have to solve both tests on their own. The argument of this part is that discovery is one pipeline' states the problem then the answer. (The unclear referent of 'both tests' is recorded under flow_is_followable.)",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶1 -> ¶2",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "sequence: 'The six chapters take the surfaces in the order each builds on the last.'",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶2 -> ¶3",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "elaboration: 'Each row gives a chapter's question and when to open it.'",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Introduction ¶3 -> Chapters in this part ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "place: opens by placing discovery against Parts II and III, as announced in ¶3.",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Chapters in this part -> How this part connects",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "example: 'Veldmark ... shows this pipeline being built.'",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "How this part connects -> The Veldmark thread",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "conclusion_summary: 'Read together, the six chapters answer the three questions once for the whole pipeline'.",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "The Veldmark thread -> Where to begin",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Organising principle agrees with the declared large_to_small flow with prerequisite_order for the chapters: flow reader A 'overview to detail and back ... dependency order'; reader B 'orientation, then argument, then reference ... chapter order explicit'. Neither marks any section unclear.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Built as separate products on separate copies of the data, search, carousels, maps and alerts each have to solve both tests on their own.",
+      "finding": "Both flow readers had to re-read to resolve 'both tests': ¶1 never calls the appearance and disappearance of listings 'tests' (reader A read it as a single test), and the long dangling opening clause delays the subject. Spec order is fine; the wording obscures the problem_solution step into the thesis.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3(a) (same sentence, same 'both tests' referent and dangling opening phrase)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Recommendations reuse ranking's machinery without a query, map search compiles places as query understanding compiles words, and alerts come last because they reuse every surface before them.",
+      "finding": "The stated rule is that each chapter builds on the one before, but map search's reason ties it to query understanding, not recommendations, so its fifth position stays unexplained. The draft gives exactly the spec's reason; the difficulty lies in the declared order/rationale.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "The argument of this part is that discovery is **one pipeline with six surfaces**, not six products.",
+      "finding": "The sentence before names only four surfaces (search, carousels, maps, alerts), so the reader paused over the count of six; the six are not named until ¶3.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Veldmark thread ¶1",
+      "quote": "decide on one change for each surface except query understanding",
+      "finding": "The exception is stated but never explained, which leaves the reader wondering why one surface has no decision. The spec mandates the exception without a reason; a short clause in the draft could resolve it.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "How this part connects ¶1",
+      "quote": "[[part-5]] puts its trust platform's risk gate, which can hold a risky listing back, in front of search and alerts.",
+      "finding": "Clumsy embedded gloss; reader A read it twice.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Terms used are on already_knows (read model, publication pipeline, entity clusters, p95, Veldmark and its people, failure-pattern names) or glossed (Listing Search API v1 as 'the group search contract', risk gate as able to 'hold a risky listing back'). does_not_know terms (relevance floor, ranking policy, geo query compiler, draw-your-area, saved-search service) are named and placed under their chapters, which the spec's audience note allows. Flow reader B noted 'relevance floor' unexplained in the FAILURE PATTERNS callout as minor; the spec assigns that term to the ranking chapter and its meaning is plain from the phrase, so no failure is recorded.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a direct statement and a bridge from Part III, then a disputable thesis; none of the five weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Conclusion synthesizes, states consequences and hands off; no new subtopic, no 'in conclusion' opener, not a rephrased thesis only.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'answer the three questions once for the whole pipeline rather than six times ... A fix made once then reaches every surface.'",
+      "draft_locus": "Where to begin ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Answers each of ¶2's three questions (stream / policy with named owners / contacts) and restates the test of how fast each surface forgets a sold listing and who owns its order.",
+      "draft_locus": "Where to begin ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "intro_predicts_content",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the six chapters in roadmap order with the reason for each position, a table, then placing the part in the book and following Veldmark; matches both roadmap promises. Its side note that 'places the part in the book' may repeat ¶1 is not a mismatch.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "Reader named the six chapter subjects in order (index and contract; ambiguous queries to structured search; ordering for buyers and sellers with paid visibility; recommending items sold tomorrow; place as main filter with draw-your-area; notifying within minutes). Commute is not named in the answer but the rest matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader chose ranking for paid listings and unexplained position 3, and saved-searches-and-alerts for digests, matching expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader gave Part II and Part III inputs and Parts V, VI and VII roles exactly as expected; noted the page says 'constrain or supply' for all three together, but its split matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

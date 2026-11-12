@@ -1,0 +1,603 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/31-products-and-entitlements/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/31-products-and-entitlements/index.md",
+  "spec_sha": "41a9c1cd04ae1501",
+  "draft_sha": "a7edcbbbe5667557",
+  "run_at": "2026-11-12T22:16:33+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "what the chapter designs: the commercial core, via a disputed invoice",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stakes: sell, enforce and bill disagreeing hurts customers and pricing agility",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "why architects care: entitlements are hot-path, financial and easy to scatter",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three key points: keep four concerns apart, ledger not counter, prove delivery",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed: Billing by Guesswork, Multiplier Creep, Deal-Shaped Architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "every revenue model needs a commercial core; wronged sellers come from architecture",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "definitions of catalog, pricing engine, entitlement, quota, effect, enforcement point",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "design is a reference-architecture inference from public product behavior",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "chapter roadmap",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Thirteen Cars and €117 ¶1",
+      "summary": "Ruhrblick dealer disputes €117 overage for 13 unpublished cars",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Thirteen Cars and €117 ¶2",
+      "summary": "cause: importer and billing export count differently; 1,140 dealers overbilled",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Thirteen Cars and €117 ¶3",
+      "summary": "second problem: group price event costs engineering weeks due to scattered product code",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Thirteen Cars and €117 ¶4",
+      "summary": "Ingrid frames both as one missing source of truth",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶1",
+      "summary": "core decision: keep four concerns apart",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶2",
+      "summary": "delivery evidence as the shared input none owns",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶3",
+      "summary": "subsections cover three concerns; billing interface comes later",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶4",
+      "summary": "five catalog object types: product, package, add-on, effect, version",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶5",
+      "summary": "catalog as versioned reference data released as events",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶6",
+      "summary": "price as a function of several inputs",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶7",
+      "summary": "Vinted's price list shows formula pricing",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶8",
+      "summary": "prices as effective-dated versioned lists / quotes record every input version for reproducibility",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶9",
+      "summary": "anatomy of an entitlement and its run-time effect",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: Four Things That Must Stay Apart ¶10",
+      "summary": "enforcement points read effects, only the entitlement service reads entitlements",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶1",
+      "summary": "two selling paths: consumer purchases vs professional contracts",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶2",
+      "summary": "the paths share only catalog, pricing and ledger",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶3",
+      "summary": "the ledger is append-only",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶4",
+      "summary": "ledger properties: idempotency, explainability, reconciliation",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶5",
+      "summary": "project effects onto hot-path read models because live ledger lookups cannot scale",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶6",
+      "summary": "effect projector publishes events that become paid fields in the search index",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶7",
+      "summary": "ranking owns how paid fields are used; this chapter owns producing them",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶8",
+      "summary": "paid effects must be removed when listings are sold or removed",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶9",
+      "summary": "effects may be briefly stale but the ledger may not / index is never the record",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶10",
+      "summary": "fail-open versus fail-closed per enforcement point",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶11",
+      "summary": "feeds exceeding package quotas and four possible policies",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶12",
+      "summary": "three mandatory rules for feed overflow: contract term, refusal entries, ledger-based billing",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶13",
+      "summary": "metering and billing turn delivery into invoices for the finance ledger",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶14",
+      "summary": "billing consumes the ledger and never recomputes entitlements",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶15",
+      "summary": "finance requirements: recognition over period, variable consideration, credit notes",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶16",
+      "summary": "daily reconciliation of granted, delivered and billed",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: The Commercial Core ¶17",
+      "summary": "reconciliation keeps the top-listing guarantee and yields seller reports and disclosure evidence",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶1",
+      "summary": "public record shows the behaviors the architecture must support",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶2",
+      "summary": "Stripe Entitlements confirms the pattern but lacks marketplace needs",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶3",
+      "summary": "build-or-buy: buy invoicing, build catalog, ledger and projector",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: One Catalog for Four Brands ¶1",
+      "summary": "Veldmark's five decisions for the Tally entitlement service",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: One Catalog for Four Brands ¶2",
+      "summary": "replaying Ruhrblick under Tally: no wrongful overage",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: One Catalog for Four Brands ¶3",
+      "summary": "replaying the price event as a catalog release, with Tradeyard's delay",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: One Catalog for Four Brands ¶4",
+      "summary": "migration order by pain / shadow-month cutover rule",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "trade-offs table intro: simple options vs ledger for multi-brand scale",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "vertical differences, e.g. real estate's branch hierarchy",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "failure: two counters for one fact",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "failure: paid fields outliving the listing",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "failure: product codes hard-coded in ranking",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "failure: price lists edited in place",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "failure: boosts executed twice or never",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "failure: moderation and monetization disagree",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "failure: inconsistent time windows and time zones",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Failure Modes ¶8",
+      "summary": "failure: unbounded promotions",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶9",
+      "summary": "failure: global fail-closed default",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "what to decide centrally versus leave to brands",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "ownership split and the entitlement matrix",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "metrics to watch",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Tally makes acquisitions cheaper to integrate",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "ten questions to test the design",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "From Products to Attention ¶1",
+      "summary": "synthesis: one ledger answers both the invoice and the price event",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "From Products to Attention ¶2",
+      "summary": "hand-off to advertising platforms",
+      "matched_spec_paragraph": "p60"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 60 body units' outline summaries match the controlling ideas of their aligned spec paragraphs (p01–p60, including the spec's p31, p33, p32 order) in the spec's order; the five callouts match no spec paragraph and are recorded with null.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Marked two_ideas by the outliner; judged one idea: the spec's controlling idea is itself 'two design rules follow' (effective-dated price lists; quotes record input versions); the outliner's two summaries are the two halves of that one declared idea.",
+      "spec_locus": "/sections/1/paragraphs/7 (p16)",
+      "draft_locus": "Concepts: Four Things That Must Stay Apart ¶8",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Marked two_ideas by the outliner; judged one idea: the spec's controlling idea is 'two consistency rules apply to every effect' (bounded staleness; the index is never the record); the paragraph opens with that umbrella sentence.",
+      "spec_locus": "/sections/2/paragraphs/8 (p27)",
+      "draft_locus": "Architecture: The Commercial Core ¶9",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Marked two_ideas by the outliner; judged one idea: the spec's controlling idea joins the migration order and the shadow-month cutover rule as one recommendation; the paragraph treats the cutover rule as the condition on each step of the order.",
+      "spec_locus": "/sections/4/paragraphs/3 (p42)",
+      "draft_locus": "Veldmark Worked Example: One Catalog for Four Brands ¶4",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every body unit ties to a supporting claim through its section (scene S1; concepts S2–S4; architecture S3–S5; practice S2–S4/S6; worked example S1/S3/S5/S6; trade-offs, verticals, failure modes S1–S5; CA view and questions S6 and all); intro and conclusion units serve their declared context, roadmap, synthesis and hand-off functions.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0 (p09) evidence[0] table",
+      "draft_locus": "Concepts: Four Things That Must Stay Apart ¶1",
+      "quote": "The single place Ingrid asks for is not one system. The chapter's core decision is to keep four concerns apart, a separation most marketplaces reach only after the spaghetti:",
+      "finding": "The four-concerns table (question answered, when it changes, owner, must not contain) is introduced only by 'keep four concerns apart' and is followed directly by the delivery-evidence paragraph. No sentence says what the table shows: that each concern changes for its own reasons and has its own owner, which is why merging any two fails. The spec's controlling idea for p09 names exactly those points.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "All other evidence is explained: the price-dimensions table (framed by 'A price is a function, not a field'), the ledger-entry table and Figure 3 (explained by 'The current balance of any entitlement is the sum of its entries'), the paid-fields table, the enforcement-point table ('the right-hand column of the table is a commercial decision'), the feed-policy table ('Any of the four can be right'), the public-record table, the trade-offs, verticals and matrix tables, and the Rightmove, Vinted, Autotrader, CarGurus, Stripe and Adevinta quotations each have a sentence saying what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in was read at its boundary and is expressed: e.g. 'Felix Brandt ... It turns out to be structural' (cause_effect), 'alongside a second agenda item' (additional_support), 'The single place Ingrid asks for is not one system' (problem_solution), 'Two design rules follow' (cause_effect), 'The two paths should share ... and nothing else' (contrast), 'Any of the four can be right, but three rules are not optional' (contrast), 'That gap shapes the build-or-buy decision' (cause_effect), 'Under Tally, Ruhrblick's August invoice would carry no overage line' (problem_solution), 'The trade-offs hold in every vertical, but each has its own hardest problem' (elaboration), 'Decisions above any one team prevent these failures' (problem_solution), the bold failure-mode lead-in phrases (additional_support, phrase), and 'One family of paid products still needs its own machinery' (contrast to the hand-off). The deterministic hand-off link check passes.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers describe the declared organising principle (problem → concepts → the core in the order of a sale → public record → replay of the scene → application), name a reason for every section's position, and say the overall order needs no change. Both also flagged Common Ground, Ghost Inventory, Search as System of Record and the March 2027 neutrality decision / 'share platforms, not products' (A2/B1, A4/B2, A8/B6) as unexplained; these are not counted as failures because the spec's audience.already_knows lists Common Ground and those failure-pattern names, and the neutrality decision and the slogan are introduced in earlier chapters (e.g. sellers-and-accounts, listing-ingestion) the target reader has read.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0 (p19) evidence[0] Figure 2",
+      "draft_locus": "Architecture: The Commercial Core ¶1",
+      "quote": "Figure 2 lays the four concerns along a sale: the catalog and price lists define, the pricing engine sells, the ledger holds, the delivery systems deliver and emit delivery evidence, and billing settles.",
+      "finding": "Both readers stopped here: the figure has five stages while the sentence speaks of four concerns, and the fifth stage (delivery systems) is not one of the four concerns, so the reader has to work out the mapping. Reader A: 'The figure caption says \"five stages\". It took a moment to see that the delivery systems are the fifth stage.' The spec order is fine; the prose should say that the four concerns plus the delivery systems make five stages.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B3 ('The figure also says \"five stages\" while the text says \"four concerns\", so I had to stop and work out how the two map onto each other.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/9 (p28) evidence[0] enforcement-point table",
+      "draft_locus": "Architecture: The Commercial Core ¶9 (enforcement-point table, feed-import row)",
+      "quote": "apply the contract's overflow policy once the quota effect is current",
+      "finding": "The feed-import row of the enforcement-point table uses 'the contract's overflow policy' before 'Quotas meet feeds' introduces the four overflow policies, so both readers met it as an unexplained forward reference. The spec's chronological order (enforcement points, then feeds as the hardest case) is sound; the cell should point forward explicitly or describe the behavior without the undefined term. (Quoted from the table attached to this unit, as both readers quote it.)",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B4 ('the feed-import row says \"apply the contract's overflow policy.\" Overflow policies are introduced only in the next subsection')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1 (p55) evidence[0] entitlement-matrix table",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "Its evidence column names the delivery events and ledger entries that reconciliation compares.",
+      "finding": "The matrix's evidence column uses SlotConsumed, BoostExecuted and LeadDelivered (and a 'Motorvane lead allowance (pilot)' row) while the ledger table and the worked example name entries Consume and PublishRefused and events ListingPaidEffectChanged and AccountQuotaChanged; neither reader could tell whether these are new events or other names for the same ones. The prose should say which are ledger entries and which are delivery events, or use the names already introduced.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B10 ('It is unclear whether SlotConsumed is the same thing as a Consume entry or a different event.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0 (p45)",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Nine failures recur in every vertical. **Two counters for one fact.** The Ruhrblick defect: billing and enforcement count the same thing differently.",
+      "finding": "The first failure mode is fused into the section's opening sentence, while every other failure starts its own paragraph with its bold name, so both readers briefly lost the list's structure; reader B adds that 'in every vertical' reads oddly right after a section on how verticals differ. A cheap draft fix: let the bold name lead the unit as in the other eight.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B9 ('The first failure is fused into the intro sentence, where every other failure starts its own paragraph.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/9 (p18); /sections/2/paragraphs/9 (p28)",
+      "draft_locus": "Architecture: The Commercial Core ¶10",
+      "quote": "Every enforcement point but the scheduler reads effects, not the ledger,",
+      "finding": "Reader A (A5): the concepts section states 'Enforcement points read effects. Only the entitlement service reads entitlements.', and this sentence makes the scheduler an exception without reconciling the two. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/12 (p31)",
+      "draft_locus": "Architecture: The Commercial Core ¶13",
+      "quote": "At Veldmark that ledger is group finance's SAP S/4HANA.",
+      "finding": "Reader B (B5): 'ledger' has meant the entitlement ledger all chapter and here silently means the finance ledger; the reader re-read to check. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1 (p02)",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Two related words recur: an **effect** is what an entitlement does at an **enforcement point**, a step such as insertion, ranking or rendering that checks it.",
+      "finding": "Reader A (A1): the sentence promises two definitions but folds them into one, and the reader re-read it to separate the terms. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0 (p39)",
+      "draft_locus": "Veldmark Worked Example: One Catalog for Four Brands ¶1 (subsection 'The numbers that sized it')",
+      "quote": "After the Ruhrblick audit, the architecture advice forum agrees a design in October 2027.",
+      "finding": "Reader A marked the position of 'The numbers that sized it' as unclear: the sizing table that the heading says sized the decisions comes after the five decisions. Reader B did not report it. The order is the spec's (p39 evidence lists the decisions, then the sizing table), so the fault may lie there. One reader only.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know[1]",
+      "draft_locus": "Architecture: The Commercial Core ¶1",
+      "quote": "They need contract management (term, renewal, notice period, upgrades and proration, charging part of a period), a sales CRM, VAT invoicing, credit notes and dunning.",
+      "finding": "'Dunning' is on the spec's does_not_know list (billing and finance terms) and is never explained: proration in the same sentence gets a gloss, dunning does not, and it recurs undefined in 'I would buy invoicing, tax, dunning and payment collection.'",
+      "fault": "draft",
+      "corroborated_by": "spec audience.does_not_know lists dunning, and the draft never gives its meaning",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know[1]",
+      "draft_locus": "Architecture: The Commercial Core ¶1",
+      "quote": "a sales CRM, VAT invoicing, credit notes and dunning",
+      "finding": "'Credit notes' (on does_not_know) is used here before it is explained in Architecture ¶15 ('A wrong invoice is corrected by a credit note that references it'). The draft does define it later and no flow reader reported it, so this is uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "All other chapter-owned terms are given at or before first use: product catalog, pricing engine, entitlement, quota, effect and enforcement point (Introduction ¶2), delivery evidence (Concepts ¶2), effect projector (Architecture ¶6), overage (scene ¶1), proration (glossed in Architecture ¶1), revenue recognition over the display period and variable consideration (Architecture ¶15), CPQ (In Practice ¶3).",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens from the prior chapter and a direct-statement hook ('A seller who paid for a \"Top listing\" and never appeared on top ... is a customer the marketplace has wronged'), defines its terms, labels its evidence and gives a roadmap; none of placeholder, restated question, dictionary, dawn-of-man or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new subtopic or evidence (the advertising paragraph is the declared hand-off), and does not end on a rephrased thesis alone; none of the four weak types.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "From Products to Attention ¶1 joins what no single section states: the same ledger records the 150 consumptions and 13 refused publications, receives the price-list release, feeds ranking's paid fields and is what reconciliation checks; so-what: 'A group that builds it once changes prices as data and proves every invoice line; one that leaves package checks scattered learns of its errors from dealers.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "The conclusion returns to the declared callback: 'Ruhrblick's €117 and the price-event estimate had one cause, and one record answers both', closing both scene problems with the ledger, the projection and the reconciliation.",
+      "severity": "major"
+    },
+    {
+      "criterion": "intro_predicts_content",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro-only reader predicted the sections in order (invoice and price event, four concerns, the core in sale order with ledger, effects, enforcement points, feeds, billing, sold versus delivered, public record, replay of both cases, trade-offs, verticals, failure modes, Chief Architect's view, questions), the evidence (investor results, billing-vendor documentation, EU rules, the fictional case, labelled a reference-architecture inference) and the declarative, prescriptive tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "Matches AC-2's expected answer: the commercial core and the sold-versus-delivered test, the four terms, the reference-architecture inference, the full section sequence and the evidence kinds (dated investor sources, vendor documentation, EU law, fictional Veldmark).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches AC-1's expected answer: no single record of what can be sold, held and delivered; catalog, pricing engine, append-only ledger with idempotency keys and refused publications, and billing kept apart, so Ruhrblick is billed from 150 consumptions with no overage; effects projected to fast read models; daily reconciliation; prices as reviewed, reversible catalog/price-list releases.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches AC-4's expected answer: 31,000 qps × ~400 candidates ≈ 12 million answers a second; effect projector writes paid.* fields onto the listing document; bounded staleness, index never the record, re-projected on rebuild; projector consumes lifecycle events and sold/removed listings carry no paid fields, else Ghost Inventory with a price tag.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches AC-5's expected answer: paid consumer publication fails closed (free fails open); feed import queues and retries, never skips silently, reports to the feed; ranking serves last projected effects logged as stale; fail-open default documented per enforcement point; the overflow policy is a contract term stored with the entitlement, each refused car gets a PublishRefused entry and a feed-report line, and billing counts published listings from the ledger.",
+      "severity": "minor"
+    }
+  ]
+}

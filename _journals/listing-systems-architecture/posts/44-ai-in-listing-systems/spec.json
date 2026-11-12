@@ -1,0 +1,1781 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "ai-in-listing-systems",
+  "journal": "listing-systems-architecture",
+  "part": "part-8",
+  "title": "AI Across the Listing Lifecycle",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the ai-in-listing-systems entry in journal-spec.json; the supporting claims, audience and AC-4 and AC-5 are this spec's own. Units added by this conversion: introduction roadmap p04; lead sentences that give the autonomy ladder (p08), the hosting table (p15), the five steps (p19), the evaluation table (p40), the trade-offs table (p46/p47) and the vertical table (p48/p49) their own units; the conclusion widened to two paragraphs (p59, p60).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Where generative AI and agents have shipped at marketplaces from 2023 to 2026 across the listing lifecycle (creation, search, moderation, pro tooling, valuation), and the autonomy ladder.",
+        "The control layer between models and listings (constrained generation, validation, provenance, trust checks before generation, the AI gateway and evaluation harness), conversational search as a query compiler, search as an API product for external agents, AI crawlers and data licensing, cost per outcome, evaluation, and the EU AI Act's dated obligations."
+      ],
+      "believe": [
+        "A model's output is a proposal to be validated, never listing data.",
+        "The structured assets (taxonomy, attribute dictionary, search schema, trust rules) become more valuable when AI arrives, not less."
+      ],
+      "can_do": [
+        "Review an AI proposal by asking what structured thing the model produces and what checks it.",
+        "Design an assisted insertion flow in which the platform validates every suggestion and records its provenance.",
+        "Register an AI use with its autonomy level, owner, evaluation set, cost per outcome, AI Act classification and kill switch."
+      ]
+    },
+    "audience": {
+      "who": "Group and brand Chief Architects, CPOs and CTOs, heads of data and ML, search and trust-and-safety leads deciding on AI features in 2026-2028. They know what LLMs are; they need the marketplace-specific architecture, evidence and governance.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; what large language models are.",
+        "From earlier chapters: Veldmark (fictional), its brands and cast, Common Ground, Yardstick, the advice forum, Valuo and the Lyon apartment, Dealer Hub, the Keybridge neutrality decision; the taxonomy and bikes split, the attribute dictionary and attribute provenance; decision tiers, the gate tier and the model registry (ml-platform); DSA statements of reasons and the P2B Regulation; the failure patterns named in the chapter."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: structured-output compiler, AI listing assistant, agentic search, agent-to-marketplace interface, autonomy level and ladder, AI gateway, AI use register.",
+        "MCP and its governance, faithfulness as a metric, the text-and-data-mining reservation, AI Act Article 50 and Annex III after the Digital Omnibus.",
+        "Veldmark's photo-to-listing pilot, its results and the February 2028 channel decision record."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an AI feature design that writes model output straight into listings, the reader names the controls the architecture lacks.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace launches an assistant that reads a seller's photos and writes the category, attributes, price and description straight into the listing, with the model choosing free-text values. Two weeks later its color filter has over a thousand distinct values, some prices are wrong, and fraud analysts say scam listings now read as well as genuine ones. Using only this chapter: what does the architecture lack, and what do you build?",
+        "expected": "A control layer in which the model proposes and the platform decides: screen photos against known scam images before generating; constrain the category to the taxonomy's current leaves and attribute values to the dictionary, returning 'unknown' rather than guessing; take the price range from a registered predictive model, never from the language model; draft text last with guardrails; require seller confirmation and record per-field provenance; shift fraud detection toward account, device, image and price signals; and register the use with an owner, evaluation set, cost per outcome and kill switch."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "AI as the translator between people and the marketplace's structures; where it has shipped across the listing lifecycle; the control layer that treats output as a proposal; the photo-to-listing assistant; search, external agents and crawlers; trust and safety, pro copilots and valuation; cost, evaluation and the EU AI Act; evidence from documented 2023–2026 marketplace launches, regulation and the fictional Veldmark's pilot."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a request to expose search to an external AI assistant, the reader states what the tools should return and the controls the channel needs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A property portal is asked to let a popular AI assistant search its listings and send buyers' enquiries straight from the assistant. Using only this chapter: what should the portal offer, and on what terms?",
+        "expected": "Tools, not pages: search over the same index with a structured filter schema, public listing fields and tracked links back; no contact through the assistant, so messaging safety and attribution stay on the portal; per-partner quotas that protect the peak; leads attributed by channel and partner; the same organic ranking with paid placements labeled; a contract that forbids training on or long caching of returned listings; a decision record with a review date."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a marketplace's AI uses, the reader says which AI Act obligations apply and from when.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A marketplace group runs a conversational search assistant, generates listing descriptions, targets job ads with AI in its jobs section, and is asked to feed its valuation model into a bank's lending decisions. Using only this chapter: which EU AI Act obligations apply to which use, and from when?",
+        "expected": "Article 50 transparency for the conversational assistant and machine-readable marking of generated content from 2 August 2026 (marking for systems already on the market by 2 December 2026); job-ad targeting and candidate selection are high-risk under Annex III point 4 from 2 December 2027; a valuation feeding creditworthiness decisions on natural persons falls under Annex III point 5(b), also from 2 December 2027; whether the marketplace is a provider and whether seller-confirmed text is exempt are questions for counsel."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Where do AI and agents create value in listing marketplaces, and what architecture keeps them controlled?",
+    "claim": "AI creates value in listing marketplaces where it translates people's intent into structures the marketplace already has (photos into a category and attributes, a sentence into search filters, a message into a policy label, a lead into a drafted reply). It stays controlled only behind a layer that treats every model output as a proposal: constrained to the taxonomy, the attribute dictionary and the search filter schema, validated and stored with per-field provenance, preceded by trust checks, and never the source of a number a buyer relies on, which comes from a registered predictive model. Search offered to external assistants becomes an API product with contracts, quotas and lead attribution, and every AI use is registered with its autonomy level, owner, evaluation set, cost per outcome, AI Act classification and kill switch.",
+    "disputed_by": "The view that generative models make structured listing data less necessary, so a model can write free-text listings and answer buyers directly; or the practice of letting each team launch AI features from vendor demos, judged by uptake, with governance added after launch.",
+    "so_what": "A Chief Architect who accepts this extends the model registry into an AI use register and blocks launches that cannot fill it in; treats the taxonomy, attribute service, search API and trust platform as the AI strategy; runs one AI gateway and evaluation harness for the group while brand teams build the features; puts each brand's channel strategy toward external assistants in a decision record with a review date; enforces data-use rules in pipelines; and approves AI features by cost per outcome.",
+    "how_why": "Veldmark's photo-to-listing pilot (approved 15 November 2027, 5% of Tradeyard Netherlands' private sellers, goods only) was possible only because the group taxonomy and attribute service went live in October and the shared trust-and-safety platform in November. In nine weeks it produced about 154,000 assisted listings: 62% uptake, 92.4% of categories accepted unchanged, 78% of attribute suggestions accepted, unsupported claims in 1.9% of audited descriptions, median insertion time 2 min 50 s against 6 min 40 s, and 9 percentage points more started listings published, at €0.0062 of model cost per listing. Constrained values raised the share of cargo-bike listings recording electric assist from 61% to 88%; an earlier prototype with free-text attributes produced 1,100 distinct colors in two weeks. Fraudsters used the assistant as often as anyone, removing poor text as a scam signal. The search platform's head asked who pays for an external assistant's queries at the Sunday-evening peak of 31,000 queries per second, which is why search offered to assistants needs contracts and quotas.",
+    "supporting_claims": [
+      {
+        "id": "C1",
+        "claim": "AI creates value in listing systems where it translates people's intent into structures the marketplace already has, and every documented 2023-2026 implementation keeps the structured system of record and lets the model translate into it."
+      },
+      {
+        "id": "C2",
+        "claim": "Every model output is a proposal: a control layer (gateway, prompt registry, tools, evaluation harness, validators and guardrails) constrains it to the taxonomy, attribute dictionary and filter schema, records per-field provenance, and never lets a model write to a system of record."
+      },
+      {
+        "id": "C3",
+        "claim": "In an assisted insertion flow, trust checks run before generation, the price comes from a registered predictive model and never from the language model, and the seller confirms; constrained values improve the catalog, while fraudsters lose polished text as a signal against them."
+      },
+      {
+        "id": "C4",
+        "claim": "Conversational search compiles a sentence into the existing filter schema, and search offered to external assistants becomes an API product with contracts, quotas, lead attribution and data-use terms, alongside a crawler and licensing policy for the involuntary channel."
+      },
+      {
+        "id": "C5",
+        "claim": "The same propose-and-validate discipline governs moderation, pro copilots and valuation explanations: LLMs in the gray zone over a deterministic floor, copilots acting only with confirmation on permitted data, explanations that narrate retrieved facts only."
+      },
+      {
+        "id": "C6",
+        "claim": "Every AI use is governed by its autonomy level, cost per outcome, evaluation and AI Act classification, recorded in an AI use register with an owner and a kill switch, and the structured assets are the AI strategy."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Extends model governance to generative AI and agents: AI proposes, the structured systems the earlier parts built decide, and every AI use is registered and costed.",
+    "supports": [
+      "P8-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "scene to veldmark: the question, the vocabulary, the public evidence, the design, the worked example"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trust to copilots: the other stages of the listing lifecycle, moderation first because the pilot's fraud finding leads into it, then buyer search and the channel, then pro tooling and valuation"
+      }
+    ],
+    "rationale": "The scene poses Ingrid's question; the concepts give the terms every later section uses; the public evidence shows the pattern the control layer then designs for; the photo-to-listing pilot applies the layer to creation, the stage with the most evidence, and comes before the other stages because each of them reuses its parts (screening, constrained output, registered models). Trust and safety follows the pilot because the pilot's fraud finding is its question; search and the channel, then copilots and valuation, reuse the same pattern on other users. Cost, evaluation and the AI Act come after the features they govern, because they measure and classify those features, and their results are the fields of the AI use register the Chief Architect's view proposes; trade-offs, vertical differences, failure modes, the Chief Architect's view and the questions test and govern the whole. The architecture before the evidence would design for a pattern the reader has not seen; the pilot after search would show the compiler in its less documented use first; the register before the features would list fields with nothing to fill them."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A seller choosing a category from a tree of 1,400 leaves (marked in the prose as a generic example beside Veldmark's 1,640) and filling twenty attribute fields; a buyer translating 'a family car that fits a dog and costs less than twenty thousand' into make, body type, price and mileage filters."
+    },
+    "bridge": {
+      "from_reader_world": "Every listing chapter of Parts II to IV is in part about the cost of making people translate into the marketplace's structures.",
+      "to_topic": "Generative AI can do much of that translation, which is both its value and its danger."
+    },
+    "thesis_statement": {
+      "text": "AI creates value by translating intent into the structures the marketplace already has; its output is a proposal the platform validates, records and decides on; search for external assistants becomes an API product; and every AI use is registered and governed by autonomy, cost and consequence.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraphs p01-p02."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04, which lists the sections in order and names the kinds of evidence.",
+      "promises": [
+        {
+          "promise": "Six AI requests at Veldmark.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The terms and the autonomy ladder.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Where AI has shipped at marketplaces.",
+          "kept_in": [
+            "shipped"
+          ]
+        },
+        {
+          "promise": "The control layer.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Tradeyard's photo-to-listing pilot.",
+          "kept_in": [
+            "veldmark"
+          ]
+        },
+        {
+          "promise": "Trust and safety, search and external assistants, pro copilots and valuation.",
+          "kept_in": [
+            "trust",
+            "search",
+            "copilots"
+          ]
+        },
+        {
+          "promise": "Cost, evaluation and the EU AI Act.",
+          "kept_in": [
+            "cost-eval",
+            "regulation"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "For most of their history listing marketplaces made people translate what they had or wanted into the marketplace's structure, and generative AI is the first technology that can do much of that translation, which is where its value lies.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A seller choosing a category from a tree of 1,400 leaves and filling twenty attribute fields; a buyer turning 'a family car that fits a dog and costs less than twenty thousand' into make, body type, price and mileage filters.",
+            "shows": "Makes the work of translation concrete, so the reader sees what AI can take over."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1"
+          ],
+          "how": "States where AI's value lies."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The same ability makes AI dangerous, because a model fills fields and answers whether or not the input supports it, so the architecture must treat AI output as a proposal to be validated and the structured assets become more valuable, not less.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: proposal cards from an AI assistant pass a stencil checkpoint before reaching the listing shelf.",
+            "shows": "Pictures the proposal-and-check pattern the chapter argues for."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C2"
+          ],
+          "how": "States the thesis in the prose."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "AI's ability to translate.",
+          "introduces": "The danger of the same ability, and the chapter's claim that output is a proposal.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter rests on the structured services that the replacement of Yardstick delivers and on the ML platform and the Part II taxonomy and attribute schemas, leaves enrichment, query understanding, moderation and SEO to their owning chapters, and draws its example from the fictional Veldmark.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Links to modernization-and-migration, ml-platform, categories-and-taxonomies, attribute-schemas, normalization-and-enrichment, query-understanding, trust-and-safety-architecture, web-and-seo-architecture, long-term-evolution and meet-veldmark.",
+            "shows": "Tells the reader what is assumed, what is owned elsewhere and where the chapter sits in the reading order."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2"
+          ],
+          "how": "Places the chapter after modernization and names what it builds on."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The previous chapter's closing: the platform replacing Yardstick arrives capability by capability, with the taxonomy and attribute service, Listing Search API v1 and the shared trust-and-safety platform.",
+          "introduces": "Those services as what generative AI runs on, and the chapter's boundaries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter moves from six AI requests at Veldmark through definitions and the public record to the control layer, the photo-to-listing pilot, trust and safety, search and external assistants, copilots and valuation, cost, evaluation and the AI Act, and closes with trade-offs, verticals, failure modes, the Chief Architect's view and review questions, using dated 2023-2026 launches, EU law and Veldmark as evidence.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The section list in order and the kinds of evidence.",
+            "shows": "Lets a reader of the opening alone predict the chapter."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "Announces the sections in order."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Where the chapter sits.",
+          "introduces": "The order in which it makes its argument.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Six AI Requests in One Quarter",
+      "controlling_idea": "Six AI requests from six Veldmark teams in one quarter all reduce to one review question: what structured thing does the model produce, and what checks it?",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C2"
+        ],
+        "how": "Poses the chapter's question through six concrete proposals."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The proposals first so the questions have objects; Ingrid's question last because it generalizes the others into the chapter's test."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that AI output is a proposal to be validated.",
+        "introduces": "Six concrete AI proposals at Veldmark in November 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "By November 2027 Veldmark's Group CPO has six AI proposals from six teams, covering listing creation, conversational search, a dealer copilot, moderation, valuation explanations and AI crawlers.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's photo-to-listing assistant (2.3 million new listings a week, 78% from private sellers); Hearthly's conversational search in France and Spain and an app in a third-party assistant; Motorvane's dealer copilot for 21,400 dealers; LLMs in the moderation gray zone after the July 2027 Barcelona fake-rental ring; Valuo explanations; Tradeyard SEO on AI crawlers (46% of web sessions from organic search).",
+              "shows": "Covers every stage of the listing lifecycle the chapter walks through.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Veldmark's leaders ask about fraud, the AI Act and who pays for assistant queries at the 31,000-queries-per-second peak, and Ingrid asks of each proposal what structured thing the model produces and what checks it, a question whose answer is the same for all six.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Aisha Rahman's fraud question, Lucía Ortega's AI Act question, Tomasz Wiśniewski's Sunday-evening peak of 31,000 queries per second, Ingrid Halvorsen's question.",
+              "shows": "Each question foreshadows a later section; Ingrid's states the review test.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six proposals.",
+            "introduces": "The questions the group's leaders ask of them, ending with Ingrid's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Generative AI, Agents and Autonomy",
+      "controlling_idea": "The chapter needs precise terms for generative AI, the structured-output compiler, agentic search, agent interfaces, autonomy and governance, and an autonomy ladder that ties each level to its controls.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C6"
+        ],
+        "how": "Defines the vocabulary, including the structured-output compiler and the autonomy ladder used to govern AI uses."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Definitions first, then the one term (autonomy) expanded into a ladder, then the rule that applies it; the rule before the ladder would use levels the reader has not met."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The six requests and Ingrid's question.",
+        "introduces": "The terms the requests rest on.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "form": "list",
+          "controlling_idea": "Seven terms carry the chapter, chief among them the structured-output compiler, in which a model translates unstructured input into a structure the marketplace already has and the structure is validated deterministically.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Model Context Protocol: introduced by Anthropic in November 2024 and donated to the Agentic AI Foundation under the Linux Foundation in December 2025.",
+              "shows": "Dates the protocol external agents use to call marketplace tools.",
+              "source": "Anthropic, 2024 and 2025"
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Autonomy levels form a ladder (suggest, draft, act with confirmation, act autonomously) in which each step up removes a person from the decision and needs stronger controls.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The autonomy ladder: level, what the AI does, listing example, who confirms, typical controls.",
+              "shows": "Ties each level to who confirms and which controls it needs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Autonomy level, one of the seven terms.",
+            "introduces": "The four levels as a ladder with controls.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The author's rule is that anything that changes what buyers see about a seller's listing stays at draft or below unless the seller opts in, and anything that restricts users' rights follows the DSA's rules for automated decisions.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The ladder and its controls.",
+            "introduces": "The rule the author applies to listing systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "shipped",
+      "heading": "Where AI Has Shipped: The Lifecycle in Public Evidence",
+      "controlling_idea": "Documented marketplace launches from 2023 to 2026 cover every stage of the listing lifecycle and show three patterns: the structured system of record stays, rollouts are staged by structure, and the biggest 2026 change is distribution.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Shows from public evidence that the model translates into existing structures."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The terms and the ladder.",
+        "introduces": "Where such features have actually shipped.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Between 2023 and 2026 marketplaces shipped AI at every stage of the listing lifecycle, mostly documented by company announcements, with trade press and third-party summaries labeled.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Lifecycle table: eBay magical listing (September 2023); Kleinanzeigen photo-to-listing (November 2025, trade press); OLX Auto Description (August 2026; 98% style and relevance, 89% faithfulness); OLX job-role extraction (January 2024; about 4,000 requests a day, 'approximately 15K per month'); coches.net filter compilation (November 2024; about 20,000 calls a day for about €19); leboncoin conversational assistant (March 2024); OLX Magic (2024, third-party summary; 5-10 s against 300-500 ms); OLX CompassGPT and AutoGPT in ChatGPT (February and April 2026); ImmoScout24 MCP server and ChatGPT app (January and March 2026); OLX Chat Images GenAI (January 2026); OLX AutoIQ (February 2026); Adevinta SEO (June 2023).",
+              "shows": "Gives dated, sourced evidence for each stage, with what each case shows in its last column.",
+              "source": "Company and trade sources as cited in the chapter"
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Three patterns run through the table: every implementation keeps the structured system of record, rollouts are staged by structure, and the biggest 2026 change is distribution rather than modeling.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The table of launches.",
+            "introduces": "The three patterns it shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Control Layer Between Models and Listings",
+      "controlling_idea": "Keeping the structured systems in charge takes a control layer of gateway, prompt registry, tools and evaluation harness with validators and guardrails, and hard boundaries between model output and listing data.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "Specifies the control layer that makes every output a proposal."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Components first, then the checks around them, then the boundaries they enforce; the boundaries before the components would name rules with nothing to enforce them."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The pattern that every implementation keeps the structured system of record.",
+        "introduces": "The control layer that enforces it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "An AI feature in a listing system needs four parts that the predictive-ML platform lacks: an AI gateway, a prompt and configuration registry, tools over the marketplace's own capabilities and an evaluation harness.",
+          "function": "description"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Validators check every output deterministically against the attribute dictionary, filter schema or policy taxonomy, and guardrails block contact details, payment instructions, prohibited items and unsupported claims, so models never write to systems of record directly.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: models never write to systems of record directly.",
+              "shows": "Shows the path every output takes through validator and guardrail into the same tools and contracts the rest of the platform uses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four parts.",
+            "introduces": "The validators and guardrails around them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "Four boundaries matter: model output is never a listing field until a validator and a person accept it, every field carries provenance, the search index stays the retrieval layer, and trust and safety runs on assisted content too.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Provenance values ai_suggested, seller_confirmed and seller_edited; the seller is responsible for a confirmed description, the marketplace for one it published unconfirmed.",
+              "shows": "Shows why provenance matters for search, trust, analytics and liability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Validators and guardrails.",
+            "introduces": "The boundaries they enforce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "veldmark",
+      "heading": "Veldmark Worked Example: The Photo-to-Listing Assistant",
+      "controlling_idea": "Tradeyard's photo-to-listing assistant, built on the taxonomy service and the trust platform, screens photos first, constrains category and attributes, takes price from a registered model and drafts text last, and its pilot shows constrained AI improves the catalog while removing a weak fraud signal.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Works the assisted insertion flow end to end with numbers."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Approval, dependencies, design, one listing, the pilot's results, the design changes and rollout, then fraud: the order in which the pilot unfolded, so each result is read against the design that produced it."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The control layer and its boundaries.",
+        "introduces": "The control layer in one Veldmark assistant.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "Tradeyard's assistant was approved for a narrow pilot on 15 November 2027, excluding vehicles, property, jobs and services because those need data that photos do not give.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Netherlands, iOS first, goods only, 5% of private sellers; exclusions follow eBay and Kleinanzeigen.",
+              "shows": "Shows the staging-by-structure pattern applied.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The assistant depends on two Common Ground capabilities that went live just before it, the group taxonomy and attribute service (October 2027) and the shared trust-and-safety platform (November 2027), without which the model would have nothing to compile into and nothing to check it.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Taxonomy and attribute service, October 2027; shared T&S platform for Tradeyard NL and BE, November 2027.",
+              "shows": "Shows the dependency of AI on structured assets.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The pilot's approval.",
+            "introduces": "What made it possible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "Before the seller sees anything the assistant runs five steps: screen photos, propose a category from allowed leaves, propose attributes from the schema with 'unknown' allowed, take a price range from the registered price-hint model, and draft title and description last behind guardrails.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Perceptual hashes and an image classifier; a vision-language model ranking leaf categories; dictionary-constrained attributes; Tradeyard's price-hint model; guardrails stripping contact details, URLs, payment instructions and unsupported claims.",
+              "shows": "Each step keeps the model inside a structure or a check.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The two capabilities.",
+            "introduces": "The steps built on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The seller confirms all five as an editable form, and the published listing carries an AI label and per-field provenance.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the language model ranks categories from an allowed list, fills a schema and writes prose last.",
+              "shows": "Summarizes the five steps and where the price comes from."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The five steps.",
+            "introduces": "The seller's confirmation and the label.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "One Utrecht cargo bike shows the flow: no hash match, Bikes › Cargo at 0.94, seven of nine attributes with two returned as unknown, a €1,450-€1,700 price hint, and publication 2 minutes 10 seconds after the first photo.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Monday 6 December 2027, 19:05 CET; listed at €1,600; published 19:07.",
+              "shows": "Shows each step on one listing.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The flow in general.",
+            "introduces": "One listing through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "After nine weeks the pilot produced about 154,000 assisted listings with high uptake and acceptance, faster insertion, more published listings and a model cost below one cent per listing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Pilot measures to 17 January 2028: 62% uptake; 92.4% category accepted; attributes 78/15/7%; 1.9% unsupported claims in a 2,000-listing audit; 2 min 50 s against 6 min 40 s; +9 points started-to-published; +4% contacts (weak signal); €0.0062 per assisted listing.",
+              "shows": "Measures the pilot, each with how it is measured.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "One listing in December.",
+            "introduces": "The pilot's results in January.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Two findings changed the design: constrained values raised attribute coverage, the Attribute Junkyard in reverse, and unsupported claims clustered in condition superlatives that the guardrail now strips.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Electric assist recorded on cargo bikes rose from 61% to 88%; an earlier free-text prototype produced 1,100 distinct colors in two weeks.",
+              "shows": "Shows constraint, not the model, produced the gain."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: junkyard against swatch cabinet.",
+              "shows": "Pictures free-text against constrained values."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The pilot's numbers.",
+            "introduces": "What they changed in the design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "At full rollout model cost is not the constraint; evaluation across four languages and 1,640 leaf categories is, so the forum extends the pilot only where evaluation sets exist.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About €230,000 a year forecast; extension to 25% of Netherlands sellers and Belgium on iOS and Android from 24 January 2028; Poland and Portugal once evaluation sets exist.",
+              "shows": "Shows evaluation, not spend, gating the rollout.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The design changes.",
+            "introduces": "What limits the rollout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Fraudsters used the assistant as often as anyone, so polished text stopped being a signal against them and the trust model must lean on account, device, image and price signals, with generated photos countered behaviorally rather than visually.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "2,300 attempts with matching photos blocked in the pilot; generated apartment photos have no hash to match.",
+              "shows": "Shows what screening catches and what it cannot.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: two equally polished listings, signals lighting for the fraudulent one.",
+              "shows": "Pictures the shift in signals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Benefits to honest sellers.",
+            "introduces": "What fraudsters did with the same assistant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trust",
+      "heading": "AI in Trust and Safety",
+      "controlling_idea": "Generative models help moderation where policy changes faster than labels accumulate, under three rules: LLMs in the gray zone only, a deterministic floor, and respect for the law on automated decisions.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Applies propose-and-validate to moderation."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The pilot's fraud finding: polished text no longer separates scams, and the trust model must lean on other signals.",
+        "introduces": "Where generative models themselves help moderation, and the rules that keep them controlled.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "form": "list",
+          "controlling_idea": "Three rules keep LLMs in moderation controlled: use them only in the gray zone, keep a deterministic floor, and respect the DSA's limits on automated decisions.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 138,000 new-listing decisions a week go to human review at Tradeyard; 94% are decided automatically.",
+              "shows": "Shows where LLM triage pays.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            },
+            {
+              "kind": "quotation",
+              "what": "DSA Article 20(6): complaint decisions not taken 'solely on the basis of automated means'.",
+              "shows": "Shows the legal limit."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "OLX's chat-image model shows a well-scoped gate-tier use, and Veldmark's gray-zone design follows the same scope discipline with every model registered.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "OLX Chat Images GenAI (2026): one fraud vector, real time, measured precision.",
+              "shows": "Shows narrow scope in the gate tier."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three rules.",
+            "introduces": "A documented use that follows them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "search",
+      "heading": "Search, Agents and the New Channel",
+      "controlling_idea": "In search the model compiles a sentence into the existing filter schema, agentic flows belong only in high-consideration journeys, and search offered to external assistants and crawled by AI companies becomes a channel governed by contracts, quotas, attribution and a crawler policy.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Applies the proposal pattern to search and the new distribution channel."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "comparison",
+            "applies_to": "p26-p28: compiler against agentic search"
+          }
+        ],
+        "rationale": "Search on own surfaces first (compiler, its limits, agents), then the voluntary external channel, then the involuntary one; the crawler trade-off last because it needs both channels."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The propose-and-validate pattern in listing creation and moderation.",
+        "introduces": "The same compiler pattern in buyer search, then the new channel.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "Hearthly's conversational search compiles a sentence into its existing filter schema, shows the filters to the user and runs normal search, which keeps results explainable and cost low.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The coches.net and leboncoin pattern.",
+              "shows": "Shows the compiler pattern in documented use."
+            }
+          ]
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Natural language helps mainly where filters are many and vocabulary is vague, and a conversational layer that cannot say there is no filter for a wish will invent one.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Quiet', 'bright', 'near a good school' have no filter.",
+              "shows": "Shows the limit of compilation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The compiler.",
+            "introduces": "Where it helps and where it must refuse.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Agentic search costs an order of magnitude more latency, so it belongs in high-consideration journeys rather than default search.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "OLX's account: 5-10 seconds against 300-500 ms; a blank chat interface replaced by the familiar search page with AI built in.",
+              "shows": "Shows the cost and the interface lesson."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "One-call compilation.",
+            "introduces": "Multi-step agentic search.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "When an external assistant calls the marketplace, search becomes an API product whose tools (search with a filter schema, listing summaries, links back) have their own release mechanics.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "ImmoScout24's cached tool descriptors; Rightmove's FY2025 results (February 2026) on conversational search and a ChatGPT app.",
+              "shows": "Shows assistants get tools, not the website."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: an external assistant gets tools, not pages.",
+              "shows": "Pictures the authenticated, rate-limited, tracked interface."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Search on the marketplace's own surfaces.",
+            "introduces": "Search called by other companies' assistants.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Veldmark's February 2028 decision record answers the questions every group faces about the channel: which brands first, what tools return, no contact through the assistant, quotas, attribution, ranking and partner data use.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven decisions with reasons: Hearthly France and Motorvane Germany first; public fields and a tracked link; no contact through the assistant; per-partner quotas lowered Sunday 20:00-22:00 CET; leads tagged by channel and partner; same organic ranking, paid labeled; no training or long caching by partners.",
+              "shows": "Shows the channel governed as an API product.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Search as an API product.",
+            "introduces": "Veldmark's decisions for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The other half of the channel is involuntary: AI crawlers copy the inventory that is a marketplace's product and return no traffic.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The voluntary channel.",
+            "introduces": "Crawlers that take data without asking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The architecture has three levers against crawlers: technical controls, a machine-readable legal reservation, and commercial licensing.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Cloudflare blocked AI crawlers by default for new domains and announced pay-per-crawl on 1 July 2025; AI Act Article 53 and Article 4(3) of Directive (EU) 2019/790.",
+              "shows": "Shows the infrastructure market and the law supporting the levers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Crawlers copying inventory.",
+            "introduces": "The three levers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Crawler policy trades data protection against search traffic, so the brand's GM decides it quarterly with SEO and legal and the architecture makes each lever a configuration.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "46% of Tradeyard's web sessions start from organic search.",
+              "shows": "Shows what blocking could cost.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The levers.",
+            "introduces": "The cost of using them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "copilots",
+      "heading": "Pro Copilots and Valuation Explanations",
+      "controlling_idea": "Copilots for pros act only with confirmation on the dealer's own and permitted data, and valuation explanations narrate retrieved facts under a validator that checks every number.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Applies propose-and-validate to pro tooling and valuation."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Search and the channel, the buyer side of the lifecycle.",
+        "introduces": "Pro tooling and valuation.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Motorvane's dealer copilot acts with confirmation inside Dealer Hub, uses only the dealer's own and Motorvane's market data, explains prices in public price-rating terms, and Keybridge's equivalent stays inside Keybridge's tenancy.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Price change for forty cars after a preview; March 2027 Keybridge neutrality decision.",
+              "shows": "Shows autonomy and data limits on a copilot.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Valuo explanations narrate structured inputs and may not introduce a comparable, number or trend, because an explanation that invents a comparable turns an estimate into a misrepresentation.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lyon apartment: 68 m², Lyon 7e, energy class D, estimate €372,000-€401,000.",
+              "shows": "Shows the retrieve-then-narrate pattern on the canonical case.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Copilot constraints.",
+            "introduces": "Constraints on generated explanations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cost-eval",
+      "heading": "Cost and Evaluation",
+      "controlling_idea": "Generative AI should be budgeted by cost per outcome, with volume moved to cheaper hosting as tasks stabilize, and guarded by evaluation at five stages, with faithfulness measured apart from fluency.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Supplies the cost and evaluation fields of the register."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The features across the lifecycle.",
+        "introduces": "What they cost and how they are evaluated.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "Every feature is paid per call, which makes cost visible, but the public numbers are few and old.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "coches.net ~20,000 calls a day for ~€19 (2024); OLX ~4,000 calls a day, 'approximately 15K per month' (2024); Veldmark €0.0062 per assisted listing (illustration).",
+              "shows": "Gives the only public cost figures and Veldmark's."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The unit that matters is cost per outcome, reported by the gateway per feature and brand with a budget and an alert.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The cost figures.",
+            "introduces": "The unit that outlasts them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Cost per outcome also depends on where a model runs, and there are four options, from a frontier model through a provider API to a distilled classical model, each fitting a different volume and task stability.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Model choice and hosting: frontier API, small or mid-sized API, self-hosted open model, distilled classical model, with strengths, weaknesses and fits.",
+              "shows": "Matches each hosting option to the tasks it fits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Cost per outcome as the unit to manage.",
+            "introduces": "Where a model runs, the main lever on that cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "C6"
+            ],
+            "how": "Gives the hosting lever on cost per outcome."
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The documented trajectory matches the table, so the author's rule is to start with an API to learn the task and move volume down the table as it stabilizes, keeping the gateway so that the move is a routing change.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "leboncoin moved guardrails from prompts into fine-tuning for latency; OLX's job-role extraction cost prompted evaluation of self-hosted models.",
+              "shows": "Shows real teams moving down the table as tasks stabilized."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The hosting table.",
+            "introduces": "Documented moves along it and the author's rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "C6"
+            ],
+            "how": "Gives the rule for moving volume to cheaper hosting."
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Evaluation runs at five stages, from golden sets before launch to sampled audits of production traffic.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Golden sets, regression on every change (block if category accuracy drops more than 1 point), adversarial testing, online experiments, sampled production audit.",
+              "shows": "Shows each stage with a listing example."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Cost levers: the unit and where models run.",
+            "introduces": "The evaluation that must guard every change, including a move to a cheaper model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Faithfulness deserves its own metric, because fluent and wrong is the characteristic failure of generative models and usage metrics miss it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "OLX Auto Description: 98% style, 89% faithfulness.",
+              "shows": "Shows fluency and faithfulness diverging."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The five stages.",
+            "introduces": "The metric they must include.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The cost figures, then the unit that outlasts them, then hosting as the lever on that unit, then evaluation, which guards every change including a move down the hosting table; evaluation before hosting would leave the cheaper-model move unguarded in the reader's mind."
+      }
+    },
+    {
+      "id": "regulation",
+      "heading": "Regulation: The EU AI Act for Marketplaces",
+      "controlling_idea": "The AI Act's dated obligations, after the Digital Omnibus, touch marketplaces through Article 50 transparency and Annex III high-risk uses in jobs and credit, and Veldmark designs so as not to depend on unresolved legal questions.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Supplies the AI Act classification field of the register."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "Cost and evaluation as governance.",
+        "introduces": "Legal obligations as governance.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The AI Act applies in phases, some moved by the Digital Omnibus (Regulation (EU) 2026/1744), with five dated obligations relevant to marketplaces.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2 February 2025; 2 August 2025; 2 August 2026 with marking by 2 December 2026; 2 December 2027; 2 August 2028.",
+              "shows": "Gives each obligation's date and marketplace relevance.",
+              "source": "European Parliament Legislative Train (September 2026); AI Act implementation timeline (August 2026)"
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Annex III makes AI that targets job ads or selects candidates, and creditworthiness evaluation, high-risk, which reaches jobs marketplaces and valuation models feeding lenders.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Annex III point 4(a): 'to place targeted job advertisements, to analyse and filter job applications, and to evaluate candidates'.",
+              "shows": "Shows the scope in the Act's words."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The high-risk date in the table.",
+            "introduces": "Which marketplace uses it reaches.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Whether Article 50's marking duty applies to a marketplace assistant is a question for counsel, so Veldmark labels and marks assisted content from launch regardless.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Annex III.",
+            "introduces": "Article 50 and Veldmark's answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The AI Act sits alongside the DSA, the P2B Regulation, consumer law and the GDPR covered elsewhere in the book.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The AI Act.",
+            "introduces": "The other rules that also apply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each AI decision has a default and a condition under which the alternative is right, and the defaults keep model output in drafts and schemas.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C2",
+          "C4",
+          "C6"
+        ],
+        "how": "Gathers the chapter's decisions as choices with conditions."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The decisions made section by section.",
+        "introduces": "All of them side by side.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Each decision in the chapter has a default and a condition under which the alternative is right.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven decisions: where AI writes, output form, search interface, external channel, model hosting, crawler policy, moderation.",
+              "shows": "Shows when each option is right."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The first two rows carry the chapter's argument: wherever output is searchable, filterable or seen by buyers, the model drafts into a schema and a person or validator decides.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table.",
+            "introduces": "The rows that carry the argument.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "How much each AI decision matters depends on the vertical: the assistant pays most in general classifieds, conversational search and the external channel in real estate and automotive, and jobs carries the highest AI Act exposure.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C6"
+        ],
+        "how": "Shows where the value and risk concentrate."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The decisions in general.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "How much each decision matters depends on the vertical.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Assistant value, creation risk, conversational fit, external channel fit (ImmoScout24, OLX CompassGPT, OLX AutoGPT), copilots, AI Act exposure across four verticals.",
+              "shows": "Compares the verticals on each dimension."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "General classifieds gain most from the assistant, real estate and automotive from conversational search and the external channel, and jobs carries the highest regulatory risk.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The vertical table.",
+            "introduces": "What it adds up to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Each design choice has a characteristic failure, from free-text attributes to crawler policy by accident.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "C2",
+          "C3",
+          "C4",
+          "C5",
+          "C6"
+        ],
+        "how": "Shows what breaks without each control."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The right choice per vertical.",
+        "introduces": "What goes wrong when choices are made badly or not at all.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Nine failure modes follow from missing controls: free-text attributes, an assistant that helps scammers, numbers from the language model, prompt changes without regression tests, agentic search as default, contact through the assistant, conversation data at the vendor, crawler policy by accident and AI-washed explanations.",
+          "function": "description"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "A Chief Architect governs AI with an AI use register, treats the structured assets as the AI strategy, owns the gateway centrally, decides channel strategy per brand, enforces data-use rules in pipelines, budgets by outcome and watches a short list of indicators.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Turns the chapter into group decisions."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The group decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Extend the model register into an AI use register that every feature must fill in before launch.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Extends the registry decided on 9 November 2027.",
+              "shows": "Shows reuse rather than a parallel register.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Make the structured assets the AI strategy, because AI features compile into them and the order of Common Ground's deliveries was the order of what AI could do.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The register.",
+            "introduces": "The assets AI depends on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Own the gateway and evaluation harness centrally and the features locally.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The assets.",
+            "introduces": "Who owns the shared AI platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Decide each brand's channel strategy explicitly in a decision record with a review date.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The central platform.",
+            "introduces": "The per-brand channel decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Write data-use rules down and enforce them in pipelines, including the Keybridge neutrality commitment.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Channel strategy.",
+            "introduces": "Data-use rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Budget AI by outcome and move stable volume to cheaper hosting.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Data-use rules.",
+            "introduces": "Budgets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Watch a short list of indicators, from register coverage and faithfulness to crawler traffic and unclassified AI Act uses.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six decisions.",
+            "introduces": "The indicators that show whether they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader review any AI feature against the chapter.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C2",
+          "C3",
+          "C4",
+          "C6"
+        ],
+        "how": "Turns the chapter into a review checklist."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions for a design review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Ten review questions start from what structured output the model produces and what checks it, and cover provenance, trust, cost, evaluation, the external channel, crawlers, the AI Act and data use.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From AI to the Long View",
+    "synthesis": "AI is a translator between people and the structures the marketplace already has: where those structures are clean, the control layer lets AI make listing, search and pro work faster while every proposal stays checked, attributed and costed, on Veldmark's own surfaces or as tools for another company's assistant, and recorded in the register; where they are not, AI accelerates the mess.",
+    "so_what": "A Chief Architect's AI roadmap is therefore the structured-asset roadmap, and Ingrid's question decides every proposal.",
+    "callback": {
+      "to": "The opening's picture of sellers and buyers doing the work of translation, and Ingrid's question about the six requests.",
+      "how": "The reader now sees that translation is what AI takes over and that one question answered all six requests."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Ask of every AI proposal what structured thing the model produces and what checks it, and invest in the structures it compiles into."
+    },
+    "hand_off": {
+      "to": "long-term-evolution",
+      "relationship": "conclusion_summary",
+      "carries_over": "AI is safe where the marketplace's structures are clean and accelerates the mess where they are not, and it is only one stressor a platform must absorb.",
+      "introduces": "Keeping the platform coherent over a decade of stressors: acquisitions, regulation and the swing between central and local control."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter and the review questions.",
+      "introduces": "The answer to Ingrid's question for all six requests.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p59",
+        "controlling_idea": "Ingrid's question had the same answer for all six requests, because AI arrives as a translator into existing structures: where they are clean the control layer keeps every proposal checked, attributed, costed and registered, on own surfaces or another company's assistant; where they are not AI accelerates the mess, so the AI roadmap is the structured-asset roadmap.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p60",
+        "controlling_idea": "AI is only one of the stressors a platform must absorb over a decade, alongside acquisitions, regulation and the swing between central and local control, which long-term-evolution takes up.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "AI as one technology shift.",
+          "introduces": "The decade-long view in the next chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Predictive-model platform, decision tiers and AVM governance.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "LLM-based attribute extraction pipeline design.",
+      "covered_in": [
+        "normalization-and-enrichment"
+      ]
+    },
+    {
+      "topic": "Query understanding and hybrid retrieval evaluation.",
+      "covered_in": [
+        "query-understanding"
+      ]
+    },
+    {
+      "topic": "Moderation pipeline and DSA statements of reasons.",
+      "covered_in": [
+        "trust-and-safety-architecture",
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "SEO for answer engines.",
+      "covered_in": [
+        "web-and-seo-architecture"
+      ]
+    },
+    {
+      "topic": "Fraud signals and risk scoring.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Whether a marketplace building an assistant on a third-party model is an AI Act 'provider' for Article 50(2), and whether seller-confirmed descriptions fall under the editing exception: left to counsel; the chapter's design marks content regardless. (Carried over from spec.md.)",
+    "Database-right protection of listing data against AI crawlers: the CJEU's job-ads case law could not be fetched, so the chapter states only that it is a question for counsel. Add the case with a verified citation in a later pass. (Carried over from spec.md.)",
+    "Kleinanzeigen and OLX Magic evidence is trade press or third-party summary; recheck against first-party sources. (Carried over from spec.md.)",
+    "Marktplaats and other Adevinta-brand AI listing creation remained unverified and is not mentioned. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Made 'AI proposes, the platform decides' (the structured-output compiler) the organizing pattern, because every documented classifieds implementation keeps the structured system of record."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used Tradeyard's photo-to-listing pilot as the single worked example, tied to the October 2027 taxonomy service and November 2027 T&S platform so that the dependency on structured assets is visible; added its decisions and metrics to the ledger."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated external assistants and AI crawlers as one channel question (voluntary and involuntary distribution), following the OLX and Scout24 2026 evidence."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Digital Omnibus dates (verified September 2026) for the AI Act table."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: autonomy ladder, control layer and Veldmark pilot criteria are covered by the journal spec's AC-1; the lifecycle-table, AI-use-register-design and '10 review questions' criteria were inventories and are dropped; the external-agent criterion became AC-4 and the AI Act criterion AC-5 (both minor, added by this spec); the three T&S rules criterion is dropped as an inventory (the rules are p34's evidence).",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories).",
+        "A cold-reader criterion for the autonomy ladder (covered by AC-1's expected answer and the can_do outcomes)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "No word limit was set in spec.md; max_words set to the published prose length by check_draft's count (7,180) plus 5%, 7,539."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims C1 to C6 written here (the journal spec gives none for this post) from the thesis's parts: translation into existing structures, the control layer, the assisted insertion flow, search and the channel, moderation/copilots/valuation, and governance by register, cost and AI Act."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis rubric (fresh agent, thesis object only): pass on all four tests. It noted small orphans in this spec's supporting claims (C3's fraud signal, C4's data-use terms and crawler policy, C6's 'structured assets are the AI strategy'), which come from how_why and so_what rather than the claim; kept, since the thesis is copied from the journal spec."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved AI in Trust and Safety from after Search to directly after the Veldmark pilot, so the pilot's fraud finding leads into the moderation rules; rewrote the transition_in of trust, search and copilots, the roadmap (p04 and promises) and the flow rationale (no longer claims a chronological lifecycle; says what breaks); p09 names the DSA; the conclusion synthesis now names the external channel and the register.",
+      "rejected": [
+        "Merging the one-sentence table leads p46 and p48 into the paragraphs after the tables (each table would then attach to no unit).",
+        "Cutting or folding p56 ('budget by outcome, move stable volume to cheaper hosting'), which overlaps p16: published text, kept."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the reorder (sound with notes): the flow rationale now says cost, evaluation and the AI Act supply the fields of the register that the Chief Architect's view proposes, rather than implying the register was introduced earlier. Other notes recorded under open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (ESCALATE: one corroborated flow failure at fault in the spec). Both flow readers found 'Model choice and hosting' interrupting the path from the control layer to the worked example and arguing from cost; moved p15 and p16 from Architecture to Cost and Evaluation after p39, rewrote p15's and p40's transition_in and the two sections' controlling ideas and flows. Intent, thesis and role unchanged. Draft-fault failures revised in the prose: section openers of scene, shipped, veldmark, copilots and regulation now express their transitions; 'gray zone' glossed at first use in the scene.",
+      "rejected": [
+        "Changing the opening's '1,400 leaves' figure to agree with Veldmark's 1,640 (published figure; recorded as an open question instead, and the later figure named as Veldmark's)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (REVISE, all failures at fault in the draft): lead sentence for the boundaries list (p14); Valuo paragraph opens on the likeness to the copilot constraints (p37); evaluation lead ties evaluation to every change including a move to a cheaper model (p40); 'As verified in October 2026' now says it precedes the Veldmark scenes; 'Fast Mail for Fraudsters' glossed with the definition from where-listing-systems-go-wrong; the scene opener reworded. My own added sentences shortened to stay within max_words. Spec units unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After round 3 (ESCALATE, budget spent), cheap wording fixes only, no fourth round: scene opener, roadmap sentence, the October 2026 verification note and p03's opening; my own added sentences trimmed so the draft stays at max_words (7,539). Spec units, intent, thesis and role unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation: the opening's '1,400 leaves' is kept (published) and now says plainly it is a generic example, naming Veldmark's 1,640-leaf group tree (ledger [categories-and-taxonomies], release 2027.10). Hook updated to match."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Cheap minor findings fixed: 'faithfulness' glossed at first use in the lifecycle table; the Quotas row now states Tomasz's answer (capped per-partner capacity at the peak, per the Feb 2028 decision record in the ledger); the Regulation section states Lucía's answer (as proposed none of the six is high-risk; Article 50 transparency reaches those that generate content or talk to people) and its opener contrasts chosen controls (cost, evaluation) with legal ones. No real-company or real-law statement added or changed."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "max_words raised from 7,539 to 7,700 (+2.1%, under the 10% rule) for the fixes above; the draft counts 7,600 words."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept published text (rule 8), accepted under the author's delegation, 2026-11-12: 'Two findings change the design'; the order of Trade-offs, Vertical Differences and Failure Modes; the two flow-rubric note sets (merging p46/p48 into the following paragraphs, folding p45 into p42 and p56 into p53, p34's DSA restatement, p59 repeating p52, forward pointers to the register and kill switch) are not taken, since each would cut or move published text without a corroborated reader finding."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: terms from earlier chapters (gate tier, Common Ground, the bikes split, Keybridge, Priya Raman) stay as known to the audience; the post-round-3 wording fixes (scene opener, roadmap sentence, October 2026 note, p03 opening) are checked by the round-4 draft check rather than recorded as open."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After round 4 (ESCALATE on two corroborated draft-fault flow findings), fixed by wording as authorised by the coordinator: Regulation ¶1 now dates the table as the book's research date ('The law as it stood when this book was checked, in October 2026 (the book's research date, not a date in the Veldmark story):'); Regulation ¶2 points to 'the Article 50 transparency duties in the table above' instead of 'below'. No legal fact changed; spec units unchanged (their wording does not carry these phrases). Round 5 run."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, modernization-and-migration's closing for the opening and long-term-evolution's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Part 11 and Part 7.5; _research/brief-search-discovery.md 4.3 and 9.5; _research/brief-trust-safety-regulation.md 3.6; _research/brief-olx.md 4.11; _research/brief-real-estate-portals.md B.2 and B.5",
+      "contributed": "GenAI adoption, filter compiler and agentic search, LLM moderation and DSA Article 20(6), OLX GenAI and agents, Rightmove and ImmoScout24 MCP evidence. (Carried over from spec.md.)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md [ai-in-listing-systems] lines; ml-platform, meet-veldmark, long-term-evolution",
+      "contributed": "Veldmark facts: the photo-to-listing pilot, the cargo bike, the pilot results, the February 2028 channel decision record."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay, OLX, Adevinta, Scout24, Rightmove and Cloudflare publications (2023-2026)",
+      "contributed": "The dated lifecycle evidence, costs and channel mechanics."
+    },
+    {
+      "kind": "external",
+      "ref": "Anthropic on MCP (2024, 2025); EU AI Act Articles 50 and 53 and Annex III; European Parliament Legislative Train on the Digital Omnibus on AI (September 2026)",
+      "contributed": "MCP dates and governance; AI Act obligations and dates."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: generic 1,400-leaf example marked, faithfulness glossed, Lucía's and Tomasz's questions answered, Regulation opener; max_words 7,700. (AI-mediated session) Round-4 blockers fixed (research-date note, 'table above')."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1-3 run (REVISE/ESCALATE); index.md revised to the spec; closing wording fixes after round 3; check report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: transitions and two glosses revised in index.md. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: hosting subsection moved from Architecture to Cost and Evaluation; section openers revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric applied: AI in Trust and Safety moved after the Veldmark worked example; roadmap, transitions, rationale and conclusion synthesis revised. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations; consistency fix 'filter compiler' to 'query compiler'; sharpening pass 5,923 to 5,955 prose words; cross-chapter consistency sweep (six headings renamed; EU AI Act section moved before Trade-offs). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass; 3 inline illustrations added. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7700
+  }
+}

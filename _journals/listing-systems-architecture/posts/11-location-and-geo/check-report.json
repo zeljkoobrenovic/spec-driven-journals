@@ -1,0 +1,2693 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/11-location-and-geo/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/11-location-and-geo/index.md",
+  "spec_sha": "705e40b309bbe479",
+  "draft_sha": "3b0cf7d9958723cf",
+  "run_at": "2026-11-12T21:44:27+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "what the chapter follows: two listings from address to privacy-safe location",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stakes of wrong, too precise or unlicensed location",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "location is really three representations with different consumers",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three representations / server-side privacy enforcement / geocoding as licensing decision",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "location bugs look like search bugs but come from modeling",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "location as a small subsystem that other chapters depend on",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "running example and chapter roadmap",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶1",
+      "summary": "Rotterdam seller found at home despite district-only display",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2",
+      "summary": "how precise distances and API payload leaked her location",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶3",
+      "summary": "brands' differing location handling shows need for one model",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶4",
+      "summary": "what the inconsistent models prevent the group from doing",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶1",
+      "summary": "kinds of location a listing carries, distinct from representations",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶2",
+      "summary": "when item and seller location diverge, including shipping",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶3",
+      "summary": "address models differ by country, shown by postcodes",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶4",
+      "summary": "parsing addresses with libpostal as a shared service",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶5",
+      "summary": "geocoding results must keep match level, confidence and provenance",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶6",
+      "summary": "gazetteers and two public place models (OSM, Who's On First)",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶7",
+      "summary": "multiple parents and marketplace-curated places in the gazetteer",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶8",
+      "summary": "listings reference places by ID with all ancestors",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶9",
+      "summary": "location precision as a six-level scale",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶10",
+      "summary": "capture, stored and display precision and the Rotterdam mistake",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶11",
+      "summary": "four families of geo index",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Concepts: What \"Location\" Means for a Listing ¶12",
+      "summary": "geo index families are complementary by job",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Geocoding Providers and Licences ¶1",
+      "summary": "provider licences decide what can be stored",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Geocoding Providers and Licences ¶2",
+      "summary": "choose provider per country and use; licence travels with each coordinate",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Geocoding Providers and Licences ¶3",
+      "summary": "typical mix of registers, commercial geocoder and open gazetteer",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Geocoding Providers and Licences ¶4",
+      "summary": "geocoding volumes and costs are smaller than feared",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶1",
+      "summary": "location as a three-part value object in the listing aggregate",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶2",
+      "summary": "precise private location is personal data, often misclassified",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶3",
+      "summary": "lower parts are recomputable, making changes backfills",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶4",
+      "summary": "six components that produce and guard location",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶5",
+      "summary": "deriving the public point: cell snapping or deterministic offset",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶6",
+      "summary": "public point stays in its place and coarsens in sparse areas",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶7",
+      "summary": "Airbnb's obfuscation: release exact address only when warranted",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶8",
+      "summary": "distances must come from the public point and be rounded",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶9",
+      "summary": "internal consumers read precise points from the restricted store",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶10",
+      "summary": "listing events carry only public location, keeping copies clean",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶11",
+      "summary": "location fields in the search document",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: Three Representations and the Services Behind Them ¶12",
+      "summary": "real-estate exception for a hidden precise geo_point",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶1",
+      "summary": "each location query hides a decision",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶2",
+      "summary": "radius origin needs a curated reference point",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶3",
+      "summary": "ambiguous city scope solved with administrative and marketplace places",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶4",
+      "summary": "multilingual names and aliases attach to place IDs",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶5",
+      "summary": "place filters use stored IDs, polygons use public points",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶6",
+      "summary": "cross-border radius search requires a shared location model",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Radius, Polygon and Place: Getting the Semantics Right ¶7",
+      "summary": "travel-time search and routing provider pricing as constraint",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶1",
+      "summary": "Rotterdam bike replayed through the six-step model",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶2",
+      "summary": "replay exposes only the district / fake payment link as separate fraud risk",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶3",
+      "summary": "Lyon apartment from three agencies processed and clustered",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶4",
+      "summary": "why agencies hide the street and the portal must honor it",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶5",
+      "summary": "location features in detecting the Barcelona fake-rental ring",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶6",
+      "summary": "two new location fraud signals for new accounts",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶7",
+      "summary": "weekly location quality metrics per brand",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice at Veldmark ¶8",
+      "summary": "swapped coordinates as a recurring defect worth checking",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "three trade-off choices: storage, geo index, public-point method",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "privacy circle centered on real address is a mistake",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "location weight differs by vertical",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "nine recurring location failures and their controls",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "location needs one owner and four decisions",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "decision 1: one group gazetteer and geocoding gateway",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "decision 2: group precision policy with brand parameters",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "decision 3: providers per country and use behind the gateway",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "decision 4: location quality as a published metric",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "long-term trends to watch",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶7",
+      "summary": "when the design is overkill",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "review questions derived from the decisions",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "From Place to Seller ¶1",
+      "summary": "the single-field fault and how the three representations fix the cases",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "From Place to Seller ¶2",
+      "summary": "hand-off from location to sellers and accounts",
+      "matched_spec_paragraph": "p64"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Outline summary 'location bugs look like search bugs but come from modeling' matches the controlling idea of p01, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outline summary 'location as a small subsystem that other chapters depend on' matches the controlling idea of p02, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Outline summary 'running example and chapter roadmap' matches the controlling idea of p03, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶1",
+      "finding": "Outline summary 'Rotterdam seller found at home despite district-only display' matches the controlling idea of p04, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2",
+      "finding": "Outline summary 'how precise distances and API payload leaked her location' matches the controlling idea of p05, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶3",
+      "finding": "Outline summary 'brands' differing location handling shows need for one model' matches the controlling idea of p06, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶4",
+      "finding": "Outline summary 'what the inconsistent models prevent the group from doing' matches the controlling idea of p07, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶1",
+      "finding": "Outline summary 'kinds of location a listing carries, distinct from representations' matches the controlling idea of p08, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶2",
+      "finding": "Outline summary 'when item and seller location diverge, including shipping' matches the controlling idea of p09, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶3",
+      "finding": "Outline summary 'address models differ by country, shown by postcodes' matches the controlling idea of p10, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶4",
+      "finding": "Outline summary 'parsing addresses with libpostal as a shared service' matches the controlling idea of p11, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶5",
+      "finding": "Outline summary 'geocoding results must keep match level, confidence and provenance' matches the controlling idea of p12, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶6",
+      "finding": "Outline summary 'gazetteers and two public place models (OSM, Who's On First)' matches the controlling idea of p13, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶7",
+      "finding": "Outline summary 'multiple parents and marketplace-curated places in the gazetteer' matches the controlling idea of p14, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶8",
+      "finding": "Outline summary 'listings reference places by ID with all ancestors' matches the controlling idea of p15, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶9",
+      "finding": "Outline summary 'location precision as a six-level scale' matches the controlling idea of p16, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶10",
+      "finding": "Outline summary 'capture, stored and display precision and the Rotterdam mistake' matches the controlling idea of p17, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶11",
+      "finding": "Outline summary 'four families of geo index' matches the controlling idea of p18, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶12",
+      "finding": "Outline summary 'geo index families are complementary by job' matches the controlling idea of p19, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Geocoding Providers and Licences ¶1",
+      "finding": "Outline summary 'provider licences decide what can be stored' matches the controlling idea of p39, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Geocoding Providers and Licences ¶2",
+      "finding": "Outline summary 'choose provider per country and use; licence travels with each coordinate' matches the controlling idea of p40, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Geocoding Providers and Licences ¶3",
+      "finding": "Outline summary 'typical mix of registers, commercial geocoder and open gazetteer' matches the controlling idea of p41, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Geocoding Providers and Licences ¶4",
+      "finding": "Outline summary 'geocoding volumes and costs are smaller than feared' matches the controlling idea of p42, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶1",
+      "finding": "Outline summary 'location as a three-part value object in the listing aggregate' matches the controlling idea of p20, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶2",
+      "finding": "Outline summary 'precise private location is personal data, often misclassified' matches the controlling idea of p22, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶3",
+      "finding": "Outline summary 'lower parts are recomputable, making changes backfills' matches the controlling idea of p21, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶4",
+      "finding": "Outline summary 'six components that produce and guard location' matches the controlling idea of p23, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶5",
+      "finding": "Outline summary 'deriving the public point: cell snapping or deterministic offset' matches the controlling idea of p24, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶6",
+      "finding": "Outline summary 'public point stays in its place and coarsens in sparse areas' matches the controlling idea of p25, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶7",
+      "finding": "Outline summary 'Airbnb's obfuscation: release exact address only when warranted' matches the controlling idea of p26, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶8",
+      "finding": "Outline summary 'distances must come from the public point and be rounded' matches the controlling idea of p27, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶9",
+      "finding": "Outline summary 'internal consumers read precise points from the restricted store' matches the controlling idea of p28, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶10",
+      "finding": "Outline summary 'listing events carry only public location, keeping copies clean' matches the controlling idea of p29, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶11",
+      "finding": "Outline summary 'location fields in the search document' matches the controlling idea of p30, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶12",
+      "finding": "Outline summary 'real-estate exception for a hidden precise geo_point' matches the controlling idea of p31, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶1",
+      "finding": "Outline summary 'each location query hides a decision' matches the controlling idea of p32, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶2",
+      "finding": "Outline summary 'radius origin needs a curated reference point' matches the controlling idea of p33, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶3",
+      "finding": "Outline summary 'ambiguous city scope solved with administrative and marketplace places' matches the controlling idea of p34, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶4",
+      "finding": "Outline summary 'multilingual names and aliases attach to place IDs' matches the controlling idea of p35, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶5",
+      "finding": "Outline summary 'place filters use stored IDs, polygons use public points' matches the controlling idea of p36, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶6",
+      "finding": "Outline summary 'cross-border radius search requires a shared location model' matches the controlling idea of p37, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶7",
+      "finding": "Outline summary 'travel-time search and routing provider pricing as constraint' matches the controlling idea of p38, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice at Veldmark ¶1",
+      "finding": "Outline summary 'Rotterdam bike replayed through the six-step model' matches the controlling idea of p43, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice at Veldmark ¶2",
+      "finding": "Outline summary 'replay exposes only the district / fake payment link as separate fraud risk' matches the controlling idea of p44, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "In Practice at Veldmark ¶3",
+      "finding": "Outline summary 'Lyon apartment from three agencies processed and clustered' matches the controlling idea of p45, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "In Practice at Veldmark ¶4",
+      "finding": "Outline summary 'why agencies hide the street and the portal must honor it' matches the controlling idea of p46, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "In Practice at Veldmark ¶5",
+      "finding": "Outline summary 'location features in detecting the Barcelona fake-rental ring' matches the controlling idea of p47, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "In Practice at Veldmark ¶6",
+      "finding": "Outline summary 'two new location fraud signals for new accounts' matches the controlling idea of p48, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/6",
+      "draft_locus": "In Practice at Veldmark ¶7",
+      "finding": "Outline summary 'weekly location quality metrics per brand' matches the controlling idea of p49, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/7",
+      "draft_locus": "In Practice at Veldmark ¶8",
+      "finding": "Outline summary 'swapped coordinates as a recurring defect worth checking' matches the controlling idea of p50, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Outline summary 'three trade-off choices: storage, geo index, public-point method' matches the controlling idea of p51, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Outline summary 'privacy circle centered on real address is a mistake' matches the controlling idea of p52, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Outline summary 'location weight differs by vertical' matches the controlling idea of p53, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Outline summary 'nine recurring location failures and their controls' matches the controlling idea of p54, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Outline summary 'location needs one owner and four decisions' matches the controlling idea of p55, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Outline summary 'decision 1: one group gazetteer and geocoding gateway' matches the controlling idea of p56, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Outline summary 'decision 2: group precision policy with brand parameters' matches the controlling idea of p57, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Outline summary 'decision 3: providers per country and use behind the gateway' matches the controlling idea of p58, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Outline summary 'decision 4: location quality as a published metric' matches the controlling idea of p59, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "The Chief Architect's View ¶6",
+      "finding": "Outline summary 'long-term trends to watch' matches the controlling idea of p60, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "The Chief Architect's View ¶7",
+      "finding": "Outline summary 'when the design is overkill' matches the controlling idea of p61, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Outline summary 'review questions derived from the decisions' matches the controlling idea of p62, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Place to Seller ¶1",
+      "finding": "Outline summary 'the single-field fault and how the three representations fix the cases' matches the controlling idea of p63, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Place to Seller ¶2",
+      "finding": "Outline summary 'hand-off from location to sellers and accounts' matches the controlling idea of p64, in spec order.",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/introduction/thesis_statement",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "finding": "The outliner marked the KEY POINTS callout as holding three ideas; the spec places the thesis statement there as three bullets, and the callout is apparatus, not a body paragraph.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice at Veldmark ¶2",
+      "quote": "Not every risk Femke met that evening was a location one: at 20:11 a \"buyer\" sent her a fake payment link, a messaging and fraud problem covered in [[messaging-and-leads]].",
+      "finding": "The outliner summarised the paragraph as two ideas (only the district is exposed / a fake payment link as a separate fraud risk). The non-location risk is prescribed by p44's evidence item and the decision log keeps it in this paragraph, so the second topic comes from the spec, not from the prose; both flow readers also reported it as an aside.",
+      "fault": "spec",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Ties to thesis claim.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Ties to thesis claim.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Ties to thesis claim.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶1",
+      "finding": "Ties to L1 and L3 (motivating leak and five models).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2",
+      "finding": "Ties to L1 and L3 (motivating leak and five models).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶3",
+      "finding": "Ties to L1 and L3 (motivating leak and five models).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶4",
+      "finding": "Ties to L1 and L3 (motivating leak and five models).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶1",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶2",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶3",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶4",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶5",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶6",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶7",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶8",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶9",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶10",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶11",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶12",
+      "finding": "Ties to L1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Geocoding Providers and Licences ¶1",
+      "finding": "Ties to L5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Geocoding Providers and Licences ¶2",
+      "finding": "Ties to L5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Geocoding Providers and Licences ¶3",
+      "finding": "Ties to L5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Geocoding Providers and Licences ¶4",
+      "finding": "Ties to L5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶1",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶2",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶3",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶4",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶5",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶6",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶7",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶8",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶9",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶10",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶11",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶12",
+      "finding": "Ties to L2 and L3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶1",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶2",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶3",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶4",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶5",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶6",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶7",
+      "finding": "Ties to L4 (p38: L5).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice at Veldmark ¶1",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice at Veldmark ¶2",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "In Practice at Veldmark ¶3",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "In Practice at Veldmark ¶4",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "In Practice at Veldmark ¶5",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "In Practice at Veldmark ¶6",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/6",
+      "draft_locus": "In Practice at Veldmark ¶7",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/7",
+      "draft_locus": "In Practice at Veldmark ¶8",
+      "finding": "Ties to L2 and L3 (p47-p48 fraud reads: L2; p49-p50 metrics: L6).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Ties to L2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Ties to L2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Ties to L1 and L2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Ties to L3, L4 and L5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "The Chief Architect's View ¶6",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "The Chief Architect's View ¶7",
+      "finding": "Ties to L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Ties to L2-L6.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Place to Seller ¶1",
+      "finding": "Ties to thesis claim.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Place to Seller ¶2",
+      "finding": "Ties to thesis claim.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0/evidence/0",
+      "draft_locus": "Introduction ¶1 (example)",
+      "finding": "example 'A bike 14 km away in a 'within 10 km of Utrecht' search; Lyon flats in Villeurba' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶1 (scenario)",
+      "finding": "scenario 'Lucía Ortega brings Ingrid Halvorsen the complaint in late March 2027; the page ' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2 (scenario)",
+      "finding": "scenario 'Distances to one decimal ('2.3 km') from the centroid of a six-character postcod' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/evidence/1",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2 (figure)",
+      "finding": "figure 'Figure 1: three distance circles intersect at the seller's front door.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/evidence/0",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶3 (table)",
+      "finding": "table 'Five rows: Tradeyard NL/BE, Tradeyard PL/PT, Motorvane, Hearthly FR, Hearthly ES' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶1 (table)",
+      "finding": "table 'Kind, definition, example, who needs it, for the four kinds.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶2 (example)",
+      "finding": "example 'A dealer group with ten branches, an item at a parent's house, a property listed' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶3 (table)",
+      "finding": "table 'Postcode shapes and specificity for NL, BE, DE/AT, FR, ES/PT/PL with consequence' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶4 (source)",
+      "finding": "source 'libpostal: 99.45% full-parse accuracy on held-out data, '60+ languages', model a' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶6 (source)",
+      "finding": "source 'OSM admin_level 2 to 10, meanings varying by country (Berlin at 4); Who's On Fir' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶7 (example)",
+      "finding": "example 'Lyon 7e in the commune, the Métropole and the Rhône; 'Randstad', 'Costa del Sol'' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶9 (table)",
+      "finding": "table 'P0 to P5 with Tradeyard NL and Hearthly FR examples.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10/evidence/0",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶11 (source)",
+      "finding": "source 'Elastic BKD trees and tessellation; geohash cell-edge problem; H3 (Uber 2018) 16' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0/evidence/0",
+      "draft_locus": "Geocoding Providers and Licences ¶1 (table)",
+      "finding": "table 'Google (storage restricted, place IDs storable, display on a Google Map), Mapbox' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶1 (table)",
+      "finding": "table 'Part, contents, classification, readers for the three parts.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶2 (quotation)",
+      "finding": "quotation 'GDPR Art. 4(1): location data as one of the identifiers that make a person ident' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/evidence/1",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶2 (source)",
+      "finding": "source 'Productscape real-estate model classifies geo reference data as non-personal and' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶4 (figure)",
+      "finding": "figure 'Figure 2: location enters as text and leaves as two products; everything right o' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶5 (source)",
+      "finding": "source 'H3 res 7 average edge 1.41 km, res 8 0.53 km.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/evidence/1",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶5 (figure)",
+      "finding": "figure 'Figure 3: seeded offset versus redrawn pins that average back to the house.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶7 (quotation)",
+      "finding": "quotation ''within about a half mile (less than 1 kilometer) of the street address'; 'guest' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶9 (figure)",
+      "finding": "figure 'Figure 4: one precise point, many audiences.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9/evidence/0",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶10 (case)",
+      "finding": "case 'Femke's bike listing existed in seven copies.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/evidence/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶2 (example)",
+      "finding": "example 'Rotterdam's municipality includes Hoek van Holland about 30 km from the centre, ' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/evidence/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶3 (example)",
+      "finding": "example 'Villeurbanne, a separate commune inside the Métropole de Lyon.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/evidence/1",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶3 (figure)",
+      "finding": "figure 'Figure 5: commune outline, neighbouring commune, dashed marketplace place.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3/evidence/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶4 (example)",
+      "finding": "example 'Brussels-Capital Region's 19 municipalities with French and Dutch names; 'Elsene' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5/evidence/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶6 (example)",
+      "finding": "example 'Motorvane in Germany, the Netherlands, Poland and Austria; a buyer in Aachen sea' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6/evidence/0",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶7 (source)",
+      "finding": "source 'Rightmove's 'My Places' uses the TravelTime API; the vendor case study says Righ' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶1 (scenario)",
+      "finding": "scenario '€240 city bike on Sunday 7 March 2027 at 19:42; postcode centroid; H3 res 7 publ' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0/evidence/1",
+      "draft_locus": "In Practice at Veldmark ¶1 (source)",
+      "finding": "source 'ExifTool GPSLatitude and GPSLongitude tags.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶2 (scenario)",
+      "finding": "scenario 'The real 20:11 fake payment link of that evening, introduced as a risk that is n' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶3 (scenario)",
+      "finding": "scenario 'Three-room 68 m² flat in Lyon 7e, May 2027, three agencies via two vendors and K' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/4/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶5 (scenario)",
+      "finding": "scenario 'July 2027: 26 accounts, 180 fake rentals in Eixample, about 35% below market; re' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/6/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶7 (table)",
+      "finding": "table 'Match-level mix, low-confidence rate, coordinate defects, place drift and precis' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/7/evidence/0",
+      "draft_locus": "In Practice at Veldmark ¶8 (source)",
+      "finding": "source 'Elastic documentation on coordinate order.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/7/evidence/1",
+      "draft_locus": "In Practice at Veldmark ¶8 (example)",
+      "finding": "example 'A Lisbon listing with swapped coordinates lands in the Indian Ocean.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0/evidence/0",
+      "draft_locus": "Trade-offs ¶1 (table)",
+      "finding": "table 'Where to store location: single point, precise plus public, three representation' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0/evidence/1",
+      "draft_locus": "Trade-offs ¶1 (table)",
+      "finding": "table 'Which geo index for which job: engine-native, tile aggregations, H3, S2 or geoha' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0/evidence/2",
+      "draft_locus": "Trade-offs ¶1 (table)",
+      "finding": "table 'Public-point methods: label only, H3 snap, seeded offset, circle of uncertainty.' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0/evidence/0",
+      "draft_locus": "Vertical Differences ¶1 (table)",
+      "finding": "table 'Seven dimensions across general classifieds, real estate, automotive, and jobs a' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1/evidence/0",
+      "draft_locus": "The Chief Architect's View ¶2 (scenario)",
+      "finding": "scenario 'Approved at the architecture advice forum in May 2027; inside the Common Ground ' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3/evidence/0",
+      "draft_locus": "The Chief Architect's View ¶4 (scenario)",
+      "finding": "scenario 'When Veldmark bought Casavista in 2025, nobody asked what its coordinates were l' is followed (or, for tables and figures, framed and captioned) by prose saying what it shows.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶1",
+      "finding": "Section opening expresses sequence and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶1",
+      "finding": "Section opening expresses problem_solution and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "Geocoding Providers and Licences ¶1",
+      "finding": "Section opening expresses cause_effect and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶1",
+      "finding": "Section opening expresses sequence and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶1",
+      "finding": "Section opening expresses cause_effect and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶1",
+      "finding": "Section opening expresses sequence and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Section opening expresses cause_effect and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "finding": "Section opening expresses contrast and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Section opening expresses sequence and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "finding": "Section opening expresses problem_solution and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Section opening expresses cause_effect and picks up the declared known information.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Opening expresses cause_effect and picks up 'Failures that come from how location was modeled.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Opening expresses sequence and picks up 'Location as a subsystem.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶2",
+      "finding": "Opening expresses cause_effect and picks up 'The puzzle of how he found her.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶3",
+      "finding": "Opening expresses elaboration and picks up 'One brand's leak.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Five Answers to \"Where Is It?\" ¶4",
+      "finding": "Opening expresses cause_effect and picks up 'The five answers.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶2",
+      "finding": "Opening expresses elaboration and picks up 'Four kinds.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶3",
+      "finding": "Opening expresses sequence and picks up 'What is being located.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶4",
+      "finding": "Opening expresses elaboration and picks up 'Country-shaped addresses.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶5",
+      "finding": "Opening expresses sequence and picks up 'Parsed address components.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶6",
+      "finding": "Opening expresses sequence and picks up 'Coordinates.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/6/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶7",
+      "finding": "Opening expresses elaboration and picks up 'The two public models.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/7/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶8",
+      "finding": "Opening expresses cause_effect and picks up 'A gazetteer of administrative and marketplace places.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/8/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶9",
+      "finding": "Opening expresses sequence and picks up 'Places and hierarchies.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/9/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶10",
+      "finding": "Opening expresses elaboration and picks up 'The six levels.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/10/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶11",
+      "finding": "Opening expresses sequence and picks up 'Locations, places and precision.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/11/transition_in",
+      "draft_locus": "Concepts: What \"Location\" Means for a Listing ¶12",
+      "finding": "Opening expresses conclusion_summary and picks up 'Four index families.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in",
+      "draft_locus": "Geocoding Providers and Licences ¶2",
+      "finding": "Opening expresses cause_effect and picks up 'Terms that differ by provider.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in",
+      "draft_locus": "Geocoding Providers and Licences ¶3",
+      "finding": "Opening expresses cause_effect and picks up 'Provider per country and use.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/3/transition_in",
+      "draft_locus": "Geocoding Providers and Licences ¶4",
+      "finding": "Opening expresses elaboration and picks up 'The mix of providers.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶2",
+      "finding": "Opening expresses elaboration and picks up 'The three parts and their classifications in the table.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶3",
+      "finding": "Opening expresses sequence and picks up 'The three parts and the restriction on the precise one.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶4",
+      "finding": "Opening expresses sequence and picks up 'The value object and its classification.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶5",
+      "finding": "Opening expresses elaboration and picks up 'The precision policy engine.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶6",
+      "finding": "Opening expresses additional_support and picks up 'Two derivation methods.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶7",
+      "finding": "Opening expresses example and picks up 'Deriving a public point.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶8",
+      "finding": "Opening expresses cause_effect and picks up 'The public point.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶9",
+      "finding": "Opening expresses contrast and picks up 'Buyer-facing distances from the public point.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶10",
+      "finding": "Opening expresses sequence and picks up 'Which consumers read which part.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶11",
+      "finding": "Opening expresses sequence and picks up 'The event contract.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11/transition_in",
+      "draft_locus": "Architecture: Three Representations and the Services Behind Them ¶12",
+      "finding": "Opening expresses elaboration and picks up 'The public search document.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶2",
+      "finding": "Opening expresses example and picks up 'Hidden decisions.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶3",
+      "finding": "Opening expresses sequence and picks up 'Where a radius starts.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶4",
+      "finding": "Opening expresses sequence and picks up 'Which place a name means.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶5",
+      "finding": "Opening expresses contrast and picks up 'Names on IDs.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶6",
+      "finding": "Opening expresses sequence and picks up 'Queries within one country.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6/transition_in",
+      "draft_locus": "Radius, Polygon and Place: Getting the Semantics Right ¶7",
+      "finding": "Opening expresses sequence and picks up 'Distance-based queries.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶2",
+      "finding": "Opening expresses cause_effect and picks up 'Six steps.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶3",
+      "finding": "Opening expresses contrast and picks up 'A private seller's postcode.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/3/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶4",
+      "finding": "Opening expresses elaboration and picks up 'The agencies' display choices.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/4/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶5",
+      "finding": "Opening expresses contrast and picks up 'Location serving search and privacy.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/5/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶6",
+      "finding": "Opening expresses sequence and picks up 'Location in the detected signals.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/6/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶7",
+      "finding": "Opening expresses sequence and picks up 'Three cases.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/7/transition_in",
+      "draft_locus": "In Practice at Veldmark ¶8",
+      "finding": "Opening expresses emphasis and picks up 'The metrics table, labelled illustrative.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in",
+      "draft_locus": "Trade-offs ¶2",
+      "finding": "Opening expresses emphasis and picks up 'The public-point methods table.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/1/transition_in",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "finding": "Opening expresses sequence and picks up 'Four decisions.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/2/transition_in",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "finding": "Opening expresses sequence and picks up 'The shared gateway and gazetteer.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/3/transition_in",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "finding": "Opening expresses sequence and picks up 'The policy.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/4/transition_in",
+      "draft_locus": "The Chief Architect's View ¶5",
+      "finding": "Opening expresses sequence and picks up 'The providers.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/5/transition_in",
+      "draft_locus": "The Chief Architect's View ¶6",
+      "finding": "Opening expresses time and picks up 'Decisions for now.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/6/transition_in",
+      "draft_locus": "The Chief Architect's View ¶7",
+      "finding": "Opening expresses contrast and picks up 'Where the design is going.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in",
+      "draft_locus": "From Place to Seller ¶2",
+      "finding": "Opening expresses additional_support and picks up 'The location model and the agencies' precision choices.'.",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "From Place to Seller ¶1",
+      "finding": "'The five answers in Ingrid's table failed for one reason' sums up the chapter from its opening complaint (conclusion_summary).",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "draft_locus": "whole chapter",
+      "finding": "Both readers describe the declared prerequisite order (problem, vocabulary, licence constraint, architecture, query semantics, cases, then judgements); neither marks any section's position unclear. Both noted the Agence Rhône Habitat detail in the hand-off as minor and not confusing, so it is not recorded as a lost-thread point.",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts ¶1",
+      "quote": "These four kinds are not the three representations named in the callouts: a kind says what is located, a representation says how precisely one location is stored and shown.",
+      "finding": "The meta-clarification sends the reader back to the callouts for a term (representations) the body defines only in the Architecture section; both readers stopped and re-read here. The spec's order is fine; the sentence anticipates a concept the reader does not yet hold.",
+      "fault": "draft",
+      "corroborated_by": "flowB item B2 (same sentence, meta-aside sends reader back to the key points)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture ¶3 (after Architecture ¶2)",
+      "quote": "Back to the table's order: each part can be recomputed from the parts above it: the public point from the precise point and the policy, the place references from the public or precise point and the gazetteer.",
+      "finding": "The GDPR and Productscape paragraph (p22) interrupts the value-object table and the recomputation point that depends on it; the signpost admits the detour and the double colon makes readers reread. Both readers propose moving p22 after p21 or out of the subsection. The spec prescribes the order p20, p22, p21 and the Productscape evidence in place (decision log: both orders tried), so the difficulty comes from the spec's order and content.",
+      "fault": "spec",
+      "corroborated_by": "flowB item B5 (GDPR/Productscape paragraph breaks the flow; 'Back to the table's order' read twice)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Architecture, Figure 2 caption (before Architecture ¶4)",
+      "quote": "Everything to the right of the precision policy engine (component 5 below) sees only what the policy allows, while duplicate detection and fraud models read the restricted store (component 6) through an audited path.",
+      "finding": "The figure and its caption refer to numbered components before the list that numbers them; both readers had to look ahead. Placing the figure after the list (or not numbering in the caption) fixes it without touching the spec.",
+      "fault": "draft",
+      "corroborated_by": "flowB item B4 (Figure 2 caption cites components 5 and 6 before the list)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice at Veldmark ¶1",
+      "quote": "Her listing went live on the old model, a few weeks before the complaint. The six steps below are a replay: they show how the same listing is processed under the precision policy Veldmark adopted later in 2027.",
+      "finding": "Both readers had to reconcile three dates (7 March, the late-March complaint, the policy 'later in 2027') and work out whether Femke was the scene's complainant (she listed a bike; the complainant a sofa). The spec's case order is fine; the prose does not state plainly that Femke is a different seller from the complainant and which model each step shows.",
+      "fault": "draft",
+      "corroborated_by": "flowB item B7 (three dates to reconcile; reread to see Femke is not the complainant)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice at Veldmark ¶2",
+      "quote": "Not every risk Femke met that evening was a location one: at 20:11 a \"buyer\" sent her a fake payment link, a messaging and fraud problem covered in [[messaging-and-leads]].",
+      "finding": "Both readers read the fake-payment-link aside as leaving the topic and breaking the case's conclusion. The aside is prescribed by p44's evidence item and kept by the decision log, so the difficulty comes from the spec's content.",
+      "fault": "spec",
+      "corroborated_by": "flowB item B8 (aside that leaves the topic)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Place to Seller ¶1",
+      "quote": "The Lyon page that left out Villeurbanne had a different cause, no place references to choose between, and the same model's third representation fixes it.",
+      "finding": "After 'The five answers in Ingrid's table failed for one reason', the synthesis turns to a second cause for an example that was not in Ingrid's table (it came from the introduction and the query section); one reader stopped at the shift from 'one reason' to 'a different cause', the other mistook the Lyon page for the Lyon apartment case. The spec's synthesis prescribes this two-cause structure tied to the five answers.",
+      "fault": "spec",
+      "corroborated_by": "flowB item B9 (Villeurbanne not in Ingrid's table; 'one reason' gives way to a second cause)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "Veldmark's cases rest on three choices: where to store location (three representations suit multi-country groups), which geo index fits which job (engine-native types for queries, H3 for aggregation), and how to derive the public point (each method trades privacy against map quality; a snapped or seeded point, coarsened in sparse areas, balances the two).",
+      "finding": "Flow reader A could not parse three verdicts packed into parentheses in one pass. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "Part II models the listing as a small aggregate that references governed subdomains by ID ([[listing-aggregate]]).",
+      "finding": "Flow reader B found the opening sentence dense with jargon and cross-links, burying the claim 'Location is not an attribute but a small subsystem'. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/8",
+      "draft_locus": "Concepts ¶9",
+      "quote": "The place levels, from country down to street, also name levels of detail.",
+      "finding": "Flow reader B noted that the gazetteer paragraphs listed places down to neighbourhoods, never streets, so the bridge claims a level that was not introduced. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture ¶12",
+      "quote": "The one exception is real estate: there the search document may also hold a precise `geo_point` that is never returned in responses but is used for polygon queries when the agency has chosen exact display.",
+      "finding": "Flow reader B re-read: if the agency chose exact display, why is the public point not already precise? The prose does not say. Reported by one reader only.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1/evidence/1",
+      "draft_locus": "Architecture ¶2",
+      "quote": "The real-estate Productscape domain model, used in this book's research, classifies its geo reference data as internal and non-personal, but the listing that carries a private owner's location as \"possible-personal\".",
+      "finding": "Productscape is named as evidence without saying what it is (whose model, published or not); the reader cannot weigh the evidence. Flow reader A reported it as an unexplained term.",
+      "fault": "draft",
+      "corroborated_by": "flowA item A2 ('The real-estate Productscape domain model, used in this book's research' unexplained term in an aside)",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/audience (journal)",
+      "draft_locus": "whole chapter",
+      "finding": "Geocoding, reverse geocoding, gazetteer, admin_level, H3, S2, geohash, geo index, precision levels P0-P5, value object parts, Common Ground, Keybridge, Valuo and Tradeyard Safe Deal are defined at first use. VIN (journal does_not_know) appears only in the vertical table and lead, glossed by context ('the car's identity comes from the VIN') with a link to the chapter that covers it; aggregate and subdomain are Part II vocabulary the reader has met.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction ¶1-¶3",
+      "finding": "Opens on three concrete failures (the Utrecht radius, Villeurbanne, a private seller located from distances), then the claim and roadmap; none of the weak patterns.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Place to Seller ¶1-¶2",
+      "finding": "No 'in conclusion' opener, no new subtopic and no body evidence; the Agence Rhône Habitat detail in the hand-off names an agency already met in the Lyon case.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/so_what",
+      "draft_locus": "From Place to Seller ¶1",
+      "quote": "Under it, the Rotterdam payload would carry a cell center and a district, never a doorstep.",
+      "finding": "The paragraph synthesizes (one stored location read by every consumer caused both the leak and the unlicensed coordinates), but it never says why that matters to the group: the spec's so_what (fix location once as a shared service instead of five brand fixes, and so answer the regulator, the licensor and the cross-border buyer) and the closing sentence that three representations, one gazetteer and a licence on every coordinate answer all three are absent. The conclusion ends on the callback, not on the consequence.",
+      "fault": "draft",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/callback",
+      "draft_locus": "From Place to Seller ¶1",
+      "finding": "Returns to Ingrid's five answers and the Rotterdam door: 'the Rotterdam payload would carry a cell center and a district, never a doorstep.'",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction callouts and ¶1-¶3",
+      "finding": "The cold reader predicted all eleven sections in order (five answers; concepts; licences; three representations; radius, polygon and place; the three Veldmark cases; trade-offs, verticals, failure modes, Chief Architect's view, questions) and the evidence (providers' terms, standards, documentation, Veldmark) and tone.",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "whole chapter",
+      "finding": "The cold reader explained the leak (one-decimal distances from the six-character postcode centroid, centroid in the API payload to six decimals; payload or three intersecting circles) and the model's fix (restricted precise point never sent out; public point derived by policy via cell snap or seeded offset; all public distances and sorting from the public point, rounded; weekly exposure scan), matching the expected answer.",
+      "criterion": "AC-1",
+      "severity": "major"
+    }
+  ]
+}

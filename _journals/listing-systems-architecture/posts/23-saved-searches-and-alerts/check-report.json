@@ -1,0 +1,657 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/23-saved-searches-and-alerts/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/23-saved-searches-and-alerts/index.md",
+  "spec_sha": "61fc9b0115dff1df",
+  "draft_sha": "7fb80cefc168963b",
+  "run_at": "2026-11-12T22:04:43+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: saved searches, percolation, fan-out, alert edge cases, Veldmark's latency goal",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business value of alerts: first contact wins, and bad alerts erode trust",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architectural challenge: reverse search plus fan-out that exposes upstream inconsistencies",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: alerts as reverse search, notify on entry with send-time recheck, measure by contacts",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: ghost inventory, unguarded fraud fan-out, vanity send metrics",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Saved search as a continuous query that creates standing demand and an obligation to notify",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Veldmark's alert scale and alerts as the meeting point of many systems",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Definitions of saved search, percolation and fan-out, plus links to related chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶1",
+      "summary": "Femke's bike: listed, matched 312 searches, contacted quickly, sold",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶2",
+      "summary": "Stale digests still advertise the sold bike because of a snapshot",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶3",
+      "summary": "How Tradeyard's current instant-alert cron and daily digests work",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶4",
+      "summary": "Baseline numbers showing late alerts, stale digests and unread searches",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶5",
+      "summary": "The five-minute p95 alert latency target",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron ¶6",
+      "summary": "The chapter's central question posed by Ingrid",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶1",
+      "summary": "The four parts of a saved search",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶2",
+      "summary": "Store the query in a normalized, versioned form, not URL or engine query",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶3",
+      "summary": "Pointer to the saved-search lifecycle figure",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶4",
+      "summary": "Saved searches are personal data under GDPR",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶5",
+      "summary": "Match set and how events enter, stay in or leave it",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶6",
+      "summary": "Rule: notify on entry, retract on exit, needing previous state and a match ledger",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶7",
+      "summary": "Watchers as single-listing subscriptions; one price cut yields two alert kinds",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: Saved Searches, Match Sets and Alerts ¶8",
+      "summary": "Minimum-drop and frequency rules to stop price-drop gaming",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶1",
+      "summary": "Claim: percolation for instant alerts, batch re-query only for digests",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶2",
+      "summary": "Batch re-query's fidelity and why its cost rules it out for instant alerts",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶3",
+      "summary": "How percolation inverts matching and how its cost scales",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶4",
+      "summary": "Rightmove and Homegate as documented percolation users",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶5",
+      "summary": "Percolator engine constraints that matter for architecture",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶6",
+      "summary": "Stored shapes go stale in percolated polygon searches",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶7",
+      "summary": "Equivalent features in Lucene monitor and Vespa predicate fields",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶8",
+      "summary": "Candidate selection by partitioning and category/place pre-filter keys",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶9",
+      "summary": "Bike example: pre-filter narrows 1.9 million to 58,000 to 312",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Two Ways to Match: Percolate or Re-query ¶10",
+      "summary": "Structured matcher alternative: cheap but loses search fidelity",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶1",
+      "summary": "Pointer to the target architecture figure",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶2",
+      "summary": "Responsibilities of each component in the target architecture",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶3",
+      "summary": "Hybrid matching: percolation for instant, ledger-based digests, re-query for reconciliation",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶4",
+      "summary": "Pointer to the figure replaying the bike on the new design",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶5",
+      "summary": "How the ledger and caps turn 312 matches into 289 pushes",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Fan-out: Hot Listings, Quotas and Bursts ¶1",
+      "summary": "Size fan-out for hot-listing tails using queues",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Fan-out: Hot Listings, Quotas and Bursts ¶2",
+      "summary": "Three limits: push provider quotas, user attention, mail reputation",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Fan-out: Hot Listings, Quotas and Bursts ¶3",
+      "summary": "Mail infrastructure at this volume is its own system; leboncoin comparison",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Fan-out: Hot Listings, Quotas and Bursts ¶4",
+      "summary": "Fan-out order as a fairness decision; randomize and govern paid early alerts",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Channels, Digests and Relevance ¶1",
+      "summary": "Channels suit different urgencies (table)",
+      "matched_spec_paragraph": "p37a"
+    },
+    {
+      "draft_locator": "Channels, Digests and Relevance ¶2",
+      "summary": "Digests need retraction and a send-time availability check",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Channels, Digests and Relevance ¶3",
+      "summary": "Alert relevance: ordering digests and suppressing duplicates via ranking",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Worked Example: Sizing the Matcher for Veldmark ¶1",
+      "summary": "Event rate is modest; cost comes from candidates per event",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Worked Example: Sizing the Matcher for Veldmark ¶2",
+      "summary": "Candidate volume at peak and reducing it via dormancy and finer filters",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Worked Example: Sizing the Matcher for Veldmark ¶3",
+      "summary": "Notification fan-out rates absorbed by queues",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Worked Example: Sizing the Matcher for Veldmark ¶4",
+      "summary": "Who owns matcher cost; semantic widening needs capacity review",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Alerts as a Liquidity Lever ¶1",
+      "summary": "Alerts shorten supply-to-demand time; buyer view on speed",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Alerts as a Liquidity Lever ¶2",
+      "summary": "The lever helps both buyers and sellers",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Alerts as a Liquidity Lever ¶3",
+      "summary": "Metrics for measuring alerts as a liquidity lever (table)",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Alerts as a Liquidity Lever ¶4",
+      "summary": "Why alerts sent is excluded as a metric",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Risk Gate: Alerts Amplify Whatever They Carry ¶1",
+      "summary": "Alerts amplify listings, which helps scammers",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Risk Gate: Alerts Amplify Whatever They Carry ¶2",
+      "summary": "Hearthly Barcelona fake-rental case amplified by alerts",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Risk Gate: Alerts Amplify Whatever They Carry ¶3",
+      "summary": "A trust-and-safety risk gate in front of the matcher",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Risk Gate: Alerts Amplify Whatever They Carry ¶4",
+      "summary": "Risk gate rules: alertability, stricter thresholds, takedown retraction, new-account hold",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Risk Gate: Alerts Amplify Whatever They Carry ¶5",
+      "summary": "Holds cost honest sellers speed, so target them",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Saved Searches Outlive the Taxonomy ¶1",
+      "summary": "Saved searches outlive reference data; migrate, don't drop",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Saved Searches Outlive the Taxonomy ¶2",
+      "summary": "Bikes split migration plan for 1.3 million saved searches",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Saved Searches Outlive the Taxonomy ¶3",
+      "summary": "Same migration approach for places, polygons and commute searches",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Consent, Unsubscribe and Retention ¶1",
+      "summary": "Legal principles: alert classification, unsubscribe, push permission, retention, sensitive inference",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Speed versus safety and attention; make mechanisms configurable policy",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Real estate needs canonical-property alerts / automotive feed lag delays retractions",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Ten alerting failure modes",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Alerts as a shared group platform with brand-owned experience",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Seven ownership and policy decisions for the advice forum",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Transition plan from the cron job to the new matcher",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Watch natural-language saved searches; pin the compiled query",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions for an alerts system",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "From Discovery to Trust ¶1",
+      "summary": "Chapter answer recap and Part IV as one discovery pipeline",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "From Discovery to Trust ¶2",
+      "summary": "Speed helps fraudsters too, so it needs a risk gate",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "From Discovery to Trust ¶3",
+      "summary": "Hand-off to Part V on trust and safety",
+      "matched_spec_paragraph": "p67"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Every outline summary of a body unit agrees with the controlling idea of its aligned spec paragraph, in spec order (p01-p67, including the worked example after channels and the transition paragraph p57 in the Chief Architect's View); the five callout units have no spec paragraph and are not counted.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "standard",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked two units two_ideas. Introduction ¶3 (terms owned plus the chapters it builds on) and Vertical Differences ¶1 (canonical-property alerts and automotive feed lag) each realise a spec paragraph (p03, p59) whose controlling idea joins exactly these two parts; Vertical Differences ¶1 opens with a unifying sentence ('two verticals show that alert quality depends on systems outside the alert platform') that both examples serve. Neither is a stray second idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every body paragraph aligns to a spec paragraph that serves one of S1-S6; no orphan paragraph.",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each figure carries a caption stating what it shows, the baseline table is introduced by the sentence saying what it shows, the metrics and channel tables carry a 'Why' column, and the bike numbers, Golf case, Eixample case and leboncoin comparison are each followed or framed by the point they make.",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶1",
+      "quote": "Figure 4 shows the target architecture Ingrid's team proposes for Common Ground.",
+      "finding": "Declared relationship is cause_effect, carrying over percolation with candidate selection and the constraint that a percolator index is a projection. The opening sentence only points at a figure; nothing says the architecture follows from the matching conclusions (why the store is the system of record and the percolators are rebuildable projections). The cause-effect link the spec's flow rationale depends on is left to the heading.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Saved Searches Outlive the Taxonomy ¶1",
+      "quote": "Saved searches outlive the reference data they are written against",
+      "finding": "Declared relationship is sequence from 'risks at the moment of matching' to 'a risk over the saved search's lifetime'. The opening states the new topic but never picks up the risk gate or the moment of matching, so the shift from matching-time to lifetime concerns is not expressed. Both flow readers could not say why the section sits here (see flow_is_followable).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in boundaries express their declared relationship at the boundary: e.g. 'Once fan-out has decided who is notified and when' (channels), 'To size this design' (worked example), 'The cost buys speed.' (liquidity), 'An alert system is an amplifier.' (risk gate), 'The design consequence is' (p46), 'follow the same pattern' (p51), 'That pipeline now' (p66).",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6",
+      "draft_locus": "Worked Example: Sizing the Matcher for Veldmark ¶1",
+      "quote": "To size this design, start with Veldmark's volumes",
+      "finding": "Both flow readers could not say why the sizing section comes after Channels: A marked its position UNCLEAR ('would sit more naturally after Architecture or Fan-out'), B 'could not tell why after channels; mostly about the matcher discussed two sections earlier'. Both propose moving it. The opening already says 'this design', so the prose does what it can; the difficulty is the declared position of a section titled and mostly about the matcher, three sections after the matcher.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, position of Worked Example (with reordering suggestion 4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9",
+      "draft_locus": "Saved Searches Outlive the Taxonomy ¶1",
+      "quote": "Saved searches outlive the reference data they are written against",
+      "finding": "Both flow readers could not tell why the taxonomy section comes after the risk gate and before consent (A: 'could not tell why after risk and before consent'; B: 'link to previous section unclear; would equally fit after Architecture'). The spec's rationale (lifetime concerns after matching-time concerns) is sound but the prose never states it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, position of Taxonomy",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Worked Example: Sizing the Matcher for Veldmark ¶2",
+      "quote": "pausing the dormant 38% of the baseline removes about a third",
+      "finding": "A12 and B6: the dormancy pause is used here but only explained later in Consent, and readers cannot see why pausing 38% of saved searches removes 'about a third' of candidates; both re-read the baseline table.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/9",
+      "draft_locus": "Two Ways to Match: Percolate or Re-query ¶10",
+      "quote": "Some marketplaces skip the engine altogether and build a **structured matcher**",
+      "finding": "A9 and B4: under a heading announcing two ways to match, a third approach appears, and B had read Tradeyard's cron job as batch re-query, so 'Tradeyard's Yardstick cron job is a primitive version of this' forces a re-read. The heading is the spec's section title, which frames the section as a two-way choice.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item B4",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Saved Searches Outlive the Taxonomy ¶2",
+      "quote": "move from 19 country leaves into the canonical bike leaves of the new group taxonomy",
+      "finding": "A14 and B8: 'country leaves' is not glossed; both readers had to infer that each country had its own bike category leaf.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B8",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/14/paragraphs/2",
+      "draft_locus": "The Chief Architect's View ¶3",
+      "quote": "Motorvane keeps its alerts on Elasticsearch percolators, consistent with its engine staying until the 2029 review",
+      "finding": "A15 and B12: the 2029 review is not glossed and the paragraph is dense with dates; both readers stopped here.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B12",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Discovery to Trust ¶1",
+      "quote": "Together, the six chapters make discovery one pipeline that answers the part's three questions once.",
+      "finding": "A16 and B13: 'the part's three questions' arrive as if already known within this chapter, and B finds the answers compressed ('Who decided its position? A versioned policy with named owners, for results or a fan-out.'). The callback is required by AC-4, so the fix is a short re-statement that the questions come from the Part IV opening.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B13",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Saved Searches, Match Sets and Alerts ¶5",
+      "quote": "Usually not alert-worthy, with one exception, the price drop for listings the user watches.",
+      "finding": "A5 only: watched listings are used two paragraphs before watchers are defined.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶3",
+      "quote": "Ingrid's recommendation is to build digests from the percolation matches recorded in the match ledger",
+      "finding": "A6 only: after 'batch re-query is fast enough only for digests', digests are built from percolation matches instead, a small reversal the reader re-read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶5",
+      "quote": "Fourteen users had already received their cap of instant alerts (a frequency cap, for example five instant alerts an hour) for the evening",
+      "finding": "A8 only: an hourly cap is described as reached 'for the evening'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Architecture: A Saved-Search Store with Rebuildable Percolators ¶5",
+      "quote": "the ledger sends one notification per user per listing",
+      "finding": "B5 only: the ledger records, the orchestrator sends; the reader stopped to check which component acts.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Channels, Digests and Relevance ¶1",
+      "quote": "Once fan-out has decided who is notified and when, each match still needs a channel, and each channel suits a different urgency:",
+      "finding": "B9 only: the channel comparison arrives after Fan-out already discussed push and e-mail limits; flow reader A found the position clear.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Saved Searches Outlive the Taxonomy ¶2",
+      "quote": "run old and new matchers in parallel for a week",
+      "finding": "B10 only: the reader had to work out which matcher the November 2027 parallel run migrates, given that the new matcher is in comparison mode from Q4 2027 and Tradeyard stays on the cron job until 2028.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Worked Example: Sizing the Matcher for Veldmark ¶2",
+      "quote": "pausing the dormant 38% of the baseline",
+      "finding": "The dormancy pause policy (pause after 12 months unopened) is used here as a known lever but is stated only later, in Consent, Unsubscribe and Retention; the baseline gives only the 38% share. Not in already_knows.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A12; flow reader B, item B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Concepts: Saved Searches, Match Sets and Alerts ¶5",
+      "quote": "the price drop for listings the user watches",
+      "finding": "Watching a listing is used before the watcher is defined two paragraphs later; reported by one flow reader only (A5).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "standard",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on an intriguing example (three concrete saved searches) and the Veldmark obligation; it is not a placeholder, restated question, dictionary opening, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', introduces no new subtopic or evidence beyond callbacks to the bike and Eixample case, and ends on the hand-off to Part V rather than a rephrased thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "standard",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "It states what no section states (alerts consume every earlier Part IV surface, making discovery one pipeline that answers the part's three questions) and why it matters (that speed serves fraudsters as well as honest sellers, so it is safe only behind a risk gate and decisions every surface obeys).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "The last section answers the three Part IV questions (availability, who decided position, did it lead to a contact), returns to Femke's seven-minute first contact and the 180 Eixample rentals and 41,000 alerts, and hands off to Part V and trust-and-safety-architecture.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicts the sections in the roadmap's order (scene, concepts incl. watchers, percolation vs re-query, store with rebuildable percolators, fan-out and channels, sizing, liquidity, risk gate, taxonomy, consent, trade-offs through questions, Part IV close), the evidence (fictional Veldmark, Rightmove and Homegate percolators, sizing arithmetic) and the tone. It does not name engine documentation or trade press, a minor gap. Note: AC-2's expected text lists sizing after consent, which disagrees with the spec's own roadmap and sections (sizing after channels); the reader agrees with the roadmap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The AC-1 reader states the expected design: saved-search store of record with normalized versioned queries, rebuildable percolators partitioned with pre-filters, reverse matching on listing events notifying on entry with a match ledger, retraction of sold/removed listings, an orchestrator with dedup, caps, quiet hours and a send-time availability check for digests, a trust-and-safety risk gate keeping risky listings not alertable until review with stricter thresholds in rentals and a hold for new accounts' first listings; and measures latency searchable-to-provider (5 min p95), ghost-alert rate, alert-to-contact within 48h, unsubscribe and complaint rates, not sends. Dormant share appears as a lever rather than a metric, a minor gap.",
+      "severity": "major"
+    }
+  ]
+}

@@ -1,0 +1,664 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/21-recommendations/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/21-recommendations/index.md",
+  "spec_sha": "1080dd889384efde",
+  "draft_sha": "b9ed9e1af769689e",
+  "run_at": "2026-11-12T22:01:27+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter goals: surfaces, methods, pipeline, evaluation, regulation",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business value of recommendations and cost of recommending sold cars",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "churning catalog demands real-time, search-aligned recommender architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three key points: churn constraint, staged pipeline, contact-based measurement with consent",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed: Ghost Inventory, Set-and-Forget AI, Vanity Liquidity",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "retail recommenders vs unique, short-lived listings",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "churn reshapes plumbing rather than models",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "chapter scope and links to neighbouring chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "chapter roadmap and evidence base",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended ¶1",
+      "summary": "Motorvane's nightly co-view carousel",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended ¶2",
+      "summary": "sold Golf lingering in carousels after feed delay",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended ¶3",
+      "summary": "data team's review findings introduced",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended ¶4",
+      "summary": "co-view recommender starves new listings, dealers notice",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Golf That Kept Being Recommended ¶5",
+      "summary": "the practical question posed to the architects",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Recommendation Surfaces ¶1",
+      "summary": "definition of recommendation and how surfaces differ",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Recommendation Surfaces ¶2",
+      "summary": "low-result fallback rescues dead-end searches",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Recommendation Surfaces ¶3",
+      "summary": "recommendation e-mails as most visible stale surface",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Why Listings Break the Usual Recommender ¶1",
+      "summary": "listings break retail recommender assumptions, per published research",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Why Listings Break the Usual Recommender ¶2",
+      "summary": "principle: describe a listing with no interactions via content",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Methods Under Churn ¶1",
+      "summary": "methods judged by handling new and sold listings; two-tower terms",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Methods Under Churn ¶2",
+      "summary": "published industry cases in date order",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Methods Under Churn ¶3",
+      "summary": "listing lifetime explains different trade-off choices",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶1",
+      "summary": "multi-stage shape with heavier candidate generation",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶2",
+      "summary": "four candidate sources covering each other's gaps",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶3",
+      "summary": "candidates return IDs only; cards rendered live",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶4",
+      "summary": "single serving-time filter for all candidates",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶5",
+      "summary": "availability shares search's status read model",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶6",
+      "summary": "re-ranker optimizes contacts, excludes paid status",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: Generate, Filter, Re-rank, Apply Policy ¶7",
+      "summary": "policy rules: caps, diversity, exploration, reason codes",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Keeping Recommendations Alive: Events and Serving-Time Checks ¶1",
+      "summary": "freshness from listing events, removal first",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Keeping Recommendations Alive: Events and Serving-Time Checks ¶2",
+      "summary": "design points: deletable indices, live filter, feed lag source",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Keeping Recommendations Alive: Events and Serving-Time Checks ¶3",
+      "summary": "send-time availability check for e-mail and push",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Cold Start in Three Forms ¶1",
+      "summary": "cold start defined, three forms, section plan",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Cold Start in Three Forms ¶2",
+      "summary": "content and image features carry new listings",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Cold Start in Three Forms ¶3",
+      "summary": "session-based personalization for anonymous users",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Feedback Loops and Exposure ¶1",
+      "summary": "feedback loops: popularity bias, exposure fairness, position bias",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Feedback Loops and Exposure ¶2",
+      "summary": "same tools as ranking, but only policy limits drift",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Evaluating Recommendations ¶1",
+      "summary": "click-through is a misleading metric",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Evaluating Recommendations ¶2",
+      "summary": "offline relevance and distribution metrics + ANN recall as explicit engineering trade-off",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Evaluating Recommendations ¶3",
+      "summary": "online A/B tests on contacts with interference caveats and experimentation platform",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Privacy, Consent and Regulation ¶1",
+      "summary": "legal constraints: consent, DSA, discrimination, retention",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Privacy, Consent and Regulation ¶2",
+      "summary": "cross-brand data use as consented, opt-in decision",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Veldmark Rebuild: Similar Vehicles at Motorvane ¶1",
+      "summary": "Motorvane's rebuilt carousel design",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Veldmark Rebuild: Similar Vehicles at Motorvane ¶2",
+      "summary": "A/B test of the rebuild introduced",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Veldmark Rebuild: Similar Vehicles at Motorvane ¶3",
+      "summary": "fewer clicks but more leads; optimize for leads",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Veldmark Rebuild: Similar Vehicles at Motorvane ¶4",
+      "summary": "Golf's timeline under new design; lag fixed at source",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "trade-off table introduced",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "vertical differences table introduced",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "own-stock recommendations as labeled policy decision",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶3",
+      "summary": "consistent duplicate-cluster choice across surfaces",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "eight failure modes with warning signs",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "recommendations as platform capability with local models",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "what to share across brands",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "what stays local per brand",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "decision ownership for recommenders",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "metrics the Chief Architect should watch",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "external AI channels call for a contracted recommendation service",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "review questions derived from the chapter",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "From Lists to Maps ¶1",
+      "summary": "synthesis: plumbing, not models, solves churn",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "From Lists to Maps ¶2",
+      "summary": "hand-off to map search chapter",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 55 aligned outline summaries state the controlling idea of their spec paragraph, in spec order; the five callouts are unmatched front matter.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only Evaluating Recommendations ¶2 was marked two_ideas. Its spec controlling idea (p34) is one idea, what to measure offline, and the draft presents ANN recall as one more offline metric ('an engineering metric in its own right'); the paragraph matches its spec unit.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim R1-R6 (scene, surfaces, why-listings-differ -> R1; methods, architecture sources, cold start -> R2; filter, freshness, Hearthly duplicates -> R3; re-ranker, policy, feedback, evaluation, rebuild -> R4; privacy -> R5; Chief Architect's view -> R6).",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table, figure, case and quotation has a sentence, caption or column that says what it shows (scene table -> ¶4; methods table -> lead sentence; each dated case ends on its lesson; filter table -> shared status rule; guardrail table's 'What it protects'; rebuild table -> 'The last row...'; Felix's quotation is itself the lesson).",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/14/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "Recommendations look like a feature owned by a product squad. At group scale they are a **platform capability with brand-specific models**, and the Chief Architect's work is to draw that line.",
+      "finding": "Declared problem_solution carrying 'failures a single brand can make' and introducing 'the group decisions that prevent them'. The opening does not pick up the failure modes just listed or present the group view as what prevents them; it starts a new framing (squad feature vs platform).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions are expressed at their boundaries (e.g. 'The consequence is a design principle', 'Evaluation says what to optimize; consent and law say what may be used', 'Beyond these trade-offs', 'Each failure below breaks one rule of this chapter').",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1 (also KEY POINTS, Introduction ¶3, Architecture ¶2)",
+      "quote": "Every listing is a cold-start problem, and every recommendation is a bet on an item that may disappear before the buyer clicks.",
+      "finding": "Cold start is on audience.does_not_know. It is used in the opening, the scope paragraph ('This chapter owns ... cold start') and 'It is the cold-start backbone', but defined only in Cold Start in Three Forms ¶1, several sections later.",
+      "fault": "draft",
+      "corroborated_by": "flow_A item 3c ('cold start is used from the lead ... but defined only at ...'); flow_B item 3b",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Cold Start in Three Forms, table, new market row",
+      "quote": "Tradeyard's new cargo-bike leaf from November 2027",
+      "finding": "'Leaf' (a leaf of the category tree) is used without explanation and is not in audience.already_knows.",
+      "fault": "draft",
+      "corroborated_by": "flow_A item 3l ('\"Leaf\" ... is jargon here'); flow_B item 3k ('\"Leaf\" (a category-tree leaf) is not explained')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/2",
+      "draft_locus": "Vertical Differences ¶3",
+      "quote": "When the Lyon apartment's three agency listings are clustered into one canonical property, the recommender must choose one listing to show.",
+      "finding": "'The Lyon apartment' is referred to with a definite article as if known; already_knows lists entity-resolution clusters and the Essen Golf but not this example, and the chapter never introduces it.",
+      "fault": "draft",
+      "corroborated_by": "flow_A item 3p ('this chapter does not introduce it'); flow_B item 3q",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/14/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "This is the most valuable piece to share, and in Veldmark's case it comes with the Common Ground event backbone.",
+      "finding": "'Common Ground' is named as if known; it is not on already_knows and the chapter never says what it is beyond the word 'backbone'.",
+      "fault": "draft",
+      "corroborated_by": "flow_A item 3q ('Common Ground is not explained in this chapter'); flow_B item 3r",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6",
+      "draft_locus": "Cold Start in Three Forms ¶1",
+      "quote": "The candidate sources above already give new listings a place; this section returns to them for the published evidence behind that choice, then covers the two forms the architecture has not yet addressed, new users and new markets.",
+      "finding": "Both readers mark the section's position as partly unclear: the central problem of the chapter is defined and evidenced only after the architecture that solves it, and a third of the section reads as backtracking. The draft now signposts the return exactly as the spec's transition_in declares, and both readers still propose moving the section (or its new-listing evidence) before the Architecture section. The difficulty comes from the declared order (cold start after architecture), not from the prose.",
+      "fault": "spec",
+      "corroborated_by": "flow_B item 2 (Cold Start in Three Forms: 'Position partly unclear ... a third of it is backtracking') and item 4; flow_A item 2 ('position somewhat unclear') and item 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Methods Under Churn ¶3",
+      "quote": "Vinted and Airbnb made the same trade-off and settled it differently, because their inventory lives for different lengths of time.",
+      "finding": "'The same trade-off' is never named (freshness of the item side against serving cost), and the Vinted bullet is mostly about rebuilds, pre-filtering and exact vs approximate search, so both readers re-read the sentence.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3f; flow_A item 3h",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Methods Under Churn, method table, matrix factorization row",
+      "quote": "(standard algorithms: alternating least squares (ALS), which factorizes the user-item matrix; RP3beta, a random walk over the user-item graph that damps popular items; and SLIM, which learns sparse item-to-item weights)",
+      "finding": "Three algorithm definitions in nested parentheses inside a table cell; both readers had to re-read the row, and SLIM is never used again.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3e; flow_A item 3i",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Keeping Recommendations Alive ¶2 (point 3)",
+      "quote": "A lead management system that knows the car was sold can unpublish it before the feed does.",
+      "finding": "Both readers could not tell whether 'a lead management system' is Dealer Hub, named in the previous sentence, or a different system.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3i; flow_A item 3k",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Cold Start in Three Forms, table, new market row",
+      "quote": "Tradeyard's new cargo-bike leaf from November 2027",
+      "finding": "November 2027 is later than every other scenario date (the September 2027 rebuild), so both readers stopped to check the timeline.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3k; flow_A item 3l",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Evaluating Recommendations ¶3",
+      "quote": "Recommendation tests suffer less interference (test groups competing for the same listings) than ranking tests, because they redistribute less attention.",
+      "finding": "Both readers re-read the claim and its qualification; reader B found it at odds with the earlier point that the carousel distributes 12% of traffic. Both note the Vinted '50 A/B tests' evidence concerns search, not recommendations, so it fits the paragraph poorly.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3l; flow_A item 3m",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Privacy, Consent and Regulation ¶2",
+      "quote": "For data from Keybridge, the group's agency software, it also depends on the March 2027 neutrality commitment, which rules out using Keybridge data for ranking or sales targeting at Hearthly, the group's real-estate portal.",
+      "finding": "Veldmark ID, Keybridge, the neutrality commitment, Hearthly and Lucía Ortega arrive in one paragraph; reader B also could not tell what 'the answer' answers, since the question is stated only in the Chief Architect's view. Both readers found the paragraph heavy and re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3m; flow_A item 3n",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/3",
+      "draft_locus": "The Veldmark Rebuild ¶4",
+      "quote": "within minutes of becoming searchable on 14 April (at 17:05, just after the feed delivered it)",
+      "finding": "The 17:05 arrival time and 'the group's Supply Contract v1 (September 2027)' are new facts presented as a recap at the point of resolution; the scene gave only the date.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3p; flow_A item 3o",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "WHY THE BUSINESS CARES callout",
+      "quote": "At Motorvane, the similar-vehicles carousel starts 7% of leads in Germany.",
+      "finding": "Motorvane is used before the scene introduces it ('Motorvane is the automotive brand of Veldmark'). The brand is book-level knowledge for the audience, but both cold readers flagged it; swapping in a gloss is cheap.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3a; flow_A item 3b",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "WHY ARCHITECTS SHOULD CARE callout",
+      "quote": "It needs the same event feed and the same availability rules as search, or it will rebuild Ghost Inventory in a new place.",
+      "finding": "Ghost Inventory is used one box before the failure-patterns box glosses it. It is on audience.already_knows, but both readers flagged the order of the boxes.",
+      "fault": "draft",
+      "corroborated_by": "flow_B item 3a; flow_A item 3a",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶3-¶4",
+      "quote": "The four-stage architecture and the events that keep it current follow, then cold start, feedback loops, evaluation, and consent and regulation, and Motorvane's rebuild of the carousel.",
+      "finding": "Reader A found the roadmap dense and, with the preceding paragraph of six cross-links, hard to hold before the story begins. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Introduction ¶3 / Setting the Scene table vs Evaluating Recommendations",
+      "quote": "Like the rest of [[part-4]], it treats discovery as a read model over the listing stream, judged on contacts.",
+      "finding": "Reader A had to decide alone that 'leads' (Veldmark parts) and 'contacts' (general parts) are the same outcome; the chapter never says so. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene ¶3",
+      "quote": "Priya Raman's data and ML team found that the Golf was not an exception.",
+      "finding": "Reader A: Priya's role is only implied, while Ingrid's is given a paragraph later. Minor; one reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Recommendation Surfaces ¶3",
+      "quote": "The Rotterdam city bike that Femke, a private seller, sold on 8 March 2027 still appeared in the alert digest of Tradeyard, Veldmark's general-classifieds brand, the next morning",
+      "finding": "Reader A: a new seller, brand and date in one sentence briefly breaks the Motorvane thread. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene ¶2",
+      "quote": "It had a good run: **23 leads in 10 days** (raw leads; 19 after deduplicating repeat contacts from the same buyers), a price cut to **€21,400** on 22 April that triggered price-drop alerts to 1,180 watchers, and a sale at 15:10 on Thursday **29 April**.",
+      "finding": "Reader B re-read this dense sentence of numbers to find the point (the 26-hour removal lag); the deduplication aside is not used again. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Architecture ¶6 (Re-ranking)",
+      "quote": "Where paid placement in recommendation modules is sold, it belongs in the policy layer, labeled and disclosed, exactly as in search.",
+      "finding": "Reader B found the paid-placement aside sudden, since paid placement had not come up in the chapter. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "The Veldmark Rebuild ¶1",
+      "quote": "Motorvane stays on Elasticsearch 8 until the 2029 search review, so the design uses what that engine provides rather than waiting for the group platform.",
+      "finding": "Reader B: 'the group platform' and, in the same unit, 'the listing event contract v1' are used as if known; the shared OpenSearch platform is described only later. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9",
+      "draft_locus": "Privacy, Consent and Regulation",
+      "quote": "Evaluation says what to optimize; consent and law say what may be used.",
+      "finding": "Reader B marks the section's position 'somewhat unclear': it separates Evaluating Recommendations from the rebuild whose table uses its metrics. Reader A found the position clear (reordering 'minor; the current order works'). One reader only; the spec's rationale (evaluation must precede the rebuild, privacy limits the whole) holds.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on the kettle/Golf contrast (intriguing example) and a claim; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Synthesis plus hand-off; no 'in conclusion', no new subtopic, no body evidence, not a bare restated thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Ties content sources, events/one status filter and contact measurement to one fact (the item is new, unique and about to go) and gives the so-what: a group sharing the status read model and event stream gets most of the gain before any model is trained.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The kettle recommender fails on listings because the item is new, unique and about to go' returns to the kettle, the Golf and the bet on an item that may disappear.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted every section in order (scene, surfaces, why listings break, methods, four stages with events, cold start, feedback loops, evaluation, consent and regulation, the Motorvane rebuild, then trade-offs, verticals, failure modes, Chief Architect's view, questions), the evidence (published marketplace case studies, EU regulation, Veldmark numbers) and the tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The AC-1 reader gives the four candidate sources (attribute similarity, embeddings with a content tower, co-contact every two hours, fresh nearby listings), events within a minute, one serving-time filter on the shared status read model with trust/duplicate/already-contacted rules, a lead-trained GBDT re-ranker with position correction, a policy with a dealer-group cap and an exploration slot, judgment on leads with coverage as a guardrail while click-through falls 4%, and the sale-to-removal gap closed at the source (mark-as-sold, 15-minute feed contract).",
+      "severity": "major"
+    }
+  ]
+}

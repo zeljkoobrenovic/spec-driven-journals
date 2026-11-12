@@ -1,0 +1,1935 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "reliability-and-scale",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "Sunday Evening Peaks: Reliability, Performance and Cost",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, AC-1 to AC-3, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json; the conclusion carries Part VII's closing from the same file. Where the published text did not yet do what the contract asks (a roadmap, the part closing), the spec asks for it and the units are listed in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The traffic shape of a listing platform (evening and Sunday peaks, TV campaigns, scheduled batch work, bots and scrapers) and journey objectives: indicators, objectives and error budgets per liquidity journey, with peak-window reporting.",
+        "Control points in the search path, capacity planning for known peaks, the degradation ladder, multi-region ambition, incident management, and bot, scraper and crawler management.",
+        "Unit costs (per thousand searches, per live listing, per contact) allocated through an ownership catalog, and FinOps practice for marketplaces."
+      ],
+      "believe": [
+        "Reliability is defined per journey where liquidity is made, not per service.",
+        "Most peaks are predictable and many failures are self-inflicted, so the order of sacrifice should be decided before the incident."
+      ],
+      "can_do": [
+        "Write journey objectives with error budget policies that change what teams ship.",
+        "Design a degradation ladder and a peak calendar for a search path.",
+        "Report unit costs that turn a run-cost target into specific work."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a peak-hour outage, the reader names the journey objective, the planning control and the degradation order that apply.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "On a Sunday evening a TV campaign raises search traffic 30% while a weekly full reindex runs; caches go cold, apps retry failed searches twice without backoff, and a third of search load comes from crawlers and scrapers. Search latency rises from 400 ms to 7 seconds for 48 minutes. The post-incident review proposes moving the reindex and adding two nodes. Using only this chapter: what does the architecture lack, and what do you build?",
+        "expected": "A search journey objective counting human requests within a time limit, with an error budget reported separately for the peak window and a policy that restricts changes when it runs low; a peak and campaign calendar that marketing joins and that blocks batch work in peak windows; a degradation ladder that sheds bots first, optional features (facets, personalization) second, freshness third and search last; a gateway retry budget with jitter; bot classification at the edge. Cost per thousand human searches reported per owner."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Keeping a listing platform fast, available and affordable; journey objectives where liquidity is made; predictable peaks and self-inflicted failures; cost as an architecture metric. Then the 48-minute brown-out, the traffic shape (automated traffic included), journey objectives, control points in the search path (bot, scraper and crawler controls at the edge), capacity planning, degradation, multiple regions, incident management, cost, the redesigned brown-out, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: the SRE literature, classifieds engineering sources (Adevinta, Vinted, Rightmove), the FinOps Foundation, bot-traffic reports, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The chapter's last section performs Part VII's closing: it states what the eight chapters build in common, says why that matters for Part VIII, and returns to the part introduction's test of where a listing fact is true and how its copies are rebuilt or erased.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the final section state something about Part VII that no single chapter states, say why it matters for Part VIII, and return to the question the part introduction ends on?",
+        "expected": "A synthesis that each platform capability has a published contract, an owner and a check (listing event, register of copies, lifecycle rule, metric definition, experiment standard, model registry entry, tenant code and configuration schema, journey objective); a so-what that building those contracts across acquired brands and old teams is a problem of change, which Part VIII takes up; an explicit return to the part introduction's test, answered for one listing fact."
+      }
+    ],
+    "audience": {
+      "who": "Chief architects, platform and SRE leads, search platform leads and engineering directors of multi-brand marketplace groups.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines (Solr, Elasticsearch, OpenSearch), caching, CDNs, Kubernetes, availability zones and percentile latency; the general idea of SLOs.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane, Hearthly and Keybridge, the Yardstick monolith, Ingrid Halvorsen, the architecture advice forum, Common Ground and its €38 million run-cost target; liquidity and contacts (liquidity-and-network-effects); the Rotterdam city bike and Femke; Ghost Inventory, Search as System of Record, Fast Mail for Fraudsters, Vanity Liquidity and Deal-Shaped Architecture.",
+        "From Part VII: the listing event stream, the register of copies, the web and SEO layer, the data platform and the tenancy model of multi-country-platforms; the part introduction's test (for any listing fact, where it is true, which copies hold it and how you would rebuild or erase them)."
+      ],
+      "does_not_know": [
+        "The terms this chapter defines: service level indicator, service level objective, error budget, critical user journey, journey SLO, peak window, degradation mode and ladder, peak and campaign calendar, peak rehearsal, cost per search.",
+        "Marketplace-specific load: the evening and Sunday peak, campaign steps, supply events, and the share and kinds of automated traffic.",
+        "Bot-management vocabulary: crawler verification, RFC 9309, the sui generis database right; FinOps unit economics."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do you keep a listing platform fast, available and affordable at scale?",
+    "claim": "A listing platform should define reliability per liquidity journey (search, listing view, listing visible, listing gone, message delivered, alert sent, insertion), each with an indicator measured where the user is that counts human requests and deliberate safety holds as good events, an objective, and an error budget whose spending restricts changes on that journey; should plan for its predictable peaks with a peak and campaign calendar that keeps batch work out of peak windows and a degradation ladder that sheds bots first, optional features second, freshness third and search itself last; and should report cost per thousand searches, per live listing and per contact through an ownership catalog, so a run-cost target becomes specific work.",
+    "disputed_by": "The common practice of setting availability targets per service or component, adding capacity after each incident, deciding what to switch off during the incident, treating bot traffic as load like any other, and cutting run cost by an even percentage across teams.",
+    "so_what": "A Chief Architect who accepts this has the group define the liquidity journeys and their indicators once while each brand sets objectives and names a journey owner; makes the peak calendar, peak-window freezes and batch scheduling rules platform capabilities that marketing joins; puts degradation and read-only modes on a roadmap with a date; requires a business case for active-active regions; treats automated traffic as a cross-functional policy that engineering enforces; and publishes unit costs per brand in the quarterly architecture review next to the journey objectives.",
+    "how_why": "On Sunday 17 January 2027 a TV campaign, a weekly full reindex scheduled years earlier and cache eviction took Tradeyard NL's search p99 from about 400 ms to about 7 seconds for 48 minutes; retries without backoff and unthrottled bots, a third of the load, amplified it. About 3.4 million searches failed, about 9,800 fewer first contacts were made, and 30% of the 28-day search budget went in 48 minutes. At the same campaign slot on 16 January 2028, with the peak calendar, bot shedding, edge caching, a retry budget and the ladder, 37% of peak requests were shed or cached, search spent 6 minutes at level 2 with p99 about 1.3 seconds, under 0.2% of human searches failed and 2% of the budget was spent, still on Solr. Search costs the group about €11.8 million a year, €0.042 per thousand queries.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A listing platform's load is predictable and partly self-made (evening and Sunday peaks, campaign steps, supply bursts and a steady third of automated traffic), so incidents like the brown-out are collisions of known load rather than exotic failures."
+      },
+      {
+        "id": "S2",
+        "claim": "Reliability is defined per liquidity journey: an indicator measured from the user's side that counts human requests and deliberate safety holds as good events, an objective with a named owner, and an error budget, reported separately for the peak window, whose spending restricts changes on that journey."
+      },
+      {
+        "id": "S3",
+        "claim": "Capacity for known peaks comes first from control points in the request path (batch work isolated and scheduled by a calendar, retry budgets and admission control, caches warmed and keyed) and from a peak and campaign calendar shared with marketing, and only then from more nodes."
+      },
+      {
+        "id": "S4",
+        "claim": "What a journey gives up under load is decided in advance: a degradation ladder sheds bots first, optional features second, freshness third and search last, never safety scanning, and the regional ambition for a country-scoped group is multi-zone plus a tested read-only mode."
+      },
+      {
+        "id": "S5",
+        "claim": "Automated traffic is a policy area with its own capacity class, controlled in layers from robots.txt and crawler verification to edge classification, quotas, product design, contracted access and law, and enforced at the edge."
+      },
+      {
+        "id": "S6",
+        "claim": "Cost per thousand searches, per live listing and per contact, allocated through an ownership catalog and reported per brand, turns a run-cost target into specific work, and the platform team holds the largest levers."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Measures the whole platform at the moments liquidity is made, sets what it gives up first and what it costs per unit of work, and carries the part's closing into Part VIII.",
+    "supports": [
+      "P7-8"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "traffic to cost: each section uses the vocabulary or decision of the one before (the load and its automated third before the objectives that count humans, journeys before the control points that protect them, with bot controls at the edge as the first control point, control points before the capacity model that counts on them, capacity before the ladder that takes over beyond it)"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene states the problem (a 48-minute brown-out that nothing in the architecture anticipated) and Ingrid's question names what the architecture lacked; the body supplies each missing piece in the order the reader needs it, and the worked example reruns the same campaign slot a year later as the solution's test. The traffic shape comes first because every later section designs for it, including the automated third and its kinds of client. Why bots come and the layers that control them sit inside the control points, next to edge classification: both round-3 flow readers read a separate bot section before the journey objectives as protection arriving before the chapter says what is protected. Journey objectives follow the load because the control points, capacity plan and ladder exist to protect them; placed after those, the reader would meet error budgets and peak windows used before they are defined. The control points precede capacity planning because the capacity model counts on the cached and shed share they create; capacity precedes degradation because the ladder takes over where planned capacity ends; regions extend degradation (the read-only mode doubles as one) to the loss of a site; incident management covers what still goes wrong. Cost comes after the mechanisms whose spending it measures (shedding, caching, headroom), including the third of search cost that serves automated clients. The worked example needs every mechanism before it, and the judging sections apply the whole design."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "The earlier chapters of Part VII built the shared platform beneath Veldmark's brands; this one asks whether that platform holds at the hour when liquidity is made. Reliability engineering in a marketplace is mostly the discipline of knowing the traffic shape and designing for it, rather than reacting to it."
+    },
+    "bridge": {
+      "from_reader_world": "Every platform reader knows the daily shape (quiet nights, a lunchtime bump, a long evening peak) and has seen campaigns, pushes, bulk feeds and scrapers add to it.",
+      "to_topic": "A minute of failed search at the weekly peak loses more contacts than an hour at night, so the question is how to keep the platform fast, available and affordable at the hour that matters."
+    },
+    "thesis_statement": {
+      "text": "Define reliability per liquidity journey rather than per service, with error budgets that change what teams do; plan for predictable peaks with a calendar that keeps batch work out and degradation modes that shed bots and optional features before searches fail; and make cost per search, per listing and per contact an architecture metric.",
+      "placement": "KEY POINTS callout (three bullets), with p01 stating that reliability is designing for a known traffic shape."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Take apart one 48-minute search brown-out.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Traffic shape, automated traffic included.",
+          "kept_in": [
+            "traffic"
+          ]
+        },
+        {
+          "promise": "Journey objectives, and control points with the bot controls at the edge.",
+          "kept_in": [
+            "journeys",
+            "control-points"
+          ]
+        },
+        {
+          "promise": "Capacity, degradation and regions.",
+          "kept_in": [
+            "capacity",
+            "degradation",
+            "regions"
+          ]
+        },
+        {
+          "promise": "Incidents and cost.",
+          "kept_in": [
+            "incidents",
+            "cost"
+          ]
+        },
+        {
+          "promise": "Rerun the brown-out a year later.",
+          "kept_in": [
+            "worked"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The earlier Part VII chapters built the shared platform, and this one asks whether it holds at the hour liquidity is made; reliability engineering in a marketplace is mostly knowing the traffic shape and designing for it, including the spikes the business creates and the traffic nobody invited.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "Quiet nights, a lunchtime bump and a long evening peak; on top, a television campaign, a push to millions of alert subscribers, a bulk dealer feed, and scrapers and bots.",
+            "shows": "The load is a known shape the architecture can design for."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "States the chapter's stance and the shape of load it designs for."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The stakes are asymmetric: a minute of failed search at the weekly peak loses more contacts than an hour at night, and the peak hour is where reliability, revenue and trust meet.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Peaks are when sellers check visibility, scammers count on stretched moderators and advertising inventory is worth most.",
+            "shows": "The same failure costs more at the peak, so the peak is what the design must protect."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Motivates measuring and reporting reliability for the peak window."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The traffic shape with its evening peak.",
+          "introduces": "Why failure at that peak costs more than failure at night.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter builds on its neighbours (search-architecture, event-driven-listings, multi-country-platforms) and adds journey objectives, a degradation ladder, a regional ambition and unit costs per brand, which Part VIII weighs when it decides which of Veldmark's stacks to consolidate.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S4",
+            "S6"
+          ],
+          "how": "Names the chapter's additions and scopes out what neighbours own."
+        },
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The peak as the place reliability, revenue and trust meet.",
+          "introduces": "Where this chapter sits among its neighbours and what it adds for Part VIII.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter takes one brown-out apart: the load (traffic shape, automated traffic included), what reliability means (journey objectives), what protects it (control points with the bot controls at the edge, capacity, degradation, regions, incidents) and what it costs, citing SRE, Vinted, Adevinta, Rightmove, FinOps and bot reports; a rerun a year later, trade-offs, vertical differences, failure modes, the Chief Architect's view, questions and Part VII's closing follow.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "The roadmap that announces every section."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What the chapter adds.",
+          "introduces": "The order in which it is built.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening",
+      "controlling_idea": "Three ordinary things at once, amplified by retries and bots, browned out Tradeyard NL's search for 48 minutes, and nothing in the architecture knew the hour mattered.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "The brown-out is the chapter's case of predictable load colliding with itself."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Symptoms, then causes, amplifiers and cost in the order the review found them; the question comes after the cost so it lands on known facts; the evidence label closes the scene."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item: one 48-minute brown-out.",
+        "introduces": "The brown-out itself, on Sunday 17 January 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On Sunday 17 January 2027 at 20:35 CET, search on Tradeyard Netherlands slowed from about 400 ms to about 7 seconds at p99 for 48 minutes, and about 9% of searches failed.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard NL, 17 January 2027, 20:35 CET: p99 about 400 ms to about 7 s for 48 minutes; about 9% of requests failed; spinners, errors and partial pages without facets.",
+              "source": "scenario-ledger.md, worked example 5",
+              "shows": "Establishes the incident the chapter is built around; Veldmark is labelled fictional."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "form": "list",
+          "controlling_idea": "The post-incident review, read by Ingrid in her first week, finds no single cause but three ordinary things at once: a TV campaign, a weekly full reindex scheduled years earlier, and cache eviction at the peak.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Declutter spot in the 20:30 ad break (+about 30% in four minutes); weekly in-place reindex of the NL Solr collections at Sunday 20:00, now almost three hours; caches flushed as segments committed.",
+              "source": "scenario-ledger.md, reliability-and-scale additions",
+              "shows": "Each cause was known in advance, so the failure was self-inflicted."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The symptoms of the brown-out.",
+            "introduces": "Its three causes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Two amplifiers made it worse: apps retried failed searches twice with no backoff, and about a third of backend requests came from automated clients that were not throttled.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the brown-out's causal chain.",
+              "shows": "No component failed on its own; known load and feedback loops combined."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The three causes.",
+            "introduces": "Two amplifiers that fed the overload back.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The review counts about 3.4 million failed searches and about 9,800 fewer first contacts and proposes familiar fixes, but Ingrid asks why nothing in the architecture knew that the hour mattered, that a campaign was coming, that bots could wait or that facets were optional.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 3.4 million failed searches; about 9,800 fewer first contacts; actions: move the reindex, warm caches, add capacity.",
+              "shows": "The cost is in contacts, and capacity alone does not answer Ingrid's question."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Causes and amplifiers.",
+            "introduces": "The cost and the question the chapter answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The Sunday-evening peak is a Veldmark illustration; Rightmove's documented 2021 busiest minute, during a prime-time TV ad break, is the public example of a marketing-driven peak.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove's busiest minute: \"8:48 pm on Wednesday, during the final ad break on prime-time TV\".",
+              "source": "Google Cloud press release, 2021",
+              "shows": "Marketing-driven peaks are documented in real marketplaces, not only in the fiction."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Veldmark's fictional campaign peak.",
+            "introduces": "A documented real example of the same kind of peak.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "traffic",
+      "heading": "The Traffic Shape of a Listing Platform",
+      "controlling_idea": "Four kinds of load shape a listing platform, three of them predictable, and automated traffic is a large, mixed share that needs its own policy.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows the load is a known shape, not a surprise."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Kinds of load first, then the strongest predictable one (seasons), then the uninvited one and its local share; the bot share is used again in capacity, degradation and cost."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Ingrid's question of why nothing knew the peak.",
+        "introduces": "The traffic shape the architecture should have known.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "Four kinds of load shape a listing platform (leisure browsing, marketing and notifications, supply events, external shocks), and three of them can be predicted.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Load, shape, predictability and example; Veldmark's search peaks at 31,000 queries per second on Sunday 20:00–22:00 CET against an average of 9,000; Vinted's 2021 Facebook-outage load (+about 15% on its databases).",
+              "source": "scenario-ledger.md; Vinted Engineering, 2023",
+              "shows": "Most load is known in advance; only external shocks are not."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Seasonality can be strong enough to drive architecture, as Vinted's autumn did, yet architectures often treat known seasons as surprises.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Vinted's autumn, \"the most extreme growth and workload period of the whole year\", pushed it from manually sharded MySQL to Vitess.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "A predictable season forced an architectural change."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The predictable kinds of load.",
+            "introduces": "Seasonality as the strongest of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Automated traffic is a large share of load and falls into groups the business wants, contests or fights: search crawlers, AI crawlers, partners and aggregators, scrapers and attack traffic.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Imperva 2025: automated traffic 51% of web traffic, bad bots 37%; a security vendor's whole-web figures.",
+              "source": "Imperva, 2025",
+              "shows": "Automated traffic is too large to treat as noise, and the caveat keeps the figure in its place."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The load the business creates or expects.",
+            "introduces": "The traffic nobody invited.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Each automated group costs capacity and needs its own policy; at Tradeyard about a third of search-backend requests are automated and only about 6% of the total come from verified search crawlers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard 2027: about a third automated; about 6% verified search crawlers.",
+              "source": "scenario-ledger.md",
+              "shows": "Most automated load brings no buyers, so it can be treated differently."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: a week of traffic with evening humps, a campaign spike and a steady band of bots.",
+              "shows": "The whole shape is known in advance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The groups of automated clients.",
+            "introduces": "Their share at Tradeyard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "journeys",
+      "heading": "Journey SLOs: Defining Reliability Where Liquidity Is Made",
+      "controlling_idea": "Reliability objectives belong on the journeys that create liquidity, measured from the user's side, with error budgets whose spending changes decisions, reported for the peak window.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Defines journey objectives, the first part of the thesis."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "General SRE vocabulary, then the book's journey SLO and its journeys, then the choices inside them, then budgets and the peak-window refinement that depends on them."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The traffic shape, human and automated, whose peak matters most.",
+        "introduces": "A definition of reliability that says which journey and which hour matter.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "Site reliability engineering defines an SLI as good events over total events, an SLO as a target for customers and the error budget as 100% minus the SLO, and recommends objectives on critical user journeys rather than components.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "SLI \"the number of good events divided by the total number of events\"; SLO \"sets a target level of reliability for the service's customers\"; error budget \"100% minus the SLO\"; critical user journey \"a sequence of tasks that is a core part of a given user's experience\".",
+              "source": "Thurgood, Ferguson, Hidalgo and Beyer, The Site Reliability Workbook, 2018",
+              "shows": "The vocabulary comes from a published source, not from this book."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "In this book a journey SLO is an objective on a marketplace journey that creates or protects liquidity, measured from the user's side, with an owner and an error budget policy, and component objectives serve it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven liquidity journeys (search, listing view, listing visible, listing gone, message delivered, alert sent, insertion) with good event, measurement point, Tradeyard 2027 objective and why it matters.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows the definition applied journey by journey with concrete objectives."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The SRE vocabulary and critical user journeys.",
+            "introduces": "The book's marketplace version of it, and the journeys it applies to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "list",
+          "controlling_idea": "Three design choices in the table matter more than the numbers: measure humans and classify bots, count deliberate holds as good events, and treat removal as a journey.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 37 messages withheld after Femke's report on 7 March 2027; the Rotterdam city bike out of search a minute after sale while the morning digest still featured it.",
+              "shows": "Holds are the system working, and removal fails where nobody measures it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table of journeys and objectives.",
+            "introduces": "The three choices in it that matter most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "An error budget is useful only if spending it changes decisions, so Veldmark's April 2027 policy restricts changes on a journey's critical path at half the budget and allows only reliability fixes when it is gone.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "More than half spent: journey-owner approval; exhausted: reliability fixes only; the brown-out spent about 30% of Tradeyard NL's 28-day search budget in 48 minutes, against about 7 billion requests in 28 days.",
+              "source": "scenario-ledger.md",
+              "shows": "One peak-hour incident can spend a third of a month's budget, so the policy bites."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The objectives.",
+            "introduces": "The budget and the policy that make them change behaviour.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Because a peak-hour failure costs more contacts, Veldmark reports search reliability separately for the peak window, Sunday 18:00–23:00, and I would start there rather than weight events by expected contacts.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Peak-window reporting versus weighting events by expected contacts: more precise, harder to explain.",
+              "shows": "The simpler refinement gets the peak in front of the brand general managers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The 28-day budget and its policy.",
+            "introduces": "The marketplace-specific refinement for the peak window.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "control-points",
+      "heading": "Architecture: Control Points in the Search Path",
+      "controlling_idea": "Four control points (classify at the edge, admit and degrade at a gateway, separate optional work, keep batch work out of peak windows) protect every journey; bot controls at the edge, isolation, retry rules and layered caching are how they are built.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "Describes the mechanisms that keep known load from colliding, starting with the layered control of automated traffic enforced at the edge."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The four control points first, then the edge and its bot controls (the first control point, next to edge classification as both round-3 flow readers asked), then isolation, retries and caching in the order the brown-out's causes and amplifiers appeared."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Journey objectives that the brown-out broke.",
+        "introduces": "The architecture that protects them in the search path.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The same control points apply to every journey, not only search: classify at the edge, admit and degrade at a gateway, separate optional from essential work and keep batch work out of peak windows with the peak calendar set out under capacity planning.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: control points in the search path (edge, gateway, optional facet and personalization calls, batch under the calendar).",
+              "shows": "Shows where each control sits on the request path."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The first control point is the edge, where automated traffic is classified; listing data is valuable to others, so scraping is a capacity, commercial and trust-and-safety problem at once, met by seven control layers from policy to legal.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Barcelona fake-rental ring of July 2027 posted 180 listings in Eixample with photos copied from real listings.",
+              "source": "scenario-ledger.md",
+              "shows": "Scraping feeds fraud, not only load."
+            },
+            {
+              "kind": "table",
+              "what": "Policy (RFC 9309, \"these rules are not a form of access authorization\"), verification (Google's DNS and IP checks), classification, rate limits and quotas, product design, contracted access, legal (Directive 96/9/EC).",
+              "source": "IETF, 2022; Google Search Central, updated 2026",
+              "shows": "Each layer catches what the one before cannot."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The control points, the first of which classifies traffic at the edge.",
+            "introduces": "Why bots come and the layers that control them at the edge.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "AI crawlers add a commercial question, since Cloudflare changed its default to block them unless they pay, and this chapter's concern is only that the policy is enforced at the edge with its own capacity class.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "On 1 July 2025 Cloudflare announced it was changing its default to block AI crawlers unless they pay for content.",
+              "source": "Cloudflare, 2025",
+              "shows": "Access for AI crawlers is a business decision with a technical enforcement point."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The control layers for known kinds of bot.",
+            "introduces": "AI crawlers, where the question is commercial.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Five standard isolation rules keep work that can wait apart from work that cannot, because the brown-out came from interactive queries, reindexing and cache warm-up sharing nodes.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted's idle indexing after catch-up (2021); a reindex as a deployment with alias switch; Vinted's separate facet calls (about 20% more CPU, about 71 ms faster item search, about 50% facet cache hit ratio, 2023); bulk writers rate-limited (a dealer group's 40,000-listing update); tenants isolated.",
+              "source": "Vinted Engineering, 2021 and 2023",
+              "shows": "Each rule is documented practice or a direct answer to one brown-out cause."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The edge, where automated traffic is classified and limited.",
+            "introduces": "Isolation behind the edge, as five rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Google's SRE book gives the retry rules that would have shortened the brown-out: randomized exponential backoff, a server-wide retry budget, no retries at several levels, load shedding and tested degraded modes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "\"always use randomized exponential backoff when scheduling retries\", \"consider having a server-wide retry budget\", \"avoid amplifying retries by issuing retries at multiple levels\".",
+              "source": "Ulrich, in Site Reliability Engineering, 2016",
+              "shows": "The brown-out's retry amplifier has a documented remedy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Isolation of batch work.",
+            "introduces": "The second control: retries and timeouts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "In a marketplace, apps retry search once with jitter, the gateway enforces a retry budget, timeouts shrink down the stack and admission control rejects or degrades work past a concurrency limit.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX's reported 2021 posts on load shedding with NGINX adaptive concurrency control could not be retrieved.",
+              "shows": "Marked as a pointer, not evidence."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The general SRE rules.",
+            "introduces": "Their marketplace form.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Caching in a listing platform has three layers, edge, gateway and service, and engine, each with a different staleness tolerance and invalidation.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Layer, what is cached, staleness tolerated, invalidation.",
+              "shows": "Shows which layer can take which load and how fresh it stays."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Retries and admission control.",
+            "introduces": "The third control: caching.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Two brown-out lessons apply to caching: warm caches before switching to a new index, node or restart, and normalize cache keys so equivalent queries share an entry.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Vinted raised its facet cache hit ratio by about five percentage points by removing a per-user filter, at the cost of slightly inaccurate counts.",
+              "source": "Vinted Engineering, 2023",
+              "shows": "Normalizing what a query depends on raises cache hits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three cache layers.",
+            "introduces": "What the brown-out teaches about them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "capacity",
+      "heading": "Capacity Planning for Known Peaks",
+      "controlling_idea": "Capacity is planned from the weekly peak with a model in which caching and shedding move the result more than nodes, and a shared calendar and peak rehearsals make the model's factors knowable.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Turns the control points into a capacity plan and the calendar that feeds it."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The planning steps in order: peak figures, the model, the model applied, the levers, the calendar that supplies its campaign factor, then the rehearsal that tests the plan."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The control points: classification and shedding at the edge, retry budgets and caching.",
+        "introduces": "How much backend capacity remains to plan for once they have absorbed their share.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Capacity planning starts from the weekly peak, not the average: Veldmark's group search averages 9,000 and peaks at 31,000 queries per second, and Tradeyard carries about 70% of it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "9,000 average, 31,000 peak (ratio about 3.4); Tradeyard about 70%, roughly 21,700 at the Sunday peak; Tradeyard NL a little under half of Tradeyard's.",
+              "source": "scenario-ledger.md",
+              "shows": "The peak, not the average, sets the size."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Counting queries as results-page requests, the backend's required capacity is expected peak × campaign factor × failure headroom × (1 − share served from cache or shed).",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Each query fans out to about 2.6 engine requests at Tradeyard (search-architecture).",
+              "source": "scenario-ledger.md",
+              "shows": "Fixes the unit the model counts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Peak figures.",
+            "introduces": "The model that turns them into capacity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "For Tradeyard NL before the changes the model asks for about 19,500 queries per second, close to twice the expected peak, against a cluster sized for about 13,000.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Expected peak about 10,000; campaign factor 1.3; failure headroom 1.5 for the loss of one of three zones; almost nothing cached or shed.",
+              "source": "scenario-ledger.md",
+              "shows": "The cluster was undersized for a campaign plus a zone failure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The capacity model.",
+            "introduces": "The model applied to Tradeyard NL.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Caching and shedding unverified bots take about 35% of peak requests off the backend in the 2027 plan, cutting the requirement to about 12,700, so the cheapest capacity is the request that never reaches the cluster.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 35% off the backend; about 12,700 queries per second required, roughly the existing cluster.",
+              "shows": "Two levers change the result more than nodes."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: requests narrowed at the edge before reaching the cluster.",
+              "shows": "Visualizes the cached and shed share."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A requirement close to twice the peak.",
+            "introduces": "The two levers that bring it down.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The campaign factor is knowable only if engineering knows about campaigns, so Veldmark puts campaigns, scheduled sends, bulk imports and batch jobs into one peak and campaign calendar owned by platform engineering.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The calendar drives pre-scaling, blocks heavy batch work in peak windows and spreads 38 million daily alert notifications.",
+              "shows": "One calendar turns marketing plans into capacity inputs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The campaign factor in the model.",
+            "introduces": "Where that factor comes from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The useful load test is a peak rehearsal: production traffic replayed at 1.3 times the weekly peak, with a cache reset and the reindex running, on production-like data.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The calendar that plans peaks.",
+            "introduces": "How to test the plan before the peak.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "degradation",
+      "heading": "Graceful Degradation: Deciding in Advance What to Give Up",
+      "controlling_idea": "Degradation modes are product decisions made before the incident, ordered bots first, optional features second, freshness third and search last, and each journey has its own ladder that never drops safety scanning.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Specifies the order of sacrifice, the second half of the peak plan."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Definition and ladder, then its order and evidence, then the other journeys' ladders and the exception for safety."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Capacity planned and rehearsed for known peaks.",
+        "introduces": "What to do when load exceeds the plan anyway.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "A degradation mode is a predefined, tested reduction of functionality designed with the product owner before an incident, and the search ladder has five levels from normal to browse only.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Levels 0–4 (normal, shed bots, trim optional work, serve from cache, browse only) with triggers, changes, what users notice and who switches.",
+              "shows": "Each step and its trigger are fixed in advance."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: the search degradation ladder with recovery stepping down after sustained health.",
+              "shows": "Shows the order and avoids oscillation at the peak."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The marketplace-specific part of the ladder is its order, bots first, optional features second, freshness third, search last, supported by Vinted's approximate facet counts and SRE guidance, and with levels 1 and 2 the brown-out would most likely have been minutes of approximate counts.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted shows counts above 500 as \"500+\" with an early-termination limit and caps facet cardinality (2023); SRE guidance on cheaper fallbacks and testing degraded paths.",
+              "source": "Vinted Engineering, 2023; Ulrich, 2016",
+              "shows": "Users accept approximate counts, so facets can go before search."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: degradation as planned ballast.",
+              "shows": "The order of sacrifice as one image."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The ladder's levels.",
+            "introduces": "The order that makes it marketplace-specific, and what it would have changed on 17 January.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Each journey has its own ladder, and messaging never skips safety scanning, because turning off scam detection under load turns a reliability incident into a fraud incident.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Messaging delays attachments and read receipts, not text; alerts delay digests and keep instant alerts; insertion accepts and queues and keeps moderation in the path; Fast Mail for Fraudsters.",
+              "shows": "Safety is not on any ladder."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The search ladder.",
+            "introduces": "The ladders of the other journeys.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "regions",
+      "heading": "Multiple Regions: How Far to Go",
+      "controlling_idea": "For a country-scoped classifieds group, multi-zone plus a tested read-only mode is the right regional ambition, and single-site legacy is the larger risk.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Extends what to give up in advance to the loss of a site."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Documented record, then the failure that motivates it, then the recommendation, then Veldmark's application."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Degradation inside a working region.",
+        "introduces": "Losing a zone, a region or a site.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "Classifieds are mostly country-scoped, and the documented record shows single-writer designs with read-only projections and multi-cluster traffic shifting rather than multi-writer regions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Vinted 2026: \"all writes happen in the primary site and read-only projections are replicated around the world\"; multi-writer avoided \"without a strong business need\".",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Even a cross-border catalog avoids multi-writer."
+            },
+            {
+              "kind": "source",
+              "what": "Adevinta's many clusters with weighted DNS and a pod-health controller.",
+              "source": "Adevinta Tech Blog, 2023",
+              "shows": "Blast radius is reduced by shifting traffic, not by writing everywhere."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Regional cloud failures take shared dependencies down together, as the October 2025 us-east-1 event showed, so regional control planes are shared dependencies and autoscaling is not capacity during a regional event.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "AWS post-event summary of 19–20 October 2025: a latent defect in DynamoDB's automated DNS management left an empty DNS record; effects over about 14.5 hours on EC2 launches, Network Load Balancer, Lambda, container services, STS and console sign-in.",
+              "source": "AWS, 2025",
+              "shows": "Shared control planes fail together, and new instances may not launch."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Designs that keep writes in one place.",
+            "introduces": "What happens when that one region fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "For most journeys of a country-scoped group the right answer is multi-zone plus a tested read-only mode, which keeps the most valuable traffic and doubles as a degradation mode inside a region.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five options (multi-zone, backup and restore, read-only warm standby, active-active single writer, active-active multi-writer) with what each gives, costs and fits; the table sits before this paragraph.",
+              "shows": "The read-only standby fits where browsing is most of the value and writes can wait."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Regional failure and its lessons.",
+            "introduces": "The ambition that follows for a country-scoped group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Veldmark's starting point is more fragile than its cloud estate suggests, because Yardstick runs in one Amsterdam data center, so the plan sequences read-only standby after the Q4 2028 search extraction and funds a backup and an edge fallback meanwhile.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's newer services across three zones in AWS eu-west-1; Yardstick and MySQL in one co-located Amsterdam data center; self-hosted Solr; regional read-only standby after Q4 2028; Yardstick database backup to AWS and an edge browse-from-cache fallback.",
+              "source": "scenario-ledger.md",
+              "shows": "The largest regional risk is single-site legacy, not a cloud region."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The general recommendation.",
+            "introduces": "Veldmark's position against it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "incidents",
+      "heading": "Incident Management: When It Goes Wrong Anyway",
+      "controlling_idea": "Incident management in a marketplace sets severity by journey and time, communicates with professional customers, contains shared-platform blast radius and produces architectural actions.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Applies journey objectives and pre-decided degradation to incidents that still happen."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Design that prevents or contains failure.",
+        "introduces": "What happens when it goes wrong anyway.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "Incident management has the usual parts plus three marketplace emphases: severity follows journeys and time, professional customers need their own communication, and shared platforms have shared blast radius.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta incident reviews: a GitOps controller read a source-control outage as \"0 applications\" and began deleting applications across more than 30 clusters (2024); renaming node groups replaced about 40 nodes per group within a minute, one critical cluster took 8 minutes to recover (2023).",
+              "source": "Adevinta Tech Blog, 2023 and 2024",
+              "shows": "A group platform's failures reach every tenant at once, so platform changes need staged rollouts and freezes."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Reviews should be blameless and produce architectural actions, as the brown-out review's accepted version did.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "First draft: move the reindex, add two nodes; accepted version: the ladder, the peak calendar, the retry budget, bot classification at the edge and the journey SLOs, each with an owner and a date.",
+              "shows": "Operational fixes alone would not have answered Ingrid's question."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Handling an incident.",
+            "introduces": "What the review afterwards should produce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cost",
+      "heading": "Cost: Making Scale Visible per Unit of Work",
+      "controlling_idea": "Three unit costs, computed per brand through an ownership catalog, show where scale is cheap and where it is not, and the platform team and the group's duplicated stacks hold the largest levers.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Makes cost an architecture metric, the third part of the thesis."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Definitions, Veldmark's baseline and its readings, documented levers, who holds them, and Veldmark's own largest lever."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The mechanisms built so far (shedding, caching, headroom), which change what the platform spends.",
+        "introduces": "Cost per unit of work.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Unit economics relate technology spending to its value, and three unit costs are worth computing for a listing platform: per thousand searches, per live listing per month and per contact.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "FinOps Foundation: \"what an organization spends on technology and the value that technology spending creates\".",
+              "source": "FinOps Foundation, n.d.",
+              "shows": "Grounds unit costs in a published practice."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Veldmark's 2027 baseline shows why the first two unit costs belong in architecture reviews.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per brand: search cost (Tradeyard €6.0M, Motorvane €3.2M, Hearthly €2.6M, group €11.8M), query share (70/16/14%), cost per 1,000 queries (€0.030/0.070/0.065, group 0.042), platform run cost (€44M/27M/24M, group €104M incl. Keybridge €5M and group €4M), live listings, cost per live listing per month (€0.28/1.55/0.77).",
+              "source": "scenario-ledger.md",
+              "shows": "Puts numbers on the unit costs per brand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three unit costs.",
+            "introduces": "Veldmark's figures for the first two.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Three readings follow from the baseline: search is cheap per query and expensive in total, Motorvane's unit costs are highest and must be read against revenue, and about a third of Tradeyard's search cost serves automated clients.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Run rates for infrastructure, not people, excluding the data estate; about 284 billion queries a year.",
+              "shows": "States what the figures include before reading them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The baseline table.",
+            "introduces": "What it means.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "form": "list",
+          "controlling_idea": "The best-documented FinOps work in classifieds, Adevinta's, points to platform-level levers: an ownership catalog, telemetry treated as a cost line, and platform defaults.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "732 AWS accounts and 425 Google Cloud projects in a catalog (2024); logging cost cut 35%, metrics ingested cut by more than 33% and the observability bill by more than 20% (2024); Intel to AMD up to €30,000 a month and a cheapest-first policy that hurt CPU-bound work (2024); ARM by default for thousands of applications, no savings figure (2023).",
+              "source": "Adevinta Tech Blog, 2023 and 2024",
+              "shows": "The levers are platform defaults, not team-by-team tuning."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Veldmark's unit costs.",
+            "introduces": "Where documented savings came from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The platform team holds the largest cost levers, because its defaults apply to everyone.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Adevinta's three levers.",
+            "introduces": "Who holds them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Veldmark's three search engines, three clouds and four observability stacks are the cost face of Deal-Shaped Architecture, and the September 2027 shared-search decision is justified by reliability and cost with tenancy isolation as a requirement.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard and Hearthly to a shared Amazon OpenSearch Service platform, Motorvane on Elasticsearch until a 2029 review; one team doing rehearsals and ladders well instead of three; tenancy isolation per brand and country required.",
+              "source": "scenario-ledger.md",
+              "shows": "Shared platforms cut duplicated cost but concentrate blast radius."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Platform defaults as the largest lever.",
+            "introduces": "The largest duplicated cost at Veldmark.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked",
+      "heading": "Veldmark Worked Example: The Brown-Out, Redesigned",
+      "controlling_idea": "A year later, at the same campaign slot and still on Solr, the redesigned platform shed or cached about 37% of peak requests, spent six minutes at level 2 and about 2% of its budget.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Tests the design against the scene's incident."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The mechanisms built section by section, and the brown-out that posed the problem.",
+        "introduces": "The same campaign run against the redesigned platform.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "On Sunday 16 January 2028 Tradeyard runs the same campaign slot against the redesigned platform, and the comparison shows the brown-out reduced to six minutes at level 2.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "17 January 2027 against 16 January 2028: origin requests ~13,000/s against ~8,200/s; ~2% against ~37% shed or cached; reindex in the window yes against blocked; no ladder against level 2 for 6 minutes; p99 ~7 s for 48 minutes against ~1.3 s for 6 minutes then ~450 ms; ~9% against under 0.2% failed; ~30% against ~2% of budget; two retries without backoff against one with jitter.",
+              "source": "scenario-ledger.md",
+              "shows": "Each change maps to a section of the chapter."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The redesign needed no new search engine, only an architecture that knows when the peak is, what is optional, who the bots are and how much budget remains.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The comparison table.",
+            "introduces": "What made the difference.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each of the chapter's choices has a condition under which the other option is right, and the shared search platform is the most contested.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "States when each recommendation does not hold."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The redesign's success at Veldmark.",
+        "introduces": "When the same choices would be wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Eight decisions in the redesign have a real alternative, and the table gives the condition under which each option is right.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Reliability objectives, peak capacity, reindexing, degradation, regions, automated traffic, search platform, cost visibility: options A and B and when to choose each.",
+              "shows": "Every recommendation has a stated boundary."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The most contested trade-off is the shared search platform, whose blast radius is priced in through per-tenant isolation, staged country rollouts and peak-window freezes rather than avoided.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The eight trade-offs.",
+            "introduces": "The most contested one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The verticals differ in traffic shape, most demanding journey, write load, scraper interest, professional SLAs and cost drivers, so the most important journey is not always search.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Shows the journeys and peaks vary by vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Trade-offs that hold for every vertical.",
+        "introduces": "Where the verticals differ.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "General classifieds, real estate and automotive differ in six reliability concerns.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Traffic shape, most demanding journey, write load, main scraper interest, professional SLAs and cost driver per vertical; Hearthly stores 1.8 billion images.",
+              "source": "scenario-ledger.md",
+              "shows": "The objectives and ladders must be set per vertical."
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "In real estate the scarcest moments are not the busiest, so the alert journey outranks search latency, and in automotive lost lead delivery becomes a commercial dispute.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "In a tight rental market the first alert wins the viewing, so a five-minute Hearthly alert outage can cost more trust than a slower search page; a dealer paying for a package expects leads, so an hour of lost lead delivery becomes a dispute.",
+              "shows": "The journey that matters most differs by vertical."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The six differences.",
+            "introduces": "The two that change which journey matters most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Without journey objectives, a calendar, a ladder and bot classes, reliability fails in nine recognizable ways.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Names what goes wrong when each part of the thesis is missing."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the design should be in each vertical.",
+        "introduces": "What happens without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "form": "list",
+          "controlling_idea": "Nine failure modes recur: the reindex at the peak, retry storms, unclassified bot load, degradation invented during the incident, uptime theater, the untested failover, platform changes at the peak, trust turned off for speed, and unowned telemetry.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect makes journeys, peaks, degradation, regions, automated traffic and unit costs group decisions with owners, and watches a short list of measures.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the thesis into group-level decisions."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The decisions in the order the chapter built them (journeys, peak, degradation, regions, bots, cost), then what to watch."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The nine failure modes.",
+        "introduces": "The decisions that prevent them at group scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "The group defines the liquidity journeys and indicators once, brands set objectives and name owners, and the Chief Architect makes sure they exist, are measured from the user's side and have budget policies that change behaviour.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "The peak is a platform concept: the calendar, freezes, batch rules and rehearsals are cheap platform capabilities, and marketing joining the calendar is a governance decision.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Journeys and owners.",
+            "introduces": "The peak as a platform concept.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "Degradation and read-only modes must be funded deliberately, because features used a few times a year are not built unless they are on a roadmap with a date.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The peak calendar.",
+            "introduces": "Funding for the modes that protect the peak.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "The regional ambition is set explicitly: multi-zone plus tested read-only standby, active-active only with a business case, and single-site legacy like Yardstick first.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Degradation and read-only modes.",
+            "introduces": "How far to go across regions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Automated traffic is a cross-functional policy area involving SEO, legal, trust and safety and commercial teams, which engineering enforces.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Regional ambition.",
+            "introduces": "Automated traffic policy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Unit costs by brand belong in the quarterly architecture review next to journey SLOs, because they turn Common Ground's €38 million run-cost target into specific work.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Automated traffic policy.",
+            "introduces": "Unit costs in the review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The Chief Architect watches peak-window budget consumption, time in degraded modes, the automated share, edge cache hit ratios, cost per thousand human searches and batch jobs in peak windows, which should be zero.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six decisions.",
+            "introduces": "The measures that show whether they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader test a platform against the chapter in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the thesis into review questions."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions and measures.",
+        "introduces": "Questions that test whether a platform has them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p62",
+          "form": "list",
+          "controlling_idea": "Ten questions test journeys, peak-window budgets, batch work, campaign notice, automated load, degradation modes, retries, regional loss, unit costs and platform freezes.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Platform to Leadership",
+    "synthesis": "Reliability, peak planning and cost are one design, because each rests on the same knowledge: which journeys make liquidity and at which hours. Across Part VII, every platform capability gets the same three things: a published contract, an owner and a check that shows whether the contract holds, which is what lets brands rely on the platform without being ordered to.",
+    "so_what": "The contracts exist on paper before they exist in a group assembled by acquisition: the brands must move onto them, teams must be organized to own them and the monolith must be retired while it serves traffic, a problem of change that Part VIII takes up.",
+    "callback": {
+      "to": "Ingrid's question in the scene (why nothing in the architecture knew the hour mattered), and for the part, the Part VII introduction's closing test (for any listing fact, where it is true, which copies hold it and how you would rebuild or erase them).",
+      "how": "The reader can now answer Ingrid's question with the journeys and peak window, and answer the part's test for the Rotterdam city bike's sale, with the listing-gone objective as the check that the removal reached every copy."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Treat every platform capability as a contract with an owner and a check that it holds; Part VIII begins with platform-consolidation, the order in which acquired stacks move onto these contracts."
+    },
+    "hand_off": {
+      "to": "part-8",
+      "relationship": "time",
+      "carries_over": "The platform beneath the marketplaces makes liquidity dependable at the moments that matter, and building it across acquired brands with teams never designed to work together is a leadership problem as much as an engineering one.",
+      "introduces": "Change over time: consolidating acquired stacks onto the platform, organizing teams around it, retiring the monolith while it runs, controlling AI, and evolving the platform over a decade, beginning with platform-consolidation."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the brown-out to the review questions, and the seven Part VII chapters before it.",
+      "introduces": "What the chapter and the part add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p63",
+        "controlling_idea": "Ingrid's question has one answer used four times: knowing which journeys make liquidity and at which hours sets the objectives, the calendar, the order of the ladder and the unit costs, so reliability, peaks and cost are one design.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3",
+            "S4",
+            "S6"
+          ],
+          "how": "Synthesizes the chapter and calls back to the hook."
+        }
+      },
+      {
+        "id": "p64",
+        "controlling_idea": "Part VII's eight chapters give every platform capability a published contract, an owner and a check, which answers the part's opening test for the Rotterdam city bike, with the listing-gone objective as the check that its removal reached every copy.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Contracts: the listing event, the register entry for each copy, the lifecycle rule, the metric definition, the experiment standard, the model registry entry, the tenant code and configuration schema, the journey objective; the bike's sale is true in Yardstick, held by the copies in the register, rebuilt from the event stream, erased through the register with a receipt.",
+            "source": "journal-spec.json, Part VII closing; scenario-ledger.md",
+            "shows": "No single chapter states the shared shape, and the test is answered for one fact."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Performs the part closing and returns to the part's test."
+        },
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The chapter's own synthesis.",
+          "introduces": "The part's: the eight chapters this one closes.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p65",
+        "controlling_idea": "The contracts exist on paper before they exist in a group assembled by acquisition, so building them across acquired brands and old teams is a leadership problem of change over time, which Part VIII takes up, beginning with platform-consolidation.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S6"
+          ],
+          "how": "Answers so what and hands off to Part VIII."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Contracts with owners and checks.",
+          "introduces": "Why building them is a problem of change, and where that is taken up.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Index design, aliases and reindex mechanics.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "Event backbone and outbox.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Tenancy model.",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    },
+    {
+      "topic": "AI crawler licensing and agent access.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
+    },
+    {
+      "topic": "Crawl budget and SEO status codes.",
+      "covered_in": [
+        "web-and-seo-architecture"
+      ]
+    },
+    {
+      "topic": "Fraud detection and scam patterns.",
+      "covered_in": [
+        "fraud-prevention"
+      ]
+    },
+    {
+      "topic": "Messaging safety.",
+      "covered_in": [
+        "messaging-and-leads"
+      ]
+    },
+    {
+      "topic": "Organizational design of on-call and platform teams.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No classifieds operator published journey SLOs or degradation ladders; both are labeled recommendations. Replace with documented examples if they appear. (Carried over from spec.md.)",
+    "OLX's 2021 load-shedding post could not be retrieved; only its existence is cited. (Carried over from spec.md.)",
+    "Cost per contact is described but not computed for Veldmark; a later chapter or the toolkit may define it precisely. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized reliability around liquidity journeys rather than components, so that the chapter connects to the book's central idea."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Placed degradation as a product decision made in advance, with a fixed order of sacrifice, rather than an operational runbook topic."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended multi-zone plus read-only standby over active-active for country-scoped groups; active-active needs a business case."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Added Veldmark unit-cost baseline (search cost per brand, platform run cost) as canonical ledger facts so later chapters can reuse them."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json, reconstructed from the published index.md in its own order. Success criteria: the journeys, error-budget, capacity-model, ladder, regional, bot-control and unit-cost criteria are covered by the journal spec's AC-1 (the peak-hour outage probe) and the intent outcome; their lists of contents (citing Vinted and AWS, RFC 9309, Adevinta levers) are inventories and are dropped as criteria, the sources stay paragraph evidence; the ledger-exactness and Rightmove-label criterion is a house-style rule governed by the ledger and style guide and is dropped. AC-4 (the chapter's last section performs Part VII's closing, after the part's own AC-4) is added here at severity minor.",
+      "rejected": [
+        "Keeping the success criteria as checkboxes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so length.max_words is the published prose length (7,136 words by check_draft's count) plus 5%: 7,493."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added units the published text lacked: a roadmap paragraph (p04), lead-in paragraphs for the Trade-offs and Vertical Differences tables (p50, p52), and a conclusion in three paragraphs (p63 chapter synthesis and callback, p64 Part VII closing and the part's test, p65 so-what and hand-off) built around the published closing paragraph.",
+      "rejected": [
+        "Leaving the closing as one paragraph that lists the part's subjects."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): moved Bots, Scrapers and Crawlers from after Incident Management to directly after Control Points, so bot classes and edge enforcement come before capacity planning and the degradation ladder that shed bots. Transitions into bots, capacity and cost rewritten, roadmap (p04 and promises) and flow rationale updated.",
+      "rejected": [
+        "Merging the bot section into Traffic Shape and Control Points (changes published headings and unit counts).",
+        "Leaving the section after Incident Management."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate; one failure at fault in the spec, corroborated by both flow readers): moved Bots, Scrapers and Crawlers from after Control Points to directly after Traffic Shape, as both readers suggested; rewrote the transitions into bots, journeys, capacity and cost, the roadmap (p04, promises) and the flow rationale. Draft revised at the failing units: p16 says what the bike example shows, p40 introduces the control-layer table, the cost opener states the cause, p30 picks up the calendar, p35 marks the contrast with a single primary, p53 names the two differences, and p04 names the evidence. Words paid by shortening this pass's own additions (the conclusion's contract list, lead-ins, roadmap); max_words not raised.",
+      "rejected": [
+        "Raising max_words.",
+        "Changing the published three/four counts on inference."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (revise): roadmap p04 rewritten to say why the sections come in their order (load, meaning, protection, cost); the Journey SLOs opener now carries over the load; the Trade-offs lead-in marks the contrast with the redesign's success; the Chief Architect's View opens from the failure modes; the control-points sentence unstacked (same content); Figure 3 moved after the section's opening paragraph. Words paid by shortening this pass's own additions (the conclusion's contract list now 'from the listing event to the journey objective', the takeaway, several openers). The three/four counts finding remains open for the author.",
+      "rejected": [
+        "Raising max_words.",
+        "Changing the published counts."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 3 (escalate). Closed with cheap fixes only (no fourth round): openers of Failure Modes, Chief Architect's View and Regions p35 restored to full sentences; p34 states what its evidence shows; the roadmap's source list made its own sentence; the takeaway sentence before the hand-off cut and conclusion.takeaway reworded to match. The two spec-fault findings (bot control layers' position; the judging sections' order) are left to the author.",
+      "rejected": [
+        "A fourth round.",
+        "Moving the bot control layers into Control Points without the author's decision.",
+        "Raising max_words."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved under the author's delegation ('auto resolve all ESCALATE topics'): (1) counts made to say what they count, per the ledger's 'Four of everything' line (three search engines, three clouds) and the 14 Sep 2027 shared-search decision (Tradeyard all countries plus Hearthly): the failure-pattern callout now reads 'four brand stacks, running three search engines on three clouds with four observability bills and four on-call rotations, pay ... several times over' (was 'four search clusters ... four times'); the cost section's four observability stacks are 'one per brand'; the trade-offs paragraph's shared-platform blast radius is 'every country on it at once, Tradeyard's four and Hearthly's two' (was 'four countries'). (2) Worked example: ~37% shed or cached of ~13,000/s arriving leaves ~8,200/s at origin, not ~8,900 (the ledger gives only the 37%); the table now says '~8,200/s of ~13,000 arriving'. (3) Spec-fault order finding of round 3 (both flow readers): the bot section's motives, control-layers table and AI-crawler paragraph (p40, p41) moved into Control Points as the subsection 'Bots, scrapers and crawlers at the edge', directly after p19 and Figure 3, next to edge classification; the share and kinds of bots stay in Traffic Shape. The published H2 heading becomes that H3; the published subheadings 'Why classifieds attract scrapers' and 'The control layers' are folded into it. p40 opens from the edge control point; p20 opens 'Behind the edge'; transitions, roadmap (p04, promises), section and flow rationales updated. (4) The judging sections keep the book's house order (trade-offs, verticals, failure modes, Chief Architect's view, questions); a change belongs to the style guide, not this chapter (rule 8). (5) p19 now points forward to the peak calendar ('set out under capacity planning') and p25 states Tradeyard NL's peak as 'nearly 10,000' per the ledger ruling of 12 Nov 2026. The Journey SLOs opener spelled out ('The traffic shape says when load arrives ...'). max_words raised from 7,493 to 7,700 (under 10%) for these fixes.",
+      "rejected": [
+        "Keeping the bot section as its own H2 before Journey SLOs.",
+        "Keeping ~8,900/s.",
+        "Reordering the judging sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted under the author's delegation, 2026-11-12: the thesis-rubric and flow-rubric notes (thesis copied from the journal spec, not changed); the minor single-reader notes not acted on (2.6 engine-request fan-out, first-person 'I would start', Search as System of Record causal clause, p49/p63 repetition, peak-window freezes introduced in passing, ~37% outcome against the ~35% plan as published); the Part VII closing built in p63-p65; the length note (no published fact, figure, name, link or citation was cut)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, AC-1 to AC-3, thesis, role, the Part VII closing this chapter carries, and Part VIII's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "search-architecture, web-and-seo-architecture, saved-searches-and-alerts, messaging-and-leads, multi-country-platforms, platform-consolidation",
+      "contributed": "Neighbouring designs the chapter builds on or hands to. (Carried over from spec.md.)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md (Parts 4–6), _research/brief-search-discovery.md (Part 2), _research/scenario-ledger.md",
+      "contributed": "Evidence, labeled inferences and canonical Veldmark facts."
+    },
+    {
+      "kind": "external",
+      "ref": "Google SRE Workbook (2018) and SRE book (2016), chapters on SLOs and cascading failures",
+      "contributed": "SLI, SLO, error budget, critical user journeys; retry, load-shedding and degradation guidance."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2021, 2023, 2026); Adevinta Tech Blog (2023, 2024); Rightmove press release (2021); AWS post-event summary (2025); Imperva (2025); Cloudflare (2025); RFC 9309; Google crawler verification; FinOps Foundation; Directive 96/9/EC",
+      "contributed": "Documented public evidence for traffic shape, isolation, facets, regions, incidents, bots and cost."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalations resolved under the author's delegation: bot controls moved into Control Points, published counts made explicit, worked-example origin load corrected to ~8,200/s, Tradeyard NL peak stated, calendar forward pointer; max_words 7,700. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): sections and paragraphs reconstructed from the published text; roadmap, two table lead-ins and a three-paragraph conclusion that performs Part VII's closing added; spec.md removed. Flow rubric: Bots section moved after Control Points. Round 1 draft check: Bots section moved after Traffic Shape (spec fault); draft-fault units revised. Round 2: openers and roadmap revised. Round 3 escalated; closing fixes applied; check report stale."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,238 → 6,211 words; lead now places the chapter in Part VII and names what Part VIII uses from it; 3 headings renamed (Architecture, Peak rehearsals, Three unit costs); degradation-order point moved first; unverified AutoScout24 FinOps aside cut; spec unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Retitled \"Sunday Evening Peaks\" to match the ledger's Sunday-evening peak; permalink unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 5 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: hand-off now goes to part-8 (plus platform-consolidation), part-7 linked, Cloudflare AI-crawler claim and unretrieved OLX post hedged, American spelling. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7700
+  }
+}

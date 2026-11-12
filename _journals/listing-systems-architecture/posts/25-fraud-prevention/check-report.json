@@ -1,0 +1,723 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/25-fraud-prevention/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/25-fraud-prevention/index.md",
+  "spec_sha": "a77366d2f9cf8f9c",
+  "draft_sha": "dedd2e90cc01562c",
+  "run_at": "2026-11-12T22:10:26+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: fraud types, scoring service, friction and feedback via a Barcelona ring",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: off-platform losses still damage the brand and invite regulatory cost",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architect stake: adversarial real-time decision system that must out-learn fraudsters",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three takeaways: prevent before payment, score actors, graduated friction with fast labels",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns tackled: messaging phishing, stale models, stolen photos treated as duplicates",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Fraud borrows platform trust and moves the victim off-platform to pay",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Definitions of fraud signal, risk score and step-up friction",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter's place in the book: detector for the T&S slot, neighbouring chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections and evidence sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶1",
+      "summary": "Fake Barcelona rental listings with stolen photos, cheap rents and deposit requests",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶2",
+      "summary": "Victim count, losses and contacts when listings were removed",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶3",
+      "summary": "Signals fired on day one but were never combined, linked or routed properly",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶4",
+      "summary": "Analyst links the ring by hand / why: Hearthly Spain not yet on the shared platform",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶5",
+      "summary": "Chief Architect's question on acting on day one frames the chapter",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Threat Model: What Classifieds Fraud Looks Like ¶1",
+      "summary": "Lead-gen platforms can't see payments, so APP fraud dominates",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Threat Model: What Classifieds Fraud Looks Like ¶2",
+      "summary": "UK purchase-scam statistics / reimbursement pushes banks to demand marketplace controls",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Threat Model: What Classifieds Fraud Looks Like ¶3",
+      "summary": "Controls must therefore act before payment",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Threat Model: What Classifieds Fraud Looks Like ¶4",
+      "summary": "Public evidence: chat image fraud, post-approval edits, industrial fraud groups",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Fraud and money flow differ by vertical / protected payments shift rather than end fraud",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶1",
+      "summary": "Criteria for a useful signal and the signal families table",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶2",
+      "summary": "Price and graph as the hard-to-fake signals",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶3",
+      "summary": "Barcelona ring showed both price anomaly and shared infrastructure",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶4",
+      "summary": "OLX's duplicate-detection design for fraud from a 2019 talk",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶5",
+      "summary": "Need both hashes and embeddings; PDQ's documented limits",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Fraud Signals ¶6",
+      "summary": "Photo match meaning depends on seller relationship; route to fraud scoring",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶1",
+      "summary": "Risk scoring service: purpose, callers, and handoff to decision service",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶2",
+      "summary": "Design is an inferred reference architecture from adjacent public systems",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶3",
+      "summary": "Real-time path reads precomputed features within a tight latency budget",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶4",
+      "summary": "Feature store justification and point-in-time correctness",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶5",
+      "summary": "Rules and models serve different roles",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶6",
+      "summary": "Rule operations: backtest, shadow, gradual rollout, audit; policies as code",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶7",
+      "summary": "Barcelona combined rule introduced as an example",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶8",
+      "summary": "Rule stopped the ring, model replaced it: rules fast, models durable",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶9",
+      "summary": "Scoring actors versus items as the core design choice",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶10",
+      "summary": "Identity graph and its uses: propagate, detect rings, scope enforcement",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: The Risk Scoring Service ¶11",
+      "summary": "Graph links aren't proof / graph is personal data with limited sharing",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶1",
+      "summary": "Step-up friction as the alternative to blocking",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶2",
+      "summary": "Airbnb's targeted friction with cost-minimizing thresholds",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶3",
+      "summary": "Friction ladder introduced",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶4",
+      "summary": "Mercari passkeys and Ofcom report backing upper-rung frictions",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶5",
+      "summary": "Tradeyard phone-verification threshold scenario and assumptions",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Step-Up Friction ¶6",
+      "summary": "Cost-optimal threshold and its business-owned, measured, revisited inputs",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Fraud Controls in Messaging ¶1",
+      "summary": "Messages as the key action needing pre-delivery fraud controls",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Fraud Controls in Messaging ¶2",
+      "summary": "Femke's phishing link shows the cost of scanning too late",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Fraud Controls in Messaging ¶3",
+      "summary": "Six-step reference design for message fraud controls",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Fraud Controls in Messaging ¶4",
+      "summary": "Legal constraints on scanning private messages",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Feedback Loops and Labels ¶1",
+      "summary": "Fraud labels are late, biased and incomplete",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Feedback Loops and Labels ¶2",
+      "summary": "Four practices for honest feedback loops",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Feedback Loops and Labels ¶3",
+      "summary": "Design rules against fraudsters probing the gate",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Collaboration with Banks and Police ¶1",
+      "summary": "Platform-bank-police cooperation: payee checks' limits, identifier exchange, evidence packages",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Collaboration with Banks and Police ¶2",
+      "summary": "Veldmark's bank liaison feeding mule IBANs into the block list",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Back to Barcelona: What Day-One Action Would Have Required ¶1",
+      "summary": "Answering the day-one question component by component",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Back to Barcelona: What Day-One Action Would Have Required ¶2",
+      "summary": "Counterfactual: cluster caught on day one / Hearthly migration brought forward",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Build-vs-buy: buy signals, own decisions and labels",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Friction costs liquidity, so target and measure it",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Trade-offs ¶3",
+      "summary": "Hybrid detection with risk tiers; Barcelona listing should have waited",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Ten recurring failure modes of fraud stacks",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Group scale as advantage through shared graph and labels",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Architecture agenda decisions introduced",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Three group dashboard metrics, highlighting time to takedown",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "AI-versus-AI future; combined architecture stays the defense",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten design-review questions",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "From Risk to Identity ¶1",
+      "summary": "Synthesis: combining weak actor signals cuts takedown time to hours",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "From Risk to Identity ¶2",
+      "summary": "Hand-off to identity and verification chapter",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 59 aligned unit summaries match the controlling idea of their spec paragraph in spec order (the five callout entries match no spec paragraph and are recorded with null). Summaries for p08, p11, p51, p30 and p47 name both halves of the spec's compound controlling ideas.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶4: The second phrase (why the analyst worked by hand) explains the first; one idea, the late manual takedown.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The Threat Model: What Classifieds Fraud Looks Like ¶2: The reimbursement point is tied causally to the statistics ('explains why banks now ask'); one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Vertical Differences ¶1: The opening sentence is a lead-in; the paragraph has one idea, that where money moves shapes the threat model.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Architecture: The Risk Scoring Service ¶11: Framed as one idea, the graph's two hard constraints, announced in the first sentence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Back to Barcelona: What Day-One Action Would Have Required ¶2",
+      "quote": "Hearthly Spain's move to the shared platform was brought forward to the first quarter of 2028.",
+      "finding": "The outliner needed two phrases (counterfactual day-one outcome / migration brought forward). The migration sentence is presented as an unrelated fact rather than as Veldmark's consequence of the counterfactual, so the unit reads as two ideas; the spec's controlling idea allows tying it causally (what having the components would have changed, and what Veldmark therefore did). flowA A11 reports the same passage.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to a supporting claim: scene to F2/F3, threat model and verticals to F1, signals to F2, architecture to F3/F4, friction to F5, messaging to F1/F5, labels to F4, banks to F1/F4, back-to-Barcelona to F2-F4, trade-offs and Chief Architect's view to F5/F6, failure modes and questions to F1-F6, conclusion to the claim.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each evidence item, table, figure and quotation is introduced or interpreted in the prose: Figure 1 by the four-bullet list, the typology table by p13, the vertical table by p51, the signal table by p14, the latency table by p22, the rules/models table by p24 (thin lead-in, the table carries the comparison), the rule quote by p27, Figure 3 by p29, the ladder table by p33-p34, the threshold table by p36 (formula and minimum at 0.5), Figure 4 by the reference design, the label table and Figure 5 by p41-p42, the Back-to-Barcelona table by p47, sourcing and timing tables by p48 and p50, the decision table by p54; UK Finance, Mercari and Ofcom quotations each stated with what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every transition_in is expressed at its boundary: e.g. elaboration 'Barcelona is one instance of a wider threat', cause_effect 'The architectural consequence is', contrast 'The design lesson from Barcelona is about the policy, not the detector', similarity 'Friction acts before an action completes ... the same way', contrast 'The loop learns from labels; fraudsters learn by probing the gate', end_of_previous sequence 'The design also forces choices.', conclusion_summary 'Ingrid's day-one question now has one answer seen from every section.' The p37 sentence is tangled and the Trade-offs bridge abrupt, but both express the declared relationship (reported under flow_is_followable).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Post level: both flow readers describe a problem-to-solution arc framed by the Barcelona case (scene, threat, signals, scoring, friction, messaging, learning, banks, return to case, then reference sections), matching the declared problem_solution pattern with large_to_small and grouping; neither would move any ## section.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶4",
+      "quote": "She worked by hand because Hearthly Spain, the former Casavista (acquired in 2025 and rebranded in 2026), was not on Veldmark's shared trust-and-safety platform. The platform went live in November 2027",
+      "finding": "Both readers re-read this: the reason given (Hearthly was not on the shared platform) does not hold in July 2027 when the platform did not go live until November 2027 (flowA A1: 'I had to re-read to work out the timeline'; flowB B1: 'the reason given ... does not hold up, because no brand was on it in July'). Prose problem; the order is fine.",
+      "fault": "draft",
+      "corroborated_by": "flowB B1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: The Barcelona Fake-Rental Ring ¶5",
+      "quote": "asked Aisha Rahman, the Group Head of Trust & Safety, and Priya Raman, Head of Data & ML,",
+      "finding": "Three named people in one sentence; Aisha Rahman never returns and Rahman/Raman are easily confused when Priya Raman reappears (flowA A2, flowB B2).",
+      "fault": "draft",
+      "corroborated_by": "flowB B2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The typology varies by vertical, and so does where the money moves",
+      "finding": "Both readers mark the section 'partly unclear': it is a ## section while the readers read it as the third part of the threat model ('reads as a new major topic when it is a third part of the threat model', flowA; 'The roadmap presents it as part of the threat model ... yet it is its own ## section', flowB). The difficulty comes from the spec's structure (verticals as a separate section rather than part of threat-model), not from the prose.",
+      "fault": "spec",
+      "corroborated_by": "flowB (section 'Vertical Differences. Partly unclear')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The last row of the table below explains the strategic link between fraud and transactions.",
+      "finding": "The paragraph interprets a table the reader has not seen yet and names Femke, whose story comes three sections later (flowA A5: 'I had to read the table and then come back to the paragraph'; flowB B5 and B4). Prose problem: the interpretation can follow the table or not depend on it, and the forward reference to Femke can be dropped or shortened.",
+      "fault": "draft",
+      "corroborated_by": "flowB B5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Fraud Signals ¶2",
+      "quote": "which rates the Essen Volkswagen Golf from earlier chapters at €22,800 against an asking price of €21,900,",
+      "finding": "The callback to an earlier chapter's Golf adds two prices that play no part in the point, so the point (a price model doubles as a fraud feature) gets lost (flowA A6; flowB B7 'a detail that feels oddly specific').",
+      "fault": "draft",
+      "corroborated_by": "flowB B7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Architecture: The Risk Scoring Service ¶2",
+      "quote": "built from public adjacent systems (Meta's Sigma rule engine, Stripe Radar's documented rule operations, Uber's 2017 description of a shared feature store, Mercari's 2026 risk-based authentication) and from the evidence above",
+      "finding": "Four systems are named before any is explained (Mercari only in Step-Up Friction), and 'the evidence above' points to evidence that mostly comes below (flowA A7, flowB B8).",
+      "fault": "draft",
+      "corroborated_by": "flowB B8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Fraud Controls in Messaging ¶1",
+      "quote": "Sending a message is the action that matters most, because most classifieds scams close in the conversation, so the message controls have to act the same way: before the message is delivered.",
+      "finding": "Both readers had to re-read the bridge sentence: 'because ... so ... the same way' chains three clauses and 'the same way' points back across a clause (flowA A8, flowB B12). The placement is fine; the sentence obscures it.",
+      "fault": "draft",
+      "corroborated_by": "flowB B12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Fraud Controls in Messaging ¶2",
+      "quote": "On Sunday 7 March 2027, a fake link imitating Safe Deal",
+      "finding": "The March 2027 incident follows the December 2027 threshold example, so the chronology jumps back, and it is unclear whose rule withheld the 37 messages before the shared platform went live in November 2027 (flowA A9). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "Architecture: The Risk Scoring Service ¶8",
+      "quote": "replaced it six weeks later",
+      "finding": "Given that Hearthly was not on the shared platform until 2028, it is unclear which platform trained and deployed this model in August 2027 (flowA A10). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/1",
+      "draft_locus": "Back to Barcelona: What Day-One Action Would Have Required ¶2",
+      "quote": "Hearthly Spain's move to the shared platform was brought forward to the first quarter of 2028. The design also forces choices.",
+      "finding": "The bridge to Trade-offs follows an unrelated migration fact and feels tacked on; the payment-window fact the day-one argument depends on arrives only here (flowA A11). flowB found this bridge clear. Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "My recommendation for a group is the hybrid",
+      "finding": "A first-person narrator appears for the first time in Trade-offs (and again in 'The decisions I would put on the architecture agenda'), and it is unclear who 'I' is (flowA A12, flowB B14).",
+      "fault": "draft",
+      "corroborated_by": "flowB B14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "The Threat Model: What Classifieds Fraud Looks Like ¶2",
+      "quote": "It describes the typical pattern:",
+      "finding": "Dense with figures, and 'It' could refer to the report, the data or the purchase scams; the reader re-read the paragraph (flowA A4). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "The Threat Model: What Classifieds Fraud Looks Like ¶2",
+      "quote": "As of October 2026 that is a lobbying position, not law.",
+      "finding": "A real 2026 date next to fictional 2027 events made the reader stop to work out which timeline is 'now' (flowB B3). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Step-Up Friction ¶5",
+      "quote": "a new account that tries to send more than five first-contact messages within an hour must verify a phone number before sending more, if its message-risk score is above a threshold.",
+      "finding": "A long rule with its condition at the end; the reader re-read it to see which check gates which (flowB B10). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "Step-Up Friction ¶6",
+      "quote": "The weekly cost is (2,000 − fraud stopped) × €180 + genuine lost × €25.",
+      "finding": "The threshold table's 'Weekly cost' column comes before the formula behind it, so the reader could not tell how the costs were derived while reading the table (flowB B11). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Verified badges that survive takeover.",
+      "finding": "Verified badges and 'session posture' are not discussed anywhere in the body before this failure mode (and question 9 repeats it), so it reads as a new topic in a summary list (flowB B15). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Fraud stacks fail in recognizable ways:",
+      "finding": "The three named failure patterns from the opening box ('Fast Mail for Fraudsters', 'Set-and-Forget AI', 'Seeing Double') never return; the reader had to map them to failure modes 4, 5 and 3 (flowB B16). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Barcelona is the canonical case.",
+      "finding": "Failure modes 1-3 repeat the Back to Barcelona table in nearly the same words; 'by the third telling it read as repetition rather than progress' (flowB B17). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Fraud Signals ¶3",
+      "quote": "Its 26 accounts shared five devices and four IBANs.",
+      "finding": "'IBAN' is never expanded or explained (first in the signal table, then here and later); it is on neither already_knows nor does_not_know. Both flow readers report it as unexplained (flowA A3, flowB B6).",
+      "fault": "draft",
+      "corroborated_by": "flowA A3; flowB B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/12/paragraphs/1",
+      "draft_locus": "The Chief Architect's View ¶2",
+      "quote": "The decisions I would put on the architecture agenda:",
+      "finding": "The decision table attached to this unit uses 'DPO' ('Head of T&S and the DPO'); the text spelled out 'Group Data Protection Officer' in p30 but never gave the abbreviation. Both flow readers report it (flowA A13, flowB B9).",
+      "fault": "draft",
+      "corroborated_by": "flowA A13; flowB B9",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Fraud Controls in Messaging ¶2",
+      "quote": "NL and BE users filed about",
+      "finding": "'NL and BE' are not expanded at this point; earlier text says 'Netherlands and Belgium' (flowB B13; flowA A9 notes the same inconsistency).",
+      "fault": "draft",
+      "corroborated_by": "flowB B13",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Step-Up Friction ¶2",
+      "quote": "3-D Secure authentication",
+      "finding": "'3-D Secure' is used without explanation, unlike micro-authorizations in the same sentence (flowA A14). Single reader.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "All does_not_know terms are explained at or before first use: APP fraud (p10), money mules (p07), perceptual hash (p07) and its limits (p18), identity graph (p07, p29), actor-level scoring (p28), friction cost model (p35-p36), point-in-time correctness (p23), backtest-shadow-rollout (p25), Verification of Payee (p44).",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with a direct-statement hook about trust and fraud, then a definition paragraph, placement in the book and a roadmap; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion synthesizes the components into one answer and hands off to identity-and-verification; it does not open with 'in conclusion', merely restate the thesis, add a grab bag or hold body evidence. The identity question is the declared hand-off, not a new subtopic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p58 states what no single section states (graph links, score weighs, friction costs the fraudster, labels keep weights current, as one answer) and why it matters: takedown time moves from days to hours.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p58 returns to Ingrid's day-one question and to the opening image of the trust strangers place in the platform being borrowed by fraudsters, as callback.to names.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the roadmap's sections in order (Barcelona; threat model and vertical differences; signals including stolen photos and actor graph; scoring service with real-time and batch, rules and models; step-up friction with a cost-model threshold; messaging controls; labels; banks and police; back to Barcelona; trade-offs, failure modes, Chief Architect's view, questions), the three owned terms, the off-platform nature of the fraud, and the evidence (UK Finance, OLX, Which?, Meta, Stripe, Airbnb, fictional Veldmark). All roadmap promises are predicted. Note: AC-2's expected still lists vertical differences after trade-offs (pending journal-spec edit per the decision log); the reader's order matches the roadmap and the draft.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader routes the photo match with an unrelated seller to risk scoring as a fraud signal, combines photo reuse, price, account age and verification into one listing score, links the accounts at creation through the shared device so cluster risk raises every member's score, opens one actor-level case, holds the remaining listings at the gate that evening, and has analysts write and shadow-test a rule within hours. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader chooses the threshold by minimizing the explicit weekly cost ((fraud reaching trigger - fraud stopped) x harm + genuine lost x value of a lost genuine account), lists the inputs (volume, share stopped, genuine abandonment, the two costs), assigns the cost of a lost genuine user to the marketplace general manager, abandonment to experiment, and says the threshold is revisited when fraud adapts. Matches expected.",
+      "severity": "minor"
+    }
+  ]
+}

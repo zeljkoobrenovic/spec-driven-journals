@@ -1,0 +1,1734 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "case-olx",
+  "journal": "listing-systems-architecture",
+  "part": "part-9",
+  "title": "OLX Group: Regional Platforms, Verticalization and Retreat",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the four acceptance criteria, the thesis and the role are copied unchanged from the case-olx entry in journal-spec.json. A roadmap paragraph (p04), an interpreting paragraph under the vertical table (p43) and a conclusion section (p57, p58; p58 is the published closing paragraph moved under its own heading) were added.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "OLX's four dated phases: roll-up and rebrand (2006–2018), regional reshaping through mergers and joint ventures (2018–2021), the vertical integration bet with OLX Autos (2019–2025), and the retreat to a European core of seven markets (2022–2026: US$992 million revenue, a 48% adjusted EBITDA margin, 71% from motors, real estate and jobs).",
+        "The engineering record by era: search in five stages on one engine (sort, formula, learning to rank in Solr, a separate paid-visibility objective, hybrid retrieval), the hybrid-search proof sequence, one repository with per-brand configuration, and what the record leaves out (which brands share code, La Centrale's integration, the event backbone)."
+      ],
+      "believe": [
+        "A shared platform is worth the markets it serves for as long as the group keeps them.",
+        "Adjacent inventory and transactional businesses should be built to be retired cheaply, and a live search stack is improved in place with a proof sequence."
+      ],
+      "can_do": [
+        "Ask, before funding a shared capability, which markets will still be in the group in five years.",
+        "Lay out a proof sequence for adding a new retrieval method to a live search stack, with a revenue guardrail."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, search and ranking leads, and engineering directors deciding which markets and adjacent businesses a shared platform should serve, and how to change a live search stack.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are, and the basics of machine learning.",
+        "Part IX's evidence rules (documented fact, the author's reading, labeled inference), from part-9 and case-adevinta.",
+        "Learning to rank, paid visibility in ranking and hybrid retrieval, from ranking and query-understanding; tenancy and consolidation, from multi-country-platforms and platform-consolidation.",
+        "Veldmark, its brands and its 2027-2028 decisions, from meet-veldmark and the chapters."
+      ],
+      "does_not_know": [
+        "OLX Group's corporate history, brands and owners (Naspers, Prosus).",
+        "Prosus's profit measures aEBIT and aEBITDA and its fiscal year ending 31 March.",
+        "OLX-internal names: VAS LTR, Vanilla LTR, the extension chain, Pay&Ship, Otodim, AutoIQ."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a proposed inventory business and a planned search-engine replacement, the reader uses OLX's dated record to say how each should be built or changed.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A classifieds group wants to buy and resell used cars beside its listings, and its search team proposes replacing its Solr cluster to add vector search. Using only this chapter: what does OLX's record show for each, and how would you build or change them?",
+        "expected": "OLX Autos reached US$1.6 billion of revenue in the year to March 2022, just over half of the classifieds business, while losing money, and Prosus exited it from 2023; so keep money with a licensed provider, inventory systems outside the listing core, a separate data boundary and events, and per-category feature flags, so a retreat is a configuration change. OLX kept Solr and BM25 and added vectors as a fixed quota, retrained the ranker, shipped a modest ranker to collect data, and proved it in a smaller market's zero-results fallback before the main flow; vector retrieval at first penalized paid listings until the ranker was retrained, so add a revenue guardrail to every retrieval change."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's questions, its evidence and where it ends.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what questions will this chapter ask, what kind of evidence will it use, and how will it end?",
+        "expected": "Three questions asked of each phase (which markets and businesses the platform carried, what the group bet on beyond listings, what the engineers published about the stack meanwhile); evidence from Prosus and OLX filings and an engineering blog spanning 2018 to 2026 that describes three different organizations and many markets OLX no longer owns; the arguments that liquidity and platform value are local, adjacent bets must be built to be retired, and a listing stack is improved in place; a final comparison with Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Every statement about OLX's internal systems that no cited source documents sits in a callout or figure caption labeled as inference, and every company fact outside those labels carries its source and publication year.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "major",
+        "probe": "Is there any sentence outside an `INFERENCE, NOT DOCUMENTED` callout or a labeled figure caption that describes how OLX builds or runs a system without a dated source, or a company fact with no source and year?",
+        "expected": "None. Undocumented internals appear only in labeled inference callouts or captions; each company fact names its source and year in the sentence or the timeline; the author's interpretation is marked 'my reading' or sits in the Chief Architect's view."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What happened to OLX Group's listing platform as its portfolio shrank from 45 markets to seven and its adjacent businesses were exited, and what did its engineers change in the listing stack meanwhile?",
+    "claim": "OLX's record shows that the portfolio, not the platform strategy, set what its shared platform was worth: every market it left between 2018 (45 markets) and its year to March 2026 (seven) took its stack with it, and its inventory and transactional bets, led by OLX Autos, were exited or de-prioritized; meanwhile the listing stack improved by evolution in place, with Solr and BM25 kept, ranking moved into the engine, paid visibility given its own objective and vector retrieval added as a fixed quota proved first in a smaller market's fallback path; so a group should fund shared capabilities for the markets it will keep, build adjacent businesses to be switched off, and change search through a proof sequence rather than a replacement.",
+    "disputed_by": "The view that breadth across many markets is what makes a group's shared platform pay; that a classifieds group should move into owning inventory and handling transactions to capture more of each sale; and that adding vector search or modern ranking requires replacing the incumbent search engine.",
+    "so_what": "A Chief Architect asks which markets will still be in the group in five years before funding a shared capability, and designs it so the others can leave; keeps an adjacent business's money with a licensed provider, its inventory systems outside the listing core and its entry points behind per-category flags; adopts OLX's hybrid-search proof sequence as a standard; makes paid visibility a named objective with an owner and puts a revenue guardrail next to the relevance metric of every ranking or retrieval change; and starts consolidation with identity and service-estate hygiene, measured in services migrated.",
+    "how_why": "OLX rolled up and rebranded local sites across four continents, merged regional businesses into joint ventures, sold Avito in 2022 and left markets through sales, mergers and joint ventures. OLX Autos reached US$1.6 billion of revenue in the year to March 2022, just over half of the classifieds business, while losing money, and Prosus exited it from 2023; pay-and-ship was de-prioritized in Europe and the credit broker and services marketplace were sold. By the year to March 2026 OLX was seven markets with US$992 million of revenue, a 48% adjusted EBITDA margin and 71% of revenue from motors, real estate and jobs. Through all of it the engineering blog documents search moving from sort to formula to learning to rank in Solr, a separate 'VAS LTR' objective for paid visibility, and hybrid retrieval rolled out in a fixed sequence after it was found to penalize paid listings; multi-brand work moved to one front-end repository for three brands and one learning-to-rank repository with per-brand configuration.",
+    "supporting_claims": [
+      {
+        "id": "O1",
+        "claim": "The portfolio, not the platform strategy, set what OLX's shared platform was worth: between 2018 (45 markets) and its year to March 2026 (seven) every market that left through a sale, merger or joint venture took its stack with it, and the margin rose as the portfolio narrowed to motors, real estate and jobs."
+      },
+      {
+        "id": "O2",
+        "claim": "OLX's inventory and transactional bets, led by OLX Autos (about half of classifieds revenue in the year to March 2022 while losing money), were exited or de-prioritized within about six years, so adjacent businesses should be built to be switched off."
+      },
+      {
+        "id": "O3",
+        "claim": "Meanwhile the listing stack improved by evolution in place: Solr and BM25 kept, ranking moved into the engine as learning to rank, paid visibility given its own objective and measured causally, vector retrieval added as a fixed quota proved first in a smaller market's fallback path, and multi-brand work moved to one repository with per-brand configuration."
+      },
+      {
+        "id": "O4",
+        "claim": "The record is dated and uneven: eight years of engineering posts describe three different organizations, documented fact, the author's reading and labeled inference stay apart, and the evidence stops at which brands share code, La Centrale's integration and the event backbone."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows the portfolio, not the platform strategy, changing what a shared platform is worth, adjacent bets retired, and a listing stack evolved in place while the group around it shrank.",
+    "supports": [
+      "P9-3",
+      "P9-1"
+    ]
+  },
+  "flow": {
+    "pattern": "chronological",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes and evidence-stops: the record read across the phases"
+      },
+      {
+        "pattern": "large_to_small",
+        "applies_to": "chief-architect to questions: from the author's rules to the book's patterns, Veldmark and the reader's own group"
+      }
+    ],
+    "rationale": "The rules and the timeline come first because every later fact is read in their terms. The four phases follow in time order, because each phase changed what the platform had to carry and the reader needs the portfolio before the stack. The engineering record follows the phases because it describes the business that remains after them. The cross-cutting sections draw on both and must follow them; where the evidence stops comes before the author's rules so they are not read as documented; the comparison with the book and Veldmark and the questions to ask come last because they apply the rules. The phases overlap, and the timeline lead says so. Phase 2 (mergers, from 2018) comes before Phase 3 (the inventory bet, from 2019) although their dates overlap, because the mergers shrank the footprint first and the bet's story runs on to 2025, into the retreat. Trade-offs come before vertical differences and failure modes because they name the options the other two qualify; the comparison with the book and Veldmark precedes the questions because the questions turn its verdicts into checks on the reader's own group."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "OLX Group has made almost every portfolio move a classifieds group can make: it rolled up local sites across four continents and rebranded many to one name, merged regional businesses into joint ventures where it kept a minority stake, built an inventory-owning car business that briefly doubled its revenue and then sold or closed it, left Russia after 2022, and by 2026 was a compact European business of seven markets with margins near 50%."
+    },
+    "bridge": {
+      "from_reader_world": "An architect of a marketplace group plans a shared platform for the markets the group owns today.",
+      "to_topic": "OLX's record asks what happens to that platform when the portfolio, not the platform strategy, changes."
+    },
+    "thesis_statement": {
+      "text": "The portfolio, not the platform strategy, set what OLX's shared platform was worth; adjacent inventory and transactional bets were exited; and the listing stack improved by evolution in place, so a group should fund shared capabilities for the markets it keeps, build adjacent businesses to be switched off and change search through a proof sequence.",
+      "placement": "KEY POINTS callout (three bullets) and paragraph p02 (the three arguments)."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04.",
+      "promises": [
+        {
+          "promise": "Set the reading rules and give a dated timeline.",
+          "kept_in": [
+            "how-to-read",
+            "timeline"
+          ]
+        },
+        {
+          "promise": "Follow the four phases in order.",
+          "kept_in": [
+            "phase-1",
+            "phase-2",
+            "phase-3",
+            "phase-4"
+          ]
+        },
+        {
+          "promise": "Read the engineering record of the business that remains.",
+          "kept_in": [
+            "engineering"
+          ]
+        },
+        {
+          "promise": "Draw the trade-offs, vertical differences and failure modes, and mark where the evidence stops.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "evidence-stops"
+          ]
+        },
+        {
+          "promise": "End with decision rules, a comparison with the book's patterns and Veldmark, and questions to ask.",
+          "kept_in": [
+            "chief-architect",
+            "comparison",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "OLX Group has made almost every portfolio move a classifieds group can make, and by 2026 it was a compact European business of seven markets reported with margins near 50%.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Roll-up and rebrand across four continents; regional joint ventures with minority stakes; an inventory-owning car business that briefly doubled revenue and was then sold or closed; the exit from Russia after 2022; seven markets in 2026.",
+            "shows": "The range of portfolio moves the case can test the book's patterns against."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "OLX answers the question case-adevinta leaves open, what happens to a platform when the portfolio rather than the platform strategy changes, by asking of each phase which markets and businesses the platform carried, what the group bet on beyond listings, and what the engineers published about the stack meanwhile.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Three questions: which markets and businesses the platform carried, what the group bet on beyond listings, what the engineers published about the stack meanwhile; three arguments: liquidity and platform value are local, adjacent bets must be built to be retired, a listing stack is improved in place.",
+            "shows": "States the case's questions and the claims they test, with links to the owning chapters."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The portfolio moves just listed, and case-adevinta's question about what happens when ownership changes.",
+          "introduces": "The question this case answers and the three questions asked of each phase.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "OLX's engineering blog from 2018 to 2026 describes three different organizations, so every statement about what OLX runs is true only at its date and for the market it names.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "The global OLX of India, Indonesia, Pakistan, South Africa and Latin America; OLX Autos; today's OLX Europe.",
+            "shows": "Many posts describe markets OLX no longer owns, which is why the evidence is read by era."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The third question: what the engineers published.",
+          "introduces": "Why that evidence must be read by era.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter sets the reading rules and a timeline, follows the four phases in order, reads the engineering record, draws trade-offs, vertical differences and failure modes, marks where the evidence stops, and ends with decision rules, a comparison with the book's patterns and Veldmark, and questions to ask.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The chapter's sections in order.",
+            "shows": "Lets a reader of the opening predict the route and the ending."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The questions and the era-bound evidence.",
+          "introduces": "The route the chapter takes through them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "how-to-read",
+      "heading": "How to Read This Case",
+      "controlling_idea": "The case keeps documented fact, the author's reading and labeled inference apart, and its evidence is good on finance and on search, ranking and trust, and thin on platform consolidation and the years before 2019.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "O4"
+        ],
+        "how": "Sets the evidence rules and the limits of the record before any fact is used."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the rules every Part IX case follows, to how far this case's evidence reaches, to the one fictional element and where it appears. The limits are stated in the terms the rules define, so the rules come first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first item.",
+        "introduces": "The rules for reading the record and its known limits.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Part IX cases separate three kinds of statement: a documented fact carries its source and publication year, the author's interpretation is marked 'my reading' or sits in the Chief Architect's view, and an inference appears only in a callout labeled INFERENCE, NOT DOCUMENTED.",
+          "function": "definition"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Three limits shape the case: the financial evidence is unusually good, the engineering evidence is strong on search, ranking, experimentation and trust and almost silent on platform consolidation, and the history before 2019 rests on secondary sources.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three kinds of statement.",
+            "introduces": "How much of each the record supplies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Veldmark, the book's fictional group, appears only in the final comparison and is a composite, not a disguised OLX.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The real-company evidence.",
+            "introduces": "The one fictional element and where it is used.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "timeline",
+      "heading": "Timeline: OLX in Dated Events",
+      "controlling_idea": "OLX's history from 2006 to June 2026 is a dated sequence of roll-ups, mergers, an inventory bet, exits and one acquisition, which the four phases follow.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O2",
+          "O4"
+        ],
+        "how": "Dates every portfolio move the phases interpret, with its source type."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The reading rules.",
+        "introduces": "The dated record they apply to.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "The chronology, dated by the cited releases with ownership as of October 2026 and Prosus's fiscal year ending 31 March, falls into the four phases the next sections take in turn, which overlap because the car bet began during the mergers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Timeline from 2006 (founding) to June 2026 (FY26 results: seven markets, US$992 million revenue), each row with its source type.",
+              "source": "Wikipedia (widely reported); OLX Group, Naspers and Prosus releases; TechCrunch; Wamda; News24/Fin24",
+              "shows": "Every portfolio move the chapter interprets, dated and sourced."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: each phase changed what the listing platform had to carry.",
+              "shows": "Groups the timeline into the four phases."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "phase-1",
+      "heading": "Phase 1: Roll-Up and Rebrand (2006–2018)",
+      "controlling_idea": "The 2014 rebranding consolidated brands, not platforms, while posts published from 2018 to 2020, looking back at the engineering of these global markets, show capabilities built once, run across regional markets and fitted into the existing search engine, with very different effects per market.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O3"
+        ],
+        "how": "Shows the starting point: many markets under one name, shared capabilities whose value differed by market, and the habit of evolving the existing engine."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "p10 to p12: the reading, the autosuggest evidence and what it shows"
+          }
+        ],
+        "rationale": "The ownership facts come first because the reading of the rebranding depends on them; the engineering examples follow, with the autosuggest table and its source note before the analysis that uses them; the data platform closes the era because it is the part most likely replaced. The December 2020 autosuggest post is a look back at capabilities built in this era for the markets it served. The posts are a look back: they were published from 2018 to 2020, and the prose says so. A subheading, 'Brand consolidation, and the global era's engineering (posts of 2018–2020)', marks where the portfolio facts end and the look back at the era's engineering begins (round 2: both flow readers stopped at the 2019-2020 dates under a 2006-2018 heading)."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The timeline's first rows.",
+        "introduces": "The first phase in detail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "Secondary sources agree that Naspers bought into OLX in 2010, raised its stake to about 95% in 2014 and that year rebranded acquired local leaders to OLX while vertical brands kept their names.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Naspers in 2010, about 95% in 2014; April 2014 rebranding in Romania, Bulgaria, Kazakhstan, Belarus, Hungary and Poland; Otomoto, Otodom, Storia, Autovit, Standvirtual and Imovirtual kept their names.",
+              "source": "Wikipedia (widely reported)",
+              "shows": "The roll-up was a change of names across many markets."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "In my reading the rebranding was brand consolidation, not platform consolidation, while posts published from 2018 to 2020, looking back at these global markets, show capabilities built once, run across regional markets and fitted into the search engine already running, including an autosuggest service measured in four markets.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Logistic-regression coefficients plugged into the existing engine's ranking function (May 2019; about 10% improvement; search 'about 80% of total conversions'); query2vec synonyms for OLX South Africa (2018; null searches down 27%); autosuggest through Solr's suggest component (December 2020).",
+              "source": "OLX tech blog, 2018-2020",
+              "shows": "Each method was fitted into the engine already running rather than built beside it."
+            },
+            {
+              "kind": "table",
+              "what": "Autosuggest results per market in 2020: null searches -5.1% to -20%, search conversion +1.2% to +4.1%.",
+              "source": "OLX tech blog, December 2020",
+              "shows": "One capability, very different effects per market."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The rebranding facts.",
+            "introduces": "What they did and did not change, and what the engineering record shows instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The autosuggest results come from a December 2020 post, and all four markets except South Africa have since been sold, merged or reduced to a minority stake.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The autosuggest table.",
+            "introduces": "Its source and which of its markets remain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The tenfold spread in null-search reduction is, in my reading, the strongest early evidence that a shared capability must be evaluated per market, because the code was shared and the liquidity and language were not.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Null-search reductions from -2% to -20% across four markets.",
+              "shows": "The same code had very different effects by market."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The per-market results.",
+            "introduces": "The lesson the book draws from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Beneath these search capabilities, the era's data platform was AWS-based and has likely been replaced.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "A 2018 GOTO Berlin talk by OLX's chief technology officer (a data lake of billions of events per day); a 2019 post on SageMaker and Step Functions pipelines; a 2023 post showing Airflow and MLflow.",
+              "shows": "Dates the era's data stack and marks it as probably superseded."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The era's search capabilities.",
+            "introduces": "The data platform beneath them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-2",
+      "heading": "Phase 2: Regional Reshaping Through Mergers and Joint Ventures (2018–2021)",
+      "controlling_idea": "From 2018 OLX concentrated through exits and three 2020 mergers that swapped operating control for minority stakes, and each market contributed to a merger took its platform with it.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "O1"
+        ],
+        "how": "Shows markets leaving with their stacks, so a shared capability was worth only the markets that stayed."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "The roll-up of many markets.",
+        "introduces": "The concentration that followed it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "From 2018 the group concentrated, leaving several African and Asian markets and making three structural moves in 2020 in the United States, the Middle East and South Asia, and Brazil.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "OfferUp and letgo combined in March 2020 with OLX owning 40%; dubizzle and Middle East and South Asia businesses contributed to Emerging Markets Property Group for 39% in June 2020; OLX Brazil, 50/50 with Adevinta, bought Grupo ZAP for about R$2.9 billion.",
+              "source": "OLX Group release, 2020; Wamda, 2020",
+              "shows": "Each move swapped operation for a stake."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "In my reading these deals swapped operating control for equity, and the record shows by omission that a market contributed to a merger takes its platform with it, the lesson case-adevinta draws from 2025 reached five years earlier.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "No source describes OLX technology shared with OfferUp, Dubizzle Group or OLX Brazil after the deals.",
+              "shows": "Central capabilities were already separable or had to be made so."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: from 45 markets to seven, every departing market took its stack.",
+              "shows": "A shared capability is worth only the markets that stay."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three deals.",
+            "introduces": "Their architectural consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-3",
+      "heading": "Phase 3: The Vertical Integration Bet (2019–2025)",
+      "controlling_idea": "OLX's bets beyond listings, led by OLX Autos, grew revenue while losing money and were exited or de-prioritized, which argues for building adjacent businesses so that they can be switched off.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "O2"
+        ],
+        "how": "Documents the inventory and transactional bets and their exits."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "large_to_small",
+            "applies_to": "p16 to p18 (OLX Autos) before p19 to p20 (the smaller bets)"
+          }
+        ],
+        "rationale": "OLX Autos is told from entry to exit first because it is the largest bet and the one with numbers; the smaller bets follow in one table, and the only engineering view of the transactional layer closes the section."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The regional mergers that shrank the footprint.",
+        "introduces": "A bet in the other direction, stated in the section's first sentence: owning inventory beside the listings.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "In 2019 OLX bought control of Frontier Car Group, renamed it OLX Autos to buy, recondition and resell cars, and in March 2021 closed its Berlin entity and focused it on Latin America and Asia.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "About US$400 million invested; core product development moved to India.",
+              "source": "TechCrunch, 2021",
+              "shows": "The scale and shape of the inventory business."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "OLX Autos' revenue grew while its losses widened, until Prosus announced its exit.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About US$1.6 billion revenue in the year to March 2022, up 158%, 'just over half of the classifieds business's revenue', about 175,000 cars; first-half revenue about US$1 billion and trading losses of US$206 million; exit citing 'higher cost of capital, high inflation and a reversal of pandemic trends'.",
+              "source": "News24/Fin24, 2023",
+              "shows": "The business was large and unprofitable when the exit came."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "OLX Autos' set-up.",
+            "introduces": "Its growth and losses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The exit ran from 2023 role cuts and sales to all OLX Autos operations disposed of, held for sale or closed by 31 March 2025, and a labeled inference explains why an inventory business needs capabilities a listing platform lacks.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "About 800 roles cut and car buying stopped in Argentina, Mexico and Colombia (June 2023); OLX India and the Indonesian business sold (August 2023); discontinued-operations loss of US$128 million; South Africa's AutoTrader never part of OLX Autos (marked my reading: no source in the chapter).",
+              "source": "TechCrunch, 2023; Prosus FY25",
+              "shows": "The exit was complete within two years."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: inspection, a pricing authority that commits capital, reconditioning, logistics, stock accounting, a finance book and a retail front end.",
+              "shows": "Why the bet strained the architecture as well as the balance sheet, marked as inference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The announced exit.",
+            "introduces": "How and when it was carried out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Beside OLX Autos, OLX entered several smaller adjacent businesses and has left most of them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Kiwi Finance, Pay&Ship, Fixly, Inmokey and Obido, with entry, fate and source.",
+              "source": "OLX Group releases, 2019-2026; OLX tech blog, 2023; Prosus FY25",
+              "shows": "Adjacent bets were entered and left repeatedly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The largest adjacent bet.",
+            "introduces": "The smaller ones.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The only engineering view of the transactional layer is a 2023 Pay&Ship delivery-time post, and the product's de-prioritization two years later is, in my reading, what a cheap retreat looks like from outside.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "May 2023 post on quantile-regression delivery-time ranges; de-prioritization of pay-and-ship in Europe in the second half of FY25.",
+              "shows": "A transactional product scaled back with no visible disruption to listings; how it was built is not public."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: adjacent bets on their own switches beside the listing core.",
+              "shows": "Retirement as a configuration change rather than a migration."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The table's Pay&Ship row.",
+            "introduces": "What the record shows of one such retreat.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "phase-4",
+      "heading": "Phase 4: Retreat to a European Core (2022–2026)",
+      "controlling_idea": "From 2022 OLX left Russia and Central Asia, bought La Centrale, and became seven markets whose margin rose and whose revenue came mostly from motors, real estate and jobs.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "O1"
+        ],
+        "how": "Shows the margin rising as the portfolio narrowed, and the verticals carrying the money."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "p24 to p29: the margin and vertical tables, their notes, then the reading"
+          }
+        ],
+        "rationale": "The exits and the one acquisition come first because the economics that follow describe the portfolio they left; each table is followed by its note so the reading in p28 and p29 rests on figures already qualified."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The exits from OLX Autos and the other adjacent bets.",
+        "introduces": "Exits from whole markets beyond cars, Russia first.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "Beyond cars, the retreat to a European core started with Russia: on 14 October 2022 Naspers announced the sale of Avito for RUB 151 billion in cash.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Prosus held an effective 99%; about US$2.46 billion according to Euronews/Reuters, against earlier estimates of about US$6 billion.",
+              "source": "Naspers release, 2022; Euronews/Reuters, 2022",
+              "shows": "The largest market left by sale."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Central Asia followed in 2025 with agreed sales of OLX Uzbekistan and OLX Kazakhstan, whose completion the chapter treats as not confirmed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'sharpen our focus on core product categories and geographies' (Christian Gisy); Kazakhstan to Beeline Kazakhstan for US$75 million.",
+              "source": "OLX Group releases, 2025",
+              "shows": "The exits were stated as focus."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Russia.",
+            "introduces": "The next exits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The one large acquisition of the period, La Centrale for about €1.1 billion, closed on 17 November 2025 and took OLX into France, entered through a vertical.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "13% traffic growth, 30% more leads, integration 'ahead of plan'.",
+              "source": "OLX Group FY26 release, 2026",
+              "shows": "The vertical was the way in."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The exits.",
+            "introduces": "The one market added.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Prosus reports OLX separately, so the retreat shows directly in its margins, on two profit measures defined below the table.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "FY24 about US$660m at 25% aEBIT margin; FY25 US$777m at 35% aEBIT margin; FY26 US$992m with aEBITDA US$481m at 48%.",
+              "source": "Prosus FY25 results; OLX Group FY25 release; Prosus FY26 media release",
+              "shows": "The margin rose as the portfolio narrowed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The portfolio after the exits and the acquisition.",
+            "introduces": "What it did to the economics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The profit measure changed from aEBIT to aEBITDA between FY25 and FY26, so the 35% and 48% are not the same metric, and Prosus's eight-point expansion implies about 40% in FY25.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The margin table.",
+            "introduces": "How to read its two metrics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "From FY26 Prosus also reports OLX by vertical.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Motors US$429m at 59%; real estate US$185m at 46%; jobs US$87m at 43%; remainder about US$291m by subtraction.",
+              "source": "Prosus FY2026 media release, 2026",
+              "shows": "Motors is the largest and most profitable line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The group margin.",
+            "introduces": "Its split by vertical.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The vertical figures come from the Prosus release of 29 June 2026, and the remainder row is the author's arithmetic, not a reported figure.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The vertical table.",
+            "introduces": "Its source and which row is derived.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Motors is the largest and most profitable line, and the three verticals bring 71% of revenue although, in the author's reading, the horizontal sites carry most of the audience; Prosus ties the growth to vertical products.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "FY25 booklet: 'dealer tools', vehicle-history transparency and dealer ratings in motors; 'the rollout of a unified platform, fully reimagined app and tools optimised for agents' in real estate.",
+              "source": "Prosus FY25 booklet, 2025",
+              "shows": "Growth came from products built for each vertical."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The vertical figures.",
+            "introduces": "What they say about where the money is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "In my reading the horizontal brand works as a funnel and the verticals monetize it, and Otodim shows a vertical launched first as a new lens on horizontal inventory.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Otodim, beta in Ukraine in May 2026, 'draws on OLX Ukraine's extensive listings inventory', with independent listing and messaging 'in development'.",
+              "source": "OLX Group release, 2026",
+              "shows": "A vertical built on existing supply rather than a new supply system."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Verticals earn most of the money from an audience the horizontal sites gather.",
+            "introduces": "The reading that follows and its plainest example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "heading": "The Engineering Record: How the Listing Stack Evolved",
+      "controlling_idea": "OLX Europe's posts of 2022 to 2026 show one listing stack improved in place: search in five stages on Solr, a hybrid-search proof sequence, paid visibility measured causally, multi-brand work by configuration, and other capabilities summarized for their owning chapters.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "O3"
+        ],
+        "how": "Documents the in-place evolution of the stack that stayed."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p31 to p34: the five search stages, then the hybrid step in detail"
+          },
+          {
+            "pattern": "grouping",
+            "applies_to": "p36 to p41: paid visibility, multi-brand, other capabilities, language models"
+          }
+        ],
+        "rationale": "Search comes first because it is the best-documented evolution and the one the decision rules build on; the hybrid post follows the stage table because it is that table's last row in detail; paid-visibility measurement, multi-brand work, the summary table and language models then follow in falling order of relevance to the thesis."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The portfolio changing around the business that remains.",
+        "introduces": "What the engineers of that business published about the stack meanwhile.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "The posts of 2022 to 2026 describe OLX Europe, the business that remains, and concentrate on search, ranking, recommendations, experimentation, trust and safety and language models on the supply side.",
+          "function": "context"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "OLX's search evolved through five stages on one engine, Apache Solr, the best-documented search evolution in the book's research.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Sort only; hand-tuned formula; LambdaMART in Solr's learning-to-rank plugin (+12% conversions on page one, +5% purchases, +4% unique buyers); 'Vanilla LTR' and 'VAS LTR'; hybrid retrieval with BM25 plus a fixed number of vectors.",
+              "source": "OLX tech blog, 2022 and 2025",
+              "shows": "Each stage extended the engine already running."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The topics the record covers.",
+            "introduces": "The first and best-documented one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Learning to rank trains a model to order results from labeled outcomes, and NDCG is the standard offline ranking metric; both are defined in the ranking chapter.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The terms in the stage table.",
+            "introduces": "Their one-line glosses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Two choices in OLX's ranker match the book's patterns: a contact as the success label, with a check that unique contacted sellers rose, and paid visibility as an explicit separate objective, the opposite of Multiplier Creep.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A classifieds platform rarely observes the sale; a ranker can concentrate demand on a few sellers; whoever changes the ranker must see the paid objective.",
+              "shows": "Why each choice matters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The ranking stages.",
+            "introduces": "What their design choices show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "form": "list",
+          "controlling_idea": "The September 2025 hybrid-search post describes the order of proof as well as the design: a quota of vectors beside BM25, a ranker retrained to judge them, a modest ranker to collect data, and a first test in a smaller market's fallback path.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'We began with 35 results from semantic search', later 'from 35 to 70'; the LTR model 'consistently assigned lower relevance scores to vector search results', a problem for VAS ads; 'a linear re-ranking model to temporarily replace LTR'; seller-contact events more than doubled in the fallback; about 3% on apps and about 5% on mobile web in the main flow.",
+              "source": "OLX tech blog, 2025",
+              "shows": "Each step limited what could go wrong."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the hybrid design as OLX described it in 2025.",
+              "shows": "The documented shape, not internal components."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The last row of the stage table.",
+            "introduces": "How that step was proved.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Similarity is not relevance in local classifieds: a companion 2025 post shows a similar-items test losing until location and price were brought back through re-ranking.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "October 2025 post on offline evaluation: model chosen by memory, latency and language; offline dataset weighting favorites and chat replies above clicks.",
+              "source": "OLX tech blog, 2025",
+              "shows": "Embeddings alone do not capture what makes a local listing relevant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The hybrid-search rollout.",
+            "introduces": "A second limit on vector retrieval.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Beyond ranking paid listings, OLX treats its paid products (boost packages and VAS) as claims to be measured, using propensity matching against self-selection and group sequential testing against peeking.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Premium motors packages 'appeared to perform worse' because 'professional sellers self select'; matched uplifts of 17.6% to 97.4% (August 2026); with daily peeking 'despite a significance level of 5%, 27.9% of the simulations yielded a significant result' (August 2025).",
+              "source": "OLX tech blog, 2025 and 2026",
+              "shows": "Paid visibility is measured causally, not from dashboards, and peeking is controlled because it inflates false positives more than fivefold."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Paid listings ranked by the ranker's separate paid objective.",
+            "introduces": "How the value of the paid products to sellers is measured.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "form": "list",
+          "controlling_idea": "The record has three explicit, recent statements about multi-brand engineering: one front-end repository for three brands, one learning-to-rank repository with brand configuration, and identity and service-estate clean-up across 71 services.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'One-product, three brands' (February 2026); 'all LTR projects within a single repository' with Hydra configuration (June 2025); 'standardized user identification across 71 services, with 73% now using modern UUIDs' and 'too much of everything, not enough of anything' (March 2026).",
+              "source": "OLX tech blog, 2025-2026",
+              "shows": "Cross-brand work ran on configuration over one code base and needed clean-up first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Search and ranking.",
+            "introduces": "How the same stack serves several brands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "An August 2026 post mentions a change across three codebases, two Go services and a PHP service, and a labeled inference reads the fragments as one code base per vertical serving several country brands by configuration.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "'three codebases': two Go services and a PHP service.",
+              "source": "OLX tech blog, 2026",
+              "shows": "Go and PHP services coexist."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: a reference reading of OLX Europe's multi-brand shape; all but the brand names, the ranking repository and La Centrale is inference.",
+              "shows": "Assembles the fragments, labeled."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE, NOT DOCUMENTED callout: a plausible reference architecture; which brands share which code base is not published.",
+              "shows": "Keeps the inference apart from the record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The three multi-brand statements.",
+            "introduces": "A fourth fragment that fits them, and what the fragments together suggest.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The rest of the record (moderation, duplicates and fraud rings, chat fraud, media and recommendations) belongs to the chapters that own each topic, and a table summarizes it with dates and links.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five areas with what OLX published, date and era, and the owning chapter.",
+              "source": "OLX tech blog and releases, 2019-2026",
+              "shows": "The record's breadth, routed to the chapters that develop it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The multi-brand evidence.",
+            "introduces": "The remaining topics of the record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "OLX's 2025-2026 releases describe generative AI mostly on the supply side and in new channels, with company-reported outcomes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Posting time cut 35-55% (2025); Auto Description 98% style and relevance, 89% faithfulness (2026); job-role extraction at 'approximately 15K per month' for about 4,000 calls a day (2024); AutoIQ; CompassGPT and AutoGPT as apps inside ChatGPT (2026).",
+              "source": "OLX Group releases and tech blog, 2024-2026",
+              "shows": "Language models went first to listing creation and to channels OLX does not control."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The other capabilities.",
+            "introduces": "The newest part of the record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "In my reading the ChatGPT apps are the architecturally significant item, because serving inventory to an assistant OLX does not control turns structured attributes, availability and API-grade access into the product.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The list of language-model uses.",
+            "introduces": "The one with the largest architectural consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs the Case Illustrates",
+      "controlling_idea": "The record illustrates five options, from global breadth to evolving search in place, and shows that the portfolio decision comes before the platform decision.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O2",
+          "O3"
+        ],
+        "how": "Turns the phases and the engineering record into options with conditions."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The four phases and the engineering record.",
+        "introduces": "The options they illustrate, in a table read by the paragraph that follows it.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The trade-off rows draw on the phases and the engineering record and are not a maturity ladder; what OLX's record adds is that the portfolio decision comes first, since every exit went through a deal that took the market's platform with it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Global breadth; exit by merger or joint venture; owning inventory; one code base per vertical with brand configuration; evolving the search stack in place, each with what OLX shows and when it is right or fails.",
+              "shows": "Each option is conditional, and the first three are portfolio choices."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in the Record",
+      "controlling_idea": "The options play out differently by vertical: the money is in the verticals, the audience in the general sites, and each vertical's lesson differs.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "O1"
+        ],
+        "how": "Shows why the remaining portfolio is organized by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The options across the whole group.",
+        "introduces": "How they play out by vertical, stated in the paragraph that reads the table.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "The trade-off options play out differently by vertical: motors earns the highest margin from dealer products, real estate credits an undisclosed shared platform, jobs depends on normalizing free-text roles, and the general sites carry the funnel's work.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, motors, real estate and jobs: examples, what the record shows, implication.",
+              "shows": "Motors earns the highest margin from dealer products; real estate credits a shared platform whose mechanics are not public; jobs depends on taxonomy normalization of free text."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes the Record Exposes",
+      "controlling_idea": "The record exposes five failure modes, from revenue that hides a different business to adjacent bets without an exit design.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "O2",
+          "O3"
+        ],
+        "how": "Names what went wrong or nearly went wrong so the decision rules can address it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the options and verticals show when they work.",
+        "introduces": "What the record shows going wrong, in a lead sentence before the list.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Where the options failed or nearly failed, the record shows five failure modes: revenue that hides a different business, shared capabilities assumed to have one effect, a retrieval change that silently changes revenue, identity fragmentation after a roll-up, and adjacent bets without an exit design.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "OLX Autos' principal revenue; autosuggest from -2% to -20%; the keyword-trained ranker under-scoring vector candidates; 71 services needing standard identifiers a decade after the rebranding; four adjacent bets entered and left within about six years.",
+              "shows": "Each mode is tied to a documented episode and to the chapter that treats it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "evidence-stops",
+      "heading": "Where the Public Evidence Stops",
+      "controlling_idea": "No public source answers how OLX Europe's brands share code, what La Centrale's integration means, what the event backbone is, how far the PHP-to-Go migration has gone, what runs chat in Europe or what the exits cost technically, and three facts are volatile.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "O4"
+        ],
+        "how": "Marks the limits of the record so the decision rules are not read as documented."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the record shows.",
+        "introduces": "What it does not.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "Six questions that matter to an architect are not answered by any public source, and the chapter does not fill them beyond its labeled callouts.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Each question with what is public and what is not.",
+              "shows": "Separates the fragments from the gaps."
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Three facts are volatile as of October 2026: the completion of the Uzbekistan, Kazakhstan and Fixly sales, the status of the OLX Brasil joint venture, and the 'OLX Magic' assistant.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The unanswered questions.",
+            "introduces": "The answered facts that may change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chief-architect",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The record yields five decision rules, each conditioned on the evidence: let the portfolio decide what the platform is worth, price adjacent bets as closable, change search with a proof sequence, make paid visibility a named objective, and start consolidation with identity and service-estate hygiene.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O2",
+          "O3"
+        ],
+        "how": "Turns the thesis into the author's labeled decision rules."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The portfolio rule comes first because the others assume a known set of markets; the adjacent-bet rule follows because it decides what the platform carries; the three engineering rules close, from the search sequence the record documents best to the hygiene work that precedes consolidation."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The record and its limits.",
+        "introduces": "The author's decision rules drawn from it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "What I take from OLX is a set of decision rules, each conditioned on the evidence.",
+          "function": "transition"
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Let the portfolio decide what the platform is worth: before funding a shared capability, ask which markets will still be in the group in five years and design it so the others can leave.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The announcement of the rules.",
+            "introduces": "The first rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Price adjacent bets as businesses that may be closed, keeping money with a licensed provider, inventory outside the listing core, a separate data boundary and events, and entry points flagged per category.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The portfolio rule.",
+            "introduces": "The rule for adjacent businesses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Change the search stack by evolution with OLX's hybrid-search proof sequence adopted as a standard.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: a six-step staircase from keeping keyword search to the main flow.",
+              "shows": "Each step limits what can go wrong."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The rule for adjacent businesses.",
+            "introduces": "The rule for changing search.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Make paid visibility a named objective with an owner, and put a revenue guardrail next to the relevance metric of every ranking or retrieval change.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The search proof sequence.",
+            "introduces": "The guardrail it needs for paid listings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Treat identity and service-estate hygiene as the start of consolidation, scheduled first and measured in services migrated.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ranking rule.",
+            "introduces": "The last rule, on consolidation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "comparison",
+      "heading": "Comparing the Case to the Book's Patterns and to Veldmark",
+      "controlling_idea": "OLX's record supports the book's patterns, strongly for local liquidity and hybrid retrieval, and sharpens five of Veldmark's choices, while the Polish overlap remains a rule the case can point toward but not validate.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O2",
+          "O3",
+          "O4"
+        ],
+        "how": "Tests the book's patterns and the fictional group's decisions against the record, at the strength the evidence has."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The book's patterns first, then Veldmark's decisions, then the one Veldmark rule the record cannot test, so the narrowest and least supported comparison comes last."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The author's decision rules.",
+        "introduces": "The book's patterns the rules rest on, and Veldmark's choices, set beside the record.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The decision rules rest on the book's patterns, and OLX's record supports them: strongly for local liquidity and hybrid retrieval, and for brand configuration only where documented.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight book patterns with OLX's record and a verdict.",
+              "shows": "The verdicts range from strongly supported to supported only for the layers documented."
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Veldmark's Tradeyard resembles the horizontal-plus-vertical shape OLX runs in Poland and Portugal; with its brands and its scenario ledger glossed, the comparison sharpens five of Veldmark's 2027-2028 choices.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Safe Deal; Hearthly Direct; Ranking policy v1; the shared OpenSearch platform; the February 2028 external assistant channel, each with its OLX parallel and what the case suggests.",
+              "source": "_research/scenario-ledger.md",
+              "shows": "Each Veldmark choice is consistent with, or answers a question left by, the record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The book's patterns.",
+            "introduces": "The fictional group's decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "The Polish overlap rule is one the case can point toward but not validate, because OLX has not published how OLX.pl and Otomoto divide dealers, so Ingrid Halvorsen should make the commercial owner per listing and Motorvane's feed first-class parts of the Listing event contract.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ledger: private car listings stay on Tradeyard with insertion fees; dealers above a small listing count are offered Motorvane packages, with stock syndicated to Tradeyard; the listing core records the brand that owns the commercial relationship.",
+              "source": "_research/scenario-ledger.md",
+              "shows": "The rule the record would need to test."
+            },
+            {
+              "kind": "case",
+              "what": "OLX's money is in the verticals; Otodim builds a vertical on horizontal inventory.",
+              "shows": "The direction the record does support."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The five choices the record sharpens.",
+            "introduces": "The one it cannot test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Eight questions turn the case into checks a group can run on its own markets, adjacent businesses, revenue, rollouts, ranking, search roadmap, identity and assistant readiness.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "O1",
+          "O2",
+          "O3"
+        ],
+        "how": "Makes the decision rules testable in the reader's group."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The rules and comparisons.",
+        "introduces": "The questions a reader can put to their own group.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "form": "list",
+          "controlling_idea": "The rules become eight questions a group can put to itself, from which markets it expects to own in five years to whether its listing data is fit for an external assistant.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From OLX to eBay Classifieds",
+    "synthesis": "Asked of every phase, the three questions give one answer: which markets the platform carried was decided by deals, not by the platform; what the group bet on beyond listings was exited or scaled back; and what the engineers published shows the stack that stayed improving in place one proved step at a time. In my reading these are one rule: a shared platform is worth the markets the group keeps, so adjacent businesses should be easy to switch off and search should change in steps that can be stopped.",
+    "so_what": "A Chief Architect cannot choose the portfolio but can choose a platform that follows it: funded for the markets that stay, with adjacent businesses that can be switched off and a search stack changed in stoppable steps.",
+    "callback": {
+      "to": "The hook (almost every portfolio move a classifieds group can make) and the three questions asked of each phase.",
+      "how": "The conclusion answers the three questions in order and joins the answers into one rule."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Fund shared capabilities for the markets the group will keep, build adjacent businesses to be switched off, and change search through a proof sequence; read case-ebay-classifieds next for the integration question from the seller's side."
+    },
+    "hand_off": {
+      "to": "case-ebay-classifieds",
+      "relationship": "contrast",
+      "carries_over": "OLX's closing: a group that reached for global breadth and adjacent businesses, then concentrated on a few markets and verticals while its engineers kept improving one listing stack.",
+      "introduces": "The mirror image of Adevinta: a federation of national leaders with a thin shared layer, sold whole to Adevinta in 2021, the integration question seen from the seller's side of the deal."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole case, from the phases to the questions.",
+      "introduces": "What the three questions add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p57",
+        "controlling_idea": "Asked of every phase, the three questions give one answer, which in my reading is one rule: a shared platform is worth the markets the group keeps, so adjacent businesses should be easy to switch off and search should change in steps that can be stopped.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "O1",
+            "O2",
+            "O3"
+          ],
+          "how": "Synthesizes the chapter and calls back to the hook and the three questions."
+        }
+      },
+      {
+        "id": "p58",
+        "controlling_idea": "OLX shows a group that reached for breadth and adjacent businesses, then concentrated while its engineers kept improving one stack, and case-ebay-classifieds follows the mirror image of Adevinta, a federation of national leaders with a thin shared layer sold whole to Adevinta in 2021, the integration question seen from the seller's side of the deal.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "O1"
+          ],
+          "how": "Hands off to case-ebay-classifieds."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "OLX's route: breadth, adjacent bets, concentration.",
+          "introduces": "A group sold whole, seen from the seller's side.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A company profile or an investment view of OLX Group or Prosus."
+    },
+    {
+      "topic": "Re-teaching ranking design, hybrid retrieval, tenancy models, consolidation sequencing or transactional design; the case summarizes and links.",
+      "covered_in": [
+        "ranking",
+        "query-understanding",
+        "multi-country-platforms",
+        "platform-consolidation",
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "Adevinta's side of the OLX Brasil joint venture, and automotive groups in general.",
+      "covered_in": [
+        "case-adevinta",
+        "case-automotive"
+      ]
+    },
+    {
+      "topic": "OLX's moderation, media and recommendation systems in depth; a summary table links to the owning chapters.",
+      "covered_in": [
+        "trust-and-safety-architecture",
+        "media-pipeline",
+        "recommendations"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Which OLX Europe brands share a code base, and when the real-estate 'unified platform' rolled out. Revisit if OLX publishes on it. (Carried over from spec.md.)",
+    "Whether La Centrale's 'integration ahead of plan' includes moving onto a shared motors platform. (Carried over from spec.md.)",
+    "Completion of the Uzbekistan, Kazakhstan and Fixly sales (only signing dates confirmed in the FY26 release); status of the OLX Brasil joint venture. (Carried over from spec.md.)",
+    "How OLX.pl and Otomoto divide dealers and listings in Poland, the evidence that would test Veldmark's Polish overlap rule. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the case as four dated phases plus an engineering-record section, because the teaching value lies in the contrast between portfolio upheaval and steady in-place evolution of the listing stack."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated the early history (2006-2018) as widely reported and kept it short; leaned on Prosus filings for economics, flagging the aEBIT-to-aEBITDA metric change rather than comparing margins as like for like."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Showed the multi-brand shape only as a labeled inference figure built from documented fragments; refused to name which brands share code."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Veldmark comparison for Safe Deal, Hearthly Direct, Ranking policy v1, the OpenSearch move and the external assistant channel, plus the Polish overlap as a worked question; no new canonical facts added to the ledger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the timeline, phase-figure, search-evolution, inference-callout, evidence-stops, table-and-diagram, comparison and questions-and-sources criteria were inventories of contents and are dropped; their substance is carried by the journal spec's AC-1 (decide an inventory bet and a search change from the record), AC-2 (predict the chapter from its opening), AC-3 (reverse outline) and AC-4 (inference labeled, facts sourced and dated). spec.md set no word limit, so length.max_words is the published prose length by check_draft.py (6,955) plus 5%: 7,302.",
+      "rejected": [
+        "Keeping 'at least two mermaid diagrams' (the diagrams were replaced by generated figures on 2026-10-20) and the 6-10 questions count as criteria."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims O1 to O4 written here from the thesis (the journal spec gives none for this post): the portfolio sets the platform's worth, adjacent bets exited, the stack evolved in place, and the dated, uneven record. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) so a reader of the opening can predict the route and the ending, a paragraph under the vertical table (p43) because that section had no prose and its table was unexplained, and a conclusion section 'From OLX to eBay Classifieds' with a synthesis paragraph (p57) and the published closing paragraph (p58) moved under it, as case-adevinta did. No company fact was added.",
+      "rejected": [
+        "Leaving the hand-off as the last paragraph of Questions to Ask, with no synthesis or callback."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): p02 now names the three questions, p10 names autosuggest and the running engine, p43 states the per-vertical lessons rather than repeating Phase 4's funnel reading; the post-level rationale now explains the overlapping Phase 2 and 3 dates and the order of the cross-cutting and closing sections. Order unchanged.",
+      "rejected": [
+        "The structural merges listed in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 revision: section openings added or reworded to express the declared transitions (Phase 3 contrast with the mergers, Phase 4 'beyond cars', paid products 'beyond ranking', a 'fourth fragment' lead for the coding-agents post, trade-offs, failure-modes and questions leads, the patterns-table verdict as its lead); p28's audience claim marked as the author's reading; Kiwi Finance glossed in the timeline; Veldmark's Hearthly and Valuo glossed and the ml-platform parenthesis spelled out; the recency reason explained. To stay at the 7,302-word limit, only the author-added roadmap, vertical and synthesis paragraphs and the new leads were tightened; no published fact, figure, name, link or citation was cut.",
+      "rejected": [
+        "Moving the 2018-2020 engineering posts into the Engineering Record (would split units and change the published Phase 1)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 revision: Phase 1 subheading; data-platform paragraph tied to the search capabilities; Phase 4 opens 'the retreat to a European core started with Russia'; vertical paragraph points at the trade-off options; the scenario ledger, Hearthly (French and Spanish property portal) and Valuo glossed from the ledger; aEBIT/aEBITDA announced before the margins table; the peeking figure explained; 'Most of the audience' and 'chat fraud is the main trust problem' in the vertical table marked 'my reading'. Words held at 7,302 by tightening only text added in this pass (roadmap, synthesis, leads).",
+      "rejected": [
+        "Changing the Phase 1 heading's dates or moving the 2018-2020 engineering posts into the Engineering Record."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: (1) the Phase 2 lead no longer says OLX left Nigeria in 2018; it now says Venezuela was left in 2018 and the East and West African businesses, Nigeria among them, were sold to Jiji in April 2019, agreeing with the dated timeline row (the page contradicted itself); (2) 'It was OLX's first market in Western Europe' for La Centrale, contradicted by the page's own Portugal market, now reads 'It took OLX into France'; (3) the WHY THE BUSINESS CARES callout no longer says the margin 'roughly doubled' (FY24 aEBIT 25% against FY26 aEBITDA 48%, the mix the chapter's note warns against); it now states both measures: adjusted EBIT margin 25% to 35% in one year, adjusted EBITDA margin eight more points to 48% the next, all figures already on the page; (4) AC-4: the AutoTrader sentence and the jobs cell's 'CV parsing and a blue- and grey-collar focus' are marked 'my reading', wording otherwise kept; (5) the closing now describes eBay Classifieds Group as the journal spec does (the mirror image of Adevinta, a federation of national leaders with a thin shared layer, sold whole to Adevinta in 2021, seen from the seller's side); (6) the Veldmark comparison split into short sentences glossing Tradeyard, Motorvane, Hearthly, Valuo and Ingrid Halvorsen before the table, Safe Deal glossed in its row, the Hearthly Direct cell states the ml-platform reason instead of pointing at it, 'In the ledger' now 'In the scenario', and the Listing event contract glossed; (7) the 2018-2020 engineering posts stay in Phase 1 (rule 8: keeps the published text). Cheap minor fixes: 'looking back', 'its earlier BM25-weighted function', LTR glossed in the stage table, Multiplier Creep glossed. length.max_words raised from 7,302 to 7,600 (4%) under rule 2 to make room for the glosses; no published fact, figure, name, link or citation was cut.",
+      "rejected": [
+        "Moving the 2018-2020 engineering posts into the Engineering Record.",
+        "Dropping the AutoTrader sentence or the jobs cell's readings (published text kept, labeled)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims O1 to O4, the added roadmap (p04), vertical (p43) and synthesis (p57) paragraphs, renamed and added subheadings and glosses from earlier passes: accepted under the author's delegation, 2026-11-12. Thesis-rubric notes not acted on (the thesis is copied from the journal spec; no rewording proposed). Flow-rubric merges and moves not taken, as logged earlier: accepted under the author's delegation, 2026-11-12. spec.md's four unchecked modalities: none exists, modalities stays empty, accepted under the author's delegation, 2026-11-12. The round 1-3 notes formerly in open_questions are superseded by the resolution above."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "liquidity-and-network-effects, ranking, query-understanding, multi-country-platforms, platform-consolidation, transactions-and-payments, experimentation, ai-in-listing-systems",
+      "contributed": "Patterns the case tests."
+    },
+    {
+      "kind": "internal",
+      "ref": "case-adevinta",
+      "contributed": "Format model and the OLX Brasil joint-venture partner."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md",
+      "contributed": "Veldmark decisions used in the comparison."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-olx.md (primary), brief-search-discovery.md, brief-monetization-economics.md, brief-automotive.md, brief-platform-data-ml.md",
+      "contributed": "Evidence base."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Group FY25 and FY26 releases; Prosus FY25 booklet and FY2026 media release",
+      "contributed": "Economics and portfolio (re-verified 19 October 2026)."
+    },
+    {
+      "kind": "external",
+      "ref": "Naspers 2022 Avito disposal; OLX Group releases on OfferUp, Grupo ZAP, Uzbekistan, Kazakhstan, Otodim",
+      "contributed": "Portfolio moves (partly re-verified)."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX tech blog 2018-2026",
+      "contributed": "Search, ranking, experimentation, multi-brand, trust and safety, media and recommendations (hybrid search, recommendations, group sequential testing and WOF posts re-verified via the RSS feed)."
+    },
+    {
+      "kind": "external",
+      "ref": "News24/Fin24 2023; TechCrunch 2021, 2023",
+      "contributed": "OLX Autos."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: re-verified 9 load-bearing claims (FY26, Avito, OLX Autos, hybrid search, Otodim, OfferUp); noted the implied FY25 aEBITDA margin, the Schibsted-to-Adevinta JV stake and the unnamed Pay&Ship provider. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,091 -> 6,103 prose words; opening now ties the case to Part IX and the Adevinta case; search heading corrected to 'five stages' to match its table; 10 paragraph openings rewritten to state their point; no sections moved. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Trade-offs heading capitalized as in the 45 chapters. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec, status draft); spec.md removed. index.md: roadmap paragraph p04, vertical-table paragraph p43, conclusion section with synthesis p57; timeline lead extended. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (ESCALATE, spec faults on phase dating): spec ideas for p08, phase-1, p10 and the revised transitions updated; index.md revised as in decision_log. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (ESCALATE, spec fault on Phase 1 dating): ideas for p13, p21, p24, p43, p53, p54 and the phase-1 flow updated; index.md revised as in decision_log. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3 (ESCALATE, budget spent). Post-round wording fixes to p42, p53 and p54 (ledger gloss); roadmap and leads tightened to hold 7,302 words. Report stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation (Nigeria date, La Centrale 'first', margin callout, AC-4 labels, eBay hand-off, Veldmark glosses); max_words 7,600. Draft check round 4 follows. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7600
+  }
+}

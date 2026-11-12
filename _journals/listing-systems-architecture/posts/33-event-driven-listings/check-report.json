@@ -1,0 +1,694 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/33-event-driven-listings/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/33-event-driven-listings/index.md",
+  "spec_sha": "2c86e3b8d697037e",
+  "draft_sha": "35cde179f2246eb8",
+  "run_at": "2026-11-12T22:26:28+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the chapter teaches: designing, publishing, ordering, evolving and replaying the listing event stream",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business cost of changes that reach downstream copies late",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "One write, many readers: change flow decides latency and integration cost",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: event as contract, reliable publish plus safe consume, state-carrying replayable history",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: ghost inventory, search as record, deal-shaped architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "One listing change has many readers, so moving changes is the real design question",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Cheap ad hoc integrations fail as readers grow; one published stream replaces them",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter's place in Part VII and its ownership boundaries / roadmap of the chapter",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold ¶1",
+      "summary": "Incident: sold bike still featured in next morning's alert digest",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold ¶2",
+      "summary": "Root cause: digest built from a replica snapshot and never subscribed to sale messages",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold ¶3",
+      "summary": "Inventory of eleven readers via mixed mechanisms, multiplied across four brands",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The Digest That Did Not Know the Bike Was Sold ¶4",
+      "summary": "The chapter question and Veldmark's answer: Kafka backbone and contract v1",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶1",
+      "summary": "Three things called events need distinguishing for ownership",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶2",
+      "summary": "Definition of a listing event as the aggregate's published language",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶3",
+      "summary": "CDC is a mechanism that leaks producer schema, not a contract",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶4",
+      "summary": "Fowler's event patterns: notification, state transfer, sourcing",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶5",
+      "summary": "Listing events should carry state to avoid callback storms",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: What a Listing Event Is ¶6",
+      "summary": "Per-listing ordering, at-least-once delivery, version-gated idempotency",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶1",
+      "summary": "Five-part architecture, each part with one owner",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶2",
+      "summary": "Dual-write problem: commit-then-publish or publish-then-commit both fail",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶3",
+      "summary": "How the outbox works: same-transaction write plus relay",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶4",
+      "summary": "Outbox properties: producer-shaped events, at-least-once, per-listing order",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶5",
+      "summary": "Outbox cost: write-path changes, so legacy starts elsewhere",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶6",
+      "summary": "Table-level CDC for monoliths, with Kleinanzeigen's Debezium evidence",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶7",
+      "summary": "Translation layer: CDC as source, never contract; CDC then outbox as stages",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶8",
+      "summary": "One shared envelope chosen for consumer correctness",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶9",
+      "summary": "Carrying both delta and state makes consumers self-healing",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶10",
+      "summary": "State block holds public data only; personal data fetched on use",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶11",
+      "summary": "Contract v1's short catalog of twelve event types",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶12",
+      "summary": "Deliberate exclusions: bumps are visibility events, tracking events stay out",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶13",
+      "summary": "Tracking events' harder schema evolution as a further reason to exclude them",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶14",
+      "summary": "Two topics: 14-day events topic and compacted state topic for bootstrap",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶15",
+      "summary": "Tombstone policy for closed and erased listings; reconciliation still needed",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: The Listing Event Stream ¶16",
+      "summary": "Tighter, measured service level for removal events",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶1",
+      "summary": "Public industry evidence covers plumbing, not listing event models",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶2",
+      "summary": "Veldmark's team and timeline for designing contract v1",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶3",
+      "summary": "Decision one: one contract, three publication paths per brand",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶4",
+      "summary": "Keybridge denied Hearthly's stream to protect neutrality",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶5",
+      "summary": "Decision two: content hashing suppresses no-op feed updates at source",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶6",
+      "summary": "Decision three: mandatory strictly increasing listing versions",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶7",
+      "summary": "Decision four: Avro with full transitive compatibility",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶8",
+      "summary": "Go-live scale and latency figures for the contract",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶9",
+      "summary": "Replaying the bike's history as v1's acceptance test",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶10",
+      "summary": "What the stream does not do: same facts, same order, not decisions",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: Public Evidence and Contract v1 ¶11",
+      "summary": "Essen Golf test: stream is only as fresh as its source",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Schema Evolution ¶1",
+      "summary": "Long-lived schemas with unknown consumers make evolution the hardest discipline",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Schema Evolution ¶2",
+      "summary": "Schema Registry compatibility modes explained",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Schema Evolution ¶3",
+      "summary": "Why full transitive is needed and what it allows",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Schema Evolution ¶4",
+      "summary": "Semantic changes escape the registry and need human review",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Schema Evolution ¶5",
+      "summary": "Breaking changes via a costly parallel-run v2 topic",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶1",
+      "summary": "Replay is how the stream earns value on bad days",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶2",
+      "summary": "Three replay sources with different purposes",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶3",
+      "summary": "Backfills can resurrect sold listings; version gate prevents it",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶4",
+      "summary": "Vinted's merged reindex topic implies a needed version check",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶5",
+      "summary": "Separate lower-priority backfill topic at Veldmark",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶6",
+      "summary": "Dead-letter reprocessing can overwrite newer state",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Replay, Backfills and Dead Letters ¶7",
+      "summary": "Two DLQ rules: skip thanks to full state, or park per listing",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Trade-offs: Choosing the Shape of the Stream ¶1",
+      "summary": "Seven design decisions with recommended options",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Trade-offs: Choosing the Shape of the Stream ¶2",
+      "summary": "Typed versus generic events depends on consumers needing the cause",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Trade-offs: Choosing the Shape of the Stream ¶3",
+      "summary": "One broker versus bridges as a portfolio decision",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Same contract, different source, volume and key event per vertical",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Jobs: expiry latency is an SEO risk per Google guidance",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶3",
+      "summary": "Real estate: entity-resolution clusters as their own stream",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Catalog of failure modes, each breaking one part of the design",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "The contract outlives systems, making its decisions governance",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "What to decide centrally",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "What to leave local: contract as narrow waist",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Who decides and the consumer registry",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Metrics to watch",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Cheap copies multiply, motivating data management",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions to test an event design",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "From Events to Copies ¶1",
+      "summary": "Synthesis: producer and consumer halves both needed, as the bike shows",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "From Events to Copies ¶2",
+      "summary": "Hand-off to listing data management for where copies live",
+      "matched_spec_paragraph": "p69"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 68 body units' outline summaries match the controlling idea of their aligned spec paragraph, in spec order (p01-p69; the spec has no p22). The five introduction callouts match no spec paragraph and are mapped to null. p38's 'Versions 4 to 7 are Femke's edits' now sits in the p37 unit, but p38's controlling idea (what the stream does not do) is what its unit and summary carry.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only Introduction ¶3 was marked two_ideas (place in Part VII and ownership / roadmap). Spec p03 deliberately combines placement, scope boundaries and the roadmap sentence (roadmap placement: 'the closing sentence of p03'), so the unit carries its one declared controlling idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: intro, scene and concepts to S1; outbox, CDC and translator to S2; envelope, catalog, topics and the Concepts ordering bullets to S3; removal SLO, schema evolution and replay to S4; public evidence, contract v1, the bike and the Golf to S5; trade-offs, verticals, failure modes, Chief Architect's view, questions and conclusion to S6.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Every table, Figures 1-4 and every quotation (Fowler, Debezium, Kleinanzeigen, domain model, Adevinta, Vinted, Google) is introduced or followed by a sentence or caption saying what it shows. The mechanism table now has 'The table compares the options.' after the conclusion 'CDC and outbox are therefore stages, not alternatives', and its bold rows and 'When it is right' column state the conclusion. The Vinted 2023 and Adevinta Spain bullets carry no own lesson sentence but are framed by 'What is documented is the plumbing around them', and Vinted 2023 is interpreted later in Replay.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every other section, paragraph, introduction and conclusion boundary expresses its declared relationship and picks up the declared known information (e.g. 'Ingrid's question needs precise terms', 'These concepts become an architecture', 'Where the public record stops at the plumbing', 'Contract v1's fourth decision, full transitive compatibility, follows from one fact', 'Each of those failures needs an owner'). Plain openers at sequence boundaries are carried by subheadings.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Replay, Backfills and Dead Letters > Replay is a feature you design ¶1",
+      "quote": "Its events must also replay safely.",
+      "finding": "The declared transition is a sequence that carries over 'Schema evolution: changing the contract safely'. The opening sentence's 'Its' has no antecedent (the previous sentence is about Yardstick's decommissioning; a heading intervenes), so the carry-over to the contract and its schema evolution is not expressed. Both flow readers stumbled on this sentence.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared order (problem/incident -> concepts -> architecture -> evidence and contract v1 -> schema evolution and replay as disciplines over time -> judging sections) and give a reason for every section's position; neither marks a section unclear, and both say the major section order is sound. Points dismissed as not material for the declared audience: Common Ground (A2), Daan Visser (A3/B2), the Essen Golf (A11/B8), the Lyon apartment and entity-resolution cluster (A13/B10), Solr and Safe Deal (B minor) are all on audience.already_knows (cast, programs, recurring examples and earlier chapters); 'First, others' evidence.' (A16) and 'The rule I use' (B minor) were marked minor by the readers themselves. The failed results below are the material points.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark ¶1",
+      "quote": "(A phishing account that messaged her was suspended Sunday at 20:26; see [[fraud-prevention]].)",
+      "finding": "The phishing aside interrupts the incident; its relevance becomes clear only in the replay table two sections later. The spec's p04 evidence does not call for it here.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 1 (flow-A item 1)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts > Ordering, delivery and idempotency, Ordering bullet",
+      "quote": "The Debezium outbox router (a tool for the transactional outbox described in the next section) follows the same convention",
+      "finding": "The outbox and its router are used before they are explained; the signpost helps but both readers still met an unexplained tool. The spec's p13 evidence requires the Debezium outbox router as the source for per-listing order in Concepts, before the Architecture section defines the outbox, so the forward reference comes from the declared evidence placement.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 3 (flow-A item 4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture > Components and responsibilities, Figure 2 caption",
+      "quote": "the compacted state topic (described under topics and retention below)",
+      "finding": "Figure 2's caption relies on the compacted state topic, which is explained only in Topics and retention; the reader had to carry it forward.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5",
+      "draft_locus": "Architecture > Change data capture as the strangler's first tool ¶1",
+      "quote": "published to a compacted topic (one that keeps the latest message per key; see Topics and retention below)",
+      "finding": "Second forward reference to compaction before its section; the gloss helps but the reader still noted it as out of place.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/10",
+      "draft_locus": "Architecture > The event catalog ¶1",
+      "quote": "Contract v1 defines twelve listing event types, one per row below; pausing and resuming are one type with two names.",
+      "finding": "Both readers re-read and counted to reconcile 'twelve types' with the table's thirteen event names (ListingPaused / ListingResumed). The draft states the spec's convention faithfully; the confusion comes from the spec's p25 controlling idea and evidence, which fix the count at twelve types with pausing and resuming as one type.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 4 (flow-A item 7)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "In Practice > Veldmark: building Listing event contract v1, first decision and brand table",
+      "quote": "Unchanged: the March 2027 neutrality decision applies",
+      "finding": "The Keybridge row uses 'the March 2027 neutrality decision' before the next paragraph explains it (both readers). Reader B also found the lead 'One contract, three publication paths' clashing with a four-row table without being told Keybridge is the row that does not publish. The spec's order (table, then Keybridge's reason) is fine; the cell wording and lead sentence create the forward reference.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 5 (flow-A item 8)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice > Veldmark: building Listing event contract v1, fourth decision",
+      "quote": "the schema section below sets it against the other modes",
+      "finding": "FULL_TRANSITIVE is chosen two sections before the compatibility modes are explained, so both readers could not judge the decision when they met it, and reader B met its justification twice. The spec's p35 deliberately places the decision in In Practice with a forward pointer, and its flow rationale puts Schema Evolution after the contract exists; the difficulty comes from that declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 6 (flow-A item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "In Practice > The bike, replayed on the contract ¶1",
+      "quote": "(The table below skips versions 4 to 7, Femke's edits and a photo reorder on Sunday night.)",
+      "finding": "The skip note comes before the purpose sentence and Figure 3 stands between it and the table, so both readers held it across the figure and re-read. The spec places 'Versions 4 to 7 are Femke's edits' after the table (p38); the draft's placement causes the stumble.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 7 (flow-A item 10)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Replay, Backfills and Dead Letters > Replay is a feature you design ¶1",
+      "quote": "Its events must also replay safely.",
+      "finding": "'Its' has no clear antecedent and the section's real opening is the next sentence; both readers stumbled.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 9 (flow-A item 12)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Failure Modes, Tombstones missed bullet",
+      "quote": "Weekly reconciliation against the state topic's key set and the system of record closes the gap.",
+      "finding": "Earlier bullets and sections mention 'periodic' and 'nightly' reconciliation; the reader could not tell whether these are two checks or one.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "tests it on dated engineering posts (Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de), Confluent and Debezium documentation, and contract v1",
+      "finding": "The roadmap sentence is very long and the source list inside it had to be re-read to separate sources from stages (the intro cold reader reported the same friction, but it is not a flow reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "These questions test a design against those decisions.",
+      "finding": "Reader B could not tell which decisions 'those decisions' refers to (the Chief Architect's central decisions are several paragraphs back, after the signals).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Events to Copies ¶1",
+      "quote": "Both halves catch backfill and schema-change failures before buyers do",
+      "finding": "Reader B re-read to reconcile the claim with the listed halves: neither half includes the schema registry or review, and the digest's send-time re-check is not among the consumer-half items. The spec's synthesis (halves without schema controls) and so_what (catches schema-change failures) carry the mismatch.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Other does_not_know terms are given at or before first use: domain/change events and commands (Concepts table), notification/state transfer/sourcing (Fowler list), version-gated apply (Concepts), the dual-write problem (outbox section), CDC behind a translator, tombstones (Topics and retention), dead-letter queues (glossed at first use), tenant (glossed in the envelope section). Callout and roadmap mentions are previews. Debezium is not on either list; the cast, Common Ground and recurring examples are on already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Concepts > Ordering, delivery and idempotency, Ordering bullet",
+      "quote": "The Debezium outbox router (a tool for the transactional outbox described in the next section)",
+      "finding": "The transactional outbox is on does_not_know and is used here before the Architecture section defines it; only a forward pointer is given. Both flow readers reported it as used before explained. The spec's p13 evidence requires the outbox router here.",
+      "fault": "spec",
+      "corroborated_by": "flow-A item 4; flow-B item 3",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture > Components and responsibilities, Figure 2 caption",
+      "quote": "the compacted state topic (described under topics and retention below)",
+      "finding": "Log compaction is on does_not_know; its first use in the body is Figure 2's caption, with only a forward pointer (the gloss 'keeps the latest message per key' comes later, at Kleinanzeigen). Flow reader A reported this use as unexplained at that point. A short gloss in the caption would fix it.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 5",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "In Practice > Veldmark: building Listing event contract v1, fourth decision",
+      "quote": "with the **FULL_TRANSITIVE** compatibility mode on `listing.events.v1`",
+      "finding": "Schema registry compatibility modes are on does_not_know; FULL_TRANSITIVE is used here, with a functional gloss, two sections before the modes are defined. Both flow readers reported the modes as not yet known when the decision is met. The spec's p35 places the term here and the definitions in Schema Evolution.",
+      "fault": "spec",
+      "corroborated_by": "flow-A item 9; flow-B item 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a concrete fan-out example, states the claim, places the chapter in Part VII and its neighbours; no placeholder, restated question, dictionary, 'dawn of man' or book report. The roadmap sentence is required by the spec and follows substance.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "No bare restatement, grab bag or new subtopic: it synthesizes the two halves, calls back to the hook and the bike, gives a course of action and hands off to listing-data-management.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States what no single section states (producer half and consumer half only work together, as the bike needed both) and why it matters ('catch backfill and schema-change failures before buyers do, and let a new consumer start without asking the producer'), with the takeaway 'Review the next event design by asking which half it lacks.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'A listing written once and read by ten or twenty systems' returns to the hook, and 'Femke's bike needed both: an event the digest heard, and a digest that re-checked when it sent' returns to the scene, as callback.how declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "From the opening alone the reader predicted the fan-out framing, one owned published stream, the scope boundaries (copies to listing-data-management, tracking to data-platform), all sections in order (scene, definition, building the stream, testing on engineering posts and docs plus contract v1, schema evolution and replay, trade-offs/verticals/failure modes/Chief Architect's view/questions), the evidence (dated engineering posts from Adevinta, Kleinanzeigen, Vinted, AutoScout24, mobile.de; Confluent and Debezium docs; the fictional Veldmark) and the tone. Unpredicted details (outbox vs CDC recommendation, Kafka) are body content, not omissions from the expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Digest fix: the digest consumes the owned contract (outbox or CDC plus translator), ListingSold v9 drops the bike, and it re-checks availability at send time. Replay: version-gated apply, events carrying full public state, replay from the compacted listing.state.v1 where closed listings are tombstoned, backfills on a separate version-gated topic. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Names the dual-write failure (crash between commit and publish; forgotten publisher), the transactional outbox and its cost (write-path change, extra table, at-least-once), raw CDC making the internal schema a public contract, and CDC behind a translator/ACL until the new service publishes the same contract through its outbox, with its cost. Matches expected.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Rename: add new field, populate both, deprecate, remove in v2 via a parallel listing.events.v2 topic; the registry under FULL_TRANSITIVE stops an in-place rename. Meaning change: never in place, new field with a new name, passes the registry (syntax not semantics), caught by the forum's one-week event-catalog review. Matches expected.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "No real company's listing event names, topics or consumer logic are presented as fact; the draft states that no classifieds company in the research published its listing event names or topic layout; Adevinta, Kleinanzeigen, Vinted, Adevinta Spain, AutoScout24 and mobile.de appear only through dated posts and docs; 2018 and 2022 are flagged as older in the body and 2019 in Sources; the Vinted version-check point is labeled 'my inference'.",
+      "severity": "minor"
+    }
+  ]
+}

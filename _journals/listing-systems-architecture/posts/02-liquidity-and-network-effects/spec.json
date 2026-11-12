@@ -1,0 +1,1674 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "liquidity-and-network-effects",
+  "journal": "listing-systems-architecture",
+  "part": "part-1",
+  "title": "Liquidity Is the Product: Network Effects, Local Markets and Marketplace Metrics",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the chapter's entry in journal-spec.json. Two units were added to the published text: a roadmap paragraph (p03) and a synthesis paragraph in the conclusion (p56).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Liquidity, cross-side and same-side network effects, multi-homing and disintermediation, and why the place-and-category cell is the unit.",
+        "The liquidity metric tree from fresh supply through exposure and contact to outcomes, with its counter-metrics."
+      ],
+      "believe": [
+        "Liquidity metrics, defined carefully, are the source of most non-functional requirements in a listing platform."
+      ],
+      "can_do": [
+        "Trace a publication, alert, removal or capacity target to the liquidity metric it protects, and reject one that cannot be traced."
+      ]
+    },
+    "audience": {
+      "who": "Chief architects, data and ML leads, product directors and engineering directors who set targets for a marketplace platform and need to justify them in business terms, or who inherit dashboards built on listing and traffic counts.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes; latency percentiles and service-level objectives.",
+        "From marketplace-taxonomy: classifieds, lead generation, transactional and managed models; the marketplace profile.",
+        "From meet-veldmark: Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly and Keybridge, Safe Deal, the Common Ground program and its people."
+      ],
+      "does_not_know": [
+        "Two-sided markets, network effects (cross-side, same-side, asymptotic), liquidity and the cell, multi-homing, disintermediation.",
+        "Liquidity metrics and counter-metrics: ghost share, duplicate ratio, unsafe contact rate.",
+        "Learning to rank and propensity-score matching (owned by ranking and experimentation)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given two markets with the same buyers per listing and different outcomes, the reader says what to measure and which requirements follow.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Two countries have the same number of users per live listing, yet one gets far fewer contacts per new listing. Using only this chapter: what do you measure, and what engineering requirements could follow?",
+        "expected": "Split the data into cells (place × leaf category) and compare the share of liquid cells and of listings in them; measure matches (time to first contact, contact rate, sell-through) with counter-metrics, not listings or visits. Requirements follow from the metrics: publication and alert latency from time to first contact, removal speed from ghost share, and search capacity sized for the weekly peak from search-to-contact at peak."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Veldmark's Portugal-versus-Netherlands question; two-sided markets, network effects and the liquidity cell; competing for liquidity (seeding, winner-take-most, multi-homing, disintermediation); the metric tree; Veldmark's cell analysis; metrics turned into requirements; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: dated public sources and research, and fictional Veldmark figures."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a reported rise in contact rate, the reader names what to check before calling it a liquidity gain.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A team reports that contact rate in its category rose 20% this quarter. Using only this chapter: what would you check before believing liquidity improved?",
+        "expected": "The counter-metrics (unsafe contact rate for scam and spam contacts, ghost share, duplicate ratio); whether the rise holds per cell rather than nationally; whether time to first contact is measured from searchable; and that a dashboard does not show cause, so paid products or other changes need experiments."
+      },
+      {
+        "id": "AC-5",
+        "statement": "The reader can say what a leading portal's share of attention protects it from and what it does not, with the chapter's documented evidence.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A portal has about 80% of the time users spend on portals in its market. Using only this chapter: what does that protect it from, what does it not, and what evidence does the chapter give?",
+        "expected": "It protects against buyers leaving, not against suppliers paying less or listing elsewhere, because professionals multi-home cheaply; evidence: Autotrader's falling forecourts and stock lever, Hemnet's free entry-level formats (cause undocumented, inference labeled), the Bundeskartellamt's finding on dealer multi-homing; share figures depend on the panel (Rightmove 89% vs 75%)."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does a listing marketplace sell, and how do we measure whether it works?",
+    "claim": "A listing marketplace sells liquidity, the likelihood that a listing and a buyer find each other in a given place and category fast enough that both come back; because network effects work per place-and-category cell, national counts of listings and visits hide empty cells, so liquidity must be measured as matches per cell with counter-metrics, and those metrics, not engineering preference, set the platform's publication, alert, removal and peak-capacity targets.",
+    "disputed_by": "The view that a marketplace's health shows in listing counts, traffic and users per listing, and that targets such as indexing latency or peak capacity are engineering choices set by benchmarks and cost.",
+    "so_what": "A team that accepts this rejects any latency or freshness objective that does not name the liquidity metric it protects, sizes search for the weekly peak rather than the daily average, and decides where to seed supply cell by cell rather than country by country.",
+    "how_why": "Tradeyard Portugal had 2.5 users per live listing against the Netherlands' 2.3, yet 46% of its new listings were contacted within 48 hours against 71%, because only 11% of its cells were liquid against 38%. In dense goods cells the first buyer to message wins, so six minutes to searchable, a sold listing still in alerts and a 48-minute brown-out at the Sunday peak (about 9,800 lost first contacts) each cost matches.",
+    "supporting_claims": [
+      {
+        "id": "L1",
+        "claim": "A listing marketplace sells liquidity: the probability of a qualified match within a time window that matters, in a place-and-category cell."
+      },
+      {
+        "id": "L2",
+        "claim": "Network effects work per cell, so leadership is won cell by cell and national counts of listings, users and visits hide empty cells."
+      },
+      {
+        "id": "L3",
+        "claim": "Leadership in a cell rests on buyers' attention rather than exclusive inventory, because supply multi-homes and deals leak off-platform, so the platform's advantage lies in the freshness, quality and trust its own systems deliver, which are what the liquidity metrics measure."
+      },
+      {
+        "id": "L4",
+        "claim": "Liquidity must be measured as matches per cell in a metric tree with counter-metrics and model-specific success events, not as listings and visits."
+      },
+      {
+        "id": "L5",
+        "claim": "Liquidity metrics, not engineering preference, set the platform's publication, alert, removal and peak-capacity targets, each owned by a later chapter."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Defines liquidity and its metrics, and makes them the source of the targets that later chapters design for.",
+    "supports": [
+      "P1-2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to requirements: Veldmark's puzzle, then the concepts, measures and requirements that resolve it"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "tradeoffs to questions: the book's fixed closing sections"
+      }
+    ],
+    "rationale": "The puzzle comes first so the concepts have a question to answer; the concepts supply the vocabulary that competition, the metric tree and the Veldmark measurements use; requirements come only after the bike and the ghosts have shown what the metrics expose. Moving the requirements before the metric tree would leave targets with nothing to trace to; moving the concepts after the tree would use 'cell' and 'network effect' before they are defined."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A listing marketplace does not sell listings: sellers and buyers can list and browse anywhere. What it sells is the likelihood that a seller who lists a city bike on a Sunday evening hears from a serious buyer within the hour."
+    },
+    "bridge": {
+      "from_reader_world": "Marketplaces differ in where their job ends (marketplace-taxonomy), and their dashboards count listings and visits.",
+      "to_topic": "How well the job is done is liquidity, and its metrics turn into the platform's engineering targets."
+    },
+    "thesis_statement": {
+      "text": "A listing marketplace sells liquidity, which is local and measured per cell as matches; liquidity metrics, defined carefully, are the source of most non-functional requirements in a listing platform.",
+      "placement": "p01 (liquidity is the product), p02 (metrics as the source of requirements, bolded) and KEY POINTS bullets 1 to 3."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Veldmark's question why Tradeyard Portugal does worse than the Netherlands at the same users per listing.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Two-sided markets, network effects, liquidity and the cell.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "How marketplaces compete for liquidity: seeding, winner-take-most, multi-homing and disintermediation.",
+          "kept_in": [
+            "competing"
+          ]
+        },
+        {
+          "promise": "The liquidity metric tree with its counter-metrics, applied to Veldmark's cells, the Rotterdam bike and the other brands.",
+          "kept_in": [
+            "tree",
+            "practice"
+          ]
+        },
+        {
+          "promise": "Metrics turned into architecture requirements, each with the chapter that owns its design.",
+          "kept_in": [
+            "requirements"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a design review.",
+          "kept_in": [
+            "tradeoffs",
+            "vertical",
+            "failure",
+            "ca",
+            "questions"
+          ]
+        }
+      ],
+      "placement": "p03, with the IN THIS CHAPTER callout"
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A listing marketplace does not sell listings; it sells the likelihood that a match happens, which is liquidity, and every other system in the book exists to produce it.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A seller who lists a city bike on a Sunday evening hearing from a serious buyer within the hour; a buyer finding a still-available two-bedroom flat near a metro station.",
+            "shows": "Makes 'the likelihood of a match' concrete on both sides before the term is named."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Where the previous chapter asked where a marketplace's job ends, this one asks how well the job is done, and it argues that liquidity metrics, defined carefully, are the source of most of a listing platform's non-functional requirements.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Liquidity as the product.",
+          "introduces": "The link back to marketplace-taxonomy (where the job ends) and the chapter's thesis that liquidity metrics set the requirements; the four terms the chapter owns.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter moves from Veldmark's Portugal-versus-Netherlands question through the concepts, the competition for liquidity, the metric tree and Veldmark's measurements to the requirements, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and review questions, using dated public sources and fictional Veldmark figures.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The thesis just stated.",
+          "introduces": "The order in which the chapter argues it and the kinds of evidence it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Same Brand, Different Markets",
+      "controlling_idea": "Tradeyard Portugal and the Netherlands have almost the same users per live listing yet very different outcomes, because a national average blends dense and empty cells.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "L1",
+          "L2"
+        ],
+        "how": "Poses the chapter's question with a case in which the national ratio of buyers to listings misleads and the cell explains."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item, Veldmark's question.",
+        "introduces": "The quarterly business review in April 2027.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Question, the data that deepens it, the contradiction, the explanation, then the new question; reversing any pair would give the answer before the reader sees the puzzle."
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "In April 2027 Henrik de Boer, Veldmark's Group CEO, asked whether Tradeyard Portugal, with growing users but weaker renewals and revenue, was a smaller Netherlands or a different kind of market, and no dashboard could answer.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Henrik de Boer's question at the quarterly business review; Tradeyard PT 1.1 million live listings, faster user growth than NL for three years, lower renewals and revenue per listing.",
+              "source": "scenario-ledger.md",
+              "shows": "Sets a business question the existing listing and traffic dashboards cannot answer."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Priya Raman's team built one liquidity view with one definition per metric across Tradeyard's four countries, and the national comparison put Portugal far behind on every outcome.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tradeyard 2026, NL vs PT: live listings 6.1M vs 1.1M; MAU 14.2M vs 2.8M; MAU per live listing 2.3 vs 2.5; contacted within 48 h 71% vs 46%; median time to first contact 2.6 h vs 19 h; sold within 30 days 48% vs 29%; search sessions with a contact 9.4% vs 5.1%; zero-result searches 3.8% vs 11.6%.",
+              "source": "scenario-ledger.md, [liquidity-and-network-effects] line",
+              "shows": "Gives both the input ratio and the outcome metrics side by side, so the contradiction is visible."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The unanswered question.",
+            "introduces": "Who was asked to answer it and the comparison they built.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The national ratio of buyers to listings made Portugal look as liquid as the Netherlands, while every outcome metric said the opposite.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The comparison table.",
+            "introduces": "The contradiction between the input ratio and the outcomes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Split into cells of region by leaf category, the difference was geography: far fewer Portuguese cells were liquid, so the national average blended two markets and described neither.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "NL 38% of cells liquid against PT 11%, with the three minimums of a liquid cell (25 active listings, 50 searches a week, median first contact under 24 hours) given in a parenthesis; Lisbon and Porto hold 64% of Portuguese listings (the full cell table is p32's evidence).",
+              "source": "scenario-ledger.md",
+              "shows": "Shows that the outcome gap comes from the share of liquid cells, not from the national ratio."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The contradiction.",
+            "introduces": "Its explanation: cells.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The meeting changed its question from how to grow Tradeyard Portugal to which Portuguese cells could become liquid and what that would take, which the rest of the chapter answers.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cell explanation.",
+            "introduces": "The new question the chapter's concepts and requirements answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Two-Sided Markets and Network Effects",
+      "controlling_idea": "Liquidity comes from cross-side network effects that flatten once a cell is deep, so it is defined as a per-cell probability of a timely, qualified match.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "L1",
+          "L2"
+        ],
+        "how": "Supplies the terms (two-sided market, network effect, asymptotic, liquidity, cell) the rest of the argument uses."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The meeting's new question about which cells can become liquid.",
+        "introduces": "The concepts behind it, starting with two-sided markets.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Two-sided market, then network effects, then their shape, then the definition that rests on them, then why its cell is the unit. The scene has already introduced cells informally, so 2.3 can speak of a deep cell; defining liquidity before network effects would leave its 'place and category' part unexplained."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A two-sided market serves two groups whose value depends on each other, and in classifieds the side that creates most value for the other pays little or nothing while professionals pay.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Rochet and Tirole (2003): platforms must 'get both sides on board', and the allocation of prices between sides affects volume.",
+              "source": "Journal of the European Economic Association, 2003",
+              "shows": "Grounds the classifieds price structure in the standard economics of two-sided markets."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "Listing marketplaces have two kinds of network effect: cross-side effects, the main and positive engine, and same-side effects, usually negative among sellers and sometimes among buyers where supply is scarce.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Scout24 private-segment subscriptions averaged 506,937 customers in 2025, up 14%.",
+              "source": "Scout24 preliminary 2025 results, published 2026",
+              "shows": "Shows consumers paying for an advantage where buyers compete for scarce supply, a negative same-side effect."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Two groups whose value depends on each other.",
+            "introduces": "Network effects and their two kinds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Marketplace network effects are asymptotic: the benefit of more participants flattens once a cell is deep, so the binding constraint is supply in the long tail of cells.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "NFX: 'network effects with diminishing returns'; 'in nearly every marketplace, one side ... is harder to acquire'.",
+              "source": "NFX, The Network Effects Bible, 2019, updated 2024",
+              "shows": "Supports both the flattening and the harder side."
+            },
+            {
+              "kind": "example",
+              "what": "A Rotterdam city-bike buyer gains a lot from 5 to 50 listings and little from 500 to 5,000.",
+              "shows": "Makes the flattening concrete in a cell."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Cross-side effects as the engine.",
+            "introduces": "Their shape: diminishing returns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "Sharpening the book's reference model, this book defines liquidity as the probability that, within a time window that matters, a listing gets a qualified contact and a buyer finds a suitable available listing, measured per place and category, and three parts of the definition do the work.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The Productscape reference model of a general-listings marketplace (describes no real company): value is 'enough fresh, relevant supply in a given place and category'; 'success in one metro/category does not transfer automatically'; 'a perfect match 300 km away is useless to a pickup buyer'.",
+              "shows": "Corroborates the place-and-category part of the definition."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1, the liquidity loop (cross-side engine, same-side competition, paid visibility worth buying only while the loop turns).",
+              "shows": "Shows the loop the definition measures."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Network effects that work locally and flatten.",
+            "introduces": "The precise definition of liquidity built on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "The cell is how the market works, not a reporting convenience: leadership is won cell by cell, network effects rarely cross borders, and cell definitions differ by vertical.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Parker (2010) on startups carving categories out of Craigslist.",
+              "source": "Andrew Parker, 2010",
+              "shows": "Shows cell-level competition seen from outside."
+            },
+            {
+              "kind": "fact",
+              "what": "Zillow allocates share-of-voice leads per zip code.",
+              "source": "Zillow 10-K for 2025, filed 2026",
+              "shows": "Shows a cell definition expressed as a pricing rule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The 'place and category' part of the definition and the cell it names.",
+            "introduces": "Why the cell is the unit and three consequences.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "competing",
+      "heading": "Competing for Liquidity",
+      "controlling_idea": "Marketplaces win liquidity cell by cell, and because supply multi-homes and deals leak off-platform, a leader's advantage rests on attention and on what its own systems do with inventory.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L3"
+        ],
+        "how": "Shows how locality shapes competition (seeding, winner-take-most) and what multi-homing and leakage leave the platform to own."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Liquidity is per cell and leadership is won cell by cell.",
+        "introduces": "How a marketplace gets a cell started and keeps it.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Follows a marketplace's life in a cell: getting started (seeding), leading (winner-take-most and its limits), then the two forces that cap a lead (multi-homing, disintermediation). Reversed, the limits would arrive before the dominance they limit."
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "form": "list",
+          "controlling_idea": "Entering a cell means solving the chicken-and-egg problem, and the documented solutions all lower the cost of listing or bring supply in from elsewhere.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane receives 88% of dealer listings and Hearthly 84% of listings through feeds.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows professional feeds supplying a market's stock without manual listing."
+            },
+            {
+              "kind": "fact",
+              "what": "Facebook launched Marketplace in October 2016 on buy-and-sell groups visited by about 450 million people a month; the EC's 2024 decision concerned tying Marketplace to Facebook.",
+              "source": "Meta Newsroom, 2016; European Commission IP/24/5801, 2024",
+              "shows": "Shows distribution from an existing network and its regulatory exposure."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Seeding is a phase: once a cell is liquid, the problem becomes keeping supply quality high enough that buyers keep trusting the results.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Seeding.",
+            "introduces": "What comes after it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "Once a marketplace leads a country and vertical its lead tends to widen, and vertical portals document that dominance each in its own measure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Rightmove 89% of time (Comscore) vs 75% (SimilarWeb, Data.ai, SensorTower) in December 2025; Autotrader 11x time vs nearest competitor; REA 6.3M exclusive of 12.7M; Hemnet about 90% of property sold.",
+              "source": "Rightmove 2026; Autotrader FY26; REA FY26; Hemnet, read 2026",
+              "shows": "Documents winner-take-most and shows that the panel must be named because measures differ by 14 points."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "A cell that has become liquid.",
+            "introduces": "What happens after a marketplace leads: the lead widens.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The mechanism is local cross-side effects plus an asymmetry in multi-homing (glossed here, defined below), which lets the leader capture a disproportionate share of attention, and attention turns listings into leads.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The dominance figures.",
+            "introduces": "The mechanism that produces them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Gurley's marketplace factors explain why these markets tip, and fragmented professionals cannot easily coordinate against a leading portal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'High buyer and supplier fragmentation is a huge positive'; frequency 'obviously better'; 'network effects are rare but golden'.",
+              "source": "Bill Gurley, 2012",
+              "shows": "Explains why listing markets tip toward one leader."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The mechanism.",
+            "introduces": "A practitioner's account of why such markets tip.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Dominance has documented limits: a leader's share of attention protects it from buyers leaving, not from suppliers paying less or listing elsewhere.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Autotrader forecourts fell 0.5% (1.7% in H2), partly attributed to Deal Builder roll-out concerns; the stock lever subtracted £48 from ARPR.",
+              "source": "Autotrader FY26 results, 2026",
+              "shows": "Shows suppliers reducing what they pay without leaving."
+            },
+            {
+              "kind": "fact",
+              "what": "Hemnet announced free entry-level formats on 29 September 2026 after net sales fell 23.1%; the cause is undocumented and any supply-moving reading is labeled an inference.",
+              "source": "Hemnet investor page, read 2026",
+              "shows": "Shows a leader acting on supply, with the inference labeled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Why leads widen.",
+            "introduces": "Where dominance stops protecting the leader.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "list",
+          "controlling_idea": "Multi-homing, taking part in several competing platforms at once, is asymmetric: professionals do it cheaply, buyers do it at first and then concentrate, and private sellers do it occasionally.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge publishes stock for 9,800 agencies, including to Hearthly's competitors.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows professional multi-homing through software inside Veldmark itself."
+            },
+            {
+              "kind": "fact",
+              "what": "The Bundeskartellamt (October 2026) found mobile.de has a strong market position constrained by dealers' multi-homing and data export.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "Shows a regulator treating dealer multi-homing as a constraint on dominance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The multi-homing asymmetry named as part of the mechanism and the suppliers' room to list elsewhere.",
+            "introduces": "Its definition and three forms.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Because supply multi-homes, inventory is not exclusive, so differentiation must come from what the platform does with it: freshness, data quality, deduplication, ranking, alerts, trust and professional tools.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "NFX: multi-tenanting occurs with 'low costs or no costs' and can 'harm the defensibility of a network ... but only up to a point'; a16z lists 'prevalence of multi-tenanting' as a defensibility metric.",
+              "source": "NFX 2019/2024; a16z, 2020",
+              "shows": "Supports multi-homing as a limit on network-effect defensibility."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Multi-homing's forms.",
+            "introduces": "Its architecture consequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Disintermediation, completing a deal off the platform, is structural in classifieds and becomes a liquidity problem when it carries fraud, hides the outcome or undermines transaction or lead monetization.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Supply that leaves to other platforms.",
+            "introduces": "Deals that leave the platform after the match.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Network effects do not protect a marketplace against leakage, so classifieds answer it with product and trust measures rather than prohibitions.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Hagiu and Rothman, 'Network Effects Aren't Enough', HBR 2016, as commonly summarized (body paywalled).",
+              "source": "Harvard Business Review, 2016",
+              "shows": "Supports leakage as a trap network effects do not cover; labeled as a summary."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The three ways leakage hurts liquidity.",
+            "introduces": "The documented responses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tree",
+      "heading": "The Liquidity Metric Tree",
+      "controlling_idea": "Liquidity is measured as a tree that follows supply through exposure and contact to outcomes and retention, with counter-metrics that catch inflation and model-specific success events.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Turns the definition into measurements per cell, as matches rather than inventory."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Competition and leakage change liquidity cell by cell and hide outcomes.",
+        "introduces": "The metrics that show whether matches are happening.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole tree first, then the rules that make it usable, then the two refinements (success event by model, causation). The rules name metrics (time to first contact, counter-metrics) that only the table defines, so moving them first would use undefined terms."
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Liquidity metrics tell a marketplace whether matches happen per cell fast enough, and they are best organized as a tree from supply to outcome with counter-metrics.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Metric tree: supply (fresh available supply, completeness), exposure (early exposure, zero-result rate), match (contact rate, time to first contact, search-to-contact), outcome (sell-through, lead conversion, days to sell), retention (seller return, standing demand), counter-metrics (ghost share, duplicate ratio, unsafe contact rate), each with a definition and a pitfall.",
+              "shows": "Gives the governed definitions and the typical way each is inflated."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Three design rules make the tree usable.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The tree.",
+            "introduces": "The rules for using it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Time to first contact must be measured from 'searchable', not 'submitted', so the platform's publication delay is separated from market demand.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three rules announced.",
+            "introduces": "The first rule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Where outcomes are invisible, the contact is the success event.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "OLX (2022) trained its learning-to-rank model on purchases or 'messages/calls to sellers' because transactions are not always confirmed, and unique contacted sellers rose.",
+              "source": "OLX Tech, 2022",
+              "shows": "Shows contacts used as the success label and a check that demand was not concentrated."
+            },
+            {
+              "kind": "quotation",
+              "what": "a16z 'match rate': 'How successfully can the two sides of the marketplace find each other?'",
+              "source": "a16z, 2020",
+              "shows": "Frames the same idea as a standard marketplace metric."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first rule.",
+            "introduces": "The second rule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Every metric needs a counter-metric, because each can be improved dishonestly.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2, the metric tree with dotted counter-metric branches.",
+              "shows": "Shows each branch paired with the measure that detects its inflation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The second rule.",
+            "introduces": "The third rule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The success event depends on the marketplace model, so a group needs one tree with model-specific success events at the outcome level and common definitions elsewhere.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Rightmove's lead products, Zillow's pay-at-close fees and AVIV France's commission share depend on outcomes recorded outside the portal.",
+              "source": "See marketplace-taxonomy",
+              "shows": "Shows lead-generation outcomes the platform does not see directly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The contact as success event where outcomes are invisible.",
+            "introduces": "How the success event differs by model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Liquidity dashboards show where matches happen, not what caused them, which is the job of experimentation.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "OLX (2026): dashboards showed premium packages performing worse because sellers self-select; propensity-score matching validated by a randomized experiment found uplifts of 17.6% to 97.4%.",
+              "source": "OLX Tech, 2026",
+              "shows": "Shows correlation in dashboards misleading about paid products."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the tree measures.",
+            "introduces": "What it cannot tell: causes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Veldmark's Liquidity Measures",
+      "controlling_idea": "Applied at Veldmark, the tree changes decisions: cells redirect Portugal's spending, the Rotterdam bike shows publication delay inside time to first contact, and ghosts and duplicates distort supply in the other brands.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "L4",
+          "L5"
+        ],
+        "how": "Shows the metrics in use and exposes the platform delays and ghosts that later become requirements."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The metric tree and its rules.",
+        "introduces": "Veldmark's application of them, back to Priya's team.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Cells first (they answer the scene's question), then one listing in one cell, then the other brands; the bike makes sense only after the cell is the unit."
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "Priya's team defined a liquid cell by thresholds on listings, searches and time to first contact and keyed cells by region and leaf category; the definition was a judgement, valuable because it was applied the same way everywhere.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "NL 1,420 leaf categories, 17,040 cells, 38% liquid, 86% of listings in them; PT 760, 15,200, 11%, 52%; 64% in Lisbon and Porto.",
+              "source": "scenario-ledger.md",
+              "shows": "Gives the cell-level evidence the scene summarized."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3, two grids of cells.",
+              "shows": "Shows the gap the national ratio hid."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The cell analysis changed three decisions, each pulling a different lever: supply acquisition in illiquid cells (the supply branch), shipping that changes the cell definition itself, and labeled radius expansion (the exposure branch).",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Marketing moved to supply acquisition in the twenty largest illiquid cells; Safe Deal shipping proposed for PT goods (760 national cells instead of 15,200 regional); labeled 'nearby' radius expansion.",
+              "shows": "Shows the tree driving supply, cell-definition and exposure decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cell analysis.",
+            "introduces": "The decisions it changed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The Rotterdam city bike's thirteen minutes from submission to first contact look excellent because it sat in one of Tradeyard's densest cells.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's bike, €240, listed Sunday 7 March 2027 19:42, searchable 19:48, matched 312 saved searches, first contact 19:55.",
+              "source": "scenario-ledger.md, worked example 1",
+              "shows": "Gives the timeline that the next paragraph splits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Cell-level decisions.",
+            "introduces": "The listing-level worked example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Split at 'searchable', six of the thirteen minutes were the platform's own publication delay, which Common Ground's 90-second target (set as a requirement in the next section) would remove.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4, the thirteen minutes split into six of platform delay and seven of demand.",
+              "shows": "Shows the share of the wait the platform spent."
+            },
+            {
+              "kind": "quotation",
+              "what": "'the first buyer to message usually wins' (Productscape buyer journey).",
+              "shows": "Explains why the six minutes cost matches in a dense cell."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The thirteen minutes.",
+            "introduces": "What they contain when split at searchable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The same bike shows ghost inventory: it left search a minute after it sold but still appeared in the next morning's alert digest, visible only when ghost share covers digests.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sold Monday 8 March for €225 via Safe Deal 'pay at pickup', marked sold 18:10, removed from search 18:11, still in the evening digest the next morning.",
+              "source": "scenario-ledger.md, worked example 1",
+              "shows": "Shows a sold listing still reaching buyers through alerts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The bike's publication delay.",
+            "introduces": "A second fault on the same listing: a ghost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "form": "list",
+          "controlling_idea": "The other brands show the counter-metrics in verticals: a dealer feed left a sold car live for 26 hours at Motorvane, and duplicates overstated Hearthly's supply by 70%.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Essen Golf sold Thursday 29 April 2027; feed removal 26 hours later.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows ghost share as a feed-reconciliation problem."
+            },
+            {
+              "kind": "scenario",
+              "what": "Hearthly France 1.9M listings for about 1.12M properties, 1.7 per property.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows duplicates inflating supply and splitting demand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Ghosts in a goods marketplace.",
+            "introduces": "Ghosts and duplicates in the vertical brands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "requirements",
+      "heading": "From Liquidity Metrics to Architecture Requirements",
+      "controlling_idea": "Each branch of the liquidity tree generates a non-functional requirement with an owner chapter, and the Sunday-evening brown-out shows the cost of missing one in lost first contacts.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "L5"
+        ],
+        "how": "Traces publication, alert, removal, feed, deduplication, peak-capacity, fraud and zero-result targets to the metrics they protect."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The bike's six-minute delay, the ghost in the digest and the stale dealer feed.",
+        "introduces": "The requirements those metrics generate.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The traceability table, a worked case of one row, then the reasoning that turns the case into a funded requirement; the cost estimate means nothing before the incident, and the incident is only an example once the table has given it a row."
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "Most of a listing platform's non-functional requirements come from the liquidity tree, and each can be traced to a mechanism, a metric and an owner chapter.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Mechanism, metric, Veldmark 2027–2028 requirement and owner chapter: 90-second p95 publication; alerts within 5 minutes; removal within a minute with recheck at send time; feed reconciliation; canonical entities; peak-hour capacity; message screening; query relaxation; one governed definition.",
+              "shows": "Shows every target paired with the metric it protects and the chapter that designs it."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5, metrics on the left and the requirements they generate on the right.",
+              "shows": "Shows that a requirement without a metric lacks a business reason."
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The peak-hour row is where liquidity meets reliability, as Tradeyard NL's 48-minute Sunday-evening brown-out at the weekly peak shows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Peak about 31,000 queries/s group-wide, 70% Tradeyard; Sunday 17 January 2027 20:35 CET, p99 400 ms to 7 s for 48 minutes, about 9% of searches failed after a TV campaign, a reindex and a Solr cache eviction.",
+              "source": "scenario-ledger.md, worked example 5",
+              "shows": "Gives a peak-hour failure in a dense market."
+            },
+            {
+              "kind": "fact",
+              "what": "Rightmove's busiest minute was 8:48 pm on a Wednesday during a prime-time ad break.",
+              "source": "Google Cloud, 2021",
+              "shows": "The documented public example of a predictable peak; Veldmark's Sunday peak is labeled an illustration."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The peak-hour row of the table.",
+            "introduces": "A worked example of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Estimated in liquidity terms, the brown-out cost about 9,800 first contacts in the best cells, which turned 'search was slow' into a funded capacity case.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Nearly 10,000 queries/s on Tradeyard NL at peak (31,000 x 70% x 45% = about 9,800); about 3.4 million failed requests; about 9,800 fewer first contacts.",
+              "source": "scenario-ledger.md, [reliability-and-scale] line",
+              "shows": "Translates an incident into a liquidity cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The brown-out.",
+            "introduces": "Its liquidity cost and what the estimate changed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "heading": "Trade-offs in Measuring and Managing Liquidity",
+      "controlling_idea": "Of the choices in measuring and managing liquidity, the sold signal is the most consequential, and inferring it is more honest for a cell.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Shows when each measurement choice fits, so the metrics are defined deliberately."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Requirements that follow from the metrics.",
+        "introduces": "The choices that decide how the metrics are measured in the first place.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "The sold signal is the most consequential choice: inferring outcomes from several weak signals is less precise per listing but more honest per cell, and it must be labeled as an inference.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven choices (unit, success event, sold signal, cell definition, contact channel, seeding, paid visibility), each with two options and when each is right.",
+              "shows": "Sets the alternatives side by side before the judgement on the most consequential one."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vertical",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Cells, time windows, success events, multi-homing and leakage differ by vertical, so verticals compete differently and need different requirements.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "L2",
+          "L5"
+        ],
+        "how": "Shows that cells and the requirements they generate are vertical-specific."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The trade-offs, whose answers depend on the vertical.",
+        "introduces": "How cells and the other liquidity dimensions differ by vertical.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Vertical portals live with supply multi-homing and compete on audience and tools, horizontal goods marketplaces compete on cell density and speed, and tight rental markets combine both with the highest fraud risk.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six verticals by cell, time window, success event, multi-homing and disintermediation risk.",
+              "shows": "Lays out the differences the paragraph draws patterns from."
+            },
+            {
+              "kind": "scenario",
+              "what": "Barcelona fake-rental ring, July 2027: 26 accounts, 180 fake listings about 35% below market.",
+              "source": "scenario-ledger.md, worked example 4",
+              "shows": "Shows the rental combination being exploited."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure",
+      "heading": "Failure Modes",
+      "controlling_idea": "Liquidity measurement fails in recurring ways that reward the wrong teams: inputs instead of matches, national averages, the wrong start event, ghosts, duplicates, unowned definitions and one-sided optimization.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "L4"
+        ],
+        "how": "Names the ways the metric tree is misused, tied to the chapter's failure patterns."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How the metrics should differ by vertical.",
+        "introduces": "How they go wrong.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Failures of what is measured (inputs, unit, start event, ghosts, duplicates), then of who defines it, then of what is optimized; each failure recalls a point already argued, so the order follows the chapter's own order of argument."
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "A dashboard of inputs rewards teams for making liquidity worse; this is Vanity Liquidity.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Portugal's growing user count hid its thin cells.",
+              "shows": "Shows the pattern in the chapter's own case."
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "National averages for local markets lead to decisions that help the cells that need help least.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Inputs instead of matches.",
+            "introduces": "A second failure: the wrong unit.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Measuring from submission hides the platform's own pipeline delay, and the fix is a 'searchable' event emitted by the publication pipeline.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The wrong unit.",
+            "introduces": "The wrong start event.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Ghosts counted as supply inflate categories and consume alerts and contacts, and show up only if ghost share is measured in every channel; this is Ghost Inventory.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The wrong start event.",
+            "introduces": "Ghosts in the supply count.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Duplicates counted as depth inflate supply and split demand until the unit becomes the real-world entity; this is Seeing Double.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly's 1.7 listings per property overstated depth by 70%.",
+              "shows": "Quantifies the distortion."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Ghosts that inflate supply.",
+            "introduces": "Duplicates that inflate it the same way.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "When nobody owns the metric definitions, every liquidity discussion becomes a discussion about definitions, so governed definitions are an architecture asset.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Failures in what is counted.",
+            "introduces": "A failure in who defines it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Optimizing ranking for one side can drive the other away, and OLX's check on unique contacted sellers is a simple guard.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Failures of measurement.",
+            "introduces": "A failure of optimization.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "A Chief Architect makes liquidity metrics the governed source of targets: versioned with the architecture, defined once for the group, funded per cell, aimed at what multi-homing cannot copy and watched through counter-metrics.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L5",
+          "L3"
+        ],
+        "how": "Turns the chapter's argument into decisions, owners and rules at group scale."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions and governance that prevent them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "From the rule that makes targets traceable, through who owns the definitions it relies on and how targets are funded, to strategy and monitoring; funding per cell presupposes governed, cell-keyed definitions, which presuppose the tree in the repository."
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "The metric tree belongs in the architecture repository so every target traces to a metric and owner, and Veldmark's forum requires each new latency or freshness objective to name the liquidity metric it protects.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Architecture advice forum rule.",
+              "source": "scenario-ledger.md",
+              "shows": "Shows the rule adopted as governance."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Definitions are governed at group level and measured at cell level, with cell keys from the shared location and taxonomy services.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Where the tree lives.",
+            "introduces": "Who owns its definitions and keys.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Requirements are funded in proportion to the cells they serve, so group platforms support different service levels per vertical.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "One set of definitions.",
+            "introduces": "Different service levels.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Multi-homing is a given, so investment goes to what it cannot copy, and neutrality commitments protect the trust that keeps professionals using the group's tools.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Funding per cell.",
+            "introduces": "Where to invest against multi-homing.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Counter-metrics are the early warnings and are watched as closely as the metrics.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Investment priorities.",
+            "introduces": "What to watch.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let a reader test their own marketplace's cells, metrics and traceability in a design review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "L4",
+          "L5"
+        ],
+        "how": "Gives the reader the chapter's tests in a usable form."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions a reader can take into a review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "form": "list",
+          "controlling_idea": "Ten questions test the cell definition, liquid share, start event, sold signal, ghost coverage, supply unit, traceability of targets, multi-homing, contact channels and the definition of contact.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Liquidity to History",
+    "synthesis": "The same per-cell view that explains Tradeyard Portugal also sets the platform's targets: liquidity decides where to seed, what to measure and how fast the systems must be, so a business question and an engineering requirement are one question asked at different levels.",
+    "so_what": "A team should build no latency, freshness or capacity target that cannot name the liquidity metric it protects, and should judge a market by its liquid cells, not by its national counts.",
+    "callback": {
+      "to": "The hook (the bike seller on a Sunday evening) and the scene (Henrik's Portugal question).",
+      "how": "Portugal is now seen as two dense metro markets plus a tail of empty cells, and the Sunday-evening bike seller as the customer of the publication pipeline."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Trace every target to a liquidity metric, and reject the ones that cannot be traced."
+    },
+    "hand_off": {
+      "to": "industry-evolution",
+      "relationship": "cause_effect",
+      "carries_over": "Network effects are local and leadership is won per country and vertical.",
+      "introduces": "Groups formed as portfolios of local leaders, in waves that each left systems behind."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The chapter's tests and decisions.",
+      "introduces": "What they add up to.",
+      "form": "phrase",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p56",
+        "controlling_idea": "The answer to Henrik's question is an engineering brief as much as a market plan: the per-cell view that explained Portugal also sets how fast a listing must become searchable and reach alerts, how quickly a sold one must disappear and how much search must carry at the peak.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p57",
+        "controlling_idea": "Liquidity's locality also explains the industry's shape: why marketplaces become local leaders and groups are portfolios of them, which the next chapter traces with dates and what each phase left in the systems.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Liquidity as local, deciding targets.",
+          "introduces": "What locality did to the industry, handed to industry-evolution.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "length": {
+    "max_words": 7200
+  },
+  "non_goals": [
+    {
+      "topic": "Marketplace models and endpoints.",
+      "covered_in": [
+        "marketplace-taxonomy"
+      ]
+    },
+    {
+      "topic": "Industry history.",
+      "covered_in": [
+        "industry-evolution"
+      ]
+    },
+    {
+      "topic": "Governed metric implementation and tracking plans.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Causal measurement and interference.",
+      "covered_in": [
+        "experimentation"
+      ]
+    },
+    {
+      "topic": "Ranking objectives in depth.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Alert fan-out design.",
+      "covered_in": [
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "Publication pipeline design.",
+      "covered_in": [
+        "publication-pipeline"
+      ]
+    },
+    {
+      "topic": "Monetization KPIs such as ARPA and ARPR.",
+      "covered_in": [
+        "monetization-models"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Peak arithmetic ruled by the orchestrator's rule 3: the ledger's liquidity line (about 9,000 queries/s) contradicts its own search line (31,000 peak x 70% Tradeyard x 45% NL = about 9,800) and the reliability line (NL peak about 10,000 expected). The text now says 'nearly 10,000 queries per second at the peak'; p37 evidence updated. Ledger not edited; reported as a ledger ruling.",
+      "rejected": [
+        "Keeping 'roughly 9,000', which the arithmetic of the ledger's own figures does not give."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Forward reference in the scene (both round-3 flow readers): p07's parenthesis now states the three minimums of a liquid cell (25 active listings, 50 searches a week, median first contact under 24 hours) instead of 'set out below'; the cell figures stay in p32.",
+      "rejected": [
+        "Moving the cell definition into the scene, which would split p32."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reference model (both readers, rounds 1 to 3): p12 now introduces it once as a reference model the author maintains, a generic description of a general-listings marketplace modeled on no real company, pointing to [[business-capabilities]], before quoting it.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "OLX causal paragraph (p31, both readers): given its own subheading 'What the tree cannot tell' and an opening contrast sentence, so it no longer sits under 'Contacts, leads and outcomes by model'. Spec order unchanged.",
+      "rejected": [
+        "Moving p31 to the trade-offs section, which would break the tree section's declared large-to-small order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Brand introductions readers asked for in every round: one-clause glosses at first use for Common Ground (p04), Motorvane and Hearthly (p15), Keybridge (p20) and Safe Deal (p33), all from the ledger. length.max_words raised from 7,033 to 7,200 (2.4%, within the 10% allowed) to make room.",
+      "rejected": [
+        "Leaving the brands unglossed on the judges' ruling that meet-veldmark introduced them."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Sunday-evening peak note (consistency issue 5): the chapter presents the Sunday peak only as Veldmark's; the documented public example remains Rightmove's. No change needed; accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "EC Facebook Marketplace decision stays cited by subject matter only; no fine or date added (no new real-company or real-law claims). accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken (failure modes p44 to p47 could shrink to callbacks; p42 overlaps p14; p53 repeats p22; p30 could sit next to p28): kept the published text, as no option is clearly better and the round-3 readers did not flag them. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Shrinking p44 to p47 to callbacks."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Andrew Chen's The Cold Start Problem not added (could not be verified; no new unverified citations). accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 cheap fixes (pickup phrase opening the concepts section, NFX definition naming asymptotic network effects, Figure 5 moved after the requirements table) accepted under the author's delegation, 2026-11-12; re-checked in round 4.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json, one spec paragraph per published unit. Old success criteria were inventories; criteria 1 to 3 are replaced by the journal's AC-1 to AC-3 and two added minor cold-reader criteria (AC-4 counter-metrics, AC-5 limits of dominance); the table, diagram and section-list criteria were dropped as inventories.",
+      "rejected": [
+        "Carrying the seven checkbox criteria over unchanged."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p03) because the published introduction announced only the closing trace to owner chapters, and a synthesis paragraph (p56) because the closing paragraph only handed off without a so-what or a return to the opening. The clause in p02 that announced the trace moved into p03.",
+      "rejected": [
+        "Extending p02 to carry the roadmap, which would give it two controlling ideas."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes) taken: merged the reference-model paragraph (old p13) into the liquidity definition (p12), keeping its quotations in p12's lead and cell bullet; glossed multi-homing where p18 first uses it; named Henrik in p04 so the conclusion's callback resolves; labeled the 90-second figure in p35 as the Common Ground target set in the requirements section; added alerts to p56; narrowed the trade-offs section idea to the sold signal; rewrote the section rationales for concepts, tree, requirements, failure and ca to say what reordering would break.",
+      "rejected": [
+        "Moving p30 (success event by model) next to p28, which would split the three announced rules."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 found a spec fault: p33 claimed all three Portugal decisions sat on branches of the metric tree, but the cell definition is not a branch. p33's controlling idea now says each decision pulled a different lever (the supply branch, the cell definition, the exposure branch). The trade-offs and vertical-differences sections open with tables, so their transitions were declared end_of_previous (last sentence of p40 and p41).",
+      "rejected": [
+        "Adding a lead-in paragraph before each table, which would add two units and words over the limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 found a spec fault, corroborated by both flow readers: the scene (p07) and the cell analysis (p32) gave the same cell figures twice. p07 now carries only the headline (38% vs 11% of cells liquid; 64% of Portuguese listings in Lisbon and Porto) and p32's table carries the full figures. The 'measurement choices' bridge at the end of p40 now names the requirements table explicitly.",
+      "rejected": [
+        "Moving the liquid-cell definition into the scene, which would move p32's controlling idea into another section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit set at 7,033 (published prose of 6,698 words plus 5%), because spec.md set none."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Defined liquidity as a per-cell probability within a time window, rather than as a ratio of buyers to listings, so the Tradeyard PT example could show the national ratio misleading."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Organized metrics as a tree with explicit counter-metrics, to tie the chapter to the Ghost Inventory and Seeing Double failure patterns."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made 'metrics become requirements' a full section with an owner-chapter column, so later chapters can cite their targets back to a liquidity mechanism."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Estimated the brown-out's liquidity cost as a labeled Veldmark estimate rather than adding it to the canonical incident facts (since aligned with reliability-and-scale: 3.4M failed requests, about 9,800 fewer first contacts)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "marketplace-taxonomy",
+      "contributed": "Endpoints and success events per model."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md",
+      "contributed": "Tradeyard, Motorvane and Hearthly facts and the recurring worked examples."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/ briefs: monetization-economics, real-estate-portals, automotive, olx, platform-data-ml, search-discovery; productscape-digest.md",
+      "contributed": "Dated public evidence and the reference-model quotations."
+    },
+    {
+      "kind": "external",
+      "ref": "Rochet & Tirole (2003); NFX Network Effects Bible (2019, updated 2024); a16z 13 metrics (2020); Hagiu & Rothman, HBR (2016); Gurley (2012); Parker (2010)",
+      "contributed": "Two-sided markets, network effects, multi-tenanting, marketplace metrics, tipping factors."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove FY2025 (2026), Autotrader FY26 (2026), REA FY26 (2026), Hemnet (read 2026), Scout24 FY2025 (2026), Zillow 10-K (2026)",
+      "contributed": "Dominance, its limits and consumer subscriptions."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX Tech (2022, 2026)",
+      "contributed": "Contacts as ranking labels; causal measurement of paid packages."
+    },
+    {
+      "kind": "external",
+      "ref": "Bundeskartellamt (2026); Meta Newsroom (2016); European Commission IP/24/5801 (2024); Google Cloud (2021)",
+      "contributed": "Dealer multi-homing; distribution from an existing network; a documented peak."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: peak figure corrected to nearly 10,000 queries/s; scene states the liquid-cell minimums; reference model introduced; OLX paragraph under its own subheading; brand glosses at first use; max_words 7,200; open questions closed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1 to 3 (escalate): p07, p12, p33 revised in the spec after spec faults; draft revised unit by unit; Figure 5 moved from p40 to p38 after round 3."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline); spec.md removed. Status draft."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged)."
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,142 to 6,138 words; heading 'Getting Started and Staying Ahead' renamed 'Competing for Liquidity'; winner-take-most paragraphs reordered; spec unchanged."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator)."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: brown-out cost aligned with reliability-and-scale (3.4M failed requests, about 9,800 fewer first contacts); Common Ground timing fixed; Hemnet, Rightmove and Facebook claims spot-checked."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article (AI-mediated session)."
+    }
+  ]
+}

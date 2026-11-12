@@ -1,0 +1,2153 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "toolkit",
+  "journal": "listing-systems-architecture",
+  "part": "reference",
+  "title": "Field Kit: Templates for the Marketplace Architect",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (unit for unit, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, the three acceptance criteria and the role are copied unchanged from the toolkit's entry in journal-spec.json; the journal entry has no thesis object, so the thesis below is written here from the entry's question, the Reference part's supporting claim R-1 and the published page. The introduction realises the Reference part's opening (hook, bridge, roadmap). Tables and fenced template blocks are not units; each is recorded as the evidence of the unit before it.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The twelve templates (capability map row and heat map, vertical requirement profile, listing lifecycle state table, attribute dictionary entry, feed contract, publication-pipeline SLA card, search index design card, trust-and-safety policy-to-enforcement card, entitlement matrix, listing event specification, consolidation decision card, architecture decision record), the chapter behind each, and the three conventions they share (maintained data, references by identifier, a Veldmark example)."
+      ],
+      "can_do": [
+        "Find the template for a design or decision from the question it answers, copy it and fill only the fields that change the decision, writing 'unknown' rather than guessing.",
+        "Say which fields carry ownership, removal behavior and dates, and avoid the three common mistakes listed for each template."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects of marketplace groups, principal engineers, search, data, trust-and-safety and monetization leads and platform-engineering leads who need a working form for a decision; product and commercial leaders use Tools 1, 2, 9 and 11 as discussion documents.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are.",
+        "The book's chapters, or how to open the owning chapter linked from each tool.",
+        "Veldmark and its brands (Tradeyard, Motorvane, Hearthly, Keybridge), as introduced in meet-veldmark, and the failure-pattern names of where-listing-systems-go-wrong."
+      ],
+      "does_not_know": [
+        "Which of the book's records fits the decision on their desk.",
+        "Which fields of each record are dropped first."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given three decisions, the reader finds the template for each from the page's lookup table and names the owning chapter and one field that must not be dropped.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Using only this page: which template do you use to (a) agree a bulk feed with a new dealer-software vendor, (b) decide whether to move an acquired brand's search onto the group platform, and (c) define what a paid package does to a listing and how it is billed? For each, name the chapter behind it and one field you must not leave out.",
+        "expected": "(a) Tool 5, the feed contract (listing-ingestion), with what absence means, field ownership, removal latency or the mass-change guard; (b) Tool 11, the consolidation decision card (platform-consolidation, with the advice process of organizing-marketplace-engineering), with the gate or rollback and the cost to reverse, or Tool 12's decision record; (c) Tool 9, the entitlement matrix (products-and-entitlements), with its effects, enforcement points, failure behavior or billing basis."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can say what the page contains, how to use it and which fields matter most.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this page give you, how should you use it, and which fields does it say get dropped first?",
+        "expected": "Twelve working templates for the records Parts I to VIII ask a Chief Architect to keep, each with a Veldmark example, common mistakes and the owning chapter; start with the record that changes the decision this week, keep the templates as maintained data cited by identifier; the fields for ownership, removal behavior and dates are dropped first."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the page, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which template turns the decision on the reader's desk into a working record, and which of its fields must not be dropped?",
+    "claim": "A decision's template is found from the question it answers, filled only where the decision changes and kept as maintained data cited by identifier, and the fields that must not be dropped are those for ownership, removal behavior and dates: seven of the twelve templates record what happens when a listing ends, and the incidents the Veldmark examples replay (38,400 cars unpublished by truncated files, a sold bike in 214 digests, a fraud rule nobody was assigned to carry to Motorvane) each came from one of those fields left blank.",
+    "disputed_by": "The view that templates are sample forms to fill in completely, or to copy once into a slide deck, with every field equally worth keeping.",
+    "so_what": "A Chief Architect copies the one template for this week's decision, keeps it where the system it describes lives, writes 'unknown' rather than guessing, and fills the owner, removal and date fields before any other.",
+    "how_why": "Each tool gives a purpose, when to use it, the fields to copy, one Veldmark example and three common mistakes, and links its owning chapter; the examples replay the book's incidents and show the field that now prevents each, and the records cite each other by identifier (`POL-FRAUD-PAYLINK` v3, `listing.events.v1`, `pro-150@v5`) so a stale listing can be followed back to the contract that allowed it.",
+    "supporting_claims": [
+      {
+        "id": "T1",
+        "claim": "A reader finds the template from the question on their desk, through a lookup table that names one tool and its owning chapter per question, and a diagram shows how the records point to each other."
+      },
+      {
+        "id": "T2",
+        "claim": "Each template is the smallest form that makes one recurring decision explicit and gives it an owner: a purpose, when to use it, fields to copy, one Veldmark example and three common mistakes, with the owning chapter for the reasoning; a reader fills only the fields that change the decision and writes 'unknown' rather than guessing."
+      },
+      {
+        "id": "T3",
+        "claim": "The fields that must not be dropped carry ownership, removal behavior and dates: seven of the twelve templates record what happens when a listing ends, and each incident the Veldmark examples replay came from one of those fields left blank and is now prevented by it."
+      },
+      {
+        "id": "T4",
+        "claim": "The templates stay true only as maintained data that cite each other by identifier, kept in a register where records are superseded rather than edited."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns the book's recurring decisions into twelve copyable records and performs the reference part's opening.",
+    "supports": [
+      "R-1"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "tool-1 to tool-12: the order of the parts that teach them (understand, model, supply, discover, trust, money, platform, lead), with the decision record last because every other tool feeds it"
+      }
+    ],
+    "rationale": "A reader arrives with one decision, so the page first gives the whole set as a lookup (the table) and as a chain (the diagram), then each template, then how to keep them true. The tools follow the order of the parts that teach them, so a reader can move between a tool and its chapter in reading order, and citations run mostly backward (the index card cites the dictionary's purposes, the decision record every other tool). A few point forward (the SLA card and the index card rest on the consumer registry, the event contract and the effect projector of Tools 9 and 10); the lookup table and the tool anchors make those reachable, and part order is kept because moving Tool 10 earlier would separate it from the platform chapters that teach it. Put the tools before the lookup and the reader would have to read twelve templates to find one; put the decision record anywhere but last and its citations would point forward to most of the records it cites."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "These are working templates for a group of listing marketplaces: the records that Parts I to VIII ask a Chief Architect to keep."
+    },
+    "bridge": {
+      "from_reader_world": "The decisions argued in Parts I to VIII, from the capability map to the decision record, which a reader has met as chapters.",
+      "to_topic": "The records a team keeps for those decisions, each tested against Veldmark and kept as maintained data, not documents."
+    },
+    "thesis_statement": {
+      "text": "Find the record that changes the decision on your desk, fill only the fields that change it, and keep the fields that carry ownership, removal behavior and dates: they are dropped first, seven of the twelve templates record what happens when a listing ends, and the records cite each other by identifier.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p01's last two sentences."
+    },
+    "roadmap": {
+      "placement": "Paragraph p03, after the three conventions.",
+      "promises": [
+        {
+          "promise": "A table that finds the template for the question on the reader's desk.",
+          "kept_in": [
+            "lookup"
+          ]
+        },
+        {
+          "promise": "A diagram of how the records cite each other.",
+          "kept_in": [
+            "connect"
+          ]
+        },
+        {
+          "promise": "The twelve tools in the order of the parts that teach them, each with purpose, when to use it, template, Veldmark example, common mistakes and owning chapter.",
+          "kept_in": [
+            "tool-1",
+            "tool-2",
+            "tool-3",
+            "tool-4",
+            "tool-5",
+            "tool-6",
+            "tool-7",
+            "tool-8",
+            "tool-9",
+            "tool-10",
+            "tool-11",
+            "tool-12"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "These are working templates for a group of listing marketplaces, the records Parts I to VIII ask a Chief Architect to keep, and the reader should adapt their wording but keep the fields for ownership, removal behavior and dates, which are dropped first and whose absence the next incident finds.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "From the capability map of business-capabilities to the decision record of organizing-marketplace-engineering, each tested against Veldmark; not a certification scheme or a vendor method; the smallest form that makes a decision explicit, assigns an owner and leaves evidence someone else can check.",
+            "shows": "Places the page in the book and names the fields that matter most, so the reader knows what to protect when trimming a template."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "form": "list",
+        "controlling_idea": "Three conventions run through all twelve templates: they are maintained data rather than documents, they reference each other by identifier, and each has a short Veldmark example consistent with the chapter that teaches it.",
+        "function": "explanation",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Where each record lives (architecture repository, taxonomy and attribute service, beside the registered schema, policy registry, catalog, one Git register); a template copied into a slide deck stops being true within a quarter; examples of records citing each other; all Veldmark names, figures and dates fictional and illustrative.",
+            "shows": "Tells the reader how to keep and connect the records before meeting any of them."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The records the page offers and the fields to keep.",
+          "introduces": "The three conventions every record follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The page starts with a table that finds the template for the question on the reader's desk and a diagram of how the records cite each other, then gives the twelve tools in the order of the parts that teach them, each with its purpose, when to use it, the template, a Veldmark example, three common mistakes and its owning chapter, and ends with how to keep the templates true over time and where the glossary and bibliography take over.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The page's sections in order and the two reference pages that follow it.",
+            "shows": "Lets a reader of the opening predict the page and use it as a lookup."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The conventions the records share.",
+          "introduces": "The map of the page that holds them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "lookup",
+      "heading": "Find the Template for the Question on Your Desk",
+      "controlling_idea": "A reader finds the template for a decision from the question it answers, not by reading the twelve in order.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T1"
+        ],
+        "how": "Gives the lookup that turns a question into one template and its chapter."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The page map's first item.",
+        "introduces": "The lookup table.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Start from the question in the middle column of the lookup table; each row names one tool, links to it and names the chapter that owns it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve rows: Tool | Use it when | Chapter, from the capability map (business-capabilities) to the architecture decision record (organizing-marketplace-engineering).",
+              "shows": "A reader with a decision can find its template and owning chapter in one look."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "T1"
+            ],
+            "how": "The lookup itself."
+          }
+        },
+        {
+          "id": "p05",
+          "controlling_idea": "Three records owned by other chapters (the tenant register and configuration hierarchy, the qualified-contact definition and the journey SLOs) are linked from the tools that depend on them, not repeated here.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The twelve templates the table lists.",
+            "introduces": "The records it deliberately leaves to other chapters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "connect",
+      "heading": "How the Records Connect",
+      "controlling_idea": "Most changes in a marketplace group pass through several tools, and each record points to the next by identifier.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T1",
+          "T4"
+        ],
+        "how": "Shows that the records form one chain a reader can follow, which is why they cite each other by identifier."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The tools listed one per row.",
+        "introduces": "How the same tools refer to each other.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Most changes in a marketplace group pass through several of the tools in one direction: understanding records feed decisions, decisions produce the listing's model and its contracts, and the operational records rest on the event specification and the SLA card.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: understanding records feed decisions; decisions produce the listing's model and its contracts; nearly every operational record rests on the event specification and the SLA card.",
+              "shows": "The caption says why: a change is finished only when every copy of the listing reflects it, so the records that carry changes to every copy sit underneath the rest."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tool-1",
+      "heading": "<a id=\"tool-1\"></a>Tool 1: Capability Map Row and Heat Map",
+      "controlling_idea": "The capability map row and heat map score each capability's differentiation, maturity and duplication so that sharing, investment and ownership are argued from the same evidence.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2"
+        ],
+        "how": "Gives the frame every later record cites."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The diagram, whose understanding records feed every decision.",
+        "introduces": "The first of them, the capability map.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "A capability map describes what the marketplace must be able to do independent of system, team or brand, and its heat map scores each level-2 capability on differentiation, maturity and duplication, so it is the stable frame every later record cites.",
+          "function": "definition"
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Use the map for sharing decisions, consolidation cases, portfolio discussions and any capability with no named owner, and refresh it before annual planning and after every acquisition.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The template is one row per level-2 capability, with level 3 only where a decision needs it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twelve fields from ID and level-1 area to Reading, including Owner, Maturity per implementation with dated evidence, Duplication verdict and Linked decision.",
+              "shows": "Shows which fields carry the owner, the dated evidence and the decision that chose the verdict."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Veldmark's map v1 of 31 March 2027 fills the row for 3.1 Search and filtering.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Three engines; maturity Tradeyard 2, Motorvane 4, Hearthly 3; verdict split at level 3; annual run cost about €11.8M; linked to the 14 September 2027 search decision.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a filled row whose verdict follows from its scores."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The verdict follows from the scores: the engine differentiates little and is run three times, while relevance differentiates each brand, so the machinery is shared and the ranking is not.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The filled row.",
+            "introduces": "Why its verdict follows from its scores.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the map useless: one maturity score per capability, one group scoring everything, and forgetting the deliberate duplicate.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge's listing distribution and Hearthly's feed ingestion duplicated on purpose under the March 2027 neutrality decision.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "A map without a 'keep separate' verdict invites a cost program to merge what was kept apart on purpose."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The filled row and its verdict.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The owning chapter is business-capabilities.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-2",
+      "heading": "<a id=\"tool-2\"></a>Tool 2: Vertical Requirement Profile and Share-Layer Row",
+      "controlling_idea": "The vertical requirement profile describes a vertical by the forces acting on its systems, and its share-layer row records which layer each part of a capability sits in and the gate a vertical must pass to move onto it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2"
+        ],
+        "how": "Gives the evidence a sharing decision needs per vertical."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The capability rows, scored across the group.",
+        "introduces": "One vertical's forces, which decide where a shared capability may serve it.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "A vertical requirement profile describes a vertical by fourteen dimensions of the forces on its systems, and the share-layer row records which of four layers each part of a capability sits in and on what condition a vertical moves onto it.",
+          "function": "definition"
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Use the profile when a vertical is asked to move onto a shared engine, a new vertical or country section is proposed, or a vertical's business model changes; it goes into the decision record as evidence.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "The template is one page per vertical, numbers first, with the share-layer row beside it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fourteen dimensions in five groups (Supply, Item, Demand, Money, Rules) and the share-layer row block with layer, owner, reason, stage gate, extension points and review trigger.",
+              "shows": "Shows the profile records forces as numbers and the row records an owner and a gate."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Veldmark's Motorvane DE profile, ratified April 2027, fills the dimensions with numbers.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "91% of listings from 21,400 dealers; 88% of dealer listings by DMS feed; the Golf sold in 15 days with the feed delete 26 hours later; Pro 150 at €1,450 a month.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows forces stated as numbers that decide removal and monetization design."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The share-layer row places vehicle identity, specification and price rating at layer 3, owned by Motorvane and consumed by Tradeyard Poland's cars section, and gates Motorvane's move onto the shared ingestion engine on feed success rate and delete latency.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Poland's cars section: about 410,000 live listings, about 40% from dealers; stage gate: feed success rate and delete latency no worse than Motorvane reports today.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a layer, an owner, a consumer and a gate in one row."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The Motorvane profile.",
+            "introduces": "The share-layer row built from it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the profile useless: profiling features instead of forces, classifying a whole capability into one layer, and omitting the stage gate.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The profile and its share-layer row.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The owning chapter is vertical-requirements.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-3",
+      "heading": "<a id=\"tool-3\"></a>Tool 3: Listing Lifecycle State Table",
+      "controlling_idea": "The listing lifecycle state table makes every state, transition, trigger and derived behavior explicit, separating the listing's publication state from trust and safety's enforcement overlay.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its derived-behavior and outcome fields carry what happens when a listing ends."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The understanding records of Part I.",
+        "introduces": "The listing's own model, from Part II, starting with its states.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "A listing lifecycle is the set of states, transitions, triggers and per-state behavior, and the state table separates the publication state owned by the listing from the enforcement overlay owned by trust and safety, deriving visibility from both.",
+          "function": "definition"
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Use the table when designing a listing service, adding a state, integrating a vertical with other words, or investigating why a listing is live in one system and gone in another.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The template is two tables and a list.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The first table records transitions: from, to, trigger, command, event emitted and whether an outcome code is required.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Transitions table with an outcome code required for every terminal transition.",
+              "shows": "Shows every end of a listing must record an outcome."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three parts of the template.",
+            "introduces": "The first: transitions.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The second table records the behavior derived for each publication state and overlay.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Derived behavior per state: searchable, detail page, contactable, alertable and recommendable, URL behavior (200 / 404 / 410), retention clock.",
+              "shows": "Shows visibility is derived per state, not stored in many places."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The transitions table.",
+            "introduces": "The second table: behavior per state.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "list",
+          "controlling_idea": "The list records the rules: who may set which states, the three timestamps, the outcome vocabulary for terminal transitions, and the vertical mappings.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The two tables.",
+            "introduces": "The rules to record beside them.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Veldmark's Common Ground lifecycle for Tradeyard goods fills the derived-behavior table.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Active, restricted, held or blocked, Reserved, Sold, Withdrawn and Archived, with searchable, contactable, alertable and URL behavior for each.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows Sold as not alertable, the rule the bike's digest broke."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The Rotterdam bike exercises the table: reserved at 14:02 and sold at 18:10 on 8 March 2027 with outcome sold on platform for €225, removed from search at 18:11, and still in a digest assembled at 17:30 that broke the table's 'Alertable: No' for Sold.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Active at 19:48 on Sunday 7 March 2027; `ListingReserved` at 14:02 on Monday 8 March; `ListingSold` at 18:10; €225 in the outcome, not the price; Hearthly and Motorvane vertical mappings.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows the outcome field and the alertable rule at work on one listing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The filled derived-behavior table.",
+            "introduces": "One listing walked through it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the table useless: one status column for three owners, treating a bump or renewal as a new listing, and ending listings without an outcome.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The bike walked through the table.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The owning chapter is listing-aggregate.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-4",
+      "heading": "<a id=\"tool-4\"></a>Tool 4: Attribute Dictionary Entry",
+      "controlling_idea": "The attribute dictionary entry is a small contract for one attribute that keeps facets, filters, feeds and trust rules agreeing about what a listing is.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2"
+        ],
+        "how": "Records the owner, purposes and dated requiredness of each attribute."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The lifecycle table, which models the listing's states.",
+        "introduces": "The dictionary, which models the listing's attributes.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "An attribute dictionary entry is a small contract for one attribute (key, meaning, type, unit, values, scope, purposes, provenance precedence, owner) that the schema compiler turns into forms, validators, index mappings and feed mappings.",
+          "function": "definition"
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Use an entry when an attribute is proposed, about to become required, has its value list changed, or turns out to share a meaning with another key or carry two meanings.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The template builds on the public models of eBay's Taxonomy API and Amazon's product type definitions.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fifteen fields from Key to Owner and status, including Requiredness by category with an expected-required date and Purposes.",
+              "shows": "Shows the dates and owner an entry must carry and the purposes that drive what it compiles into."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Veldmark's `bike.battery_capacity_wh` entry, from schema release 2027.11, fills the template.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Recommended from 1 November 2027, required on create and revise from 1 March 2028, a four-month runway for dealer feeds; seller, then partner_feed, then model precedence.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a dated requiredness runway and a precedence rule in one entry."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The rollout followed the producer-breaking rule: publish the field and a readiness report per feed, validate with warnings during the runway, and only then return a stable error code.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The entry's dated runway.",
+            "introduces": "How the rollout used it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "Three mistakes make an entry useless: changing meaning, unit or type in place, converting what cannot be converted, and leaving purposes blank.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's cleanup found 31 of 990 retired keys still read by something.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows that blank purposes hide an attribute's readers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The entry and its rollout.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The owning chapter is attribute-schemas.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-5",
+      "heading": "<a id=\"tool-5\"></a>Tool 5: Feed Contract",
+      "controlling_idea": "The feed contract is everything both sides must agree on for a supply channel to be operable, of which schema validity is perhaps a third.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its semantics and reconciliation clauses state what absence means and hold a truncated file."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The listing's model from Part II.",
+        "introduces": "Supply from Part III, which writes into that model.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "A feed contract covers scope, identity, semantics, field ownership, schema, timeliness, media, errors, limits, reconciliation and change management, and it is a product artifact because partners judge a marketplace by how predictable its feed is.",
+          "function": "definition"
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Every channel that writes listings gets one, including the insertion flow, and especially any channel whose removal behavior is unknown.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The template is a contract block to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "A YAML block from feed_contract to change_management, with absence_means, field_ownership, status-change timeliness and a mass-change guard.",
+              "shows": "Shows removal semantics, ownership and the guard as named clauses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Veldmark's Motorvane DMS channel under Supply Contract v1 fills the contract.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hybrid mode: daily snapshot at 17:00 and status deltas within 15 minutes; content hash with about 91% unchanged; one RFC 9457 error catalog; mass-change guard on the snapshot.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows each clause filled with a number or a rule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The contract replaces two incidents with two controls: the truncated files that unpublished 38,400 cars for 286 dealers become 286 held runs, and the Golf's 26-hour-late removal becomes a 15-minute status delta.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Truncated files of Monday 8 March 2027, 38,400 cars for 286 dealers by 02:55; the Golf removed 26 hours late.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Ties each control in the contract to the incident it prevents."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The filled contract.",
+            "introduces": "The incidents its clauses prevent.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "Three mistakes make a contract useless: leaving 'absence means removal' implicit, purging the external-key mapping on removal, and giving one partner a private door.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The contract and the incidents it prevents.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The owning chapter is listing-ingestion.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-6",
+      "heading": "<a id=\"tool-6\"></a>Tool 6: Publication-Pipeline SLA Card",
+      "controlling_idea": "The SLA card turns 'listings should go live fast' into a contract of coverage, clock and removal with a budget per stage, and treats removal as a separate, stricter promise.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its removal row names an objective for every registered consumer."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "time",
+        "carries_over": "Records arriving through a feed contract.",
+        "introduces": "The pipeline that makes them searchable, and later removes them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "The SLA card states a time-to-searchable target with coverage, clock and removal and a per-stage budget that adds up to it, so the fast path cannot be met by holding more listings, and removal is a stricter promise of its own.",
+          "function": "definition"
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Use the card when setting a time-to-searchable target, accepting a new channel or vertical, adding a stage, or registering a new consumer of listing data.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The template is a card to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "SLA CARD block: coverage, clock, target, per-stage budget, removal objectives per consumer and partner feeds, evidence.",
+              "shows": "Shows removal as a row with its own objectives and the rule that nothing is sent for an ended listing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Veldmark's Tradeyard SLA card of 2027 fills the card.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "94% of new listings covered; p95 90 seconds by end of 2028 from a 6-minute baseline; removal: search p95 10 s, every registered consumer p95 2 min, partner feeds within 15 min.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a target, a budget that adds up and removal objectives per consumer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The removal row is the one the Rotterdam bike tested: removed from search a minute after the sale, it still reached 214 digests because the digest service was in no registry and re-checked nothing at send time.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "214 digests the next morning.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a consumer with no registered objective is where ended listings survive."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The filled card.",
+            "introduces": "The row the bike tested.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the card useless: a single p95 that hides the held share, budgets that do not add up, and removal objectives for the index only.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The card and the bike's test of it.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The owning chapter is publication-pipeline.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-7",
+      "heading": "<a id=\"tool-7\"></a>Tool 7: Search Index Design Card",
+      "controlling_idea": "The search index design card records how one market's index is built and operated, under the rule that no field exists in the index without a source outside it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its freshness budget gives removals their own lane, and the rebuild drill keeps the index a read model."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The SLA card's indexing stage and removal objective.",
+        "introduces": "The index card that budgets them for one market.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "The index design card records sources, typed fields, partitioning, write and removal visibility, read-path budget, rebuild and owners for one market's index, and its central rule that no field exists without a source outside the index is the test against Search as System of Record.",
+          "function": "definition"
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Use the card when designing a market index, changing mappings or analyzers, migrating to another engine or cluster, or planning capacity for a peak.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The template is a card of thirteen sections to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Scope to Owner, including Promotion rule, Freshness budget with a removal lane, Reindex and Rebuild drill.",
+              "shows": "Shows where each field's source, the removal lane and the rebuild drill are recorded."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Veldmark's Tradeyard Belgium index, the target design after the 14 September 2027 decision, fills the card.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 2.4 million live listings; documents built only from Listing event contract v1 and the attribute service; about 610 of 3,900 original keys promoted; index share 15 s p95, removals 10 s p95; quarterly rebuild drill.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows every field with a source outside the index and removals on their own lane."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Every row names a source outside the index: documents come only from the event contract and the attribute service, paid fields from the effect projector, and the quarterly drill proves the index can be rebuilt from the stream.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The filled card.",
+            "introduces": "How it meets the card's central rule.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the card useless: writing into the live index at peak, letting free-string attributes into the mappings, and rebuilding effects by copying the old index.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 17 January 2027 brown-out: an in-place reindex, cache eviction on every commit and a TV campaign at the Sunday-evening peak.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows what writing into the live index at peak costs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The card and how it meets its rule.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "The owning chapter is search-architecture.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-8",
+      "heading": "<a id=\"tool-8\"></a>Tool 8: Trust-and-Safety Policy-to-Enforcement Card",
+      "controlling_idea": "The policy-to-enforcement card traces one versioned policy from its text to every place it acts, so a decision stays explainable under the version in force when it was taken.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its propagation and rollout rows say which consumers must apply a decision and who tells each tenant."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Making listings searchable fast.",
+        "introduces": "Stopping harmful listings and messages, from Part V.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "The card traces one policy to its detectors, allowed enforcement rungs, consumers, notice and statement of reasons, appeal path and metrics, treating the policy as versioned reference data.",
+          "function": "definition"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Use the card when a policy is written or changed, a detector or action is proposed, or a tenant joins the shared platform, so legal and engineering each review their part without reading the other's code.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "The template is a card to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "POLICY block: version and supersedes, detectors, allowed rungs, propagation with time to last acknowledgement, rollout change class and tenant gaps, sharing, notice, metrics.",
+              "shows": "Shows the version, the consumers and the rollout owner as fields."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Veldmark's `POL-FRAUD-PAYLINK` v3, effective 18 March 2027, fills the card.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Message safety gate at 150 ms p99; `EnforcementApplied` to search, messaging, alerts and payments; rule reached BE only on 10 March and never PL or PT; time-to-action target under 30 minutes by end of 2028 from 3 h 10 min.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows a versioned policy with its propagation and rollout gaps written down."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "The card replays Femke's Sunday evening, when a fake buyer sent her a payment link, and its rollout row exists because no field in the March process said who should tell Motorvane about the same phone number.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Report at 20:19, suspension at 20:26, 37 similar messages withheld; the phone number had registered a Motorvane private-seller account.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows the missing ownership field the rollout row now carries."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The filled card.",
+            "introduces": "The row it exists for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the card useless: demoting silently, treating a decision as finished when the status changes, and rolling fraud rules out on the product release train.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The card and the evening it replays.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "The owning chapter is trust-and-safety-architecture.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-9",
+      "heading": "<a id=\"tool-9\"></a>Tool 9: Entitlement Matrix",
+      "controlling_idea": "The entitlement matrix puts every product's holder, quota, effects, enforcement points, failure behavior, ledger entries, delivery evidence and billing basis on one page, so seller, finance and engineering agree on what was sold and delivered.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3"
+        ],
+        "how": "Its failure and billing columns tie what is billed to what was delivered."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Enforcement points that read a trust-and-safety decision.",
+        "introduces": "Enforcement points that read a paid effect, from Part VI.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p66",
+          "controlling_idea": "The entitlement matrix lists, for every product and package, its holder, quota, effects, enforcement points, behavior when the entitlement service is unavailable, ledger entries, delivery evidence and billing basis.",
+          "function": "definition"
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Use the matrix when a product is launched, repriced or retired, a brand moves onto the shared catalog, a dispute or overbilling finding arrives, or a ranking or rendering change touches paid effects.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "The template is one row per product version, and its failure column is a commercial decision written as engineering.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine columns from Product version to Billing basis, with ledger entries Grant to PublishRefused.",
+              "shows": "Shows the failure behavior and the billing basis as columns of the same row."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "Beside the matrix, record the price-list version and contract behind each quote, every producer's idempotency key, and the daily granted-delivered-billed reconciliation and its owner.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The matrix rows.",
+            "introduces": "What is recorded beside them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Veldmark's Tally design of October 2027 fills three rows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Motorvane `pro-150@v5` (150 slots, 20 boosts, €1,450 a month, €9 overage only with consent), Tradeyard `top-listing-7d@v4`, Tradeyard bump.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows effects, failure modes and billing basis filled per product."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "The first row turns the late-September 2027 overbilling finding into a rule: billing counted feed rows, so it now reads 150 `Consume` entries and bills €1,450.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ruhrblick's August feed: 163 cars, 150 live, €117 overage for 13 never published; the 14-month audit found 1,140 dealers overbilled by about €212,000, credited in October 2027.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Ties the billing-basis column to the incident it prevents."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The filled matrix.",
+            "introduces": "The finding its first row turns into a rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the matrix useless: paid state as a column in the listing payload, a paid effect that outlives its listing, and billing that recomputes entitlements on its own.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The matrix and the finding behind it.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "The owning chapter is products-and-entitlements.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-10",
+      "heading": "<a id=\"tool-10\"></a>Tool 10: Listing Event Specification",
+      "controlling_idea": "The listing event specification defines one event in the listing event contract, in a shape every consuming context can rely on for years.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T3",
+          "T4"
+        ],
+        "how": "Its consumers and objectives fields give removal events their own objective, and its identifiers are what other records cite."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Decisions and paid effects that must reach every copy of a listing.",
+        "introduces": "The event that carries a listing fact to every consumer, from Part VII.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p74",
+          "controlling_idea": "A listing event specification states one listing fact in the group's published language and says what it means, when it is emitted, what makes it unique and ordered, what it carries, who consumes it, how fast it must arrive and how it may change.",
+          "function": "definition"
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "Use a specification when a new event type is proposed, a field's meaning is in doubt, a consumer registers, or a breaking change is considered, and the default answer to a new type is no.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "The template is a specification of twelve sections to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Identity to Change, including Key and order, Excluded data, Topics and retention with the tombstone rule, Objectives with a stricter removal objective, and registered Consumers.",
+              "shows": "Shows removal objectives and consumer registration as fields."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "Veldmark's `ListingSold` in `listing.events.v1`, live 1 July 2027, fills the specification.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The bike's sale at version 9; €225 via Safe Deal; removal events p99 under 5 s to topic and under 30 s to search deletion; 23 consumer groups at go-live.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows an event with its key, its removal objective and its registered consumers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p78",
+          "controlling_idea": "Under the specification, the digest that featured the sold bike subscribes to `ListingSold`, purges the bike and re-checks state before sending, instead of reading a MySQL replica snapshot.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The filled specification.",
+            "introduces": "What it changes for the digest that sent the sold bike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p79",
+          "form": "list",
+          "controlling_idea": "Three mistakes make a specification useless: putting bumps or views on the listing stream, changing a field's meaning within a version, and emitting no-op updates.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The specification and the digest it fixes.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p80",
+          "controlling_idea": "The owning chapter is event-driven-listings.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-11",
+      "heading": "<a id=\"tool-11\"></a>Tool 11: Consolidation Decision Card",
+      "controlling_idea": "The consolidation decision card replaces one yes-or-no on replatforming an acquired business with a staged, gated plan beside a synergy ledger, its constraints and an exit path.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T4"
+        ],
+        "how": "Records owners, dated evidence and the exit path that keeps a business separable."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The operational records of Parts I to VII.",
+        "introduces": "The leadership decisions of Part VIII, starting with an acquired business.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p81",
+          "controlling_idea": "The consolidation card records an acquired business's integration option, which capabilities move in which stage behind which gate, and which are left alone, beside a synergy ledger, brand and URL risk, binding constraints and an exit path.",
+          "function": "definition"
+        },
+        {
+          "id": "p82",
+          "controlling_idea": "Use the card when a deal closes or is priced, a synergy target is announced, a brand or domain migration is proposed, or a cost program proposes merging something kept separate on purpose, because public cases show the constraints row binds.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The UK CMA accepted undertakings on 2 June 2021 requiring Gumtree UK and Shpock to be sold as part of Adevinta's acquisition of eBay Classifieds Group.",
+              "source": "CMA decision, published 2021",
+              "shows": "Shows a regulator's condition can bind what an acquirer may integrate."
+            },
+            {
+              "kind": "source",
+              "what": "eBay Kleinanzeigen became Kleinanzeigen on 16 May 2023, with the previous domain to 'remain accessible for several more years'.",
+              "source": "Adevinta press release, 2023",
+              "shows": "Shows a brand migration is measured in years of redirects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p83",
+          "controlling_idea": "The template is a card to copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "CONSOLIDATION CARD block: integration option and reversibility, constraints, five-stage sequence and kept-separate list, synergy ledger, brand and URLs, people, exit path, review.",
+              "shows": "Shows the stages, the ledger lines' owners and the exit path as fields."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p84",
+          "controlling_idea": "Veldmark's card for Hearthly.es, with Keybridge as the deliberate counter-case, as recorded in the board review of 9 November 2027, fills both columns from decisions recorded in other chapters.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly.es: share services beneath, stages 0–3; synergy ledger €18M deal case against €9.6M October 2027 evidence; 3% traffic rule; hosting off at the end of 2029. Keybridge: federate under group controls; €7M cross-selling withdrawn.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows two opposite integration options in one group, each reasoned from its constraints."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p85",
+          "controlling_idea": "The two columns are the point of the card: the same group in the same year shared almost every layer beneath one portal and almost none beneath another, each for a reason in the constraints row.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The filled two-column card.",
+            "introduces": "What the two columns show together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p86",
+          "form": "list",
+          "controlling_idea": "Three mistakes make the card useless: consolidating the visible layer first, a synergy case with one number, and forgetting separability.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The card and what its columns show.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p87",
+          "controlling_idea": "The owning chapter is platform-consolidation.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tool-12",
+      "heading": "<a id=\"tool-12\"></a>Tool 12: Architecture Decision Record",
+      "controlling_idea": "The architecture decision record captures one decision, its rejected options and consequences, with five fields a marketplace group needs, and it is the record every other tool cites.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "T2",
+          "T4"
+        ],
+        "how": "Its review trigger and supersession rule keep decisions maintained rather than edited."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Every tool uses the same order so a reader who has used one can scan the next: what the record is, then when to reach for it, then the fields to copy, then the fields filled once for Veldmark, then the mistakes that make it useless, then the chapter that holds the reasoning. The mistakes name fields, so they need the template before them; the example fills the template, so it cannot come first."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The consolidation card, whose decisions are each recorded.",
+        "introduces": "The decision record, last because every other tool feeds it.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p88",
+          "controlling_idea": "An architecture decision record captures one decision in about a page, and a marketplace group adds five fields (tenants and brands, principles, liquidity metric, advice received, separability) and indexes records in the advice forum's decision log.",
+          "function": "definition"
+        },
+        {
+          "id": "p89",
+          "controlling_idea": "Use a record when a decision crosses a team, brand or tenant boundary, changes a contract or system of record, moves money, people or personal data between brands, or makes an exception; team-local decisions may use a lighter record.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the record is.",
+            "introduces": "The occasions that call for it.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p90",
+          "controlling_idea": "The template builds on Nygard's 2011 record and Harmel-Law's advice process.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "DR-YYYY-NNN block: status, proposer and decider, tenants, context, drivers, options, decision, conditions, principles, consequences, data and regulation, advice received, confirmation, review.",
+              "shows": "Shows the options, advice received and review trigger as sections."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "When to use the record.",
+            "introduces": "The record itself, field by field, to copy.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p91",
+          "controlling_idea": "Veldmark's search platform decision, accepted 14 September 2027, fills the record.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Option C: OpenSearch for Tradeyard and Hearthly, Motorvane stays on Elasticsearch; Tradeyard PT first in Q2 2028; Motorvane's advice followed; engine review in 2029 with Vespa reopened on missed budgets.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows rejected options, advice followed and a review trigger in one record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The empty template.",
+            "introduces": "The same template filled in once for Veldmark.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p92",
+          "controlling_idea": "The forum logged 74 cross-brand records by 31 December 2027, with a median of nine working days from draft to decision.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Six went to the CTO because they moved funding or people, two to the data protection officer because they moved personal data across brands.",
+              "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+              "shows": "Shows the register working at group scale and routing decisions by the decision-rights matrix."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One filled record.",
+            "introduces": "The register of records it belongs to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p93",
+          "form": "list",
+          "controlling_idea": "Three mistakes make a record useless: a record with one option, no review trigger, and editing an accepted record instead of superseding it.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The record and its register.",
+            "introduces": "The three ways the record most often goes wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p94",
+          "controlling_idea": "The owning chapter is organizing-marketplace-engineering.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The template, its example and its mistakes.",
+            "introduces": "The owning chapter, which works the full reasoning.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Using the Toolkit Over Time",
+    "synthesis": "Each template leaves evidence someone else can check only while it stays true, and the same incidents the Veldmark examples replay show how: fields for ownership, removal and dates were added after an incident found them missing, so keeping a template true means reviewing it on a calendar, adding a field when an incident finds a gap, and removing fields nobody reads.",
+    "so_what": "A team that keeps the templates as maintained data, reviewed and extended this way, finds the next missing field in a review rather than in an incident.",
+    "callback": {
+      "to": "The opening's claim that each template leaves evidence someone else can check, and that the fields dropped first are the ones whose absence the next incident finds.",
+      "how": "The reader now sees the incidents of the twelve examples as the source of those fields, and the three habits as what keeps that evidence true."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Review each template on a calendar, let each post-incident review add the missing field, and remove fields filled by habit and read by nobody."
+    },
+    "hand_off": {
+      "to": "glossary",
+      "relationship": "elaboration",
+      "carries_over": "The toolkit's closing pointer: the glossary defines the terms the templates use.",
+      "introduces": "One definition per term, set beside the terms it is confused with, each linked to its owning chapter."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The twelve tools.",
+      "introduces": "How to keep them true over time.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p95",
+        "form": "list",
+        "controlling_idea": "Each template leaves evidence someone else can check only while it stays true, above all in its fields for ownership, removal behavior and dates, and three habits keep it true: review on a calendar, let incidents add fields, and keep the set small.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The mass-change guard from 38,400 vanished cars, the send-time re-check from one sold bike in 214 digests, the `PublishRefused` entry from €212,000 of credits, the group-urgent change class from a rule that took three days to cross a border.",
+            "source": "Veldmark (fictional), _research/scenario-ledger.md and the owning chapter",
+            "shows": "Shows the fields the examples carry came from incidents, which is why a post-incident review should add one."
+          }
+        ]
+      },
+      {
+        "id": "p96",
+        "controlling_idea": "Fitness functions keep the records honest over a decade, the glossary defines the terms the templates use, and the bibliography lists the sources behind them.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Keeping the templates true.",
+          "introduces": "Where the reader goes for the terms and the sources.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Re-teaching the reasoning behind each template; each tool summarizes and links to its chapter.",
+      "covered_in": [
+        "business-capabilities",
+        "vertical-requirements",
+        "listing-aggregate",
+        "attribute-schemas",
+        "listing-ingestion",
+        "publication-pipeline",
+        "search-architecture",
+        "trust-and-safety-architecture",
+        "products-and-entitlements",
+        "event-driven-listings",
+        "platform-consolidation",
+        "organizing-marketplace-engineering"
+      ]
+    },
+    {
+      "topic": "The tenant register and configuration hierarchy, the qualified-contact definition and metrics catalog, and journey SLOs, which are linked, not reproduced.",
+      "covered_in": [
+        "multi-country-platforms",
+        "data-platform",
+        "reliability-and-scale"
+      ]
+    },
+    {
+      "topic": "Definitions of terms and the source list by topic.",
+      "covered_in": [
+        "glossary",
+        "bibliography"
+      ]
+    },
+    {
+      "topic": "Downloadable file formats (spreadsheets, document templates)."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Chose the twelve templates in the PLAN contract and no others: a grep of the chapters for 'toolkit' found only one explicit promise (the SLA card in publication-pipeline), already in the list."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Ordered tools by the book's parts (understand, model, supply, discover, trust, money, platform, lead) rather than by stage, so a reader can move between a tool and its chapter in reading order; the ADR is last because every other tool feeds it.",
+      "rejected": [
+        "Order by pipeline stage."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Wrote templates as tables where fields need guidance and as fenced blocks where the record is a literal artifact (share-layer row, feed contract, SLA card, policy card, consolidation card, ADR), so they can be copied as they are."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used `bike.battery_capacity_wh` rather than the chapter's frame-size entry for Tool 4, because it shows the recommended-then-required runway; frame size appears in the common mistakes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Spec.md success criteria not carried over as criteria: they were inventories (callouts present, twelve sections, fields trace to chapters, listed Veldmark figures, one diagram, a Sources section). The page's criteria are the three reader outcomes copied from the journal spec (find the template for a decision and a field not to drop; predict the page from its opening; reverse outline). No post-level criteria were added, to keep the criteria to what a reader can do with the page.",
+      "rejected": [
+        "A custom rubric criterion that every Veldmark figure agrees with the ledger (a fact check, not a reader outcome; the ledger governs it).",
+        "A cold-reader criterion on naming one template's owner, removal and date fields (covered by AC-1's 'one field you must not leave out')."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The journal entry has no thesis object, so the thesis was written here from the entry's question and R-1, and judged by a fresh thesis-rubric reader (2026-11-12: pass on all four tests). Its two notes were taken: T2 now carries 'fill only the fields that change the decision', and T3 uses the claim's causal wording. Its other note (the claim is one long sentence of three or four assertions; 'filled only where the decision changes' is its vaguest phrase) is left for the author."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added three units to the published text, each required by the spec: a roadmap paragraph in the introduction (the Reference part's opening roadmap), a lead-in to the lookup table (so the table is a unit's evidence and the reader is told how to use it), and one sentence after the Tool 1 and Tool 7 examples saying what each shows, as every other tool already does. The conclusion's lead-in now names the opening's claim that each template leaves evidence someone else can check (callback).",
+      "rejected": [
+        "Leaving the lookup table before any prose, where it is no unit's evidence.",
+        "Adding Part IX's cases to the hook: the published hook names Parts I to VIII and the case-automotive hand-off already carries Part IX."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Section transitions between tools are carried by the tool number in each heading and the order of the lookup table, with relationships declared per boundary; within a tool, the bold labels (Purpose, Use it when, The template, Veldmark example, Common mistakes, Learn more) carry the transitions. Tool sections were not given linking sentences, which would lengthen a page used as a lookup."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none; max_words is the published length by check_draft's count (8,166) plus 5%."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft-check revisions kept every published fact and link; glosses and pointers were added only from the scenario ledger: 'Overlap 3' explained as the third of the five overlaps in the heat map of business-capabilities; Common Ground as Veldmark's program of shared group platforms; Tally as the group entitlement service; L4 as proof of person; Femke named as the bike's seller; forward pointers to Tools 9 and 10; a sentence in How the Records Connect naming the SLA card and the event specification as the records the others rest on; sentences saying what the Tool 2 and Tool 12 examples show."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation item (rule 3): the lookup section said 'Tools 6, 7, 11 and 12 link to them where a field depends on them', but only Tool 11 links one of them ([[data-platform]], in its data row). The page contradicted itself, so the sentence now reads: 'read them in those chapters when a field depends on them. Tool 11's data row links the qualified-contact definition in [[data-platform]] directly.' No link was added to Tools 6, 7 or 12. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Adding links to multi-country-platforms, data-platform and reliability-and-scale in Tools 6, 7 and 12 (new fields in published templates)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation item (rule 8): the hand-off to the glossary is followed by Sources and Evidence, so the page does not end on it. Kept the apparatus order (conclusion, then Sources and Evidence), the house convention across the journal and the order the roadmap announces; the hand-off stays the last paragraph of prose. accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Moving Sources and Evidence above the conclusion, or folding the hand-off into the end of Sources."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 minor single-reader findings fixed in the prose, from the ledger and Figure 1 only: Figure 1's caption names the tools in each group (understanding records Tools 1 and 2; decisions Tools 11 and 12; the listing's model Tools 3 and 4; contracts Tools 5 and 10); Tool 3's example lead-in lists the overlay values (none, restored, restricted, held, blocked); Tool 8 says Femke's evening is the Sunday she listed the bike, when a fake buyer sent her a Safe Deal payment link at 20:11 (ledger, Rotterdam city bike); the conclusion's calendar habit reads 'before seasonal peaks and the busiest weeks on the campaign calendar'. 'The effect projector' was already fixed after round 3. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Earlier minor single-reader findings left as published (rule 8): KEY POINTS identifiers opaque until Tools 9 to 11; KEY POINTS wording versus p01; failure-pattern names not in the callout (known from where-listing-systems-go-wrong); 'Tenancy model v1, decision 9' without context; abbreviated example tables in Tools 3 and 9; Analyzers listed last in Tool 7; Tool 11's long Purpose sentence. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes not taken (How the Records Connect kept separate; tools in part order; Tool 12's forum statistics paragraph kept; 'seven of the twelve templates' stays in the KEY POINTS callout): accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over notes closed (rule 8, published text kept): Tool 11 follows the written platform-consolidation chapter and is reconciled again only if its synergy figures change; the bike details follow the ledger's editor line (14:02 reservation) and event-driven-listings (version 9) per consistency-issues item 24, alignment of listing-aggregate is that chapter's task; no thirteenth tool (tenant register entry or consumer registry row) is added, the twelve stay as published. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 4 (ESCALATE, 13 pass, 2 fail): both flow readers re-read the new lookup sentence ('the data platform's' had no noun); fixed to name the qualified-contact definition. The conclusion's opening sentence (single-reader minor) was split in two. Done as an exception authorized by the coordinator, then checked again in round 5."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: corrected the lookup sentence to 'Tool 11's data row links [[data-platform]] directly.' The round-5 wording (approved by the orchestrator) wrongly said the row links a qualified-contact definition; the row links data-platform for governed data products."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, role, the question, R-1, and the Reference part's opening this page carries."
+    },
+    {
+      "kind": "internal",
+      "ref": "business-capabilities, vertical-requirements",
+      "contributed": "Heat map, verdicts, profiles, share layers, stage gates."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, attribute-schemas",
+      "contributed": "Lifecycle states, overlay, derived visibility, dictionary entry, requiredness."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-ingestion, publication-pipeline, search-architecture",
+      "contributed": "Feed contract, SLA card, index design and search decision."
+    },
+    {
+      "kind": "internal",
+      "ref": "trust-and-safety-architecture, products-and-entitlements, event-driven-listings",
+      "contributed": "Policy record and ladder, Tally ledger and effects, Listing event contract v1."
+    },
+    {
+      "kind": "internal",
+      "ref": "organizing-marketplace-engineering, multi-country-platforms, identity-and-verification, case-aviv, platform-consolidation",
+      "contributed": "Governance, tenancy model, Hearthly.es decisions, the consolidation card."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md, _research/consistency-issues.md, _research/style-guide.md",
+      "contributed": "Veldmark figures, the bike rulings, pattern names and house style."
+    },
+    {
+      "kind": "external",
+      "ref": "Michael Nygard, Documenting Architecture Decisions (2011); Andrew Harmel-Law, Scaling the Practice of Architecture, Conversationally (2021)",
+      "contributed": "The record anatomy and the advice process behind Tool 12."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay Taxonomy API; Amazon SP-API product type definitions; RFC 9457 (2023); Confluent schema compatibility documentation; Elastic mapping limits",
+      "contributed": "Field models and constraints behind Tools 4, 5, 7 and 10."
+    },
+    {
+      "kind": "external",
+      "ref": "UK CMA Adevinta/eBay Classifieds decision (2021); Adevinta Kleinanzeigen rebrand release (2023); Regulation (EU) 2022/2065",
+      "contributed": "The constraints and brand rows of Tool 11 and the statement-of-reasons rule of Tools 3 and 8."
+    },
+    {
+      "kind": "internal",
+      "ref": "The RECONCILED toolkit (finance-systems-architecture)",
+      "contributed": "Page format and tool structure."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round-4 fixes: lookup sentence names the qualified-contact definition; conclusion opening split in two. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: lookup sentence reworded to what the tools link, apparatus order kept, four minor reader findings fixed; open questions closed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1 to 3 (REVISE, REVISE, ESCALATE). Revisions between rounds and four cheap fixes after round 3 (see decision_log and open_questions). Prose 8,508 words by check_draft's count against max_words 8,574. Check report stale after the close-out fixes."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline); thesis written here; units reconstructed from the published page; roadmap paragraph, lookup lead-in, two example explanations and a callback added to the prose. Status draft."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 1 mermaid diagram with a generated illustration (figure number and caption unchanged). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 4,852 -> 4,864 words; lead names the toolkit as the records Parts I-VIII ask for; teaser opener cut from How the Records Connect; Tool 11 purpose sentence split. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Tool 10 purpose now says a listing event specification defines one event in the listing event contract. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Tool 11 rebuilt against the written platform-consolidation chapter; bike version 9 and 14:02 reservation confirmed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 8574
+  }
+}

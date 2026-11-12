@@ -1,0 +1,1704 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "sellers-and-accounts",
+  "journal": "listing-systems-architecture",
+  "part": "part-2",
+  "title": "Private Sellers, Dealers and Agencies: Modeling Who Lists",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the sellers-and-accounts entry in journal-spec.json; the conclusion realises Part II's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part III's transition_in. Units added by this conversion: lead-ins and explanations for the trade-off tables (p43, p45, p46) and three conclusion paragraphs (p57, p58, p59); p03 now carries a roadmap.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Private and professional sellers, trader status, organizations, branches and networks, users and memberships, and integration principals.",
+        "The three options for who-lists data in a multi-brand group (separate, shared identity and registry, one group account) and when each fits."
+      ],
+      "believe": [
+        "The account model is where marketplaces most often confuse identity with commerce, and trader status is a governed attribute, not a checkbox."
+      ],
+      "can_do": [
+        "Model an agency network with franchisees, departing staff and a feed vendor so that trader information, reviews, leads and invoices land on the right entity.",
+        "Decide what a group shares across brand accounts and the purpose limits on it."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an agency network's complaints, the reader traces them to one modeling error and assigns each to the right entity.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "An agency network with nine owned branches and five franchisees complains: franchise listings show the parent as trader, one franchisee's reviews appear on every branch, a departed agent still receives leads for 212 listings, and franchise subscriptions are invoiced to the parent. Using only this chapter: what is the single cause, and where does each fact belong?",
+        "expected": "One entity was login, legal identity, billing party, public profile and listing owner. Each franchisee is its own legal entity and trader; reviews attach to the branch or storefront; listings belong to the organization and are assigned to branches, not to a user, so leads route through the branch; each franchisee has its own contract and billing account. The feed vendor is an integration principal with scoped grants."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Fourteen branches and three wrong answers at Hearthly; the vocabulary of supply: private and professional sellers, trader status, organizations, branches and networks, seller accounts and contracts, users and roles, integration principals; the seller account model with one entity per question, its lifecycle, lead routing and reputation; trade-offs and vertical differences; documented patterns and three Veldmark accounts; group-wide identity versus per-brand accounts; failure modes, the Chief Architect's view and questions to ask. Evidence: EU consumer, platform and tax law, public company sources and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a trader flag stored as a checkbox, the reader says what the trader status record must hold and how a private seller who behaves like a trader is reclassified.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A marketplace stores trader status as a yes/no field the seller ticks at sign-up. Using only this chapter: what is wrong with that, and what should the platform store and run instead?",
+        "expected": "A checkbox has no evidence, date, wording record or history and cannot answer a regulator, while consumer-law disclosure, DSA trader verification and tax reporting depend on it. Store a record with the declaration (what, when, in which flow and wording), evidence, the verification result (method, date, re-check date) and the platform's own assessment, with history; run a reclassification process in which trust-and-safety signals open a case, the seller confirms or explains, and the outcome changes status, display and obligations and is recorded."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a feed vendor that logs in with its dealers' passwords, the reader explains why that fails and designs the replacement.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A dealer-software vendor uploads stock for 500 dealers by logging in with each dealer's own username and password. Using only this chapter: what is wrong with that, and what should replace it?",
+        "expected": "The vendor cannot be told apart from the dealer, throttled or revoked one dealer at a time, every password reset breaks the feed, and OAuth security practice (RFC 9700) says the password grant must not be used. Model the vendor as an integration principal: one client (client credentials or a certificate) with grants per seller account, branch and scope, which the dealer can consent to and the platform can revoke individually."
+      },
+      {
+        "id": "AC-6",
+        "statement": "Given a multi-brand group that wants one view of its business customers, the reader chooses what to share and states the purpose limits.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A group runs several marketplace brands and one software product for agents, and wants to know which businesses are customers of more than one brand. Using only this chapter: what should it share across brands, what should it not share, and what limits apply?",
+        "expected": "Share the login (group identity) and verified legal-entity facts in a registry, and keep brand seller accounts separate. The registry holds public-register and verification facts only, no packages, prices, leads or listing counts; brand accounts link to registry entries, not to each other; the cross-brand question is a privileged report for group finance and approved analyses, not an API for sales tools; every cross-brand use is logged and reviewed; the software product reaches the marketplaces only as an integration principal."
+      }
+    ],
+    "audience": {
+      "who": "Chief and principal architects, identity and account-platform leads, and product leads for professional sellers in listing marketplaces, plus technology leaders integrating acquired brands.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline).",
+        "Authentication, OAuth 2.0 and its grant types, and data modeling.",
+        "Part I's vocabulary: bounded contexts, supporting and core domains, C2C and B2C models, verticals.",
+        "Part II so far: the listing aggregate that references subdomains by ID, governed reference data, the media pipeline and the location model with its precision policy.",
+        "Veldmark, its brands (Tradeyard, Motorvane, Hearthly, Keybridge), cast and programs (Veldmark ID, Safe Deal, Common Ground), and the fifteen failure-pattern names."
+      ],
+      "does_not_know": [
+        "Trader in the EU-law sense and the DSA's trader traceability duties.",
+        "DAC7, the Platform-to-Business Regulation, the INFORM Consumers Act and the consumer-law trader declaration.",
+        "KYB (know-your-business checks) and DMS (dealer management system).",
+        "Integration principal, branch, network and storefront as account-model terms.",
+        "ARPA and the commercial units portals report (branch, forecourt, paying dealer)."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How should a marketplace model the people and organizations that supply listings?",
+    "claim": "A seller account model must answer four questions with separate entities: who acts (users with memberships and roles), who is responsible (the legal entity, which is the trader), who pays (contracts and billing accounts) and who is shown (storefronts and branches). Trader status is a governed attribute with declaration, evidence, verification and history; organizations, not staff, own listings; integrations are principals with grants per account and branch; and a group shares login and verified legal-entity facts in a registry while keeping brand accounts separate.",
+    "disputed_by": "The common model of one user or advertiser record that is at once login, legal identity, billing party, public profile and listing owner, extended with a pro flag, parent pointers for branches and shared credentials for feed vendors; and, at group level, the alternative of one group account across all brands.",
+    "so_what": "A group that accepts this standardizes the supply-side model and its events before entitlements and messaging copy their own, launches a business party registry with purpose limits and logged cross-brand queries (approved at Veldmark in August 2027), moves feed partners from shared passwords to scoped grants, and tracks the share of professional listings with a verified trader record (target 100%) and orphaned listings.",
+    "how_why": "Hearthly's single advertiser entity put the parent company on five franchisees' trader panels, showed one franchisee's reviews on every branch, left 212 listings and their leads with an agent who had left, and invoiced franchise subscriptions to a parent that refused to pay them. Trader status decides which consumer law applies, what the Digital Services Act requires the platform to verify and what is reported to tax authorities, so a checkbox cannot carry it.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Who acts, who is responsible, who pays and who is shown are four questions answered by separate entities (users with memberships, the legal entity that is the trader, contracts and billing accounts, storefronts and branches), and one record that answers all four puts the wrong trader on listings, reviews on the wrong business, listings with departed staff and invoices on the wrong company."
+      },
+      {
+        "id": "S2",
+        "claim": "Trader status is a governed attribute with a declaration, evidence, a verification result and the platform's own assessment, kept with its history, enforced by the account's lifecycle (a verification gate, reclassification of private sellers who trade, suspension that propagates, and deletion of trader data on its own retention clock), because consumer law, the Digital Services Act, platform-to-business rules and tax reporting each depend on it."
+      },
+      {
+        "id": "S3",
+        "claim": "Organizations, not staff, own listings: the seller account owns each listing and assigns it to a branch, users act through memberships with roles, and lead routing and ratings attach to branches and accounts, so staff turnover and franchising do not move them."
+      },
+      {
+        "id": "S4",
+        "claim": "Integrations are principals with grants per seller account, branch and scope, never shared seller credentials, so each vendor can be identified, throttled, measured and revoked one seller at a time."
+      },
+      {
+        "id": "S6",
+        "claim": "A multi-brand group shares the login and verified legal-entity facts in a registry with purpose limits and logged cross-brand queries, and keeps brand accounts separate."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Models the last referenced subdomain, who lists, and performs the part's closing: the listing's references are complete and hand supply its first dependency.",
+    "supports": [
+      "P2-6"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "concepts, model, trade-offs and verticals: each section uses the terms or the model the previous one established"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "in-practice: the model is tested against public interfaces and three Veldmark cases"
+      }
+    ],
+    "rationale": "The scene states the problem as four complaints with one cause. The concepts then define every term the answer needs (trader, trader status, organization, branch, network, storefront, seller account, business party registry, contract and billing account, user, membership, integration principal), and leave the company evidence to the in-practice section, and the model section assembles them into one entity per question, shows the scene's network modeled correctly and adds the account's lifecycle, routing and ratings. The in-practice section tests the model against public portal interfaces and three Veldmark cases, the last of which (the Polish overlap) raises the group question the next section settles. The trade-offs follow the model directly because they weigh its own choices, and the vertical differences follow them because they show where each choice weighs most; placed after the group section (round 2) both flow readers found the verticals a detour between the Polish overlap's group question and the failure modes. Failure modes, the Chief Architect's decisions and review questions are judgements about a model the reader has already seen. Putting the model before the concepts would use undefined terms; putting the group section before the Polish overlap would answer a question nobody has asked; putting the trade-offs before the model would compare options for a model not yet described, and after the group section they re-open settled choices."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "\"Seller\" means a person with a phone number on a general classifieds site, an agency branch owned by one franchisee in a national network and fed by a software vendor on a real-estate portal, and a dealer group with several sites, a DMS vendor, a head office and salespeople on an automotive marketplace."
+    },
+    "bridge": {
+      "from_reader_world": "The reader's own user table, extended one exception at a time with a company name column, a parent-user ID for branches, a pro flag, a VAT number field and a shared login for the DMS vendor.",
+      "to_topic": "The account model is where marketplaces most often confuse identity with commerce, so the question is what model keeps them separate and still collapses to one person selling one bike."
+    },
+    "thesis_statement": {
+      "text": "Who acts, who is responsible, who pays and who is shown are four separate questions, each answered by its own entity; trader status is a governed attribute, not a checkbox; organizations own listings, integrations are principals, and groups share identity, not accounts.",
+      "placement": "KEY POINTS callout (all three bullets) and paragraph p02 (the account model confuses identity with commerce; this chapter keeps them separate)."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03.",
+      "promises": [
+        {
+          "promise": "Agence Rhône Habitat's problems on Hearthly.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The vocabulary of supply.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The seller account model with its lifecycle, lead routing and ratings.",
+          "kept_in": [
+            "model"
+          ]
+        },
+        {
+          "promise": "The alternatives the model rejects and how the model differs by vertical.",
+          "kept_in": [
+            "trade-offs",
+            "verticals"
+          ]
+        },
+        {
+          "promise": "Tests on public company documents and on Femke, Autohaus Ruhrblick and the Polish dealers on two brands.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "What a multi-brand group shares.",
+          "kept_in": [
+            "group"
+          ]
+        },
+        {
+          "promise": "Failure modes, the Chief Architect's decisions and review questions.",
+          "kept_in": [
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The listing's last referenced subdomain is the seller account, and \"seller\" means something different in every vertical.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A person with a phone number on general classifieds; an agency branch, owned by a franchisee in a national network and fed by a software vendor, on a real-estate portal; a dealer group with several sites, a DMS (dealer management system) vendor, a head office and salespeople on an automotive marketplace.",
+            "shows": "One word covers entities with different legal, commercial and operational shapes, which is why one record cannot model it."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Most marketplaces extend the first meaning one exception at a time, and the account model becomes the place where identity and commerce are most often confused; this chapter keeps them separate while still collapsing to one person selling one bike, and later chapters build on it.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A user table with a company name column, a parent-user ID for branches, a pro flag, a VAT number field and a shared login for the DMS vendor; entitlements, leads and partner feeds that later attach to accounts, branches and integration principals.",
+            "shows": "Shows the usual drift and why the model's shape is load-bearing for later chapters."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The many meanings of seller.",
+          "introduces": "What marketplaces do with them, and the chapter's claim.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter works through the model with fictional Veldmark in a stated order: Agence Rhône Habitat's problems, the vocabulary, the model, the alternatives it rejects and how they differ by vertical, its tests on documented patterns and three cases, what a group shares, and the closing judgements.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's claim.",
+          "introduces": "How the chapter will establish it, and the fictional sellers it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Fourteen Branches, Three Wrong Answers",
+      "controlling_idea": "Agence Rhône Habitat's complaints to Hearthly trace to one entity that was login, legal identity, billing party, public profile and listing owner at once, and Veldmark's other brands have the same shape.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Gives the four failures one conflated entity produces, which the model later fixes one by one."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item.",
+        "introduces": "Agence Rhône Habitat in May 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The network, the three complaints, the fourth problem Hearthly finds, the single cause, then the same cause in every brand and why it must be settled now. The cause before the complaints would be abstract; the brand survey before the cause would list symptoms with nothing to tie them."
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "Agence Rhône Habitat is a network of 14 branches, nine run by the parent company and five franchisees that are separate companies, publishing to Hearthly through Keybridge.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "May 2027; the Lyon 7e flat; 14 branches, 9 operated by the parent, 5 franchisees; Keybridge publishes to Hearthly and two competing portals.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "Sets up a network whose legal, commercial and display structures differ."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "The network's head of digital writes to Hearthly's CEO about three problems: the wrong trader on franchise listings, reviews in the wrong place and a departed agent who still owns 212 listings.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Franchise listings show the parent's name, registration and address; one franchisee's reviews appear on the network profile and every branch page; an agent who left the Villeurbanne branch in February still owns 212 listings and receives their leads at a personal e-mail address used for her 2023 login.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "Each complaint is a fact assigned to the wrong entity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The network and its May 2027 listing.",
+            "introduces": "The letter sent the same week.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Hearthly finds a fourth problem itself: the franchisees' subscriptions are invoiced to the parent, which refuses to pay them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Five franchisees' subscriptions invoiced to the parent company.",
+              "shows": "The billing party is also conflated with the legal hierarchy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Three problems in the letter.",
+            "introduces": "A fourth that Hearthly finds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Hearthly's CTO traces all four problems to one design decision: the advertiser entity is at once login, legal identity, billing party, public profile and listing owner.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Julien Marchand; branches as advertisers with a parent pointer; users as e-mail addresses attached to an advertiser; feeds authenticating as the advertiser; a model built for single-office agencies.",
+              "shows": "One entity answering several questions is the shared cause."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: one strained figure holding a login key, legal document, invoice, profile card and listings, beside five figures holding one each.",
+              "shows": "Separating the roles fixes the four problems."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Four problems.",
+            "introduces": "Their single cause.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Veldmark's Group Chief Architect sees the same shape in every brand, and the account model must be settled before Veldmark ID and the group product catalog, which both depend on it.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard user accounts with a business flag; Motorvane dealer accounts keyed by customer number with sites as sub-accounts and DMS vendors using dealers' credentials; Keybridge's separate tenant model; Veldmark ID due for approval in June 2027; a group product catalog due in 2028.",
+              "source": "scenario-ledger",
+              "shows": "The problem is group-wide and has a deadline."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Hearthly's advertiser entity.",
+            "introduces": "The same shape in the other brands, and the deadline.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: The Vocabulary of Supply",
+      "controlling_idea": "The model needs precise terms for private and professional sellers, trader status, organizations, branches, networks, storefronts, seller accounts, contracts and billing accounts, users, memberships and integration principals, several of which carry legal weight.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Defines the entities and the trader rules the model assembles."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "One entity doing five jobs at Hearthly and the same shape in every brand.",
+        "introduces": "The terms a model that separates those jobs needs, starting with the seller distinction that law depends on.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Private versus professional first, because the trader rules hang on it; then the law that makes the distinction weighty and the trader status record it requires; then the organizational levels that hold traders, the seller account through which an organization or a person sells on a brand (with the group registry that keeps the organization's facts once), and the contract and billing account that say who pays; then users, who act inside them; then integration principals, which act for them. Every entity the model's table uses is defined here, so the table assembles known terms. Company evidence is kept for the in-practice section, where it tests the assembled model. Users before organizations would give memberships nothing to belong to; integrations before users would make the contrast between a person and a client meaningless."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A private seller sells their own goods outside any business and a professional seller sells in the course of one, a distinction that matters commercially and even more legally.",
+          "function": "definition"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "In EU law the professional is a trader, and the Digital Services Act's trader traceability requires platforms to collect, assess, display, keep and delete specific trader data.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "DSA Art. 30: name, address, telephone number and e-mail, an identification document, payment account details, register number, self-certification; 'best efforts' to assess reliability; retention for six months after the relationship ends; display to buyers; applying since 17 February 2024.",
+              "source": "Regulation (EU) 2022/2065, Art. 30",
+              "shows": "Trader status triggers concrete data duties."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The distinction matters legally.",
+            "introduces": "The EU term and the DSA's duties.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Whatever the debate about whether a classifieds site is in scope, the chapter's concern is what the trader obligations do to the data model, across five regimes.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Regulation table: DSA Art. 30, EU consumer law (Modernisation Directive, 28 May 2022), Platform-to-Business Regulation, DAC7 (30 sales / €2,000 exclusion), US INFORM Consumers Act (FTC, 2023), each with what depends on trader status and the data the account must hold.",
+              "source": "EUR-Lex; European Commission; Belastingdienst; FTC",
+              "shows": "Each regime reads the same trader facts for a different purpose."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The DSA's duties.",
+            "introduces": "The scope question, handed to marketplace-regulation, and the other regimes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "One verified trader record serves many laws, and launching in-platform payments brings seller tax reporting with it.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Safe Deal as the change that brings DAC7 reporting.",
+              "shows": "The obligations grow with the business model."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five regimes in the table.",
+            "introduces": "What they add up to for the record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "Trader status is the platform's record of whether a seller acts as a trader, with four parts: declaration, evidence, verification result and platform assessment.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "One verified record.",
+            "introduces": "What that record holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Marketplaces most often lack the platform assessment, so the account model needs a reclassification process for private sellers who behave like traders, whose signals belong to trust and safety and whose outcome belongs to the account.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A private seller who lists 400 phone cases a year in original packaging; signals such as volume, new goods, repeated listings and high Safe Deal turnover open a case.",
+              "shows": "Declarations alone miss traders, so a process is needed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The fourth part, platform assessment.",
+            "introduces": "Why it is usually missing and the process that fills it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "form": "list",
+          "controlling_idea": "An organization is the legal entity that sells and is the trader, and industry practice adds branches, networks and storefronts, with a franchise network not being a legal parent of its franchisees.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Trader status.",
+            "introduces": "The organizational levels that hold traders.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15a",
+          "controlling_idea": "On each brand a private or professional seller sells through a seller account, which links to the person or to the organization that is the trader; because one organization can hold accounts on several brands, a group can keep its verified legal facts once in a business party registry.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The organization, which is the trader.",
+            "introduces": "The brand-level seller account through which it sells, and the group registry of its legal facts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15b",
+          "controlling_idea": "Who pays is a separate fact: a commercial contract and a billing account, which need not belong to the organization that is the trader, because a head office may pay for some branches and a franchisee for its own.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Who sells (the seller account) and who is responsible (the organization).",
+            "introduces": "Who pays.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A user is a person who logs in and is not a seller; a user acts through memberships that carry roles scoped to an organization or its branches.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The organizations, their seller accounts and contracts.",
+            "introduces": "The people who act inside them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "Separating users from organizations gives two rules: the seller account owns listings and assigns them to branches, and one user can belong to several organizations.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Villeurbanne agent's 212 listings stay with the branch when her membership ends.",
+              "shows": "Ownership by the account fixes the scene's third problem."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Users with memberships.",
+            "introduces": "The rules that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "An integration principal is a software client that acts on behalf of sellers and is neither a user nor a seller.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "People who act for an organization.",
+            "introduces": "Software that acts for it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "OAuth security practice draws the same line between software and seller, so a vendor serving 500 dealers is one client with 500 grants, not 500 shared passwords.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "RFC 9700 (January 2025): exact-match redirect URIs, PKCE for all clients, no implicit grant, the password grant 'MUST NOT be used', sender-constrained, audience-restricted tokens.",
+              "source": "IETF RFC 9700, 2025",
+              "shows": "The standard rules out shared seller credentials."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: a vendor with a tangled ring of dealers' keys beside one client badge with scoped tickets.",
+              "shows": "One client with scoped grants replaces shared passwords."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The integration principal as neither user nor seller.",
+            "introduces": "The same separation in OAuth practice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "model",
+      "heading": "Architecture: The Seller Account Model",
+      "controlling_idea": "Eight entities each answer one question and live in one place, the model collapses in simple cases and untangles Agence Rhône Habitat, and the account adds a lifecycle, branch-level contact routing and deliberate rating attachment.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Assembles the defined terms into the model and applies it to the scene."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The defined terms.",
+        "introduces": "How they fit together in one model.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole model first (eight entities and where they live), then the simple and complex cases, then the account's lifecycle, then the two attachments (contact routing and ratings) that depend on branches and accounts existing. Lifecycle before the entity table would describe states of an entity not yet placed; ratings before the Rhône case would lack the pooled-reviews problem that motivates them."
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "Each of eight entities answers one question and lives in one place.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: eight entities, each answering one question.",
+              "shows": "Users act, legal entities are responsible, contracts pay and storefronts are shown, with accounts, branches, networks and integrations as connectors."
+            },
+            {
+              "kind": "table",
+              "what": "Entity table: user, legal entity, seller account, branch, commercial contract and billing account, storefront, network, integration principal, each with the question it answers, key attributes and owning service.",
+              "shows": "Every question has exactly one home."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "In simple cases the model collapses to a few records, so it costs nothing there and is essential in complex cases.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke: one user with one private seller account; a single-office agency: one legal entity, account, branch, contract and storefront.",
+              "shows": "The model does not burden private sellers."
+            },
+            {
+              "kind": "table",
+              "what": "Agence Rhône Habitat before and after: one advertiser and 13 child advertisers become six legal entities, six seller accounts, 14 branches (9 + 5), one network, six contracts; trader information from the owning legal entity; reviews at branch level; users with memberships; Keybridge as an integration principal with grants for the 14 branches.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "The complex case is untangled row by row."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Eight entities.",
+            "introduces": "How few of them a simple case needs, and the complex case in full.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Modeled correctly, Agence Rhône Habitat is six traders grouped by a network for display, because a franchise network is a display and commercial concept and the trader rules follow the legal hierarchy; any franchise network has the same shape.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one brand umbrella over six legal entities, the parent with nine branches and five franchisees with one each.",
+              "shows": "The network groups traders for display without becoming their parent."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The before-and-after table.",
+            "introduces": "The principle it rests on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "A seller account runs through nine named states from registration to erasure, a lifecycle that differs for private and professional accounts mainly in the onboarding gate.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: the seller account lifecycle with a verification gate, reclassification into it and retention clocks after closing.",
+              "shows": "The account has states of its own, separate from listings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The entities and how they map onto a network.",
+            "introduces": "What happens to an account over time.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "Three lifecycle transitions need explicit design: reclassification, suspension that propagates, and closure followed by several retention clocks.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Reclassification moves Active to UnderReview to Onboarding with a volume limit; suspension removes listings from search, stops grants and bumps and handles leads, with a statement of reasons; DSA trader data six months, invoices under accounting rules, hashed fraud identifiers with justification.",
+              "shows": "Each transition touches other contexts or laws."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The lifecycle diagram.",
+            "introduces": "The transitions that need design.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Contact options and lead routing belong to the branch and the seller account, not to the listing or the uploader.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A dealer's lead for a car on its Bochum site goes to the Bochum sales queue.",
+              "shows": "Routing follows the branch."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The account's states.",
+            "introduces": "What the account configures for buyers' contact.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "For private sellers, contact preferences are also safety controls.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Routing for professionals.",
+            "introduces": "What contact settings do for private sellers.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Where ratings attach is a modeling decision with legal weight, and the branch with a labeled network aggregate is the safe default because every other choice breaks in some case.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ratings table: user, seller account, branch, individual agent, each with where it works and where it breaks.",
+              "shows": "Pooling across separate traders and ratings following departed staff are both avoidable choices."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Contact settings on the account.",
+            "introduces": "The other thing buyers see attached to it: ratings.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "EU consumer law requires saying how reviews are checked, so a marketplace should record with each rating what made the reviewer eligible.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "UCPD Art. 7(6), inserted by Directive (EU) 2019/2161: businesses giving access to consumer reviews must say whether and how they check reviewers used or bought the product.",
+              "source": "Directive (EU) 2019/2161",
+              "shows": "Eligibility evidence belongs in the rating record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Where ratings attach.",
+            "introduces": "What the law requires each rating to carry.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The model rests on three choices (how to model private sellers, who owns a listing, how integrations authenticate), and each rejected alternative fails a case already met: a private seller who must later be reclassified, the Villeurbanne agent's departure, or a vendor holding dealers' passwords.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Compares the alternatives the thesis rejects with the ones it recommends."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The model just assembled.",
+        "introduces": "The alternatives behind three of its choices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "One lead-in, then the three choices in the order the model introduced them: the seller (private or professional), the listing's owner, then the software that writes for it. Integrations first would compare authentication before the reader is reminded who owns what. The section sits straight after the model because it weighs the model's own choices; placed after the group section (round 1), both flow readers found it re-opened decisions already settled."
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "Three choices behind the model had alternatives.",
+          "function": "transition"
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Of three ways to model private sellers, a seller account linked to either a user or a legal entity is best, because it keeps private data minimal, makes reclassification explicit and attaches trader rules to legal entities.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Private-seller options: user with a seller flag, degenerate organization of one, seller account linked to a user or a legal entity, with how each works, strengths and weaknesses.",
+              "shows": "Only the third has a clean privacy boundary and a relink for reclassification."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Three choices.",
+            "introduces": "The first: modeling private sellers.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Of three listing owners, only the seller account with branch assignment survives staff turnover and multi-site routing.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ownership options: the creating user, the seller account, the seller account assigned to a branch, with where each works and breaks.",
+              "shows": "Ownership by a user orphans listings when staff leave."
+            },
+            {
+              "kind": "scenario",
+              "what": "The Villeurbanne agent's 212 listings.",
+              "shows": "The scene's third problem is the case the table settles."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Private-seller modeling.",
+            "introduces": "The second choice: who owns a listing.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Of four ways to authenticate integrations, only certificates with branch authorization and OAuth grants per account and branch can withdraw one vendor's access to one dealer, so shared seller credentials should go first.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Integration authentication options: shared seller credentials, static API key per vendor, mutual TLS certificate per vendor with branch authorization (as Rightmove's feed uses), OAuth clients with grants per seller account, branch and scope.",
+              "shows": "Per-dealer revocation needs per-dealer grants."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Listing ownership.",
+            "introduces": "The third choice: integration authentication.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The model holds in every vertical, but its weight shifts: real estate has the deepest hierarchy and rated agents, automotive depends most on integration principals, and general classifieds has the hardest trader boundary.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4"
+        ],
+        "how": "Shows which part of the model carries the most weight per vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The three choices, which hold in every vertical.",
+        "introduces": "How the model's weight differs by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "The model holds in every vertical, but real estate has the deepest hierarchy and visible agents, automotive depends most on integration principals, and general classifieds has the hardest trader boundary to police.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vertical table: typical supply (78% of new Tradeyard listings private), commercial unit, hierarchy depth, who acts, integration principals (about 160 vendors for Hearthly; 88% of Motorvane dealer listings via DMS feeds), individual professional identity, trader questions, for general classifieds, real estate, automotive and jobs.",
+              "source": "scenario-ledger; meet-veldmark",
+              "shows": "Each vertical stresses a different part of the same model."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Documented Patterns and Three Veldmark Accounts",
+      "controlling_idea": "Public portal interfaces and investor reports support the model's levels, commercial units and integration principals, and Femke, Autohaus Ruhrblick and the Polish dealer overlap show the model at work and raise the group question.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "Tests the model against documented interfaces and three cases with ledger figures."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The model, its choices and their weight per vertical.",
+        "introduces": "Public evidence and three Veldmark accounts that test it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Documented patterns first, all public-company evidence in one place and labeled as inference, so the model is anchored in public interfaces before the fictional cases; then the simplest case (Femke) and the reclassification population that resembles her, the dealer case, and finally the cross-brand overlap, which ends on the registry question the next section answers. The overlap earlier would interrupt the single-account cases with a group question."
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "The public record on seller models is thin, but mobile.de, Rightmove, investor reports, CarGurus and the Bundeskartellamt document separated sellers and accounts with integration principals, branch tenancy, the commercial unit as a modeling choice, accounts with contracts, and dealer data portability.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "mobile.de Seller API (n.d.): seller ID and customer number, multi-locations; Transfer Service Providers, with providers serving more than ten customers supplying contacts, software, VAT ID and customer numbers; every ad names the dealer's customer number; API credentials independent of sellers, seeing only linked sellers.",
+              "source": "mobile.de",
+              "shows": "Integration principals with scoped access are documented."
+            },
+            {
+              "kind": "source",
+              "what": "Rightmove RTDF v1.4.1 (2023): Network ID per software provider, Branch ID per office, sales and lettings channels; calls 'rejected if sending a channel to which the branch does not have access'; mutual TLS; branch-scoped leads; pre-advertising customer checks and redress-scheme membership (Rightmove guide, n.d.).",
+              "source": "Rightmove",
+              "shows": "Branch tenancy and KYB-like controls exist in practice."
+            },
+            {
+              "kind": "statistic",
+              "what": "Rightmove: ARPA per advertiser, 16,385 agency branches at end 2025 (2026 results). Autotrader UK: 13,942 retailer forecourts on average in FY26, £2,995 average revenue per retailer per month.",
+              "source": "Rightmove results 2026; Autotrader FY26 results 2026",
+              "shows": "Branch and forecourt are the units public companies count and price."
+            },
+            {
+              "kind": "statistic",
+              "what": "CarGurus 10-K (2026): a paying dealer is a dealer account with an active paid subscription; 34,409 at end 2025.",
+              "source": "CarGurus Form 10-K, 2026",
+              "shows": "The commercial unit is an account with a contract."
+            },
+            {
+              "kind": "source",
+              "what": "Bundeskartellamt clearance of mobile.de's acquisition of Carwow's German business, 8 October 2026: dealers multi-home and export data.",
+              "source": "Bundeskartellamt, 2026",
+              "shows": "Integration principals are how a marketplace accepts portable dealer data."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "form": "list",
+          "controlling_idea": "Under the target model Femke is a user with one private seller account whose self-declared status, Safe Deal sales below the DAC7 thresholds and coarse public profile are all recorded.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2027 account; private, self-declared, with date and wording; 'Private seller' shown; the €225 city bike through Safe Deal; four 2027 Safe Deal sales for €610; profile shows first name, district, member-since date and transaction-verified ratings.",
+              "source": "scenario-ledger",
+              "shows": "The model stays minimal for a private seller while still meeting disclosure and tax rules."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The public patterns.",
+            "introduces": "The first Veldmark account, a private seller.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "About 18,000 Tradeyard Netherlands accounts declared as private published more than 100 listings each, so reclassification fixes a legal exposure and creates sales prospects.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 18,000 accounts in 2026 with more than 100 listings each; Aisha Rahman's sample review found most were resellers (illustrative Veldmark figure).",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "Declared status diverges from behavior at scale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Femke, a genuine private seller.",
+            "introduces": "Accounts that only look like hers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Autohaus Ruhrblick is one legal entity with two branches, one contract and a DMS vendor that acts as an integration principal with scoped grants.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Autohaus Ruhrblick GmbH, verified in 2019 and re-verified every 90 days in the target model; one Motorvane Germany account; Essen and Bochum branches with their own routing; Pro 150 (150 slots, €1,450 a month) covering both; the DMS vendor (serving about 1,900 Motorvane dealers) with listings-write and statistics-read grants and no lead access.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "Each fact lands on its own entity for a professional seller."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A private seller.",
+            "introduces": "A dealer.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "When Ruhrblick lists the Essen Golf, ownership, assignment, provenance, lead routing and the trader panel each come from the right entity, and the model lets Motorvane measure feed latency per vendor.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 2021 Volkswagen Golf listed on Wednesday 14 April 2027; 23 raw leads in ten days (19 after deduplication) to the Essen queues; trader panel per DSA Art. 30(7); removal 26 hours after the 29 April sale.",
+              "source": "scenario-ledger; consistency-issues item 11",
+              "shows": "The model routes a real listing's facts correctly and makes feed problems attributable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Ruhrblick's model.",
+            "introduces": "One listing moving through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "In Poland, matching the two brands' professional accounts on the tax number finds about 2,900 dealers active on both, about 40% paying both.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard Poland's cars section and Motorvane Poland compete for dealers; no shared identifiers; a one-off NIP match finds about 2,900 dealers on both, about 40% on paid packages with both (illustrative Veldmark figure).",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "The group cannot see its own customers without shared legal-entity facts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Accounts within one brand.",
+            "introduces": "The same dealers across two brands.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The overlap is a strategic fact that justifies a registry both brands can read, and it also warns what the registry must not be used for.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The 2,900 overlap.",
+            "introduces": "What it implies for a group registry and its limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "group",
+      "heading": "Group-Wide Identity Versus Per-Brand Accounts",
+      "controlling_idea": "A multi-brand group should share the login and verified legal-entity facts and keep brand accounts separate, with purpose limits on the links that make neutrality commitments checkable.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Settles the group-level choice the thesis takes a position on."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The warning at the end of the Polish overlap.",
+        "introduces": "The options a group has and the one Veldmark chooses.",
+        "form": "sentence",
+        "placement": "both"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Options first, then the choice and the case that tests it (Keybridge), then the rules that answer the case, then who owns the remaining legal sides. Rules before the Keybridge case would read as arbitrary."
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "A multi-brand group has three realistic options for who-lists data, each right for a different kind of group.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Options table: separate accounts per brand, shared identity and party registry with brand accounts, one group account across brands, with what is shared, strengths, weaknesses and when each is right.",
+              "shows": "The middle option fits a group sharing platforms beneath separate brands."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Veldmark chooses the middle option, and its Keybridge neutrality commitment shows why the purpose of the registry's links must be limited.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2027 commitment that no Keybridge agency data is used by Hearthly for ranking or sales targeting, with access controls and an annual independent review; Agence Rhône Habitat is both a Keybridge customer and a Hearthly advertiser.",
+              "source": "scenario-ledger",
+              "shows": "A shared registry will link the two accounts, so its use must be bounded."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: the registry gives every brand the same verified trader record; Keybridge reaches Hearthly only as an integration principal.",
+              "shows": "Identity and legal facts cross brands; commercial data does not."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three options.",
+            "introduces": "Veldmark's choice and the case that tests it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Veldmark's decision record sets four rules: the registry holds only register and verification facts, brand accounts link to it and not to each other, Keybridge shares only verification facts, and every cross-brand use is logged and reviewed.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Group business party registry rules; cross-brand queries as privileged reports for group finance and approved analyses such as the Poland overlap.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "The rules answer the Keybridge question."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "What the registry link may be used for.",
+            "introduces": "The rules that answer it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Data protection and competition law each have an owner, and the architecture's job is to make the commitment checkable.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lucía Ortega's team owns data protection; Veldmark ID links private users' profiles across brands only when they use more than one brand; competition is for counsel.",
+              "shows": "The architecture carries the controls; others own the legal judgement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four rules.",
+            "introduces": "Who owns the data-protection and competition sides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Nine recurring mistakes each undo part of the model, from listings owned by users to pooled reputation.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Names the failure that each claim of the model prevents."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The model as it should work, up to group level.",
+        "introduces": "The ways it is commonly undone.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "form": "list",
+          "controlling_idea": "Nine mistakes recur, each undoing part of the model: user-owned listings, the trader checkbox, legal and display hierarchies conflated, billing and legal hierarchies conflated, shared integration credentials, suspension that does not propagate, one retention clock, cross-brand merging by e-mail and pooled reputation.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Villeurbanne agent; franchisees under the network's legal identity; Ghost Inventory with an enforcement problem; the DSA's six-month deletion rule; the Keybridge commitment.",
+              "shows": "Each failure maps back to a case or rule the chapter has shown."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The seller account is a supporting domain that almost every core domain depends on, so a group standardizes it early through four decisions, watches five measures and knows when the model is too much.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the model into group decisions with owners, dates and measures."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them at group scale.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Why standardize early, then the decision that defines the model, then the registry that depends on it, then the ownership split for trader status, then integrations, then the measures that watch all four and the condition under which the model is not worth it. Measures before decisions would watch nothing yet decided."
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "The seller account is a supporting domain that almost every core domain depends on, so a group should standardize it before other services copy their own versions.",
+          "function": "claim"
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Decision 1 makes one supply-side model with one group contract for identifiers and events across all brands, which the 2028 product catalog and entitlement service builds on.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Events SellerAccountCreated, TraderStatusChanged, BranchAdded, MembershipEnded, AccountSuspended; catalog and entitlement service due Q2 2028.",
+              "source": "scenario-ledger",
+              "shows": "Without one model, entitlements would rest on four meanings of customer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Standardize early.",
+            "introduces": "The first decision: what to standardize.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Decision 2 creates a group business party registry, approved in August 2027 and live with Veldmark ID in 2028, that serves every brand's trader and tax duties under the purpose rules.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Approved at the architecture advice forum in August 2027; owned by the identity platform team; serves DSA traceability, consumer-law declarations, P2B and DAC7; scheduled re-verification.",
+              "source": "scenario-ledger (sellers-and-accounts line)",
+              "shows": "The registry is a dated, owned decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The shared model.",
+            "introduces": "The shared registry of legal facts.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Decision 3 splits trader status between the account service, which owns the status and history, and trust and safety, which owns signals and cases, under jointly owned policy.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Aisha Rahman and the account platform's product lead own the policy; Lucía Ortega's team signs off on what buyers see.",
+              "shows": "Shared ownership has named owners."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The registry.",
+            "introduces": "Who owns trader status.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Decision 4 moves every brand's feed and API partners to grants per seller account and branch, starting with Motorvane's DMS vendors in 2028, which also makes feed quality measurable per vendor.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Trader status ownership.",
+            "introduces": "Integrations.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Five measures show whether the model holds, from the share of professional listings with a verified trader record to the volume of cross-brand registry queries.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Verified trader share (target 100%); reclassification cases opened and resolved; orphaned listings; integration principals on shared credentials; cross-brand registry queries.",
+              "shows": "Each measure watches one decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four decisions.",
+            "introduces": "What to watch.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "A single-brand, C2C-only marketplace without payments can live without the full model until the first dealer asks for a second login.",
+          "function": "counterargument",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The full model and its measures.",
+            "introduces": "The condition under which it is too much.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions test a design against the model in a review.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns each claim into a question a review can ask."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions a reader can take into a design review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "form": "list",
+          "controlling_idea": "Ten questions take the model into a design review, from naming each listing's user, trader, contract and branch to finding services that keep their own account hierarchy.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From the Listing to Its Supply",
+    "synthesis": "The four problems in Agence Rhône Habitat's letter had one cause, a record answering four questions, and separate entities put each on its owner. With the seller account modeled, every reference the listing holds has an owner, a version and a contract: the aggregate and its events, the canonical tree and its releases, the attribute dictionary, the media asset model, the location value object and the supply-side account model.",
+    "so_what": "Veldmark's 2027 decisions (Veldmark Place in May, Listing event contract v1 on 1 July, the business party registry in August, the taxonomy and attribute service in October, the group media decision in November) give every later stage a contract to read instead of a table to copy.",
+    "callback": {
+      "to": "The chapter's scene (Agence Rhône Habitat's letter and Hearthly's fourth problem) and the part opening's test: be able to say who owns each part of a listing, how it is versioned and which systems copy it.",
+      "how": "Each complaint now lands on a named entity, and the part's test can be answered for every reference the listing holds, the seller account last."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "For each part of your listing, name its owner, its version and the systems that copy it; Part III then puts the model under load through forms, APIs and feeds, starting with the integration principals this chapter defined."
+    },
+    "hand_off": {
+      "to": "part-3",
+      "relationship": "contrast",
+      "carries_over": "Part II's listing model, designed as if listings arrived clean and one at a time, and the integration principals the seller account model defined.",
+      "introduces": "Supply that arrives through forms, partner APIs and bulk feeds from systems the marketplace does not control, and the chain that turns it into searchable listings."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the scene to the review questions.",
+      "introduces": "The answer to the scene's letter and what the chapter completes for Part II.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p57",
+        "controlling_idea": "Each problem in Agence Rhône Habitat's letter now lands on its own entity, which one advertiser record could not do because it answered four questions at once.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p58",
+        "controlling_idea": "With the seller account modeled, every reference the listing holds has an owner, a version and a contract, which is the test Part II set for each part of a reader's own listing.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The seller account answered.",
+          "introduces": "Part II's references, all owned and versioned, and the part's test.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "controlling_idea": "At Veldmark, five 2027 decisions across Part II put those contracts in place, so every later stage reads a contract instead of copying a table.",
+        "function": "cause_effect",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Veldmark Place (May), Listing event contract v1 (1 July), the business party registry (August), the taxonomy and attribute service (October), the group media decision (November).",
+            "source": "scenario-ledger",
+            "shows": "The part's design became dated, owned decisions."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The contracts in general.",
+          "introduces": "The Veldmark decisions that established them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p60",
+        "controlling_idea": "Part II designed the model as if listings arrived clean and one at a time, whereas Part III puts it under load from forms, partner APIs and bulk feeds the marketplace does not control and follows the chain that turns that supply into searchable listings, starting with the integration principals defined here.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Part II's model, designed as if listings arrived clean and one at a time.",
+          "introduces": "Supply from systems the marketplace does not control, and the chain that turns it into searchable listings.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Authentication methods, verification levels, KYB vendors and verified badges.",
+      "covered_in": [
+        "identity-and-verification"
+      ]
+    },
+    {
+      "topic": "The legal analysis of the DSA, DAC7 and consumer law.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "Packages, pricing, entitlements and billing.",
+      "covered_in": [
+        "products-and-entitlements"
+      ]
+    },
+    {
+      "topic": "Lead objects, conversations and routing mechanics.",
+      "covered_in": [
+        "messaging-and-leads"
+      ]
+    },
+    {
+      "topic": "Pro tooling and CRM features.",
+      "covered_in": [
+        "professional-seller-tooling"
+      ]
+    },
+    {
+      "topic": "Feed contracts and ingestion mechanics.",
+      "covered_in": [
+        "listing-ingestion"
+      ]
+    },
+    {
+      "topic": "Reclassification signals and moderation cases.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The CJEU's criteria for when an online seller is a trader (Kamenova, C-105/17, 2018) would strengthen the reclassification section; the judgment could not be fetched and is not cited. (Carried over from spec.md.)",
+    "Whether the DSA allows an exception to displaying a home-based sole trader's address (as INFORM does) remains open; see marketplace-regulation. (Carried over from spec.md.)",
+    "National licensing of estate agents (for example France's professional card) is mentioned only generically; verify per country if the chapter is extended. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Framed the model around four questions (acts, responsible, pays, shown) rather than an entity list, because each Veldmark failure in the scene maps to one conflated question."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended 'seller account linked to a user or a legal entity' over 'degenerate organization of one', to keep private sellers' data minimal and make reclassification explicit."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Keybridge neutrality commitment as the test case for group identity, so the chapter argues for shared identity and verified facts with purpose limits, not a single group account."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Labeled the seller account model as a reference architecture inferred from public interfaces (mobile.de, Rightmove), not a description of any company's schema."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the entity-naming and franchise criteria are covered by the journal spec's AC-1; the trader-status criterion is rewritten as reader outcome AC-4, the integration criterion as AC-5 and the group-identity criterion as AC-6, all added here at severity minor; the regulation-mapping criterion (an inventory of laws) and the worked-examples, tables and diagrams criterion (an inventory of contents) are dropped, their substance being tested by AC-1 and AC-4. Word limit: spec.md set none, so length.max_words is the published prose length (6,619 words by check_draft's count) plus 5%.",
+      "rejected": [
+        "Keeping the inventory criteria as human-checked items.",
+        "A separate criterion for the regulation table (kept inside AC-4)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rewrote the closing section to perform Part II's closing (the journal spec noted that the published two-sentence closing did not): p57 answers the scene's letter, p58 states the part synthesis and the part's test, p59 gives Veldmark's 2027 decisions as the so-what, and p60 hands off to Part III with the contrast its part-level transition declares. Round 1 escalated on one spec fault: both flow readers found Trade-offs unclear after the group section, re-opening choices the model had settled. Round 2 escalated on one spec fault: both flow readers found Vertical Differences unclear between the group section and the failure modes; moved it to follow Trade-offs. Note for the author: the journal spec's AC-2 expected answer still lists trade-offs and vertical differences after the group section; this order departs from it and the journal spec was not edited. Moved Trade-offs to follow the model (the brief allows changing the spec's order on a spec fault); transitions of trade-offs, in-practice and verticals rewritten. Added a lead-in (p43) and explanations after the ownership and integration tables (p45, p46) in the trade-offs section, because the section opened on an unintroduced table and two tables had no explaining prose; p03 now carries the roadmap; p01 opens from the location chapter's per-agency precision setting, as the journal spec's transition declares."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: restored the published 'the same identity gives her a separate Motorvane profile if she ever sells a car' (the pass's 'the same login works on Motorvane' dropped the brand-profile design that Part V's identity chapter relies on); max_words raised by the 7 words the restoration adds."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the round-3 escalation under the author's delegation ('auto resolve all ESCALATE topics'). (1) Added p15a under a new 'Seller accounts and contracts' subheading in the concepts section: the seller account is the brand-level record through which a person or an organization sells, linked to the organization that is the trader, with the group business party registry introduced there; p13 now says 'whether a seller acts as a trader', so 'seller account' is first used in its definition. (2) Added p15b defining the commercial contract and billing account; the entity table's registry row no longer points forward. (3) Moved the company evidence out of the concepts section into the in-practice list (p32), removing p16 (Rightmove feed levels), p17 (commercial unit in investor reporting) and p21 (mobile.de transfer service providers) as concepts units; their published text is restored in full in p32's mobile.de, Rightmove and new investor-reports bullets, and the 'described above' back-references are gone. p22's and p18's transitions rewritten for their new predecessors. Word limit raised under the brief's rule 2 from 6,957 to 7,150 (+2.8%, within the 10% allowed) for the two definition paragraphs, the restored sentence and the hand-off clause; the draft is 7,133 words. Restored the published sentence 'The table is Veldmark's illustration, but any franchise network has the same shape.' after p25 (rule 7). Part III's journal-spec entry is now full; the hand-off (p60) was re-checked against Part III's transition_in (contrast) and now also names the chain that turns supply into searchable listings. AC-2's expected answer in journal-spec.json still lists trade-offs and vertical differences after the group section; a replacement was handed to the orchestrator, the journal spec is not edited here. Earlier flow-rubric notes not taken (fold verticals into trade-offs, align the scene's five roles with four questions, 'each of the four problems' in p57, merge p11's scope hedge into p10, the fixed order of the closing sections) are kept as decided: they keep the published text and the book's fixed chapter shape. The restored 'separate Motorvane profile' sentence stays.",
+      "rejected": [
+        "Moving the concepts section's company evidence only partly (keeping Rightmove's feed in concepts), which would leave the split both round-3 flow readers reported.",
+        "Defining the seller account inside p09, which would give p09 two controlling ideas."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, the Part II closing and Part III's transition_in."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, location-and-geo, identity-and-verification, products-and-entitlements, marketplace-regulation, listing-ingestion",
+      "contributed": "Neighbouring ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md, _research/consistency-issues.md, _research/brief-listing-data-ingestion.md Part 12, _research/brief-trust-safety-regulation.md 4.1, 5.1, 5.4-5.6, 5.8, 5.10, _research/brief-real-estate-portals.md B.2, _research/brief-monetization-economics.md 4 and 6.5, _research/brief-automotive.md A.3, _research/productscape-digest.md 2.1-2.2 and 5.4.4",
+      "contributed": "Veldmark facts, rulings (Pro 150; 23 raw and 19 deduplicated leads) and research summaries."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2022/2065 (Digital Services Act), Art. 30 (2022)",
+      "contributed": "Trader traceability."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive (EU) 2019/2161 (2019); European Commission, Consumer Rights Directive page (n.d.)",
+      "contributed": "Trader declaration and review-verification information."
+    },
+    {
+      "kind": "external",
+      "ref": "Belastingdienst, DAC7 guidance (n.d.); FTC, INFORM Consumers Act guidance (2023)",
+      "contributed": "Tax reporting and US comparison."
+    },
+    {
+      "kind": "external",
+      "ref": "mobile.de Seller API (n.d.); Rightmove RTDF v1.4.1 (2023), customer-checks guide (n.d.) and 2025 results (2026); Autotrader FY26 results (2026); CarGurus Form 10-K (2026); Bundeskartellamt (2026)",
+      "contributed": "Documented seller, branch, integration and commercial-unit patterns."
+    },
+    {
+      "kind": "external",
+      "ref": "IETF RFC 9700 (2025)",
+      "contributed": "OAuth security practice."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored the Motorvane-profile sentence. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 3 draft check (escalate; three corroborated spec faults remain, see open_questions); cheap draft fixes applied afterwards without a further round, so the round-3 check report is stale for those edits: p25, p32, p46, p48 (Ghost Inventory link), the entity table's registry row; the questions lead-in and 'the running example' cut for length; prose at 6,950 of 6,950 words."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 draft check (escalate; spec fault: Vertical Differences position, both readers): moved Vertical Differences to follow Trade-offs; transitions of verticals, in-practice and failure-modes and the roadmap rewritten; p26 now names the nine lifecycle states; p34 opener, p39 'seller data', p03 names public company documents; p13 'platform's check'; 'DAC7 thresholds' in p33."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 draft check (escalate; the one spec fault was the Trade-offs position): moved Trade-offs to follow the model, rewrote its, In Practice's and Vertical Differences' transitions and the roadmap; p30 names the default; draft revised at p01, p04, p09, p17, p27, p30, p33, p36, p47 (paragraph before its table), p49 and the P2B abbreviation; the Rhône before-table branch count corrected (14 advertisers = parent + 13 children); duplicate mobile.de and Rightmove detail trimmed in p32; one generalization cut from p25 for length."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline); thesis rubric (fail on supporting claims): the lifecycle claim folded into S2 and the standardization clause cut from S6; conclusion rewritten to carry Part II's closing; trade-off lead-in and two table explanations added; roadmap in p03; spec.md removed."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); Figure 5 kept attempt 3 with known label differences. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Renamed the subheading 'Four questions and the entities that answer them' to 'One entity per question'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: Figure 3 caption counts the eight entities. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,764 to 5,788 prose words; lead ties the chapter to Part II; commercial-unit paragraph split out; seven topic sentences sharpened. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Renamed 'party model' to 'seller account model'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: DSA Art. 30, CRD Art. 6a and UCPD Art. 7(6) checked against the Official Journal; Bundeskartellamt finding restated as reported; Ruhrblick KYB aligned with identity-and-verification, package named (Pro 150), Golf leads labeled raw vs deduplicated; hand-off to part-3. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved: seller account, registry, contract and billing account defined in concepts (p15a, p15b); company evidence moved to p32; p25's cut sentence restored; hand-off re-checked against Part III; max_words raised."
+    }
+  ],
+  "length": {
+    "max_words": 7150
+  }
+}

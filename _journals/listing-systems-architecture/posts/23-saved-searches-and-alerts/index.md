@@ -35,6 +35,8 @@ At Veldmark, the fictional marketplace group this book follows (see [[meet-veldm
 
 This chapter owns three terms. A **saved search** is a persisted, normalized search query with an owner, a notification policy and a lifecycle. **Percolation** (also called reverse search or prospective search) is matching a document against stored queries rather than a query against stored documents. **Alert fan-out** is the process of turning matches into notifications across channels, with deduplication, throttling and delivery. It builds on [[search-architecture]] for the engine, on [[event-driven-listings]] for the event stream, on [[publication-pipeline]] for what "searchable" means and when, and on [[map-search]] for drawn and commute areas. [[ranking]] and [[recommendations]] use its engagement signals, and its risk gate is where the trust and safety work of [[part-5]] begins.
 
+The chapter starts with Femke's bike and Tradeyard's cron job. It then defines saved searches, match sets and watchers, compares percolation with batch re-querying, proposes a saved-search store with rebuildable percolators, follows matches through fan-out and channels, and sizes Veldmark's matcher. Four sections treat alerts as a liquidity lever, a fraud amplifier behind a risk gate, user data that outlives taxonomy changes, and messages under consent rules. Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions follow; the last section closes Part IV.
+
 ## Setting the Scene at Veldmark: 312 Saved Searches and a Ten-Minute Cron
 
 On **Sunday 7 March 2027 at 19:42 CET**, Femke, a private seller in Rotterdam, lists a used city bike for **€240** on Tradeyard Netherlands. It becomes searchable at **19:48**, six minutes later, the Tradeyard baseline. It matches **312** saved searches. The first contact arrives at **19:55**, from a buyer who received an alert. Femke has **14** conversations within 24 hours, and on Monday 8 March she sells the bike for **€225** through Safe Deal. Tradeyard marks it sold at **18:10** and search removes it at **18:11**.
@@ -44,9 +46,9 @@ On Tuesday morning at **07:00**, **214** alert digest e-mails still feature the 
 When Ingrid Halvorsen, Veldmark's Group Chief Architect, asks how Tradeyard's alerts actually work, Daan Visser, who owns Yardstick, describes two jobs:
 
 - **Instant alerts** run as a Yardstick cron job every **10 minutes**. The job selects listings published since its last run, about 2,300 per run on a Sunday evening in the Netherlands, and matches them against saved searches stored in MySQL, using an index on category and province to pick candidates and PHP code to test the remaining filters. Matches go to a push queue. Femke's bike was picked up by the 19:50 run, and the 312 pushes were sent between 19:51 and 19:53. That was luck: a listing that becomes searchable at 19:51 waits until 20:00.
-- **Digests** are e-mails assembled once a day, in the afternoon, by re-running each saved search that has digest delivery against Solr, filtered to listings published in the past 24 hours. The results are stored and sent the next morning in send-time windows.
+- **Digests**, scheduled messages that collect a saved search's matches since the last digest, are e-mails assembled once a day, in the afternoon, by re-running each saved search that has digest delivery against Solr, filtered to listings published in the past 24 hours. The results are stored and sent the next morning in send-time windows.
 
-Veldmark's 2027 baseline numbers:
+Veldmark's 2027 baseline numbers show the bike is typical: alerts run late, digests go stale and many saved searches go unread:
 
 | Metric | Value |
 | --- | --- |
@@ -158,7 +160,7 @@ The responsibilities:
 - **Percolator indices.** Projections of the saved-search store on the search platform, partitioned for candidate selection. They can be rebuilt from the store at any time, which is what makes engine upgrades, mapping changes and the move from Solr and Elasticsearch to the shared OpenSearch platform possible. A saved search that exists only in a percolator index is **Search as System of Record** in miniature.
 - **Alert matcher.** Consumes alert-relevant listing events (`ListingPublished`, `PriceChanged`, `ListingResumed`, and relevant `ListingUpdated` events that change category, place or matched attributes). It computes the listing's pre-filter keys, percolates, applies the entry rule using the event's previous values, and emits match events keyed by user ID.
 - **Retraction handler.** Consumes `ListingSold`, `ListingRemoved`, `ListingReserved`, `ListingExpired` and `ListingPaused`, and cancels pending notifications and digest items for that listing.
-- **Risk gate.** Listings above a risk threshold from trust and safety are not alertable until cleared ([[trust-and-safety-architecture]]). The gate is described below.
+- **Risk gate.** Listings above a risk threshold from trust and safety are not alertable until cleared ([[trust-and-safety-architecture]]). The risk-gate section describes it.
 - **Notification orchestrator.** Groups match events per user, applies deduplication against the match ledger, frequency caps, quiet hours, channel preferences and consent, assembles instant notifications and digests, and performs the **send-time availability check** against the listing read model.
 - **Channel workers.** Push (through Apple Push Notification service and Firebase Cloud Messaging), e-mail (through an e-mail service provider or the group's own mail transfer agents), and the in-app inbox. They handle provider quotas, retries and delivery receipts.
 - **Engagement events.** Deliveries, opens, clicks, contacts, bounces, complaints and unsubscribes, fed back to saved-search hygiene (dormancy, pausing) and to the data platform for ranking and recommendations ([[data-platform]]).
@@ -172,7 +174,7 @@ Figure 5 replays Femke's listing on the Common Ground design.
 ![Diagram: On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates](assets/images/23-saved-searches-and-alerts/fig05-target-design-bike-s-312-matches.jpeg)
 **Figure 5:** *On the target design the bike's 312 matches become 289 instant pushes within seconds, 14 matches are deferred to digests by frequency caps, and 9 are suppressed as duplicates. The sale on Monday retracts the bike from pending digests, and the send-time check would catch it even if the retraction were missed.*
 
-The match ledger and the caps decide what each of the 312 matches becomes. Nine belong to users with two overlapping saved searches (city bikes near Rotterdam, and all bikes under €300 in South Holland), and the ledger sends one notification per user per listing. Fourteen users had already received their cap of instant alerts for the evening and get the bike in the next digest. The remaining 289 pushes leave within seconds. The numbers in the figure are illustrative.
+The match ledger and the caps decide what each of the 312 matches becomes. Nine belong to users with two overlapping saved searches (city bikes near Rotterdam, and all bikes under €300 in South Holland), and the ledger sends one notification per user per listing. Fourteen users had already received their cap of instant alerts (a frequency cap, for example five instant alerts an hour) for the evening and get the bike in the next digest. The remaining 289 pushes leave within seconds. The numbers in the figure are illustrative.
 
 ## Fan-out: Hot Listings, Quotas and Bursts
 
@@ -186,9 +188,11 @@ Three layers of limits shape the design.
 
 At Veldmark's 14 million alert e-mails a day, mail infrastructure is a system with its own engineering, whether it is bought or run. For comparison, leboncoin's engineering blog described in June 2026 moving about **12 million** transactional e-mails a day, the same range, from 20 Postfix servers to PowerMTA on AWS ([leboncoin tech blog, 2026-06-03](https://medium.com/leboncoin-tech-blog/how-we-migrated-12-million-transactional-emails-per-day-from-postfix-to-powermta-104f227eb1fc)).
 
-The order of a large fan-out is a fairness decision. When 40,000 people are alerted to the same flat, the order in which they are notified decides who gets the viewing. Sending in saved-search creation order privileges old accounts; sending in database order is arbitrary. My recommendation is a randomized order within each fan-out, completed within the latency target, and a policy decision, written down, on whether any paid product may change it. A paid "early alert" product is technically trivial and commercially tempting; it is also a ranking decision in disguise, with the same transparency questions [[ranking]] raises for paid placement.
+Beyond capacity, the order of a large fan-out is a fairness decision. When 40,000 people are alerted to the same flat, the order in which they are notified decides who gets the viewing. Sending in saved-search creation order privileges old accounts; sending in database order is arbitrary. My recommendation as the author (every "I" in this book is mine, not Ingrid's) is a randomized order within each fan-out, completed within the latency target, and a policy decision, written down, on whether any paid product may change it. A paid "early alert" product is technically trivial and commercially tempting; it is also a ranking decision in disguise, with the same transparency questions [[ranking]] raises for paid placement.
 
 ## Channels, Digests and Relevance
+
+Once fan-out has decided who is notified and when, each match still needs a channel, and each channel suits a different urgency:
 
 | Channel | Strengths | Weaknesses | Best for |
 | --- | --- | --- | --- |
@@ -197,13 +201,23 @@ The order of a large fan-out is a fairness decision. When 40,000 people are aler
 | **In-app inbox** | No permission needed; no deliverability risk; the record of all alerts | Seen only when the user opens the app | Overflow from caps; history; a fallback when push is disabled |
 | **SMS, messaging apps** | Very high open rates | Cost per message; consent rules; a channel scammers imitate | Rarely justified for alerts; sometimes for tenants in tight rental markets |
 
-A **digest** is a scheduled message that collects matches since the last digest. Digests trade speed for attention: they suit users who want to browse matches once a day, and they absorb the overflow of frequency caps. Their two requirements follow from the bike: **retraction** of items that left the match set, and the **send-time availability check**, which re-reads each item's state from the listing read model when the digest is rendered for sending. The second is the safety net for the first; together they bring the 4% stale-item rate to near zero.
+**Digests** trade speed for attention: they suit users who want to browse matches once a day, and they absorb the overflow of frequency caps. Their two requirements follow from the bike: **retraction** of items that left the match set, and the **send-time availability check**, which re-reads each item's state from the listing read model when the digest is rendered for sending. The second is the safety net for the first; together they bring the 4% stale-item rate to near zero.
 
 **Alert relevance** is not binary. A listing that matches the filters of a saved search can still be a poor alert: an overpriced item, a listing from a seller with a poor response rate, a near-duplicate of something already sent. Ordering the items within a digest by match quality, and suppressing instant alerts for clear duplicates (the same item reposted, or the same property from a second agency, see [[entity-resolution]]), are where alerts meet [[ranking]]. The simplest useful rule: within a digest, use the same ranking as the site, minus paid boosts, plus a penalty for items the user has already seen.
 
+## Worked Example: Sizing the Matcher for Veldmark
+
+**Event rate.** To size this design, start with Veldmark's volumes: its brands produce about 2.75 million new listings a week (Tradeyard 2.3 million, Motorvane 210,000, Hearthly 240,000), an average of about 4.5 per second. With price changes, resumptions and matched-attribute edits, the alert-relevant event rate is, say, three times that, about 14 per second on average. Sunday evenings and dealer feed runs push peaks to perhaps 60–80 events per second. These are modest rates. **Matching is not expensive because of events; it is expensive because of candidates per event.**
+
+**Candidates.** With brand-country-category partitions and place pre-filters, a typical Tradeyard listing meets tens of thousands of candidate saved searches, as the bike did (58,000). At 80 events per second and 50,000 candidates each, the percolator evaluates up to 4 million stored queries per second at peak, which is a cluster to size and test, not a footnote. Reducing candidates is the cheapest lever: pausing the dormant 38% of the baseline removes about a third; finer place pre-filters remove more.
+
+**Fan-out.** 38 million notifications a day average about 440 per second, with Sunday-evening peaks perhaps five times higher and individual hot listings producing bursts of tens of thousands. Queues between the orchestrator and channel workers absorb the bursts; the latency target applies to the queue's drain time.
+
+**Ownership of cost.** Matching runs on the shared search platform, so its capacity is in Tomasz Wiśniewski's budget, but its demand comes from brand product decisions: a new "alert me for any listing in my city" feature can double candidates per event. Ingrid's rule is that **any change that widens saved-search semantics goes through the same capacity review as a new search feature**.
+
 ## Alerts as a Liquidity Lever
 
-Alerts are a lever on liquidity in the sense of [[liquidity-and-network-effects]]: they shorten the time from supply appearing to demand responding. The productscape model behind this book records the buyer's view plainly: "Alert speed is the differentiator: for in-demand local goods the first buyer to message usually wins, so minutes matter", and lists among the pains "alerts after the item is sold" and "batching or delayed indexing means the alert arrives hours late". Saving a search "converts a fleeting query into a standing demand signal".
+The cost buys speed. Alerts are a lever on liquidity in the sense of [[liquidity-and-network-effects]]: they shorten the time from supply appearing to demand responding. The productscape model behind this book records the buyer's view plainly: "Alert speed is the differentiator: for in-demand local goods the first buyer to message usually wins, so minutes matter", and lists among the pains "alerts after the item is sold" and "batching or delayed indexing means the alert arrives hours late". Saving a search "converts a fleeting query into a standing demand signal".
 
 The lever works on both sides of the market. In Femke's case, the first contact arrived seven minutes after the listing was searchable, from an alert. On the seller side, fast first contacts are what make private sellers list again.
 
@@ -224,7 +238,7 @@ The metrics that measure the lever, in the order I would put them on the search 
 
 An alert system is an amplifier. It takes a new listing and puts it in front of the most motivated buyers within minutes, which is exactly what a scammer wants.
 
-In **July 2027**, **26** accounts post **180** fake rental listings in Barcelona's Eixample district on Hearthly Spain, using photos stolen from real listings, priced about **35%** below market and asking for deposits by bank transfer outside the platform. They are detected through perceptual-hash matches against existing listings and price anomalies, but **63** people report losses totaling about **€71,000** before the takedown. Hearthly's alert logs show that the 180 listings produced about **41,000** alert notifications, most of them pushes to renters with saved searches in Eixample (figures from Hearthly's own logs; Veldmark is fictional). In a tight rental market, the renters most likely to pay a deposit quickly are exactly those with alerts.
+In **July 2027**, **26** accounts post **180** fake rental listings in Barcelona's Eixample district on Hearthly Spain, using photos stolen from real listings, priced about **35%** below market and asking for deposits by bank transfer outside the platform. They are detected through perceptual-hash matches against existing listings and price anomalies, but **63** people report losses totaling about **€71,000** before the takedown. Hearthly's alert logs show that the 180 listings produced about **41,000** alert notifications, most of them pushes to renters with saved searches in Eixample (the case and all its figures are part of the fictional Veldmark scenario). In a tight rental market, the renters most likely to pay a deposit quickly are exactly those with alerts.
 
 The design consequence is a **risk gate in front of the matcher**, owned by trust and safety ([[trust-and-safety-architecture]], [[fraud-prevention]]):
 
@@ -240,7 +254,7 @@ Every minute of hold costs honest sellers the speed advantage this chapter is ab
 
 ## Saved Searches Outlive the Taxonomy
 
-Saved searches outlive the reference data they are written against: a category tree, an attribute dictionary, a gazetteer and sometimes drawn shapes and commute parameters, all of which change. The listing-data brief puts the rule simply: saved searches are user data; migrate them, don't drop them.
+Saved searches outlive the reference data they are written against: a category tree, an attribute dictionary, a gazetteer and sometimes drawn shapes and commute parameters, all of which change. The rule is simple: saved searches are user data; migrate them, don't drop them.
 
 Veldmark's test is the **bikes split** that goes live on **Monday 1 November 2027**, when Tradeyard's bike listings move from 19 country leaves into the canonical bike leaves of the new group taxonomy (city, e-bikes, cargo, kids' and others; see [[categories-and-taxonomies]]). About **1.3 million** saved searches across Tradeyard's four countries reference the old leaves and must be rewritten. The migration plan:
 
@@ -261,18 +275,6 @@ Alerts sit on a legal boundary that differs by country, so this section states p
 - **Push permission is the user's.** The app asks for notification permission when the user saves a search, the moment the value is obvious, not at first launch.
 - **Retention.** Saved searches are personal data. Veldmark pauses saved searches with no opened alert for 12 months, tells the user, and deletes them six months later if they are not reactivated; deletion requests remove saved searches, ledger entries and percolator entries together. For Tradeyard, the dormancy rule alone pauses about 38% of saved searches, which also removes about a third of the percolation candidates.
 - **Location and inference.** A saved search for a drawn area around a specific street can reveal where someone lives or wants to live; a saved search for accessible housing can reveal health information. Saved searches should not feed advertising segments without consent that covers it, and any special-category inference is off limits for ad targeting ([[advertising-platforms]]).
-
-## Worked Example: Sizing the Matcher for Veldmark
-
-**Event rate.** With the volumes in the scenario ledger, Veldmark's brands produce about 2.75 million new listings a week (Tradeyard 2.3 million, Motorvane 210,000, Hearthly 240,000), an average of about 4.5 per second. With price changes, resumptions and matched-attribute edits, the alert-relevant event rate is, say, three times that, about 14 per second on average. Sunday evenings and dealer feed runs push peaks to perhaps 60–80 events per second. These are modest rates. **Matching is not expensive because of events; it is expensive because of candidates per event.**
-
-**Candidates.** With brand-country-category partitions and place pre-filters, a typical Tradeyard listing meets tens of thousands of candidate saved searches, as the bike did (58,000). At 80 events per second and 50,000 candidates each, the percolator evaluates up to 4 million stored queries per second at peak, which is a cluster to size and test, not a footnote. Reducing candidates is the cheapest lever: dormancy pausing removes about a third; finer place pre-filters remove more.
-
-**Fan-out.** 38 million notifications a day average about 440 per second, with Sunday-evening peaks perhaps five times higher and individual hot listings producing bursts of tens of thousands. Queues between the orchestrator and channel workers absorb the bursts; the latency target applies to the queue's drain time.
-
-**Ownership of cost.** Matching runs on the shared search platform, so its capacity is in Tomasz Wiśniewski's budget, but its demand comes from brand product decisions: a new "alert me for any listing in my city" feature can double candidates per event. Ingrid's rule is that **any change that widens saved-search semantics goes through the same capacity review as a new search feature**.
-
-**Transition.** The Yardstick cron job keeps sending until Tradeyard's search moves out of Yardstick in the fourth quarter of 2028 ([[modernization-and-migration]]). In between, Tradeyard runs both: from Q4 2027 the new matcher consumes the listing event stream (live since 1 July 2027) in comparison mode, sending nothing while its match sets are compared with the cron job's; it takes over sending market by market as each Tradeyard country moves to the shared search platform (Portugal first, in Q2 2028), and the cron job stops sending when Belgium and the Netherlands move. Motorvane keeps its alerts on Elasticsearch percolators, consistent with its engine staying until the 2029 review; it adopts the saved-search service and the orchestrator so that notification policy and consent are group-wide.
 
 ## Trade-offs
 
@@ -300,7 +302,7 @@ The underlying tension is speed against safety and attention. Every protective m
 | Fraud pressure on alerts | Medium (electronics, bikes) | **High for rentals** | Medium (underpriced cars) | Medium (fake job offers) |
 | Taxonomy change impact | High: large, evolving trees | Low: stable property types, but place boundaries change | Medium: model and trim catalogs change yearly | Medium: job taxonomies change |
 
-For real estate, alerts should be per **canonical property**: when three agencies list the Lyon apartment in May 2027, a buyer with a saved search over Lyon 7e should get one alert for the flat, with the three offers attached, not three alerts. For automotive, the feed lag documented in the Golf example matters: when the car sold on 29 April, the dealer's feed reported the removal 26 hours later, so retractions arrive late through no fault of the alert system, and watchers can receive alerts on a car that is already gone. The send-time check cannot see a sale the system of record does not know about; [[listing-ingestion]] owns the feed contract that closes that gap.
+Beyond the table, two verticals show that alert quality depends on systems outside the alert platform. For real estate, alerts should be per **canonical property**: when three agencies list the Lyon apartment in May 2027, a buyer with a saved search over Lyon 7e should get one alert for the flat, with the three offers attached, not three alerts. For automotive, feed lag matters: when the Golf sold on 29 April, the dealer's feed reported the removal 26 hours later, so retractions arrive late through no fault of the alert system, and watchers can receive alerts on a car that is already gone. The send-time check cannot see a sale the system of record does not know about; [[listing-ingestion]] owns the feed contract that closes that gap.
 
 ## Failure Modes
 
@@ -329,6 +331,8 @@ The decisions I would bring to the architecture advice forum:
 6. **Taxonomy and gazetteer changes include saved-search migration in their definition of done.** No category split goes live without a migration plan and a parallel-run comparison.
 7. **Paid influence on alerts is a product decision with transparency obligations.** Sponsored items in digests or paid early alerts are decided by Noor Hassan and Olivier Petit together with the regulatory lead, not by an engineering default.
 
+**Transition.** Getting there: the Yardstick cron job keeps sending until Tradeyard's search moves out of Yardstick in the fourth quarter of 2028 ([[modernization-and-migration]]). In between, Tradeyard runs both: from Q4 2027 the new matcher consumes the listing event stream (live since 1 July 2027) in comparison mode, sending nothing while its match sets are compared with the cron job's; it takes over sending market by market as each Tradeyard country moves to the shared search platform (Portugal first, in Q2 2028), and the cron job stops sending when Belgium and the Netherlands move. Motorvane keeps its alerts on Elasticsearch percolators, consistent with its engine staying until the 2029 review; it adopts the saved-search service and the orchestrator so that notification policy and consent are group-wide.
+
 What to watch over the longer term: **natural-language saved searches**. A 2023 trade-press report says Zillow's natural-language searches can be saved for alerts ([The Title Report, 2023](https://www.thetitlereport.com/articles/87414.aspx)); Zillow has not published how. A large language model (LLM) that turns "a quiet two-bedroom near a good school, under €400,000" into filters, as [[query-understanding]] recommends, must produce the same normalized form, or the saved search will mean one thing on the day it was saved and something else when the model is upgraded. Pinning the compiled query at save time, and re-compiling only with the user's confirmation, keeps alerts stable across model versions.
 
 ## Questions to Ask
@@ -346,7 +350,11 @@ What to watch over the longer term: **natural-language saved searches**. A 2023 
 
 ## From Discovery to Trust
 
-Alerts bring buyers back to listings that are fresh and real. Whether those listings *are* real is the work of the next part of the book, [[part-5]], which begins with how a marketplace organizes trust and safety as a system rather than a queue ([[trust-and-safety-architecture]]).
+This chapter's answer is a store of normalized queries, rebuildable percolators, entry-only alerts re-checked at send time and a ledger that survives migrations, judged by latency, contacts and ghost alerts, not sends. Alerts, the last surface of Part IV, use every surface before them: the normalized form of the search contract and the geo query compiler, percolators on the shared search platform, the status read model that recommendations also read, and contacts, the measure [[ranking]] introduced. Together, the six chapters make discovery one pipeline that answers the part's three questions once. Is this listing still available? The listing stream and status read model say so on every surface. Who decided its position? A versioned policy with named owners, for results or a fan-out. Did it lead to a contact? Contacts, not clicks or sends, judge every change.
+
+That pipeline now puts a new listing in front of its most motivated buyers within minutes. Femke's first buyer wrote seven minutes after her bike became searchable, and the same speed carried 180 fake Eixample rentals to renters in about 41,000 alerts. Speed is worth as much to a fraudster as to an honest seller, so the speed Part IV builds is safe only behind a risk gate and decisions that every surface obeys.
+
+Alerts bring buyers back to listings that should be fresh and real. Whether those listings *are* real, and whether contact between the strangers they connect is safe, is therefore the work of the next part of the book, [[part-5]], which begins with how a marketplace organizes trust and safety as a system rather than a queue ([[trust-and-safety-architecture]]): one platform whose decisions publication, search, alerts and messaging must all obey.
 
 ## Sources and Evidence
 

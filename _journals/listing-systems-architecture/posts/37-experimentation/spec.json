@@ -1,0 +1,1682 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "experimentation",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "Testing a Two-Sided Market: Experimentation Platforms",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, thesis and role are copied unchanged from the experimentation entry in journal-spec.json; the hand-off uses ml-platform's transition_in. Units added by this conversion: roadmap p04, one lead-in each for Trade-offs (p47) and Vertical Differences (p48), and a synthesis paragraph p54 before the published hand-off.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The four contracts of an experimentation platform: assignment, exposure logging, governed metrics and one analysis engine (SRM checks, CUPED, sequential testing, cluster-aware inference).",
+        "Interference in two-sided markets and the designs that address it: listing-side, two-sided, cluster, switchback and geo randomization, with their loss of power.",
+        "Metric choice (liquidity first, revenue second), marketplace guardrails, experiments on ranking and prices, governance by risk and long-term holdouts."
+      ],
+      "believe": [
+        "A buyer- or seller-randomized test in a marketplace can measure a transfer between groups rather than an effect.",
+        "Pricing and ranking experiments are monetization and regulatory decisions that need an owner, pre-registered metrics and review."
+      ],
+      "can_do": [
+        "Choose the randomization unit for a change from the mechanism it works through.",
+        "Set the guardrails that protect the side of the market not being tested.",
+        "Decide which parts of experimentation the group centralizes first."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a test result that reverses at rollout, the reader explains the cause and designs the retest.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A marketplace lowers the price of a paid 'bump' that moves a listing back to the top of newest-first results. A test randomized by seller account shows +48% bumps and +18% bump revenue for the cheaper price, with no loss of contacts per bumped listing. Eight weeks after rollout to everyone, bump revenue is down 2.5% and contacts per bumped listing are down 31%. Using only this chapter: what went wrong, and how should the retest be designed and governed?",
+        "expected": "Interference: treated and control sellers competed for the same first-page time, so the test measured a transfer (control sellers' contacts per bump fell during the test) that vanished at rollout. The retest randomizes clusters (region × category group) rather than sellers, uses governed primary metrics with a control-trend guardrail and a congestion guardrail for paid visibility, is pre-registered and reviewed by monetization and regulatory owners, and accepts wider intervals as the price of the right sign."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Experiments in a market where buyers and sellers affect each other; the platform as four contracts; the randomization unit as a design decision; guardrails for the side not tested. Then the bump test that ate itself, concepts, interference, designs for two-sided markets, metrics, ranking and price experiments, the four contracts, Veldmark's experimentation standard, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: published marketplace experimentation research (Johari and others, Holtz, Kohavi), classifieds and marketplace engineering sources (Adevinta, OLX, eBay, Zalando), EU law, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ],
+    "audience": {
+      "who": "Chief architects, heads of data and experimentation, search and monetization leads, and product directors in listing marketplaces.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; what an A/B test is in general.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane and Hearthly, the cast (Ingrid Halvorsen, Priya Raman, Olivier Petit, Lucía Ortega), the architecture advice forum, Valuo; contacts and liquidity (liquidity-and-network-effects, messaging-and-leads); ranking, paid-organic blending, the ranking guardrails and the September 2027 cluster experiment (ranking); paid visibility products such as top listings and bumps (monetization-models, products-and-entitlements); the qualified contact, governed metrics, the experiment_exposure event and provisional versus final metric values (data-platform); the failure patterns Vanity Liquidity and Multiplier Creep."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: interference, cluster randomization, guardrail metric.",
+        "Experiment-statistics vocabulary: SUTVA, randomization and analysis unit, primary metric (overall evaluation criterion), exposure, sample ratio mismatch, CUPED and variance reduction, sequential or always-valid inference, two-sided randomization, switchback and carryover, synthetic control, interleaving, surrogate models.",
+        "The Veldmark bump-price test, Experimentation standard v1 and the Tradeyard Belgium retest."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do you run trustworthy experiments when buyers and sellers affect each other?",
+    "claim": "Because treated and control units in a two-sided market compete for the same buyers' attention and the same scarce listings, an experimentation platform should be built as four agreeing contracts (assignment, exposure log, governed metrics and one analysis engine), and each test should choose its randomization unit (buyer, seller, listing, cluster or time slot) by the mechanism the change works through, accepting the loss of statistical power that larger units bring; every test should be guarded on the side not tested by a control-trend guardrail, a congestion guardrail for paid visibility and a ranking guardrail set, and any test that changes visibility, prices, fees or trust thresholds should be pre-registered and reviewed before it starts.",
+    "disputed_by": "The common practice of randomizing users or seller accounts for every test, judging price and ranking changes by the treated group's revenue or purchases, and leaving experiment tooling to each team, so the test with the largest sample is trusted most.",
+    "so_what": "A Chief Architect who accepts this funds one analysis engine and one exposure log tied to the governed metrics before standardizing flag tools; makes the randomization unit a platform capability with published cluster maps; classifies experiments by risk and requires pre-registration and review for visibility, price, fee and trust-threshold changes; mandates the marketplace guardrails and a long-term holdout; and watches the gap between experiment estimates and post-rollout effects for every major launch.",
+    "how_why": "Tradeyard NL's February 2027 bump test, randomized by seller account, showed a €1.99 price lifting bump revenue 18% (a forecast of about €6.8 million a year); after rollout revenue fell about 2.5%, roughly €950,000 a year below the old price, and contacts per bumped listing fell 31%. Control sellers' contacts per bump had fallen 9% during the test: a transfer, not an effect. The retest under Experimentation standard v1 (30 June 2027) randomized 96 region × category-group clusters in Tradeyard Belgium and estimated −3.3% (interval −6.2% to −0.4%), close to what rollout showed; the price was withdrawn on 6 December 2027.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "In a two-sided market treated and control units compete for the same buyers' attention or the same scarce listings, so a buyer- or seller-randomized test can measure a transfer between groups rather than an effect, and the bias can reverse the sign."
+      },
+      {
+        "id": "S2",
+        "claim": "An experimentation platform is four contracts (assignment, exposure log, governed metrics, one analysis engine) that must agree on unit, time and definitions, and a group should centralize the analysis engine and the metric definitions before flag tools and interfaces."
+      },
+      {
+        "id": "S3",
+        "claim": "The randomization unit (buyer, seller or listing, two-sided, cluster, time slot, geography) is chosen by the mechanism a change works through and which side is scarce, accepting the loss of statistical power that larger units bring."
+      },
+      {
+        "id": "S4",
+        "claim": "Liquidity metrics come first and revenue second, observed on both sides, and every test is guarded on the side not tested by a control-trend guardrail, a congestion guardrail for paid visibility and the ranking guardrail set, with long-term holdouts for cumulative effects."
+      },
+      {
+        "id": "S5",
+        "claim": "Experiments that change visibility, prices, fees or trust thresholds are monetization and regulatory decisions, so they are pre-registered with an owner, primary metric and guardrails and reviewed before they start."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the platform a way to establish causation in a two-sided market, on the governed metrics and exposure log the data platform defines.",
+    "supports": [
+      "P7-5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "concepts before interference, designs and architecture, which use its terms; the requirements before the platform that supports them"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The bump test states the problem the chapter solves. Concepts give the terms every later section uses. Interference explains the mechanism behind the bump test, and the designs answer it directly after. Metrics and guardrails then say what to measure once the unit is fixed, and ranking and price experiments show where those choices become governance, which needs the metrics and guardrails already defined. The four contracts come after all of them because each platform requirement (unit types and cluster maps, two-sided exposure, governed metrics, cluster-aware inference, a registry for review) is the support one of those sections demands; placed earlier, as first published, the requirements arrived before the reader knew why they were needed. The architecture sits just before Veldmark's standard, whose first decisions are platform decisions, and the standard and retest can only apply the solution once all of it exists; the judging sections apply the whole design last."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "An A/B test rests on an assumption so basic that most tools never state it: what happens to one unit does not depend on which group the other units are in."
+    },
+    "bridge": {
+      "from_reader_world": "The data-platform chapter gave Veldmark one definition of a contact and a log of exposures: trustworthy measurement.",
+      "to_topic": "The next question, causation: whether a change caused the movement, when buyers and sellers compete and the A/B test's basic assumption often fails."
+    },
+    "thesis_statement": {
+      "text": "An experimentation platform is four contracts that must agree; in a two-sided market the randomization unit is a design decision chosen by mechanism, at a cost in power; guardrails protect the side not tested, and price and ranking experiments need an owner, pre-registered metrics and review.",
+      "placement": "KEY POINTS callout (three bullets), with p02 stating that interference can reverse the sign of a result."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, which names the sections in order, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Open with a Veldmark price test that reported a gain and delivered a loss.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the terms an experiment depends on.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Explain how interference arises and which designs contain it.",
+          "kept_in": [
+            "interference",
+            "designs"
+          ]
+        },
+        {
+          "promise": "Choose metrics and guardrails.",
+          "kept_in": [
+            "metrics"
+          ]
+        },
+        {
+          "promise": "Treat ranking and price experiments as governance.",
+          "kept_in": [
+            "ranking-prices"
+          ]
+        },
+        {
+          "promise": "Set out the four contracts of the platform that supports all of it.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Apply the design in Veldmark's experimentation standard and its retest of the bump price.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "An A/B test assumes that one unit's outcome does not depend on which group other units are in (SUTVA), which is close enough to true on a search engine or news site and often false in a listing marketplace, where buyers and sellers compete.",
+        "function": "claim",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Buyers competing for the same apartment in Lyon; sellers competing for the first screen of a bike search in Rotterdam; a paid bump helping one listing only by moving another down.",
+            "shows": "Shows concretely that marketplace units compete, so the assumption fails."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "States the assumption whose failure is the chapter's subject."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "When SUTVA fails, the treatment-control difference is the effect plus a transfer between groups, called interference, and the transfer can make an experiment report the wrong sign.",
+        "function": "definition",
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Defines interference and states the stakes: the wrong sign."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The assumption fails in marketplaces.",
+          "introduces": "What the measured difference then contains: effect plus transfer.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "After the data platform gave Veldmark one definition of a contact and a log of exposures, this chapter asks whether a change caused a movement, an answer that decides which ranking, pricing and paid-product changes ship; it owns three terms and leaves offline model evaluation to other chapters.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S5"
+          ],
+          "how": "Places the chapter after data-platform and names the decisions experiments govern."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Interference can reverse a result.",
+          "introduces": "Where the chapter sits: after measurement, the question of causation, and which chapters send changes here.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter follows a Veldmark price test, then covers terms, interference and the designs that contain it, metrics and guardrails, ranking and price experiments, the platform's four contracts, Veldmark's standard and retest, and the judging sections, drawing on published marketplace research, Adevinta, eBay, OLX and Zalando, EU consumer law and Veldmark.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Announces every section in order."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's question and the terms it owns.",
+          "introduces": "The order in which it answers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: The Bump That Ate Itself",
+      "controlling_idea": "Tradeyard NL's seller-randomized bump-price test reported +18% bump revenue and delivered about −2.5% after rollout, because treatment sellers took first-page time from control sellers: the test measured a transfer, not an effect.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Gives the case the whole chapter answers and shows the unwatched control trend."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Proposal, test, forecast, rollout, diagnosis: the reader needs the reported result before the reversal, and the reversal before the explanation, or the transfer has nothing to explain."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Interference and the chapter's question.",
+        "introduces": "The Veldmark bump test as the running case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In January 2027 Olivier Petit proposed testing a cheaper bump on Tradeyard Netherlands, where a bump (the paid re-dating of a listing in newest-first results) cost €2.49, on the hypothesis that sellers of low-value goods would bump more if it cost less.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Bump at €2.49; a €40 lamp and a €240 city bike as the low-value goods.",
+              "shows": "Sets up the hypothesis the test was built to check.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "From 1 to 28 February 2027 half of Tradeyard NL's private sellers, chosen at random by account, saw €1.99 and half €2.49, and the results looked decisive.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per-seller indices: bumps 1.48 (+48%), bump revenue 1.18 (+18%), contacts per bumped listing 0.99 (−1%, not significant), sellers buying a bump 11.2% vs 15.9% (+42%).",
+              "shows": "Shows the seller-randomized design and a result that looked like a clear win.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The proposal.",
+            "introduces": "The test design and its results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The arithmetic made the case: 48% more bumps at a 20% lower price gave 18% more bump revenue per seller, a forecast of about €6.8 million on €38 million a year, and the price went live for all NL sellers on 6 April 2027.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1.48 × 1.99 ÷ 2.49 ≈ 1.18; NL bump revenue about €38M a year; forecast +€6.8M; live Tue 6 Apr 2027.",
+              "shows": "Shows how the test result became a forecast and a rollout decision.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The test's results.",
+            "introduces": "The forecast and the rollout decision they produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Eight weeks after rollout bump revenue was down about 2.5% instead of up 18%, because purchases rose only 22% while contacts per bumped listing fell 31% and first-page time per bump fell from 2.6 to 1.5 hours.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Bumps +22% YoY; 1.22 × 1.99 ÷ 2.49 ≈ 0.975; about €950,000 a year below the old price; contacts per bumped listing −31%; median first-page time 2.6 h → 1.5 h; repeat purchases falling.",
+              "shows": "Shows the result reversed at rollout and that the resource the bump sells had shrunk.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The forecast of +18%.",
+            "introduces": "What actually happened after rollout.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Ingrid's question about the control group exposed the cause: control sellers' contacts per bump had fallen 9% during the test, so treatment sellers had taken first-page time from control sellers, a transfer that vanished at rollout when there was no control group left to take from.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Control sellers' contacts per bump −9% vs January; treatment flat.",
+              "shows": "Shows the gain came out of the control group.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: two pies; in the test one slice grows by taking from the other, at rollout the pie is cut into thinner slices.",
+              "shows": "Shows a transfer, not an effect, and the congestion at rollout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The reversal, unexplained.",
+            "introduces": "The diagnosis: a transfer from control sellers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The rest of the chapter is the platform and method Veldmark built so the next price test would not repeat the error.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The diagnosed failure.",
+            "introduces": "The platform and method the chapter now builds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: What an Experiment Must Get Right",
+      "controlling_idea": "A controlled experiment assigns, exposes, measures and attributes, and five terms (randomization unit, analysis unit, interference, cluster randomization, guardrail metric) plus primary metric and exposure carry the marketplace argument.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the vocabulary every later section uses."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The bump test and the promise of a platform and method.",
+        "introduces": "The vocabulary needed to describe them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Explaining the bump test and building a platform that would have caught it needs precise terms: an online controlled experiment randomly assigns units to variants, exposes them, measures outcomes and attributes the difference, and five terms carry the marketplace-specific argument.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Kohavi, Tang and Xu, Trustworthy Online Controlled Experiments (Cambridge University Press, 2020).",
+              "shows": "Grounds the general practice in the standard reference."
+            },
+            {
+              "kind": "table",
+              "what": "Randomization unit, analysis unit, interference, cluster randomization, guardrail metric, each with definition and why it matters in a marketplace.",
+              "shows": "Shows why each term matters when units compete."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The primary metric is chosen before the test as the one metric it is powered to move, and exposure, the moment a unit meets the treatment, often comes well after assignment.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A seller assigned to a new bump price is exposed only when the price is shown.",
+              "shows": "Shows the gap between assignment and exposure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The five terms in the table.",
+            "introduces": "Two further terms the architecture depends on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "interference",
+      "heading": "Interference: Why Marketplace Tests Report the Wrong Number",
+      "controlling_idea": "Interference in a listing marketplace comes from competition for attention, competition for scarce supply and market-level responses, its bias depends on which side is scarce, and published work shows it can be large.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Explains the mechanisms behind the bump test and why the right design depends on scarcity."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The mechanisms first, then the formal result on which side's randomization is biased, then the measured size of the bias; each step needs the one before."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Interference as defined in Concepts, and the bump test as its case.",
+        "introduces": "The three mechanisms that produce it and the size of its bias.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "controlling_idea": "The bump test is one case of interference, which in a listing marketplace comes from three mechanisms, each suggesting a different design.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Competition for attention (paid bumps, boosts), competition for scarce supply (best Lyon apartments), market-level responses (price badges); what a naive test measures in each.",
+              "shows": "Shows how each mechanism contaminates a naive comparison."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Johari and colleagues showed that customer randomization is biased in supply-constrained markets, listing randomization in demand-constrained ones, and two-sided randomization can be close to unbiased at both, so the bias depends on which side is scarce, which varies by category and city.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Johari, Li, Liskovich and Weintraub (2020, revised 2021).",
+              "shows": "Gives the formal result linking scarcity to bias."
+            },
+            {
+              "kind": "example",
+              "what": "Buyers scarce for second-hand furniture in a small town; listings scarce for rentals in central Barcelona.",
+              "shows": "Shows scarcity differs within one marketplace."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The first two mechanisms.",
+            "introduces": "Their formal analysis.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The bias can be large: Airbnb's meta-experiment attributed at least 32.60% of a listing-randomized estimate to interference, through the same mechanism that undid the bump test.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Holtz et al. (2020): '32.60% of the Bernoulli-randomized treatment effect estimate is due to interference bias' (Bernoulli-randomized glossed as listing by listing), a lower bound.",
+              "shows": "Shows the size of the bias in a real marketplace."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: how the bump test misled under seller randomization, by the same mechanism as Airbnb's listings.",
+              "shows": "Ties the published result back to the Veldmark case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "That the bias exists and depends on scarcity.",
+            "introduces": "How large it can be.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "designs",
+      "heading": "Designs for Two-Sided Markets",
+      "controlling_idea": "Each randomization design (listing or seller, buyer, two-sided, cluster, switchback, geographic) trades bias for power, cost or speed, and the right one follows from the mechanism a change works through; interleaving adds power for ranking-model comparisons.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Gives the reader the designs and the rule for choosing among them."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "Designs run from the finest unit (one side) to the coarsest (cities), so each larger unit is introduced as the answer to the interference the previous one leaves; the comparison table and decision figure follow all six, and interleaving comes last as a different tool for model comparisons."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Interference and its dependence on scarcity.",
+        "introduces": "The designs that contain it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Each design trades bias for power, cost or speed, and the right one depends on the mechanism the change works through.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: six tiles splitting the market by buyer, listing, pair, region × category cluster, time slot and city.",
+              "shows": "Shows that coarser units contain more interference and leave fewer units."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Listing- or seller-side randomization suits supply-side changes with diffuse buyer effects but is biased for anything that changes visibility, which was the bump test's error.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Designs in general.",
+            "introduces": "The first, randomizing listings or sellers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Buyer-side randomization suits demand-side changes when listings are plentiful and is biased for ranking changes in supply-constrained cells.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "A Veldmark carousel test randomized by user, reasonable because recommendations redistribute less attention than ranking.",
+              "shows": "Shows when buyer randomization is acceptable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Randomizing the supply side.",
+            "introduces": "Randomizing the demand side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Two-sided randomization treats an interaction only when both buyer and listing are treated, which suits cases where it is unclear which side is scarce, at a cost in ranking-service complexity and units per cell.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "One-sided designs, each biased when its side is not scarce.",
+            "introduces": "A design for when scarcity is unclear.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Cluster randomization assigns groups of units that interact mostly with each other and contains most interference at the price of power, so cluster maps should be published reference data built from observed interaction and checked for spillover.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Designs that split individual units.",
+            "introduces": "Splitting whole groups of interacting units.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Cluster randomization is also the only practical design for changes that cannot be split by user, such as SEO changes, where landing-page groups are randomized.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "City × category landing-page templates measured by organic sessions; no classifieds company has documented its SEO testing design.",
+              "shows": "Shows a reference practice where only clusters work."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Clusters to contain interference.",
+            "introduces": "A second reason to use clusters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Switchbacks alternate a whole market between variants over time slots, but long carryover in listing marketplaces limits them to short-lived mechanisms and makes them poor for prices.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DoorDash 2018 (widely reported, not retrieved); Bojinov, Simchi-Levi and Zhao (2020, revised 2025) on carryover.",
+              "shows": "Grounds the design and its carryover problem."
+            },
+            {
+              "kind": "example",
+              "what": "A listing bumped at 19:00 is still on page one at 21:00; a seller remembers yesterday's cheaper price.",
+              "shows": "Shows why carryover is long in listings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Splitting by space.",
+            "introduces": "Splitting by time.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Geographic experiments assign whole cities or countries for market-level changes, but so few units force synthetic-control (a weighted mix of untreated cities as the comparison) or difference-in-differences analysis whose results are estimates with wide uncertainty, not A/B tests; the table then compares all six designs.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six designs by bias from interference, power, implementation cost and fit.",
+              "shows": "Summarizes the trade-off across designs."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: choosing a randomization unit; first ask whether the change reallocates something units compete for.",
+              "shows": "Gives the decision rule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Clusters and time slots.",
+            "introduces": "The coarsest unit, whole geographies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Interleaving is not a seventh design but a ranking-model method: it merges two rankers' results on one page, adding large sensitivity for model comparisons while sidestepping buyer-side interference, but it cannot answer whole-page policy questions such as how many paid slots to show.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Airbnb 2025: up to 100× sensitivity from interleaving and counterfactual methods (Zhang et al., 2025).",
+              "shows": "Shows the power gain for model comparisons."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Designs that split the market.",
+            "introduces": "A method that compares models on the same page.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "metrics",
+      "heading": "Metrics: Liquidity First, Revenue Second, Both Watched",
+      "controlling_idea": "The primary metric decides what a marketplace learns, so liquidity outcomes lead and revenue follows, metrics are observed on both sides, guardrails include the control group's trend and congestion, and holdouts measure long-term effects.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Specifies the metrics and guardrails that protect the side not tested."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The metric hierarchy comes first because guardrails are defined against it, and placed after them the guardrails would have nothing to protect; both-sided observation, then the guardrails, their computation, and finally long-term effects, which the short-run guardrails cannot see."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Designs that fix the randomization unit.",
+        "introduces": "The primary metric and guardrails to measure in them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "Once the design fixes the unit, the primary metric decides what a marketplace learns; revenue is the easiest to defend and the most dangerous to optimize alone, so the hierarchy puts liquidity first, monetization second, behavior as diagnostics and health as guardrails.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Liquidity outcomes, monetization outcomes, behavior, health, with examples and use in experiments.",
+              "shows": "Shows the role each level plays."
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "A marketplace experiment's metrics must be observed on both sides, including sellers who did not bump and seller-side outcomes of ranking tests.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The metric hierarchy.",
+            "introduces": "Observing it on both sides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "Besides the guardrails the ranking chapter applies to every ranking experiment, every marketplace experiment needs a control-trend guardrail and a congestion guardrail, either of which would have stopped the bump test.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Control sellers' contacts per bump −9%, visible by the second week; first-page time per bump as the congestible resource.",
+              "shows": "Shows both guardrails would have caught the bump test.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Metrics on both sides.",
+            "introduces": "Guardrails that must not degrade.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Guardrails need near-real-time computation for harm and final computation for the rest, which is why results are computed as a stream while a test runs and why provisional and final metric values are separated.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The guardrails.",
+            "introduces": "How quickly they must be computed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Because marketplace effects compound, long-running holdouts and surrogate models measure cumulative and long-run effects, at a cost lower than discovering a supply decline a year later.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbnb Tech 2025: causal framework for long-term ranking effects from A/B data.",
+              "shows": "Shows long-run effects can be estimated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Short-run guardrails.",
+            "introduces": "Effects that appear only over months.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ranking-prices",
+      "heading": "Experimenting on Ranking and Prices",
+      "controlling_idea": "Ranking, pricing, fee and trust-threshold experiments change who gets exposure and who pays what, so they are governance and are pre-registered and reviewed before they start: ranking tests are monetization tests, price tests raise supply, legal and contract concerns, and price badges need district randomization.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S3"
+        ],
+        "how": "Shows why visibility and price tests need owners and review."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The claim that these tests are governance comes first; ranking, then prices, then price signals shown to buyers follow as its three cases, ordered from the change the reader already knows from the ranking chapter to the one with market-level interference."
+      },
+      "transition_in": {
+        "relationship": "emphasis",
+        "carries_over": "Metrics and guardrails for any experiment.",
+        "introduces": "The two kinds of experiment where they become governance.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "Ranking, pricing, fee and trust-threshold experiments are where experimentation becomes governance, because they change who gets exposure and who pays what, so each needs an owner and a unit, primary metric and guardrails registered and reviewed before it starts: a metric chosen after the results can be the one that won by chance, and a wrong unit cannot be repaired after the test.",
+          "function": "claim"
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Every ranking change reallocates exposure among sellers, some of whom paid for it, so a classifieds ranking experiment is also a monetization experiment and reports paid-product delivery as a guardrail.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay 2020: one ranker for promoted and organic listings balancing relevance against cannibalization.",
+              "shows": "Shows the coupling of ranking and paid exposure."
+            },
+            {
+              "kind": "case",
+              "what": "Veldmark's ranking-policy experiment, 6 Sep–17 Oct 2027, Tradeyard NL, category × region clusters.",
+              "shows": "Shows the design followed the standard.",
+              "source": "_research/scenario-ledger.md, [ranking] line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Governance in general.",
+            "introduces": "Ranking.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Price experiments add supply elasticity, fairness and law, and professional contracts, each requiring more than revenue measurement.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive (EU) 2019/2161, Article 6(1)(ea) CRD, recital 45; Commission guidance; Veldmark tests prices by cluster and publishes price lists.",
+              "shows": "Shows the legal question and Veldmark's practice."
+            },
+            {
+              "kind": "statistic",
+              "what": "OLX 2026: propensity-score matching estimated +17.6% to +97.4% between package levels, validated against a randomized test.",
+              "shows": "Shows observational methods for professional prices."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Ranking as governance.",
+            "introduces": "Prices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A price badge changes how buyers judge neighboring listings, a market-level interference, so Hearthly's pricing hint goes live on 22 November 2027 randomized by city district.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Hearthly pricing hint in Lyon and Bordeaux from 22 Nov 2027, district-randomized.",
+              "shows": "Shows a market-level mechanism handled by clusters.",
+              "source": "_research/scenario-ledger.md, [ml-platform] line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Prices sellers pay.",
+            "introduces": "Price signals shown to buyers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Four Contracts",
+      "controlling_idea": "An experimentation platform is four components (assignment, exposure logging, governed metrics, an analysis engine) whose difficulty is agreement on units, timestamps and definitions, and the documented classifieds record supports centralizing the engine and metrics first.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Specifies the four contracts and their marketplace requirements, and the order of centralization."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One paragraph per contract in the order data flows (assign, expose, measure, analyze), then the public record, then the author's reading of it; the recommendation needs both the components and the record before it."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The designs, metrics, guardrails and review the previous sections require.",
+        "introduces": "The platform components that must support them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p13",
+          "controlling_idea": "Every design, metric and review above needs platform support: four simple contracts (assignment, exposure logging, metrics, analysis), with a registry that is not a fifth contract but the record all four read, fixing unit, metrics and owner before launch; the hard part is agreeing on units, timestamps and definitions.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: registry, assignment, exposure, governed metrics and analysis engine.",
+              "shows": "Shows the four contracts and the identifiers and definitions they share."
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "The assignment service hashes unit identifiers deterministically and, for a marketplace, must support several unit types, layers for mutual exclusion, and server-side evaluation for anything priced or ranked.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The September 2027 ranking-policy experiment and the bump-price retest of the next section could not share Tradeyard NL's clusters.",
+              "shows": "Shows why layers are needed.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four components.",
+            "introduces": "The first, assignment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The exposure log records when a unit met its variant, using the experiment_exposure event, restricts analysis to exposed units, and must be two-sided, recording the sellers a change moved as well as the buyers who saw it.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Assignment of units.",
+            "introduces": "Recording when assigned units met the treatment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Experiments consume the governed metrics computed by the same code as the board pack, so a test's contact is the business's contact.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A ranking test on qualified contacts per searcher and a board steering on qualified contacts per live listing must share the contact definition and its 72-hour fraud restatement.",
+              "shows": "Shows how a mismatch lets a change win a test and lose the business."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Exposures logged.",
+            "introduces": "The metrics computed over them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The analysis engine turns exposures and metrics into effects and decisions, and four capabilities (SRM check, variance reduction, valid early looks, cluster-aware inference, which every design described above requires) separate it from a dashboard.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "SRM check (Zalando 2021), CUPED about 50% variance reduction at Bing (Deng et al. 2013), always-valid inference (Johari, Pekelis and Walsh 2015/2019) and safe testing on 162 Vinted experiments (Beasley 2023), cluster-aware inference.",
+              "shows": "Shows each capability with published evidence that it matters."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Metrics.",
+            "introduces": "The engine that analyzes them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Because sequential and classical tests agree less on long-delay metrics such as contacts and sales, early stopping should be allowed on harm guardrails and used with care on the primary metric.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Beasley (2023): lower agreement for transactions and cancellations than for searches and sessions.",
+              "shows": "Shows delayed marketplace metrics need caution with early looks."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Valid early looks in the engine.",
+            "introduces": "A marketplace-specific limit on them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Adevinta's record shows a classifieds group consolidating ten testing tools across 22 marketplaces toward one in-house platform, Houston, through a hybrid build-and-buy decision.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog 2024 (ten tools in 2021, 'inefficiencies, redundancy and escalating costs', scoring matrix, hybrid decision) and 2023 benchmark of 21 companies ('crawling' band, 'keep building').",
+              "shows": "Shows the cost of fragmented tooling and a documented consolidation path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four components in the abstract.",
+            "introduces": "The documented record of a classifieds group building them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The group's statistics came from one marketplace: Fisher, built at Marktplaats, became the basis of Houston's engine, and results were computed incrementally on a stream.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog 2023: Fisher in more than 90% of Marktplaats experiments, about three hours of analyst time per experiment, Nightingale as Houston's engine; Kafka Streams with weighted Welford updates; posts predate the 2025 decentralization.",
+              "shows": "Shows the engine was centralized from a proven package and made near-real-time."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Adevinta's consolidation of tools.",
+            "introduces": "Where its statistics came from.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The author's reading is to centralize the statistics engine and the metric definitions before the interface and flag tooling, because the same engine and contact metric make results comparable while the same tool with different metric code does not.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Adevinta's path from one marketplace's package to a group platform.",
+            "introduces": "The recommendation it supports.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Veldmark's Experimentation Standard",
+      "controlling_idea": "Veldmark turned the bump post-mortem into Experimentation standard v1, and the cluster-randomized retest in Belgium estimated −3.3%, close to the rollout result, at the cost of wider intervals.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Applies every claim to the bump case and shows the corrected answer."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Post-mortem, standard, retest, result: the standard must exist before the retest can follow it."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The platform, designs, metrics and governance.",
+        "introduces": "Veldmark's post-mortem and the standard that applied them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "The post-mortem reached the advice forum on 9 June 2027 framed as a platform gap: tools that could randomize only users and sellers, per-user t-tests, nobody watching the control, and about 640 experiments on three tools with three contact metrics.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Forum Wed 9 Jun 2027; about 640 experiments in 2026 across Tradeyard, Motorvane and Hearthly on three tools.",
+              "shows": "Shows the fragmentation the standard fixed.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Experimentation standard v1, adopted 30 June 2027, has six parts: one analysis engine first, unit types as a platform capability, governed metrics only, design review by risk, mandatory marketplace guardrails, and a 2% long-term holdout.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The six parts, owners (Priya Raman's Data & ML team, Olivier Petit's team, Lucía Ortega's regulatory team) and flag tools kept until 2028.",
+              "shows": "Shows the chapter's claims as one decision record.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The platform gap.",
+            "introduces": "The decision record that closed it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The retest ran 6 September–31 October 2027 in Tradeyard Belgium, because NL's clusters were reserved for the ranking-policy experiment (p40), with 96 region × category-group clusters, 48 per price, prices published per cluster.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Bumps +21% (+14% to +28%), bump revenue −3.3% (−6.2% to −0.4%), contacts per bumped listing −26% (−33% to −19%), first-page time 2.4 h → 1.5 h, qualified contacts per live listing 0% (−2% to +2%).",
+              "shows": "Shows the cluster design caught the congestion the first test missed.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The standard.",
+            "introduces": "The retest run under it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The cluster estimate was close to the NL rollout and far from February's, its wider intervals were the price of the right sign, and the €1.99 price, live in the Netherlands until the retest's result was reviewed, was withdrawn on 6 December 2027 in favor of a bump with guaranteed first-page time.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "−3.3% vs about −2.5% after rollout vs +18% in February; 96 clusters vs hundreds of thousands of sellers; withdrawn Mon 6 Dec 2027.",
+              "shows": "Shows the right sign and its cost in power.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The retest's results.",
+            "introduces": "What they meant and the decision that followed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Seven recurring choices, each with a default given in the table (buy or build, centralization order, randomization, stopping, sensitivity, prices for professionals, long-term effects) each have a default the chapter's argument supports.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Turns the argument into decisions with defaults."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design applied at Veldmark.",
+        "introduces": "The choices it implies for any group.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Building experimentation for a marketplace group means seven choices, and the table gives the default for each that follows from the sections above.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Platform, centralization order, randomization, stopping, sensitivity, prices for pros, long-term effects: options and how to choose.",
+              "shows": "Shows the default for each choice: own the engine, engine and metrics first, unit per experiment, sequential for guardrails, variance reduction always."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The verticals differ in which side is scarce, the natural cluster, outcome delay and sample size, and real estate's small districts and slow outcomes leave Hearthly with longer cluster tests, variance reduction and validated leading indicators.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows how scarcity and power change the design choice by vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Defaults for a group.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p48",
+          "controlling_idea": "The verticals differ in which side is usually scarce, which cluster is natural, how long outcomes take and how much traffic a test gets, so the same design has a different cost in each.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive and jobs by scarce side, interference risk, natural cluster, outcome delay, pricing experiments and sample size.",
+              "shows": "Shows design inputs vary by vertical."
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Real estate matters most: few listings and buyers per district and outcomes months away leave Hearthly's honest options as longer cluster tests, stronger variance reduction, validated leading indicators and restraint about small effects.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The comparison across verticals.",
+            "introduces": "The row that matters most.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Marketplace experimentation fails in recognizable ways when transfers pass for effects, revenue stands alone, SRM is ignored, results are peeked at, units are mismatched, experiments overlap, prices are assigned in the client, metrics disagree with the board, or the passive side is not logged.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the cost of ignoring each supporting claim."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the right design looks like across verticals.",
+        "introduces": "What goes wrong without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Ignoring the defaults produces nine recognizable failure modes, from the transfer mistaken for an effect to missing exposure logs for the passive side, each with its remedy.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect makes sure the platform can test prices, visibility and paid products by funding one engine and exposure log, making units a platform capability, reviewing by risk, mandating guardrails and keeping a holdout, with clear owners and the estimate-to-rollout gap as the report card.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Turns the claims into decisions in order, with owners and measures."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Preventing these failures is the Chief Architect's job, in five decisions in order: one analysis engine and exposure log, the randomization unit as a platform capability, risk classification with pre-registration and review, mandatory marketplace guardrails, and a long-term holdout.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "A forecast that missed by nearly €8 million a year.",
+              "shows": "Shows why review is not bureaucracy.",
+              "source": "_research/scenario-ledger.md, [experimentation] lines (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Ownership is split among data and ML, product and monetization, the guild, legal and regulatory, and the Group Chief Architect, and the gap between experiment estimates and post-rollout effects is the platform's real report card.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The five decisions.",
+            "introduces": "Who owns them and what to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions test a marketplace's experimentation against the chapter: units, control trends, scarcity, metric definitions, two-sided exposure, early stopping, estimate-to-rollout gaps, price review, overlaps and holdouts.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Gives a working audit drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions and measures.",
+        "introduces": "Questions that test whether they are in place.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "form": "list",
+          "controlling_idea": "Ten questions test whether those decisions hold in an organization's experiments.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Experiments to Models",
+    "synthesis": "In the bump test seller assignment broke the no-interference assumption and nothing caught it (no guardrail watched the control, no review asked whether a cheaper bump only moves first-page time between sellers); the retest gave the right sign because unit, guardrails and review were set before launch, and it paid for that with wider intervals.",
+    "so_what": "Experiment results decide which ranking, price and paid-product changes ship, so a platform that can split only users commits the business to changes whose real effect may have the opposite sign.",
+    "callback": {
+      "to": "The introduction's assumption that one unit's outcome does not depend on other units' groups, and the February 2027 bump test.",
+      "how": "The conclusion names the February test as the place the assumption broke and the retest as where the design made it hold."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Set unit, guardrails and review before launch, and judge the platform by the gap between each experiment's estimate and the effect after rollout."
+    },
+    "hand_off": {
+      "to": "ml-platform",
+      "relationship": "cause_effect",
+      "carries_over": "Experimentation's closing: the experiment and data platforms give trustworthy measurements, and most of the changes they measure are now made by models.",
+      "introduces": "How those models are trained, served, monitored and governed, by the decision each makes."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the bump test to the review questions.",
+      "introduces": "What the design adds up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p54",
+        "controlling_idea": "In the February bump test seller assignment broke the assumption the chapter opened with while no guardrail or review caught it; the retest held because unit, guardrails and review were set before launch, and since experiments decide what ships, a platform that splits only users can commit the business to the wrong sign, which the gap between estimate and rollout effect reveals.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Seller assignment, an unwatched control, no review of a congestible product; the retest's cluster unit, guardrails and wider intervals.",
+            "shows": "Combines the sections into one diagnosis no single section states."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins the claims into one account of why the test failed and the retest held."
+        }
+      },
+      {
+        "id": "p55",
+        "controlling_idea": "The experiment and data platforms give trustworthy measurements, and since most changes they measure are now made by models, how those models are trained, served, monitored and governed is the next chapter's subject.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Trustworthy measurement of changes.",
+          "introduces": "The models that now make most of those changes.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Governed metric definitions and exposure event design.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Ranking models, offline evaluation and the ranking guardrail list in detail.",
+      "covered_in": [
+        "ranking"
+      ]
+    },
+    {
+      "topic": "Model lifecycle and governance.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Monetization model design and package economics.",
+      "covered_in": [
+        "monetization-models",
+        "products-and-entitlements"
+      ]
+    },
+    {
+      "topic": "Regulatory detail of personalized pricing and P2B.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "No classifieds company has published an interference-aware design (cluster or two-sided) for its own experiments; the chapter relies on Airbnb research and Veldmark. Revisit if one appears.",
+    "Whether randomized consumer price tests trigger the personalized-price information duty is stated as a question for counsel; confirm against the consolidated Consumer Rights Directive.",
+    "DoorDash's 2018 switchback post could not be retrieved; it is cited as widely reported only."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Built the chapter on a seller-randomized bump-price test, because a paid visibility product sells a congestible resource and shows interference more clearly than a ranking model change (which ranking already uses for its cluster experiment)."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended centralizing the stats engine and metrics before tools, following Adevinta's documented Fisher → Nightingale → Houston path, rather than a single-vendor standardization."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Ran the Veldmark retest in Tradeyard Belgium rather than the Netherlands so that it did not overlap the ranking-policy cluster experiment, illustrating experiment layers."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Reported the retest's wider intervals explicitly, to make the power cost of cluster designs part of the lesson."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's six success criteria were content inventories or house-style rules; their reader outcomes are covered by the journal entry's outcome and AC-1 to AC-3 (AC-1 tests choosing a unit, guardrails and review for the bump case). None is carried over; 'every claim carries a dated source' stays a style-guide rule.",
+      "rejected": [
+        "Carrying the criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) so a reader of the opening can predict the sections (AC-2); the IN THIS CHAPTER callout omits Concepts, the Veldmark standard and the judging sections.",
+      "rejected": [
+        "Relying on the callout alone."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gave Trade-offs and Vertical Differences, whose tables opened their sections, one lead-in sentence each (p47, p48) so each table belongs to a unit.",
+      "rejected": [
+        "Leaving the tables unattached, hidden from the draft readers."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): kept the order; added a section flow to Experimenting on Ranking and Prices, recast the Metrics flow as prerequisite order, and said in the post-level rationale why the architecture precedes interference and what the governance section needs and enables. Other notes are listed in open_questions.",
+      "rejected": [
+        "Moving Interference before Architecture, which would separate it from the designs that answer it."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft check round 1 (escalate on one spec fault: both flow readers could not say why Architecture came before Interference): moved Architecture: The Four Contracts after Experimenting on Ranking and Prices, just before the Veldmark standard; rewrote the transitions into Interference, Metrics, Architecture and In Practice, the roadmap promise order and p04, and the post-level flow rationale. The analysis-engine table's pointer 'in the next section' became 'described above'.",
+      "rejected": [
+        "Interference and Designs before Architecture with Architecture before Metrics (flow reader B), which would leave the Adevinta record apart from the standard it supports.",
+        "Keeping the published order with a forward-looking frame, which both readers' difficulty argues against."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a synthesis paragraph (p54) to the conclusion that returns to the introduction's assumption and the February test; the published hand-off is kept as p55.",
+      "rejected": [
+        "A one-paragraph conclusion that only hands off."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Raised length.max_words from 6,433 to 6,650 (+3.4%, under the 10% allowance) so the round-3 draft faults could be fixed: the Concepts opening now picks up the bump test (p11); Interleaving is introduced as not a seventh design, under the renamed subheading 'a ranking-model method, not a design' (p33), and the table lead-in says 'the six designs'; the forward pointer to Adevinta's streaming computation was replaced by a statement of why results are streamed (p37); the ranking-policy experiment now names the June 2027 standard it followed (p40); p13 says the registry is not a fifth contract. Cheap minor fixes: Concepts names the three owned terms among the five; the four cells of two-sided randomization are spelled out; 'first key point' pointer reworded."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The June–December 2027 gap before the €1.99 price was withdrawn (6 December 2027, ledger): neither the ledger nor the chapter gives a reason, so p46 says plainly that the price stayed live in the Netherlands until the retest's result was reviewed; no reason is invented and no date changed.",
+      "rejected": [
+        "Inventing a reason such as waiting for the retest's significance or a contractual notice period."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Argued the pre-registration and review rule in Experimenting on Ranking and Prices (p39): fee and trust-threshold tests are named with ranking and prices, and the reasons are given (a metric chosen after the results can be the one that won by chance; a wrong unit cannot be repaired after the test). Resolves the flow-rubric note that the thesis's review rule was first argued only in the standard."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes (compound claim; S2 and S4 details) on the thesis copied from the journal spec: thesis not changed, accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The new section order (Architecture after Experimenting on Ranking and Prices, before the Veldmark standard), made after round 1, and the renamed Interleaving subheading: accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Remaining flow-rubric notes (p31 before p32; merge p19/p20 and p29/p30; repetition of 'engine and metrics first'; moving p42 to In Practice; 'every design described above'): kept the published text under rule 8, accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, and ml-platform's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "data-platform",
+      "contributed": "Exposure event, governed metrics, provisional and final values."
+    },
+    {
+      "kind": "internal",
+      "ref": "ranking",
+      "contributed": "Ranking guardrails and the Sept–Oct 2027 cluster experiment."
+    },
+    {
+      "kind": "internal",
+      "ref": "ml-platform",
+      "contributed": "District-randomized Hearthly pricing hint."
+    },
+    {
+      "kind": "internal",
+      "ref": "monetization-models",
+      "contributed": "OLX causal evidence and paid-product measurement."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Part 9; _research/brief-search-discovery.md Part 7; _research/brief-monetization-economics.md 5.3 and 6.2; _research/scenario-ledger.md",
+      "contributed": "Research briefs and the canonical Veldmark bump test, standard and retest figures."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog (2023–2024); Zalando Engineering (2021)",
+      "contributed": "Fisher, Houston, benchmark, streaming results, ten tools to one; SRM and platform evolution."
+    },
+    {
+      "kind": "external",
+      "ref": "Johari et al. (2020); Holtz et al. (2020); Bojinov et al. (2020)",
+      "contributed": "Interference and designs."
+    },
+    {
+      "kind": "external",
+      "ref": "Deng et al. (2013) CUPED; Johari, Pekelis and Walsh (2015); Beasley (2023)",
+      "contributed": "Variance reduction, always-valid inference, safe testing at Vinted."
+    },
+    {
+      "kind": "external",
+      "ref": "Zhang et al. (2025); eBay (2020); OLX (2026); Airbnb Tech (2025); Kohavi, Tang and Xu (2020); Directive (EU) 2019/2161",
+      "contributed": "Interleaving, unified promoted ranking, causal package analysis, long-term effects, general practice, personalized-price duty."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: max_words 6,433 → 6,650; p11, p13, p33, p37, p39, p40, p46 revised (bump-test pickup, registry not a fifth contract, interleaving not a seventh design, no forward pointers, the review rule argued, the price stayed live until the retest was reviewed). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (budget spent). After it, only the Interleaving subheading was renamed; remaining failures are listed in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2 (revise, 9 corroborated draft-side flow findings): figures renumbered in reading order (old 3, 4, 5, 2 became 2, 3, 4, 5); Figure 2's caption tied to the Airbnb paragraph; holdout glossed at first use; forward pointer for Adevinta's streaming computation; the registry placed beside the four components; the six-design table lead-in, the Chief Architect's opening and the conclusion's first sentence reworded; p13 and p54 ideas updated. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1: Architecture moved before In Practice; transitions, roadmap, flow rationale and the ideas of p04, p13, p14, p17, p32, p34, p47, p50, p51, p53 updated; draft revised at the failing units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (status draft): one paragraph per unit, reconstructed from the published text; added roadmap p04, two table lead-ins (p47, p48) and a synthesis paragraph p54; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep; sharpening pass 5,585 → 5,578 prose words; 3 mermaid diagrams replaced with generated illustrations. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review (Omnibus duty verified, Fisher/Nightingale claim corrected, eBay 2020 dated); 2 inline illustrations. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6650
+  }
+}

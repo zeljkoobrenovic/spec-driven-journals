@@ -1,0 +1,1795 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "modernization-and-migration",
+  "journal": "listing-systems-architecture",
+  "part": "part-8",
+  "title": "Changing the Engine in Flight: Modernizing a Live Marketplace",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the modernization-and-migration entry in journal-spec.json; the supporting claims, audience and AC-4 and AC-5 are this spec's own. Units added by this conversion: introduction roadmap p04, a Trade-offs lead-in p56, a lead-in p55 for the end-2028 progress table, and a conclusion widened from one paragraph to two (p66 synthesis and callback, p67 hand-off); after the flow rubric the one-sentence paragraph 'Four principles follow from it' was merged into p18 (old p19 removed).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Re-architect, re-platform and rewrite; seams and transitional architecture (edge routes, backends-for-frontends, event interception, branch by abstraction); parallel run, shadow traffic and canary; the migration stage gate.",
+        "Data migration of listings and accounts with one writer per record, search migration with relevance parity, URL migration, the behavior catalog, kill switches, rollback and points of no return, and how to measure progress."
+      ],
+      "believe": [
+        "A live marketplace is migrated by slices behind seams, never by a rewrite and a single cut-over.",
+        "Parity means equal outcomes for buyers and sellers, not equal features or identical results."
+      ],
+      "can_do": [
+        "Order a monolith's capabilities into migration waves and name the seam for each.",
+        "Write stage gates with numerical exit criteria and a rollback answer for a slice, including relevance parity for a search move.",
+        "Decide in advance where a migration's points of no return are."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a migration proposal that relies on a rewrite and identical results, the reader names the plan, gates and parity measure that replace it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A classifieds site's twenty-year-old monolith holds the listing table, renders most pages, runs undocumented scheduled jobs and serves old app versions directly. The proposal is to build the new platform to feature parity and switch over on one weekend, and to accept the new search engine when its top-ten results match the old engine's for 95% of head queries. Using only this chapter: what do you propose instead?",
+        "expected": "Put seams in front of the monolith (edge routes, backends-for-frontends, event interception) and move slices: read paths first, the write path that unblocks most teams next, search after it, the system of record's archive last; give each slice an owning team and a behavior catalog that decides what to carry, change or retire; pass each slice through contract, shadow, canary, ramp and retire gates with numbers agreed in advance and rehearsed rollback; judge search by relevance parity (non-inferior contacts per search session in an experiment, with latency and zero-result checks), not identical results; build the new index from the event stream, not from the old index; keep URLs stable unless a change is decided; record points of no return as decisions."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Retiring a monolith while it serves traffic: slices and their order, seams, parallel runs, data migration, search migration with relevance parity, URL stability and when rollback stops being possible; the terms migration stage gate, relevance parity and URL migration; evidence from the strangler-fig literature and documented classifieds migrations, and the fictional Veldmark's plan to retire Yardstick by the end of 2029."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a legacy platform with a hosting deadline, the reader chooses between rewrite, re-platform and incremental re-architecture and justifies the choice.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A marketplace's monolith runs in a data center whose contract ends in two years, and its data model blocks every team that wants to change listings. Using only this chapter: rewrite, re-platform or re-architect incrementally, and why?",
+        "expected": "Not a big-bang rewrite. Re-architect incrementally (strangler) where the data model blocks the target, and re-platform (lift) whatever is left when the hosting deadline arrives; the Scout24 contrast (AutoScout24 re-architected, ImmobilienScout24 re-platformed) and Yardstick's plan (a strangler to decommissioning, with a lift kept as a contingency) illustrate this."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a plan to change URLs during a platform migration, the reader says what to do instead and how to protect search traffic.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A team moving its listing pages to a new platform plans to switch to a new URL pattern on the day the new system takes over. Using only this chapter: what do you advise?",
+        "expected": "Do not change URLs because the platform changed; keep listing identifiers stable, route by pattern at the edge, and if a change is truly needed make it a separate measured step with a redirect registry, direct permanent redirects (301/308) kept at least a year, new sitemaps and monitoring of indexed pages, crawl errors and organic traffic; keep status codes such as 410 and 404 the same."
+      }
+    ],
+    "audience": {
+      "who": "Chief and principal architects, engineering directors and platform leads who own or inherit a legacy listing platform and must plan its replacement under traffic, SEO and revenue constraints.",
+      "already_knows": [
+        "What an API, a database, an event stream, change data capture, a search engine and Kubernetes are; the strangler fig by name; feature flags, canaries and A/B tests.",
+        "From earlier chapters: liquidity and contacts as the success signal (liquidity-and-network-effects, ranking), VAS and bumps (monetization-models), Tally (products-and-entitlements), Safe Deal (transactions-and-payments), Listing event contract v1, Yardstick Relay, the backfill topic and the consumer registry (event-driven-listings, listing-data-management), Listing Search API v1 (search-architecture), the URL and redirect services (web-and-seo-architecture), Veldmark ID (identity-and-verification), Supply Contract v1 (listing-ingestion), DMS vendors (professional-seller-tooling).",
+        "Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly and Keybridge, Yardstick, Common Ground, the architecture advice forum, Ingrid Halvorsen and Daan Visser, and the failure-pattern names."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: migration stage gate, relevance parity, URL migration.",
+        "Seams, branch by abstraction, Legacy Mimic, transitional architecture, the feature-parity trap, the behavior catalog; shadow, parallel run and canary as distinct modes; rank-biased overlap and non-inferiority; points of no return."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do you move a live marketplace from legacy systems to a new architecture without losing traffic, sellers or revenue?",
+    "claim": "A live marketplace should be moved off its monolith slice by slice behind seams that can route traffic back in minutes (edge routes, backends-for-frontends, the event stream): read paths first, then the write path that unblocks the most teams, then search, with the system of record's archive last. Each slice should be owned by a team of the target organization, should carry a catalog of legacy behaviors deliberately kept, changed or retired, and should pass stage gates (contract, shadow, canary, ramp, retire) whose numerical exit criteria are liquidity outcomes agreed before the slice starts, such as relevance parity measured as non-inferior contacts per search session rather than identical results; URLs should stay stable unless a change is decided, and every point of no return should be recorded as a decision before it is reached.",
+    "disputed_by": "The rewrite: build the new platform beside the monolith to feature parity and switch over in one cut-over, judge the new search engine by how closely its results match the old one's, and treat rollback as an emergency procedure rather than a designed path.",
+    "so_what": "A Chief Architect who accepts this spends early on seams that deliver little visible value alone, has the advice forum review each slice's gate criteria before it starts, puts liquidity metrics (contacts, publication outcomes, billing, organic traffic) into every gate, reports the double-running cost and its end date, requires rollback rehearsals with real cohorts, and takes each point of no return as a recorded forum decision.",
+    "how_why": "Yardstick, Tradeyard's PHP monolith, implemented 23 capabilities, had a 214-column listing table read by 38 modules, 47 scheduled jobs (9 without a known owner), 312 admin actions and 118 app endpoints, and its colocation contract ends on 31 December 2029. The Yardstick Exit plan moves it in waves 0 to 6. In the insertion shadow 6.8% of submissions first differed, and nine behaviors surfaced that the 146-item catalog had missed, among them a job that turned a price of €0 into 'price on request'. On Tradeyard Portugal, fewer than three-quarters of the new engine's top ten results matched the old engine's (median overlap 0.71), yet 8.8% of search sessions led to a contact against 8.7% on Solr, and the relevance parity gate passed. No listing URL changed in 2028, and capabilities implemented only in Yardstick fell from 23 to 6 by December 2028.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A live marketplace is moved off its monolith slice by slice behind seams that can route traffic back in minutes (edge routes, backends-for-frontends, the event stream, branch by abstraction), never by a rewrite and a single cut-over; the transitional components this needs are owned systems with end dates."
+      },
+      {
+        "id": "S2",
+        "claim": "Slices are ordered read paths first, then the write path that unblocks the most teams, then search, with the system of record's archive last, and while two systems run each record has exactly one writer and the old system is kept current so that rollback stays cheap."
+      },
+      {
+        "id": "S3",
+        "claim": "Each slice is owned by a team of the target organization and carries a behavior catalog that decides for every legacy behavior whether to carry, change or retire it, instead of chasing feature parity."
+      },
+      {
+        "id": "S4",
+        "claim": "Each slice passes stage gates (contract, shadow, canary, ramp, retire) whose numerical exit criteria are liquidity outcomes agreed before the slice starts; for search this is relevance parity, non-inferior contacts per search session on an index rebuilt from the event stream, not identical results."
+      },
+      {
+        "id": "S5",
+        "claim": "Public URLs and their status codes stay stable through a platform migration unless a change is decided and made as a separate, measured step."
+      },
+      {
+        "id": "S6",
+        "claim": "Rollback is rehearsed with real data, every point of no return is recorded as a decision before it is reached, and progress and the double-running cost are measured as outcomes with end dates."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Supplies the techniques for moving a live marketplace onto the platforms and owners the previous chapters chose, slice by slice and gate by gate.",
+    "supports": [
+      "P8-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses Yardstick's inventory and the question of order, proof and rollback; in-practice answers them with the Yardstick Exit plan after the body has built the method"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene comes first because its inventory and dates are the problem the chapter solves. The concepts follow because the architecture and the plan use seams, run modes and gates by name. The architecture comes before the plan because the plan applies it; placed later, the plan's gates and parity tables would use terms and designs the reader has not met. The judging sections come last because they weigh choices the reader has now seen made."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "Tradeyard's teams still ship through Yardstick, the monolith that launched the site in 2006. It still holds the listing table, renders the pages that search engines index, runs the jobs that send alerts and bills the bumps. It is also the reason a fraud rule takes three days to reach another country and why 140 engineers wait for the same deploy."
+    },
+    "bridge": {
+      "from_reader_world": "Architects who inherit a legacy listing platform know the strangler fig by name and know the monolith must go.",
+      "to_topic": "The second-order questions: which slice first, two systems on one dataset, judging a new search engine, keeping URLs, and when rollback ends."
+    },
+    "thesis_statement": {
+      "text": "Migrate by slice behind seams that can route back, read paths first and the system of record last; define parity per slice as measured outcomes, not features or identical results; pass every slice through stage gates with a rollback answer, and decide the point of no return in advance.",
+      "placement": "KEY POINTS callout (three bullets) and the bold sentence of p01; p03 defines the three terms."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Open with Yardstick's 2027 inventory and the board's dates.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the vocabulary of displacement.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Design the architecture for running two systems on one marketplace.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Follow Veldmark's Yardstick Exit plan through its insertion and search waves.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Part VIII turns here from decisions to code: Tradeyard's teams still ship through Yardstick, which holds the listing table, renders the indexed pages, runs the alert and billing jobs and slows every team and fraud rule, so modernization is not optional and the only choice is how much liquidity it puts at risk.",
+        "function": "claim",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Yardstick since 2006; a fraud rule takes three days to reach another country; 140 engineers wait for the same deploy.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Shows that the monolith, not the organization, is now the bottleneck the previous chapters left."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Poses the chapter's question as a risk to liquidity, which the gates later measure."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The strangler fig settles the first-order question in favour of gradual replacement, so the hard questions are the second-order ones: which slice first, how to run two systems on one dataset, how to judge a new search engine, how to keep 40 million URLs working and when going back stops being possible.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "Fowler: gradual replacement 'begins with small additions, often new features'; 'the reduced risk and earlier value from the gradual approach outweigh its costs'.",
+            "source": "Martin Fowler, Strangler Fig Application, page dated 2024",
+            "shows": "Shows the settled industry answer the chapter builds on rather than argues."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: strangler-fig vines with new modules grow around the monolith while the market stays open.",
+            "shows": "Pictures slice-by-slice replacement with the old path kept warm."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Turns the thesis into the five questions the sections answer."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Modernization is unavoidable for Yardstick.",
+          "introduces": "The settled answer (strangle gradually) and the open second-order questions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns three terms, migration stage gate, relevance parity and URL migration, and leaves event mechanisms, the search platform and the URL services to the chapters that own them.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Definitions of migration stage gate, relevance parity (not identical results) and URL migration; links to event-driven-listings, search-architecture, web-and-seo-architecture, saved-searches-and-alerts and long-term-evolution.",
+            "shows": "Gives the reader the three terms before the scene and the gates use them, and marks the chapter's boundaries."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S4",
+            "S5"
+          ],
+          "how": "Defines the gate and the parity measure the thesis relies on."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The second-order questions about gates, search and URLs.",
+          "introduces": "Precise terms for the answers.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter sets the scene with Yardstick's 2027 inventory, defines the vocabulary of displacement, designs the architecture for running two systems on one marketplace, follows Veldmark's Yardstick Exit plan through its insertion and search waves, and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, on evidence from the legacy-displacement literature, dated classifieds migrations and Google's guidance.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Fowler and Cartwright, Horn and Lewis; Marktplaats, Kleinanzeigen, Vinted, Scout24 and Subito accounts; Google Search Central; Veldmark.",
+            "shows": "Tells the reader what kind of evidence to expect."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces every section in order."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The three terms the chapter owns.",
+          "introduces": "The order in which the chapter uses them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Yardstick in 2027",
+      "controlling_idea": "Yardstick's inventory and its fixed dates pose the chapter's question: what moves in which order, how do we know each move worked, and how do we go back.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Gives the coupling and the deadline the plan must handle."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From what Yardstick is, to its measured inventory, to the question the dates pose, to the seams already built; the question needs the inventory first, and the existing seams come last because they are the first partial answer to it and show that no write has moved yet."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's promise to start with Yardstick.",
+        "introduces": "Veldmark's monolith in 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Yardstick, Tradeyard's PHP monolith since 2006 on MySQL in an Amsterdam colocation, still owns the listing table, insertion, most page rendering, alerts, pro tools, the back office and Safe Deal integration for 13.2 million live listings in four countries, although about 40 microservices have grown around it since 2019.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "13.2 million live listings, about 2.3 million new listings a week, 31 million monthly users; about 40 microservices on AWS since 2019.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the scale of what must keep running during the move."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "In July 2027 Daan Visser and Ingrid Halvorsen set up the Yardstick Exit enabling team, whose September 2027 inventory, headed by 23 capabilities to move or retire, is the starting point for the plan.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "23 level-2 capabilities; 214 columns in `ads` read by 38 modules; 47 cron jobs, 9 ownerless; 312 admin actions; 118 app endpoints; 14 systems reading tables directly (26 in March); 16 teams tied to Yardstick deploys (19 in March); colocation contract ends 31 December 2029.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows each kind of hidden coupling a slice must resolve, and why the decommissioning date is a contract date."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What Yardstick still owns.",
+            "introduces": "The inventory that measures it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The board's three Common Ground milestones (insertion out in Q2 2028, search out in Q4 2028, decommissioning at the end of 2029) turn the inventory into the chapter's question: what moves in which order, how do we know each move worked, and how do we go back if it did not.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Milestones fixed in January 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows that the dates are given and the method is open."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The inventory.",
+            "introduces": "The question the dates pose about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Two seams already exist in 2027, Yardstick Relay publishing Listing event contract v1 by change data capture and CloudFront route rules in front of the page applications, but neither moves a single write.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Relay since 1 July 2027; the web-layer route rules since May 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows what the plan can build on and what remains: the write paths."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The question of what moves and how.",
+            "introduces": "The groundwork already in place and its limit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: The Vocabulary of Displacement",
+      "controlling_idea": "Migration strategies, seams, transitional components, run modes, the behavior catalog and stage gates are distinct tools that the rest of the chapter combines.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Defines the seams, the parity trap and the gates the thesis uses."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Strategy first, because it decides whether seams are needed; seams and their components next; run modes after; the behavior catalog after the run modes, because shadow comparisons feed it; gates last, because their exit criteria use the catalog and the run modes. With the catalog after the gates, G0 would name a term the reader has not met."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Yardstick's question and its two seams.",
+        "introduces": "The vocabulary needed to answer it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "Rewrite, re-platform and incremental re-architecture are three different strategies that change different things at different risk.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Strategy table: rewrite (no documented classifieds success found), re-platform (ImmobilienScout24 to AWS from 2018, 'Erst umziehen, dann optimieren'), re-architect incrementally (AutoScout24 from November 2014, 'very time-intensive').",
+              "source": "Computerwoche, 2019",
+              "shows": "Separates the strategies by what changes and what each costs."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Scout24 ran both strategies a decade apart, and the author's reading is to re-architect when the runtime or data model blocks the target and to re-platform first when the code fits and a deadline dominates, which is why Yardstick's plan strangles the core to decommissioning by the end of 2029 and keeps a lift of whatever is left only as an undecided contingency.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Yardstick has both problems: a colocation end date and a 214-column table.",
+              "shows": "Applies the rule to the chapter's example."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three strategies and the Scout24 examples.",
+            "introduces": "The rule for choosing between them and its application to Yardstick.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A seam is a place where traffic or data can be diverted from the old system to the new one, and a listing marketplace has four natural seams: edge routing, backends-for-frontends, event interception and branch by abstraction.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seam table with Subito's 2023 CDN routing on Akamai and Fowler's 2014 branch by abstraction.",
+              "source": "Adevinta Tech Blog, 2023; Fowler, 2014",
+              "shows": "Shows what each seam diverts and by what mechanism."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The incremental strategy chosen for Yardstick's core.",
+            "introduces": "The seams it runs behind.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Cartwright, Horn and Lewis name the displacement patterns this chapter uses, Event Interception, Legacy Mimic and Transitional Architecture, and present Feature Parity as a common cause of failure.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'even defining and agreeing current \"as is\" functionality was a huge effort'",
+              "source": "Cartwright, Horn and Lewis, martinfowler.com, 2024",
+              "shows": "Shows why feature parity fails and grounds the names the chapter uses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four seams.",
+            "introduces": "The published pattern names for the components around them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Transitional components such as Yardstick Relay and every reverse-synchronization job exist to be switched off, so they need owners, budgets and end dates like any other system.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Transitional Architecture as a pattern.",
+            "introduces": "Yardstick Relay as an instance and the rule it implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Shadow, parallel run and canary differ in what the new system is allowed to do with real requests.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Mode table: shadow output discarded; parallel run with one authoritative output; canary serves a small share.",
+              "shows": "Shows which mode fits which proof."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The components that let two systems coexist.",
+            "introduces": "The ways of running them side by side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Because listing data changes under live shadow traffic, the first comparisons should replay recorded queries on frozen data, as Marktplaats chose in 2015: reproducibility beats realism, and live shadow traffic comes after.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Marktplaats replayed recorded user queries against indices built from a production copy, in small random batches every five minutes.",
+              "source": "Marktplaats Technology, 2015, republished 2017",
+              "shows": "Shows why reproducible differences matter more than live realism at first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Shadow traffic as a mode.",
+            "introduces": "Its weakness on changing listing data.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Feature parity is a trap, and the alternative is a behavior catalog per slice that gives every observable legacy behavior a decision (carry, change or retire) and an owner, built from code, run logs and shadow comparisons.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Feature Parity trap named by Cartwright, Horn and Lewis, and the shadow comparisons just described.",
+            "introduces": "The behavior catalog that replaces feature parity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Retiring is the step most migrations skip: every behavior retired deliberately is cost removed, while one retired by accident is a seller-facing incident.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: a conveyor sorts hidden behaviors into Carry, Change and Retire bins.",
+              "shows": "Pictures the catalog's three decisions."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The catalog's three decisions.",
+            "introduces": "The one most often skipped.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "A slice moves through five gates, G0 contract, G1 shadow, G2 canary, G3 ramp and G4 retire, each with exit criteria and a defined rollback.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the five gates; rollback is a normal transition until G3.",
+              "shows": "Shows the gates as a sequence with a point of no return at G4."
+            },
+            {
+              "kind": "table",
+              "what": "Gate table: exit criteria and rollback per gate, ending in 'None' at G4.",
+              "shows": "Shows that rollback cost rises gate by gate."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The run modes and the behavior catalog.",
+            "introduces": "The gates that use both as evidence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Two rules make the gates useful: exit criteria are numbers agreed before the gate, and the move from G3 to G4 is a decision with an owner because rollback stops being cheap there.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The five gates.",
+            "introduces": "The two rules without which they are ceremonies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: Running Two Systems on One Marketplace",
+      "controlling_idea": "Running two systems on one marketplace needs one writer per record, an old system kept current, layered parity for search, stable URLs, kill switches and outcome measures.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Supplies the general design each claim rests on."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The transitional architecture comes first and the topics follow by what they protect: data (writers, listings, accounts), search, URLs, rollback, and progress. Data comes first because the search index is rebuilt from the data stream and URLs depend on stable listing identifiers; rollback and measures come last because they depend on all earlier parts."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The gates and the two rules.",
+        "introduces": "The architecture that makes gates and rollback possible.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Figure 4 shows Tradeyard's transitional architecture in mid-2028, after insertion has moved and before search, with three seams deciding which system serves what; four principles follow from it.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: edge routes, BFF routing and the event stream; the new listing service as system of record for its listings; the Legacy Mimic writer.",
+              "shows": "Shows the shape of a strangler for any listing monolith."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Read paths move before write paths, because pages and read APIs can be fed from event-stream read models while the monolith stays the only writer, delivering visible value at low data risk.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The platform research's reference-architecture inference: read-heavy, SEO-critical page types first; insertion, payments and messaging last.",
+              "shows": "Labels the order as an inference and gives its reason."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The transitional architecture and its four principles.",
+            "introduces": "The first: order of slices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Each listing has exactly one writer at any moment, decided per listing at creation by seller cohort, because dual writes from application code corrupt two systems at once.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Read paths first.",
+            "introduces": "The rule for the write path when it moves.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The old system is kept current but not authoritative: the Legacy Mimic writer copies the new service's listings into the `ads` table, flagged as externally owned, which keeps modules in Yardstick working and rollback cheap until G4.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "One writer per listing.",
+            "introduces": "How the other system still sees listings it does not write.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Loops between Relay and the Mimic writer are broken by `listing_version` and owner, not by time.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Changes flowing both ways.",
+            "introduces": "The echo problem and its fix.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Listings and accounts are migrated differently because listings are short-lived and accounts are not.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "How the two systems stay consistent while both run.",
+            "introduces": "Moving the data itself.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Most listings need no migration because they end within days or weeks; only long-lived listings and the archive are backfilled, through Relay's snapshot mode and the backfill topic so downstream copies are corrected rather than duplicated.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The difference between listings and accounts.",
+            "introduces": "The listing side.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Accounts need a per-user migration (at Veldmark the identity team's slice), and Kleinanzeigen's 2025 account is the best public example: a reverse proxy routing by migration state, CDC instead of dual writes with up to a minute's delay accepted as a business decision, a per-user state machine and version-based loop breaking.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kleinanzeigen 2025: outbox rejected for polling load and missed write paths; states identified to transitioned; statement-based binlogs without GTIDs needed row-format replicas for CDC; the post names neither platform.",
+              "source": "Berlin Tech Blog, 2025",
+              "shows": "Shows a documented per-user migration and a constraint to check early."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Listings, which mostly need no migration.",
+            "introduces": "Accounts, which do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Veldmark keeps the case's lessons (one writer, CDC, loops broken by version), and its accounts move with Veldmark ID in 2028, so the per-user migration is the identity team's slice, not Yardstick Exit's.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The per-user migration pattern.",
+            "introduces": "Where Veldmark puts it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "Three facts shape a search migration: results will differ, the index must be rebuildable from a source other than itself (otherwise the group has Search as System of Record), and analyzers carry years of tuning.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "eBay Kleinanzeigen (now Kleinanzeigen) rebuilt its Elasticsearch cluster from a compacted Kafka topic in under 30 minutes (2019).",
+              "source": "Berlin Tech Blog, 2019",
+              "shows": "Shows a rebuildable index, the cure for Search as System of Record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Data migration of listings and accounts.",
+            "introduces": "The search slice, which buyers notice first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Relevance parity is therefore measured in four layers, analyzer parity, offline replay, shadow traffic and an online experiment, each catching different faults.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Layer table with method, what it catches and typical gate, ending in non-inferiority on the primary outcome.",
+              "shows": "Shows parity as a set of gates, not one comparison."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three facts.",
+            "introduces": "How parity is measured given them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The online experiment is the definition that matters: the question is whether buyers find and contact sellers at least as well, and user-level randomization is usually adequate for an engine swap.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The four layers.",
+            "introduces": "The one layer that decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Marktplaats's 2015 replacement of Voyager by Elasticsearch shows the sequence: same interfaces, reused tests, the recorded-query replay met under shadow traffic, a 1%, 50%, 100% ramp with Voyager kept warm, and failures from hidden functionality.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Two to three developers, about three months, zero downtime; 'hidden functionality in other parts of the system'.",
+              "source": "Marktplaats Technology, 2015, republished 2017",
+              "shows": "Shows the layered sequence working and the hidden behavior it surfaces."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The definition of relevance parity.",
+            "introduces": "A documented migration that followed the sequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Vinted modernized its indexing path before its engine, the order Veldmark follows, and then moved to Vespa with shadow traffic and A/B tests.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Visibility latency from up to seven minutes to about one (2023); six Elasticsearch clusters to one Vespa deployment May 2023 to April 2024; latency 2.5 times better; change-to-visible 300 s to 5 s.",
+              "source": "Vinted Engineering, 2023 and 2024",
+              "shows": "Shows the indexing-first order and an outcome-tested engine swap."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Marktplaats's sequence.",
+            "introduces": "A second migration and its ordering.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A marketplace's URL space is its search-engine inventory, so every URL a migration changes is a signal search engines must relearn.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 40 million indexed Tradeyard URLs at the start of 2027; 46% of web sessions from organic search.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows how much traffic rides on URLs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Search, the inventory buyers see.",
+            "introduces": "URLs, the inventory search engines see.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Google's site-move guidance prescribes mappings, direct permanent redirects kept at least a year, new sitemaps and an expected ranking fluctuation, and Kleinanzeigen kept its old domain accessible for years after its 2023 rebrand.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'generally at least 1 year'; 'expect temporary fluctuation in site ranking during the move'.",
+              "source": "Google Search Central, updated 2026",
+              "shows": "Shows the cost of any URL change."
+            },
+            {
+              "kind": "fact",
+              "what": "The previous domain was to 'remain accessible for several more years' (May 2023).",
+              "source": "Adevinta, 2023",
+              "shows": "Shows a classifieds company treating URLs as long-lived."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "URLs as inventory.",
+            "introduces": "What the authority on search says a change costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "The author's rule is not to change URLs because the platform changed: keep listing identifiers stable, route by pattern at the edge, put unavoidable changes in a redirect registry with monitoring, and treat status codes as part of parity.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cost of a URL change.",
+            "introduces": "The rule that avoids it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Each seam needs a kill switch an on-call engineer can flip in minutes without a deploy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Switch table: edge route weight, BFF routing flag, consumer switch, search engine selection, with scope and rollback effect.",
+              "shows": "Shows a switch for every seam."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Stable URLs, the last thing a move must not change.",
+            "introduces": "The switches that move traffic back.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A switch is only as good as the data behind it, so rollback must be rehearsed with real data at G2 and before every ramp step.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The switches.",
+            "introduces": "The data they depend on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Progress is measured by outcomes of the migration, not lines of code moved.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Measures: capabilities left in the legacy system (23 at Yardstick in 2027), traffic share, direct readers, tied teams, transitional components with end dates, business guardrails, double-running cost.",
+              "shows": "Shows what to put on the progress dashboard."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Rehearsed rollback.",
+            "introduces": "How to know the migration is moving forward.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Double running costs real money, as Adevinta's 2025 report shows, so every plan should carry the double-running cost as a line item.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adevinta attributed a more-than-doubling of cloud-provider emissions to 'parallel running of central and local services during a transitional period'.",
+              "source": "Adevinta, Strategic Report 2025, published 2026",
+              "shows": "Shows that parallel running has a visible cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The last row of the measures table.",
+            "introduces": "Its evidence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Veldmark's Yardstick Exit Plan",
+      "controlling_idea": "Veldmark's plan applies the method to Yardstick: waves in order, insertion through all gates, search judged by relevance parity, URLs unchanged and progress measured.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Shows every claim at work with numbers."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Chronological per slice: the plan, then the insertion slice gate by gate in 2028, then the search slice, URLs and the year-end measures; within a slice the gates only make sense in their order, and the year-end measures need both slices first."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The general architecture.",
+        "introduces": "Veldmark's plan, which answers the scene's question.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "The Yardstick Exit plan, approved in October 2027, moves 23 capabilities in waves 0 to 6 ordered read paths first, then the write path that unblocks most teams, then search, then the long tail, with the archive last.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Wave table 0 to 6, July 2027 to 31 December 2029, with slices and seams.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the ordering principle applied to Yardstick."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The plan leaves messaging and Safe Deal in Yardstick until 2029 because they depend on accounts, which move with Veldmark ID during 2028; moving them earlier would mean migrating them twice.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The wave order.",
+            "introduces": "Why some slices wait.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The insertion flow is the slice that unblocks the most teams, and as a write path its gates are strict.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The plan as a whole.",
+            "introduces": "Wave 2, followed gate by gate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "At G0 (Q4 2027) the new listing service publishes the insertion API and the event contract through an outbox, and the supply teams catalog 146 insertion behaviors: carry 82, change 23, retire 41.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Retired: a free relisting button that duplicated listings older than 30 days (Seeing Double) and a Belgian title template appending the municipality in capitals.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the catalog retiring behavior deliberately."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Insertion as the slice.",
+            "introduces": "Its first gate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "At G1 (January to March 2028) shadow comparison finds 6.8% of submissions differ in week one and nine behaviors the catalog missed, and the 0.5% unexplained-difference threshold is met in mid-March.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A cron job turning a €0 price into 'price on request' in Portugal; a Polish fee waiver for accounts created before 2015.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows shadow comparison finding what reading missed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "G0.",
+            "introduces": "G1.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "At G2 (April 2028) Portugal, the smallest market and without Safe Deal, goes first at 1% then 10% and runs straight into its own ramp (100% on 28 April), with the Mimic writer at about 3 seconds p95, two rollback rehearsals with real cohorts and liquidity guardrails within tolerance.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 210,000 new listings a week; guardrails: share published, time to searchable, first-contact rate within 48 hours, tickets per thousand.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a canary judged on liquidity outcomes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "G1.",
+            "introduces": "G2.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "At G3 (May to June 2028) Poland, Belgium and the Netherlands ramp by seller cohort over two to three weeks each, pro sellers last, and by 30 June all new Tradeyard listings are created in the new service.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Per-country table: weekly volume, canary start, 100% date (28 April, 26 May, 23 June, 30 June), rollbacks.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the ramp and that rollbacks were used and short."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "G2.",
+            "introduces": "G3.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "G4 for insertion waits until Q1 2029, and the one point of no return reached earlier, VAS purchase through Tally at insertion, is accepted in May 2028 as a recorded forum decision.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "G4 set for Q1 2029, after the last Yardstick-created listing ends; VAS purchase through Tally at insertion cannot be rolled back; the forum accepts that loss in May 2028 for that feature only.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows a point of no return decided and recorded before it is reached."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "G3.",
+            "introduces": "G4 and the point of no return.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The search slice follows the September 2027 search platform decision, and its new index is built from the compacted listing state topic, not from Yardstick's Solr, so Search as System of Record does not arise.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Wave 2.",
+            "introduces": "Wave 3, search.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The parity gates for Tradeyard Portugal were set before the migration began.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Analyzer set of 2,400 queries (31 differences, 6 synonyms restored); zero-result 3.1% to 2.9%; median RBO@10 0.71, reported not gated; p95 180 ms against 250 ms; sessions with a contact 8.8% against 8.7% (not significant).",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows layered parity gates with numbers agreed in advance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The search slice.",
+            "introduces": "Its gates and results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The overlap line shows why identical results are the wrong target: fewer than three-quarters of the top ten agreed, yet buyers contacted sellers at the same rate, so the gate passed and the other countries followed on the same gates.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: differently ordered results, equal contacts.",
+              "shows": "Pictures parity of outcomes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The gate results.",
+            "introduces": "What they mean for the parity definition.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "No listing URL changed in 2028, because the new service's identifiers continue Yardstick's numeric sequence and older search URLs are permanent redirects kept without an end date.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Group listing identifiers `vm:tradeyard:<country>:<id>` whose local part continues Yardstick's numeric sequence from a reserved block; legacy search URLs redirected through the registry without an end date.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows URL stability achieved by design rather than by redirects."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Search moved.",
+            "introduces": "URLs kept.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "During each wave the SEO team watches indexed pages, crawl errors, organic sessions and organic contacts per page type and country, and in the insertion ramp none moved outside normal variation.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Indexed pages, crawl errors, organic sessions and organic contacts per page type and country; none outside normal weekly variation in the insertion ramp.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the URL decision checked by measurement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The decision not to change URLs.",
+            "introduces": "The measurement that checks it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "By December 2028 the progress measures show most of Yardstick gone: capabilities only in Yardstick fell from 23 to 6, and every new listing was created outside it.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Sep 2027 vs Dec 2028: 23 to 6 capabilities; 31% to 88% page views; 0% to 100% new listings; 14 to 3 direct readers; 16 to 5 tied teams; 2 to 1 deploys a week; transitional components 2 to 3, all with 2029 end dates.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows progress measured as outcomes, as the architecture section recommended."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The waves of 2028.",
+            "introduces": "Where they left Yardstick at year end.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each choice in the method has conditions under which it is wrong.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "how": "States the limits of the claims."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Veldmark's choices.",
+        "introduces": "The alternatives and their limits.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "controlling_idea": "Each choice in the plan is right under some conditions and wrong under others, as the table shows.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Trade-off table: strategy, slice order, synchronization, parity, shadow method, URLs, with when right and when wrong.",
+              "shows": "Shows the limits of each recommendation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Verticals differ in their migration risk, cohort and the parity that matters.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Adapts slice order and parity to each vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The trade-offs.",
+        "introduces": "How they fall in each vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "controlling_idea": "Professional verticals have natural migration cohorts but depend on external parties changing their integrations, a dependency that a stable external contract such as Veldmark's Supply Contract v1 removes.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vertical table: main risk, who must change integrations (up to 160 vendors at Hearthly), natural cohort, parity that matters, SEO sensitivity.",
+              "shows": "Shows how the method changes by vertical."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Migrations fail in recurring ways, each the absence of one element of the method.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Shows what happens when each claim is ignored."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How the method works per vertical.",
+        "introduces": "How migrations go wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Ten failure modes recur in marketplace migrations, from the rewrite that never ships to the forgotten consumer, each with its prevention.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect runs the migration as a portfolio of owned slices, funds seams and double running, decides points of no return, and puts liquidity into every gate.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the claims into group-level decisions."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Ownership first because every other decision needs an owner; seams, points of no return, funding and liquidity gates follow; decision rights last because they assign the earlier decisions. With decision rights first, the reader would meet assignments for decisions not yet named."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "Treat the migration as a portfolio of slices, each owned by a team of the target organization with a catalog, numbered gates and a rollback answer, while the enabling team plans and helps.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Spend early on seams, which deliver little visible value alone but make every later wave reversible.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Slices with owners.",
+            "introduces": "The investment that makes them reversible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Decide the points of no return in advance as forum decisions with a recorded rationale.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Reversibility.",
+            "introduces": "The moments where it ends.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Fund double running explicitly and shorten it, without skipping gates to do so.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Points of no return.",
+            "introduces": "The cost of the period before them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Protect liquidity by putting contacts, publication, billing and organic traffic into every gate, because a migration that passes every technical check and loses contacts has failed.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Cost and speed.",
+            "introduces": "What the business actually judges.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The owning team proposes gate criteria, the advice forum reviews them and the G3-to-G4 decisions, the CTO decides sequence changes that move funding or dates, and finance signs off billing parallel runs, while the progress measures are watched.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five recommendations.",
+            "introduces": "Who decides each and what to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions test whether a migration plan has the method's elements.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "One question per element."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that test them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "form": "list",
+          "controlling_idea": "Ten questions test a migration plan in a design review, from slice ownership to consumers that still read the legacy database.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Migration to AI",
+    "synthesis": "Seams, gates, the behavior catalog and outcome parity together keep every step reversible until a recorded decision ends it, which is what bounds the liquidity a live migration puts at risk.",
+    "so_what": "A Chief Architect can then retire a monolith on a contract date without losing traffic, sellers or revenue, and can show the business each step's risk in liquidity terms.",
+    "callback": {
+      "to": "The opening claim that the only choice is how much liquidity the migration puts at risk.",
+      "how": "The conclusion shows the risk bounded in Yardstick's numbers: six capabilities left, no URL changed, contacts per search session held."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Build the seams first, write each slice's gates in liquidity numbers before it starts, and record each point of no return as a decision."
+    },
+    "hand_off": {
+      "to": "ai-in-listing-systems",
+      "relationship": "cause_effect",
+      "carries_over": "The platform that replaces Yardstick is delivered capability by capability, and its structured services are what the next technology shift will run on.",
+      "introduces": "Generative AI and agents across the listing lifecycle and the control layer around them."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from Yardstick's inventory to the review questions.",
+      "introduces": "What the method adds up to, answered against the opening.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p66",
+        "controlling_idea": "The seams, gates, catalog and parity measures add up to one property, that every step stays reversible until a recorded decision ends it, so the liquidity Yardstick's retirement puts at risk is bounded by design: by December 2028 six capabilities remain, no listing URL changed and contacts per search session held.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "23 to 6 capabilities; no listing URL changed in 2028; 8.8% vs 8.7% sessions with a contact.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the opening's question of how much liquidity the move puts at risk."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "States what the sections add up to and answers the opening."
+        }
+      },
+      {
+        "id": "p67",
+        "controlling_idea": "Yardstick's replacement is delivered capability by capability, and its structured services (the taxonomy and attribute service, Listing Search API v1, the shared trust-and-safety platform) are what the next technology shift will run on, which ai-in-listing-systems takes up.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Hands the new platform's structured services to the next chapter."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The bounded, reversible migration.",
+          "introduces": "The new platform as the base for AI.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Event contract design, outbox and CDC mechanics.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Search engine choice and index design.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "URL service, redirect registry and landing pages.",
+      "covered_in": [
+        "web-and-seo-architecture"
+      ]
+    },
+    {
+      "topic": "Account and identity migration design.",
+      "covered_in": [
+        "identity-and-verification"
+      ]
+    },
+    {
+      "topic": "Post-acquisition consolidation sequence.",
+      "covered_in": [
+        "platform-consolidation"
+      ]
+    },
+    {
+      "topic": "Team design.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Thesis rubric (2026-11-12, fresh agent): FAIL on how_why only. The journal spec's how_why lists Yardstick evidence (inventory, shadow diffs, Portugal parity figures) but does not state the reasoning (why seams that route back in minutes cap the loss, why read paths go first, why liquidity outcomes are the right exit criteria). The journal spec is not edited from this pass; the author decides whether to rewrite how_why there. The rubric also noted mild wandering: S2's one writer, S6's rehearsal and double-running cost and S1's end dates go beyond the claim's wording."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Defined relevance parity as non-inferiority on contacts per search session, with overlap reported but not gated."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept accounts out of Yardstick Exit and inside the Veldmark ID slice, to avoid migrating accounts twice."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Added the Amsterdam colocation end date (31 December 2029) as the reason the decommissioning date is hard."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Ordered waves read paths first, insertion second, search third, messaging and Safe Deal last, because the last depend on accounts."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit set to 7,164 by check_draft's count: spec.md set none, so the published prose (6,823) plus 5%.",
+      "rejected": [
+        "The style guide's 7,500-word chapter range, which is not a limit the old spec set."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria from spec.md: strategy choice with the Scout24 contrast rewritten as AC-4 and the URL rule as AC-5 (both minor, cold reader); seams and transitional components, stage gates with rollback, and relevance parity are covered by AC-1; dated-evidence, ledger-consistency and 'includes tables' criteria dropped as inventories (ledger agreement was checked during conversion)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes) acted on: merged the one-sentence 'Four principles follow from it' (old p19) into p18; p28 now names Search as System of Record before in-practice p50 uses it; p31 points back to the replay in p15; p06 gives the inventory headline (23 capabilities); in-practice redeclared as chronological per slice; ca-view redeclared as prerequisite_order to match its reason.",
+      "rejected": [
+        "Merging p27 (accounts move with Veldmark ID) into p43: they make different points (whose slice accounts are; why messaging waits) and merging would move published text across sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate): both flow readers again met the behavior catalog in the G0 gate before its definition, a fault of the declared order. Moved p36 and p37 (Feature parity and the behavior catalog, with Figure 4) from the architecture section into Concepts, after the run modes and before the gates; rewrote the transition_in of p36, p16 and p38; removed the round-1 forward gloss in G0. Also added opening sentences that express the declared transitions into Concepts, Architecture and the Chief Architect's View, a sentence in p27 naming the lessons of the Kleinanzeigen case that Veldmark keeps, and a link for the March capability map.",
+      "rejected": [
+        "Keeping the order with a longer gloss: the round-1 gloss did not resolve it for either reader."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 revisions without reordering: the G0 row glosses the behavior catalog with a pointer forward (instead of moving the catalog subsection into Concepts), the inventory row points forward to Relay and the contract, the search extraction is glossed, the hand-off names long-term-evolution as the home of the replacement question, and Vertical Differences, Failure Modes and Questions open with one transition sentence each (the vertical table now follows its paragraph). The roadmap, progress lead-in, Trade-offs lead-in and synthesis were shortened to stay within the word limit.",
+      "rejected": [
+        "Moving the behavior-catalog subsection (p36, p37) into Concepts before the gates: a larger move of published text than a forward gloss needs.",
+        "Moving Vertical Differences after Failure Modes (one reader only)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added units p04 (roadmap), p55 (lead-in that says what the end-2028 progress table shows), p56 (Trade-offs lead-in) and p66 (synthesis and callback), because the published text had no roadmap, two unexplained tables and a conclusion that only handed off."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation (rule 3, toward the ledger): p10 no longer says the plan lifts whatever is left in 2029; the ledger decommissions everything by 31 December 2029 and schedules no lift, so p10 now calls the lift an undecided contingency should the last wave slip (this also settles the old open question on the contingency, which stays undecided in the scenario). AC-4's expected answer and p10's controlling idea updated to match."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 3: 'six waves' in p42 changed to 'waves 0 to 6', matching the wave table, the ledger (waves 0-6, wave 0 being events, indexer and SEO pages in H2 2027) and the Part VIII intro."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 3: p48 'over about three weeks' changed to 'over two to three weeks' (ledger: PL 5-26 May, BE 2-23 June, NL 16-30 June 2028)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 3/8: Portugal's 100% on 28 April (ledger) inside the April canary is now explained in p47 (Portugal's canary runs straight into its own ramp). 'Rehearsed twice' (p47) against '1 (rehearsal)' (table): the ledger gives no count; kept the prose, which matches p39's rule (rehearse at G2 and again before each ramp step), and changed the table cell to '2 (both rehearsals)'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kleinanzeigen account case (p26), corroborated detour in rounds 2-3: kept every dated fact and reframed instead of trimming; p26 now opens by saying that at Veldmark the per-user migration is the identity team's slice and that its design borrows from Kleinanzeigen's case, and p27 names the lessons Veldmark keeps.",
+      "rejected": [
+        "Trimming the case (cuts published, dated evidence).",
+        "Moving p27 before p26 (the readers asked for Veldmark's choice up front, which a framing clause gives without reordering)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Cheap minor round-3 fixes: 'The rollbacks, in the table below, were short.'; search extraction glossed as the last countries' search moving out of Yardstick; p64 names the September 2027 to December 2028 progress table; p66's appositive made a relative clause. Not changed (published wording kept): the 'reference-architecture inference' attribution in p20 and the per-feature point of no return in p49."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 2: length.max_words raised from 7,164 to 7,300 (+1.9%) for the fixes above (draft now 7,223 words)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Open questions moved here, accepted under the author's delegation, 2026-11-12: the Kleinanzeigen post does not name the new platform (kept as a writing rule: never attribute it to an Adevinta platform); no classifieds URL-migration post-mortem with traffic data exists (revisit if one appears); flow-rubric notes not taken (Figure 4 framing, one-paragraph Vertical Differences, p27/p43 merge, Marktplaats in p15/p31, Feature Parity in p12/p36, p54 placement, read-path wave detail, the forgotten consumer, terms defined in the introduction) and round-2 minor findings (Figure 4 dating, p54 SEO numbers for the insertion ramp only, four seams vs three in Figure 4) are kept as published."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, and ai-in-listing-systems' transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "event-driven-listings, search-architecture, web-and-seo-architecture, publication-pipeline, products-and-entitlements, saved-searches-and-alerts, case-adevinta, organizing-marketplace-engineering",
+      "contributed": "Neighbouring contracts and Veldmark decisions the chapter relies on."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Part 1; _research/brief-ebay-classifieds.md Parts 3.1, 5.1, 5.2; _research/scenario-ledger.md",
+      "contributed": "Documented migrations and Veldmark facts, including the modernization-and-migration ledger line and the [editor] line on Yardstick's country copies."
+    },
+    {
+      "kind": "external",
+      "ref": "Fowler, Strangler Fig Application (2024) and Branch By Abstraction (2014); Cartwright, Horn and Lewis, Patterns of Legacy Displacement (2024)",
+      "contributed": "Strategy, seams and displacement pattern names."
+    },
+    {
+      "kind": "external",
+      "ref": "Google Search Central, Site moves with URL changes (updated 2026)",
+      "contributed": "URL migration rules."
+    },
+    {
+      "kind": "external",
+      "ref": "Marktplaats (2015), Berlin Tech Blog (2019, 2025), Vinted (2023, 2024), InfoQ (2016), Computerwoche (2019), Adevinta (2023, 2026)",
+      "contributed": "Dated classifieds migration evidence."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (20 pass, 11 fail; 4 blocking). Close: figures renumbered in order of appearance; the four SEO services linked; remaining failures recorded in open_questions for the author. The check report is stale after these fixes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 2 (escalate: the behavior catalog used in G0 before its definition, a fault of the declared order): Feature parity and the behavior catalog (p36, p37) moved into Concepts before the gates; transitions rewritten; flow rubric rerun (sound with notes; two section rationales sharpened); draft revised locally at five other units; round 3 run. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (escalate: two spec-fault findings, the lift of p10 and the behavior catalog used before definition): draft revised locally (forward glosses, transition sentences, hand-off), spec decision log and open questions updated; round 2 run. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pipeline): reconstructed from the published text; added roadmap p04, progress lead-in p55, Trade-offs lead-in p56 and synthesis p66; merged old p19 into p18 after the flow rubric; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong: Seeing Double, Search as System of Record, Multiplier Creep, Fast Mail for Fraudsters, The Copy-Paste Country, Deal-Shaped Architecture, The Forced Fit, Billing by Guesswork, Set-and-Forget AI. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagram(s) with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); known differences from the source: Figure 2: kept attempt 1: prints the words 'START' and 'END' beside the start and end dots (otherwise correct); Figure 3: kept attempt 4: 'CDC' arrow dashed instead of solid; 'Yardstick PHP monolith'–'Yardstick MySQL' line has an arrowhead; MySQL box icon is a dolphin resembling the MySQL logo. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Term alignment with the glossary: 'projection' → 'read model', 'copy register' → 'consumer registry', 'filter compiler' → 'query compiler', where they occur on this page. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: Excerpt lists all five stage gates, starting with contract, to match the body and glossary. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,419 → 5,467 prose words; lead now ties the chapter to Part VIII (after consolidation and organization) and names what depends on it; Vinted and URL paragraphs reordered point-first; no headings renamed; spec unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 2 heading(s) aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: American spelling; figure caption spacing; Vinted Vespa figures re-verified. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation auto-resolved under the author's delegation: timeline corrected toward the ledger (no scheduled lift, waves 0 to 6, two to three weeks, Portugal's April ramp, rehearsal count), Kleinanzeigen case reframed, minor fixes, max_words 7,300; round 4 run. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7300
+  }
+}

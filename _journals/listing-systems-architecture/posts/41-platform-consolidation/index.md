@@ -35,11 +35,13 @@ The public record of classifieds groups is unusually rich on this topic, because
 
 This chapter opens [[part-8]], the Chief Architect's agenda, by asking how an acquired marketplace joins the shared platform that Part VII built; it relies on the tenancy model of [[multi-country-platforms]]. It owns three terms: the **consolidation sequence** (the order and gates in which an acquired marketplace's capabilities move onto group platforms), the **synergy case** (the quantified hypothesis of savings and growth that justifies the integration, with its costs) and the **brand migration** (moving users, sellers, partners and search engines from one consumer brand to another). The later chapters of Part VIII build on it: [[organizing-marketplace-engineering]] decides who owns each moved capability, [[modernization-and-migration]] supplies the techniques for moving a live system, and [[case-adevinta]] tells Adevinta's full record.
 
+The chapter starts from Veldmark's question about Casavista and Keybridge, defines the options and terms, sets out the gated sequence and separate brand workstream, follows Veldmark's review, its ledger and one overlap between its own brands, and closes with the trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.
+
 ## Setting the Scene at Veldmark: Where Are the Casavista Synergies?
 
 On **Thursday 14 October 2027**, Henrik de Boer, Veldmark's Group CEO, forwarded Ingrid Halvorsen a question from the private-equity owner's operating partner ahead of the 2028 budget. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), had bought two businesses into its real-estate portfolio in two years. **The question was blunt: where were the synergies that had been paid for?**
 
-The first business was **Casavista**, a Spanish property portal bought in 2025 and rebranded **Hearthly.es** in 2026. Its deal case had promised **€18 million** a year of run-rate synergies by the end of 2027: **€8 million** from retiring Casavista's platform and hosting, **€4 million** from overheads and **€6 million** of revenue from selling Hearthly's agency packages and new-build campaigns in Spain. In October 2027 the synergy tracker showed **€9.6 million**: €3.9 million of technology savings, €3.6 million of overheads and €2.1 million of revenue. One-off integration costs had reached **€11 million** against **€6 million** planned. The listings and search had moved onto Hearthly's platform on Google Cloud in 2026, but the Spanish login, the Casavista review tool used by moderators and the agency billing still ran on Casavista's code, in Casavista's hosting, at about **€2.6 million** a year.
+The first business was **Casavista**, a Spanish property portal bought in 2025 and rebranded **Hearthly.es** in 2026. Its deal case had promised **€18 million** a year of run-rate synergies (the yearly gain once fully delivered) by the end of 2027: **€8 million** from retiring Casavista's platform and hosting, **€4 million** from overheads and **€6 million** of revenue from selling Hearthly's agency packages and new-build campaigns in Spain. In October 2027 the synergy tracker showed **€9.6 million**: €3.9 million of technology savings, €3.6 million of overheads and €2.1 million of revenue. One-off integration costs had reached **€11 million** against **€6 million** planned. The listings and search had moved onto Hearthly's platform on Google Cloud in 2026, but the Spanish login, the Casavista review tool used by moderators and the agency billing still ran on Casavista's code, in Casavista's hosting, at about **€2.6 million** a year.
 
 The second business was **Keybridge**, the agent CRM bought in 2024. Its deal case had included **€7 million** a year of revenue synergies from using Keybridge's insight into its 9,800 agency customers to sell them Hearthly packages. In March 2027 Veldmark had committed that **no Keybridge agency data would be used by Hearthly for ranking or sales targeting**, because agencies would otherwise leave a CRM that publishes their listings to Hearthly's competitors. That line of the synergy case was now not delayed but forbidden.
 
@@ -51,20 +53,20 @@ Ingrid's answer to the board, the **consolidation review** presented on **Tuesda
 
 ### Integration options
 
-An acquirer has five integration options for an acquired marketplace, plus the option to sell it. They differ in what is shared and in how reversible the result is.
+The review's three arguments use four concepts: the integration options and the chapter's three terms. An acquirer has five integration options for an acquired marketplace, plus the option to sell it. They differ in what is shared and in how reversible the result is.
 
 | Option | What changes | What stays | Reversibility | Documented example |
 | --- | --- | --- | --- | --- |
 | **Hold separate** | Ownership, finance, board reporting | Brand, product, platform, organization | High | eBay's 2004 statement that Marktplaats would be operated "as a separate business" ([eBay, 2004](https://www.sec.gov/Archives/edgar/data/0001065088/000129993304001734/exhibit1.htm)) |
-| **Federate under group controls** | Security baseline, access, finance close, data protection, cloud governance | Product and platform | High | Common in practice; Adevinta's account-to-cost-center catalog is a documented control layer (see [[case-adevinta]]) |
+| **Federate under group controls** | Security baseline, access, finance close, data protection, cloud governance | Product and platform | High | Common in practice; Adevinta's account-to-cost-center catalog (every cloud account mapped to a team and the cost center that pays for it) is a documented control layer (see [[case-adevinta]]) |
 | **Share services beneath** | Global components: infrastructure, data, trust, media, engines | Brand, product surfaces, local commercial terms | Medium; depends on separability | Adevinta 2019–2023: shared infrastructure, data, OCR, media and experimentation beneath local marketplaces |
 | **Replatform onto a sibling** | The acquired marketplace moves onto another brand's product platform | Brand, sometimes | Low | eBay's Mexican iBazar retired in 2015 and its users migrated to the acquired Vivanuncios "over the next several weeks" ([eBay, 2015](https://www.ebayinc.com/stories/news/ebay-classifieds-expands-mexico-acquires-vivanuncios/)) |
 | **Merge brands** | One consumer brand replaces another | Inventory and accounts, migrated | Very low | Naspers rebranded acquired local sites as OLX in several countries in 2014 (widely reported, [Wikipedia](https://en.wikipedia.org/wiki/OLX)) |
-| **Divest** | The business leaves the group | — | — | The UK competition authority required the sale of Gumtree UK and Shpock as a condition of Adevinta's eCG acquisition, with transitional services offered for both ([CMA, 2021](https://assets.publishing.service.gov.uk/media/606de28fe90e076f520fecdb/Adevinta-eBay_-_Decision_that_UILs_offer_may_be_acceptable.pdf)) |
+| **Divest** | The business leaves the group | — | — | The UK competition authority required the sale of Gumtree UK and Shpock as a condition of Adevinta's eCG acquisition, with transitional services (the seller keeps running systems for the sold business for an agreed period) offered for both ([CMA, 2021](https://assets.publishing.service.gov.uk/media/606de28fe90e076f520fecdb/Adevinta-eBay_-_Decision_that_UILs_offer_may_be_acceptable.pdf)) |
 
 Options are chosen per business and may be combined over time: a marketplace can be held separate for a year, federated, and then moved onto shared services capability by capability. What should not happen is a choice by default. **An acquisition without a recorded integration option becomes Deal-Shaped Architecture by inertia.**
 
-**Commercial integration can run years ahead of technical integration**, and sometimes should. Two documented cases show how long "hold separate" can last at the brand level while the companies are combined. Immowelt and Immonet were combined under one holding company in 2015, with two sites in Nuremberg and Hamburg ([Immowelt, 2015](https://www.immowelt.de/ueberuns/presse/pressemitteilungenkontakt/immowelt-group/immowelt-und-immonet-schliessen-sich-zusammen/)); in 2024 Immowelt GmbH was renamed AVIV Germany and still ran both immowelt and immonet.de ([Online Marketplaces, 2024](https://www.onlinemarketplaces.com/articles/immowelts-german-parent-company-rebranded-to-aviv-germany)). In France, AVIV launched **Ultimmo** in 2022, a single professional offer across SeLoger, Logic-Immo and Meilleurs Agents ([MySweetImmo, 2022](https://www.mysweetimmo.com/2022/11/03/pros-de-limmo-aviv-group-lance-ultimmo-une-offre-pour-capter-vendeurs-et-acheteurs/)).
+**Commercial integration can run years ahead of technical integration**, and sometimes should. Two documented cases show how long "hold separate" can last at the brand level while the companies are combined. Immowelt and Immonet were combined under one holding company in 2015, with two sites in Nuremberg and Hamburg ([Immowelt, 2015](https://www.immowelt.de/ueberuns/presse/pressemitteilungenkontakt/immowelt-group/immowelt-und-immonet-schliessen-sich-zusammen/)); in 2024 Immowelt GmbH was renamed AVIV Germany and still ran both immowelt and immonet.de ([Online Marketplaces, 2024](https://www.onlinemarketplaces.com/articles/immowelts-german-parent-company-rebranded-to-aviv-germany)). In France, AVIV launched **Ultimmo** in 2022, a single professional offer across SeLoger, Logic-Immo and Meilleurs Agents ([MySweetImmo, 2022](https://www.mysweetimmo.com/2022/11/03/pros-de-limmo-aviv-group-lance-ultimmo-une-offre-pour-capter-vendeurs-et-acheteurs/)). In both, the brands stayed separate while the commercial side combined.
 
 ### Consolidation sequence
 
@@ -89,7 +91,7 @@ A **synergy case** is the quantified hypothesis that combining a business with t
 ![A balance scale weighing savings against traffic loss, seller churn, double running and separation cost, next to an open ledger.](assets/images/41-platform-consolidation/synergy-ledger-scale.jpeg)
 **Figure 2:** *A synergy case is a hypothesis: run it as a ledger that weighs traffic loss, churn, double running and the cost of separating the business again against the savings.*
 
-Adevinta's eCG deal shows the parts a deal model leaves out arriving later. It targeted run-rate cost synergies of **€130–165 million** after three years ([Adevinta, 2021](https://adevinta.com/press-releases/adevinta-completes-acquisition-of-ebay-classifieds-group/)) and recorded **€69 million** of eCG integration expenses in 2023 alone, plus €15 million for the eBay Kleinanzeigen rebrand ([Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf), 2024). Whether the target was met is not public. Two years after the take-private, the 2025 strategic report described "parallel running of central and local services during a transitional period" as the group decentralized ([Adevinta Strategic Report 2025](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf), 2026): separation cost, arriving after the synergies it was never netted against. [[case-adevinta]] traces the whole cycle.
+Adevinta's eCG deal shows the parts a deal model leaves out arriving later. It targeted run-rate cost synergies of **€130–165 million** after three years ([Adevinta, 2021](https://adevinta.com/press-releases/adevinta-completes-acquisition-of-ebay-classifieds-group/)) and recorded **€69 million** of eCG integration expenses in 2023 alone, plus €15 million for the eBay Kleinanzeigen rebrand ([Adevinta Annual Report 2023](https://live.euronext.com/sites/default/files/company_press_releases/attachments_oslo/2024/04/26/616971_Adevinta%20AR%202023.pdf), 2024). Whether the target was met is not public. Two years after new owners took Adevinta private, the 2025 strategic report described "parallel running of central and local services during a transitional period" as the group decentralized ([Adevinta Strategic Report 2025](https://adevinta.com/wp-content/uploads/2026/05/Strategic-Report-2025-Aurelia-UK-Feederco-Ltd.pdf), 2026): separation cost, arriving after the synergies it was never netted against. [[case-adevinta]] traces the whole cycle.
 
 ### Brand migration
 
@@ -106,11 +108,17 @@ The integration option is the first architectural decision after signing, and Fi
 ![Diagram: Choosing an integration option](assets/images/41-platform-consolidation/fig03-choosing-integration-option-regulation-commitments-expected.jpeg)
 **Figure 3:** *Choosing an integration option. Regulation, commitments and the expected holding period remove options before technology is considered; replatforming onto a sibling needs its own investment case, and a brand merger is a separate decision even then.*
 
-The questions are ordered by how absolute they are. A merger-control remedy or a commitment to customers, such as Keybridge's neutrality, rules out integration whatever its savings. A likely sale within a few years rules out deep sharing, because every shared layer becomes separation work. Only then does the question of fit arise.
+The questions are ordered by how absolute they are. A merger-control remedy or a commitment to customers, such as Keybridge's neutrality, rules out integration whatever its savings. A likely sale within a few years rules out deep sharing, because every shared layer becomes separation work. Only then do the two questions of fit arise: whether the business shares a vertical and market with a group brand, and whether product convergence has its own investment case.
+
+### Hygiene before consolidation
+
+The later stages depend on a prerequisite that acquisitions rarely satisfy: the acquired estate must be described well enough to move. OLX's 2026 account of a cross-functional program at OLX Motors is a useful public checklist. Among its outcomes were user identification standardized across 71 services, "with 73% now using modern UUIDs instead of legacy user IDs", 45 components moved to a central secrets manager, backup compliance for tier-1 and tier-2 databases and one deployment-notification service across more than 60 services ([OLX Tech, 2026](https://tech.olx.com/empowering-innovation-through-structure-93c15614f6d3)). None of these is a consolidation step. Each is a precondition for one.
+
+The minimum hygiene I would require before trust and identity move is: one identifier per user and per seller within the acquired marketplace, an inventory of every copy of listing and user data ([[listing-data-management]]), the marketplace's events mapped to the group's listing event contract ([[event-driven-listings]]), and a list of every partner integration with its owner.
 
 ### Stages and gates after an acquisition
 
-Figure 4 is the reference sequence for a marketplace acquired into a group that already has shared platforms; its gates matter more than its exact stage boundaries.
+With that hygiene in place, Figure 4 is the reference sequence for a marketplace acquired into a group that already has shared platforms; its gates matter more than its exact stage boundaries. Each gate is a measured condition, including the acquired marketplace's liquidity against its pre-deal baseline, not a date.
 
 ![Diagram: The consolidation sequence](assets/images/41-platform-consolidation/fig04-consolidation-sequence-each-stage-moves-capabilities.jpeg)
 **Figure 4:** *The consolidation sequence. Each stage moves capabilities that are more visible to users than the last; each gate is a measured condition, not a date. Product convergence and brand migration are optional and decided separately.*
@@ -126,12 +134,6 @@ Figure 4 is the reference sequence for a marketplace acquired into a group that 
 **Payments appear in stage 1 as a contract, not as code.** Consolidating payment-provider relationships (pricing, risk models, onboarding of sub-merchants) is invisible to users and often worth more than merging checkout code. The eCG brands illustrate the pattern: Worldline's 2022 release on taking a stake in Online Payment Platform named both Marktplaats and eBay Kleinanzeigen as clients ([Worldline, 2022](https://worldline.com/de-at/home/top-navigation/media-relations/press-release/pr-2022_09_09_01)), so two marketplaces shared a provider while running their own buyer-protection flows.
 
 **Identity appears in stage 2, not stage 1**, because although it is foundational, a login change is visible to every user and must be planned with the trust capabilities that depend on it.
-
-### Hygiene before consolidation
-
-Every stage depends on a prerequisite that acquisitions rarely satisfy: the acquired estate must be described well enough to move. OLX's 2026 account of a cross-functional program at OLX Motors is a useful public checklist. Among its outcomes were user identification standardized across 71 services, "with 73% now using modern UUIDs instead of legacy user IDs", 45 components moved to a central secrets manager, backup compliance for tier-1 and tier-2 databases and one deployment-notification service across more than 60 services ([OLX Tech, 2026](https://tech.olx.com/empowering-innovation-through-structure-93c15614f6d3)). None of these is a consolidation step. Each is a precondition for one.
-
-The minimum hygiene I would require before stage 2 is: one identifier per user and per seller within the acquired marketplace, an inventory of every copy of listing and user data ([[listing-data-management]]), the marketplace's events mapped to the group's listing event contract ([[event-driven-listings]]), and a list of every partner integration with its owner.
 
 ### Brand migration as a separate workstream
 
@@ -155,7 +157,7 @@ Each workstream has its own rules:
 
 ### What went wrong with Casavista
 
-The review reconstructed the Casavista integration from the 2025 deal case and the 2026–2027 program records.
+Ingrid's review tested Casavista against this sequence. It reconstructed the integration from the 2025 deal case and the 2026–2027 program records.
 
 | Period | What happened | Effect |
 | --- | --- | --- |
@@ -179,12 +181,12 @@ The review resequenced the remaining work on one principle: **migrate to the tar
 | Capability | Old plan | Revised plan | Source of the date |
 | --- | --- | --- | --- |
 | Moderation review tool | Hearthly FR tool, 2028 | Shared trust-and-safety platform, **Q1 2028** (brought forward after Barcelona) | [[fraud-prevention]] |
-| Private-landlord verification | Not planned | Stronger verification level for private landlords in Spain, live with the T&S move | [[identity-and-verification]] |
+| Private-landlord verification | Not planned | Stronger verification level (proof of person) for private landlords in Spain, live in **Q4 2027**, ahead of the T&S move | [[identity-and-verification]] |
 | Login | Hearthly FR login, 2027 | Federated with Veldmark ID in **2028**, migrated in **2029** | [[identity-and-verification]] |
 | Agency billing | Hearthly FR billing, 2027 | Group catalog and entitlement service, Hearthly in the **second half of 2028**, after a full billing cycle in shadow mode | [[products-and-entitlements]] |
 | Casavista hosting | Switch-off 2027 | Switch-off after the login migration, end of **2029** | Consequence of the above |
 
-The revised plan delays the last €4.1 million of technology savings by about two years. Ingrid's argument to the board was that the original date had never been real: a plan that moved the Spanish login twice would have cost more, and it would have left Hearthly.es on a sibling's login for a year in which it was the group's most-attacked marketplace.
+Of the €4.1 million of technology savings still missing, the revised plan delays the €2.6 million hosting line by about two years, to the switch-off at the end of 2029; the other €1.5 million, from search and media, is on track for the end of 2028. Ingrid's argument to the board was that the original date had never been real: a plan that moved the Spanish login twice would have cost more, and it would have left Hearthly.es on a sibling's login for a year in which it was the group's most-attacked marketplace.
 
 ### Rewriting the synergy case as a ledger
 
@@ -204,7 +206,7 @@ The review replaced the Casavista and Keybridge synergy spreadsheets with a **sy
 
 **The Keybridge line is the instructive one.** A revenue synergy that depends on using one customer group's data to sell to them through another business is not a synergy but a breach of trust waiting for a date. The review's rule for future deal cases is that every revenue synergy names the data it uses and the commitment, contract or law that permits that use; Lucía Ortega, the Group Data Protection Officer, signs off the list before the deal model goes to the board.
 
-### Keybridge: the case for holding separate
+### Keybridge: the case for permanent federation
 
 Keybridge is the group's deliberate exception to consolidation. It runs on Azure, publishes listings for 9,800 agencies to Hearthly and to Hearthly's competitors, and integrates with Hearthly only through the same public supply contract that every software vendor uses ([[professional-seller-tooling]]). Its engineering organization is not part of the Common Ground platform organization, and group security standards are the only shared engineering rules ([[organizing-marketplace-engineering]]).
 
@@ -212,9 +214,11 @@ The review classified Keybridge's integration option as **federate under group c
 
 ### The overlap inside the group
 
-The one commercial overlap between Veldmark's own brands needed a portfolio decision, not a platform one. Tradeyard Poland's cars section competed with Motorvane Poland for the same dealers: about **2,900** Polish dealers had accounts on both, and about **40%** paid both. The decision had already been made in the marketplace profile register: Tradeyard Poland's vehicles section stays a classifieds section with insertion fees for private sellers, while dealers above a small listing count are offered Motorvane packages and their stock is syndicated to Tradeyard through Motorvane's feed ([[marketplace-taxonomy]]). The consequence for consolidation is one field: the shared listing core records which brand owns the commercial relationship for each listing, so the overlap can be managed without merging the brands.
+The review applied the same choice of option inside the group, to the one place where a synergy case might have proposed merging two of Veldmark's own brands. That overlap needed a portfolio decision, not a platform one. Tradeyard Poland's cars section competed with Motorvane Poland for the same dealers: about **2,900** Polish dealers had accounts on both, and about **40%** paid both. That portfolio decision was already recorded in the marketplace profile register, and the review kept it rather than merging the brands: Tradeyard Poland's vehicles section stays a classifieds section with insertion fees for private sellers, while dealers above a small listing count are offered Motorvane packages and their stock is syndicated to Tradeyard through Motorvane's feed ([[marketplace-taxonomy]]). The consequence for consolidation is one field: the shared listing core records which brand owns the commercial relationship for each listing, so the overlap can be managed without merging the brands.
 
 ## Trade-offs
+
+Behind Veldmark's choices sit general trade-offs: each integration option, and each pace of consolidation, buys savings or speed with liquidity risk and with the cost of separating the business later.
 
 ### Integration options compared
 
@@ -241,6 +245,8 @@ Bottom-up sequencing assumes the acquirer has shared platforms worth joining. A 
 
 ## Vertical Differences
 
+These trade-offs also shift by vertical: which consolidation is easy and which is hard depends on the asset a deal in each vertical buys.
+
 | Concern | General classifieds | Real estate | Automotive |
 | --- | --- | --- | --- |
 | What the deal usually buys | Audience and private-seller supply in a new market | Agency relationships and listing feeds in a market | Dealer relationships and vehicle data |
@@ -253,6 +259,8 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 
 ## Failure Modes
 
+Across verticals, the same mistakes recur:
+
 1. **The synergy case written before the architecture.** Technology savings are counted on the assumption that the acquired platform can be switched off on a date nobody has planned, and the switch-off slips while the savings remain in the budget.
 2. **Product first, trust last.** The visible migration happens because it shows progress; the pooled, invisible capabilities wait, and fraud finds the gap, as it did on Hearthly.es.
 3. **Two migrations, one traffic curve.** A rebrand and a replatform, or two replatform steps, overlap, and a ranking drop cannot be attributed or reversed.
@@ -264,7 +272,7 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 
 ## The Chief Architect's View
 
-**Decide the integration option in the first month, by decision record.** The record names the option, the reasons, the regulatory and contractual constraints, the expected holding period and the first review date. It goes to the architecture forum and to the deal sponsor. An acquisition without one will be integrated by whoever moves first.
+Each failure has a decision that prevents it. **Decide the integration option in the first month, by decision record.** The record names the option, the reasons, the regulatory and contractual constraints, the expected holding period and the first review date. It goes to the architecture forum and to the deal sponsor. An acquisition without one will be integrated by whoever moves first.
 
 **Own the consolidation sequence; let the deal team own the synergy targets.** The Chief Architect cannot promise a synergy, but can say which stage each synergy depends on, what gate it must pass and what it will cost to run two systems in the meantime. The synergy ledger is where those statements live, and it should be reviewed quarterly with the finance team that reports the synergies.
 
@@ -276,7 +284,7 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 
 **Design every integration so it can be undone.** Tenant-separable shared capabilities, exportable data, contracts that can be split and code whose ownership is clear cost little when built in from the first stage ([[multi-country-platforms]]). Veldmark's owner is a private-equity investor; any of its brands could be sold. The same discipline that makes a consolidation safe makes a later separation cheap.
 
-**What to watch.**
+**What to watch.** Each of these decisions leaves a signal that shows whether it is holding:
 
 - Synergy ledger lines whose dependent stage has slipped while the line has not.
 - Double-running costs, reported as their own line, with an end date.
@@ -285,6 +293,8 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 - Capabilities of the acquired business that have been adopted elsewhere in the group: the measure of whether the acquisition brought anything to the platform, not only took from it.
 
 ## Questions to Ask
+
+These decisions become ten review questions:
 
 1. Which integration option did we choose for each acquired business, in which decision record, and when is it next reviewed?
 2. Which regulatory remedies, customer commitments or contracts rule out integration options for this business?
@@ -298,6 +308,8 @@ Real estate and automotive carry an extra risk: supply arrives through professio
 10. If this business were sold in three years, what would we hand over, switch off and run twice, and what would it cost?
 
 ## From Sequence to Organization
+
+Casavista shows these parts working as one mechanism: the sequence decides which synergies arrive, the liquidity gates decide when, and the ledger prices each delay. The two sentences that justify an acquisition compete hardest when the product moves first; moved from the bottom up, the platform changes while the liquidity holds. A Chief Architect who owns that order can tell the owner where the synergies are before the owner asks.
 
 A consolidation sequence describes what moves and when; it does not say who owns each capability once it has moved, or how the acquired engineers become part of the group. The next chapter, [[organizing-marketplace-engineering]], takes up the organization that makes a consolidated platform work.
 

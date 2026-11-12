@@ -1,0 +1,569 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/16-publication-pipeline/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/16-publication-pipeline/index.md",
+  "spec_sha": "6beaf6a1b5e90de0",
+  "draft_sha": "46c35095ffffd6b8",
+  "run_at": "2026-11-12T21:56:16+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter preview: publish-to-findable and back, Tradeyard's 6-minute to 90-second goal",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business stake: publication and removal latency drive contacts and seller retention",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Architect stake: the pipeline spans many contexts and needs one owner and one end-to-end measure",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: decision then propagation, three-part freshness SLA, removal must reach every copy",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: Ghost Inventory, serial moderation, search as system of record",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "The publication pipeline turns accepted listings into visible supply and back, closing Part III's supply chain",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Definitions of publication pipeline, freshness SLA and unpublish propagation",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "What neighboring chapters own versus the whole path this chapter owns",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter and its evidence sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶1",
+      "summary": "Femke's bike: published, searchable after six minutes, sold, yet sent in 214 stale digests",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶2",
+      "summary": "Six-minute p95 against the 90-second target / the batch timers where the time goes",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶3",
+      "summary": "Two unanswered questions: which listings the six minutes covers / how long removal takes everywhere",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶4",
+      "summary": "Reconstructing per-stage times from Yardstick logs (illustrative, not additive)",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶5",
+      "summary": "Femke's bike placed at the slow end of the stage timings",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶6",
+      "summary": "Three findings: stacked timers, images processed too late, held listings unmeasured",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶1",
+      "summary": "The eight logical stages from submission to full visibility",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶2",
+      "summary": "First four stages decide, last four propagate; mixing them causes slow or unsafe pipelines",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶3",
+      "summary": "Two clocks: platform latency versus source latency",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶4",
+      "summary": "Dealer example shows the clocks differ; an SLA must separate them to blame the right team",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶5",
+      "summary": "Pre- vs post-moderation chosen per listing decides which stages sit on the critical path",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶6",
+      "summary": "Actual moderation mode must match public claims: the leboncoin judgment",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Stages, Clocks and Moderation Modes ¶7",
+      "summary": "Material edits must re-enter the gate, as the Which? Gumtree test shows",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶1",
+      "summary": "Architecture separates decision and propagation; reference design is inferred",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶2",
+      "summary": "Synchronous path does only validation, media readiness, risk gate and entitlement check",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶3",
+      "summary": "Outbox write of record and event defines published; everything after is propagation",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶4",
+      "summary": "Propagation consumers must never be called from the request",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶5",
+      "summary": "Asynchronous path should fan out one event rather than chain stages",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶6",
+      "summary": "Sequential design: latencies add, slow stages block, consumers are coupled",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶7",
+      "summary": "Fan-out design: one event, parallel independent consumers",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶8",
+      "summary": "Asynchronous checks can still hold before publication or demote after it, by risk tier",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶9",
+      "summary": "Three consumer rules: per-listing order, version-gated apply, tombstones",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: A Decision Path and a Propagation Path ¶10",
+      "summary": "Zombie listings: replays resurrect sold listings unless rules and reconciliation prevent it",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶1",
+      "summary": "Removal touches more systems and costs more when it fails than publication",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶2",
+      "summary": "Consumer registry needed; Veldmark audit found 41,000 weekly ended listings lingering in copies",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶3",
+      "summary": "Source of the removal objectives / rendering of ended listings is decided elsewhere, pipeline carries the reason",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶4",
+      "summary": "Consumers that pre-assemble work must re-check listing state at send time",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶5",
+      "summary": "Lifecycle scheduler pitfalls: expiry storms, scheduler lag, renewal not republication",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶6",
+      "summary": "Downstream channels enforce expiry anyway; the pipeline executes lifecycle rules on time",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Unpublish Propagation ¶7",
+      "summary": "Takedowns use the same removal path on a priority lane, with few differences",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Observability: Proving the Pipeline Works ¶1",
+      "summary": "Five observability instruments to prove insertion and removal objectives",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶1",
+      "summary": "Vinted's freshness gains came first from pipeline shape, then from the engine",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶2",
+      "summary": "Search engines' refresh/commit visibility semantics and their cost belong in the budget",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶3",
+      "summary": "The 90-second target written as a contract: coverage, clock, removal",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶4",
+      "summary": "Allocating the 90-second budget across stages, including the optional 30-second check row",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶5",
+      "summary": "Two-step delivery: pipeline reshaping on Solr to 2 minutes, then engine migration",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶6",
+      "summary": "Femke's sale replayed under the new contract: no stale digests, consumers acknowledge",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Freshness SLAs by Vertical ¶1",
+      "summary": "One SLA format with per-vertical and per-channel values",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Freshness SLAs by Vertical ¶2",
+      "summary": "Vertical cases for pre-publication checks: real estate duplicates, high-fraud rentals",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Six trade-offs, the decisive one being where 'published' is defined",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Ten common failure modes and their fixes",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "One owner for the whole path, owning the numbers not the stages",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "SLA card as a decision record governing budget changes",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Registration as a condition of consuming listing events",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Pipeline configuration must make the moderation mode statable honestly",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Metrics to watch, with held share as a guard against false improvement",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten design-review questions",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "From Published to Professionals ¶1",
+      "summary": "Conclusion: write the SLA card and consumer registry, defining published by the record",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "From Published to Professionals ¶2",
+      "summary": "Hand-off to professional seller tooling",
+      "matched_spec_paragraph": "p53"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 53 outline summaries match the controlling idea of the spec paragraph they align to, in spec order (p01-p04, p05-p07, p35-p37, p08-p14, p15-p24, p27-p31 with p25-p26 after p30, p32, p33-p34, p38-p41, p42-p43, p44, p45, p46-p50, p51, p52-p53); the five callouts carry no spec paragraph. p32's summary omits the 'record, not the index' clause but names the five instruments that are its core.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶2",
+      "finding": "Marked two_ideas, but the number and its cause form one idea: what the six minutes is and where it comes from, as the spec's controlling idea for p06 states.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶3",
+      "finding": "Marked two_ideas, but the two questions are parallel members of one idea (Ingrid's two unanswered questions), exactly the spec's p07 and the pair the conclusion answers.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Unpublish Propagation ¶3",
+      "quote": "The objectives in the table are the targets Veldmark set in 2027; the search and event figures follow [[search-architecture]] and [[event-driven-listings]].",
+      "finding": "The reverse outliner needed two summaries: where the table's objectives come from, and how ended listings are rendered (decided by web-and-SEO from the reason, which the pipeline carries). No sentence joins them; a lead such as 'Two things in the table are set elsewhere' (objectives by the search and event chapters, rendering by web-and-SEO) would make one idea, with the pipeline's job as carrying the reason.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every paragraph ties to a supporting claim: intro and scene to S2-S4 (the unmeasured held share, the unmeasured removal path, stacked timers); concepts to S1-S2 (leboncoin and Which? to the moderation mode and the gate); architecture to S1 and S4 (ordering rules, zombies); unpublish to S4 (expiry via p25-p26); observability to S5; In Practice to S2-S4; verticals to S2; trade-offs, failure modes, CA view and questions to S1-S5; conclusion synthesizes S2, S4 and S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each example, case, table, figure and quotation is framed by a sentence saying what it shows: baseline table (p35 lead, then p36-p37 findings), Figure 1 (p37 timers), stage table (p09), Essen Golf ('An SLA that does not separate the clocks blames the wrong team'), leboncoin and Which? (point-first rule sentences, reinforced in p49), Figure 2 (p15 lead), Vinted 2021 ('for the same reason'), Figure 3 (p24), 41,000 audit ('You cannot propagate a removal to a copy you do not know exists'), consumer table (p29), digests (p30), mobile.de renewalDate (the renewal rule it illustrates), Google expiry (p26 last sentence), Figure 5 (p31), Vinted 2023/2024 ('Two lessons transfer'), engine docs ('commit frequency is a capacity decision'), SLA card, budget table (p39 lead; its placement is a flow finding), plan ('shape gives most of the gain'), bike test, vertical table (p42-p43), Barcelona ring, trade-off table (p44).",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in is expressed at its boundary. Spot checks: p03 contrast ('Neighboring chapters own the parts'), p07 contrast ('not how to make each stage faster'), p35 cause_effect ('To see where the six minutes went'), architecture problem_solution ('Because mixing the two questions slows pipelines'), p21 contrast ('In the fan-out design'), unpublish contrast ('mirror image ... but'), p14 additional_support ('A second rule governs edits'), p25 sequence ('ends the listings no seller ends'), p31 similarity ('exactly as it would for a sale'), failure modes contrast ('Without the design's rules'), conclusion conclusion_summary ('Ingrid's two questions ... have one answer'), p53 contrast. Note: p38 now opens 'To answer her two questions' (accepted in the decision log), while the spec's p38 transition_in still names 'the three findings' as carried over; the problem_solution relationship is expressed either way, but the spec's carries_over is stale.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers describe the same organising principle as the spec (problem_solution: the scene's case and two questions, concepts, publish then unpublish, proof, application to the case, generalization, then grouped closing judgements), and neither marks any section's position unclear. The material lost-thread points are recorded as separate results.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: Stages, Clocks and Moderation Modes ¶1",
+      "quote": "Both of Ingrid's questions start from the stages.",
+      "finding": "Both readers stopped here: Ingrid's second question is about removal, but the eight stages that follow are all insertion stages, so the claim does not fit what it introduces (A3: 'The claim did not fit the content it introduced'). The spec's order is fine; reword so the stages are what both answers need (removal later runs back through the same consumers), or tie only the first question to the stages.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: Stages, Clocks and Moderation Modes ¶2",
+      "quote": "The checks of stage 6 can also hold back a high-risk listing, as the architecture below shows.",
+      "finding": "The exception, placed right after the two-question split, blurs the distinction the architecture is built on; both readers had to go back to the table or hold it open until p22. State the split as the rule per listing (stage 6 moves to the 'may it go live' side only for the risk tiers that wait, which the moderation-mode subsection then explains) rather than as an after-the-fact exception.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B3",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Architecture: A Decision Path and a Propagation Path ¶3",
+      "quote": "it still counts as gate-cleared, so the 90-second target below covers it.",
+      "finding": "Both readers found this the densest point: a second event appears where Figure 2 shows one, and the coverage ruling points to a target defined about a hundred lines later (A6 re-read it twice). Keep the two-event mechanics here and move the coverage ruling to the Coverage bullet of the SLA card, as both readers proposed.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "Architecture: A Decision Path and a Propagation Path ¶8",
+      "quote": "sit between `ListingSubmitted` and `ListingPublished` for the risk tiers that require them, and *after* `ListingPublished` for the tiers that go live on the gate.",
+      "finding": "After a fan-out design described with ListingPublished only, both readers could not tell which event the consumers subscribe to for listings that wait: the checks to ListingSubmitted and indexing and the rest to ListingPublished? Say so in one sentence.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B6 (its second half, on the next section)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶4",
+      "quote": "Its 30-second row pays for the wait between `ListingSubmitted` and `ListingPublished`",
+      "finding": "The paragraph explains a row of a table the reader has not yet seen; both readers read the table and then re-read the paragraph ('The two' also needs a re-read). Introduce the table first, or put the explanation of the 30-second row after it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "In Practice: How Others Got Faster, and Tradeyard's Budget ¶3",
+      "quote": "94% of Tradeyard's new listings in 2026",
+      "finding": "The scene gives the 94% undated in a March 2027 setting; pinned here to 2026, both readers paused to check whether it was a different figure. The year is right (ledger, 2026 volumes); make the two mentions agree, e.g. date the scene's figure or say 'in 2026, the last full year'.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "quote": "Part I's time to first contact sets the publication budget, and its ghost rates set the removal guarantee",
+      "finding": "Both readers stumbled on this sentence: 'its' reads as either Part I or time to first contact (A re-read to parse it), and the two Part I metrics arrive unnamed as such. The audience knows both metrics (already_knows), so the fix is wording only: name them as Part I's measures, e.g. 'Part I's time to first contact sets the publication budget, and Part I's ghost rates the removal guarantee'.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item B1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "The trade-off that decides the others is **where \"published\" is defined**.",
+      "finding": "Flow reader A (A10) looked for the decisive trade-off among the six table rows and did not find it, so could not tell whether it was a seventh choice or a framing of 'Visibility trigger'. Say which row it governs or that it sits above the six. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "Concepts: Stages, Clocks and Moderation Modes ¶7",
+      "quote": "A second rule governs edits",
+      "finding": "Flow reader B (B5) looked back for a first rule: the leboncoin paragraph is not presented as a rule, so the numbering does not land. Let p13 state its point as a rule ('The first rule: ...'). One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: A Decision Path and a Propagation Path ¶1",
+      "quote": "The reference architecture below is Veldmark's target design and an inference from public building blocks",
+      "finding": "Flow reader B (B7): the Figure 2 caption below this paragraph brings in a 'freshness monitor' and a 'human-review path' the prose has not yet explained; the figure runs ahead of the text. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Observability: Proving the Pipeline Works ¶1",
+      "quote": "Objectives for insertion and for each consumer's removal need proof that no single team can game.",
+      "finding": "Flow reader B (B9): the instruments measure the stage budget ('The p95 of each interval is the stage budget's actual value') one section before the budget is given; B proposes moving Observability after the 90-second budget. The difficulty comes from the declared section order; flow reader A found the placement clear. One reader only.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "The does_not_know terms are given at or before use in the prose: publication pipeline, freshness SLA and unpublish propagation (Introduction ¶2), platform and source latency (Concepts ¶3), pre- and post-moderation (Concepts ¶5), risk gate (stage table, Architecture ¶2), consumer registry (Unpublish ¶2), tombstone (Architecture ¶9), zombie listing (Architecture ¶10); outbox, decision service and the DSA statement of reasons are named with links to their owning chapters, as the spec allows. Veldmark's brands (Tradeyard, Motorvane, Hearthly), the Essen Golf and Part I's metrics, which flow readers met cold (A1, A11, B4), are on already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: Where Did Six Minutes Go? ¶5",
+      "quote": "it waited for the indexer's next run and the next soft commit",
+      "finding": "Soft commit (here and in the baseline table, with searcher warming) is on does_not_know and is explained only in In Practice ¶2; Scene ¶2 glosses commits as making documents visible on a timer, but warming has no gloss at first use. The draft does give both later and no flow reader reported them, so this is uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a direct statement of what the pipeline is and places it in Part III's chain and the book's measures; no placeholder, restated question, dictionary definition, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers the scene's questions and gives a course of action, then hands off; it does not open with 'in conclusion', restate the thesis alone, add a new subtopic beyond the declared hand-off, or hold body evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States what no section states alone: both of Ingrid's questions have one answer, 'write down what the pipeline counts', with the SLA card and the registry resting on the record's definition of published; so-what: 'one owner can promise the path there and back again and prove it per consumer'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Ingrid's two questions by name and to the opening's 'and back again' ('promise the path there and back again').",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader's predicted order matches the roadmap item for item (scene and 214 digests; stages, clocks, moderation modes; decision and propagation paths with ordering rules; registry, re-checks, expiry, takedowns; proof; others' gains then the 90-second budget; verticals; trade-offs; failure modes; CA view; questions) and names the evidence kinds (public engineering records, engine documentation, a French judgment, a consumer test, fictional Veldmark).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer names coverage (gate-cleared only, the held 6% with their own objective and the held share beside it) and the clock, and for the digest: snapshot assembled in advance and never re-checked; registry with removal objective and owner; removal events with version gating and tombstones; send-time re-check; acknowledgements to the propagation monitor. All parts of the expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer says not every listing should wait; chooses per listing by risk (high-risk tiers such as a new account's rentals in fake-rental cities wait, the rest go live and the check runs after, where it can demote, hold or remove); places the check in the 30-second parallel async-checks row; asks which stage's budget pays, decided on the SLA card at the architecture forum; and keeps the held objective and held share. Matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

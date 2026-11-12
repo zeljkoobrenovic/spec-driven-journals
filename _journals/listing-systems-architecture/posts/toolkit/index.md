@@ -33,7 +33,11 @@ Three conventions run through all twelve.
 - **They reference each other by identifier.** A decision record cites the capability row and the profiles it changes; an index design card cites the attribute dictionary's purposes; an SLA card cites the consumer registry; an enforcement card cites the policy version. Use the same identifier everywhere, so a reader can move from any record to the next.
 - **Each has a Veldmark example consistent with the chapter that teaches it.** All Veldmark names, figures and dates are fictional and illustrative. The examples are deliberately short; the chapter linked at the end of each tool works the full case.
 
+The page starts with a table that finds the template for the question on your desk and a diagram of how the records cite each other. Then come the twelve tools in the order of the parts that teach them, each with its purpose, when to use it, the template, a Veldmark example, three common mistakes and its chapter. It ends with how to keep the templates true over time and with its sources; the next two pages, the [[glossary]] and the [[bibliography]], give the terms the templates use and the sources behind them.
+
 ## Find the Template for the Question on Your Desk
+
+Start from the question in the middle column: each row names one tool, links to it and names the chapter that owns it.
 
 | Tool | Use it when | Chapter |
 | --- | --- | --- |
@@ -50,27 +54,27 @@ Three conventions run through all twelve.
 | [Tool 11](#tool-11): Consolidation decision card | An acquired marketplace, brand or SaaS business must be integrated, or deliberately left alone | [[platform-consolidation]] |
 | [Tool 12](#tool-12): Architecture decision record | A decision crosses a team, brand or tenant, moves money or personal data, or needs an exception | [[organizing-marketplace-engineering]] |
 
-The tenant register and configuration hierarchy of [[multi-country-platforms]], the qualified-contact definition of [[data-platform]] and the journey SLOs of [[reliability-and-scale]] are not repeated here; Tools 6, 7, 11 and 12 link to them where a field depends on them.
+The tenant register and configuration hierarchy of [[multi-country-platforms]], the qualified-contact definition of [[data-platform]] and the journey SLOs of [[reliability-and-scale]] are not repeated here; read them in those chapters when a field depends on them. Tool 11's data row links [[data-platform]] directly.
 
 ## How the Records Connect
 
-Most changes in a marketplace group pass through several of the tools, and each record points to the next.
+Most changes in a marketplace group pass through several of the tools, and each record points to the next. Nearly every operational record rests on the SLA card (Tool 6) and the listing event specification (Tool 10), so earlier tools refer forward to them.
 
 ![Diagram: How the templates reference each other](assets/images/toolkit/fig01-how-templates-reference-each-other-understanding.jpeg)
-**Figure 1:** *How the templates reference each other. Understanding records feed decisions; decisions produce the listing's model and its contracts; and nearly every operational record rests on the event specification and the SLA card, because in a listing marketplace a change is finished only when every copy of the listing reflects it.*
+**Figure 1:** *How the templates reference each other. Understanding records (Tools 1 and 2) feed decisions (Tools 11 and 12); decisions produce the listing's model (Tools 3 and 4) and its contracts (Tools 5 and 10); and nearly every operational record rests on the event specification and the SLA card, because in a listing marketplace a change is finished only when every copy of the listing reflects it.*
 
 ## <a id="tool-1"></a>Tool 1: Capability Map Row and Heat Map
 
 **Purpose.** A capability map describes what the marketplace must be able to do, independent of which system, team or brand does it. The heat map scores each level-2 capability on three separate dimensions (differentiation, maturity and duplication) so that sharing, investment and ownership questions are argued from the same evidence. It is the frame every later record cites, because it does not move when an engine, a vendor or an organization chart does.
 
-**Use it when** you prepare a Common Ground–style sharing decision, a consolidation case or a portfolio discussion about overlap, and whenever a capability has no named owner. Refresh it before every annual planning round and after every acquisition.
+**Use it when** you prepare a Common Ground–style sharing decision (Common Ground is Veldmark's program of shared group platforms), a consolidation case or a portfolio discussion about overlap, and whenever a capability has no named owner. Refresh it before every annual planning round and after every acquisition.
 
 **The template.** One row per level-2 capability; level 3 only where a decision needs it.
 
 | Field | What to record | Guidance |
 | --- | --- | --- |
 | **ID and level-1 area** | e.g. `3.1`, Discovery | Ten level-1 areas: Supply Acquisition, Listing Management, Discovery, Matching and Contact, Trust and Safety, Transactions, Monetization, Professional Services, Data and Insights, Platform |
-| **Capability name** | A stable noun phrase | Never a system ("Yardstick search"), a team or a brand |
+| **Capability name** | A stable noun phrase | Never a system ("Yardstick search", from Tradeyard's PHP monolith), a team or a brand |
 | **Definition** | One sentence a product manager can read aloud | States what must be true, not which technology does it |
 | **Value streams served** | List-to-sell, search-to-contact, lead-to-deal, pro onboarding | Mark the stage where this capability is the bottleneck, if any |
 | **Owner** | A named person, accountable for the outcome | Split ownership is allowed only when the level-3 split is recorded |
@@ -91,10 +95,12 @@ Most changes in a marketplace group pass through several of the tools, and each 
 | Implementations | 3 engines: Solr 8 (Tradeyard NL, BE, PT), Elasticsearch (Tradeyard PL on 7, Motorvane on 8), OpenSearch (Hearthly) |
 | Differentiation | Engine low; relevance high, per brand |
 | Maturity | Tradeyard 2 (6-minute p95 to searchable; 48-minute brown-out on 17 January 2027); Motorvane 4; Hearthly 3 |
-| Verdict | **Overlap 3: split at level 3.** Shared engine and indexing; brand-owned relevance and ranking policy |
+| Verdict | **Overlap 3 (the third of the five overlaps in the heat map of [[business-capabilities]]): split at level 3.** Shared engine and indexing; brand-owned relevance and ranking policy |
 | Annual run cost | About €11.8M (Tradeyard €6.0M, Motorvane €3.2M, Hearthly €2.6M) |
 | Linked decision | The 14 September 2027 search platform decision (Tool 12) |
 | Reading | Share the machinery that breaks at peak; never share the ranking that decides how each brand competes |
+
+The verdict follows from the scores: the engine differentiates little and is run three times, while relevance differentiates each brand, so the machinery is shared and the ranking is not.
 
 **Common mistakes.**
 
@@ -142,7 +148,7 @@ Extension points:  <named, with latency and failure contract>
 Review trigger:    <profile change, new consumer, acquisition>
 ```
 
-**Veldmark example** (Motorvane DE profile, March 2027 scoping workshop, ratified April 2027; abbreviated):
+**Veldmark example** (Motorvane DE profile, March 2027 scoping workshop, ratified April 2027; abbreviated). The feed share and the delete latency are the numbers that decide its removal design:
 
 | Dimension | Motorvane DE |
 | --- | --- |
@@ -195,7 +201,7 @@ Learn more: [[vertical-requirements]]
 - **Outcome vocabulary** for terminal transitions: sold on platform (with order reference and final price), sold elsewhere, no longer available, unknown.
 - **Vertical mappings**: how local words map onto the canonical states.
 
-**Veldmark example** (Common Ground lifecycle, Listing event contract v1, Tradeyard goods):
+**Veldmark example** (Common Ground lifecycle, Listing event contract v1 of Tool 10, Tradeyard goods; the overlay is none, restored, restricted, held or blocked):
 
 | Publication state (overlay) | Searchable | Contactable | Alertable | URL behavior |
 | --- | --- | --- | --- | --- |
@@ -206,7 +212,7 @@ Learn more: [[vertical-requirements]]
 | Sold | No | No | No | 200 with related live inventory, then 410 |
 | Withdrawn, Archived | No | No | No | 410 |
 
-The Rotterdam bike exercises the table: active at 19:48 on Sunday 7 March 2027; `ListingReserved` by the Safe Deal order at 14:02 on Monday 8 March; `ListingSold` at 18:10 with outcome *sold on platform, €225*, removed from search at 18:11. The €225 goes into the outcome, not into the price, so no "price reduced" alert fires for an item that is gone. The table's "Alertable: No" for Sold is the rule the digest assembled at 17:30 that day broke. Vertical mappings: Hearthly's "under offer" and "let agreed" map onto Reserved and Sold; Motorvane allows platform-set reservations only for dealers who opt in.
+Femke's Rotterdam bike exercises the table: active at 19:48 on Sunday 7 March 2027; `ListingReserved` by the Safe Deal order at 14:02 on Monday 8 March; `ListingSold` at 18:10 with outcome *sold on platform, €225*, removed from search at 18:11. The €225 goes into the outcome, not into the price, so no "price reduced" alert fires for an item that is gone. The table's "Alertable: No" for Sold is the rule the evening alert digest broke: assembled at 17:30, before the sale, it was sent the next morning without a re-check (Tool 6 picks up that digest). Vertical mappings: Hearthly's "under offer" and "let agreed" map onto Reserved and Sold; Motorvane allows platform-set reservations only for dealers who opt in.
 
 **Common mistakes.**
 
@@ -322,7 +328,7 @@ The contract replaces two incidents with two controls. The truncated files of Mo
 **Common mistakes.**
 
 - Leaving "absence means removal" implicit. A daily snapshot is a 24-hour removal objective by construction; choose it, or add status deltas.
-- Purging the external-key mapping on removal. When Motorvane's cars came back, about a fifth returned with new listing IDs and lost their history; keep the mapping through the retention window.
+- Purging the external-key mapping on removal. When Motorvane's cars came back after the truncated files of 8 March 2027, about a fifth returned with new listing IDs and lost their history; keep the mapping through the retention window.
 - Giving one partner a private door. Keybridge integrates with Hearthly through the same public contract, limits and error catalog as the other 160 or so vendors; anything else breaks the neutrality commitment.
 
 Learn more: [[listing-ingestion]]
@@ -331,7 +337,7 @@ Learn more: [[listing-ingestion]]
 
 **Purpose.** The SLA card turns "listings should go live fast" into a contract with three parts (coverage, clock and removal) and a budget per stage that adds up to the target. It names what the target does not cover, so that the fast path cannot be met by holding more listings for review, and it treats removal as a separate, stricter promise.
 
-**Use it when** you set or change a time-to-searchable target, accept a new channel or vertical onto the pipeline, add a stage (a new risk check, an enrichment), or register a new consumer of listing data.
+**Use it when** you set or change a time-to-searchable target, accept a new channel or vertical onto the pipeline, add a stage (a new risk check, an enrichment), or register a new consumer of listing data in the consumer registry (Tool 10).
 
 **The template.**
 
@@ -410,7 +416,7 @@ Learn more: [[publication-pipeline]]
 | Field | Tradeyard BE |
 | --- | --- |
 | Scope | Tenant `ty:be`; Amazon OpenSearch Service behind Listing Search API v1; about 2.4 million live listings |
-| Document | Built only from Listing event contract v1 plus the taxonomy and attribute service; `paid.*` fields from the effect projector |
+| Document | Built only from Listing event contract v1 (Tool 10) plus the taxonomy and attribute service; `paid.*` fields from the effect projector (Tool 9) |
 | Text | One index, `title_nl` and `title_fr` with their own analyzers; a language detector at ingest picks the field |
 | Promotion | Tradeyard's first group schema version promoted about 610 of 3,900 original keys to typed fields; the rest flattened |
 | Write path | Event about 2 s, document build about 3 s, refresh 5 s; **index share 15 s p95**; removals **10 s p95** on a priority lane; view counters no longer written to the index |
@@ -419,10 +425,12 @@ Learn more: [[publication-pipeline]]
 | Reindex and drill | Throttled alias-swap reindex outside the published peak window; **quarterly rebuild drill** from the event stream |
 | Analyzers | Ported Solr Dutch and French analyzers checked against a 5,000-query test set |
 
+Every row names a source outside the index: documents come only from the event contract and the attribute service, paid fields from the effect projector, and the quarterly drill proves the index can be rebuilt from the stream.
+
 **Common mistakes.**
 
 - Writing into the live index at peak. The 17 January 2027 brown-out combined an in-place reindex, cache eviction on every commit and a TV campaign at the Sunday-evening peak.
-- Letting the junkyard into the mappings. Free-string attributes turn one brand into three facet values; the index should see dictionary values only.
+- Letting the junkyard of uncontrolled attributes into the mappings. Free-string attributes turn one brand into three facet values; the index should see dictionary values only.
 - Rebuilding effects by copying the old index. Paid fields and ranking features are re-projected from their ledgers and pipelines, never inherited.
 
 Learn more: [[search-architecture]]
@@ -473,7 +481,7 @@ METRICS     Prevalence (blind sample), time to action, appeal overturn rate,
 | Sharing | Terminated fraud accounts' phone, e-mail, IBAN and device identifiers in the shared block list, hashed, 2-year retention, approved by the DPO |
 | Metrics | Median time to action on fraud reports under 30 minutes by end of 2028 (baseline 3 h 10 min) |
 
-The card replays Femke's evening: report at 20:19, suspension at 20:26, then a rule that withheld 37 similar messages. The rollout row is the one the card exists for: the same phone number had registered a Motorvane private-seller account, and no field in the March process said who should tell Motorvane.
+The card replays the Sunday evening Femke listed the bike, when a fake buyer sent her a Safe Deal payment link at 20:11: report at 20:19, suspension at 20:26, then a rule that withheld 37 similar messages. The rollout row is the one the card exists for: the same phone number had registered a Motorvane private-seller account, and no field in the March process said who should tell Motorvane.
 
 **Common mistakes.**
 
@@ -497,7 +505,7 @@ Learn more: [[trust-and-safety-architecture]]
 
 Record beside the matrix: the price-list version and contract that produced each quote, the idempotency key of every producer, and the daily granted-delivered-billed reconciliation and its owner.
 
-**Veldmark example** (Tally design, October 2027; rollout Motorvane Q1 2028, Tradeyard Q2 2028):
+**Veldmark example** (Tally, the group entitlement service, design of October 2027; rollout Motorvane Q1 2028, Tradeyard Q2 2028):
 
 | Product version | Holder | Quota and validity | Effects | Enforcement points (failure mode) | Delivery evidence | Billing basis |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -509,7 +517,7 @@ The first row is the overbilling finding of late September 2027 turned into a ru
 
 **Common mistakes.**
 
-- Paid state as a column in the listing payload. Then a feed, a moderator or a migration can grant visibility nobody sold; effects come only from the ledger, through the projector.
+- Paid state as a column in the listing payload. Then a feed, a moderator or a migration can grant visibility nobody sold; effects come only from the ledger, through the effect projector.
 - A paid effect that outlives its listing. Sold, removed or blocked listings carry no `paid.*` fields, whatever the ledger says about remaining days; the projector consumes lifecycle events too.
 - Billing that recomputes entitlements on its own. Every metered line comes from the ledger and metering, or the next audit finds another €212,000.
 
@@ -605,7 +613,7 @@ REVIEW            Date or trigger
 | --- | --- | --- |
 | Integration option | **Share services beneath**: stages 0–3; a stage-4 product platform not approved | **Federate under group controls**, permanently: finance, security operations, procurement and the annual neutrality review; nothing that touches agency data |
 | Constraints | Spanish market rules and feed vendors profiled separately from France | March 2027 neutrality commitment: no Keybridge agency data used for Hearthly ranking or sales targeting; annual independent review |
-| Stage 2: trust and identity | Moderation review tool onto the shared T&S platform in **Q1 2028**, brought forward after the July 2027 Barcelona ring ([[fraud-prevention]]); private landlords publishing rentals must reach L4 from Q4 2027; Casavista login **federated into Veldmark ID in 2028, migrated in 2029**, not moved onto Hearthly France's login first ([[identity-and-verification]]) | **Kept separate**: outside Veldmark ID; not a T&S tenant and does not consume block lists |
+| Stage 2: trust and identity | Moderation review tool onto the shared T&S platform in **Q1 2028**, brought forward after the July 2027 Barcelona ring ([[fraud-prevention]]); private landlords publishing rentals must reach L4 (proof of person) from Q4 2027; Casavista login **federated into Veldmark ID in 2028, migrated in 2029**, not moved onto Hearthly France's login first ([[identity-and-verification]]) | **Kept separate**: outside Veldmark ID; not a T&S tenant and does not consume block lists |
 | Stage 3: shared engines | Listings and search moved onto Hearthly's Google Cloud platform in September 2026; shared OpenSearch engine by end of 2028, Hearthly last in the migration order, **ranking policy stays Hearthly's** ([[search-architecture]]); shared perceptual-hash index from Q1 2028 ([[media-pipeline]]); agency billing onto Tally in H2 2028 after a shadow billing cycle ([[products-and-entitlements]]) | **Kept separate**: own billing through 2028; Keybridge-handled media excluded from the hash index |
 | Data | BigQuery through 2028, publishing governed data products under group contracts ([[data-platform]]) | Synapse not federated; only contract-named aggregates leave |
 | Stage 4: listing UX and supply | A single France-plus-Spain product platform **not approved** until Spanish feed vendors, disclosures and pricing norms are profiled against the French ones ([[case-aviv]]) | Integrates with Hearthly only through the public supply contract (Tool 5) |
@@ -653,7 +661,7 @@ Tenants affected: <codes>  Capability rows: <Tool 1 ids>   First drafted: <date>
 ## Review         Date, or the trigger that reopens it.
 ```
 
-**Veldmark example.** *The group search platform runs OpenSearch for Tradeyard and Hearthly behind one search contract; Motorvane stays on Elasticsearch.* Accepted 14 September 2027, proposed by Tomasz Wiśniewski's group search platform team.
+**Veldmark example.** *The group search platform runs OpenSearch for Tradeyard and Hearthly behind one search contract; Motorvane stays on Elasticsearch.* Accepted 14 September 2027, proposed by Tomasz Wiśniewski's group search platform team. The filled record shows the rejected options, the advice followed and the trigger that reopens the decision:
 
 | Section | Content |
 | --- | --- |
@@ -678,9 +686,9 @@ Learn more: [[organizing-marketplace-engineering]]
 
 ## Using the Toolkit Over Time
 
-The templates stay true only when they are revisited, and three habits make that happen.
+Each template leaves evidence someone else can check only while it stays true, above all in the fields that carry ownership, removal behavior and dates. It stays true only when it is revisited, and three habits make that happen.
 
-- **Review them on a calendar, not ad hoc.** The capability map and vertical profiles before annual planning and after every acquisition; decision records on their review dates and triggers; SLA cards and index design cards before the peak and campaign calendar's busiest weeks and after every rebuild drill; feed contracts at each partner's schema retirement notice; the entitlement matrix before every price event; policy cards whenever a transparency report shows a category moving.
+- **Review them on a calendar, not ad hoc.** The capability map and vertical profiles before annual planning and after every acquisition; decision records on their review dates and triggers; SLA cards and index design cards before seasonal peaks and the busiest weeks on the campaign calendar and after every rebuild drill; feed contracts at each partner's schema retirement notice; the entitlement matrix before every price event; policy cards whenever a transparency report shows a category moving.
 - **Let incidents add fields.** Veldmark's mass-change guard came from 38,400 vanished cars, the send-time re-check from one sold bike in 214 digests, the `PublishRefused` entry from €212,000 of credits and the group-urgent change class from a rule that took three days to cross a border. When a post-incident review finds a gap, the fix usually includes a new field in one of these templates.
 - **Keep the set small.** Every field should change a decision or preserve evidence. When a field is filled in by habit and read by nobody, remove it; when a review keeps asking a question no field answers, add it.
 

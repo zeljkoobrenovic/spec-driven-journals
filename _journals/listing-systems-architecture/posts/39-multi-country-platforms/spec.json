@@ -1,0 +1,1802 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "multi-country-platforms",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "One Platform, Many Marketplaces: Multi-Country and Multi-Brand Architecture",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the multi-country-platforms entry in journal-spec.json; the supporting claims and audience are this spec's own. Units added by this conversion: introduction roadmap p05 (the published introduction named neighbouring chapters but not the chapter's own sections), a Trade-offs lead-in p50 that says what the two trade-off tables show, and a conclusion widened from one paragraph to two (p61 synthesis and callback, p62 hand-off).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Tenants, global components and configuration; the platform models from the fork per country to the product platform, with the documented record (Adevinta's 2019 rule and Common Platform, eBay Classifieds, OLX, AVIV).",
+        "A tenancy model: tenant codes in every identifier, event, log, metric and cost tag; isolation separated from identity; a configuration hierarchy; extension points; release rings; group-urgent change classes; tenant exit paths.",
+        "What to share first and the centralization pendulum."
+      ],
+      "believe": [
+        "The tenant is a first-class architectural element, not a column added later.",
+        "The platform model is decided per capability, and sharing beneath the product keeps the next swing of the pendulum cheap."
+      ],
+      "can_do": [
+        "Define a tenant and decide where each market difference lives: configuration, extension point or a fork with an expiry date.",
+        "Set release rings and the change classes that bypass them.",
+        "Score a capability for sharing and order what a group shares first."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a rule that reaches markets unevenly and a brand's objection, the reader names the tenancy controls that apply.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A fraud rule written on Sunday evening protects one country within the hour, reaches a second country three days later with the next deploy of a shared monolith, and never reaches two others or the group's car marketplace, where the same phone number had registered. A brand that already runs four countries on one stack objects to a group configuration service. Using only this chapter: what tenancy model fixes the rule's path, and how do you answer the brand?",
+        "expected": "A tenant per brand × country with its code in every identifier, event and configuration; fraud and scam rules as a group-urgent change class that bypasses release rings and reaches every tenant at once, split into a group-owned detector and tenant-owned locale packs run in shadow until reviewed; shared trust signals across brands. The configuration service is mandatory only for global components, so the brand keeps its own configuration for its own services and uses the group service where it consumes a group capability."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Sharing a platform across countries and brands without one product; the tenant as a first-class element; configuration over code with a limit; sharing beneath the product, starting with what is uniform and pooled. Then the phishing rule that reached four countries unevenly, concepts, platform models, a tenancy model, Veldmark's Tenancy model v1, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: classifieds engineering and investor sources (Adevinta, eBay Classifieds Group, OLX, Prosus, Marktplaats, Vinted), standards for locales and currencies, EU law, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ],
+    "audience": {
+      "who": "Group and enterprise architects, platform-engineering leads and engineering directors of multi-country, multi-brand marketplace groups.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; multi-tenant SaaS and cloud platforms in general; feature flags and staged rollouts.",
+        "From earlier chapters: marketplace profiles (marketplace-taxonomy), vertical requirement profiles (vertical-requirements), the listing event envelope with its tenant field, glossed there as one brand in one country (event-driven-listings), statements of reasons under the DSA (trust-and-safety-architecture, marketplace-regulation), the search index topology (search-architecture), the data platform's purpose-bound sharing (data-platform), and ml-platform's shared, per-brand and per-market models.",
+        "Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly and Keybridge, Yardstick, Safe Deal, Common Ground, the architecture advice forum, Ingrid Halvorsen, Daan Visser and Femke, and the failure-pattern names (The Copy-Paste Country, The Forced Fit, Deal-Shaped Architecture, The Category Straitjacket, Billing by Guesswork)."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: tenancy model, global component, configuration over code; and tenant in full (brand × country, distinct from brand, market and marketplace profile).",
+        "Tenant identity versus tenant isolation and the three isolation tiers (logical, partitioned, dedicated); the tenant register; the configuration hierarchy; extension points; the configure–extend–fork ladder; release rings, tenant-scoped flags and group-urgent change classes; tenant exit paths.",
+        "The six platform models and the public record behind them (Adevinta's 2019 rule and Common Platform, eBay Classifieds Group federation and MoVe, OLX's one-repo frontend and Hydra configuration, AVIV, Vinted).",
+        "GDPR Chapter V transfer rules as they bear on data residency; BCP 47 locale tags, ISO 4217 currency codes and Unicode CLDR."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "How do you share a platform across countries, brands and verticals without forcing them into one product?",
+    "claim": "A group should share a platform across countries, brands and verticals by making the tenant (at Veldmark brand × country, ten tenants) a first-class element that every shared capability carries in identifiers, events, configuration, releases, logs and costs; holding market differences that are data as versioned, schema-checked, effective-dated configuration resolved along a hierarchy, putting differences in behavior behind owned extension points and allowing a fork only with an expiry date; releasing in rings from the smallest tenants to the largest while fraud rules, security fixes and legal takedowns reach all tenants at once; documenting an exit path for every tenant of every shared capability; and deciding the platform model capability by capability rather than once for the group, sharing beneath the product and starting with capabilities whose technology is uniform and whose value grows when data is pooled, while product surfaces stay with the brands.",
+    "disputed_by": "Either of two common positions: each country or brand forks the codebase and adapts it locally, or the group converges every brand onto one product platform; both treat the platform model as one decision for the whole group rather than one per capability.",
+    "so_what": "A Chief Architect who accepts this decides the tenant definition, code format, mandatory carriage and exit-path rule once at group level; decides the platform model capability by capability, scoring each on investment, uniformity of technology and value of pooled data and publishing the scores; shares in order infrastructure, the event backbone and data platform, trust signals and identity, media and search, then taxonomy and the commercial core, leaving product surfaces last; requires an expiry date on every approved fork; and watches adoption without mandate, country branches in code, lead time from the first tenant to the last and a yearly separability drill.",
+    "how_why": "On 7 March 2027 a phishing rule protected Tradeyard NL within the hour, reached Belgium on 10 March with the next Yardstick deploy, and never reached Poland, Portugal or Motorvane, where the same phone number had an account. Yardstick held about 2,600 branches on the country code and four category trees. Tenancy model v1 (9 June 2027) defined ten brand × country tenants, mandatory tenant codes, partitioned isolation by default, one configuration service for global components, release rings with the three largest tenants last, group-urgent classes for fraud, security and takedowns, and exit paths, because a private-equity owner may sell any tenant. Replayed, the rule split into a group detector and locale packs within a 48-hour shadow window. Adevinta's 2019 rule and the swings at Adevinta and AVIV are the public record.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The tenant, at a marketplace group usually brand × country, is defined once and carried by every shared capability in its records, events, configuration, releases, logs, cache keys and cost lines; tenant identity is mandatory everywhere, while isolation is chosen per capability with partitioned isolation as the default."
+      },
+      {
+        "id": "S2",
+        "claim": "Market differences that are values are held as schema-checked, versioned, effective-dated configuration resolved along a hierarchy; differences in behavior go behind owned extension points; and a fork is allowed only under a decision record with an expiry date (configure, then extend, and only then fork)."
+      },
+      {
+        "id": "S3",
+        "claim": "Changes reach tenants through release rings, smallest tenants first, and tenant-scoped flags, while named group-urgent change classes (fraud and scam rules, security fixes, legal takedowns) reach every relevant tenant at once."
+      },
+      {
+        "id": "S4",
+        "claim": "Every shared capability records which tenant may use which data and documents an exit path for each tenant, because the boundaries between tenants are legal and commercial as well as technical, and any tenant may be sold, closed or moved."
+      },
+      {
+        "id": "S5",
+        "claim": "The platform model is decided capability by capability, not once for the group: the public record shows sharing working within a vertical and at lower layers across verticals, while both public attempts at a converged product platform were rowed back."
+      },
+      {
+        "id": "S6",
+        "claim": "A group shares first the capabilities whose technology is uniform and whose value grows when data is pooled, leaves product surfaces to the brands, and designs shared layers so that the next swing of the centralization pendulum is cheap."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Decides how every capability of the part is shared across countries and brands, and how the group keeps the ability to undo a sharing decision.",
+    "supports": [
+      "P7-7"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses the phishing rule's uneven path and Ingrid's question; in-practice answers them with Tenancy model v1 after the body has built the design"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene comes first because its incident and inventory are the problems the chapter solves. The concepts follow because every later section uses tenant, tenancy model, global component and configuration over code; placed later, the platform models would be compared in words the reader cannot yet separate. The platform models come before the architecture because the record (sharing within a vertical and beneath the product; converged products rowed back) is what justifies designing for global components rather than one product. The architecture then specifies the tenancy model the record points to, and the worked example applies it to the scene's problem; placed before the architecture, the decision record would cite registers, rings and extension points not yet explained. The judging sections apply the whole design, so they come last, with the Chief Architect's sharing order after the trade-offs and vertical differences it draws on."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Most marketplace groups grew one country at a time, and every market that was copied must later be changed separately: a group with ten copies of its insertion flow pays for each new rule, regulation and improvement ten times."
+    },
+    "bridge": {
+      "from_reader_world": "Architects of multi-country groups know both failures: country copies that multiply every change, and a group platform imposed as one product that local teams route around.",
+      "to_topic": "The architecture between those two failures: a shared platform that earns its tenants through contracts, built on a tenancy model, global components and configuration over code."
+    },
+    "thesis_statement": {
+      "text": "Make the tenant a first-class element that every shared capability carries; hold market differences that are data as governed configuration, behavior in owned extension points, and forks only with an expiry date; and share beneath the product, starting with what is uniform and pooled, deciding the model capability by capability.",
+      "placement": "KEY POINTS callout (three bullets), with the WHY callouts and the failure-patterns callout; p03 names the three terms the chapter owns."
+    },
+    "roadmap": {
+      "placement": "Paragraph p05, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Open with a phishing rule that protected one Veldmark market within the hour, another three days later and two others never.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the terms and compare the six platform models marketplace groups use.",
+          "kept_in": [
+            "concepts",
+            "platform-models"
+          ]
+        },
+        {
+          "promise": "Design a tenancy model layer by layer.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Test Veldmark's Tenancy model v1.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Marketplace groups grew one country at a time for good reasons, but every market that was copied must later be changed separately, so a group with ten copies pays for each new rule, regulation and improvement ten times.",
+        "function": "claim",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Launching or buying one country at a time; local teams knowing local buyers, law and competitors; ten copies of the insertion flow.",
+            "shows": "Shows why forking is rational at each step and costly in sum: the Copy-Paste Country."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S5"
+          ],
+          "how": "States the cost that configuration over code and per-capability sharing remove."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The opposite mistake, one platform imposed on every market as is, is just as common: it fits the market that designed it, and local teams route around it with workarounds, shadow systems and a case for leaving.",
+        "function": "counterargument",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Workarounds, then shadow systems, then a case for leaving.",
+            "shows": "Shows how an imposed platform decays: the Forced Fit."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S5",
+            "S2"
+          ],
+          "how": "Rules out convergence as the answer and sets up the need to express real market differences."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The cost of copying every market.",
+          "introduces": "The opposite failure: a platform imposed as one product.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter designs the architecture between those two failures, applying Part VII's argument that a shared platform earns its tenants through contracts rather than mandates, and owns three terms: tenancy model, global component and configuration over code.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Short definitions of tenancy model, global component and configuration over code.",
+            "shows": "Gives the reader the three terms before the scene uses them."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          "how": "Names the three ideas the thesis is built from."
+        },
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The two failures, copying and imposing.",
+          "introduces": "The architecture between them and the three terms it rests on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter answers for every capability the question ml-platform asked of models (shared, per brand or per market), building on the event envelope's tenant field and the marketplace profiles, and hands the shared platform to reliability-and-scale, acquired stacks to platform-consolidation and the organization to organizing-marketplace-engineering.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Links to ml-platform, event-driven-listings, marketplace-taxonomy, reliability-and-scale, platform-consolidation and organizing-marketplace-engineering.",
+            "shows": "Places the chapter between the capabilities it shares and the chapters that run, consolidate and organize the shared platform."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S5"
+          ],
+          "how": "Ties the tenant to the envelope field the reader has met and widens ml-platform's question to every capability."
+        },
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The three terms the chapter owns.",
+          "introduces": "Where the chapter sits: what it builds on and what takes its results further.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter opens with the uneven phishing rule, defines the terms, compares six platform models, designs a tenancy model, tests Veldmark's Tenancy model v1 (two tests and a first release), and closes with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, on evidence from the public record of five groups, standards and EU law.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Adevinta, eBay Classifieds Group, OLX, AVIV and Vinted; locale and currency standards; EU data-protection law.",
+            "shows": "Tells the reader what kind of evidence to expect."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "Announces every section."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Where the chapter sits among its neighbours.",
+          "introduces": "The order of its own sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days",
+      "controlling_idea": "A phishing rule that protected Tradeyard Netherlands within the hour reached Belgium three days later and never reached Poland, Portugal or Motorvane, because Veldmark's brands had each solved multi-country inside their own walls and Common Ground had to solve it across them.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Poses the chapter's question with the incident and inventory that Tenancy model v1 later answers."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "From one phishing message to the four markets it reached unevenly, to the question it raised, to the group-wide inventory, and then to the decision record that answers it; the reader sees the cost in hours and days before the structural cause. Opened with the inventory instead, the 2,600 branches would read as abstract duplication with no cost attached, and the question in p08 would have no incident to come from."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's promise to open with the phishing rule.",
+        "introduces": "The incident at Veldmark.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "On Sunday 7 March 2027 a phishing message to Femke on Tradeyard Netherlands was reported, the account suspended and a new rule written within the hour, so Veldmark stopped the attack in one market quickly.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "20:11 fake Safe Deal payment link; reported 20:19; account suspended 20:26; a new rule withheld 37 similar messages.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the group can act fast inside one market."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The rule did not reach the other markets: Belgium got it on 10 March with the next Yardstick deploy, Poland and Portugal never, and nothing connected the suspended account's phone number to its Motorvane account.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick deploy cycle; outsourced PL/PT moderation queues with their own rule sets; the same phone number on a Motorvane private-seller account; Figure 1.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the cost of country copies in days and in missed markets."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The rule stopped the attack in one market in under an hour.",
+            "introduces": "It did not reach the others.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Ingrid used the incident to ask what Common Ground's slogan 'share platforms, not products' had left unanswered: what a market is in a shared platform, and where each difference should live.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Common Ground, the €140 million program approved in January 2027; a rule that should reach four countries in minutes against a Polish fee or a Belgian bilingual form that should stay local.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Turns the incident into the chapter's question."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The rule's uneven path.",
+            "introduces": "The question it raised for Common Ground.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The May 2027 inventory made the problem concrete: ten marketplace tenants in eight countries, nine locales and two currencies, Yardstick's 2,600 country branches and four category trees, Motorvane already configured per country, and Hearthly part-way through moving Spain onto its French platform.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard NL, BE, PL, PT; Motorvane DE, NL, PL, AT; Hearthly FR, ES; Keybridge a SaaS company, not a marketplace; nine locales, EUR and PLN; about 2,600 branches; trees of 1,420, 1,380, 980 and 760 leaves; Motorvane's one Kotlin stack; Spanish login still on Casavista's code.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows the scale of the problem and that each brand had solved it differently."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The question of what a market is.",
+            "introduces": "The group's inventory of markets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The three brands had each solved multi-country inside their own walls in three different ways, so Common Ground had to solve it across brands, and the decision record of 9 June 2027, Tenancy model v1, is the chapter's thread.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The inventory of three brands' arrangements.",
+            "introduces": "The across-brand problem and the decision record that answers it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Tenants, Global Components and Configuration",
+      "controlling_idea": "Four terms (brand, market, tenant, marketplace profile) must be kept apart, tenant identity must be separated from tenant isolation, and the global component and configuration over code, with its extension-point limit, are the two mechanisms of sharing.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "how": "Defines the vocabulary every later section uses."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Tenant terms come first because the tenancy model is defined in them; identity and isolation follow because they qualify what a tenant is in storage and load; the global component then names what is shared across tenants; configuration over code and extension points name how tenant differences are expressed in it. Placed earlier, the global component would have no tenants to serve."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Common Ground's question of what a market is, raised by the scene.",
+        "introduces": "Precise definitions of the words groups use loosely.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Marketplace groups use brand, market, tenant and marketplace profile interchangeably, and this book fixes each one, with the tenant as the unit a shared capability scopes, configures, isolates, releases and bills by.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Brand, market, tenant and marketplace profile with definitions and Veldmark examples (Tradeyard; Poland; ty:pl; Tradeyard Poland vehicles).",
+              "shows": "Separates the four words so that later sections can use them exactly."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "A tenancy model is the set of decisions that answer, for every shared capability, what a tenant is and how it is identified, isolated, configured, released, costed and allowed to leave; the answers may differ by capability but the tenant codes may not.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The tenant as the unit a shared capability works by.",
+            "introduces": "The full set of decisions about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The tenant is usually brand × country, because law, language, currency, competitors and partner ecosystems follow the country, and not smaller, because profiles share their market's users, accounts and legal entity.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The tenancy model's first question, what a tenant is.",
+            "introduces": "Why brand × country is the usual answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "Tenant identity, which every record, event, request, log line, metric and cost line must carry, is separate from tenant isolation, which is a per-capability choice among logical, partitioned and dedicated tiers, each with its cost.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Isolation tiers: logical, partitioned, dedicated, with what is separate, typical use and cost.",
+              "shows": "Shows that isolation is a choice with a price, while identity is not optional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What a tenant is.",
+            "introduces": "Two different properties teams often conflate as 'multi-tenant'.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Partitioned isolation is the right default, shared fleets with each tenant's data in movable units, and moving a tenant to dedicated infrastructure must not change any client.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "search-architecture's index per brand and country on shared clusters; aliases, routing tables and per-tenant connection configuration; Figure 2.",
+              "shows": "Shows the default agrees with the search chapter and how the design rule is met."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three isolation tiers and their costs.",
+            "introduces": "The default a marketplace group should choose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "A global component is a capability built and run once for the group with a stable contract beneath local products, and it is not a shared product, because the tenant's product team decides how the capability appears to its users.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "An image pipeline, an identity service, a moderation decision pipeline, a search engine platform, an experimentation statistics engine.",
+              "shows": "Makes the term concrete."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What a tenant is and how it is separated.",
+            "introduces": "What is shared across tenants.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Adevinta's 2019 annual report gives the clearest public test for choosing global components: centralize where investment is large and the technology uniform, and keep product local.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'a centralised strategy to data and analytics'; 'where investment requirements are large and the technology is uniform, and where the maxim built once; used many times clearly applies'; 'local autonomy and decentralised capacity in product and technology'.",
+              "source": "Adevinta Annual Report 2019 (published 2020)",
+              "shows": "States both conditions a capability must meet."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The global component as a concept.",
+            "introduces": "A documented test for which capabilities qualify.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Configuration over code means tenant differences that are data, values a tenant owner can change without a developer, are governed configuration rather than code branches.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Locales, currencies, category trees, attribute requirements, fee tables, legal texts, consent purposes, moderation thresholds, feature switches, endpoints per profile.",
+              "shows": "Lists what counts as data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The global component, what is shared.",
+            "introduces": "How tenant differences are expressed inside it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Because configuration that can express anything becomes an unreviewed programming language, the principle needs three companions: a schema per configuration type, a resolution hierarchy and change control.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Configuration as governed data.",
+            "introduces": "The controls that keep it from becoming code.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "A difference that is behavior belongs in an extension point where a tenant-owned component plugs in, which gives the ladder configure, then extend, and only then fork.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A VIN decoder for cars, an energy-certificate validator for French property, a Polish tax rule.",
+              "shows": "Shows what kind of difference is behavior rather than a value."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Differences that are values.",
+            "introduces": "Differences that are behavior, and the ladder.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "platform-models",
+      "heading": "Platform Models: From the Fork to the Product Platform",
+      "controlling_idea": "Marketplace groups use six platform models, not a maturity ladder; the public record shows sharing working within a vertical and at lower layers across verticals, while both public converged product platforms were rowed back.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Grounds the per-capability platform decision in the documented record."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The six-model table first, then what the record shows within a vertical, across verticals and for converged products; each reading cites rows of the table. Without the table first, the readings would cite models the reader has not seen; and the converged-product reversals come last because they qualify the top row and set up the architecture's choice to share beneath the product."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The global component and configuration over code, the two mechanisms of sharing.",
+        "introduces": "The platform models groups actually build from them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "Marketplace groups use six platform models, from the fork per country to the converged product platform, and they are not a maturity ladder: most groups run several at once for different capabilities.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fork per country (Schibsted-era Blocket-derived sites, primary documentation unavailable); federation with coordinated choices (Marktplaats and eCG, 2015, republished 2017); shared core with local configuration (OLX 2026 one repo three brands; Adevinta Benelux job posting); global components beneath local products (Adevinta's 2019 rule); platform as product (Adevinta Common Platform, Navarro 2020); converged product platform (Adevinta 2023 'a unified global platform'; AVIV 2021).",
+              "source": "Sources listed in the chapter; dated as published",
+              "shows": "Sets each model beside a dated example, where it works and where it fails."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Most successful multi-country sharing is within a vertical: OLX's evidence points to one codebase per vertical serving several country brands, and eCG's 2020 motors partner contract suggests a shared motors platform, both readings labeled as inference.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX one frontend repository for three brands; centralized learning-to-rank repository with brand configuration; Prosus FY25 credits a 'unified platform' in real estate.",
+              "source": "OLX Tech 2026, 2025; Prosus 2025",
+              "shows": "Shows within-vertical sharing in the record."
+            },
+            {
+              "kind": "source",
+              "what": "eCG MoVe reference repositories, 2020.",
+              "source": "eBay Classifieds Group on GitHub, 2020",
+              "shows": "Suggests a shared motors platform, tenants unnamed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The six models and where each works.",
+            "introduces": "The first pattern in the record: sharing within a vertical.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Across verticals the shared layers sit lower: a car marketplace and a property portal share infrastructure, identity, media, messaging, trust signals and data far more easily than an insertion flow.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Sharing within a vertical.",
+            "introduces": "Sharing across verticals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Both public attempts at a converged product platform were rowed back: Adevinta's 2023 plan for 'a unified global platform' gave way by 2025 to decentralization (told in full in case-adevinta), and AVIV's 2021 integration ambition gave way by 2025 to local autonomy with selective group functions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "AVIV CEO, August 2021: 'aligning our tech roadmap across the organization to create a European real estate marketplace'; December 2025 interview: the interviewer's phrase 'fully integrated platform'; the answer 'strengthened the autonomy of its local businesses' while operating 'group-level functions where they create clear advantages'.",
+              "source": "Online Marketplaces, 2021 and 2025",
+              "shows": "Shows the second documented reversal, attributing each phrase to its speaker."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Shared layers that work within and across verticals.",
+            "introduces": "The model at the top of the table, and how both public examples ended.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: A Tenancy Model for a Marketplace Group",
+      "controlling_idea": "A tenancy model for a marketplace group consists of a layered split of shared and local, a tenant register, a configuration hierarchy, extension points with the configure–extend–fork ladder, release by tenant with group-urgent classes, data boundaries between tenants, and localization beyond translation.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Specifies each element of the tenancy model the thesis calls for."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The layer model first, because every later element sits in its tenancy services; the register next, because configuration, rings and exit paths read it; the configuration hierarchy before extension points, because extensions start where configuration ends; release by tenant after both, because rings and flags release configuration and code alike. The first four elements say how a tenant's differences are expressed and changed; the last two turn from mechanisms to what tenants may not share: data boundaries (where data may live and which tenant may use it, which needs the register's legal entity and hosting profile) and localization, which applies configuration, extensions and release scope to language and ends on Belgium, the case that tests the tenant definition. Placed before the register, data boundaries would cite legal-entity and hosting attributes not yet introduced; placed in the concepts, localization would have no configuration or extension mechanism to point at. Placed earlier, the rings would have no register to read, and Belgium would test a definition the reader had not yet seen used."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The record's lesson that sharing works beneath the product.",
+        "introduces": "A reference architecture for sharing that way.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "The author's reference architecture, not any company's, separates shared from local by layer and puts the tenancy services, on which every layer depends, in the middle.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: brands own product surfaces, commercial terms and market policies; the group owns global components and infrastructure; tenancy services carry market differences down as configuration, extensions and release scope.",
+              "shows": "Shows where shared and local meet."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Local does not mean outside the platform: local content such as a Polish fee table or a Belgian bilingual form is applied by shared components, so the brand owns the content and the platform owns the mechanism.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The layered split of shared and local.",
+            "introduces": "What 'local' means in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "The tenant register is the small, authoritative list of tenants that every shared capability reads, and an entry holds the code, brand, country and legal entity, locales, currency, time zone and regulator, hosting and isolation profile, profiles and lifecycle.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "BCP 47 tags (RFC 5646, 2009); ISO 4217 codes with minor units; the DSA for statements of reasons.",
+              "shows": "Anchors the locale, currency and legal-entity attributes in standards."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The tenancy services at the center of the layers.",
+            "introduces": "Their first element, the register.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Lifecycle is the attribute most groups omit: a leaving tenant needs export jobs, transitional services and a switch-off plan, and the register is where the platform learns of it.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The register's attributes.",
+            "introduces": "The one most often missing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Configuration is resolved along a hierarchy from the most general scope to the most specific, inherited unless overridden, with the schema stating the levels at which each key may be set.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the configuration hierarchy, with experiment arms last.",
+              "shows": "Shows that most keys are set at one or two levels and experiments can override without forking."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The register, which says what tenants exist.",
+            "introduces": "How each tenant's configuration is resolved.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "OLX published a small, concrete version of the hierarchy in 2025: one learning-to-rank repository with Hydra composing brand-level configuration, one code path with configuration composed by scope.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OLX centralized learning-to-rank projects that had caused 'duplicated efforts' and used Hydra with configs such as brand: olx and brand: real_estate.",
+              "source": "OLX Tech, 2025",
+              "shows": "Shows the shape in one capability and why it generalizes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The configuration hierarchy.",
+            "introduces": "A published instance of it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Four rules keep a configuration hierarchy healthy: every key has a schema, an owner and a level; changes are versioned, reviewed and effective-dated; configuration is data, not logic; and resolution is observable.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The hierarchy and its published example.",
+            "introduces": "The rules that keep it from decaying.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "When configuration is not enough, a shared capability offers extension points, defined interfaces where a tenant-owned component runs under a contract with an owner on each side.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Configuration and its limit, rule three.",
+            "introduces": "The next rung: extension points.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Adevinta's 2023 dispute back office is the clearest published example: per-tenant adapters in, a canonical model in the middle and an extensible surface out, the general pattern for a global component that serves different products.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Events via Kafka, SQS or REST normalized into one model; an extensible micro-frontend; 'We couldn't hardcode anything… or make any assumptions'.",
+              "source": "Adevinta Tech Blog, 2023",
+              "shows": "Shows extension points working in a cross-marketplace component."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Extension points defined.",
+            "introduces": "A published instance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The configure–extend–fork ladder decides which mechanism a difference gets, with an owner and an exit for each rung.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Configure (a value; brand content on a group schema); extend (behavior at a known point; promote to core if a second tenant needs it); fork (neither works and the market cannot wait; expiry date and a plan to fold back or leave).",
+              "shows": "Shows when each rung applies and how each ends."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Configuration and extension points.",
+            "introduces": "The ladder that chooses between them and the fork.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The fork rung exists because pretending it does not starts shadow systems: a declared, dated fork is a managed exception, an undeclared one the Copy-Paste Country in miniature.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The fork rung in the ladder.",
+            "introduces": "Why it is there.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "list",
+          "controlling_idea": "Releases of a shared platform are scoped by tenant through release rings, which move a deployment from synthetic to small to the largest tenants, and tenant-scoped feature flags, whose release toggles must expire.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Hodgson's taxonomy of release, experiment, operational and permission toggles.",
+              "source": "Pete Hodgson, martinfowler.com, 2017",
+              "shows": "Shows why release toggles need an expiry."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "How a difference is expressed: configuration, extension or fork.",
+            "introduces": "How a change reaches each tenant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Rings limit a defect's blast radius and flags let a tenant adopt a change on its schedule, but some changes must not wait for any schedule, so the tenancy model names group-urgent change classes in advance.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A fraud rule, a security fix or a legal takedown.",
+              "shows": "Names the changes that bypass rings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Rings and flags as two mechanisms.",
+            "introduces": "Their opposite purposes and the changes that must bypass both.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "For an EU group, data residency does not mean keeping data in the user's country: GDPR Chapter V restricts transfers outside the EEA, so EU hosting with governed outside access covers most needs, and stricter constraints go in the register's hosting profile.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Regulation (EU) 2016/679, Chapter V.",
+              "source": "European Union, 2016",
+              "shows": "States the actual legal constraint."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The mechanisms that express and release a tenant's differences.",
+            "introduces": "What tenants may not share: where their data may live and who may use it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The harder boundary in a multi-brand group is legal and commercial, which tenant may use which data, so a shared platform needs tenant-scoped access by default and explicit, recorded exceptions.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Purpose limitation, competition law, platform-to-business commitments, the group's promises; a shared fraud block list as an exception.",
+              "shows": "Shows why data in one warehouse is not free to share."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The geographic boundary.",
+            "introduces": "The legal and commercial boundary between tenants.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Multi-region deployment is a separate decision that country-scoped classifieds rarely need; Vinted's single cross-border catalog with a primary writer and replicated read projections is the documented exception.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'not to shard our primary data models across regions'; 'Eventual consistency is being built into how the system works, not an edge case we try to hide'.",
+              "source": "Vinted Engineering, 2026",
+              "shows": "Shows what a truly global dataset demands and why most groups do not need it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Boundaries between tenants' data.",
+            "introduces": "Whether data spans regions at all.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "list",
+          "controlling_idea": "Localization in a listing platform touches at least six layers, and only the first is text: interface text, formats, taxonomy labels, search analysis, legal and policy content, and trust content.",
+          "function": "explanation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Unicode CLDR plural and gender rules; links to location-and-geo, categories-and-taxonomies, attribute-schemas, search-architecture.",
+              "shows": "Places each layer with its standard or owning chapter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Configuration, extensions and release scope, and the boundaries between tenants.",
+            "introduces": "Language: the market difference that runs through every layer and uses all of those mechanisms.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Belgium is the test case: in 2013 eBay described 2dehands.be and 2ememain.be as one bilingual marketplace under two names, so a model that equates tenant with locale, or brand with domain, cannot represent it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "eBay Classifieds Group brand page, 2013 archived snapshot: 'bilingual' Dutch and French search and listing.",
+              "source": "eBay Classifieds Group, 2013",
+              "shows": "Shows one tenant, one inventory, two locales and two names."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Localization beyond translation.",
+            "introduces": "A market that tests the tenant definition.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Veldmark's Tenancy Model v1",
+      "controlling_idea": "Veldmark's Tenancy model v1 of 9 June 2027 applies every element of the reference architecture, and its two tests (the phishing replay and the classification of Yardstick's branches), one market that combines the layers (Polish vehicles) and its first release (the taxonomy service's rings) confirm it and refine it.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the tenancy model decided, tested and used at a group with the scene's problem."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "In date order: the decision record and the arguments it settled (June 2027), the rings' first use for the taxonomy service (October 2027), the replay of the phishing rule before the trust-and-safety platform went live (November 2027), the branch classification for the insertion flow leaving Yardstick (Q2 2028), and the Polish vehicles section, which combines configuration, extensions and commercial ownership and so needs both tests before it. The rings follow the arguments because the second argument was about ring placement; in any other order the dates jump, which both round-2 flow readers reported."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The reference tenancy model.",
+        "introduces": "Veldmark's decision record that applies it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "The decision record adopted on 9 June 2027 had nine parts, from ten brand × country tenants to tenant exit paths, each with its reason.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "1 ten tenant codes; 2 codes in every identifier vm:<brand>:<country>:<id>, event, API call, log line, metric, cache key and cost tag; 3 Keybridge not a tenant; 4 partitioned default; 5 one configuration service, group → brand → tenant → profile → seller segment → experiment; 6 extension points (VIN decoding, energy certificates, Polish insertion fees); 7 release rings; 8 group-urgent classes; 9 tenant exit paths, because a private-equity owner may sell any tenant.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows every element of the reference architecture decided for one group."
+            }
+          ]
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The two decisions that drew argument were settled by scope and by traffic: the configuration service is mandatory only for global components, so Motorvane keeps its own, and Poland is too large to be a canary.",
+          "function": "refutation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Felix Brandt's objection; Katarzyna Nowak's question; Poland with 3.6 million live listings and 8.9 million monthly users.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows how the model answers a brand that already solved multi-country and a market that wanted to go early."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The record as adopted.",
+            "introduces": "The two parts of it that were contested.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The rings were first used for the group taxonomy and attribute service in October 2027, and the ring-1 week found two defects, one of them a cache key without the tenant code, which is why decision 2 requires the code in every cache key.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "ty:pt on Monday 4 October 2027, ring 2 a week later, ty:nl on Monday 25 October, a week before the bikes split on 1 November; a Portuguese label falling back to Dutch; a cache key missing the tenant code.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows rings catching the classic multi-tenant bug before the largest tenant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The ring placement argued over, Poland too large to be a canary.",
+            "introduces": "The rings' first use, for the taxonomy service in October 2027.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Before the shared trust-and-safety platform went live for Tradeyard Netherlands and Belgium in November 2027, Ingrid's team replayed the 7 March incident against it as a design test of the tenancy model.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: the rule as policy content with a tenant scope; tenants in other languages in shadow mode until a locale term list is reviewed.",
+              "shows": "Shows the rule's path on the shared platform."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The rings' first use in October 2027.",
+            "introduces": "The replay of the scene's incident before the shared trust-and-safety platform went live in November 2027.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "form": "list",
+          "controlling_idea": "The replay produced three findings that went back into the model: rules split into a group detector and tenant locale packs, cross-brand signals need one recorded exception, and statements of reasons stay tenant-scoped.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The domain-age signal and link pattern global, the wording Dutch; a 48-hour shadow window for Polish and Portuguese packs; a shared block list of hashed identifiers of accounts terminated for fraud, approved by the Group Data Protection Officer; DSA statements of reasons issued per Member State.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows what the test changed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The replay.",
+            "introduces": "What it found.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The second test, on the Tradeyard insertion flow leaving Yardstick in Q2 2028, sampled 300 of the 2,600 country branches and found about 70% values, 20% behavior and 10% dead code, and no branch that justified a fork.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Daan Visser's team's sample: about 70% configuration, about 20% extensions (Polish insertion fees, Belgian title language detection, Portuguese tax identifiers), about 10% dead; Figure 6.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows configuration over code removing country branches without a fork."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first test, on trust and safety.",
+            "introduces": "The second, on the insertion flow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The Polish vehicles section shows the layers combined: one market, two brands, one shared capability and two commercial owners, all of which the tenancy model has to represent.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Private-seller listings in tenant ty:pl, with insertion fees in złoty from the ty:pl vehicles profile; Motorvane's VIN decoding through the same extension contract; dealers offered Motorvane packages in tenant mv:pl and syndicated to Tradeyard; the listing core records the commercial owner.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Shows configuration, extensions and ownership working together in one market."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The branch classification.",
+            "introduces": "One market where all mechanisms meet.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The platform model and the isolation tier are chosen per capability, and the configure-and-share approach stops holding when a market's product has structurally diverged, one tenant dominates, or ownership is about to change.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S1",
+          "S4"
+        ],
+        "how": "Sets out the per-capability choices and states when the thesis does not hold."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Veldmark's decisions and their tests.",
+        "introduces": "The choices behind them, set side by side, and their limits.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49a",
+          "controlling_idea": "Veldmark's tested decisions rest on choices every group faces, so the section sets them side by side in two tables (a platform model per capability, an isolation tier per workload) and then says when the guidance does not hold.",
+          "function": "transition"
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Read across the two trade-off tables, a capability with uniform technology goes to a global component on a partitioned default while the brand keeps its insertion flow, web, apps and prices, and Veldmark's 2027 choices follow that line.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Platform model per capability with Veldmark's 2027 choice (compute, identity, trust and safety, search, taxonomy, catalog, insertion flow, web and apps, packages and prices).",
+              "shows": "Shows the per-capability decision and Veldmark's choices."
+            },
+            {
+              "kind": "table",
+              "what": "Isolation choices: logical everywhere, partitioned by default, dedicated for the largest tenant, dedicated per tenant, with benefit, cost and when each is right.",
+              "shows": "Shows partitioned as the default and when each alternative wins."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two tables the lead-in announced.",
+            "introduces": "What they show read together, and Veldmark's choices along that line.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The configure-and-share approach fails when a market's product has diverged for structural reasons, when one tenant is so large that the shared platform becomes its platform, and when ownership is likely to change soon.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A transactional model among lead-based ones; a regulatory regime with no equivalent; a dominant tenant; an imminent sale (case-adevinta).",
+              "shows": "Names the conditions under which the guidance does not hold."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The choices the tables recommend.",
+            "introduces": "When those choices do not hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Every vertical shares its engines and identity easily and its country-specific edges hardly at all, and real estate is the hardest vertical to share across countries.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S6"
+        ],
+        "how": "Shows where sharing beneath the product stops in each vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The trade-offs and the conditions under which sharing stops holding.",
+        "introduces": "How those limits fall in each vertical, which the section's opening sentence names.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p52",
+          "controlling_idea": "Real estate is the hardest vertical to share across countries, because professional-software ecosystems, mandatory disclosures and valuation data differ most there, so a shared engine with local ingestion, disclosure and pro-tooling edges fits the evidence and a single property product does not.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What varies by country, what is easiest and hardest to share, and the documented signal, for general classifieds, real estate, automotive and jobs.",
+              "shows": "Shows the same split, shared engines and local edges, in every vertical."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Eight failure modes recur when the tenancy model is missing or partial, from the tenant added as an afterthought to the missing exit path.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the cost of omitting each element of the tenancy model."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Where sharing fits each vertical.",
+        "introduces": "What goes wrong when the tenancy model is missing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "form": "list",
+          "controlling_idea": "Eight failure modes recur: the tenant added as an afterthought, brand equated with domain or locale, configuration that became code, release toggles that never expire, rings without a group-urgent lane, the largest tenant as design authority, pooled data without recorded boundaries, and no exit path.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Belgium, Poland's vehicles section and a rebrand break brand-as-domain; Tradeyard Netherlands carries about 45% of Tradeyard's search traffic; Keybridge's commitments.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Ties several failures to the chapter's cases."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "A Chief Architect decides the tenancy model once at group level, the platform model per capability, what to share first and who decides what, watches six measures, and designs the platform to survive the next swing of the centralization pendulum.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the thesis into decisions, an order of sharing and measures."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The group-level tenancy decision comes first because everything else may vary by capability; then the per-capability model, the sharing order that follows from it, the split of decision rights, the measures that show whether it works, and last the pendulum, which explains why all of it is designed to be reversible. Placed before the per-capability scoring, the sharing order would have no criteria behind it; placed first, the pendulum would argue for reversibility before the reader knows what is being shared."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them at group scale.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Decide the tenancy model once, early, at group level: the tenant definition, code format, mandatory carriage and exit-path requirement are the only parts that may not vary by capability.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Decide the platform model per capability by asking whether it passes both halves of Adevinta's 2019 test, whether its value grows when data is pooled, and whether it can be shared without converging the product above it, and publish the scores.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What is decided once for the group.",
+            "introduces": "What is decided per capability.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Share in order infrastructure and cloud governance, the event backbone and data platform, trust signals and identity, media and the search engine, then taxonomy and the catalog and entitlements model, with product surfaces last and often never.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Uniform and invisible; everything depends on them; value grows with pooling and fraud ignores brand boundaries; expensive and uniform; need the tenancy services first.",
+              "shows": "Gives the reason for each step; platform-consolidation develops the post-acquisition variant."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three questions for scoring a capability.",
+            "introduces": "The order of sharing they produce.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "The group decides schemas, contracts and the tenancy model, the brand decides configuration values, extensions and product, the platform team decides how a capability is built and run, and the forum decides forks, with an expiry date.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to share and in what order.",
+            "introduces": "Who decides what.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Six measures show whether the model works: adoption without mandate, country branches in code, configuration health, lead time from one tenant to all, cost per tenant, and yearly separability drills.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "On 7 March 2027 the lead time was three days to Belgium and never to Poland or Portugal.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Gives the measure a baseline from the scene."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Decision rights.",
+            "introduces": "The measures that show whether the decisions work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Groups swing between centralization and local autonomy faster than platforms change, so the goal is not the right position on the pendulum but a platform that survives the next swing.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adevinta (2023 convergence, 2025 decentralization) and AVIV (2021 integration, 2025 localization).",
+              "shows": "Shows the pendulum swinging within a few years at both public examples."
+            },
+            {
+              "kind": "reasoning",
+              "what": "Global components a tenant can leave, configuration it can take with it, products that never depended on another brand's code; long-term-evolution's cost to reverse.",
+              "shows": "Shows how the architecture makes the swing cheap."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The measures, including separability drills.",
+            "introduces": "Why reversibility is the design goal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let an architect test a group's platform against the tenancy model: tenant codes, isolation, branches in code, configuration governance, extension points, lead time to all tenants, shared data, exit paths, adoption without mandate and convergence initiatives.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Gives the reader a working review drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions and measures.",
+        "introduces": "Questions that test whether they are in place.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "form": "list",
+          "controlling_idea": "Ten questions test whether a group's tenant codes, isolation tiers, branches in code, configuration governance, extension points, lead time to all tenants, shared data, exit paths, adoption and convergence initiatives meet the chapter's design.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Sharing to Staying Up",
+    "synthesis": "Each kind of market difference has one place to live (a value in configuration at its level, a behavior in an extension point, a fork only under an expiry date, an urgent rule in a group-urgent lane), and all of them depend on one thing decided once: a tenant code carried everywhere, with an exit path for every tenant.",
+    "so_what": "With that model each fraud rule, search upgrade or consent change is built once and reaches every tenant, while each market keeps what makes it local and the group can still sell or move a tenant.",
+    "callback": {
+      "to": "The scene's 7 March phishing rule, which reached Belgium three days late and Poland and Portugal never, and Ingrid's question of where each difference should live.",
+      "how": "The conclusion answers Ingrid's question difference by difference and shows the replayed rule reaching every tenant at once, with locale packs following within the shadow window."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the tenancy decision record first: tenant definition and codes, mandatory carriage, isolation default, configuration hierarchy, rings with group-urgent classes, and an exit path per capability."
+    },
+    "hand_off": {
+      "to": "reliability-and-scale",
+      "relationship": "contrast",
+      "carries_over": "A tenancy model decides how the platform is shared, but not whether the shared platform stays up when every tenant uses it at once.",
+      "introduces": "Reliability, performance and cost: journey objectives, peak planning, degradation and unit costs at the Sunday-evening peak."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the uneven rule to the review questions.",
+      "introduces": "What the tenancy model adds up to, answered against the scene.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p61",
+        "controlling_idea": "Ingrid's question now has an answer for each kind of difference (configuration, extension point, fork with an expiry date, group-urgent lane), all resting on a tenant code carried everywhere, and replayed under Tenancy model v1 the 7 March rule reaches every tenant at once instead of Belgium three days late, so each improvement is bought once while markets stay local.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "The 7 March rule; Belgium on 10 March; Poland and Portugal never; the replay's detector and locale packs within the 48-hour shadow window.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "Calls back to the scene with the result the model produces."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "how": "States what the sections add up to and returns to the opening incident."
+        }
+      },
+      {
+        "id": "p62",
+        "controlling_idea": "A tenancy model decides how the platform is shared but not whether the shared platform stays up when everyone uses it at once, which reliability-and-scale takes up at the Sunday-evening peak.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S6"
+          ],
+          "how": "Hands the shared platform to the next chapter."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the tenancy model decides.",
+          "introduces": "What it leaves open: staying up, fast and affordable at the peak.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Consolidation after acquisitions, synergy cases and brand migrations.",
+      "covered_in": [
+        "platform-consolidation"
+      ]
+    },
+    {
+      "topic": "Team topologies, funding and governance forums.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    },
+    {
+      "topic": "Search index topology in depth.",
+      "covered_in": [
+        "search-architecture"
+      ]
+    },
+    {
+      "topic": "Event contract details.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Cross-brand data products.",
+      "covered_in": [
+        "data-platform"
+      ]
+    },
+    {
+      "topic": "Reliability, capacity and cost at peak.",
+      "covered_in": [
+        "reliability-and-scale"
+      ]
+    },
+    {
+      "topic": "A full retelling of Adevinta's history.",
+      "covered_in": [
+        "case-adevinta"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Which OLX brands share which codebase is not publicly documented; revisit if OLX publishes its vertical platform architecture.",
+    "What AVIV's 'fully integrated platform' consisted of, and how far it got, is not public.",
+    "The Benelux multi-tenant platform rests on recruiter copy; replace with a technical source if one appears."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Defined the tenant as brand × country and made marketplace profiles configuration scopes inside it, to stay consistent with the profile register in marketplace-taxonomy and the event identifier format in event-driven-listings."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the 7 March 2027 phishing rule (ledger) as the motivating incident, because it shows the cost of country forks in hours and days rather than in abstract duplication."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept Keybridge outside the tenancy model, with registry access only as an integration principal, to agree with sellers-and-accounts and the March 2027 neutrality decision."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated converged product platforms as one model among six, with both public examples (Adevinta, AVIV) reversed, rather than as the end of a maturity ladder."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria rewritten: the seven inventory criteria (definitions, a six-model table, a layered architecture with three diagrams, residency and localization coverage, the Veldmark worked example, trade-off and vertical tables with 6–10 questions, grouped sources) are replaced by the journal entry's outcome criteria AC-1 (an uneven rule and a brand's objection: which tenancy controls apply), AC-2 (the opening predicts the sections) and AC-3 (reverse outline); diagram, table and source counts are dropped as inventories. No criteria added.",
+      "rejected": [
+        "Keeping the counts of diagrams, tables and questions as criteria: they describe contents, not reader outcomes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so max_words is the published prose length by check_draft's count (7,077) plus 5%: 7,431."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p05) so that the opening predicts the sections (AC-2), moving the published evidence sentence into it; added to p04 one clause that picks up ml-platform's question of shared, per-brand and per-market models, the relationship (elaboration) the journal spec declares for this chapter's transition_in."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a lead-in paragraph to Trade-offs (p50) because its two tables had no sentence saying what they show (evidence_is_explained)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): relabelled the in-practice section's flow from chronological to problem_solution (its units are not in date order), added Polish vehicles to its controlling idea, and added what-would-break reasons to the scene, platform-models, in-practice and ca-view rationales. No unit moved."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 escalated on two spec-fault flow findings, both corroborated by the two flow readers. (1) Architecture: the position of data residency and localization after release by tenant was unclear; the order is kept and the spec now states the reason (the last two elements turn from mechanisms to what tenants may not share, and localization uses all the mechanisms), with p38's transition changed from sequence to contrast and p41's to elaboration. (2) Platform models: the claim that both converged platforms were rowed back gave only AVIV's evidence; p24 now states Adevinta's half in one clause from facts already in the chapter (its 2023 'unified global platform' plan and 2025 decentralization). Vertical Differences, whose position both readers called unclear (fault unclear), keeps its place in the book's standard judging order, with a transition that ties it to the trade-offs; moving it was not taken.",
+      "rejected": [
+        "Moving localization next to the tenant definitions in Concepts.",
+        "Moving Vertical Differences before Trade-offs or into Platform Models: the book's chapter shape fixes the judging sections' order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 found one spec-fault flow finding, corroborated by both flow readers: In Practice's dates jumped (replay and branch test before the October 2027 rings). Moved p49 (release rings in numbers) to follow p44, made the section's flow chronological, and rewrote the transitions of p49 (example, from the ring-placement argument) and p45 (time, from the rings' first use). This reverses the round-0 relabelling to problem_solution, which the flow rubric had suggested as one of two options."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from one paragraph to two so that it synthesizes and calls back to the 7 March rule and Ingrid's question before the hand-off to reliability-and-scale."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: added a Trade-offs lead-in unit (p49a) before the first table that carries the section's cause_effect transition from Veldmark's tested decisions and announces the two tables and the limits; p50 now has an elaboration transition_in from it. To make room, max_words raised from 7,431 to 7,520 (+1.2%, under the 10% cap); no published text cut."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Decision 2 of the 9 June 2027 record now lists cache keys (draft table and p43 evidence), matching the ledger's Tenancy model v1 line ('identifier, event, API call, log, metric, cache key and cost tag') and the rings paragraph's statement that decision 2 requires the tenant code in every cache key."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The ledger does not place ring definitions in the tenant register, so rings were not added to the register's attribute list; the release-rings bullet now says 'Each ring is a list of tenant codes from the tenant register' instead of 'The ring definitions live in the tenant register'."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Polish vehicles paragraph now says private sellers' listings sit in tenant ty:pl (ledger: insertion fees for Tradeyard PL vehicles; the ty:pl vehicles profile) and that dealers are offered Motorvane packages in tenant mv:pl (ledger: the commercial overlap of Tradeyard PL cars and Motorvane PL dealers)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Modalities: none is planned now; modalities stays empty (the four unchecked boxes of the old spec.md are not carried over). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order kept: Vertical Differences stays after Trade-offs and localization stays at the end of Architecture. In round 1 the two flow readers proposed different destinations for Vertical Differences, and only one proposed moving localization, so no move had converged; the published order is kept (rule: keep published order unless both readers converged)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric note to trim p19 and p20 declined: both are published text, and the concepts section defines what the architecture section specifies. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 cheap fixes (p41 names language's mechanisms; p47 names the replay as the first test; p50's fork-column sentence made plain; callout says 'adoption without mandate') accepted under the author's delegation, 2026-11-12; round 4 checks them."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The spec's conclusion takeaway ('write the tenancy decision record first') is not stated verbatim in the draft's conclusion; it was a judge note, not a failure, so the published conclusion is kept. Accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, and reliability-and-scale's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "case-adevinta, marketplace-taxonomy, vertical-requirements, search-architecture, event-driven-listings, trust-and-safety-architecture, fraud-prevention, categories-and-taxonomies, sellers-and-accounts, platform-consolidation, long-term-evolution, ml-platform",
+      "contributed": "Neighbouring contracts and the tenant gloss used earlier (one brand in one country)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md, _research/consistency-issues.md (items 18 and 19)",
+      "contributed": "Veldmark facts; the AVIV quote ruling and the eight-country ruling."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Annual Report 2019; Navarro 2020; Adevinta dispute back office 2023; Marktplaats search migration 2015/2017; eCG MoVe repositories 2020; eCG 2dehands page 2013; Adevinta Benelux job posting; OLX Masterclass 2026 and Hydra 2025; Prosus FY25; Vinted 2026; Online Marketplaces 2021 and 2025 (AVIV)",
+      "contributed": "The documented record of platform models."
+    },
+    {
+      "kind": "external",
+      "ref": "GDPR; DSA; RFC 5646; ISO 4217; Unicode CLDR; Hodgson 2017",
+      "contributed": "Residency, statements of reasons, locale and currency standards, feature-toggle taxonomy."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: seven → eight countries, AVIV 2021 quote aligned with case-aviv (no 'unified'; 'fully integrated' attributed to the interviewer), Vinted quote corrected, long-term-evolution link restored. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,193 → 6,214 prose words; opening ties the chapter to Part VII's contracts-not-mandates argument; first sentences sharpened. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: pointer to long-term-evolution now uses that chapter's term, cost to reverse. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json); known differences from the source recorded for Figure 3. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed paragraph by paragraph from the published text; added roadmap p05, Trade-offs lead-in p50 and a two-paragraph conclusion. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: p24 controlling idea, architecture flow rationale, p38 and p41 transitions, verticals transition. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: moved p49 after p44 (In Practice now in date order), with p45 and p49 transitions rewritten. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 3: open questions updated with the remaining findings and the post-round fixes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved the round-3 escalation under the author's delegation: Trade-offs lead-in unit p49a, cache keys in decision 2, ring sentence reworded, Polish vehicles tenants named, max_words 7,520; open questions reduced to the three source questions."
+    }
+  ],
+  "length": {
+    "max_words": 7520
+  }
+}

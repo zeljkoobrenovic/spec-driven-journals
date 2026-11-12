@@ -1,0 +1,2008 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "marketplace-regulation",
+  "journal": "listing-systems-architecture",
+  "part": "part-5",
+  "title": "Rules of the Marketplace: DSA, DAC7 and Vertical Regulation",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the marketplace-regulation entry in journal-spec.json; the conclusion realises Part V's closing (synthesis, so-what, callback, takeaway) from the same file, and the hand-off uses Part VI's transition_in. Units added or split by this conversion: introduction p03/p04 (split), roadmap p05, GDPR p38/p39 (split), one lead-in paragraph each for Trade-offs (p59) and Vertical Differences (p60), and two conclusion paragraphs.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The legal roles (hosting service, online platform, online marketplace, online intermediation service, reporting platform operator) and the features that trigger each; which rules reach a pure lead-generation site and which turn on contracts or payments concluded through the platform.",
+        "The DSA as system requirements (demotion and payment holds as restrictions, trader traceability as a data lifecycle, statements of reasons against the Transparency Database schema, transparency reports from the event log); ranking, advertising, price-reduction and review disclosures; GDPR retention per data class; DAC7 and its pipeline from the payment ledger; property and vehicle rules; UK and US rules in brief.",
+        "The obligation, the control and the evidence, and the five components that serve every law."
+      ],
+      "believe": [
+        "Every transaction feature is a regulatory decision and should be reviewed as one.",
+        "Compliance by design, with the evidence query written with the control, costs less than compliance by project."
+      ],
+      "can_do": [
+        "Map a regulation's articles to system requirements and owning components, and design a statement-of-reasons pipeline and a DAC7 pipeline.",
+        "Specify the disclosures and regulated listing attributes a marketplace needs, and set retention per data class.",
+        "Hold country differences as configuration over shared components and make every reported number reproducible."
+      ]
+    },
+    "audience": {
+      "who": "Chief and enterprise architects, trust-and-safety, data and payments leads, and regulatory or data-protection leads who must jointly turn legal obligations into systems; not lawyers.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline).",
+        "From earlier chapters: the listing aggregate and its price history, attribute schemas, listing ingestion, sellers and accounts with trader status, ranking and paid products, recommendations, the trust-and-safety decision service, decision record, policy registry, enforcement propagation and appeals, fraud prevention's risk scores, and identity-and-verification's claims, KYB and business registry.",
+        "Veldmark, its brands and cast (Ingrid Halvorsen, Lucía Ortega), Yardstick, Safe Deal, Femke's bike and the phishing incident, the Essen Golf, the Lyon apartment, and the failure-pattern names."
+      ],
+      "does_not_know": [
+        "The legal roles (hosting service, online platform, online intermediation service, online marketplace, reporting platform operator) and their triggers.",
+        "Statement of reasons, the DSA Transparency Database and its schema; obligation, control and evidence; compliance by design.",
+        "P2B, UCPD, CRD and Omnibus disclosure rules; DAC7 consideration and excluded sellers; EPBD, DPE and Pkw-EnVKV fields; UK and US rules."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an irreproducible regulatory figure and a planned payments launch, the reader names what is needed and what changes.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your regulator asks you to reproduce last year's count of listing removals, and your brands' exporters give different numbers; separately, product wants to launch in-platform payments in two countries next quarter. Using only this chapter: what do you need, and what changes?",
+        "expected": "One decision record that feeds statements of reasons, the Transparency Database and reports, with every reported number a saved, versioned query over immutable events; an obligation register linking each obligation to a control and an evidence query. Payments move the marketplace into DAC7 as a reporting platform operator and into trader traceability, so the launch is a regulatory decision: a DAC7 pipeline aggregates consideration from the payment ledger, flags sellers approaching the threshold early and keeps the tax profile separate from general identity claims."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Regulation now written in the vocabulary of systems design, the chapter's scope (EU first, UK and US briefly, not legal advice) and its claim that many obligations ask for a few artifacts; the five exporters and the irreproducible report; legal roles defined by features; the DSA as requirements and the statement-of-reasons pipeline; ranking, advertising and consumer transparency; GDPR; DAC7; property and vehicle rules; UK and US; compliance as architecture; trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: EU legal texts in the Official Journal, the DSA Transparency Database, national rules and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "The chapter's last section performs Part V's closing: it shows how the decision record, risk scores, identity claims and the law's five components fit together, says why that matters for Part VI, and returns to the part introduction's test of who decided, under which policy version, where it propagated and how to prove it.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the final section state something about Part V that no single chapter states, say why it matters for Part VI, and return to the question the part introduction ends on?",
+        "expected": "A synthesis that Part V's chapters produce and consume the same few records; a so-what about messaging, payments and paid placements in Part VI; an explicit return to the part introduction's test (who made a decision, under which policy version, where it propagated, how to prove it a year later)."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Which regulations shape marketplace architecture and how do they become system requirements?",
+    "claim": "The regulations that bind a listing marketplace are triggered by its features, not by the label 'classifieds': a pure lead-generation site falls under the DSA's moderation duties, ranking transparency and platform-to-business rules but outside DAC7 until payments to sellers pass through it, and largely outside the DSA's online-marketplace duties until consumers conclude contracts with traders through it, so every payment, checkout or shipping feature is a regulatory decision; and the many obligations ask for five components built once, an obligation register with an evidence query per control, a decision record and evidence store, one trader and business registry, disclosure surfaces generated from documented parameters, and reporting views that are saved, versioned queries over immutable events and the payment ledger, with country differences held as configuration and each data class kept only as long as the law requires.",
+    "disputed_by": "The common practice of treating regulation as legal review at the end of a project, met by a separate exporter, form or code path per law and per country when a deadline arrives, with transparency numbers assembled by hand each year and payments launched as a product decision only.",
+    "so_what": "A Chief Architect who accepts this owns the map from obligation to control to evidence while counsel interprets the law, puts regulatory review at the moment a transaction feature is proposed, funds the five components as platform rather than compliance overhead, and measures compliance like reliability: the share of restricting decisions with a statement sent and submitted, the time from decision to submission, and reports that can be produced again from the log.",
+    "how_why": "Veldmark's first DSA transparency reports, due at the end of February 2027, drew on five statement-of-reasons exporters that counted differently: an edit rejected and then accepted counted once in one system and twice in another, Motorvane counted a paused dealer listing as a restriction in one quarter and not the next, and Hearthly Spain had no record of which decisions were automated, so no figure could be produced again. Tradeyard Safe Deal, 11.6 million transactions worth about €1.02 billion in 2026, brought Veldmark into DAC7, where about 21,000 of about 1.3 million paid sellers were reportable, which makes the pipeline a filter over the ledger; Motorvane and Hearthly, which only list and advertise, stay outside. Demotion and payment holds are restrictions that need statements of reasons, and energy-performance indicators are mandatory listing fields, so ranking, payments and schema teams build to the law as well.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A marketplace's legal roles are triggered by its features: lead generation brings DSA moderation duties, ranking transparency and P2B rules, while DAC7, US INFORM and, largely, the DSA's online-marketplace duties turn on payments or contracts concluded through the platform, so every transaction feature is a regulatory decision."
+      },
+      {
+        "id": "S2",
+        "claim": "The DSA turns moderation into system requirements: demotion and payment holds are restrictions, one decision record generates the user's statement and the Transparency Database submission, trader traceability is a data lifecycle, and every reported number is a saved, versioned query over immutable events."
+      },
+      {
+        "id": "S3",
+        "claim": "Ranking, advertising, consumer and vertical rules ask for disclosure surfaces generated from documented parameters and for regulated listing fields validated at ingestion and owned by someone who tracks the law."
+      },
+      {
+        "id": "S4",
+        "claim": "Retention is set per data class, each with a legal basis, a trigger and a timer, and kept only as long as the law requires."
+      },
+      {
+        "id": "S5",
+        "claim": "DAC7 makes in-platform payments a tax-reporting obligation met by a pipeline that filters the payment ledger, asks sellers early and keeps the tax profile separate."
+      },
+      {
+        "id": "S6",
+        "claim": "The obligations ask for five components built once (obligation register, decision record and evidence store, trader and business registry, disclosure surfaces, reporting views), with country differences as configuration, owned, reviewed and measured by the Chief Architect like reliability."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows that the law asks for the records the earlier chapters build (the decision record, the trader record) plus three more components, and that payments move the legal perimeter, which carries Part V into Part VI.",
+    "supports": [
+      "P5-5"
+    ]
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "order_of_importance",
+        "applies_to": "dsa to beyond-eu: the law that most changes the architecture first (DSA), then the disclosure rules that reach lead generation, GDPR retention, DAC7 (the clearest perimeter shift), vertical listing fields, and rules outside the EU last"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene states the problem (an irreproducible report and an unmapped list of duties); the concepts give the roles and the obligation-control-evidence vocabulary every later section uses; the rules follow law by law, most consequential first, each ending in the component it asks for; the compliance section then assembles the five components the rules have named one by one, and the judging sections test that design. Putting the components before the laws would present five abstractions before the reader has seen the obligations that justify them; putting DAC7 before the role concepts would show a perimeter shift before the reader knows what a perimeter is; GDPR comes before DAC7 because it sets up the per-data-class retention model into which DAC7's seller data then fits as one class (the table names it; the DAC7 section explains it); after DAC7, the tax profile's separation and retention would be argued before the reader has the retention model."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Until about 2020, regulation reached most classifieds architects as a legal review at the end of a project: a privacy notice, a cookie banner, a clause in the terms. That is no longer possible."
+    },
+    "bridge": {
+      "from_reader_world": "Architects who know regulation as a review at the end of a project, and the trader record and decision record Part V's earlier chapters built.",
+      "to_topic": "The DSA, DAC7, consumer and energy-performance law now specify records, aggregations, explanations and fields, so the question is which laws a marketplace's features trigger and what each asks the system to do."
+    },
+    "thesis_statement": {
+      "text": "A marketplace's features decide which laws apply, so every transaction feature is a regulatory decision; most obligations ask for the same few artifacts, built once as compliance-by-design components with evidence built in.",
+      "placement": "KEY POINTS callout (three bullets) and paragraph p02."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p05, which names the sections in order.",
+      "promises": [
+        {
+          "promise": "Show Veldmark's five exporters and the report that could not be produced again.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the legal roles that features trigger and the obligation-control-evidence vocabulary.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Turn the DSA into requirements, with the statement-of-reasons pipeline and reports.",
+          "kept_in": [
+            "dsa"
+          ]
+        },
+        {
+          "promise": "Cover ranking, advertising and consumer transparency, GDPR, DAC7, vertical rules and UK and US rules.",
+          "kept_in": [
+            "transparency",
+            "gdpr",
+            "dac7",
+            "vertical",
+            "beyond-eu"
+          ]
+        },
+        {
+          "promise": "Assemble the five components that serve every law.",
+          "kept_in": [
+            "compliance"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions, and Part V's closing.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Regulation used to reach classifieds architects as a legal review at the end of a project, but the DSA, DAC7, consumer law and energy-performance law now specify decision records, aggregations, explanations and listing fields, so regulation is partly written in the vocabulary of systems design.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "The DSA, applicable to all platforms since 17 February 2024, specifies what a moderation decision record must contain, how quickly notices are handled and what is submitted to a Commission database; DAC7 specifies a quarterly per-seller aggregation of payments; consumer law what a results page must explain about ranking; energy-performance law fields on property listings.",
+            "source": "Regulation (EU) 2022/2065; Council Directive (EU) 2021/514",
+            "shows": "Each law names a data structure or a computation, not just a notice, so an architect who waits for legal review rebuilds the same thing four times."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter maps the regulations that shape listing marketplaces into requirements, concentrating on the EU and treating the UK and US briefly, without being legal advice, and claims that the obligations ask for a small number of artifacts that compliance by design builds once.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Regulation written in the vocabulary of systems design.",
+          "introduces": "The chapter's scope, its limits and its claim that compliance by design is cheaper than compliance by project.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Identity-and-verification built the trader record, the business registry, the evidence trail and the minimization rules partly because the law asks marketplaces to know their traders and explain their decisions, so this chapter takes up those laws, which ask for the decision record and the trader record and bind Part VI's payments, paid products and advertising.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The claim that a few artifacts serve many obligations.",
+          "introduces": "The previous chapter's trader record and Part V's decision record as those artifacts, and the laws that ask for them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Neighboring chapters own the machinery this chapter regulates (moderation and enforcement, identity levels and the business registry, payment flows, ranking and advertising), and Veldmark is the running example.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The records this chapter's laws ask for.",
+          "introduces": "Which chapters own the machinery behind them, so this chapter states obligations rather than rebuilding it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter runs from Veldmark's irreproducible 2026 transparency report through the legal roles, the DSA, ranking and consumer transparency, GDPR, DAC7, vertical rules and UK and US rules, to the five components that serve every law, then the closing sections and Part V's closing.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The scope and the neighbors.",
+          "introduces": "The order of the sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Five Exporters and One Report",
+      "controlling_idea": "Veldmark's first DSA transparency reports, compiled in February 2027 from five statement-of-reasons sources that counted differently, could not be produced again, and the group had no list of what else it was obliged to do.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S6"
+        ],
+        "how": "Shows the problem the chapter's components solve: decision counts that depend on the exporter, and obligations nobody has mapped."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that many obligations ask for a few artifacts and that regulated numbers must be reproducible.",
+        "introduces": "Veldmark's February 2027 transparency report as the case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "In February 2027 Lucía Ortega had to deliver one DSA transparency report per online platform for the first full harmonized period, 1 January to 31 December 2026, by the end of February.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lucía Ortega, Group DPO and regulatory lead; Commission Implementing Regulation (EU) 2024/2835: period 1 January–31 December 2026, due two months after; one report each for Tradeyard, Motorvane and Hearthly.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Sets a fixed legal deadline on a computation the group had never made consistently."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The inputs came from five statement-of-reasons sources that counted the same decisions differently, so the numbers did not agree.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick's template for Tradeyard NL and BE, two vendor exports for PL and PT, Motorvane's hand-built tool, two Hearthly exporters; Tradeyard NL about 20,000 statements a week from listing removals; an edit rejected then accepted counted once in one system and twice in another; Motorvane's 'dealer listing paused for missing data' a restriction in one quarter and not the next; Hearthly Spain with no record of automation.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Counts depended on which exporter produced them, so no figure was reproducible."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The deadline and the three reports.",
+            "introduces": "Why the inputs disagreed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Ingrid Halvorsen's two questions, whether the number could be produced again next year and what else the group was obliged to do, received a 'no' and a list that became the obligation register behind the shared trust-and-safety platform.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ingrid joined as Group Chief Architect that month; the list became the obligation register; the shared T&S platform went live for Tradeyard NL and BE in November 2027 and was designed against it.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Names the two needs the chapter answers: reproducibility and a map of obligations."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The disagreeing numbers.",
+            "introduces": "The two questions they raised and what came of the answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Who Is the Marketplace in Law?",
+      "controlling_idea": "EU law regulates roles defined by what a service does, so a marketplace's features decide its obligations, and three terms (obligation, control, evidence) turn those obligations into architecture.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Establishes that features trigger roles and that an obligation is met by a control proven by evidence."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Ingrid's question about what else the group was obliged to do.",
+        "introduces": "The answer begins with which legal roles Veldmark holds.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "EU digital regulation regulates roles defined by what a service does, and one marketplace can hold several roles at once, each with its own obligations.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight roles (hosting service, online platform, platform allowing distance contracts with traders, very large online platform, online intermediation service, online marketplace, reporting platform operator, controller), each with its source, trigger and Veldmark example; Tradeyard is a reporting platform operator for Safe Deal transactions only; no classifieds marketplace was designated a VLOP as of October 2026.",
+              "source": "Official Journal text, as linked in the chapter",
+              "shows": "Each role is switched on by a feature, and Veldmark's brands hold different sets of roles."
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The role table rests on the Official Journal texts of the DSA, P2B Regulation, Omnibus Directive and DAC7, and the Commission's list of designated very large online platforms updated 15 October 2026.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Links to Regulation (EU) 2022/2065, 2019/1150, Directive (EU) 2019/2161, Council Directive (EU) 2021/514, and the Commission's VLOP list.",
+              "shows": "Lets the reader check each role definition at its source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The role table.",
+            "introduces": "Its sources.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Some definitions explicitly cover lead generation while others turn on a contract concluded through the platform, which is the chapter's most important architectural fact.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "P2B and the UCPD ranking rule apply 'irrespective of where those transactions are ultimately concluded'; DSA trader traceability, CRD marketplace duties and DAC7 turn on a contract or payment through the platform; DAC7 excludes software that 'exclusively' allows users 'to list or advertise'.",
+              "source": "Directive (EU) 2019/2161, Art. 3; Council Directive (EU) 2021/514, Annex V",
+              "shows": "A pure lead-generation site is inside P2B and ranking transparency but outside DAC7 and arguably the marketplace duties."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The roles in the table.",
+            "introduces": "The split between lead-generation and contract-based definitions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The author's working rule is to assume the contract-based rules apply to every trader listing and to treat every transaction feature as a perimeter change reviewed before launch.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: a marketplace moves across the perimeter into trader traceability, marketplace duties and DAC7 when it adds payment, checkout or shipping.",
+              "shows": "Every transaction feature is also a regulatory decision."
+            },
+            {
+              "kind": "example",
+              "what": "Safe Deal, shipping labels, deposits, rental applications with payment and online car reservation as perimeter changes.",
+              "shows": "The rule names concrete features that trigger review."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The uncertainty over whether a contact button 'allows' distance contracts.",
+            "introduces": "A working rule that is cheap if wrong.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Small-company exemptions in the DSA and the P2B Regulation do not help a group, because linked-enterprise rules make an acquired small marketplace part of the group.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "DSA Arts. 19 and 29 exempt micro and small enterprises; P2B Art. 11(5) exempts small enterprises from complaint handling; both refer to Recommendation 2003/361/EC with its linked-enterprise rules.",
+              "source": "Official Journal text, as linked in the chapter",
+              "shows": "An acquisition loses the exemption, so the gap belongs in the integration plan."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Roles that apply by feature.",
+            "introduces": "The exemptions a group might hope would switch them off.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "Three terms make regulation tractable: an obligation is a duty in a legal source, a control is the system behavior that meets it, and evidence is the data that proves the control worked.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "DSA Art. 17(1) as an obligation; the decision service emitting a statement-of-reasons event as the control; restriction count equals statements plus documented exceptions as the evidence query.",
+              "shows": "Each term is shown on the same DSA duty."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which rules apply to which features.",
+            "introduces": "The vocabulary for meeting them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Compliance by design builds controls into components with the evidence query written alongside, while compliance by project builds an exporter per obligation; the first costs more for the first law and less for every later one.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Obligation, control and evidence.",
+            "introduces": "The two ways of building them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dsa",
+      "heading": "The Digital Services Act as a Set of System Requirements",
+      "controlling_idea": "The DSA regulates the moderation process itself, so each of its articles becomes a requirement on a named component, and one decision record must generate the user's statement, the database submission and reproducible reports.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Maps DSA articles to components and shows the statement-of-reasons pipeline and event-log reports that serve them."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the whole DSA as a table of requirements, to the three surprising entries, to the statement-of-reasons interface and pipeline, to one decision, then to the reports that aggregate decisions; the reports come last because they count what the pipeline records."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The online-platform and trader-contract roles named in the role table.",
+        "introduces": "The DSA articles those roles bring, as system requirements.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "The DSA most changes listing-system architecture because it regulates the moderation process, and its articles for a non-designated platform with trader listings map to owning components.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Articles 14, 15 and 24(1), 16, 17, 20 and 21, 22, 23, 24(2), 24(5), 25, 26, 27, 30, 31, 32, each with obligation, system requirement and owning component.",
+              "source": "Regulation (EU) 2022/2065",
+              "shows": "Every article lands in a component (policy registry, decision service, case management, appeals, reporting views, business registry), so no article needs its own project."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Three entries in the table catch ranking, payments and seller-data teams by surprise.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The article table.",
+            "introduces": "The three entries that reach teams outside trust and safety.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Demotion is a restriction that needs a statement of reasons, so a ranking feature that quietly pushes suspected scams down is a moderation decision.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Art. 17 lists 'demoting content'; the Transparency Database has DECISION_VISIBILITY_CONTENT_DEMOTED.",
+              "source": "DSA Transparency Database API documentation",
+              "shows": "Ranking teams are inside the DSA's decision rules."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three surprising entries.",
+            "introduces": "The first: demotion.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Payment holds are restrictions too, so a Safe Deal payout held by fraud rules needs a statement of reasons unless another regime applies.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Suspension, termination or other restriction of monetary payments' is in the same list.",
+              "source": "Regulation (EU) 2022/2065, Art. 17",
+              "shows": "Payments teams are inside the DSA's decision rules."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Demotion as a restriction.",
+            "introduces": "Payout holds as another.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Trader traceability is a data lifecycle, because Article 30 requires deletion six months after the trader relationship ends.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Store trader information 'for a period of six months after the end of the contractual relationship' and then delete it.",
+              "source": "Regulation (EU) 2022/2065, Art. 30(5)",
+              "shows": "A deletion trigger and timer conflict with keeping dealer documents 'just in case'."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Two restrictions that surprise teams.",
+            "introduces": "The third surprise, for seller-data teams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The Transparency Database is a concrete interface with fixed batches, required fields, a fixed vocabulary and a ban on personal data.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Batches of up to 100 that fail as a whole; required fields including ground, content type, category, dates, facts, source, automation, territorial scope and a puid of up to 500 characters; restriction, ground, source and automation values; 16 categories; no personal data (Art. 24(5)).",
+              "source": "DSA Transparency Database API documentation, n.d.",
+              "shows": "The statement is a data contract the pipeline must validate against."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Statements of reasons as the output of every restriction.",
+            "introduces": "The database they are submitted to.",
+            "form": "paragraph",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The database operates at scale, holding about 4.4 billion statements from 375 platforms in the 180 days to 19 October 2026, 41% fully automated, and its schema is in effect a regulator-defined moderation event model worth adopting internally.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 4.4 billion statements from 375 platforms, 41% fully automated (accessed 19 October 2026).",
+              "source": "DSA Transparency Database",
+              "shows": "The interface is mature and heavily used."
+            },
+            {
+              "kind": "reasoning",
+              "what": "INFERENCE callout: a decision record that cannot be mapped field by field needs a lossy translation layer; adopt the regulatory vocabulary and extend it.",
+              "shows": "Why the schema should shape the internal record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The database's interface.",
+            "introduces": "Its scale and what follows for the internal record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Veldmark's decision record maps field by field to the statement, with the decision ID as the idempotency key and personal data stripped from the facts.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine mappings: decision_id to puid; action to the four decision fields; policy to ground; reason_facts to decision_facts with PII stripping; source; automation; territorial scope; seller_type to account_type; dates.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The internal record already holds every statement field, so the statement is a view of it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Adopting the regulatory vocabulary.",
+            "introduces": "Veldmark's mapping.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The pipeline that replaced the five exporters has four stages and one rule: the user's statement and the database submission are two views of one decision from the same record.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the user receives the full statement with redress; the database receives a PII-free version, batched and keyed by decision ID.",
+              "shows": "Retries never duplicate and every submission traces back to its decision."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The field mapping.",
+            "introduces": "The pipeline built on it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "Throughput is not the hard part (about 61,000 restricting decisions a week, about 610 API calls), while atomic batch failure, personal data in free text and documented exceptions are.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 61,000 restricting decisions a week in 2027, Tradeyard NL's roughly 20,000 weekly removals the largest source; about 610 calls a week at 100 per batch.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Volume is trivial, so design effort belongs to correctness."
+            },
+            {
+              "kind": "fact",
+              "what": "Art. 17(2) exceptions: no electronic contact details, or 'deceptive high-volume commercial content'.",
+              "source": "Regulation (EU) 2022/2065, Art. 17(2)",
+              "shows": "Exceptions must be recorded so counts still reconcile."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The pipeline's stages.",
+            "introduces": "Where its difficulty actually lies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The suspension of the account that phished Femke on 7 March 2027, replayed as it would have run on the November 2027 pipeline, shows both views: the decision record's fields, the Dutch statement to the user, the database values without personal data, and the evidence kept in the evidence store.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "20:26 Sunday 7 March 2027; suspend_account; POL-FRAUD-PAYLINK version 2; user report; partly automated; NL; database values DECISION_ACCOUNT_SUSPENDED, DECISION_GROUND_INCOMPATIBLE_CONTENT, STATEMENT_CATEGORY_SCAMS_AND_FRAUD, SOURCE_TYPE_OTHER_NOTIFICATION, AUTOMATED_DECISION_PARTIALLY; facts without domain, user name or phone.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "One record yields both views, and the identifying evidence stays reachable for appeals, police and regulators."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The hard parts of the pipeline.",
+            "introduces": "One decision traced through it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The implementing regulation fixes calendar-year reporting, publication within two months and five years' availability, and its templates ask for counts, times and accuracy indicators.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Arts. 2 and 3 of Implementing Regulation (EU) 2024/2835; templates ask for notices by category and trusted flagger, actions by basis, median times, complaints, reversals and automated-tool accuracy.",
+              "source": "Commission Implementing Regulation (EU) 2024/2835",
+              "shows": "Every cell is a count over decision events."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Statements per decision.",
+            "introduces": "Reports over all decisions.",
+            "form": "paragraph",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Every number in a regulatory report should be a saved query over immutable events, versioned with the report, which made Veldmark's 2027 report the first that could be produced again.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Report for 2027 published February 2028, each template cell generated by a named query over decision, notice, complaint and enforcement events with policy and model versions.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Lucía's 'no' became 'yes, here is the query and the snapshot'."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: five exporters versus one event log feeding a saved query that gives the same report every time.",
+              "shows": "Reproducibility comes from the source of the numbers, not from care in compiling them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "What the templates ask for.",
+            "introduces": "How to make those numbers reproducible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "transparency",
+      "heading": "Ranking, Advertising and Consumer Transparency",
+      "controlling_idea": "Four overlapping sources on ranking, advertising and seller status ask for three disclosure surfaces, while P2B process rules and two Omnibus rules reach professional tooling, price badges and reviews.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S1"
+        ],
+        "how": "Turns ranking, ad and consumer rules into generated disclosure surfaces and data requirements, several of which apply to lead generation too."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "DSA Arts. 26 and 27 on ad labels and recommender parameters in the article table.",
+        "introduces": "The other sources that regulate ordering and labeling.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Four overlapping sources regulate how a marketplace orders and labels what users see, and read together they ask for three disclosure surfaces.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "P2B Art. 5; UCPD Art. 7(4a); UCPD Annex I point 11a; DSA Arts. 26 and 27; CRD Art. 6a, with what each requires and whom it protects.",
+              "source": "Official Journal text, as linked in the chapter",
+              "shows": "The rules overlap on ranking parameters, paid-placement labels and seller status."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The disclosure table rests on the Official Journal texts of the P2B Regulation, the Omnibus Directive and the DSA.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Links to Regulation (EU) 2019/1150, Directive (EU) 2019/2161 and Regulation (EU) 2022/2065.",
+              "shows": "Lets the reader check each requirement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The disclosure table.",
+            "introduces": "Its sources.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "The three surfaces are a ranking explanation per search surface, labels on every paid placement, and seller status on every listing, each generated from data another chapter owns.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Veldmark labels every paid boost, including a private seller's €4.99 bump, because an undisclosed paid boost is blacklisted either way; one trader-status field drives the DSA Art. 30(7) panel and the CRD Art. 6a notice.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Generated surfaces satisfy several laws at once and are the structural defense against Multiplier Creep."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Three disclosure surfaces.",
+            "introduces": "What each one is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The P2B Regulation adds notice periods for business users, so terminating a dealer is a workflow with a timer, and its proposed repeal does not remove the need for the capability.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Terms changes notified at least 15 days ahead; whole-service termination with reasons at least 30 days ahead (Arts. 3 and 4); repeal proposed November 2025, ranking guidelines to remain (European Commission, updated 2 July 2026).",
+              "source": "Regulation (EU) 2019/1150; European Commission",
+              "shows": "Motorvane's dealer termination for unpaid invoices needs a notice timer; the DSA needs the same capabilities anyway."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The P2B Regulation's ranking rule (Art. 5) in the disclosure table.",
+            "introduces": "Its other duties toward business users: notice periods for terms changes and terminations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Two Omnibus rules reach listing features that rarely get legal review.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "P2B rules for professional tooling.",
+            "introduces": "Two consumer rules on price badges and reviews.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "A 'price reduced' badge must show the lowest price of the previous 30 days, so the listing must keep its full price history.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Price Indication Directive as amended by Directive (EU) 2019/2161, Art. 2: the prior price is the lowest in at least 30 days.",
+              "source": "Directive (EU) 2019/2161",
+              "shows": "The portal presents the announcement on the trader's behalf."
+            },
+            {
+              "kind": "scenario",
+              "what": "The Essen Golf cut from €21,900 to €21,400 on Thursday 22 April 2027; the badge needs the lowest price in 30 days, not the previous price.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The rule targets a brief raise before a 'cut', which only a full price history in the listing aggregate can detect."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Two Omnibus rules.",
+            "introduces": "The first, on price reductions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Reviews must be checked as coming from real buyers, so Veldmark ties Tradeyard ratings to a completed Safe Deal or confirmed handover and logs the check as evidence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The UCPD blacklists claiming reviews are genuine without 'reasonable and proportionate steps' and commissioning fake reviews.",
+              "source": "Directive (EU) 2019/2161, Art. 3",
+              "shows": "The marketplace needs evidence of its checks."
+            },
+            {
+              "kind": "case",
+              "what": "FINN publishes buyer and seller ratings at the same time, or after three weeks.",
+              "source": "FINN help center, 2024, updated 2026",
+              "shows": "A documented design that prevents retaliation ratings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Price-reduction badges.",
+            "introduces": "The second rule, on reviews.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "gdpr",
+      "heading": "GDPR: Retention, Minimization and Address Privacy",
+      "controlling_idea": "GDPR's minimization, storage limitation and accountability principles make retention a per-data-class design with legal basis, trigger and timer, and raise two issues specific to marketplaces.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Gives each data class its own retention driven by the law that governs it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Rules about what must be shown to users.",
+        "introduces": "Rules about what may be kept and for how long.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Three GDPR principles produce the most architecture for listing systems: data minimization, storage limitation and accountability.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Personal data 'limited to what is necessary'; the duty to demonstrate compliance.",
+              "source": "Regulation (EU) 2016/679, Art. 5",
+              "shows": "These principles drive retention and evidence design."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Retention per data class works because other laws require keeping data the GDPR would delete and fraud prevention wants it longer, so each class gets a legal basis, a trigger and a timer enforced by logged deletion jobs.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five classes: DSA trader data (six months after the relationship, then delete); moderation evidence (at least six months, default 12 at Veldmark); hashed block-list identifiers (two years); DAC7 seller data (national periods); messages (per brand policy).",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Each class has a different driver and clock."
+            },
+            {
+              "kind": "fact",
+              "what": "Recital 47 recognizes processing 'strictly necessary for the purposes of preventing fraud' as a legitimate interest.",
+              "source": "Regulation (EU) 2016/679",
+              "shows": "Supports fraud retention without making it unlimited."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Minimization, storage limitation and accountability.",
+            "introduces": "The design that satisfies them alongside other laws.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Address privacy is specific to marketplaces: private sellers' exact addresses should be hidden by default, while the DSA requires a trader's address to be shown.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "DSA Art. 30(7) requires the trader's address; INFORM has a home-address exception for some sellers; the author found no equivalent in Art. 30.",
+              "source": "Official Journal text, as linked in the chapter",
+              "shows": "Sole traders working from home face a conflict the platform cannot design away."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Retention as the general design.",
+            "introduces": "The first of two marketplace-specific GDPR issues.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "An automated account suspension can fall under GDPR Art. 22, and the DSA's appeal process should be designed as the same mechanism that provides its safeguards.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "A decision that 'similarly significantly affects' a person requires safeguards including human intervention and the right to contest.",
+              "source": "Regulation (EU) 2016/679, Art. 22",
+              "shows": "The DSA appeal already provides most of that."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Address privacy.",
+            "introduces": "The second issue, automated decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dac7",
+      "heading": "DAC7: When Payments Turn a Marketplace into a Tax Reporter",
+      "controlling_idea": "DAC7 makes a platform that knows the consideration it pays sellers a reporting platform operator, so in-platform payments bring a quarterly per-seller tax pipeline that is mostly a filter over the payment ledger.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S1"
+        ],
+        "how": "Shows the clearest perimeter shift and the pipeline that serves it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The reporting-platform-operator role in the role table and the DAC7 class the retention paragraph announced.",
+        "introduces": "What DAC7 requires and how Veldmark meets it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "form": "list",
+          "controlling_idea": "DAC7 requires a reporting platform operator to collect, verify and report seller information each year, under definitions of relevant activities, consideration, excluded sellers, reported fields and deadlines.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Relevant activities; consideration net of platform fees 'known or reasonably knowable'; excluded seller: fewer than 30 sales of goods and not more than €2,000; identity and per-quarter consideration, activity count and fees; due diligence by 31 December, report by 31 January; first period 2023.",
+              "source": "Council Directive (EU) 2021/514, Annex V",
+              "shows": "These definitions are the pipeline's specification."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "DAC7's platform definition excludes software that only lists or advertises, so a classifieds site that only lists is outside and one that collects the price and pays the seller is inside.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Not software that, 'without any further intervention in carrying out a Relevant Activity', exclusively processes payments, lets users list or advertise, or redirects users.",
+              "source": "Council Directive (EU) 2021/514, Annex V, Section I",
+              "shows": "Payments flip the perimeter."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The DAC7 definitions.",
+            "introduces": "The exclusion that matters most for classifieds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Safe Deal brought Veldmark into DAC7 through Tradeyard B.V., which reports to the Dutch tax administration for NL, BE and PL sellers, while Motorvane and Hearthly stay outside.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard B.V. contracts Safe Deal for all three countries; Motorvane and Hearthly only list and advertise; Hearthly's tenant application files do not collect or pay rent.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The perimeter follows the payment feature brand by brand."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule that payments bring a platform inside.",
+            "introduces": "Veldmark's case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "DAC7 is mostly a filtering problem: of about 1.3 million sellers paid through Safe Deal in 2026, about 21,000 were reportable.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "11.6 million transactions, about €1.02 billion GMV in 2026; about 1.3 million distinct sellers; about 21,000 with 30 or more sales or above €2,000; about 17,500 with complete, validated TIN and date of birth by 30 November; two reminder cycles plus payout holds.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The pipeline filters the ledger down to a small reportable population and chases its data."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Being in scope.",
+            "introduces": "The size of the problem.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Because the buyer protection fee is charged to the buyer, Femke's €225 bike sale is her full consideration and, as one sale, leaves her an excluded seller.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sold for €225 on Monday 8 March 2027; buyer paid the €11.95 fee on top; 30 sales in 2027 would make her reportable and require her TIN before 31 December.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Consideration is what the seller is paid, and the both-conditions test decides who is excluded."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The excluded-seller test across 1.3 million sellers.",
+            "introduces": "One seller through the test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Building the pipeline taught three lessons: aggregate from the ledger, ask sellers early, and keep the tax profile separate from general identity claims.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4 (placed just before this paragraph): payment ledger, identity claims, a separate tax profile, the report to the tax authority and the same data to each seller.",
+              "shows": "The pipeline's sources and outputs."
+            },
+            {
+              "kind": "fact",
+              "what": "Early flag at 20 sales or €1,500.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Due diligence starts before the December deadline."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The population and the edge case.",
+            "introduces": "What the pipeline was built to do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vertical",
+      "heading": "Vertical Rules: Property and Vehicles",
+      "controlling_idea": "Vertical rules govern the listing rather than the marketplace and arrive as mandatory structured fields, so regulated attributes need validation at ingestion and an owner who tracks the law.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows regulated listing attributes as schema and ingestion requirements."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Horizontal rules that govern the marketplace.",
+        "introduces": "Vertical rules that govern the listing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "Horizontal rules govern the marketplace, while vertical rules govern the listing and arrive as fields.",
+          "function": "claim"
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The recast EPBD requires energy class and indicator in property advertisements including portals, which removes any argument that the duty is only the advertiser's.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Indicator and class 'stated in online and offline advertisements, including in property search portal websites'; transposition by 29 May 2026.",
+              "source": "Directive (EU) 2024/1275, Art. 20(4)",
+              "shows": "Portals are named in the duty."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Rules that arrive as fields.",
+            "introduces": "The EU property case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "French law adds the climate class, an F/G warning, an estimated annual energy cost with its reference year, fines and rental bans, and recalculations can change a home's class.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Fines €3,000, or €15,000 for a company; G-rated homes not newly let since 1 January 2025, F from 2028, E from 2034; calculation changes from 1 January 2026.",
+              "source": "Service-Public.fr, 2026",
+              "shows": "National law adds fields and makes values time-dependent."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The EU duty.",
+            "introduces": "What one country adds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "The Lyon apartment's incomplete feeds led Hearthly to four ingestion rules: mandatory DPE fields, blocking with feedback, effective-dated values, and class constraining category.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "68 m² T3 in Lyon 7e, €389,000, DPE class D, May 2027, two vendors and Keybridge; one feed lacked the climate class, none carried the annual cost; about 3.8% of Hearthly France's feed listings failed the check in May 2027.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Regulated fields must be enforced at ingestion, not assumed from feeds."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The French requirements.",
+            "introduces": "What they meant for one listing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Regulated attributes need an owner who tracks the law, because the schema changes on the regulator's timetable.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four ingestion rules.",
+            "introduces": "Who must keep them current.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Vehicle rules are more fragmented and mostly bind dealers, but Germany's Pkw-EnVKV makes consumption and CO2 fields mandatory for new cars in Motorvane's dealer feed.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Pkw-EnVKV § 5, transposing Directive 1999/94/EC, as amended 2 March 2026: energy consumption, CO2 emissions and CO2 class for new passenger cars in promotional material.",
+              "source": "gesetze-im-internet.de",
+              "shows": "Same 'missing field blocks publication' rule as the DPE."
+            },
+            {
+              "kind": "scenario",
+              "what": "The Essen Golf, a 2021 car with 48,000 km, is used and outside the rule.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The rule's scope depends on the vehicle's status."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Property rules that name portals.",
+            "introduces": "Vehicle rules that mostly bind dealers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "beyond-eu",
+      "heading": "Beyond the EU: UK and US Rules in Brief",
+      "controlling_idea": "UK and US rules differ in structure from the EU's but reward the same components, and INFORM repeats DAC7's payment trigger.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Shows the components are not EU-specific and that payments move the perimeter in the US too."
+      },
+      "transition_in": {
+        "relationship": "place",
+        "carries_over": "EU vertical and horizontal rules.",
+        "introduces": "Rules outside the EU, for groups with brands there.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "UK and US rules differ from the EU's in structure but reward the same components, which matters to groups that, unlike Veldmark, operate there.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "UK OSA illegal-content duties (fraud a priority offence; risk assessments due 16 March 2025, measures from 17 March 2025); OSA fraudulent-advertising duties (codes consulted July–October 2026, final statement expected by mid-2027); DMCC Act reviews from 6 April 2025, fines up to 10%; INFORM thresholds 200 sales and $5,000, disclosure above $20,000; 24 CFR § 100.75.",
+              "source": "Ofcom; legislation.gov.uk; FTC; Which?; Cornell LII",
+              "shows": "Each rule reuses the moderation pipeline, evidence, review anchoring, business registry or classifiers."
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The UK and US table rests on legislation.gov.uk, Ofcom, Which?, the FTC and the Cornell Legal Information Institute.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Six linked sources with dates.",
+              "shows": "Lets the reader check each rule."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The UK and US table.",
+            "introduces": "Its sources.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "INFORM repeats the DAC7 pattern, so launching in-platform payments is a regulatory decision outside the EU as well: because only marketplace-processed sales count, a US lead-generation classifieds site is largely outside its seller-verification and disclosure duties, and payments bring it in.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Under INFORM only sales made through the marketplace with payment processed by it count toward the high-volume seller threshold.",
+              "source": "US Federal Trade Commission, INFORM guidance, 2023",
+              "shows": "The payment feature, not the listing, moves the perimeter in the US too."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The INFORM row.",
+            "introduces": "Its parallel with DAC7's payment trigger.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "compliance",
+      "heading": "Compliance as Architecture",
+      "controlling_idea": "The chapter's many obligations ask for five components built once, with country differences held as configuration that counsel changes through review.",
+      "function": "synthesis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Assembles the components that serve every law and the rule for national variation."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The obligations of every law in the chapter.",
+        "introduces": "The five systems they ask for.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p56",
+          "controlling_idea": "The obligations form a long list but ask for only five systems: an obligation register, a decision record and evidence store, a trader and business registry, disclosure surfaces and regulatory reporting views.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Each component with the laws it serves and its key property (machine-readable register; immutable evidence; one record, many views; generated disclosures; saved, versioned queries).",
+              "shows": "Every law in the chapter maps to these five."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: each obligation points to a control in a shared component and to an evidence query; country differences enter as configuration.",
+              "shows": "The register always knows which obligations are demonstrably met."
+            }
+          ]
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "National differences tempt a code path per country, which is The Copy-Paste Country and multiplies every change by eight.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Illegal content, consumer-law transposition, DAC7 formats and energy-label rules differ by country.",
+              "shows": "Variation is real and pervasive."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Shared components.",
+            "introduces": "National variation that threatens to split them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Veldmark holds country differences as data in the registries, schemas, templates and reporting views, changed by Lucía's team with counsel through reviewed pull requests and recorded in the obligation register.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Policy registry legal grounds per country; attribute schema mandatory fields per country and category; disclosure templates per country; reporting formats per country.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Engineers change components; compliance changes configuration."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Copy-Paste Country.",
+            "introduces": "Configuration over shared components.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Four ways of meeting the obligations trade speed for the first deadline against the cost of every later law, and shared components with country configuration fit a multi-brand, multi-country group.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Places the recommended design among its alternatives and says when each is right."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The recommended design.",
+        "introduces": "Its alternatives.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "The four approaches trade speed for the first deadline against the cost of every later law, and shared compliance-by-design components with country configuration suit a multi-brand, multi-country group.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Compliance by project; local compliance per brand; shared components with country configuration; compliance vendor, each with strengths, weaknesses and when it is right.",
+              "shows": "Each alternative is right somewhere, and Veldmark's case selects the shared design."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences in Legal Exposure",
+      "controlling_idea": "General classifieds, real estate and automotive face the same horizontal laws with different weight, differ most in their listing rules, and fall under DAC7 only when they handle payments.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Shows how the roles and regulated fields differ by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The approaches for the group as a whole, and the listing fields of Vertical Rules.",
+        "introduces": "Across every rule in the chapter, how exposure differs by vertical.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "controlling_idea": "Across every rule in the chapter, not only the listing fields of Vertical Rules, the three verticals share the horizontal laws with different weight, differ most in listing rules, and enter DAC7 only when the platform handles payments.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Horizontal exposure, vertical listing rules and DAC7 per vertical.",
+              "shows": "DAC7 applies only with in-platform payment, rent collection or sale payments."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Seven failure modes, from exporters instead of records to personal data in the public database, are what happens when obligations are met by projects, code or habit instead of components.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S6"
+        ],
+        "how": "Names the breakdowns the chapter's design prevents."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Alternatives and verticals.",
+        "introduces": "What goes wrong in practice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "Seven failure modes recur: exporters instead of records, silent demotion, unlabeled boosts, payments launched without the tax view, trader data kept forever, law in code, and personal data in the public database.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The February 2027 Veldmark situation; Multiplier Creep; DAC7 learned of in November; DSA Art. 30(5) breach; free-text notes in decision_facts.",
+              "shows": "Each failure maps back to a section's requirement."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect owns the map from obligations to components and evidence, puts regulatory review at the moment a feature is designed, funds the components as platform, watches the regulatory pipeline, and measures compliance like reliability.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S1"
+        ],
+        "how": "Turns the design into the architect's responsibilities and measures."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "What the Chief Architect does to prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p62",
+          "controlling_idea": "The Chief Architect owns the map from obligations to components and evidence, not the law, and the obligation register has a legal owner and an architecture owner.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lucía Ortega owns the legal content, Ingrid's architecture team the control and evidence columns.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Divides interpretation from implementation."
+            }
+          ]
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Regulatory review belongs before design is final at the predictable moments that change the legal perimeter.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "New transaction feature, paid ranking product, cross-brand data sharing, acquisition, new country; Safe Deal's Polish launch in 2026 would have been cheaper with the DAC7 tax profile designed in.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "The perimeter moves at known moments."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Owning the map.",
+            "introduces": "When to review it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "The shared components should be funded as platform rather than compliance overhead, because trust and safety, seller tooling, ranking and finance need them too.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Reviewing at the right moment.",
+            "introduces": "How to fund what the review asks for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "Proposals in the regulatory pipeline, as of October 2026, change the components' configuration rather than the components, which is the test of the architecture.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Proposed P2B repeal; a Digital Fairness Act in preparation after the 2024 fitness check; EU Digital Identity Wallets due by the end of 2026.",
+              "source": "European Commission, Review of EU consumer law, n.d.",
+              "shows": "None changes the five components."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Funding the components.",
+            "introduces": "Testing them against coming law.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "Compliance should be measured like reliability, with per-brand monthly metrics whose fall is an incident.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Share of restricting decisions with a statement sent and submitted; median time to submission; complete trader data; regulated listings with all fields; obligations with a passing evidence query.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+              "shows": "Compliance becomes observable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Testing against coming law.",
+            "introduces": "Measuring the present.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions let an architect test a marketplace against the chapter: features and laws in scope, decisions and statements, reproducibility, personal data, trader deletion, disclosures, DAC7 timing, regulated fields, country code and the register.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Gives the reader a working audit drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's responsibilities.",
+        "introduces": "Questions that test whether they are met.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "form": "list",
+          "controlling_idea": "Ten questions test whether a marketplace's features, decisions, reports, data, disclosures, payments, fields and country rules meet the chapter's requirements.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Trust to Money",
+    "synthesis": "Part V's four chapters produce and read the same few records: the decision record that trust-and-safety-architecture makes the single output of moderation, the risk scores and actor clusters that fraud prevention feeds into it, the identity claims and trader record that identity-and-verification keeps, and the five components through which the law asks for exactly these records as evidence. Trust is one platform because its records are shared, not because its people are.",
+    "so_what": "Every revenue line in Part VI steps onto this platform: messaging is where scams close and where identity levels gate contact, in-platform payments move the marketplace into DAC7 and trader traceability, and paid placements need the labels and ranking disclosures regulation specifies; a group that built trust as four stacks pays for each of those again.",
+    "callback": {
+      "to": "The Part V introduction's closing test (for any enforcement decision, who made it, under which policy version, where it propagated and how you would prove all three a year later) and Ingrid's question in this chapter's scene whether the report could be produced again.",
+      "how": "The reader can now answer the test for Femke's suspension from records Part V built (the decision record with POL-FRAUD-PAYLINK version 2 and the analyst, the enforcement event acknowledged by each consumer, the statement keyed by decision ID and the saved query), and sees Lucía's 'no' become 'yes' because the records are shared."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Review every transaction feature as a trust and regulatory decision before it is a product decision; Part VI begins with messaging-and-leads, the moment a buyer decides to contact a seller."
+    },
+    "hand_off": {
+      "to": "part-6",
+      "relationship": "sequence",
+      "carries_over": "Part V's three threads: the message safety gate, DAC7 seller reporting for in-platform payments, and trader records.",
+      "introduces": "Contact, transactions and the revenue models built on top of them."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "This chapter's components and questions, and the three Part V chapters before it.",
+      "introduces": "What the four chapters of Part V share.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p68",
+        "controlling_idea": "Part V's four chapters produce and read the same few records (decision record, risk scores and actor clusters, identity claims and trader record, and the law's five components that ask for them as evidence), so trust is one platform because its records are shared, not because its people are.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The decision record from trust-and-safety-architecture, the risk scores fed into it by fraud-prevention, the identity claims and trader record of identity-and-verification, and the five components of this chapter.",
+            "shows": "Each chapter writes or reads the same records; none states that alone."
+          }
+        ]
+      },
+      {
+        "id": "p69",
+        "controlling_idea": "The part's test can now be answered for Femke's suspension: the decision record says who decided and under which policy version, the acknowledged enforcement event says where it propagated, and the statement keyed by decision ID with the saved query proves it a year later.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Femke's suspension at 20:26 on 7 March 2027 under POL-FRAUD-PAYLINK version 2, an analyst confirming a rule hit; the statement and submission keyed by decision ID; the saved query of the 2027 report.",
+            "source": "_research/scenario-ledger.md (Veldmark is fictional)",
+            "shows": "The part's four-part test and Ingrid's reproducibility question are answered by shared records."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Shared records.",
+          "introduces": "The part introduction's test applied to one decision.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p70",
+        "controlling_idea": "Part V's threads run into Part VI, so every transaction feature should be reviewed as a trust and regulatory decision before it is a product decision: messaging is where scams close and identity levels gate contact, payments change the legal perimeter, labels govern paid placements, trader records feed billing, a group that built trust as four separate stacks pays for each again, and Part VI begins with the moment a buyer contacts a seller.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "A trust platform whose records answer the test.",
+          "introduces": "What that means for the revenue lines of Part VI, and the hand-off to it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The moderation pipeline, decision service and enforcement propagation.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    },
+    {
+      "topic": "Identity levels, KYB and the business registry.",
+      "covered_in": [
+        "identity-and-verification"
+      ]
+    },
+    {
+      "topic": "Payment flows, licensing and buyer protection.",
+      "covered_in": [
+        "transactions-and-payments"
+      ]
+    },
+    {
+      "topic": "Ranking and ad-stack internals.",
+      "covered_in": [
+        "ranking",
+        "advertising-platforms"
+      ]
+    },
+    {
+      "topic": "Legal advice, national transposition detail and competition law."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Status of the proposed P2B repeal and the Digital Fairness Act proposal should be rechecked at the next revision.",
+    "National DAC7 record-keeping periods were not researched per country."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around legal roles triggered by features, rather than law by law, because the perimeter shift caused by payments is the most consequential architectural fact."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Verified DSA, P2B, Omnibus, DAC7, GDPR, EPBD and the transparency-report implementing regulation against Official Journal texts retrieved through the EU Publications Office (EUR-Lex itself was blocked), and added the marketplace section's own small-enterprise exemption (Art. 29), which the brief did not cover."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept UK and US rules to one table, since Veldmark operates only in the EU, while showing that INFORM repeats the DAC7 payment-trigger pattern."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Used the Femke account suspension and the Lyon apartment's DPE as worked examples to stay consistent with the ledger and with the trust-and-safety chapter."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's seven success criteria were reader outcomes in form but inventories in substance (rule lists per law, plus 'article references are verified'); they are covered by the journal entry's outcome (know/can_do) and AC-1 to AC-3, so none is carried over. 'Article references are verified against Official Journal texts' is a research rule, not a reader outcome, and is kept as the decision of 2026-10-19 above.",
+      "rejected": [
+        "Carrying the criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added AC-4 (minor, custom rubric) so the post checks that its last section performs Part V's closing, mirroring Part V's own AC-4 in the journal spec.",
+      "rejected": [
+        "Leaving the part closing unchecked at post level."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p05) so a reader of the opening can predict the sections (AC-2), and split the published third introduction paragraph into the bridge from identity-and-verification (p03) and the neighbors' ownership (p04), because it held two ideas.",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names the rules but not the sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Split the published GDPR paragraph on address privacy and automated decisions into two (p38, p39), because it held two ideas.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gave Trade-offs and Vertical Differences, which had only tables, one lead-in paragraph each (p59, p60) stating what the table shows.",
+      "rejected": [
+        "Leaving table-only sections, which the schema cannot specify."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from one paragraph to three (synthesis, the part introduction's test answered for Femke's suspension, so-what with takeaway and hand-off) to carry Part V's closing, as the journal spec requires; the published sentences are kept in the last paragraph. 'Questions to Ask' is specified as the last body section.",
+      "rejected": [
+        "Putting Part V's closing in the Chief Architect's View."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The 'Sources:' lines after the role, disclosure and UK/US tables are specified as their own evidence units (p10, p30, p54) rather than moved, so no link or wording changes.",
+      "rejected": [
+        "Folding the source links into the preceding paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): merged the published DAC7 closing sentence on INFORM (former p46, a forward reference to the US rules) into p55 in the UK and US section, which made the same point; rewrote the flow rationale for GDPR before DAC7.",
+      "rejected": [
+        "Keeping the INFORM preview in the DAC7 section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 found a spec fault in p55: its controlling idea called INFORM a 'tax-reporting decision', which the chapter's own table contradicts (INFORM is seller verification and disclosure). p55 now says 'regulatory decision'; the merged published sentence was changed the same way. Order, intent, thesis and role unchanged.",
+      "rejected": [
+        "Keeping 'tax-reporting decision' for INFORM."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 named two spec faults, both corroborated: the P2B notice-period paragraph (p32) read as out of place under ranking, and Vertical Differences' position after Trade-offs was unclear. Kept the order (the P2B Regulation is a ranking source in the section's table; the closing sections follow the book's fixed order) and changed the two transition_in entries to say the relation: p32 elaborates the P2B ranking rule into its other business-user duties; Vertical Differences narrows the group-level comparison to verticals. Also recorded p26 as a replay on the November 2027 pipeline.",
+      "rejected": [
+        "Moving the P2B paragraph to Professional seller tooling or Compliance as Architecture.",
+        "Moving Vertical Differences before Trade-offs, against the book's standard section order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit set to the published draft's length plus 5% (8,391 words by check_draft's count, which includes callouts and tables, so 8,811), because spec.md set no limit.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1's INFORM correction ('tax-reporting decision' to 'regulatory decision' in p55 and its sentence) is kept: it is more accurate to the chapter's own UK/US table and to the INFORM Consumers Act, which concerns seller verification and disclosure. No new legal statement added; accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Reverting to 'tax-reporting decision'."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3's corroborated spec fault (Vertical Differences five sections after Vertical Rules, with a near-identical name): kept the book's standard closing order and renamed the section 'Vertical Differences in Legal Exposure' (other LISTED chapters already qualify this heading, e.g. 'Vertical Differences in the Record'); its lead-in now says it compares exposure across every rule in the chapter, not only the listing fields of Vertical Rules, and its transition_in names that relation. Table unchanged; accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Merging the section into Vertical Rules, which would put judging material inside the law-by-law sequence and drop the book's fixed closing section.",
+        "Moving it before Trade-offs."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 2: max_words raised from 8,811 to 9,000 (+2.1%, within the 10% allowance) to close AC-4's so-what gap: p70 now names messaging (where scams close and identity levels gate contact) and the cost of building trust as four separate stacks; accepted under the author's delegation, 2026-11-12.",
+      "rejected": [
+        "Cutting published text to make room."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The chapter keeps its stated assumptions: a classifieds trader listing with a contact button is treated as allowing distance contracts (DSA Section 4, CRD Art. 6a), and whether a private seller's paid bump is an advertisement under DSA Art. 26 or the UK Online Safety Act is left to counsel. Published wording unchanged (rule 8); accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The 'Four overlapping sources' lead-in was fixed after round 3 as 'Four overlapping sources, five rules in all'; the flow-rubric notes not taken (Vertical Differences partly repeating the vertical-rules and DAC7 points; the 'Sources:' units; Trade-offs and Regulatory review restating p15 and p12; payments-move-the-perimeter recurring in p60 and p70; Figure 4 before the 'three lessons' paragraph) stay as published (rule 8); accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3's uncorroborated minor findings (the DAC7 exclusion clause in Concepts; the 2027 report computed from the event log; 'as of October 2026'; 'The four approaches' and 'Four implementations'; 'eight times as much'; Safe Deal's Polish launch in the Chief Architect's View; the INFORM 'so') are recorded and not acted on: they concern published text, facts and a real-law sentence, and do not block (rule 8); accepted under the author's delegation, 2026-11-12.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: conclusion 'Ingrid's \"no\"' corrected to 'Lucía's \"no\"': in the scene Ingrid asked the question and Lucía answered no."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "trust-and-safety-architecture",
+      "contributed": "Decision record, 20,000 weekly statements at Tradeyard NL, block-list retention, Femke's suspension."
+    },
+    {
+      "kind": "internal",
+      "ref": "identity-and-verification",
+      "contributed": "Trader and business registry."
+    },
+    {
+      "kind": "internal",
+      "ref": "transactions-and-payments, attribute-schemas, ranking, advertising-platforms",
+      "contributed": "Systems the obligations land in."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Veldmark figures: DSA reporting, ~61,000 restricting decisions a week, DAC7 population, Lyon DPE failure rate."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (marketplace-regulation, part-5, part-6 entries)",
+      "contributed": "Intent, thesis, role, Part V's closing and Part VI's transition_in."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2022/2065; Implementing Regulation (EU) 2024/2835; DSA Transparency Database and API documentation.",
+      "contributed": "DSA obligations, reporting rules, statement schema and volumes."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2019/1150; Directive (EU) 2019/2161; Council Directive (EU) 2021/514; Regulation (EU) 2016/679; Directive (EU) 2024/1275.",
+      "contributed": "P2B, Omnibus, DAC7, GDPR and EPBD obligations."
+    },
+    {
+      "kind": "external",
+      "ref": "Service-Public.fr (DPE); Pkw-EnVKV; Ofcom and legislation.gov.uk (Online Safety Act); FTC (INFORM); 24 CFR § 100.75; FINN help center on ratings.",
+      "contributed": "National, UK and US rules and the FINN ratings design."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: INFORM correction kept; 'Vertical Differences' renamed 'Vertical Differences in Legal Exposure' with a lead-in that separates it from Vertical Rules; p70 adds messaging and the four-stacks cost (AC-4); max_words 8,811 to 9,000. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 3: ESCALATE (16 pass, 13 fail; 3 corroborated, one of them a spec fault on Vertical Differences' position). Cheap fixes applied afterwards without a further round; the check report is therefore stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2 (escalate on two spec faults): transitions into p32 and Vertical Differences restated, p26 recorded as a replay; draft revised at the corroborated flow points. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1 (escalate on one spec fault): p55's controlling idea corrected (INFORM is a regulatory, not tax-reporting, decision); draft revised at the failing transitions and flow points. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (status draft): one paragraph per unit, reconstructed from the published text; added roadmap, two table lead-ins, two splits and a three-paragraph conclusion carrying Part V's closing; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations; consistency fix naming ranking, payments and seller-data teams and the four pipeline stages; sharpening pass 6,993 → 7,029 prose words; cross-chapter consistency sweep of 4 headings. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review (Safe Deal 2026 volume 11.6M / ~€1.02B, eight countries, hand-off to part-6); 2 inline illustrations. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 9000
+  }
+}

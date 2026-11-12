@@ -1,0 +1,776 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/02-liquidity-and-network-effects/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/02-liquidity-and-network-effects/index.md",
+  "spec_sha": "30e9c17ba076e001",
+  "draft_sha": "72fceaff3c7afd4d",
+  "run_at": "2026-11-12T21:29:14+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the reader will learn: liquidity, local network effects, metric tree, architecture requirements",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business value of liquidity measured per city and category",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Why architects should help define liquidity metrics that drive requirements",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: liquidity is per cell, measure matches not inventory, metrics become requirements",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: vanity liquidity, ghost inventory, duplicates",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "A marketplace's real product is the likelihood of a match: liquidity",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Chapter's terms and thesis that liquidity metrics are the source of non-functional requirements",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Roadmap of the chapter from Veldmark's question to design-review questions",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Same Brand, Different Markets ¶1",
+      "summary": "CEO's question why Tradeyard Portugal underperforms the Netherlands despite growth",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Same Brand, Different Markets ¶2",
+      "summary": "Data team builds one consistent liquidity view across countries",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Same Brand, Different Markets ¶3",
+      "summary": "Similar national buyer-to-listing ratios but much worse Portuguese outcomes",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Same Brand, Different Markets ¶4",
+      "summary": "Cell-level split shows Portugal is two dense metros plus an empty long tail",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Same Brand, Different Markets ¶5",
+      "summary": "Question reframed to which cells can become liquid",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Two-Sided Markets and Network Effects ¶1",
+      "summary": "Two-sided markets and price allocation favoring buyers and private sellers",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Two-Sided Markets and Network Effects ¶2",
+      "summary": "Cross-side versus same-side network effects, with renter competition example",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Two-Sided Markets and Network Effects ¶3",
+      "summary": "Network effects flatten with depth; long-tail supply is the constraint",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Two-Sided Markets and Network Effects ¶4",
+      "summary": "Definition of liquidity: time window, qualified and available, per cell",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Two-Sided Markets and Network Effects ¶5",
+      "summary": "Consequences of cells: cell-by-cell leadership, no cross-border effects, vertical-specific cells",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶1",
+      "summary": "Chicken-and-egg problem and ways to seed supply",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶2",
+      "summary": "After seeding, the task shifts to keeping supply quality high",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶3",
+      "summary": "Evidence of winner-take-most dominance from vertical portals",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶4",
+      "summary": "Mechanism: local cross-side effects plus asymmetric multi-homing concentrate attention",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶5",
+      "summary": "Gurley's factors: supplier fragmentation makes markets tip and leaders durable",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶6",
+      "summary": "Limits of dominance: suppliers cut spend or list elsewhere",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶7",
+      "summary": "Asymmetric multi-homing by professionals, buyers and private sellers",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶8",
+      "summary": "Non-exclusive inventory means differentiation must come from what the platform does with it",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶9",
+      "summary": "Disintermediation and the three situations where it harms liquidity",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Competing for Liquidity ¶10",
+      "summary": "Product and trust measures to counter leakage",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶1",
+      "summary": "Liquidity metrics organized as a supply-to-outcome tree with counter-metrics",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶2",
+      "summary": "Lead-in to three design rules",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶3",
+      "summary": "Rule: measure time to contact from searchable, not submitted",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶4",
+      "summary": "Rule: use contacts as the success event when outcomes are unseen",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶5",
+      "summary": "Rule: pair every metric with a counter-metric against gaming",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶6",
+      "summary": "Success event varies by marketplace model; common tree with model-specific outcomes",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Liquidity Metric Tree ¶7",
+      "summary": "Dashboards show where matches happen, not causes; causality needs experiments",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶1",
+      "summary": "Veldmark's liquid-cell definition and cell key",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶2",
+      "summary": "Three decisions changed by the analysis: marketing, shipping, radius expansion",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶3",
+      "summary": "Rotterdam city bike timeline to first contact",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶4",
+      "summary": "Platform publication delay took almost half the seller's wait; 90-second target",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶5",
+      "summary": "Sold bike still in alert digest shows ghost inventory across channels",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Liquidity Measures ¶6",
+      "summary": "Vertical-brand examples: Motorvane stale feed ghost and Hearthly duplicate listings",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "From Liquidity Metrics to Architecture Requirements ¶1",
+      "summary": "Liquidity metrics mapped to requirements and owning chapters",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "From Liquidity Metrics to Architecture Requirements ¶2",
+      "summary": "Sunday peak search incident at Tradeyard NL",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "From Liquidity Metrics to Architecture Requirements ¶3",
+      "summary": "Estimated lost contacts from the incident justified capacity funding",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Trade-offs in Measuring and Managing Liquidity ¶1",
+      "summary": "Inferring sold outcomes from weak signals is more honest per cell",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Vertical portals compete on audience and tools, horizontals on density and speed; rentals combine both",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Vanity metrics of inputs reward worsening liquidity",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "National averages mislead decisions for local markets",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "Measuring from submission hides platform delay",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "Ghost listings counted as supply across all channels",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "Duplicates inflate supply and split demand",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "Unowned, inconsistent metric definitions",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "Ranking that optimizes only one side",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Keep the metric tree in the architecture repository and trace targets to it",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Govern definitions at group level, measure per cell with shared keys",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Set service levels in proportion to the cells they serve",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Accept multi-homing and invest in what competitors cannot copy",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Watch counter-metrics as early warnings",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Design-review questions on cells, measurement, ghosts, duplicates and traceability",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "From Liquidity to History ¶1",
+      "summary": "Answer to the CEO's question and the per-cell view as source of engineering targets",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "From Liquidity to History ¶2",
+      "summary": "Liquidity explains industry shape; hand-off to industry evolution chapter",
+      "matched_spec_paragraph": "p57"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 56 aligned units match the controlling idea of their spec paragraph (p01-p57, no p13 in the spec) in spec order; the five opening callouts are unaligned, as the spec declares no paragraphs for them.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "One unit marked two_ideas (In Practice ¶6, Motorvane ghost and Hearthly duplicates). Its lead sentence ('Two of the book's other worked examples ... show the counter-metrics at work') states one idea with two instances, exactly as spec p37 declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: scene and concepts to L1/L2, competing to L3, tree and failure modes to L4, practice to L2/L4, requirements, Chief Architect's view and questions to L5, trade-offs to L4, vertical differences to L3.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7 (p22, evidence a16z)",
+      "draft_locus": "Competing for Liquidity ¶8",
+      "quote": "a16z's 2020 list of marketplace metrics includes the \"prevalence of multi-tenanting\" as a defensibility measure",
+      "finding": "The a16z citation is the last sentence of the paragraph, placed after the architecture consequence; no sentence says what it shows or how it bears on the point that differentiation must come from what the platform does with non-exclusive inventory. Both flow readers read it as a leftover citation (flow-a item 9, flow-b item 9).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/transition_in (concepts, elaboration)",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶1",
+      "quote": "Answering it starts with two-sided markets.",
+      "finding": "The declared known information (the meeting's new question about which Portuguese cells can become liquid) is picked up only by the pronoun 'it' directly after a section heading, so the elaboration has no visible antecedent; both flow readers had to look back to resolve it (flow-a item 1, flow-b item 1).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7/transition_in (p22, cause_effect)",
+      "draft_locus": "Competing for Liquidity ¶8",
+      "quote": "NFX describes multi-tenanting as occurring when there are \"low costs or no costs to simultaneously participating in competing networks\"",
+      "finding": "The boundary is declared cause_effect, carrying over multi-homing's forms, with the transition at the start of the paragraph. The opening sentence instead introduces a quotation under a new term (multi-tenanting) that is never tied to multi-homing; the cause-effect move ('The architecture consequence is direct.') arrives only in the second sentence.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/transition_in (failure, contrast)",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "**Vanity metrics on the wall.** The most common failure is a dashboard of inputs",
+      "finding": "Declared contrast carrying over how the metrics should differ by vertical; the section opens directly on its first failure with no phrase that picks up the vertical differences or marks the turn from how metrics should work to how they go wrong. Flow-a marked the section's position unclear.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶1",
+      "quote": "Answering it starts with two-sided markets.",
+      "finding": "After the heading, 'it' has no nearby referent; flow-a had to look back to find it meant the Portuguese-cells question, and flow-b adds that the promised link to Portugal never appears in the section.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1 (p10)",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶2",
+      "quote": "Scout24's results show that consumers will pay for an advantage in such a market.",
+      "finding": "A revenue statistic inside the definition of same-side effects pulls the reader away from the concept (flow-a item 2).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3 (p12)",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶4",
+      "quote": "This book also draws on a reference model I maintain: a generic description of how a general-listings marketplace works, modeled on no real company",
+      "finding": "A new source and a sudden first-person voice introduced inside the third bullet of the liquidity definition interrupt it; flow-a had to re-read to see the quotations come from this model (flow-a item 3).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3 (p18) and /sections/2/paragraphs/6 (p21)",
+      "draft_locus": "Competing for Liquidity ¶4",
+      "quote": "The mechanism behind these numbers is a combination of local cross-side effects and an asymmetry in **multi-homing** (using several competing platforms at once).",
+      "finding": "Multi-homing and its asymmetry are used as the mechanism before they are explained, then defined again in their own subsection; both readers propose moving Multi-homing before Winner-take-most. The spec places the gloss here and the definition after the limits paragraph, so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4 (p19)",
+      "draft_locus": "Competing for Liquidity ¶5",
+      "quote": "Bill Gurley's 2012 list of marketplace factors explains why these markets tip",
+      "finding": "Flow-a could not see how fragmentation explains tipping and read the paragraph as an aside; flow-b read it as a second explanation of why markets tip right after 'the mechanism', unsure which one the chapter means.",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5 (p20)",
+      "draft_locus": "Competing for Liquidity ¶6",
+      "quote": "Its \"stock\" lever, the number of paid vehicles retailers advertise, subtracted £48 from average revenue per retailer",
+      "finding": "Investor jargon in a dense sentence; flow-a re-read it (flow-a item 7).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/5 (p20)",
+      "draft_locus": "Competing for Liquidity ¶6",
+      "quote": "Hemnet has not said why. Reading it as supply shifting elsewhere is an inference.",
+      "finding": "The paragraph disclaims an inference it never states, and 'it' is unclear (flow-a item 8).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7 (p22)",
+      "draft_locus": "Competing for Liquidity ¶8",
+      "quote": "a16z's 2020 list of marketplace metrics includes the \"prevalence of multi-tenanting\" as a defensibility measure",
+      "finding": "A leftover citation after the key point, and multi-tenanting versus multi-homing is briefly confusing; the paragraph trails off (flow-a item 9).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/9 (p24)",
+      "draft_locus": "Competing for Liquidity ¶10",
+      "quote": "is commonly summarized as listing disintermediation among the traps that network effects do not protect a marketplace against",
+      "finding": "Hedged, nested phrasing that both readers had to re-read (flow-a item 10).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3 (p28)",
+      "draft_locus": "The Liquidity Metric Tree ¶4",
+      "quote": "and reported that after the change unique contacted sellers *rose*, a check that ranking did not concentrate demand on a few sellers",
+      "finding": "One sentence holds a definition, two quotations and a second, different finding; the long parenthetical and the shift of point lose the reader (flow-a item 11).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5 (p30)",
+      "draft_locus": "The Liquidity Metric Tree ¶6",
+      "quote": "Rightmove's reported lead products, Zillow's pay-at-close fees and AVIV France's commission share all depend on outcomes recorded outside the portal",
+      "finding": "Flow-a found the subsection 'Contacts, leads and outcomes by model' largely repeats design rule 2 and leans on unexplained examples (flow-a item 12).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3 (p07) and /sections/4/paragraphs/0 (p32)",
+      "draft_locus": "In Practice: Veldmark's Liquidity Measures ¶1",
+      "quote": "Priya's team defined a **liquid cell** for Tradeyard goods as one with at least 25 active listings, at least 50 searches a week and a median time to first contact under 24 hours.",
+      "finding": "The same threshold and the 38% versus 11% result were already given in the opening scene, and the caption repeats them a third time; flow-b checked whether it was a different analysis. The spec itself places the threshold and result in both p07 and p32, so the repetition comes from the declared content and order.",
+      "fault": "spec",
+      "corroborated_by": "flow-b item 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4 (p36)",
+      "draft_locus": "In Practice: Veldmark's Liquidity Measures ¶5",
+      "quote": "It left search at **18:11**, but the alert digest built that evening still featured it when buyers opened it the next morning.",
+      "finding": "Two 'it's point at different things, and why the digest included the sold bike is not given (flow-a item 14).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4 (p36)",
+      "draft_locus": "In Practice: Veldmark's Liquidity Measures ¶5",
+      "quote": "Measured per cell, it was a steady stream of alerts and recommendations pointing at sold items",
+      "finding": "A jump from one ghost to a per-cell stream with no evidence of the stream (flow-a item 15).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in (p38)",
+      "draft_locus": "From Liquidity Metrics to Architecture Requirements ¶1",
+      "quote": "The bike's six minutes, the digest ghost and the Golf's stale feed each point at a requirement, as does the rest of the tree, the source of most non-functional requirements.",
+      "finding": "Stacked appositive at the section's opening sentence (flow-a item 16).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1 (p39)",
+      "draft_locus": "From Liquidity Metrics to Architecture Requirements ¶2",
+      "quote": "Veldmark's Sunday peak is an illustration, not an industry statistic; the documented public example of a predictable, marketing-driven peak is Rightmove's",
+      "finding": "The disclaimer and the Rightmove aside break the worked incident in two and turn away from it (flow-a item 17).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 15",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2 (p40)",
+      "draft_locus": "From Liquidity Metrics to Architecture Requirements ¶3",
+      "quote": "Tradeyard NL carries about 45% of Tradeyard's search traffic, or nearly 10,000 queries per second at the peak.",
+      "finding": "The reader must chain this with '31,000 ... about 70% on Tradeyard' to check the figure; the derivation is only partly shown (flow-a item 18).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 16",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in (tradeoffs, end_of_previous)",
+      "draft_locus": "From Liquidity Metrics to Architecture Requirements ¶3",
+      "quote": "Each target, though, rests on how its metric is measured, the choices compared next.",
+      "finding": "The signpost is bolted onto the incident paragraph, does not follow from the incident, and its trailing appositive is awkward (flow-a item 19).",
+      "fault": "draft",
+      "corroborated_by": "flow-b item 17",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/transition_in (vertical, end_of_previous)",
+      "draft_locus": "Trade-offs in Measuring and Managing Liquidity ¶1",
+      "quote": "Most of these answers also depend on the vertical.",
+      "finding": "A one-line bridge appended to an unrelated paragraph about the sold signal (flow-a item 20).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8 (failure)",
+      "draft_locus": "Failure Modes ¶5",
+      "quote": "Hearthly's 1.7 listings per property meant its supply metrics overstated depth by 70%.",
+      "finding": "Flow-a marked the Failure Modes section's position UNCLEAR and found five of its seven items restate earlier material with the same numbers (flow-a item 21 and section list). Flow-b gave the section a reason. The repetition is declared by the spec (p46, p47 restate the bike, ghost and Hearthly material) and the section's place is the book's fixed closing order.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3 (p53)",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "quote": "That is also why neutrality commitments such as Keybridge's matter",
+      "finding": "Keybridge's neutrality commitments were never introduced (flow-a item 22).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2 (p17)",
+      "draft_locus": "Competing for Liquidity ¶3",
+      "quote": "89% in December 2025 on Comscore data but 75% on SimilarWeb, Data.ai and SensorTower data",
+      "finding": "Three figures in one clause; flow-a re-read it (flow-a item 4).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2 (p11, Figure 1)",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶3 (Figure 1 caption)",
+      "quote": "paid visibility is only worth buying while the loop is turning",
+      "finding": "Paid visibility is not yet set up in the body when the caption relies on it (flow-b item 3).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1 (concepts: subsections 'Liquidity, defined', 'Why the cell is the unit')",
+      "draft_locus": "Two-Sided Markets and Network Effects ¶4 (subheading)",
+      "quote": "### Liquidity, defined",
+      "finding": "Liquidity, the central term, sits as a subsection under 'Two-Sided Markets and Network Effects'; scanning the outline flow-b could not find where liquidity is defined (flow-b item 5).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0 (p56)",
+      "draft_locus": "From Liquidity to History ¶1",
+      "quote": "So a target that cannot name the liquidity metric it protects should not be built",
+      "finding": "'So' does not follow from the sentence before it (flow-b item 18).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7 (p22)",
+      "draft_locus": "Competing for Liquidity ¶8",
+      "quote": "NFX describes multi-tenanting as occurring",
+      "finding": "'Multi-tenanting' is introduced as a new term with no statement that it is NFX's and a16z's name for the multi-homing just defined; a reader meets two names for one concept.",
+      "fault": "draft",
+      "corroborated_by": "flow-a item 9 (also flow-b item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3 (p53)",
+      "draft_locus": "The Chief Architect's View ¶4",
+      "quote": "That is also why neutrality commitments such as Keybridge's matter",
+      "finding": "Keybridge is known from meet-veldmark, but its neutrality commitments are not introduced in this chapter or in meet-veldmark or marketplace-taxonomy; the sentence treats them as known.",
+      "fault": "draft",
+      "corroborated_by": "flow-a item 22",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on an intriguing example (the Sunday-evening bike seller and the flat near a metro station) and a claim, not a placeholder, definition or 'dawn of man'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Does not open with 'in conclusion', holds no body evidence, and is not a rephrased thesis alone; the second paragraph is the declared hand-off to industry-evolution.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "States what no single section states (the per-cell view that explained Portugal is also the engineering brief) and the so-what (reject untraceable targets; judge markets by liquid cells).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Henrik's question (Portugal as two dense metro markets plus a tail of empty cells) and to the hook ('The seller who lists a bike on a Sunday evening is the real customer of the publication pipeline').",
+      "severity": "major"
+    },
+    {
+      "criterion": "intro_predicts_content",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted all sections in order (puzzle, concepts, competition, metric tree applied at Veldmark, requirements, closing blocks) and the evidence (dated public sources, research, fictional Veldmark figures).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader splits into place x leaf-category cells, compares liquid-cell share and listings in them (38% vs 11%, 86% vs 52%), measures contact rate, time to first contact from searchable, search-to-contact and sell-through with counter-metrics, and derives publication and alert latency, ghost removal and peak search capacity. Matches expected.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "See intro_predicts_content: sections and evidence predicted in order.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Reverse outline matches the spec's controlling ideas in order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader checks unsafe contact rate, ghost share and duplicate ratio, per-cell versus category average, time to first contact from searchable, and that dashboards do not show cause (experimentation). Matches expected.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader: protects from buyers leaving, not from suppliers paying less or listing elsewhere; professionals multi-home cheaply; evidence Autotrader forecourts and stock lever, Hemnet free formats with the inference labeled, Bundeskartellamt; panel dependence 89% vs 75%. Matches expected.",
+      "severity": "minor"
+    }
+  ]
+}

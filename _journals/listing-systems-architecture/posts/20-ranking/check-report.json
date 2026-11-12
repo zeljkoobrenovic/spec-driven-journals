@@ -1,0 +1,606 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/20-ranking/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/20-ranking/index.md",
+  "spec_sha": "458a867b071e2066",
+  "draft_sha": "ae9d80a1c488b6b8",
+  "run_at": "2026-11-12T21:59:07+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter scope: what ranking topics are covered",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "business stake in first-page order",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "architectural stake: ranking policy as separate versioned component",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three key takeaways: model/policy split, floored paid visibility, explainability",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns tackled by the chapter",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "no listing order is neutral",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "why marketplace ranking is harder than retail",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "chapter's place in Part IV and its boundaries with neighbouring chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter's sections and evidence",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The \"Top Listing\" Boost That Ate Relevance ¶1",
+      "summary": "Veldmark's paid-visibility revenue and Ingrid's first-page question",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The \"Top Listing\" Boost That Ate Relevance ¶2",
+      "summary": "Tradeyard ranking accreted as layered Solr boosts",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The \"Top Listing\" Boost That Ate Relevance ¶3",
+      "summary": "untested boosts led to paid-dominated, less relevant first pages and fewer contacts",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The \"Top Listing\" Boost That Ate Relevance ¶4",
+      "summary": "Femke's bike buried at position 14 behind paid listings",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: The \"Top Listing\" Boost That Ate Relevance ¶5",
+      "summary": "monetization and migration counterpoints reframe the question as ownership of order",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "What Ranking Is: Prominence, Not a Sort ¶1",
+      "summary": "EU legal definition of ranking as prominence and its consequences",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What Ranking Is: Prominence, Not a Sort ¶2",
+      "summary": "definitions of sort order, relevance model, ranking policy and exposure",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What Ranking Is: Prominence, Not a Sort ¶3",
+      "summary": "signal families with differing owners and risks",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What Ranking Is: Prominence, Not a Sort ¶4",
+      "summary": "keep volatile signals out of the index / paid and trust signals carry legal duties",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶1",
+      "summary": "multi-stage ranking pipelines in published systems",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶2",
+      "summary": "adding an explicit ranking policy layer",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶3",
+      "summary": "written contracts per component",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶4",
+      "summary": "relevance model must not use entitlements, OLX coupling example",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶5",
+      "summary": "ranked queries produce data for other teams",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: Model, Policy Layer and Ranking Log ¶6",
+      "summary": "three interface decisions: entitlements as data, versioned policy, reason codes",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶1",
+      "summary": "definition of learning to rank",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶2",
+      "summary": "label choice as a business decision",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶3",
+      "summary": "multi-task, two-sided labels",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶4",
+      "summary": "published evolution from tree models to neural rankers",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶5",
+      "summary": "classifieds LTR examples from mobile.de and leboncoin",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶6",
+      "summary": "recommended GBDT LambdaMART default and when to go neural",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶7",
+      "summary": "logging features as served to avoid training-serving skew",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Learning to Rank ¶8",
+      "summary": "position bias and propensity-weighted correction",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶1",
+      "summary": "default sort as a political choice among options",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶2",
+      "summary": "newest-first value and rules for sound bumps",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶3",
+      "summary": "bump as a policy term and Tradeyard's double-prominence mistake",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶4",
+      "summary": "cold-start exposure for new listings: exploration slots and content priors",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶5",
+      "summary": "exposure as an allocated resource",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶6",
+      "summary": "page-level interdependence and per-seller caps",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶1",
+      "summary": "how paid placement competes with organic: four approaches",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶2",
+      "summary": "eBay's unified ranker with no promotions when relevance is sparse",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶3",
+      "summary": "classifieds complications: position-sold products and private buyers of paid visibility",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶4",
+      "summary": "delivery events so sellers' purchases can be reconciled",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶5",
+      "summary": "causal measurement of paid exposure value",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Blending Paid Visibility with Organic Results ¶6",
+      "summary": "deduplicating a listing across paid and organic slots",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Transparency: Ranking as a Regulated Function ¶1",
+      "summary": "EU instruments governing ranking",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Transparency: Ranking as a Regulated Function ¶2",
+      "summary": "caveats: P2B repeal proposal and DSA ad status",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Transparency: Ranking as a Regulated Function ¶3",
+      "summary": "trust demotions as visibility restrictions owed reasons",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Transparency: Ranking as a Regulated Function ¶4",
+      "summary": "explicit policy plus reason codes make compliance automatic",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶1",
+      "summary": "three stages of ranking evaluation",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶2",
+      "summary": "limits of offline NDCG on logs and maps",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶3",
+      "summary": "online testing sensitivity via interleaving and its limits",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶4",
+      "summary": "marketplace interference and randomization unit choice",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶5",
+      "summary": "fixed guardrail metrics for ranking experiments",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Evaluating Ranking Changes ¶6",
+      "summary": "guardrail breaches require owner decision",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Veldmark Remedy: Ranking Policy v1 ¶1",
+      "summary": "Veldmark's five-part ranking ADR",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Veldmark Remedy: Ranking Policy v1 ¶2",
+      "summary": "experiment design for policy v1",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Veldmark Remedy: Ranking Policy v1 ¶3",
+      "summary": "results: floor improved paid value; CEO approval and rollout",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "when each design option fits",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "ranking varies by vertical",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "vertical disputes: market-value signal at Motorvane / cluster representative at Hearthly",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "eight recurring ranking failure modes and warning signs",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "ranking ownership is contested across the business",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "group-level decisions: layering, ranking council, shared vs local",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "metrics the chief architect should monitor",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "AI agents re-ranking results and the output contract",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "ten design-review questions",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "From Ranking to Recommendations ¶1",
+      "summary": "synthesis: model, policy and log as division of labor",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "From Ranking to Recommendations ¶2",
+      "summary": "bridge to recommendations chapter",
+      "matched_spec_paragraph": "p63"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "criterion": "reverse_outline_matches_spec",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "criterion": "intro_predicts_content",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "criterion": "AC-4",
+      "severity": "minor"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "criterion": "AC-5",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Architecture: Model, Policy Layer and Ranking Log ¶4",
+      "quote": "and when OLX added vector retrieval, the keyword-trained model under-scored semantically retrieved results, which \"would be particularly problematic for VAS ads retrieved via semantic search\", so the model had to be retrained",
+      "finding": "Both flow readers had to re-read the OLX paragraph: one sentence carries two quotations and a causal chain, and the lesson (a retrieval change became a monetization change) arrives two sentences later and depends on remembering that VAS visibility sat inside the model's objective. The spec's order is fine; the prose obscures the point.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3e (flow reader A, item 3a)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶4",
+      "quote": "A new listing needs exposure most and can neither buy nor earn it, because the position bias corrected in the model hurts new listings most: they have no engagement history, so a model that leans on engagement ranks them low, so they collect no engagement.",
+      "finding": "Both flow readers stumbled on the causal claim: the previous section says position bias is corrected, so 'the position bias corrected in the model hurts new listings most' reads as a contradiction until the reader works out that the harm is the feedback loop that correction does not remove; reader A also found 'can neither buy' at odds with the bump just described.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3f (flow reader A, item 3c)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶5",
+      "quote": "Like freshness, exploration slots are an **exposure** policy: they decide how attention is shared among listings, and so does the per-seller cap below.",
+      "finding": "Both flow readers found the exposure-as-a-resource framing (Singh and Joachims) out of place between exploration slots and the per-seller cap, needing a forward reference to 'the cap below'; both proposed putting the framing first (or after the cap). The difficulty comes from the declared order of p31, p32, p33, whose controlling idea for p32 itself requires the forward reference, so the draft cannot fix it without reordering units.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3h (flow reader A, item 3d)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Blending Paid Visibility with Organic Results ¶1",
+      "quote": "Four approaches cover the field, and only the last removes a paid listing when it would hurt the page: fixed slots fill whatever the inventory, a multiplier has no upper bound and a separate auction keeps two notions of relevance, while a floor drops paid listings that do not match and a **cap on paid positions** limits how many the floor admits.",
+      "finding": "Both flow readers re-read this sentence: it compresses the whole blending table into one long sentence before the reader has seen the table, which then says the same thing more clearly. The claim of the paragraph (only the floor removes a paid listing that would hurt the page) can be stated more simply.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3i (flow reader A, item 3e)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Blending Paid Visibility with Organic Results ¶5",
+      "quote": "Measuring whether paid exposure *creates* value is harder than it looks.",
+      "finding": "Both flow readers read the OLX causal-measurement paragraph as a side step inside the 'Delivery accounting' subsection, whose point is 'did I get what I paid for?'; the draft does not say why measuring value belongs to ranking (for example, that the floor's claim to make paid products better can only be shown causally), so the contrast with counting delivery is not made and the section seems to zig-zag.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3j (flow reader A, item 3f)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Transparency: Ranking as a Regulated Function ¶1",
+      "quote": "Paid positions and demotions are what the law regulates: European law turned ranking explanation from good practice into an obligation.",
+      "finding": "Both flow readers paused at the transparency opening: the two clauses either side of the colon do not connect (the second does not follow from the first), and 'demotions' is used as a lead-in although trust demotions have only appeared in passing. The declared cause-effect link (paid positions sold and labeled, so legal duties attach) is present but obscured.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3k (flow reader A, item 3g)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "The Veldmark Remedy: Ranking Policy v1 ¶1",
+      "quote": "The \"Spotlight\" product, a private-seller upgrade guaranteeing the first reserved slot for 48 hours that the forum had deferred in May ([[monetization-models]]), was withdrawn, because a guaranteed first slot cannot coexist with a relevance floor.",
+      "finding": "Both flow readers met Spotlight for the first time here, withdrawn in the same sentence, and relying on a forum decision from monetization-models, a chapter that comes later in the book; it felt out of place. The spec's evidence requires Spotlight to be withdrawn, but the draft could introduce it as a pending Monetization proposal held for this review; whether to keep it at all is the author's call.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 3m (flow reader A, item 3j)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Ranking to Recommendations ¶1",
+      "quote": "That is why a floor made the top listing worth more to its sellers.",
+      "finding": "Both flow readers re-read the conclusion here: 'That' points to the three-way division of labor, and the causal step from that separation to the floor making the paid product worth more (paid listings shown only where they match, so more contacts per euro) is left implicit.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3o (flow reader A, item 3n)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶1",
+      "quote": "Its oldest rule is the **default sort**, the order a buyer gets before choosing any: the most political decision in a classifieds product, because it decides who wins without any user choosing.",
+      "finding": "Flow reader A (item 3b) had to re-parse the appositive followed by a colon, and heard 'choosing any' and 'without any user choosing' as an echo.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "It then defines ranking, lays out the architecture of model, policy layer and log, and works through its parts: learning to rank, then the ranking policy's rules (the default sort and bumps, exploration slots and per-seller caps) and paid blending, transparency under EU law and evaluation.",
+      "finding": "Flow reader B (item 3a) found the roadmap hard to parse: it reads as if transparency and evaluation were parts of the architecture, and the nested list with 'then', a parenthesis and 'and' hides the grouping.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Architecture: Model, Policy Layer and Ranking Log ¶1",
+      "quote": "That layer needs a place in the pipeline.",
+      "finding": "Flow reader B (item 3c) expected the following paragraph to be about 'that layer', but it describes generic multi-stage pipelines; the policy layer only arrives in the next paragraph.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "Architecture: Model, Policy Layer and Ranking Log ¶2",
+      "quote": "A ranking function: retrieval, relevance model, ranking policy, the results page (presentation) and the ranking log, the five components of the table below.",
+      "finding": "Flow reader B (item 3d) stopped to reconcile the Figure 2 caption's five components with the section heading's three (model, policy layer, log).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Ranking Policy: Default Sort, Bumps, Exploration and Seller Caps ¶4",
+      "quote": "Two tools address it, a policy rule and a model input:",
+      "finding": "Flow reader B (item 3g) found content-based priors, a model input, out of place in the Ranking Policy section, which is otherwise about rules above the model; the spec's p31 places both tools here.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "The paid products of [[part-6]] depend on its relevance floor and delivery events",
+      "finding": "Flow reader B (item 3b) reported 'relevance floor' as used in the introduction long before it is explained in the blending section; the term is not on the spec's does_not_know list and only one reader reported it.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    }
+  ]
+}

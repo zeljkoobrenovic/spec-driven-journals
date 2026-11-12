@@ -1,0 +1,594 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/10-media-pipeline/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/10-media-pipeline/index.md",
+  "spec_sha": "035f35ad292e903f",
+  "draft_sha": "643b8ed67337184a",
+  "run_at": "2026-11-12T21:44:43+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter roadmap: following a photo through the pipeline, costs, hashing and Veldmark's plan",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Why photos matter commercially: buyer judgment, theft target, growing storage cost",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Media decisions cut across security, privacy, trust, search, feeds and cost",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: media IDs with own lifecycle, on-demand derivatives, hashes as trust infrastructure",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: duplicates, late moderation, ghost images",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Media is the bulkiest and least governed listing data",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Media pipelines grow piecemeal and end up costly, outdated and late on fraud",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter frames media as one subdomain with one contract and a MediaReady event",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections via the bill and the fraud ring",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶1",
+      "summary": "Julien brings two documents to Ingrid / Tradeyard GPS finding on Femke's photos",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶2",
+      "summary": "Hearthly's media storage scale and cost breakdown, storage outgrowing listings",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶3",
+      "summary": "Three causes of cost: feed re-downloads, pre-generated renditions, no deletion",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶4",
+      "summary": "Barcelona fake-rental ring: hash detection worked but didn't hold listings or cover other brands",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶5",
+      "summary": "Chapter question: one group pipeline that's cheaper, faster, private and stops stolen photos",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: Assets, Masters, Derivatives and Hashes ¶1",
+      "summary": "Definitions of asset, original, master, derivative, image service, content addressing, perceptual hash, pipeline",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Assets, Masters, Derivatives and Hashes ¶2",
+      "summary": "Core rule: listings hold media IDs, not URLs",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶1",
+      "summary": "Three entry points feed one pipeline",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶2",
+      "summary": "Direct pre-signed uploads from clients and resumable-upload duplication",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶3",
+      "summary": "Partner feeds and change markers to avoid re-fetching unchanged images",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶4",
+      "summary": "Back-office and generated media enter with provenance",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶5",
+      "summary": "AI Act marking duties make provenance a required media attribute",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶6",
+      "summary": "Introduces the nine pipeline stages and which block publication",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶7",
+      "summary": "Malformed files should be client errors with repair, per InfoJobs PDF lesson",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶8",
+      "summary": "Documents like CVs and certificates carry personal data and own retention",
+      "matched_spec_paragraph": "p17b"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶9",
+      "summary": "Split of checks: synchronous, before searchable, after publication",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: The Upload-to-Edge Pipeline ¶10",
+      "summary": "Barcelona match became a queue item rather than a trust input",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Privacy: What Photos Reveal ¶1",
+      "summary": "Photos carry personal data the platform is accountable for; Femke case",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Privacy: What Photos Reveal ¶2",
+      "summary": "EXIF GPS exposure and stripping before storing the master",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Privacy: What Photos Reveal ¶3",
+      "summary": "Faces, plates and home interiors need detection and blurring policy",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶1",
+      "summary": "Derivative strategy decides much of the bill",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶2",
+      "summary": "Pre-generated renditions: simple but costly and format-locked",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶3",
+      "summary": "On-demand derivatives behind a CDN, OLX Dali example",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶4",
+      "summary": "Modern formats AVIF/WebP chosen per request favor on-demand generation",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶5",
+      "summary": "Three rules: bounded variants, signed URLs, immutable URLs",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Derivatives, Formats and the CDN ¶6",
+      "summary": "Outbound channel image minimums as a derived media attribute",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Storage Tiers and the Media Lifecycle ¶1",
+      "summary": "Cloud storage classes and their minimum durations and fees",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Storage Tiers and the Media Lifecycle ¶2",
+      "summary": "Lifecycle should follow listing state, not access patterns, due to minimum durations",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Storage Tiers and the Media Lifecycle ¶3",
+      "summary": "Introduces retention classes table",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Storage Tiers and the Media Lifecycle ¶4",
+      "summary": "Deletion requires CDN purge, else ghost images and privacy failure",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Storage Tiers and the Media Lifecycle ¶5",
+      "summary": "Retaining hashes of scam photos needs a legal basis",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Perceptual Hashing: Finding the Same Photo Twice ¶1",
+      "summary": "Duplicate vs stolen photos: same-seller reuse vs cross-seller use",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Perceptual Hashing: Finding the Same Photo Twice ¶2",
+      "summary": "Layered matching: exact, perceptual, embedding, human review",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Perceptual Hashing: Finding the Same Photo Twice ¶3",
+      "summary": "Allowlist for legitimately repeated images is mandatory",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Perceptual Hashing: Finding the Same Photo Twice ¶4",
+      "summary": "Hash index should be shared across brands",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Perceptual Hashing: Finding the Same Photo Twice ¶5",
+      "summary": "Lyon flat: same hash signal supports legitimate listing merge",
+      "matched_spec_paragraph": "p38b"
+    },
+    {
+      "draft_locator": "Understanding Images: Quality, Order, Text and Content ¶1",
+      "summary": "Image models read photos for quality, order, text and attributes",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Understanding Images: Quality, Order, Text and Content ¶2",
+      "summary": "Quality scoring models and their uses",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Understanding Images: Quality, Order, Text and Content ¶3",
+      "summary": "Automated gallery ordering and cover selection",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Understanding Images: Quality, Order, Text and Content ¶4",
+      "summary": "OCR of text in images for moderation and search",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Understanding Images: Quality, Order, Text and Content ¶5",
+      "summary": "Classifiers for content and attributes; MediaReady must trigger recomputation",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Video, 3D Tours and Floor Plans ¶1",
+      "summary": "Video, 3D tours and floor plans and their distinct handling",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Video, 3D Tours and Floor Plans ¶2",
+      "summary": "One media model with several processing profiles",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶1",
+      "summary": "Public examples (Adevinta, OLX, Rightmove, mobile.de) converge on one architecture",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶2",
+      "summary": "Veldmark approves group media decision; Hearthly first adopter",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶3",
+      "summary": "Shared contract, staged infrastructure, group hash index first",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶4",
+      "summary": "Hearthly's four changes: content addressing, no renditions, lifecycle, pre-search hash check",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶5",
+      "summary": "Planned cost cut from 6.2M to 3.6M euros",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶6",
+      "summary": "Processing cost falls least: compute traded for storage",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice: Public Examples and Veldmark's Plan ¶7",
+      "summary": "Plan closes the raw-original privacy gap with a backfill",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Introduces trade-offs table of seven choices",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Keybridge media excluded from group hash index for neutrality",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Same pipeline across verticals, differing sources, fraud, privacy and duplicates",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Jobs vertical shows documents must be handled too",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Nine failure modes, each reversing a chapter rule",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Media is easy to share and costly not to; decisions for the forum",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Share the contract first, infrastructure later",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Retention as owned, signed-off policy",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Five metrics to watch",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Plan for generated media and provenance",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Enforce neutrality boundaries in the media layer",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten review questions",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "From Pictures to Place ¶1",
+      "summary": "Synthesis: one contract solves both the bill and the fraud",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "From Pictures to Place ¶2",
+      "summary": "Hand-off to listing location privacy in the next chapter",
+      "matched_spec_paragraph": "p66"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 68 aligned summaries state the controlling idea of their spec paragraph, in spec order (scene: meeting with the third finding, bill, causes, ring, question; concepts; doors, provenance, stages, gate lesson, documents, timing, Barcelona; privacy; derivatives; lifecycle; hashing incl. the Lyon split; understanding; rich media; in practice; trade-offs; verticals; failure modes; CA view; questions; conclusion). The five callouts match no spec paragraph and are recorded as null.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "structure",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only scene ¶1 was marked two_ideas (Julien's two documents / Tradeyard GPS finding on Femke's photos). Spec p05 declares both ideas in its controlling idea, so the paragraph holds the one idea its spec entry gives it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: scene to S4/S5, concepts and understanding/rich media to S1, pipeline (incl. provenance and documents) to S2/S3, privacy to S3, derivatives and lifecycle to S4 (lifecycle also S3), hashing to S5, in-practice to S1/S3/S4/S5, the judgement sections and conclusion to the whole thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each evidence item is followed by its meaning: Figures 1-6 carry interpretive captions; the nine-stage table is framed by its lead-in and read in 'What blocks publication'; the retention table by the deletion and hash-retention paragraphs; the cost table by the processing-line paragraph; the trade-offs and vertical tables by their lead-ins and follow-ups; quotations (Rightmove, OLX Dali, YAMS, ClamAV, PDQ, Autotrader, mobile.de) each get a sentence saying what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other boundaries express their declared relationship and pick up the declared known information (e.g. 'The first is the media bill', 'Three causes are visible in the numbers', 'Answering Ingrid's question needs precise words', 'Recording provenance is not bookkeeping', 'Those failing PDFs were documents', 'The sanitize stage exists because', 'Hearthly's bill comes next', 'Derivatives can be regenerated; masters cannot', 'The Barcelona review turned on a hash match', 'Hashing compares photos with each other; image models read each photo', 'Julien's two documents describe one failure', 'Stripping GPS coordinates from photos closes one way'). One boundary fails, below.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Perceptual Hashing: Finding the Same Photo Twice ¶5",
+      "quote": "The Lyon apartment shows the other side:",
+      "finding": "Declared contrast carrying over 'a shared index that catches copied photos'. The opening says 'the other side' without naming what it is the other side of; the preceding paragraph ends on brands' trust rules, so the contrast (a cross-seller match that is legitimate, not fraud) is left for the reader to reconstruct, and 'The Lyon apartment' is used as if already introduced. Both flow readers stopped here.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared order (problem scene, terms, pipeline with privacy, the bill's half, the ring's half, image uses beyond fraud and rich media, evidence and plan, judgement sections), say the roadmap announces it and the body keeps to it, and mark no section UNCLEAR. Points judged not material: 'Common Ground' (A3.7, B3.7) is on audience.already_knows; Keybridge in the trade-offs table (A3.8, B3.6) is glossed in the same cell as 'a neutral SaaS' and the March 2027 decision is explained in the next paragraph; the CDN-purge pointer (A3.3) is a spec-required forward pointer the reader itself called small.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶1",
+      "quote": "A third finding, from Tradeyard, is already on her list: the stored originals of Femke's bike photos still carry the GPS coordinates of her home.",
+      "finding": "Both readers stopped: a 'third' finding arrives before the first and second documents are described, and Femke is named with no clause saying who she is (a private seller on Tradeyard). The spec only requires the finding to be on Ingrid's list in this paragraph; the prose can say who Femke is and present it as a separate finding without numbering it ahead of the documents.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 3.1",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/7",
+      "draft_locus": "Architecture: The Upload-to-Edge Pipeline ¶8",
+      "quote": "Those failing PDFs were documents, not photos, and the document path needs rules of its own, because in jobs and real estate it carries personal data.",
+      "finding": "Both readers found the paragraph announcing 'rules of its own' that it never gives here (A: they arrive only in the retention table two sections later; B: stranded, repeats stage 4). The spec's controlling idea (documents are media assets with personal data and their own retention) can be kept in place by naming the rules or pointing to the malware-scan stage and the Documents retention class.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 3.3",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Perceptual Hashing: Finding the Same Photo Twice ¶5",
+      "quote": "The Lyon apartment shows the other side:",
+      "finding": "Both readers lost the referent: 'the other side' points back past the cross-brand sharing paragraph to the fraud bullets, and the definite article treats the Lyon apartment as known. The spec order (sharing, then the legitimate-match case) is workable if the opening names the contrast explicitly.",
+      "fault": "draft",
+      "corroborated_by": "flowB item 3.5",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/3",
+      "draft_locus": "In Practice: Public Examples and Veldmark's Plan ¶4",
+      "quote": "(a separate measure from the 38% of duplicate originals)",
+      "finding": "Both readers report that the two 38% figures still stop them despite the label. The round-3 resolution kept both figures by decision (decision log, item d); the prose has already done what wording can, so the remaining stumble comes from the ledger's coincident number, which only a spec/ledger change can remove.",
+      "fault": "spec",
+      "corroborated_by": "flowB item 3.8",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "Architecture: The Upload-to-Edge Pipeline ¶5",
+      "quote": "Recording provenance is not bookkeeping: virtual staging, sky replacement and AI-generated listing videos bring marking and disclosure duties.",
+      "finding": "Reader B found the long AI Act paragraph a digression between the three doors and the nine stages. The position is the spec's (moved here in round 3); the length is the draft's. Only one reader reported it.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/9",
+      "draft_locus": "Architecture: The Upload-to-Edge Pipeline ¶10",
+      "quote": "In Barcelona the lookup matched within minutes",
+      "finding": "Reader B had to check whether Barcelona's lookup was the synchronous one listed in the timing bullets ('a fast perceptual-hash lookup'); the paragraph does not say which timing the lookup ran in. Only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Video, 3D Tours and Floor Plans ¶1",
+      "quote": "beyond its subject, its content was not accessible for this book",
+      "finding": "Reader A found the clause about the OLX news item awkward enough to stop on. Only one reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Terms on does_not_know are given before or where first used: media asset, original, master (glossed in the introduction as 'cleaned uploads'), derivative, image service, content addressing, perceptual hash, PDQ and Hamming distance in Concepts; EXIF GPS tags in Privacy; AVIF/WebP as modern formats with browser support; storage-class minimum durations and retention classes in Storage Tiers; the publication budget and trust decision in the timing split with their owning chapters. Common Ground, Keybridge, Tradeyard and the cast are on already_knows. One unintroduced referent fails, below.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: 1.8 Billion Images and a Fake-Rental Ring ¶1",
+      "quote": "the stored originals of Femke's bike photos still carry the GPS coordinates of her home",
+      "finding": "Femke is not on already_knows (she is a private seller, not book cast) and the scene names her without saying who she is; she is identified only in the Privacy section. Both flow readers reported her as unintroduced.",
+      "fault": "draft",
+      "corroborated_by": "flowA item 3.1; flowB item 3.1",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with a concrete intriguing comparison (kilobytes of text vs megabytes of photos times derivatives and years), bridges from the attribute dictionary and the reader's staged media stack, states the thesis and gives a roadmap; none of placeholder, restated question, dictionary, 'dawn of man' or book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion does not open with 'in conclusion', adds no new subtopic or body evidence, and does not end on a rephrased thesis alone: it synthesizes the two documents into one failure and one contract, then hands off to location-and-geo by similarity.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "It states what no single section states (the bill and the ring are one failure, answered by one contract whose entry step removes copies and fills the hash index while on-demand derivatives and lifecycle remove renditions and undeleted masters) and says why it matters: sharing the contract and index first is cheap, cuts the bill and stops fraud earlier without waiting for storage to move.",
+      "severity": "major"
+    },
+    {
+      "criterion": "structure",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "It returns to the scene's callback element: 'Julien's two documents describe one failure', and answers Ingrid's question in substance (stores less, catches stolen photos earlier; privacy in the GPS hand-off).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader lists all sixteen expected sections in the spec's roadmap order (scene with bill and ring, terms, pipeline and publication checks, what photos reveal, derivatives and CDN, storage tiers and lifecycle, perceptual hashing, image understanding beyond fraud, video/tours/floor plans, public examples, Hearthly's plan in numbers, trade-offs, vertical differences, failure modes, Chief Architect's view, review questions), the evidence (fictional Veldmark, public examples, cost numbers) and a plain declarative tone.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names all expected elements: the match only made a 'possible duplicate' queue item while the listing went live; it returned a distance with no seller relationship; the index covered one brand. Fix: for high-risk segments such as rentals, feed the match to the trust decision before searchable and hold the listing, attach the seller relationship, share the index across brands, use block lists.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names the three causes (feed re-downloads without change markers, nine stored renditions kept forever, no deletion of ended-listing media) and the fixes (SHA-256 masters with conditional requests, hash comparison and media change dates; on-demand derivatives behind a CDN in AVIF/WebP with bounded widths; lifecycle by listing state with colder classes and deletion by retention class). It omits the parenthetical about minimum storage durations, which the chapter covers in the lifecycle section; the causes and changes the probe asks for are all given.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader answers no: stored originals keep GPS and one misconfigured bucket exposes the home; strip metadata in sanitization before the master is written, keep raw originals only for a documented purpose with restricted access and short retention, and purge derivatives from the CDN on deletion. Matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

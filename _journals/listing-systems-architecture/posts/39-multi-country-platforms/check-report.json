@@ -1,0 +1,635 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/39-multi-country-platforms/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/39-multi-country-platforms/index.md",
+  "spec_sha": "874cf7544912d047",
+  "draft_sha": "2490fa310f1e9dd5",
+  "run_at": "2026-11-12T22:27:54+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: platform models, tenancy design, what to share first",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Business cost of forks versus imposed platforms",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Multi-country as a scoping decision best made early",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: tenant as element, configuration over code, share beneath product",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: copy-paste country, forced fit, deal-shaped architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Groups grew by copying markets, so every change is paid many times",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Imposed single platform fits one market and gets routed around",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Chapter's middle path and its three owned terms",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Links to earlier and later chapters",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the chapter and its evidence sources",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶1",
+      "summary": "Phishing attack stopped in one Veldmark market within an hour",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶2",
+      "summary": "Rule reached Belgium days late and other markets never / no link to the same fraudster on Motorvane",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶3",
+      "summary": "Chief Architect asks what a market is and where differences live",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶4",
+      "summary": "Veldmark's tenants, locales and currencies / how each brand handled multi-country (Yardstick branches, Motorvane config, Hearthly migration)",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶5",
+      "summary": "Brands solved multi-country separately; group-level decision record introduced",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶1",
+      "summary": "Need for precise terms; definitions table",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶2",
+      "summary": "Definition of a tenancy model as a set of per-capability questions",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶3",
+      "summary": "Tenant is usually brand by country; profiles are scopes inside it",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶4",
+      "summary": "Tenant identity versus tenant isolation",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶5",
+      "summary": "Partitioned isolation as default; moving to dedicated must not change clients",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶6",
+      "summary": "Definition of a global component beneath local products",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶7",
+      "summary": "Adevinta's two-condition test for centralizing",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶8",
+      "summary": "Definition of configuration over code",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶9",
+      "summary": "Configuration needs schema, resolution hierarchy and change control",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Concepts: Tenants, Global Components and Configuration ¶10",
+      "summary": "Behavioral differences go to extension points; configure-extend-fork ladder",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Platform Models: From the Fork to the Product Platform ¶1",
+      "summary": "Six platform models used side by side, not a maturity ladder",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Platform Models: From the Fork to the Product Platform ¶2",
+      "summary": "Successful sharing happens within a vertical (OLX, eCG evidence)",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Platform Models: From the Fork to the Product Platform ¶3",
+      "summary": "Across verticals, sharing sits in lower layers",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Platform Models: From the Fork to the Product Platform ¶4",
+      "summary": "Converged product platforms were rolled back at Adevinta and AVIV",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶1",
+      "summary": "Reference architecture with tenancy services in the middle",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶2",
+      "summary": "Local content is applied by shared mechanisms",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶3",
+      "summary": "Tenant register and its attributes",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶4",
+      "summary": "Lifecycle state for leaving tenants",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶5",
+      "summary": "Configuration resolved along a scope hierarchy",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶6",
+      "summary": "OLX's Hydra-based hierarchical configuration example",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶7",
+      "summary": "Four rules for a healthy configuration hierarchy",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶8",
+      "summary": "Extension points and their contracts",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶9",
+      "summary": "Adevinta dispute back office as extension-point example",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶10",
+      "summary": "Ladder decides which mechanism a difference gets",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶11",
+      "summary": "Declared, dated forks versus undeclared shadow forks",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶12",
+      "summary": "Tenant-scoped releases: rings and feature flags",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶13",
+      "summary": "Rings versus flags / group-urgent changes that bypass tenant schedules",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶14",
+      "summary": "Data residency in the EU under GDPR",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶15",
+      "summary": "Legal and commercial limits on which tenant may use which data",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶16",
+      "summary": "Multi-region deployment as a separate decision; Vinted exception",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶17",
+      "summary": "Six layers of localization beyond translation",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Architecture: A Tenancy Model for a Marketplace Group ¶18",
+      "summary": "Belgium as one tenant with two locales and two names",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶1",
+      "summary": "Veldmark's nine-part tenancy decision record",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶2",
+      "summary": "Motorvane's objection on configuration scope / Poland's ring placement",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶3",
+      "summary": "Ring rollout of taxonomy service and the defects it caught",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶4",
+      "summary": "Replaying the phishing incident as a design test",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶5",
+      "summary": "Three replay findings: detector plus locale packs, cross-brand boundary, tenant-scoped statements of reasons",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶6",
+      "summary": "Sampling Yardstick's country branches: values, behavior, dead code",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: Veldmark's Tenancy Model v1 ¶7",
+      "summary": "Polish vehicles section combining two brands in one market",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Transition to trade-off tables",
+      "matched_spec_paragraph": "p49a"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "How Veldmark's choices map to the trade-off tables",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Trade-offs ¶3",
+      "summary": "Three situations where configure-and-share fails",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Real estate as the hardest vertical to share",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Eight recurring failures without a tenancy model",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Decide the tenancy model once, early, at group level",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Decide platform model per capability using three questions",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Order in which to share capabilities",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Decision rights between group, brand and platform team",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Metrics to watch for a shared platform",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Centralization pendulum; design so swings are cheap",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten questions to test the tenancy decisions",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "From Sharing to Staying Up ¶1",
+      "summary": "Answer to the opening question and the replayed rule",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "From Sharing to Staying Up ¶2",
+      "summary": "Hand-off to reliability and scale chapter",
+      "matched_spec_paragraph": "p62"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 63 aligned outline summaries match their spec paragraphs' controlling ideas in spec order, including the in-practice order now chronological (record, rings Oct 2027, replay Nov 2027, branch sample Q2 2028, Polish vehicles); the five callout units carry the thesis_statement and roadmap callouts. Covers AC-3.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Four units were marked two_ideas (Scene ¶2, Scene ¶4, Architecture ¶13, In Practice ¶2); each joins exactly what its spec paragraph's controlling idea joins (p07 late rule + no Motorvane link; p09 inventory incl. each brand's arrangement; p37 rings vs flags + group-urgent classes; p44 the two contested decisions).",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit carries its spec paragraph's contribution to S1-S6; none is off-thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Figures 1-6 (Figure 3's layers and tenancy services are now named in the prose), the terms, isolation, platform-model, ladder, decision-record, trade-off and vertical tables, the quotations (Adevinta 2019, AVIV 2021/2025, Adevinta dispute back office, OLX Hydra, Vinted, eBay 2013) and the 300-branch statistic are each introduced and their point stated in the prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other paragraph, section and conclusion transitions express their declared relationship and pick up the declared known information (e.g. 'Ingrid's question starts with words', 'Sharing beneath products needs a tenancy model', 'The first tenancy service, the tenant register', 'Veldmark's tests showed its decisions working for one group', 'The limits just described fall hardest on real estate', 'Decisions prevent those failures', 'Those drills matter because', 'These questions test those decisions').",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/15/transition_in",
+      "draft_locus": "Architecture: A Tenancy Model for a Marketplace Group ¶16",
+      "quote": "Multi-region deployment is a separate decision.",
+      "finding": "Declared contrast carrying over the boundaries between tenants' data and introducing whether data spans regions at all; the sentence names neither the two boundaries just described nor the region question, and the subsection lead ('Two boundaries limit what tenants share') announced only two topics, so the paragraph reads as an unannounced third topic (both flow readers stumbled here).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6/transition_in",
+      "draft_locus": "In Practice: Veldmark's Tenancy Model v1 ¶7",
+      "quote": "The Polish vehicles section, where both brands operate, shows how the layers combine.",
+      "finding": "Declared example carrying over the branch classification (values to configuration, behavior to extensions) and introducing one market where all mechanisms meet; the opening does not pick up the classification, and the paragraph sits under the 'Configuration replacing branches' subheading without any link to branches, so both flow readers found it out of place.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Without a tenancy model, eight failures recur.",
+      "finding": "Declared contrast carrying over 'where sharing fits each vertical'; the opening does not refer to the verticals or to sharing's fit at all (flow reader B: 'no bridging sentence connects them').",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe problem -> vocabulary -> options -> design -> application -> evaluation, matching the spec's prerequisite_order with problem_solution and grouping; no section's position was unclear to either reader and neither would change the top-level order. Excluded: both readers paused at 'The Category Straitjacket' / 'Billing by Guesswork' and reader B at 'Daan Visser', but these are on audience.already_knows (earlier chapters), so they are not counted.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Veldmark: One Rule, Four Countries, Three Days ¶4",
+      "quote": "Keybridge, the agency software business, is a SaaS company with its own customers, not a marketplace; it also serves Hearthly's competitors, so Veldmark committed in March 2027 not to use its data for Hearthly.",
+      "finding": "Both readers: the Keybridge commitment interrupts the tenant count and pays off only at decision 3. The spec's evidence asks only that Keybridge be noted as a SaaS company, not a marketplace; the March 2027 commitment clause is the draft's addition and can move to decision 3 or be explained.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 1), flowB (item 1)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "Platform Models: From the Fork to the Product Platform ¶1",
+      "quote": "Groups combine global components and configuration in six platform models, and they are not a maturity ladder",
+      "finding": "Both readers: the sentence says every model combines global components and configuration, but the first models in the table (fork per country, federation) use neither; reword so the six models are ways of sharing more or less (from nothing to the whole product).",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 2), flowB (item 2)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Platform Models: From the Fork to the Product Platform ¶4",
+      "quote": "AVIV's chief executive said the group was \"aligning our tech roadmap across the organization to create a European real estate marketplace\"",
+      "finding": "Both readers re-read because the AVIV 2021 quotation appears in the platform-models table row and again in full in the paragraph on rowed-back platforms; cite it once (the table can name AVIV 2021 without the quote).",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 3), flowB (item 3)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/16",
+      "draft_locus": "Architecture: A Tenancy Model for a Marketplace Group ¶17",
+      "quote": "Language uses configuration, extensions and release scope.",
+      "finding": "Both readers found the localization subsection's opening sentence abrupt and had to re-read it; it should say that language is the difference that runs through every layer and is handled by the mechanisms just described.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 4), flowB (item 6)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/15",
+      "draft_locus": "Architecture: A Tenancy Model for a Marketplace Group ¶16",
+      "quote": "Multi-region deployment is a separate decision.",
+      "finding": "Both readers: the Vinted multi-region paragraph is a third topic under a subsection lead that announced 'Two boundaries'; announce it or link it to the boundaries.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 5), flowB (item 5)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "In Practice: Veldmark's Tenancy Model v1 ¶6",
+      "quote": "After the replay, the second test, on the Tradeyard insertion flow that moves out of Yardstick in the second quarter of 2028, found no country branch that justified a fork.",
+      "finding": "Both readers re-read: 'the second test' counts from a first test never named (the replay was called only 'a design test', the roadmap says only 'tests Veldmark's version', and the rings rollout is not called a test), and the sentence gives the result before the 300-branch method.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 6), flowB (item 9)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "In Practice: Veldmark's Tenancy Model v1 ¶7",
+      "quote": "The Polish vehicles section, where both brands operate, shows how the layers combine.",
+      "finding": "Both readers: the paragraph sits under 'Configuration replacing branches' but is not about branches; give it its own short subheading or tie it explicitly to the branch classification.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 7), flowB (item 11)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Without a tenancy model, eight failures recur.",
+      "finding": "Both readers: several of the eight (toggles that never expire, rings without a group-urgent lane, the largest tenant as design authority) occur with a tenancy model done badly, not without one; the lead does not fit its list. The spec's section transition ('what goes wrong when the tenancy model is missing') invites this wording, but the draft can say 'missing or half-built' within it.",
+      "fault": "draft",
+      "corroborated_by": "flowA (item 9), flowB (item 14)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/16",
+      "draft_locus": "Architecture: A Tenancy Model for a Marketplace Group ¶17",
+      "quote": "Localization in a listing platform touches at least six layers",
+      "finding": "Reader A only: localization placed after data residency is weakly linked to the mechanisms it uses; would sit better after extension points. Placement is the spec's. Single reader: minor.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: A Tenancy Model for a Marketplace Group ¶12",
+      "quote": "A shared platform changes every tenant at once unless its releases are scoped by tenant, with two mechanisms.",
+      "finding": "Reader B only: unclear what 'with two mechanisms' attaches to. Single reader: minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "In Practice: Veldmark's Tenancy Model v1 ¶4",
+      "quote": "Then, before the shared trust-and-safety platform went live for Tradeyard Netherlands and Belgium in",
+      "finding": "Reader B only: 'Then, before ... November' leaves the replay's timing relative to the October ring rollout unclear; also 'Release rings in numbers' holds few numbers. Single reader: minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "In Practice: Veldmark's Tenancy Model v1 ¶3",
+      "quote": "one week before the bikes split (new bike categories) went live on",
+      "finding": "Reader B only: the bikes split has no other role in the chapter and made the reader check for a missed mention. Single reader: minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Trade-offs ¶2",
+      "quote": "the fork column names the failure each capability suffers if forked",
+      "finding": "Reader B only: the key to reading the first table comes after both tables; it could go in the lead-in. Single reader: minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Owned terms (tenant, tenancy model, global component, configuration over code, isolation tiers, tenancy services, register, hierarchy incl. 'seller segment (such as professional sellers)', extension points, ladder, rings, group-urgent classes, exit paths, integration principal now glossed as 'an outside system's login', BCP 47, ISO 4217, CLDR, GDPR Chapter V, DSA, VIN) are defined at or before first substantive use; failure-pattern names and the Veldmark cast are on already_knows. No reader reported an unexplained term outside already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a direct statement of cost (ten copies pay ten times), then the opposite failure; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Conclusion answers the opening question and hands off by contrast; no bare restatement, new material or 'in conclusion'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'a value lives in configuration, a behavior in an extension point, a fork under an expiry date and a fraud rule in a group-urgent lane, all resting on a tenant code carried everywhere and an exit path per tenant' with so-what 'Improvements are bought once; markets stay local.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Calls back to Ingrid's question and the 7 March rule: 'the 7 March rule reaches every tenant at once, not Belgium three days late'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the subject (sharing without forcing one product; tenant first-class; configuration over code with the configure-extend-fork limit; share beneath the product, uniform and pooled first), the section order (phishing scene, terms, six platform models, tenancy model, Veldmark's version, trade-offs, verticals, failure modes, Chief Architect's view, questions) and the evidence (Adevinta, eCG, OLX, AVIV, Vinted, locale/currency standards, EU law, fictional Veldmark), matching the roadmap and AC-2's expected. Its only friction (the six models not yet named) is not a misprediction.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer names brand x country tenants with codes in every identifier, event and log; fraud rules as a group-urgent class bypassing rings; the group detector plus tenant locale packs in a 48-hour shadow window; the shared hashed block list as the cross-brand trust signal; and answers the brand with decision 5's scope (configuration service mandatory only for global components, the brand keeps its own configuration and uses the group service where it consumes a group capability). Matches AC-1's expected.",
+      "severity": "major"
+    }
+  ]
+}

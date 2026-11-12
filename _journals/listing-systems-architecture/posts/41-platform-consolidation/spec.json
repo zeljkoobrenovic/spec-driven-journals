@@ -1,0 +1,1791 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "platform-consolidation",
+  "journal": "listing-systems-architecture",
+  "part": "part-8",
+  "title": "After the Deal: Consolidating Platforms After Acquisitions",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, thesis and role are copied unchanged from the platform-consolidation entry in journal-spec.json; the hand-off uses organizing-marketplace-engineering's transition_in. Units added by this conversion: roadmap p04, one lead-in each for Trade-offs (p39) and Vertical Differences (p41), and a synthesis paragraph p52 before the published hand-off.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The integration options for an acquired business (hold separate, federate under group controls, share services beneath it, replatform onto a sibling, merge brands, divest) and the regulatory, contractual and ownership conditions that rule each out.",
+        "The consolidation sequence: day-one controls; invisible and contractual capabilities, with payments as a contract; trust and identity; shared engines; the product platform last and optional, each with a measured gate.",
+        "The synergy case as a ledger with dis-synergies, double running and separation cost, and brand migration as a separate workstream (site moves, accounts, partner endpoints, business-user notice)."
+      ],
+      "believe": [
+        "An acquisition should be consolidated from the invisible to the visible, because the product carries the liquidity the deal paid for.",
+        "A synergy case is a hypothesis to be tracked against dated evidence, and a revenue line that depends on data needs a named permission."
+      ],
+      "can_do": [
+        "Write an integration decision record for an acquired marketplace.",
+        "Challenge a deal model's technology and data-dependent revenue lines before the price is agreed.",
+        "Plan a rebrand that does not compound with a platform migration."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an integration plan that moves the product first, the reader names what is out of order and the sequence and gates that replace it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A group buys a national property portal. The integration plan rebrands it onto the group brand in month four, moves listings and search onto a sibling marketplace's platform in month ten, and leaves login, the moderation tool and agency billing for year three. The synergy case lists only savings, including revenue from using the acquired CRM's customer data to sell the group's packages. Using only this chapter: what is wrong, and what do you propose?",
+        "expected": "The sequence is inverted: trust and identity should consolidate before the product, which goes last with its own investment case; migrate to the group target, not to a sibling scheduled for replacement; gate each stage on the acquired marketplace's liquidity metrics, not dates; keep the rebrand apart from the platform move and start a second traffic-affecting change only when organic sessions are back near baseline; run the synergy case as a ledger with traffic loss, double running and separation cost; and require a named permission for the data-based revenue line, which a neutrality commitment may forbid."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Choosing an integration option, sequencing consolidation from controls to product with gates, running the synergy case as a ledger, and brand migration; the terms consolidation sequence, synergy case and brand migration; evidence from the public record of classifieds acquisitions (eBay, AVIV, OLX, Adevinta) and the fictional Veldmark's Casavista and Keybridge integrations."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ],
+    "audience": {
+      "who": "Chief and enterprise architects, CTOs and integration leads of marketplace groups that buy and sometimes sell marketplaces, and the finance and corporate-development partners who write synergy cases with them.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes; what an acquisition and a deal model are in general.",
+        "From earlier chapters: Veldmark (fictional) and its brands Tradeyard, Motorvane, Hearthly and Keybridge, Common Ground, Veldmark ID, Ingrid Halvorsen, Henrik de Boer, Lucía Ortega and the architecture advice forum; liquidity and its metrics (liquidity-and-network-effects); the Barcelona fake-rental ring (fraud-prevention, identity-and-verification); the Keybridge neutrality commitment of March 2027; the marketplace profile register (marketplace-taxonomy); the redirect registry (web-and-seo-architecture); the failure patterns Deal-Shaped Architecture, The Forced Fit and Ghost Inventory.",
+        "From Part VII: the tenancy model and tenant-separable shared capabilities of multi-country-platforms; from the Part VIII introduction, that the part asks in what order the earlier decisions are carried out."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: consolidation sequence, synergy case, brand migration; and the integration options by name.",
+        "Deal vocabulary: run-rate synergies, dis-synergies, separation cost, carve-out and transitional services, merger-control remedies.",
+        "Brand-migration mechanics: site-move redirects and the Change of Address tool, app store identity and design tokens, sender-domain ramp-up, the P2B notice period.",
+        "The Casavista integration figures, the consolidation review of 9 November 2027 and the synergy ledger."
+      ]
+    }
+  },
+  "thesis": {
+    "question": "When a group acquires marketplaces, what should it consolidate, when, and how?",
+    "claim": "A group should choose an integration option for each acquired marketplace in a decision record within the first month after signing, letting merger remedies, commitments to customers and the expected holding period rule options out before technical fit; consolidate from the invisible to the visible (day-one controls, then infrastructure, data, advertising and payment contracts, then trust and identity, then shared engines), leaving the core listing and search product last and only with its own investment case; gate each stage on the acquired marketplace's liquidity metrics rather than on dates; run the synergy case as a ledger that counts traffic loss, double running and separation cost and names the permission behind every revenue line that uses data; and keep any brand migration a separate workstream that does not overlap a platform migration.",
+    "disputed_by": "The common deal-team plan: replatform the acquired marketplace onto the acquirer's or a sibling's product stack and rebrand it on the deal's timetable, moving search, listings and the brand first because that makes the acquisition visible, and tracking synergies as a spreadsheet of savings; or the opposite habit of leaving every acquired stack untouched indefinitely.",
+    "so_what": "A Chief Architect who accepts this reviews every technology synergy and every data-dependent revenue synergy before the price is agreed, owns the consolidation sequence while the deal team owns the targets, reviews the synergy ledger quarterly with finance, pauses any stage whose liquidity gate fails, migrates to the group target rather than to a sibling due for replacement, and designs every integration so that it can be undone if the business is later sold.",
+    "how_why": "Veldmark replatformed Casavista product-first: the rebrand on 9 March 2026 cost 19% of organic sessions in six weeks, and listings and search moved in September 2026 before traffic had recovered, so the cause of each dip could not be separated. Login, the moderation review tool and agency billing stayed on Casavista's code at about €2.6 million a year, and in July 2027 the Barcelona ring's 26 accounts had proved no more than an e-mail address. By October 2027 the deal had delivered €9.6 million of €18 million in synergies, at €11 million of one-off cost against €6 million planned. Keybridge's €7 million cross-selling line was forbidden by the March 2027 neutrality commitment. The recommended order reverses Casavista's because the invisible layers move without users noticing, trust and identity gain value as signals are pooled and are where fraud concentrates when left behind, and the product carries the liquidity the deal paid for, so it moves last and only after the gates show the lower stages held.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "An acquirer chooses an integration option for each acquired business (hold separate, federate under group controls, share services beneath, replatform onto a sibling, merge brands, divest) in a recorded decision, and merger remedies, commitments to customers and the expected holding period rule options out before technical fit is considered."
+      },
+      {
+        "id": "S2",
+        "claim": "Capabilities move onto group platforms from the invisible to the visible and from pooled value to mere cost: day-one controls, then infrastructure, data, advertising and payment contracts, then trust and identity, then shared engines, with the core listing and search product last, optional and on its own investment case, and always to the group target rather than to a sibling due for replacement."
+      },
+      {
+        "id": "S3",
+        "claim": "Each stage is gated on the acquired marketplace's own liquidity metrics, not on the plan's dates, and a second traffic-affecting change waits until organic sessions have recovered."
+      },
+      {
+        "id": "S4",
+        "claim": "A synergy case is a hypothesis run as a ledger that counts dis-synergies, double running and separation cost beside the savings, tracks each line against dated evidence, and names the permission behind every revenue line that uses data."
+      },
+      {
+        "id": "S5",
+        "claim": "A brand migration is an architectural workstream (domains and redirects, accounts, apps, e-mail, partner endpoints, legal notice) that is kept apart from any platform migration so that one traffic risk lands at a time."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Sets the order and the gates in which an acquired marketplace's capabilities move onto group platforms, and the synergy ledger that keeps the deal honest.",
+    "supports": [
+      "P8-1"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "concepts before architecture and practice, which use their terms"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene states the problem (synergies behind, costs over, a forbidden line, a fraud gap) before any solution. The concepts give the terms the answer needs, including the synergy case the ledger later tracks; the architecture gives the general answer, with gates as measured conditions; the review applies it to the scene's problem, which only works once the options, the sequence, its gates and the synergy case have been defined. Placed before the architecture, the review's 'inverted sequence' would have nothing to be inverted against. The judging sections weigh the whole design and come last."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "A marketplace acquisition is usually justified in two sentences: the target is a market leader, and owning it alongside the group's other marketplaces will save money and grow revenue."
+    },
+    "bridge": {
+      "from_reader_world": "The deal rationale every reader has seen: a market leader bought for savings and growth.",
+      "to_topic": "The first sentence is about liquidity the acquirer must not damage, the second about platforms it must change, and the record of classifieds groups shows how often that goes wrong."
+    },
+    "thesis_statement": {
+      "text": "Choose an integration option per business, with regulation, commitments and a likely sale ruling options out; consolidate from the bottom up, invisible and pooled first and the product last, gated on liquidity metrics; run the synergy case as a ledger with dis-synergies and separation cost; decouple brand migrations from platform migrations.",
+      "placement": "KEY POINTS callout (three bullets), with p01 stating the liquidity-against-platform tension."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Start from Veldmark's question about the Casavista and Keybridge synergies.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the integration options and the three terms.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Set out the consolidation sequence with its gates and the brand migration as a separate workstream.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Follow Veldmark's consolidation review, its synergy ledger and one overlap between Veldmark's own brands.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions to ask.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A marketplace acquisition is justified by two sentences, one about liquidity the acquirer must not damage and one about platforms it must change, so consolidation is the work of changing the platform without damaging the liquidity while both compete for the same months, teams and risk budget.",
+        "function": "claim",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3"
+          ],
+          "how": "States the tension the sequence and its gates resolve."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Because classifieds groups were assembled almost entirely by acquisition, their public record on consolidation is rich, and it shows more reversals than finished integrations.",
+        "function": "evidence",
+        "evidence": [
+          {
+            "kind": "case",
+            "what": "eBay bought national leaders and kept their brands; Axel Springer combined property portals into AVIV; Naspers rebranded acquired sites as OLX; Adevinta bought eBay Classifieds Group, integrated part of it and, under new owners, decentralized and sold businesses.",
+            "shows": "Shows four groups taking different paths and the last one reversing, which is the record's main lesson."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "Grounds the options and the cost of reversal in the public record."
+        },
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "Consolidation as changing the platform without damaging the liquidity.",
+          "introduces": "The industry's public record of acquisitions and reversals.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "This chapter opens Part VIII by asking how an acquired marketplace joins the shared platform of Part VII, owns the terms consolidation sequence, synergy case and brand migration, and hands ownership, migration techniques and Adevinta's full record to later chapters.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S4",
+            "S5"
+          ],
+          "how": "Names the three terms the supporting claims rest on."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The public record of acquisitions.",
+          "introduces": "Where the chapter sits in Part VIII, the three terms it owns and what later chapters take from it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter follows Veldmark's question about its Casavista and Keybridge acquisitions through the concepts, the consolidation sequence with its gates and the brand-migration workstream, Veldmark's consolidation review, synergy ledger and one overlap between its own brands, and the closing trade-offs, vertical differences, failure modes, Chief Architect's view and questions to ask.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Announces the sections that argue each claim."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The terms the chapter owns.",
+          "introduces": "The order of the sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Where Are the Casavista Synergies?",
+      "controlling_idea": "By October 2027 Veldmark's two real-estate acquisitions had delivered about half their promised synergies at nearly twice the planned cost, one synergy line had become forbidden, and the unconsolidated Spanish login had let a fraud ring in.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the case whose inverted sequence and spreadsheet of savings the chapter's claims correct."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The owner's question comes first, then the evidence behind it in the order the reader needs it (Casavista's numbers, Keybridge's forbidden line, the July fraud), then the review that answers it; the review's three arguments make sense only once all three problems are on the table."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The tension between liquidity and platforms and the chapter's terms.",
+        "introduces": "Veldmark's synergy question as the running case.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On 14 October 2027 Henrik de Boer forwarded Ingrid Halvorsen the private-equity owner's question of where the synergies paid for in Veldmark's two real-estate acquisitions were.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Thu 14 Oct 2027; the owner's operating partner, ahead of the 2028 budget; two businesses bought into the real-estate portfolio in two years.",
+              "shows": "Sets the question the chapter answers.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Casavista, bought in 2025 and rebranded Hearthly.es in 2026, had delivered €9.6 million of €18 million in promised run-rate synergies at €11 million of one-off cost against €6 million planned, while its login, review tool and agency billing still ran on Casavista's code at about €2.6 million a year.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Deal case €18M by end 2027 (€8M platform and hosting, €4M overheads, €6M revenue); Oct 2027 tracker €9.6M (tech €3.9M, overheads €3.6M, revenue €2.1M); one-off cost €11M vs €6M; listings and search on Hearthly's Google Cloud platform since 2026; login, review tool and agency billing on Casavista code and hosting at ~€2.6M a year.",
+              "shows": "Shows the synergies lagging and the costs overrunning, with the trust-critical parts left behind.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two businesses behind the owner's question.",
+            "introduces": "The first business, Casavista, and its numbers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Keybridge's €7 million cross-selling line, which depended on using its 9,800 agency customers' data to sell them Hearthly packages, had been forbidden by the March 2027 neutrality commitment.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge bought 2024; €7M/yr revenue synergy from agency insight; March 2027 commitment that no Keybridge agency data be used by Hearthly for ranking or sales targeting.",
+              "shows": "Shows a synergy line that is not delayed but forbidden.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Casavista's shortfall.",
+            "introduces": "The second business, Keybridge, and its line.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "In July 2027 the Barcelona fake-rental ring exploited the still-unconsolidated Spanish login, showing that the parts of the acquisition left unconsolidated were the ones that mattered most for trust.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "26 accounts, 180 fake listings, 63 people reporting losses of about €71,000; none of the 26 accounts had proved more than an e-mail address because the Spanish login was still Casavista's.",
+              "shows": "Shows the cost of leaving trust and identity for last.",
+              "source": "_research/scenario-ledger.md, Barcelona ring lines (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Two financial problems.",
+            "introduces": "A third problem, a trust failure, in July.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Ingrid's consolidation review of 9 November 2027, the thread of the chapter, argued that the synergy case had been sequenced in the wrong order, had counted only savings and contained one line that should never have been written.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Consolidation review presented to the board Tue 9 Nov 2027.",
+              "shows": "Names the answer the chapter follows.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The three problems: shortfall, forbidden line, fraud.",
+            "introduces": "The review's three arguments that answer them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Options, Sequences, Synergies and Brands",
+      "controlling_idea": "Four concepts frame consolidation: the integration option chosen per business, the consolidation sequence ordered from invisible to visible, the synergy case with its usually missing parts, and the brand migration as an architectural event.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "how": "Defines the terms each later section argues with, with dated public cases for each."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The option comes first because it decides whether any sequence is needed; the sequence before the synergy case because synergies depend on stages; the brand migration last because it is the one move the sequence keeps separate. Each definition is followed by the public case that shows it, so no example arrives before its term."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The review's three arguments.",
+        "introduces": "The concepts those arguments use.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "An acquirer has five integration options plus the option to sell, and they differ in what is shared and in how reversible the result is.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Hold separate, federate under group controls, share services beneath, replatform onto a sibling, merge brands, divest; each with what changes, what stays, reversibility and a documented example (eBay/Marktplaats 2004, Adevinta 2019–2023, iBazar to Vivanuncios 2015, OLX rebrands 2014, CMA remedies 2021).",
+              "shows": "Shows that each option is real and dated, and that reversibility falls as sharing rises."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Defines the options the decision record chooses among."
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Options are chosen per business and may be combined over time, but an acquisition without a recorded option drifts into Deal-Shaped Architecture by inertia.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Argues for a recorded choice."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The five options.",
+            "introduces": "How they are chosen and what happens when none is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Commercial integration can run years ahead of technical integration, as two documented property-portal cases show.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Immowelt and Immonet combined in 2015, renamed AVIV Germany in 2024 and still running both brands; AVIV's Ultimmo (2022), one professional offer across SeLoger, Logic-Immo and Meilleurs Agents.",
+              "shows": "Shows hold separate lasting at the brand level while the companies combine; the paragraph's last sentence says so."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Shows that holding separate is a legitimate long-term option."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Options combined over time.",
+            "introduces": "Commercial integration ahead of technical integration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A consolidation sequence is the ordered set of gated stages through which an acquired marketplace's capabilities move onto group platforms, answering which capability moves next, what must be true first and what would stop it.",
+          "function": "definition",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Defines the sequence and its gates."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The integration option.",
+            "introduces": "The second term, the consolidation sequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Two rules set the order, moving what users cannot see before what they can and what gains value from pooling before what only saves cost, and the core listing and search experience fails both, so it comes last and often never.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: a building renovated from the foundation up beneath an unchanged storefront.",
+              "shows": "Shows the bottom-up order with the visible product untouched."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Gives the reasoning behind the order."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "What a consolidation sequence is.",
+            "introduces": "The two rules that order it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "A synergy case is the quantified hypothesis that combining a business with the group raises profit, and of its four parts (cost, revenue, dis-synergies, separation cost) deal models usually show only two.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four parts with typical lines and whether they usually appear in the deal model.",
+              "shows": "Shows which parts deal models leave out."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: a scale weighing savings against traffic loss, churn, double running and separation cost.",
+              "shows": "Shows the case as a ledger with both sides."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Defines the case and its missing parts."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The order in which capabilities move.",
+            "introduces": "The third term, the synergy case that funds the moves.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Adevinta's eCG deal shows the parts a deal model leaves out arriving later: integration expenses and a forced rebrand during integration, and separation cost after the take-private.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€130–165M run-rate cost-synergy target (Adevinta, 2021); €69M eCG integration expenses in 2023 plus €15M for the eBay Kleinanzeigen rebrand (Annual Report 2023); 'parallel running of central and local services during a transitional period' (Strategic Report 2025).",
+              "shows": "Shows dis-synergies and separation cost appearing after the synergies they were never netted against.",
+              "source": "Adevinta 2021, 2024, 2026"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Grounds the ledger in a public case."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four parts of a synergy case.",
+            "introduces": "A public deal in which the missing parts arrived.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "A brand migration moves users, sellers, partners and search-engine presence from one consumer brand to another, and it is an architectural event because the brand is embedded in domains, URLs, app identities, sender reputations, partner endpoints, legal entities and contracts.",
+          "function": "definition",
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Defines the brand migration as architecture."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The synergy case, which a rebrand can cost.",
+            "introduces": "The fourth term, the brand migration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The best-documented brand migration, Kleinanzeigen's, was forced by contract and was carried out two years apart from its platform migration.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "eBay brand not usable beyond 2024; rebrand cost €15M in 2023; Kleinanzeigen from 16 May 2023 with the old domain kept accessible for several more years; a 2025 engineering post on migrating the whole platform with parallel running and per-user switching behind a reverse proxy.",
+              "shows": "Shows a rebrand and a platform migration done as separate programs.",
+              "source": "Adevinta 2023, 2024; Berlin Tech Blog 2025"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows brand and platform migrations decoupled in practice."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "What a brand migration is.",
+            "introduces": "The industry's best-documented case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: The Consolidation Sequence",
+      "controlling_idea": "The architecture of consolidation is a choice of option by four questions, a staged sequence whose gates are measured conditions resting on estate hygiene, and a brand migration run as its own workstream.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Turns the concepts into the decision, the stages, the gates and the workstreams."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The steps follow what each needs first: the option decides whether any sequence runs; hygiene is the precondition every stage needs, so it comes before the stages it gates; the stages and their placements follow; the brand migration comes last because the sequence keeps it apart. Putting the brand workstream before the stages would invite the reader to treat it as one of them, and putting hygiene after the stages (as first published) made a precondition arrive after what it conditions."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The four concepts.",
+        "introduces": "The architecture that applies them, starting with the first decision after signing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The integration option is the first architectural decision after signing, made with four questions.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: choosing an integration option; regulation, commitments and expected holding period remove options before technology is considered.",
+              "shows": "Shows the decision as a sequence of questions."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Gives the decision procedure."
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The questions are ordered by how absolute they are: a remedy or a commitment to customers rules integration out whatever its savings, a likely sale rules out deep sharing, and only then do the two questions of fit arise (same vertical and market as a group brand; an investment case for product convergence).",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Keybridge's neutrality commitment as a commitment that rules out integration.",
+              "shows": "Ties the rule to the running case."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Explains why constraints come before technical fit."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Figure 3's four questions.",
+            "introduces": "Why they come in that order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The later stages depend on a prerequisite acquisitions rarely satisfy, an estate described well enough to move, and OLX's 2026 account of OLX Motors is a public checklist of that hygiene.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "User identification standardized across 71 services, 'with 73% now using modern UUIDs'; 45 components moved to a central secrets manager; backup compliance for tier-1 and tier-2 databases; one deployment-notification service across more than 60 services.",
+              "shows": "Shows hygiene work that is not consolidation but precedes it.",
+              "source": "OLX Tech, 2026"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows what the sequence depends on."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chosen integration option.",
+            "introduces": "The hygiene every stage of the sequence needs first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Before trust and identity move, the author requires one identifier per user and seller, an inventory of every copy of listing and user data, events mapped to the group's listing event contract and a list of partner integrations with owners.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Sets a concrete gate."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Hygiene as a precondition.",
+            "introduces": "The minimum the author would require.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The reference sequence moves capabilities in stages from day-one controls to an optional product platform, each more visible than the last, and its gates, each a measured condition that includes the acquired marketplace's liquidity against its baseline rather than a date, matter more than its stage boundaries.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the consolidation sequence; each gate is a measured condition, not a date.",
+              "shows": "Shows the stages and gates."
+            },
+            {
+              "kind": "table",
+              "what": "Stages 0–4 with capabilities, why at this point, and the gate to the next stage (risk register, visibility in group tooling, detection and login success at baseline, relevance and billing parity, own investment case).",
+              "shows": "Shows each gate as a measured condition."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Gives the order and the gates."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The minimum hygiene.",
+            "introduces": "The stages and gates that can start once it is in place.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Payments sit in stage 1 as a contract, not as code, because consolidating payment-provider relationships is invisible to users and often worth more than merging checkout code.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Worldline's 2022 release named Marktplaats and eBay Kleinanzeigen as clients of Online Payment Platform.",
+              "shows": "Shows two marketplaces sharing a provider while keeping their own flows.",
+              "source": "Worldline, 2022"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Explains one placement in the sequence."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The stage table.",
+            "introduces": "Why payments are in stage 1.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Identity sits in stage 2, not stage 1, because a login change is visible to every user and must be planned with the trust capabilities that depend on it.",
+          "function": "explanation",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Explains a second placement."
+          },
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Why payments sit where they do.",
+            "introduces": "Why identity sits where it does.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The governing rule for brand migrations is to decouple them from platform migrations, because together they produce a ranking drop nobody can attribute, roll back or fix quickly.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S5",
+              "S3"
+            ],
+            "how": "States the decoupling rule."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The capability stages and their placements.",
+            "introduces": "The brand migration, which the sequence keeps separate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "A brand migration touches more systems than its sponsors expect.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: the workstreams of a brand migration and their dependencies; most are invisible in the brand plan and visible on switch day.",
+              "shows": "Shows the breadth of systems a rebrand touches."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows the scope of the workstream."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The decoupling rule.",
+            "introduces": "How much a brand migration touches.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "list",
+          "controlling_idea": "Each workstream of a brand migration (domains and URLs, accounts, apps, e-mail and notifications, partners, legal) has its own rules.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google Search Central site-move guidance (updated 2026): permanent redirects, short chains, redirects kept generally at least one year, Change of Address tool, temporary ranking fluctuation.",
+              "shows": "Gives the rules for domains and URLs.",
+              "source": "Google Search Central, 2026"
+            },
+            {
+              "kind": "fact",
+              "what": "Kleinanzeigen accounts carried over without re-registration (press reporting, not verified against a primary source).",
+              "shows": "Shows the accounts rule in a real case."
+            },
+            {
+              "kind": "quotation",
+              "what": "mobile.de: 'the rebranding itself was the final step and took only two weeks to implement once the base refactoring was done'.",
+              "shows": "Shows design tokens making a brand a configuration value.",
+              "source": "Berlin Tech Blog, 2025"
+            },
+            {
+              "kind": "fact",
+              "what": "Regulation (EU) 2019/1150, Article 3: changes to business users' terms notified at least 15 days ahead.",
+              "shows": "Gives the legal notice rule.",
+              "source": "European Union, 2019"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Gives the workstream rules."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The workstreams in Figure 5.",
+            "introduces": "The rules of each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Veldmark's Consolidation Review",
+      "controlling_idea": "Veldmark's review found Casavista's sequence inverted, resequenced the remaining work to the group target, replaced the synergy spreadsheets with a ledger, held Keybridge separate on purpose and settled the Polish overlap as a portfolio decision.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Applies the option, sequence, gate and ledger to the running case with numbers."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "additional_patterns": [
+          {
+            "pattern": "grouping",
+            "applies_to": "p36-p38: the two businesses the review did not consolidate, Keybridge and the Polish overlap"
+          }
+        ],
+        "rationale": "The reconstruction of what went wrong comes first, because the revised sequence and the ledger are answers to it; the ledger follows the resequencing because its dates come from the new plan; Keybridge and the Polish overlap close the section as the cases where the right answer was not to consolidate."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The sequence, gates and brand workstream.",
+        "introduces": "Veldmark's review, which applies them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "Ingrid's review tested Casavista against the sequence by reconstructing the integration from the 2025 deal case and the 2026–2027 program records.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "2025 deal case and 'replatform onto Hearthly France, then rebrand'; Mon 9 Mar 2026 rebrand, organic sessions −19% in six weeks and −5% by Sep 2026; Sep 2026 listings and search moved, second dip; late 2026 login, review tool and billing deferred, €8M line stalled at €3.9M; July 2027 Barcelona ring.",
+              "shows": "Shows the order of events that produced the shortfall.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Lays out the inverted sequence as evidence."
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The sequence was inverted: the product moved first because a replatform plan starts there and it makes the deal visible, while trust and identity, whose value grows with pooling, were left for last.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 6: a new storefront on a cracked foundation versus a solid trust-and-identity foundation beneath an unchanged storefront.",
+              "shows": "Shows the inverted and the recommended order."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Draws the chapter's central lesson from the case."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The reconstructed timeline.",
+            "introduces": "What it shows: an inverted sequence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The rebrand and the platform move were six months apart but the second began before the first had recovered, so the review set a rule that a second traffic-affecting change waits until organic sessions are within 3% of baseline or the board accepts the risk in writing.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S5"
+            ],
+            "how": "Sets the recovery gate."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The inverted order.",
+            "introduces": "A second fault, the timing of the two traffic events.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The review resequenced the remaining work on the principle of migrating to the target, not to the sibling, using Common Ground's dates.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Moderation review tool to the shared T&S platform Q1 2028; private-landlord verification (L4) live in Q4 2027, ahead of the T&S move; login federated with Veldmark ID 2028, migrated 2029; agency billing to the group catalog in the second half of 2028 after a shadow billing cycle; Casavista hosting switched off end of 2029.",
+              "shows": "Shows each capability moving once, to the group target, on dates other chapters set.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The faults the review found.",
+            "introduces": "The revised sequence that fixes them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Of the €4.1 million of technology savings still missing, the revised plan delays the €2.6 million hosting line by about two years to the 2029 switch-off, while €1.5 million from search and media stays on track for end of 2028; Ingrid argued this was honest because the original date had never been real.",
+          "function": "analysis",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Shows the cost of migrating to the target, and why it is lower than migrating twice."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The revised dates.",
+            "introduces": "Their cost and why it is acceptable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The review replaced the synergy spreadsheets with a synergy ledger, one line per synergy or dis-synergy with an owner, a mechanism, a dependency on a stage and dated evidence.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine lines: hosting €4.0M (€1.4M), search and media €4.0M (€2.5M), overheads €4.0M (€3.6M), Spanish revenue €6.0M (€2.1M), traffic-loss dis-synergy (~€1.3M in 2026, estimate), double running €2.6M a year, Keybridge cross-selling €7.0M withdrawn, Keybridge neutral synergies €1.9M added, Hearthly.es separation cost recorded.",
+              "shows": "Shows dis-synergies, double running and separation cost beside the savings, each tied to a stage.",
+              "source": "_research/scenario-ledger.md, [platform-consolidation] line (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Shows the ledger in use."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The re-dated plan.",
+            "introduces": "The ledger that tracks synergies against it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The Keybridge line shows that a revenue synergy built on using one customer group's data is a breach of trust, so every revenue synergy must name the data it uses and what permits that use, signed off by the data protection officer before the deal model goes to the board.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Names the permission rule."
+          },
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The ledger's lines.",
+            "introduces": "The most instructive line and the rule it produced.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Keybridge is the group's deliberate exception to consolidation, sharing with Hearthly only the public supply contract every software vendor uses.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge runs on Azure, publishes listings for 9,800 agencies to Hearthly and its competitors, is outside the Common Ground platform organization and shares only group security standards.",
+              "shows": "Shows what holding apart looks like in practice.",
+              "source": "_research/scenario-ledger.md, Keybridge lines (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Shows a business held apart by design."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The withdrawn Keybridge line.",
+            "introduces": "Keybridge's place in the group as a whole.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The review classified Keybridge as federate under group controls permanently, and since it shares almost nothing it is also the group's most separable business: neutrality and separability require the same architecture.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Finance, security operations, procurement and the annual neutrality review shared, nothing touching agency data; separation cost close to zero; a portal owning agents' software holds a strong position (case-aviv).",
+              "shows": "Shows the option chosen by commitment, not fit, and its side benefit."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S4"
+            ],
+            "how": "Ties the option to separation cost."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Keybridge's separate position.",
+            "introduces": "The option the review recorded and its corollary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The review applied the same choice of option inside the group: for the one overlap where a synergy case might have proposed merging two of Veldmark's own brands, Tradeyard Poland's cars section against Motorvane Poland, it kept the portfolio decision already recorded in the marketplace profile register rather than merging brands, which costs one field in the shared listing core.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 2,900 Polish dealers on both, about 40% paying both; dealers above a small listing count offered Motorvane packages and syndicated to Tradeyard; the shared listing core records which brand owns the commercial relationship.",
+              "shows": "Shows an overlap managed without merging brands.",
+              "source": "_research/scenario-ledger.md overlap line and marketplace-taxonomy line; dealer counts from the [sellers-and-accounts] line"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Shows the integration option chosen against merging brands, for a business the group already owned."
+          },
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The review's choice of option for Keybridge.",
+            "introduces": "The same choice applied to an overlap between the group's own brands, where merge brands was declined.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Every option and every pace trades savings and speed against liquidity risk and separation cost, and bottom-up sequencing itself stops holding when there is nothing beneath to share or the deal is meant to remove a competitor.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S5"
+        ],
+        "how": "Compares the options and the approaches, and states the limits of the guidance."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The worked case.",
+        "introduces": "The general trade-offs behind its choices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "The options and the pace of a consolidation each buy savings or speed with liquidity risk and later separation cost.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Integration options compared on savings, liquidity risk, time to value, separation cost later and when each is right.",
+              "shows": "Shows reversibility and risk rising with savings."
+            },
+            {
+              "kind": "table",
+              "what": "Speed against safety: big-bang, rebrand first, platform first, capability by capability.",
+              "shows": "Shows platform first as the default for voluntary rebrands and big-bang as almost never right."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S5"
+            ],
+            "how": "Sets the alternatives side by side."
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Bottom-up sequencing does not hold when the acquirer has no shared platform worth joining or when the acquisition exists to remove a competitor, where early brand and inventory merger can be right.",
+          "function": "counterargument",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "States the limits of the main claim."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The trade-off tables, which assume bottom-up sequencing.",
+            "introduces": "The cases where that assumption fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The vertical decides what a deal buys and therefore which consolidation is easy and which is hard, and in feed-driven verticals professionals can move their inventory when an integration gets worse.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Adjusts the sequence and the brand risk by vertical."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The general trade-offs.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Which consolidation is easy and which is hard differs by vertical, because each vertical's deal buys a different asset.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate and automotive compared on what the deal buys, easiest and hardest consolidation, brand migration risk and a documented signal (Kleinanzeigen 2023/2025; Immowelt and immonet 2015–2024; AVIV 2025 per the interviewer's phrase; OLX and La Centrale, closed November 2025).",
+              "shows": "Shows the hardest step sitting where each vertical's supply and revenue live."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S5"
+            ],
+            "how": "Compares the verticals."
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Real estate and automotive carry an extra risk because supply arrives through professional software, so a consolidation that breaks an integration invites professionals to move their inventory elsewhere.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Bundeskartellamt's October 2026 mobile.de/Carwow clearance: dealers multi-home and 'many platforms offer dealers data export to other platforms'.",
+              "shows": "Shows that professionals can move inventory, so integration quality is a liquidity gate.",
+              "source": "Bundeskartellamt, 2026"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Explains why feed success belongs in the gate."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The vertical table.",
+            "introduces": "The extra risk in feed-driven verticals.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Consolidations fail in eight recurring ways, each the reverse of a rule the chapter sets.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Restates each claim as the failure that ignoring it produces."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The vertical differences.",
+        "introduces": "The mistakes that recur across verticals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "form": "list",
+          "controlling_idea": "Consolidations fail when the synergy case precedes the architecture, the product moves first, migrations overlap, work moves to a sibling, revenue lines rest on forbidden data, scope is assumed at signing, the acquired organization is forgotten or no exit path exists.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Hearthly.es (product first, trust last); CMA 2021 remedies for Gumtree UK and Shpock; an experimentation statistics package built at Marktplaats adopted group-wide; Adevinta's parallel running in 2025.",
+              "shows": "Shows each failure in a named case."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect decides the option early, owns the sequence and the ledger, reviews the deal model before signing, gates on liquidity, separates brand from platform and designs for reversal.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Turns each claim into a decision and a signal."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The decisions follow the life of a deal: the option in the first month, the sequence and ledger for its duration, the deal-model review before signing the next deal, the gates and brand decision during migration, reversibility for the eventual sale; the watch list comes last because it monitors all of them."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "The Chief Architect should decide the integration option within the first month in a decision record that names the option, reasons, constraints, holding period and review date.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The Chief Architect owns the consolidation sequence while the deal team owns the synergy targets, and the synergy ledger, reviewed quarterly with finance, is where each synergy's stage, gate and double-running cost are stated.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous decision of the Chief Architect.",
+            "introduces": "A further decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The architecture function should review every technology synergy and every data-dependent revenue synergy before the price is agreed, the cheapest point to remove a forbidden line or add a missing dis-synergy.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous decision of the Chief Architect.",
+            "introduces": "A further decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Every stage gate includes the acquired marketplace's own liquidity metrics, and a stage whose gate fails is paused rather than pushed through to meet a date.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous decision of the Chief Architect.",
+            "introduces": "A further decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The brand decision stays separate from the platform decision because brands are commercial assets with their own investment case, and merging the two decisions produces programs too big to stop.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous decision of the Chief Architect.",
+            "introduces": "A further decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Every integration should be designed so it can be undone, because any brand of a private-equity-owned group could be sold and the discipline that makes consolidation safe makes separation cheap.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "States the decision this claim requires of the Chief Architect."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous decision of the Chief Architect.",
+            "introduces": "A further decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Five signals show whether a consolidation is on track: slipped stages behind unslipped ledger lines, double-running costs with an end date, liquidity against the pre-deal baseline, organic sessions and feed errors around migrations, and acquired capabilities adopted elsewhere.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S4"
+            ],
+            "how": "Turns the gates and ledger into monitoring."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six decisions.",
+            "introduces": "What to watch once they are made.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten review questions turn the chapter into checks on any integration plan.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Gives one or more questions per claim."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions that test a plan against them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Ten questions test an integration plan's option, constraints, order and gates, synergy dependencies, dis-synergies, data permissions, overlapping migrations, brand-migration details, sibling targets and separation cost.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Sequence to Organization",
+    "synthesis": "The option, the order, the gates, the ledger and the separate brand workstream are one mechanism: the order decides which synergies arrive, the liquidity gates decide when, and the ledger prices every delay, so a group that runs them together protects the liquidity it bought while changing the platform beneath it, which Casavista's product-first plan did not.",
+    "so_what": "With the sequence and the ledger in hand, a Chief Architect can tell the owner where the synergies are, and which ones depend on which stage, before the owner has to ask.",
+    "callback": {
+      "to": "The opening's two sentences that justify an acquisition (liquidity not to damage, platforms to change) and Henrik de Boer's question of where the synergies were.",
+      "how": "The conclusion shows that the two sentences compete hardest when the platform moves product first, and that the review's answer to the question was a sequence and a ledger."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Record the option, sequence the capabilities bottom-up behind liquidity gates, run the synergy case as a ledger and keep the brand migration apart."
+    },
+    "hand_off": {
+      "to": "organizing-marketplace-engineering",
+      "relationship": "problem_solution",
+      "carries_over": "Platform-consolidation's closing: a consolidation sequence says what moves and when, but not who owns each capability once it has moved or how the acquired engineers become part of the group.",
+      "introduces": "The marketplace team topology and architecture governance: one owning team per journey, context and capability, platform teams as internal products, decision rights, the advice process and funding."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the owner's question to the review questions.",
+      "introduces": "What the parts add up to.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p52",
+        "controlling_idea": "Casavista shows that the option, the order, the gates, the ledger and the separate brand workstream work as one mechanism that lets a group change the platform without damaging the liquidity it bought, so a Chief Architect who owns it can answer the owner's question before it is asked.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The order decides which synergies arrive, the gates when, and the ledger what each delay costs; Casavista's product-first plan inverted all three.",
+            "shows": "Combines the sections into one account no single section gives."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins the claims and calls back to the opening."
+        }
+      },
+      {
+        "id": "p53",
+        "controlling_idea": "A consolidation sequence says what moves and when but not who owns each capability once it has moved or how acquired engineers join the group, which the next chapter takes up.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Hands the open question to the next chapter."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The mechanism and what it cannot settle.",
+          "introduces": "Ownership, the next chapter's subject.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The tenancy model and configuration design.",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    },
+    {
+      "topic": "Migration techniques such as strangler fig, parallel run and relevance parity.",
+      "covered_in": [
+        "modernization-and-migration"
+      ]
+    },
+    {
+      "topic": "Team design and acquired organizations.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    },
+    {
+      "topic": "Full company histories.",
+      "covered_in": [
+        "case-adevinta",
+        "case-ebay-classifieds",
+        "case-aviv",
+        "case-olx"
+      ]
+    },
+    {
+      "topic": "Deal valuation and accounting for acquisitions."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Whether Adevinta's €130–165 million eCG synergy target was achieved is not public.",
+    "Account continuity in the Kleinanzeigen rebrand rests on press reporting; replace with a primary source if one is found.",
+    "Whether OLX will move La Centrale onto its motors platform is not public; revisit when OLX reports on it.",
+    "Otodom and other OLX vertical brand histories could not be verified from primary sources and are not used."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Set the Veldmark scene in the October–November 2027 synergy review, because the ledger already places Hearthly.es partly on Casavista's code and the Barcelona ring on an unverified login, which makes the inverted sequence concrete."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Added canonical Casavista synergy figures and the rebrand date to the ledger so later chapters (modernization, case studies) can reuse them."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated Keybridge as a permanent \"federate under controls\" case and made the withdrawn cross-selling line the chapter's example of a revenue synergy that should never be written."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Placed payments in stage 1 as a contract consolidation, citing the shared payment provider of Marktplaats and Kleinanzeigen, rather than as a code merger."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's six success criteria were content inventories (tables, dated examples, diagrams, question counts); their reader outcomes are covered by the journal entry's outcome and AC-1 to AC-3 (AC-1 tests diagnosing a product-first plan and proposing the sequence, gates, ledger and data permission). None is carried over.",
+      "rejected": [
+        "Carrying the criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) so a reader of the opening can predict the sections (AC-2); the IN THIS CHAPTER callout does not name the Veldmark case or the judging sections.",
+      "rejected": [
+        "Relying on the callouts alone."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gave Trade-offs and Vertical Differences, whose tables opened their sections, one lead-in sentence each (p39, p41) so each table belongs to a unit.",
+      "rejected": [
+        "Leaving the tables unattached, hidden from the draft readers."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a synthesis paragraph (p52) before the published hand-off, because the published closing was a hand-off only and did not return to the opening's two sentences or the owner's question.",
+      "rejected": [
+        "Rewriting the hand-off paragraph to carry the synthesis as well, which would give it two controlling ideas."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit set to the published prose length plus 5% (5,833 → 6,125 words by check_draft's count), since spec.md set none."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes): kept the order; corrected the post-level rationale (the ledger is not defined before the review; the synergy case is), announced the Polish overlap in the roadmap (p04), and made p21 say that a gate is a measured condition including liquidity against baseline. Notes not taken are in open_questions.",
+      "rejected": [
+        "Moving the Polish overlap to Trade-offs, which would change the published order."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate): the corroborated flow finding that hygiene arrived after the stages it conditions was a spec fault in order. Moved p24–p25 (Hygiene before consolidation) ahead of p21–p23 (Stages and gates), changed the architecture section's flow to prerequisite_order and rewrote the transition_in of p24 and p21; p26's carry-over updated. Re-validated.",
+      "rejected": [
+        "Keeping the published order and waiving the finding, which only the author can do."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the move (sound with notes): p25 names stage 2 by its content so it no longer refers forward. Notes not taken (a general ledger/permission paragraph in Architecture; merging p27 into p28; section rationales for concepts and ca-view) stay in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate): p38 was ruled unable to trace to a supporting claim and read as a detour (spec fault). Kept it in place (no published fact cut) and recast its controlling idea and transition as the same choice of integration option applied inside the group, merge brands declined, supporting S1. Also: glossed run-rate synergies in p06, added a sentence saying what Immowelt/immonet and Ultimmo show (p12), removed the forward stage number from p25, aligned 'three terms' and 'four concepts', and shortened p04 and p52 to stay within the limit.",
+      "rejected": [
+        "Moving p38 into Trade-offs, which would separate it from the review that decided it.",
+        "Cutting the overlap, which would drop published Veldmark facts."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Revised-plan table: private-landlord verification now 'live in Q4 2027, ahead of the T&S move' (was 'live with the T&S move', i.e. Q1 2028), corrected to the ledger's [identity-and-verification] Hearthly ES private-landlord rule ('live Q4 2027') and the identity-and-verification chapter. Auto-resolved under the author's delegation (ledger rule)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p33 reworded to agree with the chapter's own synergy-ledger table: of the missing €4.1M, the €2.6M hosting line moves about two years to the end-2029 switch-off; €1.5M from search and media stays on track for end of 2028 (€4.0M−€1.4M and €4.0M−€2.5M). Auto-resolved under the author's delegation (arithmetic/ledger rule)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Published Veldmark figures kept: 2,900 Polish dealers / ~40% paying both (in the ledger's [sellers-and-accounts] line); the €4.0M/€4.0M split of the €8M technology line, the ~€1.3M 2026 traffic-loss dis-synergy and the 3% rule's board-acceptance clause (not in the ledger, not contradicted by it; reported to the orchestrator as ledger additions). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p06 keeps the published 'Hearthly's platform' (the orchestrator's revert; the ledger says only 'Hearthly's Google Cloud platform'). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft fixes for the round-3 findings, accepted under the author's delegation, 2026-11-12: glossed 'transitional services' (options table, Divest row) and Adevinta's 'account-to-cost-center catalog' (every cloud account mapped to a team and the cost center that pays for it, as case-adevinta describes); roadmap p04 names the closing sections; Concepts lead-in says 'three arguments use four concepts'; Keybridge subheading renamed 'the case for permanent federation' to match the body's option; p38 opening and decision attribution clarified (decision already in the marketplace profile register, kept by the review); a lead-in sentence added to 'What to watch'. The p24/p25 hygiene point (p24 'the later stages', p25 'before trust and identity move') is kept as is: both statements are consistent."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit raised from 6,125 to 6,400 words (+4.5%, within the 10% allowed) to make room for the glosses and lead-ins without cutting published text. accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes not taken (merge p36 with p37, merge p27 with p28, a general ledger/permission paragraph in Architecture) are declined: each would change the published unit structure; option that keeps the published text chosen under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent, acceptance criteria, thesis and role (copied), and the next post's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/_research/scenario-ledger.md",
+      "contributed": "Casavista integration figures and dates, Keybridge, Barcelona ring, identity and catalog dates."
+    },
+    {
+      "kind": "internal",
+      "ref": "case-adevinta, multi-country-platforms, business-capabilities, identity-and-verification, fraud-prevention, products-and-entitlements, professional-seller-tooling, marketplace-taxonomy, web-and-seo-architecture, organizing-marketplace-engineering",
+      "contributed": "Cross-chapter facts and the terms the chapter relies on."
+    },
+    {
+      "kind": "external",
+      "ref": "eBay 8-K 2004; eBay Vivanuncios 2015; Immowelt 2015; Adevinta 2021, 2023 (annual report and rebrand release) and Strategic Report 2025; Berlin Tech Blog 2025 (two posts); Worldline 2022; Online Marketplaces 2024 and 2025; MySweetImmo 2022; OLX Tech 2026; OLX Group 2025; CMA 2021; Bundeskartellamt 2026; Regulation (EU) 2019/1150; Google Search Central (updated 2026); Wikipedia (OLX)",
+      "contributed": "Dated public evidence for the options, the synergy case, brand migration and vertical differences."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation auto-resolved under the author's delegation: landlord verification date corrected to Q4 2027, p33 savings sentence aligned with the ledger table, glosses for transitional services and the account-to-cost-center catalog, roadmap names the closing sections, Keybridge subheading matches its option, p38 and 'What to watch' lead-ins; length limit 6,400. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: reverted 'Hearthly France's platform' to the published 'Hearthly's platform'. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 3 (escalate): two closing fixes without another round (concepts opening sentence; p24 now says the later stages depend on hygiene). Remaining findings in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: p38 recast as the integration option applied inside the group; run-rate glossed; Ultimmo paragraph says what its cases show; forward stage reference removed; p04 and p52 shortened. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: moved the hygiene subsection before the stages; added one opening sentence to seven sections; named Figure 3's four questions in p20; glossed the Adevinta take-private; said why the Polish overlap belongs in the review; named Hearthly France's platform in p06; shortened p04 and p52 to stay within the length limit. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec); added roadmap p04, lead-ins p39 and p41 and synthesis p52. Status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 4,969 → 4,982 prose words; lead now places the chapter as the opener of Part VIII; decoupling rule moved to the top of the brand-migration section. Spec unchanged. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 3 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: AVIV 'fully integrated platform' attributed to the interviewer; American spelling; timetoread 27 min; Bundeskartellamt 8 Oct 2026 and Adevinta synergy figures re-verified. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6400
+  }
+}

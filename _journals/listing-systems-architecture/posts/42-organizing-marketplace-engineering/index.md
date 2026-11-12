@@ -35,6 +35,8 @@ The technical chapters of this book argue for shared platforms beneath local pro
 
 This chapter owns two terms. A **marketplace team topology** is the assignment of team types to a marketplace group's journeys, bounded contexts and shared capabilities, together with the interaction mode between each pair of teams. **Architecture governance** is the set of decision rights, forums, records, principles and standards through which architectural decisions are made, communicated and revisited. Where boundaries come from is the subject of [[bounded-contexts]]; what to share across countries and brands is [[multi-country-platforms]].
 
+The chapter starts from a March 2027 phishing rule at Veldmark and the team lists behind it. It defines the team types and the parts of governance, designs a topology with platform teams, decision rights, an advice process, funding and architects, tests it against what classifieds groups have published, and follows Veldmark's Common Ground organization through its first year. Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions close it.
+
 ## Setting the Scene at Veldmark: The Rule That Reached Belgium Three Days Late
 
 On Sunday 7 March 2027, Femke, a private seller in Rotterdam, listed a city bike on Tradeyard Netherlands. At 20:11 a "buyer" sent her a fake Safe Deal payment link. She reported it at 20:19, the account was suspended at 20:26, and Tradeyard NL's trust-and-safety team wrote a new rule that withheld 37 similar messages to other sellers that evening. Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), handled the incident well in the Netherlands.
@@ -52,7 +54,7 @@ Ingrid Halvorsen, Veldmark's Group Chief Architect since February, does not read
 | Group functions (Veldmark Ads, group IT) | about 110 | 16 | Functions | None |
 | **Total** | **about 1,150** | **158** | | |
 
-The team list explains the incident better than the rule engine does. Trust and safety for Tradeyard was owned by an in-house team for the Netherlands and Belgium and by vendors for Poland and Portugal; nobody owned *trust and safety for Tradeyard*, let alone for the group. The capability map that Ingrid presented on 31 March 2027 (see [[business-capabilities]]) found the same shape in identity, search, catalog and analytics: **each overlap existed because several teams each owned a piece of it, and no team owned the whole.**
+The team list explains the incident better than the rule engine does. Trust and safety for Tradeyard was owned by an in-house team in Lisbon for the Netherlands and Belgium and by vendors for Poland and Portugal; nobody owned *trust and safety for Tradeyard*, let alone for the group. The capability map that Ingrid presented on 31 March 2027 (see [[business-capabilities]]) found the same shape in identity, search, catalog and analytics: **each overlap existed because several teams each owned a piece of it, and no team owned the whole.**
 
 ![A courier with one fraud rule reaches the Netherlands at once, waits days behind a slow machine for Belgium, and is turned away by contractor desks at Poland and Portugal.](assets/images/42-organizing-marketplace-engineering/one-rule-four-countries.jpeg)
 **Figure 1:** *The March 2027 phishing rule reached Belgium three days late and Poland and Portugal never, because each country's trust and safety had a different owner and nobody owned trust and safety for Tradeyard.*
@@ -63,7 +65,7 @@ Mateus Carvalho, the Group CTO, asks Ingrid the question this chapter answers: *
 
 ### Conway's law, read as a design tool
 
-Melvin Conway observed in 1968 that organizations which design systems produce designs that copy their own communication structures ([Conway, 1968](https://www.melconway.com/Home/Committees_Paper.html)). In a marketplace group the observation is easy to verify: four brands with four engineering organizations have four identity systems. The useful reading is the reverse one, sometimes called the *inverse Conway maneuver*: **if you want a shared search platform, create a team whose job is the search platform**, and give the brands' discovery teams a reason to depend on it.
+Mateus's question is about teams before it is about platforms. Melvin Conway observed in 1968 that organizations which design systems produce designs that copy their own communication structures ([Conway, 1968](https://www.melconway.com/Home/Committees_Paper.html)). In a marketplace group the observation is easy to verify: four brands with four engineering organizations have four identity systems. The useful reading is the reverse one, sometimes called the *inverse Conway maneuver*: **if you want a shared search platform, create a team whose job is the search platform**, and give the brands' discovery teams a reason to depend on it.
 
 The maneuver has two limits. First, changing teams does not change code; the old structure persists in the systems until someone migrates them, which is why [[modernization-and-migration]] follows this chapter. Second, teams have a limited capacity for complexity. The Team Topologies authors, Matthew Skelton and Manuel Pais, put it as a principle: "Teams can only handle so much complexity before breaking down" ([Team Topologies, key concepts](https://teamtopologies.com/key-concepts), n.d.). A team asked to own Tradeyard's insertion flow in four countries, the pro-seller API and the image pipeline will own all three badly.
 
@@ -130,16 +132,16 @@ Andrew Harmel-Law's **advice process**, described in 2021, replaces approval wit
 
 ### Stream-aligned teams on top of platform teams
 
-A group of marketplaces needs stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a few complicated-subsystem teams beside them, and enabling teams that move between them. Figure 2 shows the version Veldmark adopted for Common Ground.
+Applied to a group of marketplaces, the four team types stack: the group needs stream-aligned teams per brand and journey on top, platform teams per shared capability underneath, a few complicated-subsystem teams beside them, and enabling teams that move between them. Figure 2 previews the version Veldmark adopted for Common Ground in June 2027; the worked example tells how that decision was made.
 
 ![Diagram: Veldmark's Common Ground team topology (target 2028)](assets/images/42-organizing-marketplace-engineering/fig02-veldmark-s-common-ground-team-topology.jpeg)
-**Figure 2:** *Veldmark's Common Ground team topology (target 2028). Brands keep their journeys and their products; the group owns the capabilities beneath them; specialists and enablers sit beside both. Keybridge stays outside the platform organization because its neutrality commitment requires it.*
+**Figure 2:** *Veldmark's Common Ground team topology (target 2028). Brands keep their journeys and their products; the group owns the capabilities beneath them; specialists and enablers sit beside both. Keybridge stays outside the platform organization because its March 2027 neutrality commitment requires it: Keybridge publishes agencies' listings to Hearthly's competitors.*
 
 Three properties of the figure matter more than its boxes:
 
 - **Arrows point down.** Brands depend on platforms; platforms never depend on a brand's internals. When a platform needs something from a brand — Tradeyard's listing events, for example — it gets it through a published contract, not a call into Yardstick.
 - **Specialists serve brands through platforms.** A ranking model is trained by a specialist team, served through the search platform's ranking service, and configured by each brand's discovery team. The relevance objective stays with the brand, as [[ranking]] argues; the model mechanics stay with the specialists.
-- **Enabling teams are temporary by design.** The Yardstick Exit team exists to make itself unnecessary by the end of 2029.
+- **Enabling teams are temporary by design.** Veldmark's Yardstick Exit team exists to make itself unnecessary by the end of 2029.
 
 ### Platform teams as internal products
 
@@ -160,7 +162,7 @@ The best-documented example in the classifieds record is Adevinta's internal pla
 
 ### Decision rights across group, platform and brand
 
-Governance starts with a table, not a forum. The decision-rights matrix below is the one that Veldmark's forum adopted in April 2027 and revised in September. *D* means decides, *A* means must be asked for advice, *I* means informed.
+Governance starts with a table, not a forum. The decision-rights matrix below is Veldmark's, used here as the example. Veldmark's architecture advice forum, an open weekly meeting set up in April 2027 and described in the worked example, adopted it that month and revised it in September. *D* means decides, *A* means must be asked for advice, *I* means informed.
 
 | Decision | Group (CTO, Chief Architect) | Platform team | Brand engineering | Brand product |
 | --- | --- | --- | --- | --- |
@@ -177,7 +179,7 @@ The matrix has two deliberate features. Brands decide exceptions themselves, pro
 
 ### The advice process in a marketplace group
 
-Under the advice process, most cross-brand decisions stay with the team that proposes them. Figure 4 shows the path as Veldmark runs it.
+Under the advice process, most cross-brand decisions stay with the team that proposes them. Figure 4 shows the path as Veldmark's forum runs it.
 
 ![Diagram: The advice process applied to cross-brand decisions](assets/images/42-organizing-marketplace-engineering/fig04-advice-process-applied-cross-brand-decisions.jpeg)
 **Figure 4:** *The advice process applied to cross-brand decisions. Most decisions stay with the team that proposes them; the forum makes advice public and consistent; only decisions that move funding, people or personal data across brands go to an accountable executive.*
@@ -218,7 +220,7 @@ A 2018 post on the Berlin Tech Blog, shared by the eBay Kleinanzeigen and mobile
 
 ## In Practice: What the Public Record Shows
 
-Few marketplace groups publish their organization designs; each dated fragment below is evidence about one organization at one time.
+The public record can test only parts of this design. Few marketplace groups publish their organization designs; each dated fragment below is evidence about one organization at one time.
 
 **Marktplaats: from business-unit teams to Journey Teams (2017).** In a November 2017 post, Marktplaats described replacing product teams aligned to business units, each product owner with a "huge backlog", by cross-functional **Journey Teams** organized around the customer journey, which included product, technology, marketing, customer relations, product analytics and data science. The company moved to objectives and key results, with at most three company objectives and four key results each, refreshed quarterly. The head of technology wrote that in this way of working "the platform has been changed from a set of monolithic services to microservices, allowing teams to deliver 10x faster each year" — a self-reported claim ([Marktplaats Technology, 2017](https://medium.com/marktplaats-technology/the-marktplaats-journey-becoming-the-best-version-of-ourselves-5ece9829f13f)). The post is nine years old, and the current organization is not public. It is still the clearest classifieds account of cutting teams by journey rather than by business unit, and of the architecture following the teams.
 
@@ -230,7 +232,7 @@ Few marketplace groups publish their organization designs; each dated fragment b
 
 A third OLX fragment concerns ownership: a July 2025 post explains that recommendations serving moved out of "a shared backend service" to the data team "to gain greater autonomy and flexibility" ([OLX Tech, 2025](https://tech.olx.com/scaling-recommendations-service-at-olx-db4548813e3a)) — a complicated subsystem taking ownership of its own runtime, with the efficiency trade-offs the post describes.
 
-**Adevinta: voluntary platforms, harvested inventions, and a swing back.** Adevinta's record covers the full pendulum and is told in [[case-adevinta]]. For organization design, three fragments matter. The deployment abstraction that ran across its marketplaces, FIAAS, came from FINN.no, and its experimentation analysis package, Fisher, came from Marktplaats; both were local inventions promoted to group level (2017–2023 sources). In 2023 the group "redesigned the operating model and created a robust structure organised by verticals", and in 2025 it "evolved from a centralised structure to a decentralised, standalone operating model", with "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property" (Adevinta Annual Report 2023; Strategic Report 2025). In a September 2026 post about an infrastructure self-service bot, leboncoin's engineering blog described about ten infrastructure engineers supporting about 70 feature teams ([leboncoin tech blog, 2026](https://medium.com/feed/leboncoin-tech-blog); figures from the blog's feed summary, the full post not retrieved).
+**Adevinta: voluntary platforms, harvested inventions, and a swing back.** Adevinta's record covers the full swing between central and local and is told in [[case-adevinta]]. For organization design, three fragments matter. The deployment abstraction that ran across its marketplaces, FIAAS, came from FINN.no, and its experimentation analysis package, Fisher, came from Marktplaats; both were local inventions promoted to group level (2017–2023 sources). In 2023 the group "redesigned the operating model and created a robust structure organised by verticals", and in 2025 it "evolved from a centralised structure to a decentralised, standalone operating model", with "the ramp-down of central functions, the transfer of key capabilities, the localisation of intellectual property" (Adevinta Annual Report 2023; Strategic Report 2025). In a September 2026 post about an infrastructure self-service bot, leboncoin's engineering blog described about ten infrastructure engineers supporting about 70 feature teams ([leboncoin tech blog, 2026](https://medium.com/feed/leboncoin-tech-blog); figures from the blog's feed summary, the full post not retrieved). That is the platform-team pattern at local scale after the decentralization: about seven feature teams per infrastructure engineer, reached through a self-service bot.
 
 > **INFERENCE, NOT DOCUMENTED:** Read as Conway's law in reverse, Adevinta's 2023 reorganization by verticals preceded its plan to converge the leboncoin and Kleinanzeigen product platforms, and its 2025 decentralization preceded the localization of intellectual property and the parallel running of central and local services. In both directions the organization moved first and the platforms were expected to follow. The public record does not describe the internal team designs, so this is the author's reading of the sequence, not a description of Adevinta's organization.
 
@@ -242,7 +244,7 @@ The common thread is modest: **journey-aligned teams, domain maps before reorgan
 
 ### Three options
 
-In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring three organization options to the advice forum.
+Veldmark answered Mateus's question with this design, through its architecture advice forum. In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring three organization options to the forum, whose twelve principles include "share platforms, not products".
 
 | Option | Description | For | Against |
 | --- | --- | --- | --- |
@@ -250,13 +252,15 @@ In May 2027 Ingrid and Yara Mendes, the Head of Platform Engineering, bring thre
 | **B. Central platform organization, product-run** | Group platform teams under the Head of Platform Engineering, each with a product owner and tenant-facing contract; brands keep journeys | One owner per shared capability; fleet-level economics | Brands lose engineers and some control; risk of the Forced Fit if platforms are slow |
 | **C. Central product and technology** | One group organization owning all products and platforms, with brand "market teams" for local needs | Maximum reuse | Breaks "share platforms, not products"; the 2023-style convergence bet; expensive to reverse if a brand is sold |
 
-The forum's advice is option B, with conditions. Mateus Carvalho decides it on **Tuesday 22 June 2027**, effective **1 September 2027**, in the decision record "Common Ground organization v1". It has five parts:
+The forum's advice is option B, with conditions. Mateus Carvalho decides it on **Tuesday 22 June 2027**, effective **1 September 2027**, in the decision record "Common Ground organization v1", which has five parts:
 
 1. **One owning team per shared capability.** The group platform organization, under Yara Mendes, owns the Common Ground platforms: event backbone, search platform, identity (Veldmark ID), trust-and-safety pipeline engineering, media, messaging, catalog and entitlements, taxonomy and attributes, the listing platform (publication pipeline and consumer registry) and the developer platform. Data and ML platforms stay in Priya Raman's Data & ML organization, which follows the same platform rules.
 2. **Brands keep their journeys, products and teams.** Stream-aligned teams stay in Tradeyard, Motorvane and Hearthly, cut by journey. Tradeyard's Polish and Portuguese country teams become journey teams serving all four Tradeyard countries, with market product leads per country; Tradeyard Poland keeps one market team for its vehicles and property sections.
 3. **Policy stays local, mechanism goes central.** Aisha Rahman, Group Head of Trust & Safety, owns group policy standards; each brand's trust operations own local policy and moderation; the platform team owns the pipeline, rule engine and case tooling. This is the split the capability map recommended.
 4. **People move with work, not with a date.** Engineers move to a platform team when their capability moves, not on 1 September. About **150** engineers transfer from brands in 2027 and about **80** are hired, giving the platform organization about **230** engineers in **24** teams by the end of 2027.
 5. **Keybridge stays outside.** Keybridge's engineering organization is not merged into the platform organization and is not a tenant of the shared trust-and-safety platform or the listing event stream; group security standards apply. The March 2027 neutrality decision makes this a structural choice, not a postponement.
+
+> **BY DECEMBER 2027:** Of the nine capabilities the board's January 2027 program named (Veldmark ID, trust and safety, media, search, messaging, catalog and entitlements, event backbone, data platform, and taxonomy and attributes; part 1 adds the listing and developer platforms), eight had one owning team, and country-cut, overloaded and Yardstick-bound teams had fallen.
 
 | Measure | March 2027 | December 2027 |
 | --- | --- | --- |
@@ -285,15 +289,15 @@ Olivier Petit, VP Monetization, adds one condition that turns out to matter: the
 
 ### The architecture advice forum, one year in
 
-Veldmark set up the forum in April 2027, together with its architecture principles, and made decision records mandatory for cross-brand decisions. It meets weekly, for an hour, and anyone may attend; about 60 people do on a typical week. Its first year can be read from its decision log.
+The forum that advised on these decisions was set up in April 2027, together with the architecture principles, and made decision records mandatory for cross-brand decisions. It meets weekly, for an hour, and anyone may attend; about 60 people do on a typical week. Its first year can be read from its decision log.
 
 | Month (2027) | Decision records the forum advised on, as told in other chapters |
 | --- | --- |
 | April | Architecture principles; decision-rights matrix |
-| May | Common Ground context map ([[bounded-contexts]]); data platform design ([[data-platform]]); Tradeyard web layer ([[web-and-seo-architecture]]) |
+| May | Common Ground context map ([[bounded-contexts]]); qualified contact definition ([[data-platform]]); Tradeyard web layer ([[web-and-seo-architecture]]) |
 | June | Ranking policy v1 ([[ranking]]); Veldmark ID ([[identity-and-verification]]); Common Ground organization v1 (this chapter) |
 | July | Listing event contract v1 live ([[event-driven-listings]]) |
-| September | Supply Contract v1 ([[listing-ingestion]]); search platform decision ([[search-architecture]]) |
+| September | Supply Contract v1 ([[listing-ingestion]]); search platform decision ([[search-architecture]]); data platform decisions ([[data-platform]]) |
 | October | Group taxonomy release and bikes split ([[categories-and-taxonomies]]); Tally ([[products-and-entitlements]]) |
 | November | ML platform decision ([[ml-platform]]); shared trust-and-safety platform live for Tradeyard NL and BE |
 
@@ -304,7 +308,7 @@ Veldmark's principles fit on one page. Four of the twelve do most of the work in
 | Principle | Test it implies | A 2027 decision it shaped |
 | --- | --- | --- |
 | Share platforms, not products | Is the proposal a capability beneath several products, or a product feature? | Ranking policy: shared ranking service, brand-owned objective |
-| One owner per context and capability | Can the proposer name the single owning team? | Removal propagation to alerts given to the Alerts team |
+| One owner per context and capability | Can the proposer name the single owning team? | Removal propagation to alerts (sold listings leaving alerts) given to the Alerts team |
 | Contracts before migrations | Does a published contract exist before any tenant moves? | Every application on Listing Search API v1 before its engine changes |
 | Separable by tenant | Can a brand leave this capability within 18 months with its data? | Per-brand topics and schemas on the event backbone |
 
@@ -312,11 +316,13 @@ The fourth principle comes from Veldmark's ownership: a private-equity owner mig
 
 ### The phishing rule, replayed
 
-In November 2027 the shared trust-and-safety platform goes live for Tradeyard Netherlands and Belgium. The forum's acceptance test is the March incident. A rule written by Tradeyard's trust operations team in Lisbon is a configuration change in the platform, reviewed in the platform's rule workflow, and effective for every tenant that subscribes to the rule family within an hour, without any Yardstick deploy. The phone number of a terminated fraud account enters the shared hashed block list, which the data protection officer approved with a two-year retention, so Motorvane sees the match at its next account check. Poland and Portugal are not tenants yet; their move is on the platform's roadmap, and the gap is listed on the team API page rather than hidden.
+In November 2027 the shared trust-and-safety platform goes live for Tradeyard Netherlands and Belgium. The forum's acceptance test is the March incident. A rule written by Tradeyard's in-house trust operations team in Lisbon is a configuration change in the platform, reviewed in the platform's rule workflow, and effective for every tenant that subscribes to the rule family within an hour, without any Yardstick deploy. The phone number of a terminated fraud account enters the shared hashed block list, which the data protection officer approved with a two-year retention, so Motorvane sees the match at its next account check. Poland and Portugal are not tenants yet; their move is on the platform's roadmap, and the gap is listed on the team API page rather than hidden.
 
 The rule engine did not change. **The ownership did**: there is now one team that owns "a rule reaches every tenant", and its service level is written down.
 
 ## Trade-offs
+
+Each of Veldmark's choices, from the stream-aligned axis to funding, has conditions under which it is wrong:
 
 | Decision | Option | When it is right | When it is wrong |
 | --- | --- | --- | --- |
@@ -332,6 +338,8 @@ The rule engine did not change. **The ownership did**: there is now one team tha
 
 ## Vertical Differences
 
+Those conditions shift by vertical, mostly on the supply side:
+
 | Topic | General classifieds | Real estate | Automotive | Professional SaaS (agent or dealer tools) |
 | --- | --- | --- | --- | --- |
 | Dominant stream-aligned teams | Private-seller supply, discovery, conversation and transaction | Agency supply and feeds, discovery, new-build campaigns, valuation products | Dealer supply and feeds, discovery, leads, financing | Product modules of the customer's workflow |
@@ -343,6 +351,8 @@ The rule engine did not change. **The ownership did**: there is now one team tha
 Two consequences for organization design. In real estate and automotive, the **supply journey has a commercial side** — agency and dealer contracts, feeds, packages — so the supply team needs close links to sales and account management, which a central platform cannot provide. And a SaaS business that serves the marketplaces' competitors, like Keybridge, needs an organization boundary that customers can see, not only an access control list.
 
 ## Failure Modes
+
+When the design is missing or half applied, nine failures recur.
 
 - **The platform without a product owner.** A team builds what the loudest brand asks for, has no roadmap that tenants can read, and measures itself by tickets closed. Tenants start building around it within a year. The fix is a product owner, a team API page and a tenant review each quarter.
 - **The mandate before the platform.** A deadline for all brands to move onto a platform that is not yet cheaper, faster or safer than what they have. The brands comply on paper and keep their copies running. This is the Forced Fit; it often follows a board-level synergy target.
@@ -356,7 +366,7 @@ Two consequences for organization design. In real estate and automotive, the **s
 
 ## The Chief Architect's View
 
-**Design ownership first, and draw it on the same map as the architecture.** The capability map, the context map and the team topology are three views of one model. If a capability or context has no owning team on the map, it has none in reality. I would review the three together twice a year and treat any orphan or any split ownership as an architectural defect with a named fix and date.
+**Design ownership first, and draw it on the same map as the architecture.** Most failures above start with an unnamed owner. The capability map, the context map and the team topology are three views of one model. If a capability or context has no owning team on the map, it has none in reality. I would review the three together twice a year and treat any orphan or any split ownership as an architectural defect with a named fix and date.
 
 **Measure platforms by adoption and by tenant cost, not by output.** The questions I ask of every platform team each quarter: how many tenants use it in production; what it costs a new tenant to onboard; how many brands still run a shadow copy and why; and what share of its roadmap came from tenants. A platform that cannot answer these is a shared-services department.
 
@@ -367,6 +377,8 @@ Two consequences for organization design. In real estate and automotive, the **s
 **Who decides, and what to watch.** The CTO decides the topology and funding, on the forum's advice; the Group Chief Architect owns the principles, the decision-rights matrix and the maps; platform heads own contracts; brand leaders own journeys. Watch: orphaned or split capabilities; teams over the cognitive-load threshold; teams blocked by another team's deploy (Yardstick's count is the headline number at Veldmark); median time from decision draft to decision; decisions with an expired review date; and shadow copies of platform capabilities in brands.
 
 ## Questions to Ask
+
+These questions test whether that design is in place.
 
 1. For each shared capability, which single team is woken up when it breaks, and who decides its roadmap?
 2. Which bounded contexts or journeys are owned by more than one team, and which by none?
@@ -380,6 +392,8 @@ Two consequences for organization design. In real estate and automotive, the **s
 10. If a brand were sold in 18 months, which teams and platforms would have to split, and is that written down?
 
 ## From Organization to Migration
+
+Mateus's question now has a three-part answer. Platform teams own the shared capabilities as products; journey teams in the brands use them; and when the two disagree, the proposing team decides after public advice, under a matrix that sends only money, people and personal data to an executive. The parts depend on each other: without owners the forum has nobody to advise, and without the forum and funding the owners have no tenants. That is why the March rule, replayed in November, reached every subscribing tenant within an hour on the same rule engine: each capability now exists once, because one team owns it. A group that wants this starts with the ownership catalog and the decision-rights matrix.
 
 The organization assigns owners; it does not move code. Tradeyard's teams still deploy through Yardstick, and the new platform teams own capabilities that the monolith still implements. [[modernization-and-migration]] takes up the work of moving a live marketplace from the old system to the new one without losing traffic, sellers or revenue.
 

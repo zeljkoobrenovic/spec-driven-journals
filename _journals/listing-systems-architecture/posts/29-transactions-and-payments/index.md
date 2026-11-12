@@ -35,6 +35,8 @@ From about 2017 the large European horizontals began to move into that moment fo
 
 This chapter starts where [[messaging-and-leads]] ends: with an offer accepted in chat, which the marketplace can leave to the parties or carry through payment and delivery. The question is architectural and strategic: **when should a listing marketplace take part in the transaction, and which systems does it then have to own?** The answer becomes the transactional revenue line that [[monetization-models]] compares with the other ways a marketplace earns. The chapter does not re-teach payments. The sibling book RECONCILED covers the payment lifecycle in [[payments-fundamentals]], the two main providers in [[adyen]] and [[stripe]], and the reconciliation design in [[payments-to-ledger]] and [[designing-financial-ledgers]].
 
+The chapter opens at Veldmark's forum with three proposals and an unexplained clearing account. It defines the terms, sets out when taking part pays and who can hold the money, and designs the transaction platform: its six contexts, order state machine, shipping, disputes, ledger and regulatory switches. Two Safe Deal orders and the forum's decisions test the design, followed by trade-offs, vertical differences, failure modes, the Chief Architect's view and questions.
+
 ## Setting the Scene at Veldmark: Three Proposals and a Clearing Account
 
 On Wednesday 22 September 2027, the architecture advice forum of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]), had three transaction proposals on its agenda, and Ingrid Halvorsen, the Group Chief Architect, had asked for them to be heard together.
@@ -48,6 +50,22 @@ The three proposals all wanted more of it:
 3. **Hearthly Spain** (Julien Marchand, Hearthly CTO): a protected rental deposit. In July 2027, a ring of **26** accounts had posted **180** fake rental listings in Barcelona and collected about **€71,000** from **63** people as deposits paid by bank transfer outside the platform ([[fraud-prevention]] tells that story).
 
 Ingrid added a fourth item, which nobody had proposed. At the December 2026 month-end, Veldmark's group finance team had found about **€2.3 million** of Safe Deal items in a clearing account that could not be matched to orders: refunds issued after payouts, label charges netted from settlements, partial refunds agreed in chat. The amount was a fraction of GMV, but nobody could say what it consisted of without a week of spreadsheet work. Her point to the forum was that **Safe Deal had shipped its checkout before it had shipped its ledger**, and that every proposal on the agenda would make that worse unless the transaction platform was designed properly first.
+
+### Safe Deal in 2026, in numbers
+
+| Measure (2026) | Value |
+| --- | --- |
+| Orders | 11.6 million (NL, BE, PL) |
+| GMV | about €1.02 billion; average item price about €88 |
+| Revenue | €75 million: buyer fees about €59 million, shipping-label margin about €16 million |
+| Shipped share | about 78% of orders (about 9 million labels); the rest "pay at pickup" |
+| Distinct sellers paid | about 1.3 million, of whom about 21,000 above the DAC7 excluded-seller test |
+| Disputes opened | about 1.3% of orders (about 151,000); about 70% resolved by agreement or return |
+| Buyer-protection losses funded by Tradeyard | about €4.1 million, 0.4% of GMV |
+| Card chargebacks | under 0.1% of orders |
+| Unmatched items in clearing at the December month-end | about €2.3 million |
+
+Safe Deal is a good business: €75 million of revenue on €1.02 billion of GMV is a 7.4% take rate, and losses are an order of magnitude below revenue. But it was **run as a feature on top of Yardstick's world view** until 2027: its dispute desk worked from e-mail templates, partial refunds were manual and the finance view was reconstructed at month-end.
 
 The rest of this chapter is the framework the forum used to decide.
 
@@ -66,7 +84,9 @@ A classifieds marketplace's job ends at the contact ([[marketplace-taxonomy]]). 
 - **Dispute** versus **chargeback**: a dispute is opened with the platform under its buyer protection; a chargeback is opened by the buyer's card issuer under card-scheme rules. Both can occur for the same order, and they follow different clocks.
 - **Pick-up and drop-off point (PUDO)**: a shop or locker where parcels are handed in and collected; the default shipping method for low-value consumer parcels in much of Europe.
 
-**Holding the money and taking the risk are separate**: the PSP holds the funds, but a buyer-protection refund that the seller cannot cover is paid by the marketplace. And **the order is a separate aggregate from the listing**: a listing can have many conversations and, for multi-quantity sellers, many orders; an order belongs to one buyer, one seller and one agreed price. [[listing-aggregate]] keeps availability on the listing and leaves everything about money to the order.
+**Holding the money and taking the risk are separate**: the PSP holds the funds, but a buyer-protection refund that the seller cannot cover is paid by the marketplace.
+
+**The order is a separate aggregate from the listing**: a listing can have many conversations and, for multi-quantity sellers, many orders; an order belongs to one buyer, one seller and one agreed price. [[listing-aggregate]] keeps availability on the listing and leaves everything about money to the order.
 
 ## When to Take Part in the Transaction
 
@@ -92,7 +112,7 @@ My rule of thumb: **take part in the transaction where the platform's presence r
 
 ## Payment Models: Who Holds the Money
 
-A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options. In practice, classifieds groups have used the first.
+A marketplace that wants to collect from buyers and pay sellers in the EU has three basic options, which the comparison below splits into five models. In practice, classifieds groups have used the first.
 
 ### Use a licensed provider's marketplace product
 
@@ -112,6 +132,8 @@ The marketplace can avoid payments entirely and rely on contact plus safety advi
 
 ### Comparing the models
 
+In the table, the provider option appears twice, with the platform or the seller as merchant of record, and the specialist institutions get their own row: five models. They differ in who holds the funds, who verifies payees and who loses money first.
+
 | Model | Who holds funds | Who verifies payees | Who carries chargebacks and refunds first | Marketplace owns | Fits |
 | --- | --- | --- | --- | --- | --- |
 | Provider marketplace product, platform as merchant (Adyen for Platforms, Stripe destination or separate charges) | The provider, in the platform's or sellers' held balances | The provider | The platform's balance; recovery from the seller by debit or transfer reversal | Order, fees, release rules, disputes, losses, reconciliation | C2C goods at scale; one brand on the statement |
@@ -120,11 +142,11 @@ The marketplace can avoid payments entirely and rely on contact plus safety advi
 | Own licence (Vinted Pay) | The marketplace, in safeguarded accounts | The marketplace | The marketplace | Everything, including safeguarding and the ledger | Transaction-first marketplaces at very large volume |
 | Off-platform | The parties | Nobody | The victim | Safety advice only | Lead-generation and high-value categories |
 
-Veldmark chose the first row. [[bounded-contexts]] records the consequence: the Safe Deal context **conforms** to Adyen's model of accounts, balances and payouts and translates only at its edge, where an order meets a listing.
+Veldmark chose the first row. [[bounded-contexts]] records the consequence: Safe Deal **conforms** to Adyen's model of accounts, balances and payouts and translates only at its edge, where an order meets a listing.
 
 ## Architecture: The Transaction Platform
 
-A transactional pivot adds six bounded contexts beside the listing core. None of them belongs inside the listing service.
+With a provider holding the money, a transactional pivot still adds six bounded contexts beside the listing core. None of them belongs inside the listing service.
 
 | Context | Owns | Key events | Must not own |
 | --- | --- | --- | --- |
@@ -142,14 +164,14 @@ A transactional pivot adds six bounded contexts beside the listing core. None of
 
 The most common integration bug in a transactional pivot is the double sale: two buyers pay for the same one-off item because the listing still looked available. The order context must therefore **reserve the listing atomically when payment is committed**, and the listing must treat a reservation from an order as authoritative. At Tradeyard, a Safe Deal order emits `ListingReserved` on the listing event stream and the listing transitions to reserved; search shows a badge and alerts stop notifying ([[event-driven-listings]]). A reservation needs a timeout: an order that is never paid, never shipped or never collected must release the listing again, or the reservation becomes Ghost Inventory in reverse, a sellable item nobody can buy.
 
-When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). Femke's bike is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.
+When the order completes, the listing becomes sold through the same stream, and every copy of the listing must react: search, saved-search alerts, digests, recommendations and sitemaps ([[saved-searches-and-alerts]], [[publication-pipeline]]). Femke's bike, whose order In Practice walks through step by step, is the canonical warning. It sold through Safe Deal at 18:10 on Monday 8 March 2027 and was gone from search a minute later, but the next morning's alert digest, assembled from an older snapshot, still featured it to **214** users.
 
 ### The order state machine
 
 ![Diagram: A protected-payment order for goods](assets/images/29-transactions-and-payments/fig03-protected-payment-order-goods-every-waiting.jpeg)
 **Figure 3:** *A protected-payment order for goods. Every waiting state has a deadline, every exit to cancellation or refund returns money and releases the listing, and a completed order can still be reopened by a card chargeback weeks later, which is why the ledger must handle states after payout.*
 
-Four design rules follow from the diagram.
+Four design rules follow from the diagram's waiting states (placed, awaiting hand-in or pickup, delivered, disputed).
 
 1. **Every waiting state has a timer and an owner.** Unshipped orders, uncollected pickups and silent buyers are the normal case, not the exception. Kleinanzeigen documents one such rule: if the buyer does not confirm receipt, "wird der Betrag nach 14 Tagen automatisch an den Verkäufer überwiesen" (the amount is paid to the seller automatically after 14 days) ([Kleinanzeigen, n.d.](https://themen.kleinanzeigen.de/sicher-bezahlen/)). Marktplaats' successor to its first escrow product, as described in 2022, paid the seller on day 8 if there were no complaints ([AVROTROS Radar, 2022](https://radar.avrotros.nl/artikel/dit-is-de-vervanger-voor-de-gelijk-oversteken-functie-van-marktplaats-52677)).
 2. **Release is a decision, not a side effect.** The order context decides when funds become payable, using the delivery event, the dispute window, the buyer's confirmation and the risk score. The payment edge only executes. A fraud rule must be able to hold a payout, and that hold is itself a restricting decision that needs a statement of reasons under the Digital Services Act ([[marketplace-regulation]]).
@@ -168,7 +190,7 @@ Shipping also changes discovery. An item that ships nationwide is no longer cons
 
 A dispute desk is a case-management system with money attached. Kleinanzeigen's coverage, as published in 2026, lists five cases: item not shipped, significantly different from the description, not authentic, a different item, incomplete ([Kleinanzeigen, n.d.](https://themen.kleinanzeigen.de/sicher-bezahlen/)). Adevinta built a dispute-management back office as a reusable component "that can be plugged into any marketplace", which ingested per-marketplace transaction events through Kafka, SQS or REST and normalized them into a common model; its designers noted, "We couldn't hardcode anything… or make any assumptions" ([Adevinta tech blog, 2023](https://adevinta.com/techblog/from-hello-world-to-a-dispute-management-back-office/)). That is the right shape for a shared capability across brands: an anti-corruption layer per marketplace and a canonical case model.
 
-A protection promise is also a liability that must be provisioned, measured per category and priced into the fee. eBay's 2025 annual report describes its transaction losses as consisting "primarily of losses resulting from our buyer protection programs, chargebacks" ([eBay Form 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm)).
+A protection promise is also a liability that must be provisioned, measured per category and priced into the fee. eBay's 2025 annual report describes its transaction losses as consisting "primarily of losses resulting from our buyer protection programs, chargebacks" ([eBay Form 10-K for 2025, filed 2026](https://www.sec.gov/Archives/edgar/data/1065088/000106508826000027/ebay-20251231.htm)). That loss line is what a protection promise becomes on any marketplace's books.
 
 ### Reconciliation and the ledger
 
@@ -195,6 +217,7 @@ Femke listed her city bike on Tradeyard Netherlands for **€240** on Sunday 7 M
 | 14:02–18:05 | Femke's other open conversations are told the bike is reserved; alerts stop | Listing, Messaging | None |
 | 18:08 | At the handover, Femke enters the buyer's six-digit handover code | Order | €225 released to Femke's available balance; €11.95 recognized as Tradeyard revenue |
 | 18:10 | Order completed; listing marked sold | Order, Listing | None |
+| Tue 9 Mar, 07:00 | The alert digest assembled at 17:30 on Monday still features the sold bike to 214 users | Alerts | None |
 | Tue 9 Mar | Payout to Femke's bank account | Payment edge | €225 paid out |
 
 The handover code is the release event: by giving it, the buyer confirms they have seen and accepted the bike, so pay-at-pickup protection covers payment security and the seller not turning up, not "not as described" after handover. Femke had already been verified as a payee by Adyen before her first Safe Deal payout, which is why Veldmark ID will carry that fact as a `payee.verified` claim ([[identity-and-verification]]). The €11.95 fee is charged to the buyer on top of the price, so Femke's DAC7 consideration is €225; with four Safe Deal sales in 2027 totaling €610, she is an excluded seller.
@@ -219,35 +242,21 @@ Every step produced an event, and every amount has a ledger line: €70.65 captu
 ![Left: a jumble of unmatched refunds, label charges and payments in a clearing bin. Right: a ledger where every line is linked to an order event and reconciled.](assets/images/29-transactions-and-payments/clearing-to-ledger.jpeg)
 **Figure 4:** *The December 2026 clearing balance existed because refunds, label charges and partial refunds were handled outside the order; in the target design every amount is an event with a ledger line, traceable from order to bank movement.*
 
-### Safe Deal in 2026, in numbers
-
-| Measure (2026) | Value |
-| --- | --- |
-| Orders | 11.6 million (NL, BE, PL) |
-| GMV | about €1.02 billion; average item price about €88 |
-| Revenue | €75 million: buyer fees about €59 million, shipping-label margin about €16 million |
-| Shipped share | about 78% of orders (about 9 million labels); the rest "pay at pickup" |
-| Distinct sellers paid | about 1.3 million, of whom about 21,000 above the DAC7 excluded-seller test |
-| Disputes opened | about 1.3% of orders (about 151,000); about 70% resolved by agreement or return |
-| Buyer-protection losses funded by Tradeyard | about €4.1 million, 0.4% of GMV |
-| Card chargebacks | under 0.1% of orders |
-| Unmatched items in clearing at the December month-end | about €2.3 million |
-
-Safe Deal is a good business: €75 million of revenue on €1.02 billion of GMV is a 7.4% take rate, and losses are an order of magnitude below revenue. But it was **run as a feature on top of Yardstick's world view** until 2027: its dispute desk worked from e-mail templates, partial refunds were manual and the finance view was reconstructed at month-end.
-
 ## The Architecture Advice Forum's Decisions
 
 On 22 September 2027 the forum applied the four conditions and the architecture above to each proposal.
 
-**Safe Deal Portugal: approved for Q3 2028**, on the target platform rather than as a fourth copy. The conditions all hold for Portuguese goods. The launch adds local payment methods and two national carrier and PUDO networks through new shipping adapters, runs under the same Tradeyard B.V. contract with Adyen, and reports Portuguese sellers under DAC7 through the existing Dutch filing. It waits for the platform work below, because launching a fourth country on the 2024 design would multiply the clearing problem.
+**Safe Deal Portugal: approved for Q3 2028**, on the target platform, not on the 2024 design that serves Safe Deal's first three countries. The conditions all hold for Portuguese goods. The launch adds local payment methods and two national carrier and PUDO networks through new shipping adapters, runs under the same Tradeyard B.V. contract with Adyen, and reports Portuguese sellers under DAC7 through the existing Dutch filing. It waits for the platform work below, because launching a fourth country on the 2024 design would multiply the clearing problem.
 
-**Motorvane private car payment: not escrow; a narrow pilot.** A 5% fee on the Essen Golf's **€21,900** would be about **€1,095**, which no buyer would pay, and a single misdirected payment of that size is a material loss. Most Motorvane listings come from dealers, who have their own payment processes and legal duties. The forum approved only a design study for a "secure handover" for private-to-private sales in Germany: funds held for at most 72 hours around a scheduled handover, a flat buyer fee, release by handover code, and payee verification at proof-of-person level. It is to be decided in Q2 2028 with Adyen's limits and Motorvane's fraud data in hand. Until then, Motorvane invests in the warning and verification controls that [[fraud-prevention]] describes.
+**Motorvane private car payment: not escrow; a narrow pilot.** A 5% fee on the Essen Volkswagen Golf's **€21,900** would be about **€1,095**, which no buyer would pay, and a single misdirected payment of that size is a material loss. Most Motorvane listings come from dealers, who have their own payment processes and legal duties. The forum approved only a design study for a "secure handover" for private-to-private sales in Germany: funds held for at most 72 hours around a scheduled handover, a flat buyer fee, release by handover code, and payee verification at proof-of-person level. It is to be decided in Q2 2028 with Adyen's limits and Motorvane's fraud data in hand. Until then, Motorvane invests in the warning and verification controls that [[fraud-prevention]] describes.
 
 **Hearthly Spain protected deposits: declined.** A rental deposit is a large payment to a landlord under a lease, governed by its own legal rules, and holding it would put Hearthly into the rental contract itself, a different marketplace model with its own licensing and consumer-law questions. The Barcelona ring is better answered upstream: the private-landlord rule that requires proof of person with name match before publishing rentals in Spain, live in Q4 2027 ([[identity-and-verification]]), plus warnings in messaging when a counterparty asks for a deposit before a viewing. **This was the forum's clearest case of declining The Forced Fit**: a goods checkout is not a rental product.
 
 **The transaction platform: funded first.** Before Portugal, Safe Deal moves to the six-context design: an order service that owns availability and timers, a shipping context with normalized tracking events, a dispute case service built on the shared trust-and-safety case management, and a transaction ledger that receives order and money events and feeds group finance. The forum set three objectives for the end of 2028: every Safe Deal amount traceable from order to bank movement; unmatched clearing items under **€100,000** at any month-end; and DAC7 aggregates computed from the ledger rather than assembled from exports.
 
 ## Trade-offs
+
+Eight decisions shape a transaction platform, the first two restating the payment models above as choices, and for each one, both options are right under some conditions:
 
 | Decision | Option A | Option B | Prefer A when | Prefer B when |
 | --- | --- | --- | --- | --- |
@@ -268,6 +277,8 @@ On 22 September 2027 the forum applied the four conditions and the architecture 
 
 ## Vertical Differences
 
+The verticals differ in whether the pivot happens at all, what is paid on the platform, who holds the funds and which fear protection answers:
+
 | Dimension | General classifieds goods | Real estate | Automotive | Recommerce and jobs |
 | --- | --- | --- | --- | --- |
 | Is the pivot common? | Yes, category-gated (leboncoin, Kleinanzeigen, Marktplaats) | Rare; transactions settle with notaries, agents and lease contracts | Reservations and deal steps, rarely full payment | Recommerce is payment-first; jobs have no payment between parties |
@@ -286,7 +297,7 @@ Automotive shows the professional side of the trade-off. Autotrader's Deal Build
 
 **The double sale.** The listing stays available while an order is in progress, a second buyer pays, and one of them must be refunded. The order must reserve the listing atomically and the reservation must expire.
 
-**Sold, but still everywhere.** A completed order that does not reach every copy of the listing creates **Ghost Inventory**: alerts and digests promote an item that is gone, and a contact form invites buyers to ask about it. The bike in the Tuesday digest is the example.
+**Sold, but still everywhere.** A completed order that does not reach every copy of the listing creates **Ghost Inventory**: alerts and digests promote an item that is gone, and a contact form invites buyers to ask about it. The bike in the next morning's digest is the example.
 
 **Disputes by e-mail.** Without a case system, evidence lives in mailboxes, decisions are inconsistent, decision deadlines are missed and there is no data to price protection. A dispute desk needs cases, evidence, decision codes and service levels.
 
@@ -300,7 +311,7 @@ Automotive shows the professional side of the trade-off. Autotrader's Deal Build
 
 ## The Chief Architect's View
 
-At group scale, transactions raise four standing decisions.
+At group scale, transactions raise four standing decisions that prevent these failures.
 
 **Decide the pivot per profile, and record it.** Whether a country and category has protected payment, which fulfilment methods and which coverage belongs in the marketplace profile register ([[marketplace-taxonomy]]), as configuration. The general manager owns the commercial decision; finance and legal sign off on the provider, the loss provision and the reporting obligations; architecture owns the cost of change and the platform it runs on. A rule I use: **no category gets protected payment without a named owner for disputes, reconciliation and DAC7.**
 
@@ -311,6 +322,8 @@ At group scale, transactions raise four standing decisions.
 **Measure trust and money together.** The metrics that matter are the share of eligible sales that go through protected payment, dispute rate and outcome by category, buyer-protection losses as a share of GMV, payout delay from delivery, reconciliation breaks at month-end and payment-phishing reports. A rising protected share with falling phishing losses is the pivot working; a rising take rate with rising unmatched items is the pivot borrowing from the future.
 
 ## Questions to Ask
+
+These questions test a design against the chapter:
 
 1. For which countries and categories do all four conditions hold (ships, moderate price, fear of non-delivery, strangers), and is the gate configuration or code?
 2. Which licensed entity holds the buyer's money, who is merchant of record, and who loses money first when a refund cannot be recovered from the seller?
@@ -324,6 +337,10 @@ At group scale, transactions raise four standing decisions.
 10. If we had to switch protected payment off in one category, what happens to open orders, held funds and sellers' expectations?
 
 ## From Transactions to Monetization
+
+The classifieds bargain this chapter opened with, where the platform finds the buyer and the parties settle the money, fits some categories and not others. The four conditions say where the platform removes a fear that stops sales; the six contexts are the cost of carrying that fear. The forum needed both: Portugal passed the conditions but waited for the ledger, while the car payment and the deposits failed conditions no platform can change. Safe Deal took on the fear without the ledger, and the €2.3 million clearing balance was the result.
+
+A proposal to go transactional gets two questions: do all four conditions hold for this country and category, and can the platform explain every amount from order to bank? Only a yes to both turns buyer protection from a liability into a product.
 
 Protected payment adds a revenue line, but it is one of several ways a listing marketplace makes money, and usually not the largest. Visibility products, professional subscriptions, insertion fees, lead products and advertising each ask for different systems and each spend liquidity differently. [[monetization-models]] catalogs the models with their published KPIs and shows what each one requires from the architecture.
 

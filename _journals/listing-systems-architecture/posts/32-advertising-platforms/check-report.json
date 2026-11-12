@@ -1,0 +1,679 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/32-advertising-platforms/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/32-advertising-platforms/index.md",
+  "spec_sha": "813814a451c89deb",
+  "draft_sha": "8420fa8aa890463c",
+  "run_at": "2026-11-12T22:21:04+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter preview: three ad businesses and Veldmark's 2027 decisions",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "ad revenue is high-margin but rewards page views over matches",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "ad stack choices are architecture decisions with legal consequences",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "key points: three stacks under one policy, consent and latency cap revenue, intent data as asset and liability",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed: Multiplier Creep, Vanity Liquidity, Billing by Guesswork",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "advertising as Part VI's last revenue line, paid for attention and in tension with matching",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "the three ad businesses defined: display/native, sponsored listings, retail media",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "scope boundaries and links to other chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "chapter roadmap",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶1",
+      "summary": "Veldmark Ads as a shared unit and its 2026 revenue split by product",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶2",
+      "summary": "ad revenue split by brand inventory",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶3",
+      "summary": "three disagreements reach the Chief Architect",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶4",
+      "summary": "longer auction timeout raised ad revenue but slowed pages",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶5",
+      "summary": "unreviewed retail-media audience raises privacy questions",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶6",
+      "summary": "top listing and sponsored campaign competing for the same positions",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶7",
+      "summary": "the real question: what is one platform, what slots and data each part uses, who decides",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: The Vocabulary of the Ad Stack ¶1",
+      "summary": "display sold to advertisers vs sponsored sold to sellers / first-party audience as a data product",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: The Vocabulary of the Ad Stack ¶2",
+      "summary": "introduces the ad-industry vocabulary table",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶1",
+      "summary": "public record shows ad revenue scale and cyclicality",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice: What the Public Record Shows ¶2",
+      "summary": "display ad revenue tracks the ad market, not audience growth (Adevinta)",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶1",
+      "summary": "reference architecture: three decision paths under one policy service",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶2",
+      "summary": "step-by-step flow of a display impression",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶3",
+      "summary": "timeout trades bids against speed / server-side bidding is required for apps",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶4",
+      "summary": "five rules keeping the auction off the page's critical path",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶5",
+      "summary": "ads.txt and sellers.json supply-chain hygiene as maintained configuration",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶6",
+      "summary": "ad server as a concentration risk needing a group-owned campaign model",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶7",
+      "summary": "native ads must be labeled and count against the ad-load budget",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶8",
+      "summary": "sponsored listings belong inside ranking (eBay, OLX evidence)",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶9",
+      "summary": "five design choices keeping sponsored positions within marketplace rules",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶10",
+      "summary": "EU rules require disclosure of paid ranking and a paid flag end to end",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶11",
+      "summary": "what retail media sells, with CarGurus, Autotrader and Rightmove examples",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Architecture: Three Stacks, One Policy Layer ¶12",
+      "summary": "five design rules for the first-party audience service",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Consent: The Signal That Sets the Revenue ¶1",
+      "summary": "legal and industry consent mechanisms (ePrivacy, TCF v2.3, Google CMP requirement)",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Consent: The Signal That Sets the Revenue ¶2",
+      "summary": "consent is granular and changing, so it must be available server-side",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Consent: The Signal That Sets the Revenue ¶3",
+      "summary": "consent dialog is a revenue component needing governed experimentation",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Consent: The Signal That Sets the Revenue ¶4",
+      "summary": "consent-or-pay is risky; consent-or-contextual is the robust default",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Consent: The Signal That Sets the Revenue ¶5",
+      "summary": "contextual targeting reduces dependence on shifting browser identity plans",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶1",
+      "summary": "forum took three decisions in July 2027",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶2",
+      "summary": "design of the three-arm timeout experiment",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶3",
+      "summary": "experiment result and rule that ad changes need a contacts guardrail",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶4",
+      "summary": "EV SUV audience rebuilt under the rules, shrinking after consent check",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶5",
+      "summary": "no car-maker retail media on dealer listing pages to protect dealer trust",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: Three Decisions in 2027 ¶6",
+      "summary": "top and sponsored listings merged into one paid-position product family",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "introduces the trade-offs table",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "own decisions on listings and audiences, rent generic display plumbing",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "introduces the vertical differences table",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "real estate excludes valuation-request data from ad segments",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "list of advertising failure modes without this design",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "five agenda questions for the Chief Architect",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "which ad components are shared group-wide and which are not",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "the brand product team owns the page; ads rent positions under policy",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "what data advertising may use, with hard exclusions",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "limiting dependence on one ad server and browser identity",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "show ad metrics next to contacts and page speed",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "ten questions to test the ad architecture",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "From Revenue to the Platform Underneath ¶1",
+      "summary": "answer to the chief architect's question / Part VI synthesis: shared records, delivery proof and guardrails per revenue line",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "From Revenue to the Platform Underneath ¶2",
+      "summary": "Part VI test applied to a sponsored campaign",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "From Revenue to the Platform Underneath ¶3",
+      "summary": "revenue lines depend on platform capabilities; hand-off to Part VII",
+      "matched_spec_paragraph": "p54"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 53 aligned summaries state the controlling idea of their spec paragraph (p01-p54) in spec order; the five introduction callouts match no spec paragraph and carry the KEY POINTS thesis statement the spec places there.",
+      "spec_locus": "/sections",
+      "draft_locus": "whole draft",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Marked two_ideas, but the spec's p12 controlling idea is the pair of distinctions and the paragraph frames them as one idea: 'Two distinctions shape everything after this section.'",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Concepts: The Vocabulary of the Ad Stack ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Marked two_ideas, but both halves are what Prebid's documentation says about the auction's deadline (late bids dropped; environments without a browser header need Prebid Server), exactly the p16 controlling idea, and the paragraph closes on one consequence for a marketplace.",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶3",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "From Revenue to the Platform Underneath ¶1",
+      "quote": "Ingrid's question has its answer",
+      "finding": "The paragraph answers two different questions: the chapter's (Ingrid's: what is shared, who decides) and the part's (what Part VI's five chapters give every revenue line), with no sentence subordinating one to the other; the outliner needed two phrases. The spec's p52 controlling idea itself joins the two with 'and', so the draft cannot meet the check without the spec splitting them or making the chapter's answer an instance of the part synthesis.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit serves a supporting claim or a framing role: scene and worked example -> S3/S4/S5 problems and answers; concepts -> S1; public record -> S1/S6; architecture -> S1, S2, S3 (display rules), S4 (p21-p23), S5 (p24-p25); consent -> S3; judging sections -> S2, S6; conclusion -> part synthesis. No unit off-thesis.",
+      "spec_locus": "/thesis/supporting_claims",
+      "draft_locus": "whole draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Scene revenue table: p05 says it shows four products with different buyers on different systems and maps them onto the three businesses; p06 brand split stated plainly.",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Vocabulary table defines each term (MRC viewability rule cited and stated); introduced by p13.",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Concepts: The Vocabulary of the Ad Stack ¶2",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Public-record table carries a 'What it shows' column per row; p33 draws the Adevinta lesson explicitly.",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "In Practice: What the Public Record Shows ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Figure 1 caption and component table are introduced ('The table gives each component one owner') and explained; Figure 2 caption states what the impression diagram shows.",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Quotations explained: Prebid (timeout trade-off, server-side path 'not optional'), IAB Tech Lab ads.txt ('configuration that must be kept in step'), US DoJ ruling ('remedies ... may change how the products are offered'), DSA Art. 26(1) (labels), eBay 10-K and OLX ('Paid visibility lives inside ranking'), UCPD Annex I 11a and P2B Art. 5 ('therefore needs a machine-readable paid flag'), CarGurus ('describes the audience product directly'), Autotrader (small but growing, reported on its own), DSA Art. 26(3)/28(2) (exclusions at source); Figure 3 caption explains the sponsored path; pacing example explained.",
+      "spec_locus": "/sections/3",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶11",
+      "quote": "Rightmove reports about **10 million** consumers subscribed to its marketing CRM",
+      "finding": "The Rightmove figure is only labelled 'a first-party channel in its own right'; the paragraph's claim is about what retail media sells (placements, audiences, measurement), and the sentence never says how a marketing-CRM subscriber count supports it (the spec's 'shows': first-party channels are real revenue lines at vertical leaders). Both flow readers found it unconnected.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Consent evidence explained: ePrivacy Art. 5(3), TCF v2.3 deadline and the mandatory Disclosed Vendors segment, Google's certified-CMP requirement (non-personalized fallback), EDPB Opinion 08/2024 ('consent or pay is not a safe default'), the VLOP list, Google's Privacy Sandbox reversal ('identity plumbing is not' under the marketplace's control); Figure 4 caption explains consent or contextual.",
+      "spec_locus": "/sections/4",
+      "draft_locus": "Consent: The Signal That Sets the Revenue",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Experiment table explained in p36 (third arm: -1.9% revenue, ~+1% contacts, why contacts are worth more); Figure 5, Figure 6 captions state their point; the 310,000 -> 240,000 segment explained as a 23% difference the original ignored; EUR 238M vs EUR 14M stated as the reason for Felix's condition; Decision 3's -6% revenue with rising contacts per paid position tied to the ranking pattern.",
+      "spec_locus": "/sections/5",
+      "draft_locus": "Veldmark Worked Example: Three Decisions in 2027",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Trade-offs table summed up by p41's rule; vertical table introduced by p42 and its sensitive-data column applied in p43.",
+      "spec_locus": "/sections/6",
+      "draft_locus": "Trade-offs / Vertical Differences",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Conclusion's records (lead ID, ledgers, invoice line) and the Tradeyard Poland Sponsored case are stated with what they show.",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Revenue to the Platform Underneath",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶1",
+      "quote": "Against that record, Veldmark's reference architecture keeps three decision paths apart and puts one policy service over all of them (Figure 1).",
+      "finding": "The spec declares cause_effect carrying over 'advertising is large, cyclical and, for sponsored listings and audiences, decided in the marketplace's own systems'. The preceding prose (p33) ends only on display's cyclicality, and 'Against that record' states no reason why the record leads to three separate paths; both flow readers said the link did not connect.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in boundaries express their declared relationship: introduction (elaboration 'The term \"advertising\" hides', contrast 'does not re-teach', sequence roadmap); scene (example/additional_support/time/labelled sequence/'Ingrid's question ... was not'); concepts and in-practice section openers follow p11's 'The rest of this chapter is the answer'; architecture inner boundaries (elaboration, cause_effect 'The timeout trades', problem_solution 'Five rules', additional_support, place 'sit inside the result list', contrast 'closest to the core marketplace', cause_effect 'Five design choices', additional_support 'The regulatory floor', sequence, cause_effect 'where the privacy risk concentrates'); consent ('All three paths depend on consent', 'Three architectural consequences follow', 'Second', 'Third', 'also ... which matters because'); worked example (problem_solution, Decision labels, 'also accepted', 'took effect later, from the first quarter of 2028'); judging sections ('behind this design', 'differs by vertical', 'Without this chapter's design', 'preventing these failures raises', 'Ten questions test those five answers'); conclusion ('Advertising closes Part VI', 'The part's test asks', 'Each record depends on'). The hand-off link to part-7 is present (deterministic check).",
+      "spec_locus": "/sections/*/transition_in",
+      "draft_locus": "whole draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the declared order: scene -> vocabulary -> evidence -> design path by path -> consent across paths -> decisions answering the scene in order -> judging sections -> part close; no section other than In Practice is unclear to either. Points both readers raised that are dismissed as not material for this audience: the brand names (Tradeyard, Motorvane, Hearthly, Keybridge), Safe Deal and VAS, the forum principle 'share platforms, not products' and 'the part's test' are all on audience.already_knows (earlier chapters and the part introduction).",
+      "spec_locus": "/flow",
+      "draft_locus": "whole draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶1",
+      "quote": "Its 2026 revenue split (terms defined next) shows four products with different buyers, served by different systems.",
+      "finding": "Both readers had to re-read to map the table's four products onto the three businesses just announced, and both noted that '(terms defined next)' is followed by the three disputes, not the definitions. The spec's order is fine; the prose (or the table's row labels) could tie each row to its business and say the terms come in the next section.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 1 (flow reader A, item 1)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2",
+      "draft_locus": "In Practice: What the Public Record Shows ¶1",
+      "quote": "Marketplaces publish advertising revenue more readily than advertising architecture, but the figures show how large and cyclical the business is and where its decisions run.",
+      "finding": "The section's place is unclear to both readers: it draws only the Adevinta cyclicality lesson, which does not lead into the architecture, and its eBay, CarGurus, Autotrader and OLX rows are quoted again in full in the architecture subsections, so readers meet the same evidence twice. The duplication is specified by the spec (p32's table rows and p21/p24's evidence) and was kept by the decision log ('Notes not taken ... moving the public-company citations from p21 and p24 into In Practice'); both readers propose folding or moving the section, a change to the spec's order or evidence. The weak link into the architecture is reported separately as a transition failure.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, section 2 (In Practice marked 'unclear') and section 3 item 3 (flow reader A, item 5)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶7",
+      "quote": "And their positions count against the same ad-load budget as sponsored listings, because to the buyer they are all positions not given to the most relevant listing.",
+      "finding": "Native placements get their own subsection between display and sponsored listings without saying they are filled by the display path's ad server, so B checked whether this was a fourth path; A met a forward reference to sponsored listings (not yet covered), a new 'ad-load budget', and 'buyer' switching from ad buyer to marketplace buyer. The spec places native inside the display path ('native placements, which share its ad server'); the prose does not say so.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 4 (flow reader A, items 3 and 4)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶11",
+      "quote": "Rightmove reports about **10 million** consumers subscribed to its marketing CRM",
+      "finding": "Both readers found the Rightmove CRM figure out of place in a paragraph about retail-media placements and audiences, connected to nothing before or after.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 5 (flow reader A, item 7)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Consent: The Signal That Sets the Revenue ¶4",
+      "quote": "No classifieds marketplace appeared on the European Commission's list of designated very large online platforms when it was checked in October 2026",
+      "finding": "Both readers had to work out why the VLOP list matters: the link (the EDPB opinion was addressed to large online platforms, so it does not bind Veldmark directly) is left implicit.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 7 (flow reader A, item 8)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Ghost Inventory (gone listings still shown) monetized.",
+      "finding": "Both readers stopped at Ghost Inventory: it is not among the failure patterns the opening callout says the chapter addresses, and ads on gone listings appear nowhere else in the chapter, so it read like a mistake. The spec's p44 names it; the callout and the body do not prepare it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 10 (flow reader A, item 11)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "From Revenue to the Platform Underneath ¶3",
+      "quote": "Those are platform problems. Review every revenue change for its cost in contacts, with its record, delivery evidence and guardrail named before launch.",
+      "finding": "Both readers re-read the closing paragraph: the list of earlier chapters' needs is compressed, and the bare imperative interrupts the step from 'platform problems' to the Part VII hand-off. The spec's p54 states the review as a consequence ('so every revenue change should be reviewed'); the prose drops that link.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 13 (flow reader A, item 13)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "Veldmark Worked Example: Three Decisions in 2027 ¶5",
+      "quote": "a €14 million retail-media line is not worth their trust",
+      "finding": "Flow reader B: the EUR 14M is the group-wide retail-media total, not Motorvane's share, so the comparison with Motorvane's EUR 238M dealer subscriptions mixes scopes and sent the reader back to the table. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Veldmark Worked Example: Three Decisions in 2027 ¶4",
+      "quote": "no data from Valuo (Hearthly's valuation product)",
+      "finding": "Flow reader A wondered why a real-estate valuation product would feed an electric-SUV segment; the exclusion reads as group-wide policy only once Vertical Differences explains Valuo. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Architecture: Three Stacks, One Policy Layer ¶12",
+      "quote": "(new-car leasing against used-car stock)",
+      "finding": "Flow reader B had to re-read the parenthetical to see who competes with whom. One reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: One Ad Unit, Three Arguments ¶1 (revenue table)",
+      "quote": "Programmatic display (open auction and private deals)",
+      "finding": "The scene's revenue table uses 'supply-side platforms' and 'private deals' (PMP deals), both on audience.does_not_know, before the Concepts section defines them, and unlike Prebid they are not glossed in passing. Both flow readers reported these terms as undefined at that point.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item 1, and flow reader B, section 3 item 1 (both report SSPs and private deals used undefined in the table)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every other does_not_know term is defined at or before use: ad stack, first-party audience, sponsored listing (intro ¶2 and table), header bidding and Prebid (glossed in p05), ad server, DSP, native ad, retail media, CMP, TCF, TC string, ad load, CPM/eCPM/CPC, viewability, clean room (table before p25), ads.txt/app-ads.txt/sellers.json (p18), EDPB consent-or-pay (p30); fill rate, AMP and key-values glossed. Brand names, Safe Deal and the forum are already_knows.",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "whole draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on Part VI's thread and a direct statement of the tension (core revenue from matches, ad revenue from page views), then the three businesses, scope and roadmap; no placeholder, restated question, dictionary, dawn-of-man or book-report opening.",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers Ingrid's question, states the part synthesis, applies the part's test to one product and hands off; not a bare summary, a new-topic reveal, an uplift ending or a grab bag.",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Revenue to the Platform Underneath",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Synthesis: every revenue line needs a record both sides can count, delivery events and a contacts guardrail, so money is one pipeline because records are shared. So-what: these are platform problems Part VII builds for, with a course of action (review every revenue change for its cost in contacts).",
+      "spec_locus": "/conclusion",
+      "draft_locus": "From Revenue to the Platform Underneath",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Returns to Ingrid's question from the scene ('Ingrid's question has its answer'), to the introduction's framing ('Advertising closes Part VI'), and answers the Part VI introduction's test for a Sponsored campaign on Tradeyard Poland, as the spec's callback requires.",
+      "spec_locus": "/conclusion/callback",
+      "draft_locus": "From Revenue to the Platform Underneath ¶1-¶2",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted all twelve sections in the spec's order (scene, vocabulary, public record, three paths under one policy layer, consent, 2027 decisions, trade-offs, verticals, failure modes, Chief Architect's view, questions, Part VI close), the tension between matches and page views, the three businesses and owned terms, and the evidence (fictional Veldmark, public company sources, regulators and industry sources, legal reasoning). Its two possible confusions (Veldmark Ads, the brand structure) are known to this audience.",
+      "spec_locus": "/intent/acceptance_criteria/1",
+      "draft_locus": "Introduction",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader matched all three parts of the expected answer: timeouts, slot counts and ad load in the ad policy service, shipped only behind an experiment with contacts per session as guardrail, revenue that costs contacts decided by the CPO; audiences from the first-party audience service, consented and DPO-approved sources, exclusions of dealer, neutral-role (Keybridge) and message data, minimum 1,000 users, off site only through a clean room; Top listing and Sponsored as one product family in the catalog, decided inside ranking under one relevance floor, at most three paid positions in the first ten rows, one invoice line.",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "whole draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The last section states a part-level synthesis no single chapter states (record both sides can count: lead ID, order and transaction ledger, entitlement ledger, one invoice line; delivery events; a contacts guardrail), says why it matters for Part VII (consent on every event, read model of paid positions, impressions joined to contacts, leads and paid effects as events, one governed contact definition, guardrails on pricing tests), and answers the part introduction's test for a Sponsored campaign on Tradeyard Poland.",
+      "spec_locus": "/intent/acceptance_criteria/3",
+      "draft_locus": "From Revenue to the Platform Underneath",
+      "severity": "minor"
+    }
+  ]
+}

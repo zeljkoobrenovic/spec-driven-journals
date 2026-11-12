@@ -1,0 +1,1559 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "publication-pipeline",
+  "journal": "listing-systems-architecture",
+  "part": "part-3",
+  "title": "From Submitted to Searchable: The Publication Pipeline",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the publication-pipeline entry in journal-spec.json. Units added by this conversion: a roadmap paragraph in the introduction (p04) and a synthesis paragraph (p52) before the hand-off.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The eight stages from submission to full visibility, the two clocks (platform latency and source latency), and pre- versus post-moderation.",
+        "The split between a synchronous decision path and an asynchronous propagation path, and the mechanisms of unpublish propagation: a consumer registry, version-gated events, tombstones, send-time re-checks and a propagation monitor."
+      ],
+      "believe": [
+        "Unpublishing is harder than publishing and matters more, and a single p95 that hides coverage, clock and the held listings is not an SLA."
+      ],
+      "can_do": [
+        "Write a publication-pipeline SLA card with coverage, clock, removal objectives per consumer and a stage budget.",
+        "Find where a slow or ghost listing comes from, and decide which stage's budget pays for a new pre-publication check."
+      ]
+    },
+    "audience": {
+      "who": "Chief and principal architects, platform and search leads, and engineering directors of classifieds, automotive and real-estate marketplaces who own (or inherit) publication latency targets, moderation integration or Ghost Inventory complaints.",
+      "already_knows": [
+        "What an API, a database, an event stream, a search engine and Kubernetes are; percentiles such as p95; Kafka partitions and consumer offsets.",
+        "From earlier chapters: the listing aggregate, its lifecycle states, events and versions (listing-aggregate); feeds, snapshots and reconciliation (listing-ingestion); normalization and entity resolution; Veldmark, its brands, cast and Common Ground (meet-veldmark); the failure-pattern names (where-listing-systems-go-wrong); Part I's time to first contact and ghost rates."
+      ],
+      "does_not_know": [
+        "Publication pipeline, freshness SLA, unpublish propagation, platform latency and source latency, pre- and post-moderation, risk gate, consumer registry, tombstone, zombie listing.",
+        "Search-engine refresh and soft-commit semantics and searcher warming.",
+        "The transactional outbox and the event contract (owned by event-driven-listings), the moderation decision service (trust-and-safety-architecture) and the DSA statement of reasons (marketplace-regulation), which are named here and defined in their chapters."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a fast-looking p95 and a sold listing in a digest, the reader names what the SLA hides and where the ghost came from.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Your dashboard shows a two-minute p95 from submit to searchable, and a listing sold yesterday evening appeared in this morning's alert digest although search removed it within a minute. Using only this chapter: what might the p95 hide, and how do you stop the digest problem?",
+        "expected": "The p95 may cover only listings cleared by the automated gate; the held share and its own review objective must be stated next to it, together with which clock is measured. The digest was assembled before the sale from a snapshot and never re-checked: every system holding a copy must be registered with a removal objective and owner, consume version-gated removal events and tombstones, re-check each listing's state at send time, and report acknowledgements to a propagation monitor."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Where six minutes went at Tradeyard and the sold bike in 214 digests; eight stages, two clocks and moderation modes; a decision path and a propagation path with ordering, idempotency, zombie listings, expiry and renewal; unpublish propagation through a registry, send-time re-checks and takedowns; observability; how others got faster, Tradeyard's baseline and the 90-second budget; freshness SLAs by vertical; trade-offs, failure modes, the Chief Architect's view and questions. Evidence: public company engineering sources, regulation and case law, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposed new pre-publication check, the reader decides which listings should wait for it and how its cost is paid within the target.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Trust and safety wants every new listing to wait, before it goes live, for an image model that takes up to 25 seconds. Using only this chapter: should every listing wait, and how do you decide whether the 90-second target can absorb it?",
+        "expected": "Not every listing: the moderation mode is chosen per listing by risk (category, seller trust, the gate's score); high-risk tiers such as a new account's rentals in fake-rental cities wait, while the rest go live on the synchronous gate and the check runs after publication, where it can still demote, hold or remove through enforcement. The check sits in the asynchronous checks stage (30 s, in parallel with media); the question is which stage's budget pays for it, decided on the SLA card at the architecture forum; held listings get their own objective and the held share is reported beside the target."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What happens between a seller pressing \"publish\" and a buyer finding the listing, and how fast must it be?",
+    "claim": "Publishing is a decision followed by a propagation: the synchronous path holds only what decides whether a listing may go live (validation, the risk gate and the entitlement check, within about two seconds), and everything else is driven by one listing event under a latency budget per stage that sums to the target (90 seconds p95 at Tradeyard); the freshness target is a contract that names the listings it covers, the clock it measures and the objective for listings held for review, with removal objectives per consumer (10 seconds for search, 2 minutes for every registered copy) tighter than the insertion target; and removal reaches every registered copy through version-gated events, tombstones and send-time re-checks, with a monitor that proves each consumer acknowledged it.",
+    "disputed_by": "The common practice of a serial pipeline in which moderation, enrichment and batch indexing run one after another, 'published' means 'present in the search index', the freshness metric is one p95 over the listings that passed automatically, and removal is designed for the search index only.",
+    "so_what": "A Chief Architect who accepts this gives the whole path one owner and an SLA card decided at the architecture forum, makes registration in the consumer registry the price of subscribing to listing events, asks which stage's budget pays for any new pre-publication check, and watches insertion latency by moderation path, the share of listings held and removal latency for the worst consumer.",
+    "how_why": "Tradeyard's six-minute p95 measured only the 94% of listings the automated gate cleared; the other 6%, about 138,000 a week, had no number, and nobody could say how long a sold listing took to disappear from everything. Femke's bike left search one minute after its sale and still appeared in 214 digests assembled from a replica snapshot. In the 90-second budget the synchronous path takes 2 seconds and indexing 15, with search removal at 10 seconds p95 and every registered consumer at 2 minutes; changing the pipeline's shape brings Tradeyard to about 2 minutes by the end of 2027 on the same Solr engine.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Publishing is a decision followed by a propagation: the synchronous path holds only validation, media readiness, the risk gate and the entitlement check, ends with one listing event written through the outbox, and everything else (indexing, alerts, SEO, recommendations, syndication) consumes that event in parallel rather than passing the listing from stage to stage."
+      },
+      {
+        "id": "S2",
+        "claim": "A freshness SLA is a contract that names the listings it covers, the clock it measures (platform or source latency) and the objective for listings held for review, because the moderation mode decides which stages sit on the critical path and a single p95 over the gate-cleared listings hides the rest."
+      },
+      {
+        "id": "S3",
+        "claim": "The target is met by a latency budget per stage that sums to it (90 seconds p95 at Tradeyard), and most of the gain comes from the pipeline's shape (events instead of stacked timers) before the engine's visibility model gives the last part."
+      },
+      {
+        "id": "S4",
+        "claim": "Removal touches more copies than publication and a missed removal can send buyers to a scammer, so it reaches every registered copy through a consumer registry, version-gated events, tombstones and send-time re-checks, with takedowns on the same path at a higher priority and objectives per consumer tighter than the insertion target."
+      },
+      {
+        "id": "S5",
+        "claim": "The pipeline is provable only when 'published' is defined by the listing record and its event rather than by the index, one owner holds the SLA card and the registry, and instruments measure every stage and every consumer."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Ties the earlier links into one path with a time budget and makes removal reach every copy, setting the freshness and removal guarantees that discovery reads.",
+    "supports": [
+      "P3-4"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "in-practice: public records first, then Tradeyard's baseline, contract, budget and plan, then the removal test on the bike"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, failure modes, the Chief Architect's view and the questions: the book's closing judgements on a design already shown"
+      }
+    ],
+    "rationale": "The scene states two problems: an insertion number that covers only some listings, and a removal path with no number, and it reconstructs where the six minutes went, so the stacked timers motivate what follows. The concepts give the stages, clocks and moderation modes both answers need. The architecture answers the insertion problem's shape (decide, then propagate) and lays down the ordering rules that removal depends on; unpublish propagation then answers the removal problem with those rules in hand; observability gives the proof both answers need. The worked example then tests the design on public records and prices it at Tradeyard against the scene's baseline, closing both scene questions; the vertical section generalizes the card it produced. Trade-offs, failure modes, the Chief Architect's view and questions judge a design the reader has already seen. Unpublish before architecture would use version-gated events and tombstones before they are defined; expiry sits with the other causes of removal, so that sale, expiry and takedown meet on one path; the budget before the stages and the engines' visibility model would allocate seconds to things not yet explained; the vertical table before Tradeyard's card would show a format before the reader has seen one filled in."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "The publication pipeline is the path that turns an accepted listing into visible supply, and back again."
+    },
+    "bridge": {
+      "from_reader_world": "The earlier Part III chapters bring a record in, clean it and match it, and none of that reaches a buyer until the listing appears in search, an alert, a search-engine result or a recommendation.",
+      "to_topic": "The path through a dozen systems owned by half a dozen teams, each adding latency, each able to fail and each holding a copy that must later be removed."
+    },
+    "thesis_statement": {
+      "text": "Publishing is a decision followed by a propagation under a budget per stage; a freshness SLA is a contract that names its coverage, its clock and the held listings; and unpublishing, harder and more important than publishing, must reach every registered copy through version-gated events, tombstones, send-time re-checks and a per-consumer monitor.",
+      "placement": "KEY POINTS callout (all three bullets); p01 frames the path in both directions."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04.",
+      "promises": [
+        {
+          "promise": "Tradeyard's six minutes, where they went, and the sold bike in 214 digests.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The stages, clocks and moderation modes.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "A decision path and a propagation path, with its ordering rules.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Making unpublishing reach every copy through a consumer registry, send-time re-checks, expiry and one path for takedowns.",
+          "kept_in": [
+            "unpublish"
+          ]
+        },
+        {
+          "promise": "How to prove the pipeline works.",
+          "kept_in": [
+            "observability"
+          ]
+        },
+        {
+          "promise": "How others got faster and Tradeyard's 90-second budget.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "Freshness SLAs by vertical, trade-offs, failure modes, the Chief Architect's view and review questions.",
+          "kept_in": [
+            "verticals",
+            "trade-offs",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The publication pipeline is the last link of Part III's supply chain: it turns a listing that ingestion, normalization and entity resolution have brought in, cleaned and matched into visible supply and back again, through a dozen systems that each add latency, can fail and hold a copy.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Ingestion, normalization and entity resolution reach no buyer until the listing appears in search, an alert, a search-engine result or a recommendation; Part I's time to first contact sets the publication budget and its ghost rates the removal guarantee; Part IV is only as fresh as this pipeline.",
+            "shows": "Places the chapter in the chain and names what it must guarantee in both directions; entity resolution's pre-publication duplicate checks appear later as stage 5 and in the real-estate case."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "Frames publication and removal as one path through many systems, the problem both halves of the thesis answer."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The chapter owns three terms: the publication pipeline (the stages from submission to visibility on every surface, and back), the freshness SLA (the target for how fast a change becomes visible and an ended listing disappears) and unpublish propagation (the mechanism that carries the end of a listing to every copy, with evidence).",
+        "function": "definition",
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S4"
+          ],
+          "how": "Defines the SLA and unpublish propagation the thesis is about."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The path from submission to visibility and back.",
+          "introduces": "The three terms the chapter owns for it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Neighboring chapters own the parts (lifecycle states, the moderation gate, the event contract, indexing, alert fan-out); this chapter owns the whole path, the budget that ties the stages together and the measurement that proves it works.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S5"
+          ],
+          "how": "Claims the end-to-end path and its measurement as one ownership."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The terms this chapter owns.",
+          "introduces": "The parts that other chapters own, and what is left for this one.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter starts with Tradeyard's six minutes and a sold bike that reached 214 alert digests, defines the stages, clocks and moderation modes, splits the pipeline into a decision path and a propagation path, makes unpublishing reach every copy (registry, send-time re-checks, expiry, takedowns), shows how to prove it works, then works through public records, Tradeyard's baseline and its 90-second budget, freshness SLAs by vertical, trade-offs, failure modes, the Chief Architect's view and review questions, and names its kinds of evidence.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What this chapter owns.",
+          "introduces": "The order in which it builds the path, and the Veldmark case it uses.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Where Did Six Minutes Go?",
+      "controlling_idea": "Tradeyard's six-minute p95 and Femke's sold bike in 214 digests pose the chapter's two questions, which listings the publication number describes and how long a sold listing takes to disappear from everything, and the reconstruction shows the six minutes are stacked timers.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S3"
+        ],
+        "how": "Shows an unmeasured held share, an unmeasured removal path and a delay built from stacked timers, the gaps the thesis closes."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item.",
+        "introduces": "Femke's bike on Tradeyard Netherlands, with Veldmark named as fictional.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The bike's timeline first, then the number Ingrid puts on it, then her two questions, which only make sense once the number and the timeline are known; then the reconstruction answers the heading's question of where the six minutes went, so the reader carries the stacked timers into the concepts and the architecture they motivate."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Femke's city bike went from submission at 19:42 on 7 March 2027 to searchable at 19:48, sold on Monday and left search at 18:11, yet appeared in 214 Tuesday digests assembled at 17:30 from a replica snapshot that was never re-checked.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "19:42 submit, 19:44 cleared, 19:48 searchable, 312 saved searches, first buyer 19:55, 14 conversations, sold Monday for €225 via Safe Deal, marked sold 18:10, removed from search 18:11, 214 Tuesday 07:00 digests assembled 17:30 from a replica snapshot.",
+              "shows": "One listing shows both a slow publication and a removal that reached search but not every copy.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Ingrid reads the six minutes as Tradeyard's p95 against Common Ground's 90-second target, and Daan explains that it comes from a batch moderation consumer, a timed batch indexer and Solr's commit timer.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "p95 of 6 minutes; Common Ground (€140 million) target of 90 seconds p95 by end of 2028; Yardstick's RabbitMQ batch moderation consumer, timed batch indexer and Solr commits.",
+              "shows": "The delay is built from timers and batches, not from slow work.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The bike's timeline.",
+            "introduces": "The number it stands for and where the time goes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Ingrid's first question is which listings the six minutes describes (only the 94% cleared by the automated gate, with the 6%, about 138,000 a week, unmeasured) and her second is how long a sold listing takes to disappear from everything, for which nobody had a number either.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "94% automated clearance; 6% (about 138,000 a week) to human review, visible after minutes or hours; no removal number.",
+              "shows": "The headline number hides coverage and ignores removal.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Daan's explanation of how to make stages faster.",
+            "introduces": "The questions Ingrid asks instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Ingrid's team reconstructed Tradeyard's six minutes stage by stage from Yardstick's logs, with illustrative figures that show where the time goes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Baseline table: submit 2 s/4 s; thumbnails 18 s/70 s; moderation consumer 50 s/140 s; batch indexer 70 s/150 s; Solr soft commit and warming 40 s/85 s; end to end 3 min 10 s median, 6 min p95.",
+              "shows": "The time sits in waiting between stages, not in the work.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Ingrid's questions and Daan's account of batches and timers.",
+            "introduces": "The stage-by-stage reconstruction of where the six minutes went.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Femke's bike sits at the slow end of the table: cleared at 19:44, it waited for the indexer's next run and the next soft commit and was searchable at 19:48.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Cleared 19:44, searchable 19:48 after the indexer run and soft commit.",
+              "shows": "The bike's four minutes were waiting on timers, as the table predicts.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The baseline table.",
+            "introduces": "The bike's place in it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The reconstruction produced three findings: every timer stacks, images were processed at the wrong moment, and the held 6% had no measure at all.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: three timed stops versus a continuous stream.",
+              "shows": "Shows why event-driven stages win most of the gain."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The baseline and the bike.",
+            "introduces": "What they show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Stages, Clocks and Moderation Modes",
+      "controlling_idea": "Eight stages split into a decision and a propagation, a freshness SLA must name one of two clocks, and the moderation mode decides which stages sit on the critical path.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Gives the stage split the architecture rests on and the coverage and clock terms the SLA needs."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Ingrid's two questions, which cannot be answered without knowing what the pipeline consists of.",
+        "introduces": "The stages, clocks and moderation modes that answering them requires.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Stages first, because the clocks are measured across them and the moderation mode decides which of them sit on the critical path; the leboncoin and Which? cases follow the moderation definition because they test it."
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "A listing passes eight stages between submission and full visibility, each with what it decides, a typical owner and whether it runs synchronously.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Stage table: validation, media readiness, risk gate, entitlement and pricing check, enrichment, asynchronous risk checks, indexing and cache invalidation, notification and distribution.",
+              "shows": "Gives the reader the stages every later section allocates time and ownership to."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The first four stages decide whether the listing may go live and the last four decide where it must appear, and mixing the two is the root of most slow pipelines.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Indexing inside the request makes the seller wait for search; moderating after the indexer has seen the listing shows unmoderated content.",
+              "shows": "Each way of mixing the questions has a visible cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The eight stages.",
+            "introduces": "The two questions they answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "A freshness SLA must say which clock it measures: platform latency, from receipt to visible, which the marketplace controls, or source latency, from the real-world change to receipt, which it controls only indirectly.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The stages a listing passes.",
+            "introduces": "The two clocks a time across them can be measured on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "For dealers the two clocks diverge, as in the Essen Golf whose sale reached Motorvane 26 hours late while its own removal took ten minutes, so an SLA that does not separate them blames the wrong team.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Autohaus Ruhrblick sold the Golf on 29 April 2027; removal arrived through the next day's snapshot, 26 hours after the sale; Motorvane's platform latency ten minutes.",
+              "shows": "Only the platform clock is the pipeline's to fix; the other is a feed-contract problem.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The two clocks.",
+            "introduces": "A case where they differ by two orders of magnitude.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Pre-moderation checks before visibility and post-moderation after, large classifieds choose per listing by risk, and the moderation mode therefore decides which stages sit on the critical path and must be reported separately in the SLA.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A verified dealer's car goes live on the gate's verdict; a new account's first rental in a fake-rental city waits for image and duplicate checks.",
+              "shows": "The same components serve two paths with different critical paths."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Clocks, the first thing an SLA must name.",
+            "introduces": "Moderation modes, which decide what lies on the clock's path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The pipeline's actual moderation mode must match what the marketplace tells users, as the 2015 Paris judgment against leboncoin shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "December 2015: leboncoin found guilty of misleading commercial practices for claiming every ad passed validation when not all were reviewed before going live; as a host it had no duty to check every ad in advance.",
+              "shows": "A moderation claim is a factual claim the pipeline's configuration must support.",
+              "source": "Clubic, 2015"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Choosing the moderation mode per listing.",
+            "introduces": "The obligation to describe that choice truthfully.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A material edit is a new submission and must re-enter the gate, as the 2024 Which? test of Gumtree shows.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "December 2024 Which? undercover test: Gumtree blocked a first scam-style ad, but edited versions passed review 'in minutes'.",
+              "shows": "Edits that bypass the gate reopen the path the gate closed.",
+              "source": "Which?, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The rule that the actual mode must match the claim.",
+            "introduces": "A second rule about which changes the gate must see.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: A Decision Path and a Propagation Path",
+      "controlling_idea": "The synchronous path decides and stops at one event written through the outbox; the asynchronous path fans that event out to consumers that apply events by version and keep tombstones.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Builds the decide-then-propagate design and the ordering rules removal later depends on."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The concepts' finding that mixing decision and propagation slows pipelines.",
+        "introduces": "A design that separates them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole design (Figure 2) first, then the synchronous path, then the asynchronous path's shape, then the rules that make fan-out safe. The ordering rules come last because they only matter once many consumers receive one stream."
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "The reference architecture is Veldmark's target design and an inference from public building blocks, because no classifieds operator has published its complete pipeline; Figure 2 shows the decision path ending in one event and the propagation path fanning it out.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: decision path, one event, propagation path with every consumer reporting to a freshness monitor; the human-review path rejoins at the same publication step.",
+              "shows": "A held listing propagates exactly like a cleared one, so both paths share one mechanism."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "form": "list",
+          "controlling_idea": "The synchronous path runs while the seller waits, gives a definite answer and does four things only: validate, confirm media readiness, run the risk gate and check entitlements.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Media processed during drafting; gate within a few hundred milliseconds; insertion fees for vehicles and property at Tradeyard Poland; a missing entitlement as a decision outcome.",
+              "shows": "Each step contributes to the decision, not to visibility.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Figure 2's decision path.",
+            "introduces": "Its four steps.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The listing context then writes the listing and its event in one transaction through the transactional outbox and returns; that record and its event, not the index, define what 'published' means; the event is ListingPublished for most listings and ListingSubmitted for a gate-cleared listing whose risk tier waits for further checks; everything after the write is propagation, and the seller gets a promise the platform can keep.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four decision steps.",
+            "introduces": "The write that ends the synchronous path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Indexing, alert matching, sitemaps, recommendations and syndication must never be called from the request, because each can be slow or down and none decides whether the listing may exist.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Everything after the write is propagation.",
+            "introduces": "The stages that must stay out of the request, and why.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The asynchronous path begins with the listing event and should fan it out rather than pass the listing from stage to stage.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The synchronous path's end, the event.",
+            "introduces": "What the asynchronous path does with it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "In the sequential design each stage calls the next, so latency is the sum, a slow stage blocks everything and adding a consumer is invasive, and Yardstick's timers were a version of it.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Fan out rather than pass along.",
+            "introduces": "The design that passes along, and its costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "In the fan-out design the listing context publishes ListingPublished once and every consumer subscribes, so consumers run in parallel, each surface waits only for the decision and its own consumer, and a new consumer touches nobody else.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The sequential design's costs.",
+            "introduces": "The fan-out design that removes them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Asynchronous checks that may still change the decision run before ListingPublished for the risk tiers that need them and after it for the rest, where they can still demote, hold or remove a live listing through enforcement.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Fan-out after the decision.",
+            "introduces": "The checks that can still change it, and where they sit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "Fan-out is safe only if every consumer applies duplicate, late and out-of-order events correctly, through three rules: per-listing order, version-gated apply and tombstones instead of deletions.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted's 2021 indexing pipeline used the Kafka offset as the Elasticsearch external version and documented that adding partitions broke the ordering assumption.",
+              "shows": "Version gating is a documented practice, and ordering assumptions break when partitions change.",
+              "source": "Vinted Engineering, 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Many consumers receiving one event stream.",
+            "introduces": "What each must do so that duplicates, delays and reordering do no harm.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "These rules prevent the zombie listing, in which a replay or reindex writes an old active state over a sold one, the most common way a backfill creates Ghost Inventory.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: a backfill's version 3 finds the tombstone and is ignored; without it the sold listing is recreated.",
+              "shows": "Shows why the tombstone, not the deletion, stops the zombie."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The three rules.",
+            "introduces": "The failure they prevent.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "unpublish",
+      "heading": "Unpublish Propagation",
+      "controlling_idea": "Removal touches more systems than publication and its failures cost more, so it needs a consumer registry with objectives per consumer, send-time re-checks for work assembled in advance, a lifecycle scheduler that ends listings on time, and takedowns on the same path at a higher priority.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Specifies the removal half of the thesis, consumer by consumer."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Publication through fan-out and the rules that keep removed listings removed.",
+        "introduces": "Removal as its own problem, harder than publication.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The registry comes first because nothing can be removed from a copy nobody knows about; the objectives per consumer follow the registry they belong to; send-time re-checks close the gap that events alone leave; expiry follows as the second cause of removal, by the clock rather than the seller; takedowns come last because they reuse everything before them, and Figure 5 then gathers every cause of removal on one path."
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "Removal is the mirror image of publication but touches more systems, because a week-old listing has been copied into digests, candidate stores, feeds and caches, and its failures cost more, because a listing left up after a takedown sends buyers to a scammer.",
+          "function": "claim"
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The first requirement is a consumer registry of every system that holds listing data, because a removal cannot reach a copy nobody knows exists.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark's March 2027 audit: about 41,000 Tradeyard NL listings a week still present in at least one downstream copy 24 hours after ending in Yardstick, mostly in the alert-digest cache and the recommendation candidate store, neither on any list.",
+              "shows": "Unregistered copies are where Ghost Inventory lives.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: removal reaches only registered copies.",
+              "shows": "Shows the two unregistered copies as the ghosts."
+            },
+            {
+              "kind": "table",
+              "what": "Consumer table: search index, caches, alert matcher and digests, recommendations, listing page and SEO, messaging, advertising, partner feeds, analytics, each with removal action and objective.",
+              "shows": "Each copy needs its own removal action and objective.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Removal touches more systems.",
+            "introduces": "The first thing needed to reach them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The objectives in the table are Veldmark's 2027 targets aligned with the search and event chapters, and how an ended listing is rendered is decided from the reason it ended, which the pipeline must carry.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The consumer table.",
+            "introduces": "Where its numbers come from and what the pipeline must carry beside them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Consumers that assemble work in advance must re-check each listing's current state just before sending, because purges on removal events can fail or arrive late.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's bike in 214 Tuesday digests built at 17:30 and sent at 07:00; one batched lookup per digest.",
+              "shows": "The re-check is cheap and the failure it prevents is visible to buyers.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Removal events and purges for every registered copy.",
+            "introduces": "A second safeguard for copies assembled before the removal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "The lifecycle scheduler, which ends the listings no seller ends, is part of the pipeline and fails in three ways: midnight expiry storms, a lagging scheduler, and renewals treated as republication.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "mobile.de's Seller API keeps a separate renewalDate, 'the date the ad was last marked as new, which makes it appear new in search', next to creation and modification dates.",
+              "shows": "Renewal can be modelled as a ranking-timestamp change without touching creation.",
+              "source": "mobile.de Seller-API, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Removal of sold listings through events, purges and send-time re-checks.",
+            "introduces": "Removal by the clock: the lifecycle scheduler that ends the listings no seller ends.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Downstream channels enforce expiry whether the marketplace does or not, so the pipeline must execute lifecycle rules on time and propagate their results.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Google Merchant Center expires products 30 days after their last update; Google's job-posting guidance warns failing to remove expired jobs 'may result in a manual action'.",
+              "shows": "Late expiry has costs outside the marketplace's control.",
+              "source": "Google, n.d.; Google Search Central, updated 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The scheduler's failure modes.",
+            "introduces": "Why they cannot be left to downstream channels.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Takedowns should ride the same removal path as sales on a priority lane, because two mechanisms guarantee that one falls behind the registry; only priority, the gone page, pending messages and the statement of reasons differ.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: sales, expiry, takedowns and feed reconciliation end in one removal event; each consumer acknowledges the version it applied to the propagation monitor.",
+              "shows": "One path, one acknowledgement model for every cause of removal."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Removal for sales and for expiry.",
+            "introduces": "Removal for fraud and policy takedowns, which uses the same rails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "observability",
+      "heading": "Observability: Proving the Pipeline Works",
+      "controlling_idea": "A pipeline spanning eight teams is proven by five instruments no single team can game: the listing journey, synthetic canaries, stuck-listing detection, copy reconciliation and the two SLAs side by side.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Gives the measurement that makes the budget and the removal objectives provable, and ties it to defining 'published' in the record."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Objectives for insertion and for every consumer's removal.",
+        "introduces": "The measurement that proves each is met.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "Five instruments prove the pipeline works, and copy reconciliation works only because the record, not the index, defines what is published.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "If the index is the only place that knows, the pipeline has become Search as System of Record and none of the questions can be answered.",
+              "shows": "Measurement depends on where 'published' is defined."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: How Others Got Faster, and Tradeyard's Budget",
+      "controlling_idea": "Public records show that changing the pipeline's shape gives most of the gain and the engine's visibility model the rest, and Tradeyard's contract, budget and plan follow the same order while the bike's sale tests the removal side.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S2",
+          "S4"
+        ],
+        "how": "Tests the design on public records and prices it in Tradeyard's SLA card and budget."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The design and the instruments that prove it.",
+        "introduces": "Documented cases and Tradeyard's own numbers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Public records first, so the shape-first lesson is established; the scene's baseline findings then justify the contract and budget; the plan shows the order of gains; the removal test closes the case the scene opened. Putting the plan before the public records would present Tradeyard's two-step order of gains (shape, then engine) without the evidence that it is the usual order."
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "Vinted's public record shows that its first freshness gain came from changing the pipeline's shape and the second from the engine's visibility model.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted 2023: from Sidekiq delta jobs (up to about seven minutes) to CDC and Flink read models (about one minute); 2024, after moving to Vespa: 5-second visibility interval and a 4.64-second p99 to index a single item.",
+              "shows": "Shape first, engine second, in a classifieds-scale record.",
+              "source": "Vinted Engineering, 2023; 2024"
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Each engine documents when new documents become visible and at what cost, which is why commit frequency is a capacity decision as much as a freshness one.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Elasticsearch refresh every second only for search-active indices, lighter than a commit; Solr 8.11 soft and hard commits; new searchers auto-warm from the old one's caches.",
+              "shows": "Visibility intervals have a warming cost teams budget for.",
+              "source": "Elastic, n.d.; Apache Solr Reference Guide 8.11"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The engine's visibility model as the second lesson.",
+            "introduces": "What the engines document about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "form": "list",
+          "controlling_idea": "Ingrid's team wrote the 90-second target as a contract with three parts on the SLA card: coverage (gate-cleared listings, with a held-listing objective and the held share beside both), clock (platform latency) and removal objectives (the consumer table's targets).",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Coverage: 94% gate-cleared; held p90 under 30 minutes to decision in staffed hours; held share published. Clock: platform latency from receipt to searchable; feeds have their own SLA. Removal: search p95 10 s, every registered consumer p95 2 min, partner feeds 15 min, nothing sent after the end.",
+              "shows": "Answers Ingrid's two questions in the contract itself.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The three findings, including the unmeasured held share.",
+            "introduces": "The contract that closes them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The budget allocates the 90 seconds to stages, counting media and asynchronous checks once because they run in parallel.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Budget: sync path 2 s, outbox to topic 2 s, async checks and media 30 s, publication decision 1 s, indexing 15 s, caches 20 s, slack 20 s, total 90 s.",
+              "shows": "The target is met stage by stage and any new stage must be paid for from it.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The contract's insertion target.",
+            "introduces": "Its allocation to stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The plan reaches about two minutes on Solr by the end of 2027 by changing the pipeline's shape, and the rest with the 2028 moves of the insertion flow and search, so shape gives most of the gain and the engine the last part.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Second half of 2027: event-driven indexer fed from the listing event contract (live 1 July 2027), image processing during drafting, moderation pull as a stream; about 2 minutes p95 by end of 2027; insertion flow out of Yardstick Q2 2028; OpenSearch Q4 2028.",
+              "shows": "Repeats Vinted's order of gains at Tradeyard.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The budget.",
+            "introduces": "How and when it is delivered.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The bike's sale tests the removal side: under the new contract the digest service purges and re-checks at send time, so the bike reaches no Tuesday digest and the monitor shows each consumer's acknowledgement.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "ListingSold at 18:10; recommendation store acknowledges 18:11, partner syndication feed 18:19; no Tuesday digest.",
+              "shows": "The removal half of the contract answers the scene's second question.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The insertion side of the plan.",
+            "introduces": "The removal side, tested on the same bike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Freshness SLAs by Vertical",
+      "controlling_idea": "A group needs one SLA format with values per vertical and channel, because supply channels, removal risks and moderation paths differ.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows coverage, clock and moderation path as fields whose values differ by vertical."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Tradeyard's SLA card.",
+        "introduces": "The same format filled in for the other verticals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "A group does not need one SLA but one SLA format with values per vertical and channel.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vertical table: Tradeyard, Motorvane (88% dealer feeds), Hearthly (84% agency feeds), jobs; what sellers notice, insertion objective, dominant removal risk, source-latency control, moderation path, special constraint.",
+              "shows": "The same fields take different values per vertical.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "In real estate a listing that waits for a duplicate check before going live is slower but lands in the right property cluster, so Hearthly accepted a slower insertion objective, and the Barcelona ring made image and duplicate checks pre-publication for rentals in fake-rental cities.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly's slower objective for entity resolution; the Barcelona ring of July 2027 used photos stolen from real listings.",
+              "shows": "A vertical can rationally trade insertion speed for correctness or safety.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Values differ per vertical.",
+            "introduces": "One vertical's deliberate choice of a slower value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "The pipeline's choices (shape, moderation mode, visibility trigger, engine interval, removal mechanism, digest freshness) each have conditions, and the one that decides the others is where 'published' is defined.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "how": "States the recommended choices as decisions with conditions and names the decisive one."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design, the worked example and the vertical values.",
+        "introduces": "The choices they rest on, as options with conditions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "The trade-off that decides the others is where 'published' is defined: by the listing context's state and event, which can be measured, reconciled and rebuilt, or by the indexer, which turns every missing or lingering listing into an investigation.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Trade-off table: shape, moderation mode, visibility trigger, engine visibility, removal mechanism, digest freshness, each option with when it is right and what it costs.",
+              "shows": "Each choice has conditions; the defaults are the chapter's design."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Ten common failures are what happens when each rule of the design is skipped.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows the cost of each skipped rule."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The recommended choices.",
+        "introduces": "What goes wrong without them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "form": "list",
+          "controlling_idea": "Ten failures follow from skipping the design's rules, each with its fix: a serial moderation queue, stacked timers, indexing before the decision, edits that skip the gate, one p95, removal measured only in search, zombies from replays, expiry storms and lag, unregistered copies, and renewal as republication.",
+          "function": "counterargument"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The Chief Architect gives the whole path one owner, makes the SLA card a decision record, makes registration the price of access, keeps the moderation claim provable and watches the numbers that cannot be gamed.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S2",
+          "S4"
+        ],
+        "how": "Turns the design into group decisions with owners and measures."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Owner first, because the card, the registry and the watch list need someone to hold them; the card before the registry because the card sets the objectives registration commits to; honesty about the mode next; the watch list last because it measures all of them."
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "The whole path needs one owner, at Veldmark the listing platform team in Yara Mendes's organization, which owns the numbers that show whether the stages add up but not the stages.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listing platform team under Yara Mendes owns the SLA card, budget, consumer registry and freshness monitor.",
+              "shows": "Ownership of the measure is separate from ownership of the stages.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The SLA card is a decision record, decided at the architecture advice forum, so a new pre-publication check must say which stage's budget pays for it.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The owner.",
+            "introduces": "The record the owner holds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Registration in the consumer registry is the price of access to listing events, enforced at subscription time, and is the cheapest Ghost Inventory control available.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The card's removal objectives.",
+            "introduces": "The rule that puts every consumer under them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Legal and product teams must be able to state from the pipeline's configuration what share of listings is checked before publication, because the leboncoin judgment makes a moderation claim a factual claim.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Registration as a rule the platform enforces.",
+            "introduces": "A second claim the pipeline must be able to prove.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "The numbers to watch are insertion latency per brand, channel and moderation path, the held share, review latency, removal latency per consumer, the overdue backlog, reconciliation mismatches and canaries at peak, and a number that improves while the held share rises is not an improvement.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The owner, card, registry and moderation claim.",
+            "introduces": "The measures that show whether they hold.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions take the design into a review of the reader's own pipeline.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Gives the reader the design as questions for their own platform."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "The questions a reviewer asks to find them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "form": "list",
+          "controlling_idea": "Ten review questions cover the synchronous path, the SLA's coverage and clock, the stage budget, where 'published' is defined, edits, event handling, the consumer registry, send-time re-checks, takedowns and canaries at peak.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Published to Professionals",
+    "synthesis": "Ingrid's two questions have one answer: nobody had written down what the pipeline counts. The SLA card names the listings, the clock and the held objective; the consumer registry names every copy a removal must reach; both work only because 'published' is defined by the listing record and its event.",
+    "so_what": "With that definition, one owner can promise a number for the path there and back again and prove it per consumer, instead of investigating each slow or ghost listing after a buyer finds it.",
+    "callback": {
+      "to": "The opening's path 'and back again', and Ingrid's two questions in the scene: which listings the six minutes describes, and how long a sold listing takes to disappear from everything.",
+      "how": "The synthesis answers both questions with the SLA card and the consumer registry, and names the path there and back again as what one owner promises."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the SLA card with coverage, clock and removal objectives, and make registration in the consumer registry the price of subscribing to listing events."
+    },
+    "hand_off": {
+      "to": "professional-seller-tooling",
+      "relationship": "contrast",
+      "carries_over": "The publication pipeline, which treats every seller the same way, and the published, removable listings it produces.",
+      "introduces": "The sellers who supply most of a vertical marketplace's inventory, dealers and agencies managing hundreds of listings who check the marketplace against their own systems, and how to build their tooling without compromising the marketplace's neutrality."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from the scene to the review questions.",
+      "introduces": "The answer to Ingrid's two questions.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p52",
+        "controlling_idea": "Ingrid's two questions have one answer, writing down what the pipeline counts: the SLA card names the covered listings, the clock and the held objective, the registry names every copy, and both rest on defining 'published' by the listing record, which lets one owner promise and prove the path there and back again.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The card and the registry come first; stage-by-stage speedups follow from them.",
+            "shows": "Gives the reader the course of action the synthesis implies."
+          }
+        ]
+      },
+      {
+        "id": "p53",
+        "controlling_idea": "The pipeline treats every seller the same way, but most of a vertical marketplace's inventory comes from dealers and agencies managing hundreds of listings, whose tooling and its neutrality the next chapter takes up.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The pipeline that treats every seller the same way.",
+          "introduces": "Professional sellers and their tooling.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Lifecycle states and durations.",
+      "covered_in": [
+        "listing-aggregate"
+      ]
+    },
+    {
+      "topic": "Moderation policy, decision service and enforcement ladder.",
+      "covered_in": [
+        "trust-and-safety-architecture"
+      ]
+    },
+    {
+      "topic": "Event contract, outbox and schema evolution.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Index design and engine choice; alert matching and fan-out.",
+      "covered_in": [
+        "search-architecture",
+        "saved-searches-and-alerts"
+      ]
+    },
+    {
+      "topic": "Feed reconciliation and source-latency fixes; gone-page HTTP policy.",
+      "covered_in": [
+        "listing-ingestion",
+        "web-and-seo-architecture"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Framed publication as 'decide, then propagate' rather than as a linear stage list, because the sync/async split explains most latency and failure."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Defined the 90-second target as covering gate-cleared listings only, with a separate review-path objective and the held share published, to stop the metric being gamed or dominated by the review queue (recorded in the ledger)."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made takedowns ride the same removal path on a priority lane, consistent with trust-and-safety-architecture and event-driven-listings.",
+      "rejected": [
+        "A separate takedown mechanism."
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Reused the index budget (15 s) and removal targets (10 s search, 2 min consumers, 15 min partner feeds) from neighboring chapters instead of inventing new ones."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the eight-stages, two-clocks, version-gating and unpublish-design criteria are replaced by the journal spec's AC-1 (cold reader) and AC-3 (reverse outline); the moderation criterion is rewritten as AC-4 (minor, added here: decide which listings wait for a new check and which budget pays); the worked-example figures criterion is governed by the ledger, not by a reader outcome, and is dropped; the inventory of diagrams, tables, sections and sources is dropped (format stays governed by the style guide).",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: spec.md set none, so length.max_words is the published prose length (6,195 words as counted by check_draft.py) plus 5%, 6,505."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check failed two points at fault in the spec, each reported by both flow readers: Expiry and renewal sat under Architecture though expiry is a cause of removal, and the conclusion heading named only the hand-off. Moved p25-p26 into Unpublish Propagation before takedowns, rewrote the transitions that move invalidated (p25, p31) and both section rationales; renamed the conclusion heading, keeping the book's 'From X to Y' form.",
+      "rejected": [
+        "Keeping the order and reframing expiry in the prose (both readers proposed the move)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 failed two points at fault in the spec, both corroborated: the baseline that answers the scene heading waited five sections, and p01 required an entity-resolution detail readers could not place and read as contradicting the stage table. Moved p35-p37 to the end of the scene (transition rewritten as cause_effect from Ingrid's questions; p38 now carries the scene's findings), dropped the detail from p01, and restated the tiering rule once in p17.",
+      "rejected": [
+        "Keeping the baseline in In Practice, which leaves the heading's question unanswered for five sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Facts changed in index.md, each toward the ledger or the chapter's own text: the March 2027 audit's 41,000 listings now 'a week' in the prose and Figure 4's caption (ledger, listing-aggregate line); the coverage bullet's '94% of Tradeyard's new listings in 2026' loses 'in 2026', which no ledger line states and which clashed with the scene's present tense (ledger Moderation row gives 94% undated); the vertical table's Jobs column names Tradeyard's PL and PT jobs sections (ledger, Tradeyard row); Femke's bike is 'at the slow end of the table' rather than 'a typical case' (19:42 to 19:48 is the 6-minute p95; ledger calls it the 6-minute baseline)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims S1 to S5 written here from the thesis's parts and P3-4 (the journal spec gives none for this post): decide then propagate; the SLA as a contract; the stage budget and shape before engine; removal to every registered copy; provability through the record, one owner and instruments."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) because the published introduction had none beyond the callout, and a synthesis paragraph (p52) before the hand-off so the conclusion answers the scene's two questions rather than only handing off.",
+      "rejected": [
+        "Leaving the conclusion as a hand-off only (fails conclusion_synthesizes_and_answers_so_what and the callback)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round-3 escalation resolved (accepted under the author's delegation, 2026-11-12): the post-round-3 wording fixes stand (p14 'A second rule governs edits'; p38 'To answer her two questions'; figures numbered in order of appearance; p17 says why 'still counts as gate-cleared' matters; p09 names only stage 6 as able to hold a listing back; p39 names the 2028 design on OpenSearch; the Jobs column names Tradeyard's PL and PT jobs sections). The two order moves of rounds 1 and 2 (expiry into Unpublish Propagation; the baseline to the end of the scene) and the conclusion heading 'From Published to Professionals' are accepted."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The 30-second 'asynchronous checks and media confirmation' row (both round-3 flow readers): the stage sums agree with the ledger (2+2+30+1+15+20+20 = 90 s), so the row stays and p39's lead-in now explains it from the chapter's own stages: it pays for the wait between ListingSubmitted and ListingPublished (image models and duplicate search for tiers that require them, and late image derivatives when a photo was added just before submission, since drafting-time processing 'usually' finishes first, as the stage table says); a listing that goes live on the gate with images ready skips the row, and its 30 seconds become margin. Word limit raised from 6,505 to 6,600 (+1.5%) for this fix (accepted under the author's delegation, 2026-11-12)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor single-reader findings kept as published (accepted under the author's delegation, 2026-11-12): 'freshness monitor' and 'propagation monitor' (the ledger names the freshness monitor; the KEY POINTS callout and Figure 5 are not renamed); Figure 3's 'version 3' (matches the figure); the decisive trade-off stays in prose before the table; the Vinted Kafka-offset detail; soft commit and searcher warming named in the baseline table before In Practice explains them; the material-edit rule under Concepts; the 'ghost rates' back-reference."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow and thesis rubric notes not taken earlier stay not taken (accepted under the author's delegation, 2026-11-12): p25/p26 and p35/p36 stay separate units, p22 stays where it is, p44 and p32 unchanged, the baseline stays in the scene before the Vinted record; the thesis is copied from the journal spec and is not changed here."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carried-over spec.md questions closed (accepted under the author's delegation, 2026-11-12): the baseline stage breakdown stays illustrative, as the text says; Motorvane and Hearthly SLA values stay qualitative; the reference design stays until an operator documents its full pipeline."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of professional-seller-tooling."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Tradeyard 6-minute p95, 90-second target, 94%/6% moderation split, the Rotterdam bike, the Essen Golf, the SLA card, the 41,000-a-week audit, Yardstick milestones."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, search-architecture, event-driven-listings, trust-and-safety-architecture, listing-ingestion, entity-resolution",
+      "contributed": "Times, budgets and removal objectives kept consistent; the online checks that run inside this pipeline."
+    },
+    {
+      "kind": "internal",
+      "ref": "Research briefs: platform (Parts 2 and 12), trust (Part 3), data ingestion (Parts 5 and 11), search (2.5, 2.6)",
+      "contributed": "Public evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering 2021, 2023, 2024",
+      "contributed": "Indexing ordering and freshness improvements."
+    },
+    {
+      "kind": "external",
+      "ref": "Elastic near-real-time search; Apache Solr Reference Guide 8.11",
+      "contributed": "Refresh, commit and warming semantics."
+    },
+    {
+      "kind": "external",
+      "ref": "Clubic, 2015 (leboncoin judgment); Which?, 2024",
+      "contributed": "The moderation-claim and edited-ad cases."
+    },
+    {
+      "kind": "external",
+      "ref": "Google Merchant Center expiry; Google job-posting guidance; mobile.de Seller-API",
+      "contributed": "Downstream expiry enforcement and the renewal date."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Orchestrator review: restored 'in 2026' on the 94% automated-gate share; the figure is in the ledger's 'Volumes (2026, rounded)' table. Check report stale."
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: digest snapshot source aligned with the ledger, restored toolkit link, Vinted p99 claim worded as published, American spelling, timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 3 headings aligned with the book's shared section names, glossary terms and source-group structure; no body text changed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 5,573 to 5,551 prose words; lead places the chapter as the last link of Part III's supply chain; 3 headings renamed; leboncoin and Which? lessons split into point-first paragraphs. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources archived in _research/mermaid-figures.json). (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec), reconstructed from the published text; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1-3 run (ESCALATE at round 3, budget spent); fixes after round 3 applied without another check (see open_questions); index.md 6,503 words against the 6,505 limit. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2 (spec faults, corroborated by both flow readers): Tradeyard's baseline (p35-p37) moved from In Practice to the end of the scene, which asks where the six minutes went; the entity-resolution detail removed from p01's controlling idea; p17 now states once which event a high-risk gate-cleared listing gets; p36 says the bike sits at the slow end of the table. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1 (spec faults, corroborated by both flow readers): Expiry and renewal (p25, p26) moved from Architecture into Unpublish Propagation, before takedowns; the conclusion heading renamed from 'From Pipeline to People' to 'From Published to Professionals' so it names the synthesis as well as the hand-off. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Thesis rubric (pass with notes): S4 made concrete. Flow rubric (sound with notes): p17 now states that the record and its event define published; p38 points back to the consumer table; p52 ends with the course of action. No reordering. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: open questions moved to the decision log; p39 explains the 30-second asynchronous checks and media row; word limit 6,600. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6600
+  }
+}

@@ -1,0 +1,1376 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/19-query-understanding/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/19-query-understanding/index.md",
+  "spec_sha": "ba6b17ea8b464717",
+  "draft_sha": "28a55d1e3ae50443",
+  "run_at": "2026-11-12T21:57:35+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "what the chapter teaches about turning messy queries into structured searches",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failed queries cost buyers and sellers contacts",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "query understanding as a governed layer coupled to taxonomy and models",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "three key points: compile to filters, confidence with a way back, AI as layers over structure",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "listing queries are disguised filter requests",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "definition of query understanding and its place between taxonomy, search and ranking",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "three terms the chapter owns, autocomplete included",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "roadmap of the chapter",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶1",
+      "summary": "upcoming bikes split prompts check of e-bike query logs",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶2",
+      "summary": "bike inventory size and the many forms of e-bike queries",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶3",
+      "summary": "old analyzer gives inconsistent results per e-bike variant",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶4",
+      "summary": "other languages add variants; split will expose misses",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶1",
+      "summary": "definition: normalization and analysis",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶2",
+      "summary": "definition: spelling correction",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶3",
+      "summary": "definition: synonyms",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶4",
+      "summary": "definition: query categorization",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶5",
+      "summary": "definition: query tagging of attributes and places",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶6",
+      "summary": "definition: interpretation with confidences",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶7",
+      "summary": "definition: null and low-result recovery",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶8",
+      "summary": "definition: hybrid retrieval",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Concepts: From Query String to Structured Query ¶9",
+      "summary": "definition: LLM query compiler",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Architecture: Shared Vocabulary, Local Policy ¶1",
+      "summary": "reference architecture inside search API with cached model calls",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: Shared Vocabulary, Local Policy ¶2",
+      "summary": "owners and change reasons per step",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: Shared Vocabulary, Local Policy ¶3",
+      "summary": "shared vocabulary, local filtering policy",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶1",
+      "summary": "analysis causes silent failures; mechanisms intro",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶2",
+      "summary": "tokenizing hyphens, digits and units in several forms",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶3",
+      "summary": "asymmetric accent folding (Vinted)",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶4",
+      "summary": "stemming with protected brand names",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶5",
+      "summary": "decompounding with a marketplace word list",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶6",
+      "summary": "handling multilingual markets with one dictionary",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Language Analysis per Country ¶7",
+      "summary": "analyzer parity testing on engine changes",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Spelling and Synonyms ¶1",
+      "summary": "engine fuzzy matching is cheap but vocabulary-blind",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Spelling and Synonyms ¶2",
+      "summary": "marketplace speller built from own vocabulary with correction rules",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Spelling and Synonyms ¶3",
+      "summary": "three rules for maintaining synonyms",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶1",
+      "summary": "categorizer trained on behavior, outputs a distribution",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶2",
+      "summary": "production categorizer: versioned, calibrated, monitored",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶3",
+      "summary": "attribute and location tagging methods",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶4",
+      "summary": "tagging depends on a clean attribute dictionary",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶5",
+      "summary": "tag meanings vary by vertical and market, stored in dictionary",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶6",
+      "summary": "confidence-to-action policy with removable chips",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Query Categorization and Attribute Extraction ¶7",
+      "summary": "two policy invariants: no count increase, removals as labels",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Null and Low-Result Recovery ¶1",
+      "summary": "explicit recovery ladder for null results",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Null and Low-Result Recovery ¶2",
+      "summary": "never silently drop buyer filters; show labeled alternatives",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Null and Low-Result Recovery ¶3",
+      "summary": "saved search as standing demand",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Autocomplete and Query Suggestions ¶1",
+      "summary": "Vinted autocomplete system in detail",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Autocomplete and Query Suggestions ¶2",
+      "summary": "most autocomplete requests need no fuzzy correction",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Autocomplete and Query Suggestions ¶3",
+      "summary": "three autocomplete design rules",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶1",
+      "summary": "dense retrieval cases at Vinted, Airbnb, leboncoin",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶2",
+      "summary": "cases chose different index designs for documented reasons",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶3",
+      "summary": "fusion methods for incomparable scores",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶4",
+      "summary": "fusion feeds ranking rather than replacing it",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶5",
+      "summary": "use dense retrieval only to fill recall gaps",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Semantic and Hybrid Retrieval ¶6",
+      "summary": "costs and new failure modes of dense retrieval",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶1",
+      "summary": "documented LLM search compiles, not generates",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶2",
+      "summary": "caveat that table facts are dated",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶3",
+      "summary": "LLM compiler pattern with validator",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶4",
+      "summary": "five strengths of the compiler pattern",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶5",
+      "summary": "latency and data-protection limits",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Natural-Language and Conversational Search with LLMs ¶6",
+      "summary": "external AI assistants turn search into an external product",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Evaluating Query Understanding ¶1",
+      "summary": "shared evaluation harness with per-layer measures",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Evaluating Query Understanding ¶2",
+      "summary": "lessons: traffic replay beats logged recall; simple structured diffs",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Evaluating Query Understanding ¶3",
+      "summary": "refresh query sets after taxonomy releases",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶1",
+      "summary": "four-part plan intro",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶2",
+      "summary": "shared e-bike vocabulary entry with speed-pedelec exclusion",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶3",
+      "summary": "Dutch analyzer fixes tested on both engines",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶4",
+      "summary": "categorizer relabeled via mapping events and registered",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶5",
+      "summary": "confidence thresholds and recovery for e-bike queries",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶6",
+      "summary": "before/after outcome measures",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶7",
+      "summary": "gain came from vocabulary and policy / chip removals led to an e-bike parts interpretation",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶8",
+      "summary": "next projects: Hearthly LLM compiler and Motorvane generation tags",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "table of conditional trade-offs",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "which levers matter most per vertical",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "failures mirror the rules / analyzer drift",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Failure Modes ¶2",
+      "summary": "synonym file as dumping ground",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "Failure Modes ¶3",
+      "summary": "taxonomy change without categorizer plan",
+      "matched_spec_paragraph": "p71"
+    },
+    {
+      "draft_locator": "Failure Modes ¶4",
+      "summary": "invisible filters",
+      "matched_spec_paragraph": "p72"
+    },
+    {
+      "draft_locator": "Failure Modes ¶5",
+      "summary": "autocomplete leading to empty or offensive results",
+      "matched_spec_paragraph": "p73"
+    },
+    {
+      "draft_locator": "Failure Modes ¶6",
+      "summary": "dense results ignoring filters",
+      "matched_spec_paragraph": "p74"
+    },
+    {
+      "draft_locator": "Failure Modes ¶7",
+      "summary": "unvalidated LLM output",
+      "matched_spec_paragraph": "p75"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "five group-level decisions to hold",
+      "matched_spec_paragraph": "p76"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "metrics to watch for drift",
+      "matched_spec_paragraph": "p77"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "review questions for your own system",
+      "matched_spec_paragraph": "p78"
+    },
+    {
+      "draft_locator": "From Retrieval to Order ¶1",
+      "summary": "synthesis: queries compiled to filters with confidence and a way back",
+      "matched_spec_paragraph": "p79"
+    },
+    {
+      "draft_locator": "From Retrieval to Order ¶2",
+      "summary": "hand-off to ranking chapter",
+      "matched_spec_paragraph": "p80"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 80 aligned unit summaries match their spec paragraphs' controlling ideas in spec order; the five callouts match no spec paragraph, as expected.",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "spec_locus": "/sections/11/paragraphs/6",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶7",
+      "finding": "Outliner gave two phrases (gain from vocabulary and policy; chip removals as training signal); both are the readings of the measured outcome that the spec declares as this paragraph's single controlling idea (\"what it shows and how it fed back\").",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "spec_locus": "/sections/14/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "finding": "Outliner gave two phrases (failures mirror the rules; analyzer drift); the first sentence is the list lead-in the decision log placed here deliberately instead of a separate unit, and the paragraph's own idea is analyzer drift. The readability cost is recorded under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to its section's advances_thesis claims (Q1 to Q5); no unit argues outside the thesis.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Every table has a lead-in and a reading (p19/p20, p37, p39, p46, p50/p51, p56, p64/p65, p67, p68); figures 1 to 5 carry explanatory captions; the Elastic and Vinted quotations are each tied to the point they support.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶1 -> Introduction ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶2 -> Introduction ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶3 -> Introduction ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Introduction ¶4 -> Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶1 -> Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶2 -> Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶3 -> Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶4 -> Concepts: From Query String to Structured Query ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶1 -> Concepts: From Query String to Structured Query ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶2 -> Concepts: From Query String to Structured Query ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/3/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶3 -> Concepts: From Query String to Structured Query ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/4/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶4 -> Concepts: From Query String to Structured Query ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/5/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶5 -> Concepts: From Query String to Structured Query ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/6/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶6 -> Concepts: From Query String to Structured Query ¶7",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/7/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶7 -> Concepts: From Query String to Structured Query ¶8",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/1/paragraphs/8/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶8 -> Concepts: From Query String to Structured Query ¶9",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "Concepts: From Query String to Structured Query ¶9 -> Architecture: Shared Vocabulary, Local Policy ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in",
+      "draft_locus": "Architecture: Shared Vocabulary, Local Policy ¶1 -> Architecture: Shared Vocabulary, Local Policy ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in",
+      "draft_locus": "Architecture: Shared Vocabulary, Local Policy ¶2 -> Architecture: Shared Vocabulary, Local Policy ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Architecture: Shared Vocabulary, Local Policy ¶3 -> Language Analysis per Country ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in",
+      "draft_locus": "Language Analysis per Country ¶1 -> Language Analysis per Country ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in",
+      "draft_locus": "Language Analysis per Country ¶2 -> Language Analysis per Country ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "Language Analysis per Country ¶3 -> Language Analysis per Country ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "Language Analysis per Country ¶4 -> Language Analysis per Country ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/5/transition_in",
+      "draft_locus": "Language Analysis per Country ¶5 -> Language Analysis per Country ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/3/paragraphs/6/transition_in",
+      "draft_locus": "Language Analysis per Country ¶6 -> Language Analysis per Country ¶7",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "Language Analysis per Country ¶7 -> Spelling and Synonyms ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in",
+      "draft_locus": "Spelling and Synonyms ¶1 -> Spelling and Synonyms ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in",
+      "draft_locus": "Spelling and Synonyms ¶2 -> Spelling and Synonyms ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Spelling and Synonyms ¶3 -> Query Categorization and Attribute Extraction ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/1/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶1 -> Query Categorization and Attribute Extraction ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/2/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶2 -> Query Categorization and Attribute Extraction ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/3/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶3 -> Query Categorization and Attribute Extraction ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/4/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶4 -> Query Categorization and Attribute Extraction ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/5/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶5 -> Query Categorization and Attribute Extraction ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/5/paragraphs/6/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶6 -> Query Categorization and Attribute Extraction ¶7",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶7 -> Null and Low-Result Recovery ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in",
+      "draft_locus": "Null and Low-Result Recovery ¶1 -> Null and Low-Result Recovery ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/6/paragraphs/2/transition_in",
+      "draft_locus": "Null and Low-Result Recovery ¶2 -> Null and Low-Result Recovery ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Null and Low-Result Recovery ¶3 -> Autocomplete and Query Suggestions ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/7/paragraphs/1/transition_in",
+      "draft_locus": "Autocomplete and Query Suggestions ¶1 -> Autocomplete and Query Suggestions ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/7/paragraphs/2/transition_in",
+      "draft_locus": "Autocomplete and Query Suggestions ¶2 -> Autocomplete and Query Suggestions ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "Autocomplete and Query Suggestions ¶3 -> Semantic and Hybrid Retrieval ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/paragraphs/1/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶1 -> Semantic and Hybrid Retrieval ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/paragraphs/2/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶2 -> Semantic and Hybrid Retrieval ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/paragraphs/3/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶3 -> Semantic and Hybrid Retrieval ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/paragraphs/4/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶4 -> Semantic and Hybrid Retrieval ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/8/paragraphs/5/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶5 -> Semantic and Hybrid Retrieval ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/transition_in",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶6 -> Natural-Language and Conversational Search with LLMs ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/paragraphs/1/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶1 -> Natural-Language and Conversational Search with LLMs ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/paragraphs/2/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶2 -> Natural-Language and Conversational Search with LLMs ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/paragraphs/3/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶3 -> Natural-Language and Conversational Search with LLMs ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/paragraphs/4/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶4 -> Natural-Language and Conversational Search with LLMs ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/9/paragraphs/5/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶5 -> Natural-Language and Conversational Search with LLMs ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/10/transition_in",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶6 -> Evaluating Query Understanding ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/10/paragraphs/1/transition_in",
+      "draft_locus": "Evaluating Query Understanding ¶1 -> Evaluating Query Understanding ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/10/paragraphs/2/transition_in",
+      "draft_locus": "Evaluating Query Understanding ¶2 -> Evaluating Query Understanding ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/transition_in",
+      "draft_locus": "Evaluating Query Understanding ¶3 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/1/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶1 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/2/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶2 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/3/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶3 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/4/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶4 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/5/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶5 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/6/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶6 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶7",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/11/paragraphs/7/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶7 -> In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶8",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/12/transition_in",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶8 -> Trade-offs ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/13/transition_in",
+      "draft_locus": "Trade-offs ¶1 -> Vertical Differences ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/transition_in",
+      "draft_locus": "Vertical Differences ¶1 -> Failure Modes ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/1/transition_in",
+      "draft_locus": "Failure Modes ¶1 -> Failure Modes ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/2/transition_in",
+      "draft_locus": "Failure Modes ¶2 -> Failure Modes ¶3",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/3/transition_in",
+      "draft_locus": "Failure Modes ¶3 -> Failure Modes ¶4",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/4/transition_in",
+      "draft_locus": "Failure Modes ¶4 -> Failure Modes ¶5",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/5/transition_in",
+      "draft_locus": "Failure Modes ¶5 -> Failure Modes ¶6",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/14/paragraphs/6/transition_in",
+      "draft_locus": "Failure Modes ¶6 -> Failure Modes ¶7",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/15/transition_in",
+      "draft_locus": "Failure Modes ¶7 -> The Chief Architect's View ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/15/paragraphs/1/transition_in",
+      "draft_locus": "The Chief Architect's View ¶1 -> The Chief Architect's View ¶2",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/sections/16/transition_in",
+      "draft_locus": "The Chief Architect's View ¶2 -> Questions to Ask ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "Questions to Ask ¶1 -> From Retrieval to Order ¶1",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "criterion": "transition_expresses_declared_relationship",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in",
+      "draft_locus": "From Retrieval to Order ¶1 -> From Retrieval to Order ¶2",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/6",
+      "draft_locus": "Query Categorization and Attribute Extraction ¶7",
+      "quote": "A filter only removes listings unless a second retrieval path, such as embedding search run without that filter, adds some back: Vinted reported in 2025 that approximate retrieval (the nearest-neighbor search behind dense retrieval) could make results inconsistent with filters",
+      "finding": "Both readers had to re-read the first invariant because its evidence is a dense-retrieval failure that the chapter explains two sections later; the inline gloss added in rounds 2 and 3 did not remove the dependency (reader A also notes the shift from \"adding an interpretation\" to \"adding a filter\"). The difficulty comes from the spec placing the Vinted dense-retrieval evidence in p38; moving only that evidence to the hybrid section (keeping both invariants together, as the decision log requires) was not considered by the earlier rulings.",
+      "fault": "spec",
+      "corroborated_by": "flow reader A, item A2; flow reader B, item B4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶1",
+      "quote": "Dense retrieval in main search uses a two-tower model, one network embedding queries and another listings: a frozen multilingual CLIP",
+      "finding": "The Vinted bullet stacks two-tower, CLIP, projection head, item tower, HNSW, market blocs, exact-search fallback, RRF with a forward pointer and a dense-only cap; both readers found it the hardest passage to hold. The prose can split it into shorter sentences without changing the unit.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A5; flow reader B, item B9",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶2",
+      "quote": "The two detailed cases reached **different answers to the same problem**, approximate retrieval under heavy filtering (for Airbnb, also under real-time updates), for documented reasons.",
+      "finding": "The paragraph contrasts two answers but never states Vinted's answer (HNSW split by market blocs with exact-search fallback) against Airbnb's (IVF with cluster IDs as a filter); both readers had to dig it out of the long bullet above.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A4; flow reader B, item B10",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Semantic and Hybrid Retrieval ¶6 (Figure 3 caption)",
+      "quote": "and the LLM compiles language into filters that the attribute dictionary validates.",
+      "finding": "The Figure 3 caption (attached to this unit; not part of units.json text, quoted from the draft) introduces the LLM compiler before its section; both readers met it as out of place. The figure's placement is kept by the decision log, but the caption can mark the LLM layer as the next section's subject.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A6; flow reader B, item B11",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/3",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶4",
+      "quote": "Eight days after the split, the 9 November ML platform decision went further and made registration in one group model registry mandatory for every production model, this one included.",
+      "finding": "Both readers were pulled out of the case narrative by a decision that is never introduced, and reader B still could not tell the inventory from the registry; the round-3 rewording did not make the side note read as part of the plan.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A8; flow reader B, item B12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/7",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶8",
+      "quote": "and returns Veldmark's Lyon apartment at €389,000.",
+      "finding": "Both readers read \"Veldmark's Lyon apartment\" as a listing they should already know; nothing in this chapter introduces it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A9; flow reader B, item B13",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/7",
+      "draft_locus": "In Practice: Tradeyard's E-Bike Queries Through the Bikes Split ¶8",
+      "quote": "so that \"golf 8\" means the generation of the Essen Volkswagen Golf rather than 2008.",
+      "finding": "The \"Essen Volkswagen Golf\" appears from nowhere for both readers (B: \"baffling\"); the chapter never introduces a Golf listed in Essen, so the definite reference reads as a missing antecedent.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A10; flow reader B, item B14",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/14/paragraphs/0",
+      "draft_locus": "Failure Modes ¶1",
+      "quote": "Each failure below skips one rule above, in the order the chapter taught them. **Analyzer drift** skips the first, token parity:",
+      "finding": "The framing promises a failure-to-rule mapping that only the first failure follows; the rules were never numbered and later failures do not name the rule they skip, and the first bold label is buried mid-paragraph. Each failure paragraph can name its rule without adding a unit.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A11; flow reader B, items B16 and B17",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/15/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "Lucía Ortega's data-protection review covers where query text may be processed and how long prompts are kept.",
+      "finding": "A named person appears with no role; both readers stopped on who she is.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, item A12; flow reader B, item B18",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Veldmark: Eleven Ways to Say E-Bike ¶1",
+      "quote": "Tradeyard's bike categories (six country leaves in the Netherlands, most of them generic)",
+      "finding": "\"Six country leaves\" reads as six countries rather than six leaf categories in the Dutch tree (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Language Analysis per Country ¶1",
+      "quote": "Analysis is the source of most silent failures in query understanding. Four mechanisms matter for European listing marketplaces.",
+      "finding": "The paragraph announces four mechanisms and six bold items follow; the multilingual case and the parity rule are not marked as different in kind (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Autocomplete and Query Suggestions ¶2",
+      "quote": "The same account shows that fuzzy correction is usually not needed.",
+      "finding": "Reads at first as contradicting the spelling section until the next sentence limits it to autocomplete prefixes (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Null and Low-Result Recovery ¶2",
+      "quote": "The ladder never removes a filter the buyer chose without saying so.",
+      "finding": "The reader had to check this against steps 4 and 5, which widen location and category; the sentence does not say those steps are announced (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Null and Low-Result Recovery ¶3",
+      "quote": "Step 7 matters for liquidity: a buyer who saves a search after a null result is standing demand that alerts can serve when supply appears.",
+      "finding": "After the Airbnb paragraph the return to step 7 of the table reads as stray (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Autocomplete and Query Suggestions ¶1",
+      "quote": "Autocomplete reuses all of these steps at the earliest point, before the query is submitted, to steer it toward something the marketplace understands.",
+      "finding": "The section is mostly Vinted statistics and does not show the reuse it announces until the design rules (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/5",
+      "draft_locus": "Natural-Language and Conversational Search with LLMs ¶6",
+      "quote": "In two 2026 posts, ImmoScout24 described a Model Context Protocol (MCP) server, a standard for assistants to call tools, for its assistant, launched in November 2025, and an app inside ChatGPT over its property data",
+      "finding": "Nested appositions make the sentence hard to parse (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/16/paragraphs/0",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "Which share of our queries is browse, short keyword, long natural language?",
+      "finding": "\"Browse\" queries are never discussed in the chapter, and the list lacks a conjunction (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Language Analysis per Country ¶7",
+      "quote": "sampled across the head, torso and tail of the query distribution.",
+      "finding": "\"Torso\" is not glossed, while head and tail are (p18); one reader flagged it as minor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/15/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "Any natural-language feature uses the group's AI gateway (see [[ai-in-listing-systems]])",
+      "finding": "\"The group's AI gateway\" appears for the first time here as if known; only a cross-link explains it (one reader).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with three concrete queries (intriguing example) and states the claim; no throat-clearing, dictionary or history opening.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion synthesizes and hands off; it is not a section-by-section recap and adds no new material.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p79 states the one form every part compiles to, why the e-bike gain came from vocabulary and policy, and that a taxonomy release without aliases, labels and evaluation sets is a relevance regression.",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p79 returns to \"ebike gazelle\" and \"T3 balcon Lyon 7\" as requests for filters.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "criterion": "AC-2",
+      "finding": "The cold reader of the opening predicted every section in order, from the Tradeyard scene through the review questions, the scenario and documented-case evidence, and the tone; it did not name engine documentation, a minor gap.",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "criterion": "AC-1",
+      "finding": "The cold reader built one vocabulary entry with per-language aliases and the speed-pedelec exclusion read by tagger and categorizer, analyzer fixes checked on a real-query test set, categorizer labels from mapping events and backfilled attributes registered as an owned, monitored order-tier model, the 0.85 filter-with-chip and boost/suggest bands, the no-increase invariant and the ladder widening the radius before broadening the category.",
+      "severity": "major"
+    }
+  ]
+}

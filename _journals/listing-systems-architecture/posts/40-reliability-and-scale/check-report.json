@@ -1,0 +1,695 @@
+{
+  "spec": "_journals/listing-systems-architecture/posts/40-reliability-and-scale/spec.json",
+  "draft": "_journals/listing-systems-architecture/posts/40-reliability-and-scale/index.md",
+  "spec_sha": "31f1c4a5dbbb41ce",
+  "draft_sha": "7f841ae3bdbb64a9",
+  "run_at": "2026-11-12T22:30:40+01:00",
+  "round": 4,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "What the chapter covers: dissecting one search brown-out to build reliability architecture",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Peak-hour outages cost the business most",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Reliability failures come from ordinary causes and need architectural fixes",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three key points: journey-level reliability, predictable peaks and degradation, cost as an architecture metric",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three failure patterns the chapter addresses",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Marketplace reliability means knowing and designing for the traffic shape",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Peak hour carries asymmetric stakes for contacts, trust and revenue",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "How the chapter relates to neighboring chapters and feeds Part VIII",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Roadmap of the chapter's sections and sources",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶1",
+      "summary": "The Sunday-evening Tradeyard NL search brown-out and its symptoms",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶2",
+      "summary": "Three coinciding causes: TV campaign, scheduled reindex, cache eviction",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶3",
+      "summary": "Two amplifiers: retries without backoff and unthrottled bot traffic",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶4",
+      "summary": "Incident impact and Ingrid's question about what the architecture failed to know",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶5",
+      "summary": "Rightmove's documented TV-driven peak as a real-world parallel",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "The Traffic Shape of a Listing Platform ¶1",
+      "summary": "Four kinds of load, three predictable",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Traffic Shape of a Listing Platform ¶2",
+      "summary": "Seasonality strong enough to drive architecture (Vinted example)",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "The Traffic Shape of a Listing Platform ¶3",
+      "summary": "Automated traffic share of the web and the groups of bots hitting listing sites",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Traffic Shape of a Listing Platform ¶4",
+      "summary": "Each bot group needs its own policy; Tradeyard's automated traffic share",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶1",
+      "summary": "SRE vocabulary: SLI, SLO, error budget and critical user journeys",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶2",
+      "summary": "Definition of a journey SLO in this book",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶3",
+      "summary": "Three design choices: measure humans, count holds as good, treat removal as a journey",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶4",
+      "summary": "Veldmark's error budget policy and how much budget the brown-out spent",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶5",
+      "summary": "Reporting reliability separately for the peak window",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶1",
+      "summary": "Overview of control points along the search path",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶2",
+      "summary": "Why bots scrape listings and why edge control must be layered",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶3",
+      "summary": "AI crawlers as a commercial policy enforced at the edge",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶4",
+      "summary": "Five isolation rules separating batch, optional and tenant work from interactive search",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶5",
+      "summary": "SRE rules on retries, backoff, load shedding and testing degraded modes",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶6",
+      "summary": "Marketplace practice for retries, timeouts and gateway admission control",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶7",
+      "summary": "Three caching layers with different staleness tolerance",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Architecture: Control Points in the Search Path ¶8",
+      "summary": "Caching lessons: warm before switching and normalize cache keys",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶1",
+      "summary": "Capacity starts from the weekly peak; Veldmark's peak query volumes",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶2",
+      "summary": "Query fan-out and introduction of the peak capacity model",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶3",
+      "summary": "Applying the model to Tradeyard NL shows the cluster was undersized",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶4",
+      "summary": "Caching and bot shedding cut required capacity more than adding nodes",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶5",
+      "summary": "A shared peak and campaign calendar owned by platform engineering",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Capacity Planning for Known Peaks ¶6",
+      "summary": "Peak rehearsals replaying production traffic under adverse conditions",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Graceful Degradation: Deciding in Advance What to Give Up ¶1",
+      "summary": "Definition of degradation modes as pre-decided product choices",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Graceful Degradation: Deciding in Advance What to Give Up ¶2",
+      "summary": "Order of the degradation ladder, its supporting evidence and effect on the brown-out",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Graceful Degradation: Deciding in Advance What to Give Up ¶3",
+      "summary": "Degradation ladders for messaging, alerts and insertion, keeping safety on",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Multiple Regions: How Far to Go ¶1",
+      "summary": "Vinted and Adevinta avoid multi-writer regional designs",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Multiple Regions: How Far to Go ¶2",
+      "summary": "AWS us-east-1 outage lessons: shared control planes and autoscaling limits",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Multiple Regions: How Far to Go ¶3",
+      "summary": "Recommendation: multi-zone plus a tested read-only mode",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Multiple Regions: How Far to Go ¶4",
+      "summary": "Veldmark's fragile starting point (single-site Yardstick) and its regional plan",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Incident Management: When It Goes Wrong Anyway ¶1",
+      "summary": "Three marketplace emphases in incident management: journey-and-time severity, professional customer comms, shared-platform blast radius",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Incident Management: When It Goes Wrong Anyway ¶2",
+      "summary": "Blameless reviews should yield architectural actions, as the brown-out review did",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶1",
+      "summary": "Unit economics and three unit costs for a listing platform",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶2",
+      "summary": "Lead-in to Veldmark's 2027 unit-cost baseline",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶3",
+      "summary": "Three readings of the cost baseline: search total, Motorvane's high costs, bot-driven cost",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶4",
+      "summary": "Adevinta's platform-level FinOps levers: ownership catalog, telemetry, platform defaults",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶5",
+      "summary": "Platform team holds the largest cost levers",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Cost: Making Scale Visible per Unit of Work ¶6",
+      "summary": "Duplicated brand stacks as the cost of Deal-Shaped Architecture and the shared search decision",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Brown-Out, Redesigned ¶1",
+      "summary": "Rerun of the New Year campaign a year later",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Veldmark Worked Example: The Brown-Out, Redesigned ¶2",
+      "summary": "The fix needed architectural knowledge, not a new engine",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Lead-in to the trade-off table",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Trade-offs ¶2",
+      "summary": "Shared search platform's blast-radius trade-off and how to price it in",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶1",
+      "summary": "Lead-in to vertical differences table",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Vertical Differences ¶2",
+      "summary": "Real estate's alert journey and automotive's dealer lead delivery as key journeys",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Failure Modes ¶1",
+      "summary": "Nine recurring reliability failure modes",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶1",
+      "summary": "Define liquidity journeys, objectives and owners",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶2",
+      "summary": "Make the peak a platform concept with calendar and freezes",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶3",
+      "summary": "Fund degradation and read-only modes deliberately",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶4",
+      "summary": "Set an explicit regional ambition, legacy single sites first",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶5",
+      "summary": "Automated traffic as a cross-functional policy area",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶6",
+      "summary": "Publish unit costs in architecture reviews",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "The Chief Architect's View ¶7",
+      "summary": "Metrics to watch",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Ten questions testing reliability, peak, bot, regional and cost decisions",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "From Platform to Leadership ¶1",
+      "summary": "Answer to Ingrid's question: reliability, peak planning and cost are one design",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "From Platform to Leadership ¶2",
+      "summary": "Part VII closes: the platform's contracts, owners and the opening test answered",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "From Platform to Leadership ¶3",
+      "summary": "Hand-off to Part VIII's leadership and consolidation agenda",
+      "matched_spec_paragraph": "p65"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶4",
+      "quote": "counting failed and slow human requests against about 7 billion search requests in a 28-day period.",
+      "finding": "The paragraph ends on the 30% statistic with no sentence saying what it shows. The spec's evidence is meant to show that one peak-hour incident can spend about a third of a month's budget, so the policy bites; the draft leaves the reader to infer that (flow reader A, item A4, stopped here to check the arithmetic).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Cost: Making Scale Visible per Unit of Work ¶3",
+      "quote": "partly because its listings carry more revenue; the unit cost should be read against revenue per listing, not alone",
+      "finding": "The explanation of the Motorvane row misreads the evidence: higher revenue per listing does not cause higher cost. The spec's point is that Motorvane's high unit cost must be read against its higher revenue per listing; the draft states revenue as a cause of cost (flow reader B, item B8, calls it a non sequitur).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/transition_in",
+      "draft_locus": "Vertical Differences ¶1",
+      "quote": "The verticals differ too.",
+      "finding": "Declared relationship is contrast, carrying over trade-offs that hold for every vertical and introducing where the verticals differ. 'differ too' frames the section as an addition to the trade-offs rather than a contrast with choices that hold everywhere, and does not pick up the carried-over idea; flow reader A also found the link from trade-offs thin.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "what protects it (control points with the bot controls at the edge, capacity, degradation, regions, incidents) and what it costs. The evidence comes from SRE, Vinted, Adevinta, Rightmove, FinOps and bot reports.",
+      "finding": "Reader A (A1): 'Three telegraphic lists with nested parentheses; read twice. The evidence-sources sentence adds nothing to the roadmap.' The roadmap's order is sound; its compressed wording makes the reader reread.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-B B1 (run-on list with nested parentheses; 'control points with the bot controls at the edge' hard to parse; re-read)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Veldmark: Forty-Eight Minutes on a Sunday Evening ¶5",
+      "quote": "The \"Sunday-evening peak\" is a Veldmark illustration; the documented public example of a marketing-driven peak is Rightmove's",
+      "finding": "Reader A (A2): 'Sourcing aside after Ingrid's question flattens the hand-off.' The spec places the Rightmove contrast as the scene's last paragraph, after the question the chapter answers, so the difficulty comes from the order; reader B suggests moving it into Traffic Shape beside the marketing row.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-B B2 (right after the scene's closing question, deflates it; belongs in traffic shape)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶3",
+      "quote": "the Rotterdam city bike left search one minute after sale, while the morning alert digest still featured it, so the objective covers every surface.",
+      "finding": "Reader A (A3): 'The \"so\" does not follow at first reading; clause order hides the point.' The callback is compressed; the prose needs to say that the bike left search but not the digest, which is why the objective must cover every surface.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-B B11 (the 'so' compresses a callback; re-read)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "Journey SLOs: Defining Reliability Where Liquidity Is Made ¶4",
+      "quote": "The brown-out alone spent about **30%** of Tradeyard NL's 28-day search budget in 48 minutes",
+      "finding": "Reader A (A4): 'Had to check whether 30% fits 3.4 million failed; works only if many slow requests count, left implicit.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Control Points in the Search Path ¶1",
+      "quote": "keep batch work out of peak windows with the peak calendar set out under capacity planning",
+      "finding": "Reader A (A5): the calendar is leaned on by this sentence, the Figure 3 caption and isolation rule 1 before it is introduced two sections later; 'for a while the reader is told about a mechanism not yet met.' The spec's order (control points before capacity, calendar defined under capacity) creates the forward reference; both readers propose introducing the calendar earlier or defining it at first use.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-B B4 (met three times before learning what it is)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Architecture: Control Points in the Search Path ¶2",
+      "quote": "The first control point is the edge, where automated traffic is classified, and policy for it starts from why bots come.",
+      "finding": "Reader A (A6): the first sentence joins two ideas awkwardly, and the subsection drifts into commercial, trust-and-safety and legal territory (Product design and Legal rows, AI-crawler licensing) that feels out of place in a section on control points in the search path. The material sits here by the spec's placement of p40/p41 (moved in round 3); the awkward opening sentence is a draft matter.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Architecture: Control Points in the Search Path ¶4",
+      "quote": "Behind the edge, the brown-out happened because interactive queries, reindexing and cache warm-up shared the same nodes at the same time.",
+      "finding": "Reader A (A7): 'As written it says the brown-out happened behind the edge; reads oddly.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Architecture: Control Points in the Search Path ¶6",
+      "quote": "OLX is reported to have published a two-part post in 2021 on load shedding with NGINX using adaptive concurrency control; it could not be retrieved or verified for this book, so treat it as a pointer, not evidence.",
+      "finding": "Reader A (A8): 'Unverified pointer interrupts the argument.' The spec lists this unretrievable OLX post as the paragraph's evidence, so the draft cannot drop it without a spec change.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-B B5 (research note left in text; breaks flow)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Capacity Planning for Known Peaks ¶2",
+      "quote": "Figures here count queries, meaning results-page requests; each query fans out to about 2.6 engine requests at Tradeyard",
+      "finding": "Reader A (A9): 'Searches', 'queries' and 'requests' drift across the chapter (3.4 million failed search requests, 7 billion search requests, cost per thousand searches, cost per 1,000 queries, peak search requests at origin ~13,000/s); 'could not always tell what a figure counts.' The definition here is not held to elsewhere.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-B B6 (unit of load keeps changing; had to check)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "Cost: Making Scale Visible per Unit of Work ¶1",
+      "quote": "**Cost per thousand searches** — search infrastructure cost divided by search requests. In this book, **cost per search** means",
+      "finding": "Reader B (B7): the bullet is headed 'Cost per thousand searches' but defines 'cost per search', and divides by 'search requests' while the table reports cost per 1,000 queries.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-A A9 ('the cost bullet changes its own term mid-definition')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "Capacity Planning for Known Peaks ¶4",
+      "quote": "shedding unverified automated traffic at peak, together take about **35%** of peak requests off the backend",
+      "finding": "Reader A (A10): bot shedding appears both as a standing capacity lever (part of the 35%) and as ladder Level 1 triggered at 70% concurrency; with the worked example's '~37% shed or served from cache' and 'Level 2 reached', the reader is 'unsure whether bot shedding is normal peak posture or a degradation step.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "The Traffic Shape of a Listing Platform ¶4",
+      "quote": "and only about 6% of the total from verified search engine crawlers",
+      "finding": "Reader B (B3): unclear whether 'the total' means all requests or all automated requests.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/2",
+      "draft_locus": "Cost: Making Scale Visible per Unit of Work ¶3",
+      "quote": "partly because its listings carry more revenue",
+      "finding": "Reader B (B8): 'Revenue does not cause cost; non sequitur.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Cost: Making Scale Visible per Unit of Work ¶6",
+      "quote": "Veldmark's three search engines, three clouds and four observability stacks, one per brand",
+      "finding": "Reader B (B9): the cost table lists three brands, so 'four ... one per brand' does not add up; Keybridge, the fourth brand, appears only inside the group total cell (B10). Stopped to reconcile.",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-A A12 (had to reconcile 'four ... one per brand' with three rows; Keybridge only inside the group total)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/5",
+      "draft_locus": "Cost: Making Scale Visible per Unit of Work ¶6",
+      "quote": "The September 2027 decision to move Tradeyard and Hearthly to a shared search platform on Amazon OpenSearch Service",
+      "finding": "Reader A (A13): 'Major decision introduced in passing; later sections depend on it.' The worked example, trade-offs and conclusion rely on a decision the spec first places at the end of the cost section; reader A suggests introducing it earlier (Regions or the start of the worked example).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/13/paragraphs/0",
+      "draft_locus": "The Chief Architect's View ¶1",
+      "quote": "**Decide the journeys and their owners.** Preventing those failures takes group decisions.",
+      "finding": "Reader A (A14): the link back to the failure modes sits inside the first bold item and reads as part of that item rather than as the section's opening.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "From Platform to Leadership ¶2",
+      "quote": "the Rotterdam city bike's sale is true in Yardstick, the register of copies names every store holding it, each copy is rebuilt from the event stream and erased through the register",
+      "finding": "Reader A (A16): 'Dense; acceptable as part close, hardest sentence of the closing.'",
+      "fault": "draft",
+      "corroborated_by": "reader-flow-B B12 (dense; terms from other chapters at the closing beat)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Architecture: Control Points in the Search Path ¶1",
+      "quote": "keep batch work out of peak windows with the peak calendar set out under capacity planning",
+      "finding": "'Peak and campaign calendar' is on the audience's does_not_know list and is used here, in the Figure 3 caption ('kept out of peak windows by the same calendar') and in isolation rule 1 ('a calendar the platform enforces') before Capacity Planning ¶5 defines it. The forward reference follows the spec's section order.",
+      "fault": "spec",
+      "corroborated_by": "reader-flow-A A5 and reader-flow-B B4 (both report the calendar used before it is introduced)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor"
+    }
+  ]
+}

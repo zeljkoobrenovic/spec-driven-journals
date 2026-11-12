@@ -1,0 +1,1787 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "professional-seller-tooling",
+  "journal": "listing-systems-architecture",
+  "part": "part-3",
+  "title": "Serving the Pros: Dealer, Agent and Merchant Tooling",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the professional-seller-tooling entry in journal-spec.json; the conclusion realises Part III's closing (synthesis, so-what, takeaway) from the same file, and the hand-off uses Part IV's transition_in. Units added by this conversion: the roadmap paragraph p04 and two conclusion paragraphs (p67, p68).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The professional's jobs in the marketplace, the lead from the professional's side, and why professionals buy outcomes rather than exposure.",
+        "The pro workspace over domain systems of record (inventory operations, performance and ROI, lead management, pricing insight, team permissions, the partner API) and the four neutrality controls: separate tenancy, API parity, data boundary and ranking blindness."
+      ],
+      "believe": [
+        "Statistics, lead exports and billing must come from one event stream, because professionals check them against their own CRM and sales.",
+        "Software a group sells to professionals is neutral only when the architecture enforces it and produces evidence."
+      ],
+      "can_do": [
+        "Reconcile a professional's portal lead count with their CRM and turn the gap into specific changes.",
+        "Draw the neutrality boundary around a group-owned pro SaaS and decide which pro capabilities are shared engines and which are brand front ends."
+      ]
+    },
+    "audience": {
+      "who": "Architects and engineering leads who own dealer portals, agency workspaces, partner APIs or an acquired pro SaaS product, and group leaders who decide what to share and how to keep a SaaS business neutral.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline); BFFs and OAuth.",
+        "From earlier chapters: the listing aggregate and its events, seller accounts, organizations, branches and integration principals (sellers-and-accounts), feeds and feed errors (listing-ingestion), the publication pipeline and its removal path, and the vertical layer model (vertical-requirements).",
+        "Veldmark, its brands, cast and the Essen Golf and Lyon apartment, and the failure-pattern names."
+      ],
+      "does_not_know": [
+        "Pro tooling, lead management for pros and pro SaaS as this chapter defines them.",
+        "The lead ledger and performance read model as pro-tooling components, and the professional's lead lifecycle.",
+        "The P2B Regulation's Articles 7 and 9 and the four neutrality controls."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a lead-count dispute and a request for cross-portal data, the reader resolves both with the chapter's design.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A dealer's portal shows 23 leads for a car while the dealer's CRM received 14, and the dealer threatens to downgrade. Separately, your group owns an agent CRM that publishes to competing portals, and your portal's CEO asks for its anonymized cross-portal performance data. Using only this chapter: what do you do in each case?",
+        "expected": "Reconcile per channel from one lead ledger: deduplicate raw contacts per buyer and listing (here 19 unique buyers); export every channel (calls and bookings as well as e-mail) through the Lead API and webhooks with stable IDs and deduplication keys; show raw and deduplicated counts side by side; compute statistics, leads and package delivery from the same event stream; optionally match sales by VIN. Refuse the request: the report is computed inside the CRM per agency; the portal sees no CRM data, aggregated or anonymized, enforced by separate tenancy, API parity, a data boundary and ranking blindness, with an evidence pack for an independent review."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Two arguments in one week: the Golf's 23 leads against the dealer's 14 and Keybridge's portal performance report; what professionals need, outcome over exposure and the lead from their side; a workspace over systems of record with its inventory, performance, lead, pricing, team and API capabilities; neutrality by design: the neutrality problem of pro SaaS, what the law asks and the four controls; the worked example of both arguments; build, integrate or own; vertical differences, failure modes, the Chief Architect's view and questions. Evidence: public company and investor sources, EU law (the Platform-to-Business Regulation) and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What do professional sellers need from a marketplace, and how should that tooling be architected?",
+    "claim": "Professionals buy outcomes and judge them by reconciling the marketplace's numbers with their own CRM and sales, so pro statistics, lead exports and billing records must come from one event stream with shared identifiers; pro tooling is a workspace that composes inventory, leads, entitlements and accounts from their domain systems of record for one organization and exposes the same capabilities through a versioned partner API; and software the group sells to professionals, such as an agent CRM that publishes to competing portals, is kept neutral by four architectural controls (separate tenancy, API parity, a data boundary and ranking blindness), each producing audit evidence.",
+    "disputed_by": "The common practice of building the pro portal as its own product with a reporting database fed nightly from several lead systems, reporting views and raw contacts as value, treating the partner API as secondary to the portal's own tools, and keeping a group-owned SaaS neutral by policy statements and separate hosting rather than enforced controls.",
+    "so_what": "A Chief Architect who accepts this shares the lead ledger, the performance read model, the pro API gateway and the developer portal as engines while brands keep their pro front ends, runs the pro API as a governed product, and watches the gap between portal-reported and CRM-received leads for a sample of professionals (a gap above a few percent is a defect), lead export coverage by channel and every access request that crosses the neutrality boundary.",
+    "how_why": "Dealer Hub reported 23 leads for the Essen Golf, counting some buyers twice; the dealer's CRM received 14 because calls and bookings were never exported; the deduplicated count was 19 unique buyers, and a VIN match tied the sale to one of them, which withdrew the downgrade. Keybridge publishes for 9,800 agencies to Hearthly and its competitors, so any Keybridge data in Hearthly's ranking or sales targeting, even an anonymized benchmark, breaks the March 2027 decision and the trust of every agency that multi-lists; the EU Platform-to-Business Regulation already requires portals to describe their data access and any differentiated treatment of their own services.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Professionals judge the marketplace by reconciling its numbers with their own CRM and sales, so pro statistics, lead exports and billing records must come from one event stream with shared identifiers, counting deduplicated leads beside raw contacts and labeling estimates."
+      },
+      {
+        "id": "S2",
+        "claim": "Pro tooling is a workspace that composes inventory, leads, entitlements, insight and accounts from their domain systems of record for one organization and owns no business record of its own."
+      },
+      {
+        "id": "S3",
+        "claim": "Every pro capability is also offered through a versioned partner API run as a product, because many professionals work through partner software; the group shares the engines behind it while brands keep their front ends."
+      },
+      {
+        "id": "S4",
+        "claim": "Software the group sells to professionals is neutral only when four architectural controls (separate tenancy, API parity, a data boundary and ranking blindness) enforce it and produce evidence an independent reviewer can test."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Ends the chain where professionals check its output against their own systems, and performs the part's closing: supply is complete and hands discovery a fresh, deduplicated, removable stock.",
+    "supports": [
+      "P3-5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "concepts, architecture, neutrality: each uses the terms the previous one established"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "worked-example: the design applied to the scene's two arguments"
+      }
+    ],
+    "rationale": "The scene states two arguments; the concepts define what professionals need; the architecture answers those needs with a workspace and one event stream; neutrality by design names the conflict of owned pro software and answers it; the worked example settles both arguments with that design. Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions are judgements on a design the reader has seen. Putting the architecture before the concepts would design for needs not yet stated; putting neutrality before the architecture would demand API parity before the API is described; putting the worked example earlier would resolve the arguments with mechanisms not yet explained."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A private seller visits a marketplace a few times a year. A dealer or an estate agent lives in it: sales staff open the lead inbox before their e-mail, managers read the weekly statistics before the board meeting, and the integration partner pushes inventory every few minutes."
+    },
+    "bridge": {
+      "from_reader_world": "The reader's own dealer portal or agency workspace, built as a reporting product next to the listings.",
+      "to_topic": "For professionals the marketplace is one of the systems their business runs on and is judged by whether its numbers reconcile, so the question is what they need and how to build it."
+    },
+    "thesis_statement": {
+      "text": "Professionals buy outcomes and check them with their own systems, so statistics, lead exports and invoices come from the same events; pro tooling is a workspace over domain systems of record exposed through APIs; and software sold to professionals must be neutral by architecture.",
+      "placement": "KEY POINTS callout (three bullets); p01 states the reconciliation test."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p04.",
+      "promises": [
+        {
+          "promise": "Two arguments that reached Veldmark in one week.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "What professionals need: their jobs, outcomes over exposure and the lead from their side.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "The workspace over systems of record and its capabilities.",
+          "kept_in": [
+            "architecture"
+          ]
+        },
+        {
+          "promise": "Neutrality by design: the conflict pro SaaS brings, what the law asks and four controls.",
+          "kept_in": [
+            "neutrality"
+          ]
+        },
+        {
+          "promise": "The worked example that settles both arguments.",
+          "kept_in": [
+            "worked-example"
+          ]
+        },
+        {
+          "promise": "Build, integrate or own; vertical differences; failure modes; the Chief Architect's view; review questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A dealer or an estate agent lives in the marketplace, which is one of the systems its business runs on, and judges it the way it judges its other systems: by whether its numbers reconcile.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Sales staff open the lead inbox before their e-mail, managers read the weekly statistics before the board meeting, and the integration partner pushes inventory every few minutes; a private seller visits a few times a year.",
+            "shows": "For professionals the marketplace is an operational system next to their DMS or agency CRM, so it is checked like one."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The publication pipeline treated every seller the same way, but professionals supply most of a vertical marketplace's stock, and pro tooling is where they see what that stock produced, measured in qualified buyers and sales rather than in slots.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A Motorvane dealer pays for slots and prominence but wants to know how many qualified buyers each car produced and how many bought; a Hearthly agency wants to know whether the portal brought it sellers and tenants.",
+            "shows": "Professionals judge the marketplace on outcomes, not on what they bought.",
+            "source": "scenario-ledger (Veldmark is fictional)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The earlier Part III chapters, which brought listings in and published them for every seller alike.",
+          "introduces": "Professionals, who supply most of the stock and check what it produced.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter owns three terms, pro tooling, lead management for pros and pro SaaS, and leaves the lead itself, packages, the organization model and feeds to the chapters that own them.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Pro tooling as the place professionals check the marketplace.",
+          "introduces": "The chapter's three terms and its boundaries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter answers two Veldmark arguments in a stated order: the scene, what professionals need, the workspace architecture, neutrality by design, the worked example, then building, integrating or owning, vertical differences, failure modes, the Chief Architect's view and review questions, with evidence from public company sources, EU law and the fictional Veldmark.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The terms the chapter owns.",
+          "introduces": "The order in which the chapter uses them and the kinds of evidence it relies on.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Two Arguments in One Week",
+      "controlling_idea": "Two arguments in one week, a dealer's lead count against its CRM and a request to see a group-owned CRM's cross-portal data, pose the chapter's two questions at Veldmark.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Sets the reconciliation dispute and the neutrality request that the design must answer."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The professional who judges the marketplace by reconciling its numbers, and the roadmap's two arguments.",
+        "introduces": "The two Veldmark arguments themselves.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In the second week of June 2027 two arguments about professional tooling reach Ingrid Halvorsen, Veldmark's Group Chief Architect, in the same week.",
+          "function": "context"
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Autohaus Ruhrblick's sales director finds 23 Golf leads in Dealer Hub against 14 in the dealer's CRM and proposes a downgrade, while Felix Brandt, Motorvane's CTO, wants funding to rebuild Dealer Hub.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Pro 150 package at €1,450 a month with 150 slots; 23 leads in Dealer Hub in the first ten days against 14 in the dealer's CRM; Dealer Hub runs on a reporting database fed nightly from three lead systems.",
+              "shows": "The professional checks the marketplace's count against its own system and acts on the gap.",
+              "source": "scenario-ledger (Golf, Pro 150, Dealer Hub lines)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two arguments in one week.",
+            "introduces": "The first, from Essen.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Emma Laurent of Keybridge, the group's agent CRM that publishes for 9,800 agencies to Hearthly and its competitors, wants a portal performance report, and Claire Fontaine, Hearthly's CEO, asks to see the aggregated comparison.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge acquired in 2024; 9,800 agency customers; Agence Rhône Habitat, a 14-branch network; Emma Laurent's report; Claire Fontaine's question.",
+              "shows": "Owning software that serves the portal's competitors creates pressure to use its data.",
+              "source": "scenario-ledger (Keybridge, cast, Lyon apartment)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first argument, from Essen.",
+            "introduces": "The second, from Lyon.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The March 2027 Keybridge decision states the principle but not the mechanism, so Ingrid must answer both arguments with one design.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2027 decision: no Keybridge agency data is used by Hearthly for ranking or sales targeting, with access controls and an annual independent review.",
+              "shows": "A rule without a mechanism leaves the request unanswered.",
+              "source": "scenario-ledger (Mar 2027)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Claire's request for the comparison.",
+            "introduces": "What the existing decision does and does not settle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: What Professionals Need",
+      "controlling_idea": "Professionals need outcomes they can verify and a lead that continues into their own systems.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the jobs, the outcome test and the professional's lead that the architecture answers."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Ingrid's task: what professionals need, how to build the tooling, how to keep owned software neutral.",
+        "introduces": "The first of those questions, what professionals need.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "From the professional's jobs, to the job that decides renewal (proving value), to the lead that carries it; each step narrows to what the next relies on. The software that records the lead's later states, and the conflict it brings, is left to the neutrality section, where the law and the controls answer it."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "The professional has three jobs, operating inventory, converting demand and proving value, plus a fourth in real estate, winning mandates before there is anything to list.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The productscape reference model's professional-merchant persona, its fears 'paying for exposure without measurable return' and a feed sync that 'has silently dropped half their stock', and the real-estate model's mandate job.",
+              "shows": "The jobs come from a generic domain model, not from one company.",
+              "source": "Productscape domain models (author's sibling repository, 2026)"
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Table 1 maps eight professional jobs to the capabilities that serve them and to documented products.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table 1: mobile.de Seller API; Autotrader Co-Driver (28 to 5 minutes, 86% of retailers, May 2026); Rightmove RTDF v1.4.1 (Nov 2023); mobile.de Lead Manager (45% of replies, Jul 2026) and Preis-Planer; AVIV Ultimmo (2022); Rightmove performance calls and CarGurus ROI tracking (10-K, Feb 2026); mobile.de multi-locations.",
+              "shows": "Every job has a public product behind it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The professional's jobs.",
+            "introduces": "The capabilities and public products for each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "form": "table",
+          "controlling_idea": "Every row of Table 1 has a public example and reads from more than one domain.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Table 1.",
+            "introduces": "What its rows have in common.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Pro tooling is a composition problem, because no capability lives in one service.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A statistics page reads listings, events, leads and entitlements; a lead inbox reads conversations, call records, accounts and the listing.",
+              "shows": "Each capability spans several domains, so a pro tool composes rather than owns."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Rows that read from several domains.",
+            "introduces": "The conclusion that pro tooling composes services.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "list",
+          "controlling_idea": "The professional's real question is causal, and public evidence shows how hard it is to answer: self-selection distorts package dashboards, while incumbents report outcomes rather than views.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "OLX (Aug 2026): naive metrics made premium ads look worse; after propensity-score matching the most expensive package was associated with 97.4% more conversions, with matched estimates above experimental ones.",
+              "shows": "Comparisons between packages mislead unless self-selection is handled."
+            },
+            {
+              "kind": "quotation",
+              "what": "Rightmove FY2025: '7 out of 10 vendor instructions ... 8 out of 10 tenants'; Autotrader FY2026: Deal Builder reservations are 'the very best enquiries'.",
+              "shows": "Leaders sell outcomes, not exposure."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The 'prove value' job among the professional's jobs.",
+            "introduces": "The causal question behind it and why it is hard.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The architecture therefore needs a performance funnel per listing, branch and organization with outcomes as the headline and views only as diagnostics.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Outcome evidence and the difficulty of attribution.",
+            "introduces": "The funnel the architecture must provide, and Vanity Liquidity as its failure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "From the professional's side a lead has a lifecycle, from assignment to won or lost, most of which happens in the professional's CRM and returns to the marketplace only through an integration.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: the marketplace records Received, Merged, Assigned and Responded; later states happen in the CRM.",
+              "shows": "ROI reporting is only as good as the return path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Deduplicated leads and outcomes in the funnel.",
+            "introduces": "The lead as the professional sees it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Response time, which the marketplace sees, and outcome, which the professional sees, are the two measurements in the lifecycle that matter most.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "mobile.de's 2026 lead-performance report tracks response time, response rate and processing status.",
+              "shows": "The marketplace can already measure and improve response time; outcome must come back from the professional."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Figure 1's lifecycle.",
+            "introduces": "Its two most important measurements.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: A Workspace Over Systems of Record",
+      "controlling_idea": "Pro tooling is a workspace that composes domain systems of record for one organization, computes statistics from the billing event stream, and offers every capability through the partners' API.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3"
+        ],
+        "how": "Specifies the workspace, one event stream for statistics, leads and billing, and the partner API."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "What professionals need, ending with the lead's two measurements, response time and outcome.",
+        "introduces": "The second of Ingrid's questions: how to build tooling that serves those needs.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole architecture and its pieces first, then each capability in the order of the professional's jobs (inventory, performance, leads, pricing, team), ending with the partner API, which exposes all of them. Putting the API first would describe an interface to capabilities not yet introduced."
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "The recommended workspace has three properties: it owns no business records, offers every capability through the API partners use, and computes statistics from the same event stream as billing.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the portal UI, the app and partner software reach the same capabilities through one gateway; statistics, the lead ledger and billing consume one event stream.",
+              "shows": "The three properties are visible as one architecture."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "Each of the five pieces, the pro API gateway, the workspace backend, the lead ledger, the performance read model and insights, sits where it does for a stated reason.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Organization-scoped tokens; the productscape partner surface with 'certification and SLA controls'; a BFF that caches but does not own; the lead ledger proposed in monetization-models; a rebuildable read model; vertical price ratings and Valuo.",
+              "shows": "Each piece's place prevents a second system of record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Figure 2.",
+            "introduces": "The pieces and why each sits where it does.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Because most professional inventory arrives by feed, the most valuable inventory tool mirrors the ingestion pipeline in terms a sales manager can read.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The productscape partner persona fears 'opaque moderation or validation failures'; mobile.de returns errors as stable keys; Autotrader documents a DVLA write-off rejection.",
+              "shows": "Feed errors are already structured; the tool must show them to the person who notices a missing car."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The architecture's pieces.",
+            "introduces": "The first capability, inventory operations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Bulk operations are batches of commands against the listing service with a job record the professional can inspect, not direct writes by the workspace.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A bulk price change of 200 cars.",
+              "shows": "Shows the rule on a typical case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The rule that the workspace shows what the pipeline did.",
+            "introduces": "The same rule applied to bulk changes.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The professional, the sales team and billing see the same numbers only if statistics, leads and delivery records are derived from the same events with the same identifiers.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Delivery records required by products-and-entitlements; a 'Top listing' bought on Monday showing the impressions it produced.",
+              "shows": "The statistics page can be a view over billing's own records."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: one event stream feeds the dashboard, the sales team and billing; nightly copies disagree.",
+              "shows": "Shared identifiers make the numbers agree."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Inventory operations.",
+            "introduces": "The second capability, performance and ROI.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "list",
+          "controlling_idea": "Three design rules follow: count leads after deduplication beside the raw contacts, separate observed facts from estimates, and do not compare packages naively.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The OLX self-selection case.",
+              "shows": "Naive package comparisons cost revenue and credibility."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One event stream with shared identifiers.",
+            "introduces": "The rules for what it reports.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "The same lead object serves professionals who work leads in the portal's inbox and those who work them in their own CRM, with an outcome channel back.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "mobile.de's call-assistant pilot: 91% of answered calls outside opening hours, one in three a qualified lead (Jul 2026); its Lead API; Autotrader's Messages, Calls and Deals APIs.",
+              "shows": "Leads must leave the portal through every channel."
+            },
+            {
+              "kind": "reasoning",
+              "what": "The VIN lets a DMS sale be matched to the listing and its leads.",
+              "shows": "The return path is reliable for vehicles."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Performance and ROI.",
+            "introduces": "The third capability, lead management.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Exported leads are personal data, so the marketplace must record which leads went to which integration under which terms, all the more as leads carry model outputs.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Autotrader's 'Buying Signals' intent model built on 'verified but anonymised sales transactions and consumer interactions'.",
+              "shows": "Model outputs become part of what is exported and must be explainable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Leads exported to the professional's CRM.",
+            "introduces": "The obligations that export creates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Price tools turn the marketplace's market data into pricing advice for each professional.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "CarGurus Next Best Deal Rating and PriceVantage (10-K, Feb 2026); Autotrader's 'price adjusted days to sell'; mobile.de's Preis-Planer.",
+              "shows": "Leaders already sell pricing insight to professionals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Lead management.",
+            "introduces": "The fourth capability, pricing and market insight.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The author infers that price tools create a feedback loop and show each professional insight computed from everyone's data, so the insight service must know each output's population and access rule.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Published pricing tools.",
+            "introduces": "Their two architectural consequences, labeled as inference.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Pro tooling enforces three rules on the account hierarchy: listings and leads belong to the organization, permissions are scoped to branch and capability, and integrations are principals with tokens that follow OAuth security practice.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The Lyon branch of Agence Rhône Habitat cannot reprice the Villeurbanne branch's listings.",
+              "shows": "Branch scoping in a real hierarchy."
+            },
+            {
+              "kind": "source",
+              "what": "RFC 9700 (Jan 2025): authorization code with PKCE, no password grant, sender-constrained or rotated refresh tokens.",
+              "shows": "The baseline for partner tokens."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Pricing insight.",
+            "introduces": "The fifth capability, team, branches and permissions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "For many professionals the marketplace's own UI is secondary, as the scale of leading portals' partner integrations shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Autotrader: over 220 technology partners, 155 million calls a month, up from 91 million; 30-day notice of breaking changes (May 2026); Rightmove network and branch identifiers and client certificates.",
+              "shows": "Partners carry much of the professional's daily work."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Integrations as principals.",
+            "introduces": "How much professionals work through them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The pro API is a product whose customers are software vendors, and because dealers multi-home its quality helps decide which portal's workflow a professional chooses.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Bundeskartellamt, October 2026 (mobile.de/Carwow): dealers multi-home and 'many platforms offer dealers data export to other platforms'.",
+              "shows": "Inventory is not exclusive, so the integration surface competes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Partner integrations at scale.",
+            "introduces": "The author's judgement that the API is a product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "neutrality",
+      "heading": "Neutrality by Design: When the Group Sells the CRM",
+      "controlling_idea": "Owning software sold to professionals brings a conflict with the portal, and a group keeps that software neutral by four architectural controls that answer the questions EU law already asks, each producing evidence.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Names the conflict pro SaaS brings, grounds neutrality in P2B Articles 7 and 9, and specifies the four controls and their costs."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Ingrid's three questions, after the workspace and the public partner API that answer the second.",
+        "introduces": "The third question: groups that also sell the software professionals use, and the conflict that brings.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The conflict owned software brings first, then the law's questions about it, then the controls that answer them and their cost; the controls cannot be judged before the conflict and the questions are known. The conflict opens this section rather than closing the concepts, so it is answered where it is raised; flow readers in all three draft-check rounds asked for this."
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "controlling_idea": "Many marketplace groups also sell software to professionals, including the CRM in which the lead's later states are recorded.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Scout24 Transaction Enablement €106.6 million in 2025 (Feb 2026); Zillow's Follow Up Boss (10-K, Feb 2026); Cox Automotive's Autotrader.com with vAuto, Dealertrack and VinSolutions; Cars.com websites for about 7,700 dealers (10-K, Feb 2026).",
+              "shows": "Selling pro software is common among marketplace groups."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Owning pro software brings an advantage at the origin of listings and a conflict, because the CRM knows what the professional publishes to every competitor.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Groups that sell software to professionals.",
+            "introduces": "What that ownership brings, the advantage and the conflict.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The EU Platform-to-Business Regulation's Articles 7 and 9 already require portals to describe any differentiated treatment of their own services and their access to data, and its repeal is so far only a proposal.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Art. 7: 'any differentiated treatment which they give, or might give' to the provider's own or controlled business users, including 'technical interfaces'; Art. 9: access to data 'including in aggregated form'; Commission repeal proposal of November 2025, still a proposal as of October 2026.",
+              "shows": "The law already names the conflict and asks for a description of it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The conflict owned pro software brings: the CRM knows what professionals publish to every competitor.",
+            "introduces": "The EU law that already names that conflict.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Whatever happens to the regulation, a neutral design must answer its three questions with evidence, not with policy.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A regulation that may be repealed.",
+            "introduces": "Questions that remain whatever happens to it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Neutrality is enforceable when it rests on four architectural controls, each producing evidence.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table 2: separate tenancy, API parity, data boundary and ranking blindness, with what each means and the evidence it produces.",
+              "shows": "Each control answers one of the questions with something a reviewer can test."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Three questions that need evidence.",
+            "introduces": "The four controls that produce it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "table",
+          "controlling_idea": "The four controls turn a neutrality promise into architecture an independent reviewer can test.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Table 2.",
+            "introduces": "What its controls achieve together.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The controls cost slower integration and duplicate infrastructure, which is the price of selling software to customers who also buy from the portal's competitors.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Controls that make neutrality checkable.",
+            "introduces": "What they cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked-example",
+      "heading": "Veldmark Worked Example: The Golf's 23 Leads and Keybridge's Report",
+      "controlling_idea": "The design settles both arguments: one lead ledger reconciles the Golf's counts and withdraws the downgrade, and the neutrality boundary refuses Hearthly the Keybridge comparison with evidence.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Applies the one-stream design and the four controls to the scene's two arguments."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The design: one event stream, the lead ledger and the four controls.",
+        "introduces": "Its application to the two arguments from the scene.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The two arguments in the order the scene raised them, each from evidence (the reconstructed counts, the boundary) to the changes and the answer. The Golf comes first because its lead ledger is also what Keybridge's public APIs expose."
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Felix's team reconstructs the Golf's ten days from the three lead systems, channel by channel.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table 3: e-mail 14/14/14; calls 7/4/0; test-drive bookings 2/1/0; total 23 raw, 19 deduplicated, 14 in the CRM.",
+              "shows": "Each count differs for a stated reason.",
+              "source": "scenario-ledger (Golf reconciliation)"
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "form": "table",
+          "controlling_idea": "Neither Dealer Hub's raw count nor the CRM's e-mail count was the number the dealer needed.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Table 3.",
+            "introduces": "What its three counts show.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Both sides were wrong in opposite directions: the honest number was 19 unique buyers, and a VIN match ties the sale to one of them.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 29 April sale recorded in the DMS and exported next morning; the buyer's e-mail matches one of the 19.",
+              "shows": "The sale is attributed with evidence, not estimated.",
+              "source": "scenario-ledger (Golf, listing-ingestion line)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: 23 and 14 feed one ledger of 19 unique buyers, one matched to the sale.",
+              "shows": "Shows the reconciliation at a glance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The counts in Table 3.",
+            "introduces": "Who was wrong and what the right number was.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "form": "list",
+          "controlling_idea": "Felix's rebuild becomes four specific changes rather than a new portal.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Lead view on the lead ledger; Lead API and webhooks for all channels; opt-in sale matching by VIN; statistics from the event stream.",
+              "shows": "Each change closes one cause of the gap.",
+              "source": "scenario-ledger (professional-seller-tooling line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The diagnosis of the gap.",
+            "introduces": "The changes it calls for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "With numbers that agree, the renewal conversation changes and the downgrade is withdrawn.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Over the quarter the 150 slots produced 1,610 deduplicated leads and, among dealers who opt in, about one confirmed sale for every twelve leads (labeled illustrative).",
+              "shows": "The professional renewed because both systems told the same story."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The four changes.",
+            "introduces": "Their effect on the renewal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Emma's report is legitimate; the question is what data it uses and who sees the result, which the boundary in Figure 5 answers.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: Keybridge publishes through the public API, receives leads and statistics through public APIs, and computes the report inside Keybridge per agency.",
+              "shows": "The boundary places the report where only the agency sees it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first argument settled.",
+            "introduces": "The second, Keybridge's report.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The answer to Claire is no, because the comparison is computed from data agencies entrusted to Keybridge, and even an anonymized benchmark would break the March decision.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Claire's question and the boundary.",
+            "introduces": "The answer and why the alternative is rejected.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "Three implementation details make the boundary auditable: Keybridge is treated as one of about 160 vendors with monthly contract tests, origin tags are barred from ranking and sales tools, and a standard evidence pack goes to the annual review.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "About 160 software vendors; contract tests run monthly with Keybridge's and a test vendor's credentials; evidence pack owned by Lucía Ortega.",
+              "shows": "Each of the four controls produces evidence at Veldmark.",
+              "source": "scenario-ledger (professional-seller-tooling line, cast)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The refusal.",
+            "introduces": "How it is made checkable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The separate clouds help but are not the control, so the controls are written as policies and tests that would survive a move to one cloud.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Keybridge on Azure, Hearthly on Google Cloud; a possible later move of both to AWS.",
+              "shows": "Hosting is incidental; the controls must not depend on it.",
+              "source": "scenario-ledger (Cloud line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Controls implemented as tests and evidence.",
+            "introduces": "The hosting separation that only looks like a control.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs: Build, Integrate or Own",
+      "controlling_idea": "Per capability, a group builds what only the portal knows, exposes everything through the API, and owns pro SaaS only if it can run it as a neutral, separable business.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Weighs building, integrating and owning, and argues for the API and for neutral, separable SaaS."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "One owned SaaS product kept neutral at Veldmark.",
+        "introduces": "The general choice, per capability, between building, integrating and owning.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The options side by side, then the rule drawn from them, then the consequence of owning for a group's structure. Stating the rule before the table would ask the reader to accept it before seeing the options it weighs."
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "A group decides, per capability, whether to build pro tools in the portal, integrate through APIs or own a pro SaaS product.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table 4: the three options with meaning, strengths, weaknesses and when each is right.",
+              "shows": "Each option fits a different kind of capability."
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "form": "table",
+          "controlling_idea": "Most groups need building for portal-specific capabilities and integration for the rest, while owning SaaS is a separate business with its own rules.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Table 4.",
+            "introduces": "What its rows add up to.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The author's rule is to build what only the portal knows, expose everything through the API and own SaaS only as if a competitor owned the portal, and the API is the option most often under-funded.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison of the three options.",
+            "introduces": "The rule the author draws from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Owning SaaS built with separate tenancy also keeps it separable when a group sells or keeps its businesses.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "platform-consolidation and Adevinta's 2024-2026 decentralization (case-adevinta).",
+              "shows": "Businesses sold separately must be separable."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Owning SaaS as a separate business.",
+            "introduces": "Its effect on a group exit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The professional and the system they already run decide what the portal must provide, so pro tooling differs by vertical more than most capabilities.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Shows which workspace capabilities and integrations each vertical needs most."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The choice to build, integrate or own.",
+        "introduces": "How the answer differs by vertical.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The comparison across five verticals first, then the two verticals where pro tooling changes character; reversed, the two special cases would read as the general rule."
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Pro tooling varies more across verticals than almost any other capability, because professionals' businesses differ.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table 5: automotive, real estate, general classifieds, jobs and recommerce by professional, existing system, needs and tension, including Autotrader's Deal Builder pause and Vinted Pro.",
+              "shows": "The professional's existing system sets what the portal must offer."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "form": "table",
+          "controlling_idea": "The professional and their existing system decide what the portal must provide, and in automotive and real estate the integration surface matters as much as the portal's own tools.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Table 5.",
+            "introduces": "What it shows.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "In real estate and recommerce pro tooling does more than save time: it helps agencies win supply and draws a compliance boundary around traders.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Rightmove's Opportunity Manager predicts 'potential vendors from their usage of the Rightmove platform' (FY2025); Vinted: 'businesses have legal obligations that private sellers don't' (Sep 2026).",
+              "shows": "Pro tooling there is supply acquisition or compliance first."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Verticals in which the professional's system dominates.",
+            "introduces": "Two verticals where pro tooling changes purpose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Pro tooling fails when it becomes a second system of record, flatters, stops leads at its edge, gates features ad hoc, neglects its API, relies on promised neutrality or imposes platform states.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Each failure mode is the absence of one element of the design."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the design should be, per vertical.",
+        "introduces": "How it goes wrong in practice.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Failures grouped by the claim they violate: records and numbers first (S1, S2), then the API (S3), neutrality (S4) and professionals' consent, which Table 5's automotive tension (platform-controlled states) set up. Placed before the design sections, each failure would criticise a design the reader has not seen."
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The second system of record grows when the pro portal fills its own tables nightly, and its numbers soon disagree with billing, the listing service and the professional's CRM.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Dealer Hub's nightly reporting database.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "Statistics that flatter report raw contacts as leads and views as the headline until the professional's CRM disagrees.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Vanity Liquidity, sold to the customer who pays.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Leads that stop at the portal's edge make the professional undercount the portal's value and downgrade.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Autohaus Ruhrblick's near-downgrade.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Feature gating by package-name checks in the workspace code breaks features on a package redesign and hides what each customer received.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "'Premium statistics' and 'AI replies' switched on by scattered checks.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "An API treated as a side project passes its pain to partners and then to professionals, who blame the portal.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The productscape partner persona's fear of 'breaking changes disrupting merchant inventory'.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Neutrality by promise erodes through small exceptions that together end it and, in the EU, amount to differentiated treatment that should have been described.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "An early-access endpoint, a one-off read access, a correlated ranking feature.",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Rolling out platform-controlled states without consent changes how professionals run their business, so per-organization configuration and reversibility belong in the design.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Autotrader's pause of Deal Builder's auto-rollout and 'request a reservation' (FY2026 results).",
+              "shows": "Shows the failure in a recognizable case."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure mode.",
+            "introduces": "Another way pro tooling fails.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group level the Chief Architect decides which pro capabilities are shared engines, runs the pro API as a governed product, sets the neutrality regime, and watches reconciliation gaps, export coverage and boundary crossings.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Turns the design into group decisions, owners and measures."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Failure modes that brand teams cannot prevent alone.",
+        "introduces": "The group-level decisions and measures that prevent them.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "What to decide, who decides, what to watch, then the change that raises the stakes; the measures make sense only after the decisions they monitor."
+      },
+      "paragraphs": [
+        {
+          "id": "p60",
+          "controlling_idea": "At group level pro tooling raises three decisions that brand teams cannot make alone.",
+          "function": "claim"
+        },
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "The three decisions are which pro capabilities are shared engines and which are brand front ends, the pro API as a governed product, and the neutrality regime for any owned pro SaaS.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "In vertical-requirements' layers, the lead ledger, performance read model, pro API gateway and developer portal are layer-2 engines; Dealer Hub and Hearthly's agency workspace are layer-4 products.",
+              "shows": "Sharing the engine but not the front end avoids forcing one vertical's workflow on another."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Three decisions.",
+            "introduces": "What each one is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Brand teams decide their workspaces, the group platform owns the engines and the API product, the architecture advice forum rules on bypasses and boundary crossings, and group legal with the data-protection officer own the P2B descriptions.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to decide.",
+            "introduces": "Who decides it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "form": "list",
+          "controlling_idea": "Five measures show whether pro tooling works, from reconciliation gaps, where a gap above a few percent is a defect, to neutrality incidents.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What to watch.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "As AI agents acting for professionals begin to call the pro API, scoped authorization, explainable outputs and audit trails matter more.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "As of 2026 Autotrader and OLX have shipped apps inside ChatGPT, Rightmove has submitted one, and mobile.de's call assistant answers buyers for dealers.",
+              "shows": "Agents already sit between professionals and portals."
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Today's decisions and measures.",
+            "introduces": "How agents change the stakes from 2025-2026 on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions take the chapter's design into a review of one's own pro tooling.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Each question tests one claim against the reader's own systems."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The Chief Architect's decisions and measures.",
+        "introduces": "Questions that apply them in a review.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "form": "list",
+          "controlling_idea": "Ten questions, from whether lead counts match the professional's CRM by channel to whether professionals can switch off platform-controlled states, take the design into a review.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Supply to Discovery",
+    "synthesis": "The supply chain is complete: listings come in through forms and feeds under contracts, are normalized and enriched with provenance, are recognized when they describe the same thing, are published and removed within a freshness target, and are checked by the professionals who supply most of the value, whose renewal depends on the chain's numbers agreeing with their own.",
+    "so_what": "Discovery can treat its indices and alerts as read models of a supply stream that is contracted, deduplicated and removable with evidence; where a link is missing, Part IV inherits the ghost, the duplicate or the disputed count.",
+    "callback": {
+      "to": "The chapter's hook (a professional who judges the marketplace like its own systems, by whether its numbers reconcile), the scene's two arguments, and the part opening's claim that supply is one chain, not five features.",
+      "how": "The closing names the links in order and ends at the professional who checks them; Ruhrblick's withdrawn downgrade and the Keybridge boundary show that check passing."
+    },
+    "takeaway": {
+      "type": "broader_implications",
+      "content": "Search, alerts and recommendations are only as fresh, deduplicated and trustworthy as the supply this part delivers; Part IV begins with search-architecture, which asks how to index millions of short-lived listings without letting the index become the system of record."
+    },
+    "hand_off": {
+      "to": "part-4",
+      "relationship": "sequence",
+      "carries_over": "Part III's published, deduplicated and removable listings, its 90-second freshness budget with removal from search in 10 seconds, and professional-seller-tooling's closing claim that discovery inherits whatever ghost, duplicate or disputed count supply leaves behind.",
+      "introduces": "The buyer's side: search, query understanding, ranking, recommendations, map search and alerts as surfaces that read that supply and turn it into contacts."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter and Part III's five chapters.",
+      "introduces": "What the completed chain means for the professional and for discovery.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p66",
+        "controlling_idea": "Part III's supply chain is complete, one chain rather than five features from forms and feeds to the professional, and it ends where this chapter began, with professionals who renew only when the chain's numbers agree with their own, which one event stream secured for Ruhrblick and four controls with evidence secured for Keybridge's agencies.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p67",
+        "controlling_idea": "Because the chain delivers supply that is contracted, deduplicated and removable with evidence, discovery can treat its indices and alerts as read models of it, and where a link is missing Part IV inherits the ghost, the duplicate or the disputed count.",
+        "function": "cause_effect",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The 90-second budget and 10-second removal from search set in publication-pipeline.",
+            "shows": "Discovery's freshness rests on supply's guarantees."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "A chain whose numbers professionals can check.",
+          "introduces": "What it gives the buyer's side of the book.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p68",
+        "controlling_idea": "Part IV turns next to the buyer's side, six surfaces from search to alerts that read this supply and turn it into contacts, starting with search architecture.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Supply that discovery reads as read models.",
+          "introduces": "Part IV and its first chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Lead, conversation and lead routing design on the marketplace side.",
+      "covered_in": [
+        "messaging-and-leads"
+      ]
+    },
+    {
+      "topic": "Package, entitlement and billing systems; revenue models.",
+      "covered_in": [
+        "products-and-entitlements",
+        "monetization-models"
+      ]
+    },
+    {
+      "topic": "Organization hierarchy and trader status.",
+      "covered_in": [
+        "sellers-and-accounts"
+      ]
+    },
+    {
+      "topic": "Feed contracts and ingestion.",
+      "covered_in": [
+        "listing-ingestion"
+      ]
+    },
+    {
+      "topic": "AI agents acting for professionals.",
+      "covered_in": [
+        "ai-in-listing-systems"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The legislative status of the proposed P2B repeal should be re-checked before print. (Carried over from spec.md.)",
+    "Whether a dealer's DMS sale export by VIN is personal data under GDPR (it links to a buyer) needs counsel; the chapter treats sale matching as opt-in per dealer. (Carried over from spec.md.)",
+    "Immowelt's historical broker software was only WIDELY REPORTED in the brief and is deliberately not cited. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Framed the chapter around the professional's jobs and the reconciliation test rather than a feature catalog, because renewal depends on numbers that match the professional's systems."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept the marketplace-side lead model in messaging-and-leads and modeled only the professional's lifecycle here, to avoid two definitions of a lead."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Verified P2B Articles 7 and 9 directly (legislation.gov.uk EU text) to ground neutrality in law, rather than relying on the brief's Article 5 coverage."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Introduced Motorvane Dealer Hub and Autohaus Ruhrblick's package as local facts (now the canonical Pro 150 package, €1,450/month, 150 slots, per the editor's ledger line), recorded in the scenario ledger with the Keybridge parity and evidence-pack rules."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the jobs-to-capabilities, lifecycle-diagram, reference-architecture-diagram, trade-off and vertical tables and dated-sources criteria were inventories of contents and are dropped (the style guide still governs format and sourcing); the Golf reconciliation and the Keybridge answer are kept as reader outcomes through the journal spec's AC-1; AC-2 and AC-3 replace the rest. No acceptance criteria were added.",
+      "rejected": [
+        "Carrying the success criteria over as written (inventories)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims S1 to S4 written here (the journal spec gives none for this post) from the thesis's three parts, with the partner API split from the workspace because two sections argue it separately. For the author to confirm."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Table captions ('**Table N:**') are separate units in the draft; each is specified as its own paragraph with form 'table' whose controlling idea is what the table shows, as in vertical-requirements.",
+      "rejected": [
+        "Merging captions into the paragraph before them, which would change the house caption format."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) so a reader of the opening can predict the sections (AC-2); the intro's second paragraph now carries the contrast with publication-pipeline that the journal spec declares.",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names only the needs and the conflict."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Widened the conclusion from one paragraph to three (synthesis with callback, so-what, hand-off) to carry Part III's closing; 'Questions to Ask' is specified as the last body section.",
+      "rejected": [
+        "Putting Part III's closing in the Chief Architect's View."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length limit set to the published draft's length plus 5% (6,784 words by check_draft's count, which includes callouts and tables, so 7,123), because spec.md set no limit.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Supporting claims S1-S4 accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Moved 'Pro SaaS and the neutrality problem' (p17, p18) from the end of Concepts to open Neutrality by Design, as flow readers suggested in all three rounds; accepted under the author's delegation, 2026-11-12. Rewrote the transitions into Architecture (no longer has to defer the conflict), into Neutrality (Ingrid's third question) and into p32; updated the roadmap promises and the concepts, neutrality and post flow rationales. The journal spec's AC-2 expected answer lists the neutrality problem under the concepts; the replacement text is reported to the orchestrator.",
+      "rejected": [
+        "Keeping the conflict at the end of Concepts with a forward reference in the Architecture opener."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Failure Modes opener rewritten as a lead clause inside p53 ('The design fails in practice in seven ways. The first is the second system of record'), so no unit is added; accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Glosses added: layer-2 engines and layer-4 products in p61 (per the vertical-requirements four-layer share test in the ledger), and the 90-second publication and 10-second removal targets in p67 (per the publication-pipeline SLA card line); length.max_words raised from 7,123 to 7,250 (under 2%; draft now 7,173) for them and for the moved section's new transition; accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Minor fixes: 'both clouds' names Keybridge's and Hearthly's clouds; the AI-agents paragraph opens by tying agents to the measures just listed; the Buying Signals sentence leads with the link to export responsibility; Valuo glossed as Hearthly's valuation model (ledger); productscape left as is (already glossed). Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "KEY POINTS change from 'audit evidence' to 'ranking blindness, each with audit evidence' accepted under the author's delegation, 2026-11-12: it matches Table 2's four controls."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Thesis-rubric notes (thesis copied from the journal spec) and the flow-rubric notes not taken (caption merges, p60/p61 merge, p56/p59 grounding, 'separate clouds') closed without change, keeping the published text; spec.md's unchecked modality boxes closed (no modality files exist). Accepted under the author's delegation, 2026-11-12."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria, thesis, role, Part III's closing and Part IV's transition_in."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-veldmark; _research/scenario-ledger.md; _research/consistency-issues.md",
+      "contributed": "Keybridge decision, Golf and Lyon examples, Pro 150, Dealer Hub and the neutrality controls."
+    },
+    {
+      "kind": "internal",
+      "ref": "monetization-models",
+      "contributed": "Lead-ledger proposal and the 19-lead deduplication rule."
+    },
+    {
+      "kind": "internal",
+      "ref": "vertical-requirements",
+      "contributed": "The layer model used for shared engines versus brand front ends."
+    },
+    {
+      "kind": "external",
+      "ref": "Autotrader FY2026 results (May 2026) and developer portal; mobile.de Seller API and July 2026 platform update; CarGurus and Cars.com 10-Ks (Feb 2026); Cox Automotive",
+      "contributed": "Automotive pro capabilities, API scale and outcome claims."
+    },
+    {
+      "kind": "external",
+      "ref": "Rightmove RTDF v1.4.1 (Nov 2023) and FY2025 results (Feb 2026); Zillow 10-K FY2025; Scout24 FY2025 preliminary results; AVIV Ultimmo (2022)",
+      "contributed": "Real-estate pro tooling and pro SaaS examples."
+    },
+    {
+      "kind": "external",
+      "ref": "OLX causal-inference post (Aug 2026); Vinted commercial-selling Q&A (Sep 2026); Bundeskartellamt mobile.de/Carwow clearance (Oct 2026)",
+      "contributed": "Self-selection, trader routing and multi-homing evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2019/1150 Articles 7 and 9; European Commission P2B page (updated Jul 2026); RFC 9700 (Jan 2025)",
+      "contributed": "Legal grounding for neutrality and the token baseline."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: 'Pro SaaS and the neutrality problem' moved to open Neutrality by Design; Failure Modes opener; glosses for layer-2/layer-4 and the 90-second/10-second targets; minor fixes ('both clouds', AI-agents tie, Buying Signals, Valuo); max_words 7,123 to 7,250 (draft 7,173). Round 4 draft check follows."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check rounds 1-3 (REVISE, REVISE, ESCALATE). Prose revised between rounds: roadmap names the two arguments; KEY POINTS lists ranking blindness among the four controls; section bridges into Verticals, Failure Modes, the Chief Architect's View and Questions; glosses for Deal Builder, platform-controlled states and productscape; the pro SaaS paragraph links to the CRM; the Ruhrblick quarter sentence clarified. After round 3: three cheap fixes, so the check report is stale. Draft 7,120 words (limit 7,123)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: scene paragraphs name Felix Brandt, Emma Laurent and Claire Fontaine; section rationales for trade-offs, verticals and failure modes say what reordering would break; conclusion p66 restates the chapter's own design (one event stream, four controls) before the part synthesis."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (reconstructed from the published text); added roadmap p04 and conclusion paragraphs p67-p68 to carry Part III's closing and the hand-off to part-4; status draft."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 3 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources in _research/mermaid-figures.json); known differences recorded in spec.md. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,398 to 6,409 words; lead places the chapter at the end of Part III; 'The partner ecosystem' renamed 'The partner API as a product'; 8 paragraph openers made into claims. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 1 heading aligned with the book's shared section names. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Ruhrblick moved to Pro 150 (€1,450, 150 slots), sale-record date aligned with ingestion, Rhône Habitat branch wording, OLX claim corrected to the source, P2B verified, hand-off to part-4. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7250
+  }
+}

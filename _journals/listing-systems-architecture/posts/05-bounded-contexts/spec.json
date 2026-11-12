@@ -1,0 +1,2020 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "bounded-contexts",
+  "journal": "listing-systems-architecture",
+  "part": "part-1",
+  "title": "Bounded Contexts for Marketplaces: Where One Listing Becomes Many Models",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the bounded-contexts entry in journal-spec.json. One unit was added by this conversion: a synthesis paragraph (p76) before the old hand-off paragraph in the closing section.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Core, supporting and generic subdomains; bounded context, context map, core domain and published language.",
+        "The meanings of 'listing' in supply, catalog, trust, search, monetization, contact and analytics, and the context-map relationships (anti-corruption layer, conformist, customer–supplier, open host, separate ways)."
+      ],
+      "believe": [
+        "One context owns the listing's truth; every other context owns only its own view."
+      ],
+      "can_do": [
+        "Draw a context map from a capability map, name one owner for each piece of listing data and one team for each context."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a proposal for one context to write listing state directly, the reader says who decides and how the change propagates.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A dealer's feed says a car is sold, and the search team proposes deleting it from the index straight from the feed. Using only this chapter: who decides the car is gone, and how does search learn it?",
+        "expected": "Ingestion reports what the feed says and sends a withdraw command to the catalog, which owns listing state and emits a removal on the published listing event; search, alerts and leads are read models that react within their declared deadlines and never write state back. The feed's delay becomes one problem: ingestion's freshness contract with the dealer."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Six Veldmark answers to 'what is a listing?'; subdomains, contexts and context maps; where a marketplace competes; one listing in many models; the marketplace context map, aggregates and the listing event as published language; Veldmark drawing its boundaries; the public record; trade-offs, vertical differences, failure modes and the Chief Architect's view. Evidence: domain-driven design literature, public engineering sources and fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given one subdomain that two brands of a group value differently, the reader says how to classify it and what a shared platform for it must do.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A group runs a general classifieds brand with mostly private sellers and a car brand whose supply comes almost entirely from verified dealers. Using only this chapter: is trust and safety core or supporting, and what does that mean for a group trust-and-safety platform?",
+        "expected": "Classify per brand: core at the classifieds brand (private-seller scams), supporting at the car brand (dealer supply verified at contract). A group platform serving both shares the pipeline and makes policies configurable per brand and country; contexts for a brand's core subdomain stay with that brand even when the engine underneath is shared."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a paid placement that touches the listing and the seller's entitlement, the reader explains how it stays correct without one transaction across contexts.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A seller buys a seven-day 'Top listing'. Using only this chapter: why should one database transaction not decrement the seller's balance, flag the listing and reindex it, and what happens instead if the listing was removed in the meantime?",
+        "expected": "Those are separate aggregates in two contexts (the entitlement account in monetization, the listing in the catalog), and transactions should not cross aggregates. Monetization grants the entitlement keyed by the order ID, sends a placement command to the catalog and publishes the visibility change; retries reuse the key. If the catalog rejects the command because the listing was removed, monetization, which owns the entitlement, refunds or re-credits it. Consistent inside each aggregate, eventually consistent between them."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should a marketplace be decomposed into domains, and where do the boundaries go?",
+    "claim": "A listing marketplace's boundaries belong where the meaning of 'listing' changes (a feed record in supply, an aggregate in the catalog, a case subject in trust, a document in search, an entitlement holder in monetization, a fact row in analytics); the catalog owns the listing's state, every other context builds its own view from a published listing event and never writes listing state back, and each relationship on the context map is recorded as an organizational decision about who adapts to whom.",
+    "disputed_by": "The view that a marketplace should keep one canonical listing model, in one table or one service, shared by every team, so that all teams see the same listing and data is never duplicated.",
+    "so_what": "A late dealer removal becomes one context's freshness contract instead of a bug in six places: a group that accepts this names one owner for every piece of listing data, moves paid-visibility and moderation state out of the shared table, treats the search index as a read model and gives each context exactly one owning team.",
+    "how_why": "Teams sharing one model negotiate every change with every other team: Yardstick's ads table has 214 columns read by 38 modules. Trust decisions must survive the listing's deletion, search does not want the seller's phone number, and real estate cares about the property behind three listings, so no single structure holds every meaning with its invariants. Veldmark's 54 capabilities became 19 contexts and 31 ownership decisions.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "'Listing' means different things in different contexts (a feed record, an aggregate, a case subject, a search document, an entitlement holder, a fact row), and a boundary belongs wherever the meaning changes."
+      },
+      {
+        "id": "S3",
+        "claim": "One context, the listing catalog, owns the listing's state; every other context builds its own view from the published listing event, never writes listing state back, and keeps its transactions inside its own aggregates."
+      },
+      {
+        "id": "S4",
+        "claim": "Each relationship on the context map (anti-corruption layer, conformist, customer-supplier, open host with published language, partnership, separate ways, contained big ball of mud) is an organizational and sometimes commercial decision about who adapts to whom, and is recorded as one."
+      },
+      {
+        "id": "S5",
+        "claim": "The boundaries are found by a repeatable method that starts from the capability map: classify each subdomain per brand as core, supporting or generic, which decides which contexts a brand keeps, which the group shares and which it buys; then candidate contexts, language breaks, one owner per piece of data, named translation points and one team per context; public engineering records show the same order, domains before services and events between them."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns the capability map into boundaries of models and teams, and fixes who owns the listing's truth for the rest of the book.",
+    "supports": [
+      "P1-5"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "worked-example and public-record: Veldmark's own process behind the map, then the map's claims tested against real records"
+      }
+    ],
+    "rationale": "Each section supplies what the next one needs. The forum scene poses the question; the concepts give the words to answer it; subdomains say which contexts matter to which brand; one listing in ten contexts shows where meaning changes; the context map assigns owners and relationships using all of that. Veldmark's worked example then shows how the map was drawn and the public record tests it against real marketplaces, and the trade-offs, vertical differences, failure modes, governance and review questions come after it because each is a judgement about a map the reader has already seen. Moving the context map before the meanings would present owners and relationships for distinctions not yet drawn."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Ask six teams what a listing is and you get six correct answers that cannot all be true of one data structure: the seller's draft, the moderator's case subject, the search document, the paid placement, the lead's source and the analyst's fact row."
+    },
+    "bridge": {
+      "from_reader_world": "The capability map of the previous chapter: 54 level-2 capabilities in ten areas, which say what the group does but not how it should be built.",
+      "to_topic": "How many models of a listing there should be, who owns each and how they talk are decomposition questions, answered with bounded contexts."
+    },
+    "thesis_statement": {
+      "text": "Boundaries belong where the meaning of 'listing' changes; one context owns the listing's truth and every other owns only its view, built from a published event; and each relationship on the context map is a decision about who adapts to whom.",
+      "placement": "KEY POINTS callout (all three bullets); p02 states the overloaded noun the claim starts from."
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03.",
+      "promises": [
+        {
+          "promise": "Six Veldmark answers to 'what is a listing?'",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "The terms: subdomains, bounded contexts, context maps and their relationships.",
+          "kept_in": [
+            "concepts"
+          ]
+        },
+        {
+          "promise": "Classify subdomains as core, supporting or generic.",
+          "kept_in": [
+            "subdomains"
+          ]
+        },
+        {
+          "promise": "Find where 'listing' changes meaning, following one listing through ten contexts.",
+          "kept_in": [
+            "one-listing"
+          ]
+        },
+        {
+          "promise": "Draw the context map with its relationships.",
+          "kept_in": [
+            "context-map"
+          ]
+        },
+        {
+          "promise": "Aggregates as transactional boundaries.",
+          "kept_in": [
+            "aggregates"
+          ]
+        },
+        {
+          "promise": "The listing event as the shared language.",
+          "kept_in": [
+            "listing-event"
+          ]
+        },
+        {
+          "promise": "How Veldmark draws the Common Ground map.",
+          "kept_in": [
+            "worked-example"
+          ]
+        },
+        {
+          "promise": "What public engineering records show.",
+          "kept_in": [
+            "public-record"
+          ]
+        },
+        {
+          "promise": "Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions for a review.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "The capability map of the previous chapter says what a marketplace does but not how many models of a listing there should be, who owns them or how they talk, and the tool for those questions is domain-driven design's bounded context.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "54 level-2 capabilities in ten areas, mapped to the value streams that produce liquidity.",
+            "shows": "The reader starts from what the previous chapter built, and sees that a map of capabilities still leaves the decomposition questions open.",
+            "source": "business-capabilities"
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Listing marketplaces are a clear case for bounded contexts because their central noun is overloaded: six teams give six correct answers to 'what is a listing?' that cannot all be true of one data structure.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "The seller's draft, the moderator's case subject, the search document, the paid placement, the lead's source and the analyst's fact row, all called 'the listing'.",
+            "shows": "One word names several models, so teams sharing one model negotiate every change with every other team."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The bounded context as the tool for decomposition.",
+          "introduces": "Why marketplaces in particular need it: the overloaded word 'listing'.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Later chapters build inside the boundaries drawn here, and this chapter goes from six Veldmark answers to 'what is a listing?' through the terms, the subdomains, one listing in ten contexts and the context map with its aggregates and published language, to Veldmark's worked map, the public record, and the trade-offs, vertical differences, failure modes, Chief Architect's view and review questions.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The overloaded noun and the bounded context as the tool for it.",
+          "introduces": "What the rest of the book builds on these boundaries, and the order of this chapter; Veldmark named as fictional.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Six Answers to \"What Is a Listing?\"",
+      "controlling_idea": "At Veldmark's architecture forum six people give six correct answers to 'what is a listing?', so the design question becomes which context owns which meaning and who owns the truth.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows the overloaded noun in one room, with the people who own each meaning."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that six teams give six correct answers.",
+        "introduces": "The forum meeting where they give them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The question, then the six answers, then the conclusion the forum draws from them. The conclusion before the answers would be an assertion; the answers without it would be a list of complaints."
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "controlling_idea": "In April 2027 Sven needs to know what a listing is before he can define Listing event contract v1, so Ingrid puts 'what is a listing, and who decides?' on the advice forum's agenda.",
+          "function": "context",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Listing event contract v1, due live on 1 July 2027; Sven Lindqvist and Ingrid Halvorsen at the newly set-up weekly architecture advice forum.",
+              "shows": "The question has a deadline and an owner, so it is a design question, not a seminar.",
+              "source": "scenario-ledger"
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "form": "list",
+          "controlling_idea": "Six Veldmark people each describe a different, correct listing: a 214-column row, a dealer feed record, a trust subject, a search document, a holder of paid products and one of three listings of one property.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Daan: the `ads` row (214 columns, 38 modules); Felix: the DMS feed record (88% of dealer listings; the Essen Golf removal 26 hours late); Aisha: a subject whose decision outlives the listing; Tomasz: a flattened document without the phone number; Olivier: something that holds a bump or a slot; Julien: the Lyon flat, one property with three listings.",
+              "shows": "Each meaning has its own invariants and its own reason to differ, so no one structure holds them all.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The forum's question.",
+            "introduces": "The six answers, one per person.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The forum concludes that 'listing' is six concepts sharing a name and an identifier, so the question is which context owns which meaning, which owns the truth and how the others learn of changes.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: six people see one listing card through six lenses.",
+              "shows": "The six models are linked only by a shared identifier."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six answers.",
+            "introduces": "What they add up to, and the design question it leaves.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "concepts",
+      "heading": "Concepts: Subdomains, Contexts and Context Maps",
+      "controlling_idea": "Domain-driven design's strategic terms (domain, subdomain and its three kinds, bounded context, ubiquitous language, context map with its named relationships, aggregate and domain event) give the vocabulary for the decomposition, and each is distinct from the previous chapter's capability, service and team.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Defines the bounded context the thesis draws, and names the relationship patterns the thesis says must be recorded."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The forum's question of which context owns which meaning.",
+        "introduces": "The vocabulary needed to answer it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Each term needs the one before: subdomain needs domain, its kinds need subdomain, a bounded context is distinguished from a subdomain, its language belongs to it, a map relates contexts, aggregates sit inside them. The comparison table and the ownership rule come last because they use every term; placed first, they would compare units the reader cannot yet tell apart."
+      },
+      "paragraphs": [
+        {
+          "id": "p07",
+          "controlling_idea": "Domain-driven design, introduced by Eric Evans in 2003, has a strategic part for large models and many teams, and its terms carry this chapter.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Evans, Domain-Driven Design: Tackling Complexity in the Heart of Software (2003).",
+              "shows": "Dates and attributes the method the chapter uses."
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "A domain is the business the software serves and a subdomain is a part of it with its own concerns, found in the business, and the capability map's areas are a first draft of them.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Domain-driven design's strategic part.",
+            "introduces": "Its first two terms.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Subdomains differ in strategic value: core where the business competes, generic where nobody wins, and supporting in between, and the classification is a business judgement that maps onto the heat map's differentiation score.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Evans (2003) for core and generic; Vernon, Implementing Domain-Driven Design (2013), for supporting.",
+              "shows": "Attributes each category to its source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Subdomains.",
+            "introduces": "The three kinds and their link to the previous chapter's heat map.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A bounded context is the boundary within which one model and its vocabulary apply consistently, drawn mainly by human language, and 'listing' is the marketplace's version of Fowler's 'meter'.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fowler (2014): 'a central pattern in Domain-Driven Design'; DDD 'deals with large models by dividing them into different Bounded Contexts'; the utility where 'meter' meant three things.",
+              "shows": "The boundary follows language, which is exactly what changes when 'listing' changes meaning.",
+              "source": "Fowler, BoundedContext, 2014"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Subdomains, which are found in the business.",
+            "introduces": "The bounded context, which is drawn in the model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The ubiquitous language is the vocabulary used consistently inside one context, ubiquitous within it rather than across the company.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The bounded context's vocabulary.",
+            "introduces": "Its name and its scope.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "A context map shows the contexts and who is upstream, who adapts to whom and where translation happens, and its relationship patterns have standard names with typical marketplace uses.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine relationships (partnership, shared kernel, customer-supplier, conformist, anti-corruption layer, open host service, published language, separate ways, big ball of mud), each with a meaning and a marketplace use.",
+              "shows": "Every relationship the chapter later assigns has a standard name and a marketplace example the reader can recognize.",
+              "source": "DDD Crew, Context Mapping, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Single contexts and their languages.",
+            "introduces": "How contexts relate to one another.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "From tactical design come the aggregate, a cluster treated as one unit that transactions do not cross, and the domain event, a record that something meaningful happened, published so other contexts can react.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fowler (2013): 'a cluster of domain objects that can be treated as a single unit'; 'transactions should not cross aggregate boundaries'.",
+              "shows": "Gives the rule the bump example later applies.",
+              "source": "Fowler, DDD_Aggregate, 2013"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The strategic terms.",
+            "introduces": "Two tactical terms the chapter needs for transactions and integration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Capability, subdomain, bounded context, service and team are different units decided by different people, and a table keeps them apart.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Concept, unit of, decided by, example: from 'saved searches and alerts' as a capability to the Tradeyard Alerts team.",
+              "shows": "One example traced across all five units shows that none of them can stand in for another."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The new terms.",
+            "introduces": "How they differ from the previous chapter's capability and from services and teams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The healthy shape is one team owning one or more contexts, each context owned by exactly one team and containing one or more services, because context and team boundaries must agree.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Conway, 'How Do Committees Invent?' (1968): systems copy the communication structures of the organizations that build them.",
+              "shows": "Context boundaries that ignore team boundaries do not hold, and teams drawn without a map create contexts by accident."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Contexts, services and teams as separate units.",
+            "introduces": "The rule that relates them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "subdomains",
+      "heading": "Subdomains: Where a Marketplace Competes",
+      "controlling_idea": "Subdomains must be classified per brand before contexts are drawn, because the classification decides where to invest, what to buy and what to share, and it differs by vertical.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows that core, supporting and generic differ by brand, which decides which contexts stay with a brand."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The definitions of core, supporting and generic subdomains.",
+        "introduces": "Applying them to Veldmark's three brands.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The classification table first (p16 carries it as evidence), then what it implies for core and for generic subdomains, then the hard case where brands disagree. The hard case placed first would be a conflict between categories the reader has not yet seen applied; it needs both consequences, because the answer (shared machinery, configurable policy) combines them."
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "The subdomain classification differs by brand and vertical, so it is done per brand even when the map is shared.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Ten subdomains classified for Tradeyard, Motorvane and Hearthly, with why each differs (for example lead management supporting at Tradeyard and core at Motorvane and Hearthly).",
+              "shows": "The same subdomain is core in one brand and supporting in another, so one group classification would be wrong for someone."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The classification has two practical consequences, and the first is that core subdomains are where brand-specific contexts belong even on a shared platform: the group may provide the engine, but the brand owns the context that holds its relevance or valuation model.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Motorvane's ranking and Hearthly's valuation model.",
+              "shows": "Applies the capability chapter's rule (share the machinery, keep the content) to contexts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The per-brand classification.",
+            "introduces": "Its first practical consequence, for core subdomains, announced as the first of two.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Generic subdomains are candidates for buying or for one group context.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark ID, approved in June 2027, built once as an open host service with brand-specific profiles.",
+              "shows": "Nobody treats login as a competitive advantage, so one group context is enough.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first consequence.",
+            "introduces": "The second, for generic subdomains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Classification turns political when one group platform serves brands that classify the same subdomain differently, so the platform shares the machinery and makes the policy configurable.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Trust and safety is core at Tradeyard and supporting at Motorvane, whose supply is 91% from about 21,400 dealers verified at contract signature.",
+              "shows": "A group trust platform must serve both, which is why trust-and-safety-architecture shares the pipeline and configures policies per brand and country.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The two clean consequences.",
+            "introduces": "The case where brands disagree.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "one-listing",
+      "heading": "One Listing, Many Models",
+      "controlling_idea": "Following one listing through ten contexts shows that each context gives 'listing' its own meaning, identity and owned data, so the boundaries fall where the meaning changes.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Demonstrates the meaning changes the thesis names, and that each context owns data no other should write."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Which subdomains matter to which brand.",
+        "introduces": "The contexts in which the listing appears and what each needs it to be.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The ten-context table is the evidence; the two analyses read it (ownership, then interpretation of one change); the reference models confirm it from outside, first by their structure and then by their counts and one ownership mistake. The confirmation before the evidence would ask the reader to trust a model they have not seen."
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "The Lyon flat, listed by three agencies at €389,000, €389,000 and €395,000, means something different in each of ten contexts.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A 68 m² T3 flat in Lyon 7e listed in May 2027 by three agencies; Agence Rhône Habitat, a 14-branch network, publishes through Keybridge.",
+              "shows": "One real case keeps the comparison concrete.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "table",
+              "what": "Ten contexts with what 'listing' means, its identity, what the context owns and the Lyon flat in that context (three feed records, three listings, one canonical property, one collapsed search result, one alert, three package slots, one valuation observation).",
+              "shows": "Identity and meaning change from context to context, so one model cannot serve them all."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each context owns something no other context should write, and when two contexts write the same field one of them is wrong about its boundary.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table's 'Owns' column.",
+            "introduces": "The ownership rule it shows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The same real-world change means different things in different contexts, so one published event serves all of them while each interprets it in its own model.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A price cut to €379,000 at Rhône Habitat: a changed feed field, a PriceChanged transition, a document update, a price-drop alert, a new observation, a fact row.",
+              "shows": "One change, six interpretations, which is why the event, not a shared table, is the integration point."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Each context's own data.",
+            "introduces": "Each context's own reading of one change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Two generic domain models the book draws on, introduced here as the author's working models that describe no company, reach the same structure, with one owner of the listing and a property separate from it, because the listing is a publication about the thing, not the thing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The real-estate reference model's property reference 'connects multiple classifieds, valuations, and location signals to the same underlying property without treating every listing as a separate property'.",
+              "shows": "An independent model separates the listing from the entity it describes.",
+              "source": "Productscape reference models, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The structure Veldmark's contexts show.",
+            "introduces": "The same structure in independent reference models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The reference models' numbers make the one-owner pattern concrete, and even their mistakes show that ownership assignments must be reviewed as carefully as boundaries.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "In the general model the listing is owned by one capability, read by eleven and queried through search by two more; its data catalog assigns credentials, sessions and the audit log to cookie consent.",
+              "shows": "The canonical pattern, and a reminder to review ownership as carefully as boundaries.",
+              "source": "Productscape reference models, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The reference models' one owner and many readers.",
+            "introduces": "Their counts, and a mistake that shows why ownership needs review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "context-map",
+      "heading": "Architecture: The Marketplace Context Map",
+      "controlling_idea": "Veldmark's Common Ground map gives the catalog ownership of listing truth, publishes it as one language, and records each relationship as a reasoned decision.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Shows one owner of listing truth with read models around it, and every relationship decided with a reason."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The many meanings and the owner of each.",
+        "introduces": "The map that connects them and decides who adapts to whom.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The whole map first, so each relationship is read as one edge of a picture the reader has seen; without it, nine relationship paragraphs would arrive with nothing to place them in. Then the relationships in the order the listing flows: from supply into the catalog, out to consumers and partners, then the edges and the legacy monolith. Starting at the monolith would explain a translator before the language it translates into."
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "controlling_idea": "Veldmark's Common Ground context map, approved in May 2027, is the 2028 target with Yardstick behind a translator.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the Common Ground context map (target 2028).",
+              "shows": "Shows the catalog at the center, ACLs on the inbound side, conformist and command relationships, and Keybridge connected only by the public feed contract."
+            }
+          ]
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Each relationship on the map is a decision with a reason, and the first, feed ingestion, is a one-way anti-corruption layer, so no vendor's model leaks into the catalog.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly receives 84% of its listings from about 160 real-estate software vendors; Motorvane most of its dealer stock from DMS exports.",
+              "shows": "Many formats and meanings of 'deleted' make translation at the boundary necessary.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The map as a whole.",
+            "introduces": "The claim that each relationship is a reasoned decision, and the first one: supply's translation into catalog commands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The catalog is upstream of almost everything and publishes a language rather than exposing its model, which makes it an open host service with a published language on the group event backbone, which Hearthly's events also reach through a bridge.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Listing event contract v1: twelve event types with public state, version and cause.",
+              "shows": "Consumers depend on the contract, so the catalog can refactor its storage freely.",
+              "source": "event-driven-listings"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What enters the catalog.",
+            "introduces": "What leaves it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Search conforms to the published language and never writes listing state back, which keeps the index a read model and prevents Search as System of Record.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted (2024) put a 'search contract' in a Go gateway in front of Vespa so product applications did not change.",
+              "shows": "A stable language at a boundary lets the model behind it change.",
+              "source": "Vinted Engineering, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The language the catalog publishes.",
+            "introduces": "Its largest consumer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Monetization is a customer-supplier partner of the catalog and owns entitlements, so the listing carries only references to active placements.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Entitlements (sold, granted, consumed, delivered) live in monetization; ranking reads the visibility effects it publishes.",
+              "shows": "This is the rule that prevents Billing by Guesswork."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A consumer that only reads.",
+            "introduces": "A partner that needs the catalog to accept something.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Trust and safety changes listings only by command and keeps its own decision record, working in partnership with the catalog during the 2027 pipeline redesign.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The publication pipeline's 90-second target.",
+              "shows": "It cannot be met unless both contexts change together, which is why the relationship is a partnership for now.",
+              "source": "publication-pipeline"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Monetization's commands.",
+            "introduces": "Trust and safety's commands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The transaction context deliberately conforms to its regulated payment provider and translates only where an order meets a listing.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Safe Deal runs on Adyen for Platforms, the licensed party.",
+              "shows": "Conforming is right when the upstream is regulated and cannot change; the cost is portability.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Contexts that keep their own models.",
+            "introduces": "A context that adopts an upstream model on purpose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Identity and taxonomy are open host services that serve every context with a stable protocol and know nothing about listings.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Relationships around the listing.",
+            "introduces": "Two services every context uses.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Keybridge goes separate ways, reaching Hearthly only through the public feed contract with no subscription to its events, because the map must enforce a commercial promise.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "In March 2027 Veldmark committed that Hearthly would not use Keybridge agency data for ranking or sales targeting.",
+              "shows": "A map that showed Keybridge as a partner would contradict the promise.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Relationships that integrate.",
+            "introduces": "A relationship that deliberately does not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Yardstick is contained as a big ball of mud behind Yardstick Relay, so CDC is only ever a source and consumers see one language from every brand.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The 214-column `ads` table until the insertion flow moves out in Q2 2028; Relay reads it through change data capture and emits contract events.",
+              "shows": "The translator lets the monolith be replaced without consumers noticing.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The new contexts' relationships.",
+            "introduces": "The legacy monolith's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "aggregates",
+      "heading": "Aggregates and Transactional Boundaries",
+      "controlling_idea": "Aggregates keep transactions inside one context, so a change that touches two contexts is split into steps that are each atomic, made safe by idempotency and repaired by the owner of the data.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows that no context writes another's state even inside one business operation."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Boundaries between contexts.",
+        "introduces": "Boundaries of transactions inside them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The rule and the table, then the bump that applies it, then the general trade. The bump before the rule would read as an implementation detail; the trade before the bump would be an abstraction without a case."
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Aggregates set transactional boundaries inside contexts, and most damage in listing systems comes from transactions that span what should be two aggregates.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six aggregates (listing, entitlement account, case, conversation, canonical property, saved search) with their context, consistency rule and what each must not include.",
+              "shows": "Each aggregate refers to the others by ID, so no transaction needs to cross them."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "form": "list",
+          "controlling_idea": "A bump is split into steps that are each atomic in one aggregate, made safe by an idempotency key and repaired by the context that owns the entitlement.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A seven-day 'Top listing': the naive one-transaction version across three tables and two contexts, then four steps (grant keyed by order ID, ApplyPlacement and VisibilityChanged, new listing version, retry or refund with the visibility change reversed).",
+              "shows": "The split survives replacing Yardstick's MySQL or moving the entitlement service."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the bump across two aggregates in two contexts.",
+              "shows": "Each step is atomic in its own aggregate and the owner of the entitlement repairs a rejection."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The rule that transactions stay inside aggregates.",
+            "introduces": "A bump done the naive way and the split way.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The trade is deliberate: atomic consistency within an aggregate, explicit eventual consistency between aggregates, and idempotency everywhere.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The bump's steps.",
+            "introduces": "The general rule they follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "listing-event",
+      "heading": "The Listing Event as Published Language",
+      "controlling_idea": "The listing event contract is the language between contexts, its design rules follow from the map, and Ghost Inventory shows what happens when a context does not share it.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Shows how other contexts build their views from the catalog's published event."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Transactions inside contexts.",
+        "introduces": "The language between them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "The listing event contract is the map's most important artifact, and its design rules follow from the map: owned by the catalog but designed with consumers, public state only, business transitions, versioned and keyed per listing, with group identifiers as the shared kernel.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The listing ID format `vm:tradeyard:nl:84711032`; ListingSold versus 'Row 84711032 updated'.",
+              "shows": "Shows the difference between a domain event and a row change, and what a small shared kernel is."
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Ghost Inventory is a boundary failure before it is a latency failure: one context learned of a sale and another did not because they did not share a language.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's €240 Rotterdam bike, sold at 18:10 on 8 March 2027 and removed from search at 18:11, yet featured in the next morning's alert digest built from its own copy.",
+              "shows": "Under the map, alerts subscribe to ListingSold and every consumer declares a removal deadline.",
+              "source": "scenario-ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: Ghost Inventory as a boundary failure.",
+              "shows": "One shared event reaches every consumer that a private copy misses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The contract's design rules.",
+            "introduces": "The case that shows why they matter for boundaries.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "worked-example",
+      "heading": "Veldmark Worked Example: Drawing Common Ground's Boundaries",
+      "controlling_idea": "Veldmark draws its boundaries in five steps from the capability map, and the result turns the Essen Golf's late removal into one problem in one context.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S3"
+        ],
+        "how": "Shows the method end to end with ledger numbers and its effect on one case."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The finished map, its aggregates and its published language.",
+        "introduces": "The work behind the map: how Veldmark drew it, step by step.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The five steps in the order the team ran them; each uses the previous step's output (candidates, then their language, then their data, then their relations, then their teams). The Essen Golf comes last because it needs the finished map."
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "controlling_idea": "The sections so far showed the finished map; Veldmark's sessions show the work behind it: five steps over four working sessions in April and May 2027, from the March capability map.",
+          "function": "context"
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The 54 level-2 capabilities collapse into 19 candidate contexts, more than the ten a listing passes through because the map also holds contexts such as identity and taxonomy; some are merged because they share a model and some split because the heat map gave them different verdicts.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Saved searches and alerts merged with the alert parts of Notifications; search split into a group platform context and brand relevance contexts.",
+              "shows": "Capabilities are candidates, not contexts.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The sessions.",
+            "introduces": "Step 1.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Writing down what 'listing', 'seller' and 'price' mean in each candidate finds the boundaries, including the surprise that price means different things at Motorvane and Hearthly France.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hearthly France prices include agency fees (the Lyon flat's €389,000, €389,000 and €395,000); the catalog keeps advertised price and fee basis apart and valuation owns the net-price translation.",
+              "shows": "A language break is found by asking, and it decides who translates.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Candidate contexts.",
+            "introduces": "Step 2, testing them by language.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "One context is named owner of every piece of data, 31 decisions in all, and five took more than one session.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Listing state, paid visibility, moderation decision, canonical property and off-platform sold price: candidates, decision and why.",
+              "shows": "Each contested piece goes to the context whose invariants need it, and search and ingestion never own state.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The boundaries.",
+            "introduces": "Step 3, assigning truth within them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "The relationships are drawn and four anti-corruption layers are named and owned.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Feed ingestion per brand (shared library), Yardstick Relay, the Hearthly bridge from Google Pub/Sub to Confluent Cloud, the transaction edge towards Adyen.",
+              "shows": "Translation points are named things with owners, not side effects.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Owners of data.",
+            "introduces": "Step 4, relationships between owners.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Each context gets exactly one owning team, which fixes four split contexts and two orphans.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "13 of 19 already single-owned; four split inside Yardstick; removal propagation went to the Alerts team and taxonomy to the new group taxonomy team (service live October 2027).",
+              "shows": "The orphans were exactly the responsibilities whose absence caused Ghost Inventory and taxonomy drift.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Relationships.",
+            "introduces": "Step 5, teams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "With the map in place the Essen Golf's 26-hour removal delay becomes one problem in one context, ingestion's freshness contract with the dealer, instead of six problems.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Sold 29 April 2027; removal 26 hours later; ingestion sends Withdraw, the catalog emits ListingRemoved with cause 'feed removal', consumers react within declared deadlines.",
+              "shows": "The delay stays in the dealer's DMS, but there is one owner of it.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The five steps.",
+            "introduces": "Their effect on one case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "public-record",
+      "heading": "In Practice: What the Public Record Shows",
+      "controlling_idea": "Public engineering records show the same decisions at real marketplaces: domain work before services, services aligned to contexts, the cost of a database as contract, and anti-corruption layers as products.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4"
+        ],
+        "how": "Shows real marketplaces drawing domains before services and integrating through events and translation layers."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's fictional map and how it was drawn.",
+        "introduces": "What real marketplaces have published about the same decisions.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Real companies grouped by the decision each shows: domains before services (Vinted, the fullest account, so it frames the rest), services aligned to contexts (AutoScout24), the database as contract (Kleinanzeigen) and translation as a product (Adevinta). Starting with the narrow cases would leave the reader without the order (domains, then services, then events) that the others are read against."
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Veldmark's map is fictional and few real marketplaces publish theirs, but several have published enough to show the shape of the same decisions.",
+          "function": "transition"
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Vinted understood its domains before splitting its monolith and integrated them with business events, not shared tables.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'Our first step wasn't to break the monolith apart. It was to understand it.'; 'at least two years ... almost 300 of them'; DDD 'guided how we restructured teams'.",
+              "shows": "Decomposition came first and was slow; events between domains made it work.",
+              "source": "Vinted Engineering, January 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Published records.",
+            "introduces": "The first and most recent.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "AutoScout24 is an early documented case of a listing marketplace using bounded contexts as the unit of service ownership.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "AutoScout24 Tech Blog (2018): services each focused on a bounded context; InfoQ (2016): Project Tatsu from November 2014, teams added every two to three months, 'shared nothing'.",
+              "shows": "Services followed contexts; the evidence is old and the current architecture is not public."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Vinted's domains before services.",
+            "introduces": "An older case of services aligned to contexts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Kleinanzeigen's CDC pipeline gets data out of a database with configuration, but, by inference, makes the source schema a de facto contract, which is why Veldmark puts a translator between CDC and the published language.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog (Kleinanzeigen, January 2025): Debezium CDC into Kafka, joined and enriched, published to a compacted topic; problems 'often occur at the infrastructure level rather than in the application code'.",
+              "shows": "Shows the pattern; the cost is labeled an inference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Cases that integrate through contexts.",
+            "introduces": "A case where the database is the source.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Adevinta built a dispute back office that consumes each marketplace's events through its own translation, an anti-corruption layer offered as a product.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Tech Blog (February 2023): 'that can be plugged into any marketplace'; 'We couldn't hardcode anything… or make any assumptions'.",
+              "shows": "A group context can serve marketplaces whose models differ, if each publishes good events."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Translation in front of a database.",
+            "introduces": "Translation in front of several marketplaces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Three decomposition decisions (granularity, integration style, and one model or many) have no universal answer, and each option is right under stated conditions.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows that the relationship and model choices are decisions with costs, made under conditions."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Veldmark's choices and the public cases.",
+        "introduces": "The alternatives it did not take and when they are right.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "How many contexts, then how they talk, then whether they share a model: each decision assumes the previous one is made. Asking about integration style before the number of contexts is settled would compare styles for boundaries not yet drawn."
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Veldmark's map and the public cases turn on three decisions that recur in every decomposition, and none has a universal answer.",
+          "function": "transition"
+        },
+        {
+          "id": "p55",
+          "form": "table",
+          "controlling_idea": "Context size should follow the maturity of the domain work and the event platform: few large contexts early, contexts per level-2 capability at group scale, and many fine-grained domains only after the domain work is done.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Few large contexts, contexts per level-2 capability (Veldmark's choice), many fine-grained domains (as Vinted's 300 suggest): strengths, weaknesses, when right.",
+              "shows": "Each size is right at a different maturity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three recurring decisions.",
+            "introduces": "The first: granularity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "form": "table",
+          "controlling_idea": "Published events are the default integration between contexts, with synchronous APIs for answers needed now and CDC only as a transitional source behind a translator, and a shared database never across contexts.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Shared database, synchronous APIs, published events, CDC from tables: strengths, weaknesses, when right.",
+              "shows": "Each style fits one kind of interaction; only one never fits between contexts."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Granularity.",
+            "introduces": "The second: integration style.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "form": "table",
+          "controlling_idea": "Per-context models with a published language are the default for a marketplace group, with an enterprise canonical model kept to the small shared kernel and per-brand models only for businesses that may be sold.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Enterprise canonical model, per-context models plus a published language, per-brand models: strengths, weaknesses, when right.",
+              "shows": "Answers the disputing view (one canonical model) on its merits and limits it to the shared kernel."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Integration style.",
+            "introduces": "The third: one model or many.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "The context map's skeleton is shared across verticals, but which contexts exist, which are core and where the entity sits differ.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the per-vertical differences that make classification and contexts brand-specific."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Decisions that apply to every marketplace.",
+        "introduces": "What differs by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "controlling_idea": "The skeleton is shared while entities, extra contexts, supply languages, the hardest boundary and the place of transactions differ by vertical.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs and recommerce on five dimensions.",
+              "shows": "Real estate and automotive have a durable entity behind the listing; classifieds mostly do not."
+            }
+          ]
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "The real-estate column explains why Hearthly has entity resolution and mandates contexts that Tradeyard lacks, and product-safety rules can force the same separation for goods.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "When product-safety rules make the marketplace responsible for recalled items, a product identity separate from the listing lets one notice suspend every affected listing.",
+              "shows": "The listing-versus-entity boundary appears wherever an entity outlives its listings."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The vertical table.",
+            "introduces": "One column read closely, and the same need in goods.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "Nine recurring decomposition failures each break either the single owner of listing truth or a deliberate relationship, and each has a named cure.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Shows what happens when one owner or a recorded relationship is missing."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How boundaries should be drawn.",
+        "introduces": "How they commonly go wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Shared models first (one table, one database, one group model, wrong-dimension boundaries), then missing owners (listing state, entitlements), then undecided relationships and ownership, then the opposite error of too many contexts. Each group fails a different part of the thesis; mixing them would hide which rule each failure breaks, and the last item reads as a warning against overcorrecting only after the others."
+      },
+      "paragraphs": [
+        {
+          "id": "p59a",
+          "controlling_idea": "Boundaries go wrong in recurring ways, most of them a missing owner or an undecided relationship, and nine recur often enough to name.",
+          "function": "transition"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "The god listing table, where every module reads and writes one table, is escaped by naming column owners and putting a translator in front, not by splitting the table first.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Yardstick's 214-column `ads` table.",
+              "shows": "No team can say which columns it owns.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Recurring ways boundaries go wrong.",
+            "introduces": "The first: the god listing table.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "A database shared between contexts means the boundary on the diagram does not exist, and the symptom is a migration that needs three teams to deploy together.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The god table inside one system.",
+            "introduces": "The same coupling between two contexts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "A group canonical model for everything becomes the god table at group scale, so the shared kernel should hold only identifiers, tenant codes and the published event.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Sharing a schema between two contexts.",
+            "introduces": "Sharing one model across the group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Contexts drawn by technical layer guarantee that every business change crosses every boundary.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Models shared too widely.",
+            "introduces": "Boundaries drawn in the wrong dimension.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "When a consumer such as search becomes the place where listing state is corrected, the index becomes the only complete copy, which is Search as System of Record, cured by a named owner and a tested rebuild path.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Wrong boundaries.",
+            "introduces": "A missing owner of listing truth.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "When insertion, ranking, rendering and messaging each check package flags, nobody can say what was sold versus delivered, and the cure is a monetization context that owns entitlements.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "A missing owner of listing state.",
+            "introduces": "A missing owner of entitlements.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "controlling_idea": "A context that adopts a vendor's model without deciding to is conformist by accident, so conformity should be a recorded decision and an anti-corruption layer the default elsewhere.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Veldmark recorded conformity to the payment provider.",
+              "shows": "Shows conformity as a decision rather than a default."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Missing owners.",
+            "introduces": "Relationships nobody decided.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Split ownership, one context with two teams, leaves the edge cases unowned, and its mirror image is a responsibility with no team, as with Veldmark's two orphans.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Removal propagation to digests and taxonomy.",
+              "shows": "Ghost Inventory lives in the edge cases each team assumes the other handles.",
+              "source": "scenario-ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Undecided relationships.",
+            "introduces": "Undecided ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Fine-grained contexts drawn before the domain is understood produce distributed monoliths.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted's two years of domain work came before the services.",
+              "shows": "The order matters as much as the size.",
+              "source": "Vinted Engineering, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Too little ownership.",
+            "introduces": "Too many boundaries too early.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "At group scale the context map is the architecture's constitution: a few decisions belong to the group by decision record, the rest to brands, with a forum to review changes and five signals to watch.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S3"
+        ],
+        "how": "Turns ownership of truth and recorded relationships into group governance."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failures that come from missing owners and undecided relationships.",
+        "introduces": "Who decides what, so those failures are prevented.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The principle, then who decides what, then how, then what to watch, then where the book goes on. Signals come after the rules they monitor."
+      },
+      "paragraphs": [
+        {
+          "id": "p69",
+          "controlling_idea": "The context map is the architecture's constitution at group scale, and the author keeps some decisions at group level and leaves others to brands.",
+          "function": "claim"
+        },
+        {
+          "id": "p70",
+          "form": "list",
+          "controlling_idea": "Five decisions belong at group level by decision record: the owner of listing truth per brand, the published language, the shared kernel, relationships carrying commercial or legal promises, and the rule for anti-corruption layers.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Group versus brand decisions.",
+            "introduces": "The group's list.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Brands decide the internal models of their core contexts, the services inside each context and the decomposition of their own legacy systems, within those rules.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Group decisions.",
+            "introduces": "Brand decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p72",
+          "controlling_idea": "The architecture advice forum reviews changes to the map, the shared kernel and the published language, and a change needs a decision record only when it alters what another team must do.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What each level decides.",
+            "introduces": "Who reviews and when a record is needed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p73",
+          "form": "list",
+          "controlling_idea": "Five signals show the map decaying: contexts with two owners or none, writes by non-owners, consumers reading legacy tables directly, translation layers making business decisions, and contexts that cannot be separated if a business is sold.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta (2025): 'parallel running of central and local services during a transitional period' as it decentralized.",
+              "shows": "Shows the cost of shared contexts that were not designed to be separable.",
+              "source": "Adevinta, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "How decisions are made.",
+            "introduces": "What to monitor afterwards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "Two later chapters apply the map to tenancy and to team design.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Governance of the map.",
+            "introduces": "Where the book uses it next.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions turn the chapter into a design review of a group's boundaries.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S3",
+          "S4"
+        ],
+        "how": "Gives the reader the method as questions they can ask of their own map."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions and signals.",
+        "introduces": "Questions a reader can take into a review.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p75",
+          "form": "list",
+          "controlling_idea": "Ten review questions test the owner of listing truth, the language breaks, per-brand core subdomains, the published language, deliberate relationships, entitlements, writes, team ownership, commercial promises and separability.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From One Map to Four Verticals",
+    "synthesis": "The six answers at the forum were all right because each described a different context: the group keeps six models, lets one context decide the listing's state, joins the rest by an identifier and a published event, and records who adapts to whom. Ownership of truth and recorded relationships together are what make a change local.",
+    "so_what": "A late removal such as the Essen Golf's becomes one context's freshness contract instead of a bug in six places, and a brand can change its ranking or packages without a cross-team project.",
+    "callback": {
+      "to": "The forum's question 'what is a listing, and who decides?' and its six answers.",
+      "how": "The reader can now answer both halves: six meanings, six models; the catalog decides state, and the map decides who adapts to whom."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Name one owner for every piece of listing data and one team for every context, and record each relationship on the map as a decision."
+    },
+    "hand_off": {
+      "to": "vertical-requirements",
+      "relationship": "contrast",
+      "carries_over": "The context map, which treats the four brands alike because most of it is shared.",
+      "introduces": "The opposite question: what genuinely differs between verticals, and which contexts must never be forced into one shape."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter: meanings, owners, relationships and the review questions.",
+      "introduces": "The answer to the forum's question.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p76",
+        "controlling_idea": "The forum's question now has an answer in two halves, six meanings in six models and one owner of state with every relationship recorded, and that is what turns a late removal into one context's problem and lets a brand change without a cross-team project; the working rule is one owner for every piece of listing data, one team for every context and each relationship recorded as a decision.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p77",
+        "controlling_idea": "The map deliberately treats the four brands alike, so the next chapter goes beyond this chapter's short table of vertical differences and asks the opposite question: what genuinely differs between verticals and which contexts must never be forced into one shape.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "A map that treats the brands alike.",
+          "introduces": "What differs between verticals.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The listing aggregate's internal design and lifecycle.",
+      "covered_in": [
+        "listing-aggregate"
+      ]
+    },
+    {
+      "topic": "The event envelope, catalog, schema evolution and replay.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Matching and canonical entities.",
+      "covered_in": [
+        "entity-resolution"
+      ]
+    },
+    {
+      "topic": "System of record versus read models, and erasure.",
+      "covered_in": [
+        "listing-data-management"
+      ]
+    },
+    {
+      "topic": "Team topology and governance.",
+      "covered_in": [
+        "organizing-marketplace-engineering"
+      ]
+    },
+    {
+      "topic": "Tenancy.",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Evans's and Vernon's books were not re-read in this session; the core/supporting/generic attribution follows standard practice and should be checked against the texts before print. (Carried over from spec.md.)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Organized the chapter around where the meaning of 'listing' changes rather than around a generic DDD tutorial, because the overloaded noun is what makes marketplaces a clear case."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Classified subdomains per brand rather than once for the group, to show that trust is core at Tradeyard and supporting at Motorvane."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Modeled Keybridge as 'separate ways' with a public feed contract, so that the March 2027 neutrality decision appears as an enforced context-map relationship, matching event-driven-listings."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Kept event-contract details brief and linked to event-driven-listings to avoid re-teaching; reused its identifiers (Yardstick Relay, listing ID format, the event types)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Success criteria: the definitions-with-dated-sources, Lyon-consistency, dated-public-evidence and 'includes trade-off tables, vertical differences, failure modes, view and questions' criteria were inventories or consistency rules already governed by the style guide and the ledger, and are dropped; the capabilities-to-teams table and the context-map diagram criteria are covered by the journal spec's AC-1 and AC-3; the per-brand classification and the aggregates/bump criteria are rewritten as reader outcomes AC-4 and AC-5, added here at severity minor. Word limit: spec.md set none, so length.max_words is the published prose length (7,409 words by check_draft's count) plus 5%.",
+      "rejected": [
+        "Keeping the inventory criteria as human-checked items.",
+        "Adding a criterion for the Keybridge relationship (covered by AC-3's reverse outline and the thesis)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric notes taken: the signpost paragraphs 'The classification has two practical consequences.' (old p17) and 'Each relationship on the map is a decision, and each has a reason.' (old p26) merged into the paragraphs that follow them (p18, p27), with their transitions rewritten; the public-record section's pattern relabeled from chronological to grouping; order reasons added or sharpened for Concepts, Subdomains, Trade-offs (new flow) and Failure Modes, each saying what reordering would break."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1: p67's controlling idea changed from 'Veldmark's two orphans were in this category' (split ownership) to 'its mirror image is a responsibility with no team', because the published sentence filed two unowned responsibilities under split ownership (flow reader B; the ledger has 4 split contexts and 2 unowned responsibilities, so the prose was corrected to match). p24, p47 and p51 ideas reworded to match the revised prose (reference models introduced at p24; p47 picks up the public record and names the five steps; p51 says the Hearthly bridge was not discussed in the map section)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 2 (escalate on spec faults, each reported by both flow readers): 'Aggregates and Transactional Boundaries' and 'The Listing Event as Published Language' promoted from ### subsections of the context-map section to their own sections (headings unchanged except title case), matching the roadmap; p46 no longer restates the reference models' structure from p24 and says they are not public records; the Hearthly bridge is now named in p28 with the catalog's published language, so p51's four anti-corruption layers hold no surprise; bump step 4 (p37) now reverses the visibility change on rejection. Draft-side fixes in the same pass: transitions into Concepts, One Listing and Trade-offs; the 91% figure placed beside 'most of it by feed'; 'sibling book' replaced by RECONCILED, this book's companion on finance systems; 'no listing state'; 'six places with their own copy'; 'As Chief Architect' before the first-person sentence."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Treated 'From One Map to Four Verticals' as the conclusion and added a synthesis paragraph (p76) before the hand-off, because the published closing only handed off and did not return to the forum's question."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation ('auto resolve all ESCALATE topics'), 2026-11-12: thesis-rubric test 6 (S2 orphan, S5 partly anchored) resolved by folding S2 into S5 in this post spec's own supporting claims (not copied from the journal spec): per-brand classification is now the method's first step, and the Subdomains and Vertical Differences sections support S5. The journal-spec thesis is unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Spec-fault order finding (both round-3 flow readers): the reference-models paragraph p46 moved from 'In Practice: What the Public Record Shows' into 'One Listing, Many Models' beside p24, rewritten as an elaboration of p24 ('The models' numbers make the one-owner pattern concrete') with the cookie-consent mistake tied to the need for named owners. Published facts kept; the public-record section now holds real companies only.",
+      "rejected": [
+        "Cutting p46 (would lose the owner/reader counts and the cookie-consent point)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Spec-fault order finding (both round-3 flow readers, also round-1 rubric note 3): the worked example moved before the public record, directly after the context map and its two elaborating sections (aggregates, listing event), so the reader sees how Figure 2 was drawn while it is fresh. Transitions rewritten into the worked example (elaboration), the public record (contrast with Veldmark's fictional map) and Trade-offs (Veldmark's map and the public cases); roadmap promises, p03 and the post flow rationale reordered. AC-2's expected answer in the journal spec lists the old order; replacement text handed to the orchestrator.",
+      "rejected": [
+        "Placing the worked example between the context map and Aggregates (would separate the map from the two sections that elaborate it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Corroborated draft finding (Failure Modes lead-in running into the god listing table): the lead-in is now its own unit p59a ('Nine of them recur often enough to name'), and p60 gets an example transition."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conclusion takeaway stated in words in p76 ('name one owner for every piece of listing data and one team for every context, and record each relationship on the map as a decision'); length.max_words raised from 7,780 to 7,950 (+2.2%, within the 10% allowance) for it and the other fixes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Bump step 4 reversing the visibility change on rejection kept, because it matches products-and-entitlements; the one-reader note that VisibilityChanged is published before the catalog accepts the placement stays minor."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Cheap minor findings from round 3 fixed: four sessions versus five steps (p47 now says five steps spread over four sessions); the open-host row of the Concepts table names the listing catalog; the Keybridge paragraph says separate ways means no integration beyond what any outside vendor gets; Step 1 says why 19 candidate contexts exceed the ten in the Lyon table (identity, taxonomy). Not taken: Vertical Differences' position (one reader; flow-B found it clear; house chapter shape); Step 3's packed sentence (one reader)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Open question on the 19-context count closed: the scenario ledger (bounded-contexts line) records 19 bounded contexts, meet-veldmark and part-1-intro reuse 19, and no later chapter states another count."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Open question on a context-map template in the toolkit closed by keeping the published text: no template is added from this chapter; adding one is a toolkit decision outside this post. Accepted under the author's delegation, 2026-11-12."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Earlier open-question notes (flow rubric notes not taken, second flow rubric, round 1 to 3 history, empty modalities) accepted under the author's delegation, 2026-11-12, and removed from open_questions; their content is recorded in the decision-log entries above."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Orchestrator: 'thirteen event types' → 'twelve' (ledger line 135: listing.events.v1 has 12 domain event types; event-driven-listings and listing-aggregate say twelve)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role and the hand-off relationship of vertical-requirements."
+    },
+    {
+      "kind": "internal",
+      "ref": "business-capabilities",
+      "contributed": "The capability map and heat-map verdicts used as input."
+    },
+    {
+      "kind": "internal",
+      "ref": "listing-aggregate, event-driven-listings, entity-resolution, trust-and-safety-architecture",
+      "contributed": "Neighbouring designs this chapter must agree with."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/productscape-digest.md, _research/brief-platform-data-ml.md, _research/brief-adevinta.md, _research/scenario-ledger.md",
+      "contributed": "Reference-model structure, public-record briefs and Veldmark facts."
+    },
+    {
+      "kind": "external",
+      "ref": "Evans, Domain-Driven Design (2003); Vernon, Implementing Domain-Driven Design (2013)",
+      "contributed": "Subdomain categories, bounded context, context map, core domain."
+    },
+    {
+      "kind": "external",
+      "ref": "Fowler, BoundedContext (2014) and DDD_Aggregate (2013); DDD Crew, Context Mapping (n.d.)",
+      "contributed": "Definitions and relationship patterns."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2024, 2026); AutoScout24 Tech Blog (2018); InfoQ (2016); Adevinta Tech Blog (2023, 2025)",
+      "contributed": "Dated public evidence."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: S2 folded into S5; p46 moved beside p24; worked example moved before the public record; Failure Modes lead-in split into p59a; conclusion states the takeaway; max_words 7,780 to 7,950; four cheap minor fixes. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check, three rounds (REVISE, ESCALATE, ESCALATE); spec changed after round 2 (aggregates and listing event promoted to sections, p46, p28, p37, p67 ideas); close-out prose fixes after round 3; check report stale. Prose at 7,780 words, the limit."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec, paragraph level); spec.md removed. Prose revised to match: roadmap paragraph p03, synthesis paragraph p76 added to the closing section."
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Replaced 2 mermaid diagrams with generated illustrations (figure numbers and captions unchanged; sources in _research/mermaid-figures.json); Figure 2 kept attempt 4, whose 'decisions' edge has no clear arrowhead at Listing catalog. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Consistency fix: 'twelve event types' to 'thirteen' to match the event catalog in event-driven-listings. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Sharpening pass: 6,354 to 6,314 prose words; Concepts heading renamed to 'Subdomains, Contexts and Context Maps'; lead names the chapters that build on these boundaries; topic sentences brought forward in One Listing, Many Models; one sentence on goods and product safety cut. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep: 4 headings aligned with the book's shared section names, glossary terms and source-group structure. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Added 2 inline illustrations (article-illustrator); figures renumbered. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Editorial review pass: Kleinanzeigen Debezium quote corrected to the source wording; Vinted domain claims spot-checked; IDs and Lyon prices checked against ch. 15 and ch. 33. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 7950
+  }
+}

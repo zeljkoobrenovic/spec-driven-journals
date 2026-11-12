@@ -37,20 +37,22 @@ The industry has a settled answer to the first-order question. Martin Fowler's *
 
 This chapter owns three terms. A **migration stage gate** is a decision point in moving one slice of a system, with measured exit criteria and a defined rollback, that must be passed before more traffic or responsibility moves. **Relevance parity** is the condition that a new search path produces outcomes for buyers and sellers that are not worse than the old path's, within agreed tolerances, measured on real queries; it is not identical results. **URL migration** is the controlled change of public URLs, or the deliberate decision not to change them, with mappings, redirects, sitemaps and monitoring that preserve search-engine signals. The event mechanisms this chapter uses belong to [[event-driven-listings]], the search platform to [[search-architecture]], and the URL and redirect services to [[web-and-seo-architecture]]. Earlier chapters already assume the plan's dates, such as the alert cut-over in [[saved-searches-and-alerts]], and [[long-term-evolution]] asks how the platform that replaces Yardstick avoids becoming another one.
 
+The chapter starts with Yardstick's 2027 inventory and dates, defines the vocabulary of displacement, designs the architecture for running two systems on one marketplace, and follows Veldmark's Yardstick Exit plan through its insertion and search waves. Trade-offs, vertical differences, failure modes, the Chief Architect's view and questions close it. The evidence is the strangler-fig literature, dated classifieds migrations, Google's guidance and Veldmark.
+
 ## Setting the Scene at Veldmark: Yardstick in 2027
 
 Yardstick is the core of Tradeyard, the horizontal classifieds brand of Veldmark, the fictional marketplace group this book follows (see [[meet-veldmark]]). It is a PHP monolith written from 2006 onwards, running on MySQL in a co-located data center in Amsterdam. Since 2019 about 40 microservices have grown around it on AWS, but Yardstick still owns the listing table, insertion, most page rendering, alerts, the pro-seller tools, the admin back office and the integration with Tradeyard Safe Deal. It serves Tradeyard's 13.2 million live listings in four countries, about 2.3 million new listings a week and 31 million monthly users.
 
-In July 2027 Daan Visser, Tradeyard's engineering director, who owns Yardstick, and Ingrid Halvorsen, the Group Chief Architect, set up the **Yardstick Exit** enabling team to produce the retirement plan. Its inventory, presented to the architecture advice forum in September 2027, is the starting point for everything that follows.
+In July 2027 Daan Visser, Tradeyard's engineering director, who owns Yardstick, and Ingrid Halvorsen, the Group Chief Architect, set up the **Yardstick Exit** enabling team to produce the retirement plan. Its inventory, presented to the architecture advice forum in September 2027, counts 23 capabilities to move or retire and is the starting point for everything that follows.
 
 | Inventory item (September 2027) | Count | Why it matters |
 | --- | --- | --- |
-| Level-2 business capabilities implemented by Yardstick (from the March capability map) | 23 | Each is a slice that must move or be retired |
+| Level-2 business capabilities implemented by Yardstick (from the March capability map, see [[business-capabilities]]) | 23 | Each is a slice that must move or be retired |
 | Columns in the `ads` table | 214, read by 38 Yardstick modules | No module can move without deciding which columns it owns |
 | Scheduled jobs (cron) | 47, of which 9 had no known owner | Hidden behavior; several write listing state |
 | Admin back-office actions | 312 | Moderators, support and sales depend on them daily |
 | Mobile app endpoints served directly by Yardstick | 118 | Old app versions keep calling them for months after any change |
-| Systems reading Yardstick's MySQL tables or raw change stream directly | 14 (down from 26 in March, after Listing event contract v1) | Each is a veto on changing the schema |
+| Systems reading Yardstick's MySQL tables or raw change stream directly | 14 (down from 26 in March, after Listing event contract v1, described below) | Each is a veto on changing the schema |
 | Teams whose changes ship only with a Yardstick deploy | 16 (19 in March) | The organizational cost, two deploys a week |
 | Hard deadline | The Amsterdam colocation contract ends 31 December 2029 | The board's date for decommissioning is a contract date, not an aspiration |
 
@@ -62,7 +64,7 @@ Some groundwork already exists. Since 1 July 2027, Tradeyard publishes Listing e
 
 ### Re-architect, re-platform or rewrite
 
-Three strategies are often confused:
+Yardstick's question needs a vocabulary first. Three strategies are often confused:
 
 | Strategy | What changes | Typical duration and risk | Documented classifieds example |
 | --- | --- | --- | --- |
@@ -70,7 +72,7 @@ Three strategies are often confused:
 | **Re-platform** ("move first, then optimize") | Runtime and hosting change; code changes as little as possible | Fast; deadline-friendly; leaves the architecture as it was | ImmobilienScout24's move from its data center to AWS, begun in 2018 under the motto "Erst umziehen, dann optimieren" ([Computerwoche, 2019](https://www.computerwoche.de/article/2783679/scout24-hievt-immobilienportal-in-die-cloud.html)) |
 | **Re-architect incrementally** (strangler) | The system is replaced slice by slice behind seams | Years; value from the first slice; complexity of running two systems | AutoScout24's move from a .NET monolith to microservices on AWS, begun in November 2014; the same 2019 press account describes it as successful but "very time-intensive" |
 
-Scout24 ran both, a decade apart, which makes the contrast unusually clean. My reading of the evidence: **re-architect when the runtime or the data model blocks the target; re-platform first when the code already fits the target runtime and a contract deadline dominates.** Yardstick has both problems — a co-located data center with a fixed end date, and a 214-column table that blocks every bounded context — which is why its plan combines a strangler for the core with a lift of whatever is left in 2029.
+Scout24 ran both, a decade apart, which makes the contrast unusually clean. My reading of the evidence: **re-architect when the runtime or the data model blocks the target; re-platform first when the code already fits the target runtime and a contract deadline dominates.** Yardstick has both problems — a co-located data center with a fixed end date, and a 214-column table that blocks every bounded context — which is why its plan strangles the core slice by slice to decommissioning by the end of 2029, and keeps a lift of whatever is left only as an undecided contingency should the last wave slip.
 
 ### Seams and transitional architecture
 
@@ -99,12 +101,21 @@ Three ways of running old and new side by side differ in what the new system is 
 
 Shadow traffic has a well-known weakness in listings: the data changes underneath it. In a 2015 account, Marktplaats's search team chose to **replay recorded user queries** against indices built from a copy of the production database, in small random batches every five minutes, rather than mirroring live traffic, because a live index that changes during the comparison makes differences impossible to reproduce ([Marktplaats Technology, 2015, republished 2017](https://medium.com/marktplaats-technology/replacing-our-legacy-search-engine-with-elasticsearch-4ad03aeceb3d)). **Reproducibility beats realism** for the first comparisons; live shadow traffic comes after.
 
+### Feature parity and the behavior catalog
+
+Feature parity is a trap because nobody knows the full feature set of a fifteen-year-old marketplace. The alternative is a **behavior catalog** per slice: every observable behavior of the old system — including those found in cron jobs, templates, admin tools and search configuration — with a decision for each: *carry*, *change* or *retire*, and an owner. The catalog is built from code reading, from logs of what actually runs, and from shadow comparisons, which find the behaviors that reading missed.
+
+Retiring is the step most migrations skip. Every carried behavior is cost on the new platform; every behavior retired deliberately is cost removed. A behavior that is retired by accident, on the other hand, is a seller-facing incident.
+
+![A conveyor carries hidden behaviors out of an old monolith to a sorting station that routes each into Carry, Change or Retire bins.](assets/images/43-modernization-and-migration/behavior-catalog-sorting.jpeg)
+**Figure 2:** *A behavior catalog replaces the feature-parity trap: every observable behavior of the old system, including the ones hidden in cron jobs and admin tools, gets an owner and a decision to carry, change or retire it.*
+
 ### The migration stage gate
 
 A slice moves through five gates. The names are Veldmark's; the shape is general.
 
 ![Diagram: The five stage gates for one migration slice](assets/images/43-modernization-and-migration/fig02-five-stage-gates-one-migration-slice.jpeg)
-**Figure 2:** *The five stage gates for one migration slice. Rollback is a normal transition until G3; the move to G4 is the recorded decision that the old path will no longer be kept current.*
+**Figure 3:** *The five stage gates for one migration slice. Rollback is a normal transition until G3; the move to G4 is the recorded decision that the old path will no longer be kept current.*
 
 | Gate | Exit criteria (examples) | Rollback |
 | --- | --- | --- |
@@ -120,12 +131,10 @@ Two rules make the gates useful. **Exit criteria are numbers agreed before the g
 
 ### The shape of a strangler for a listing site
 
-Figure 3 shows the transitional architecture for Tradeyard in mid-2028, after the insertion flow has moved and before search has. It generalizes to any listing monolith.
+Gates and rollback need an architecture in which two systems run at once. Figure 4 shows the transitional architecture for Tradeyard in mid-2028, after the insertion flow has moved and before search has. It generalizes to any listing monolith, and four principles follow from it.
 
 ![Diagram: Tradeyard's transitional architecture in mid-2028](assets/images/43-modernization-and-migration/fig03-tradeyard-s-transitional-architecture-mid-2028.jpeg)
-**Figure 3:** *Tradeyard's transitional architecture in mid-2028. Three seams — edge routes, BFF routing and the event stream — decide which system serves what. The new listing service is the system of record for listings it created; the Legacy Mimic writer keeps Yardstick's table current so that modules still in the monolith keep working and rollback stays possible.*
-
-Four principles follow from it.
+**Figure 4:** *Tradeyard's transitional architecture in mid-2028. Three seams — edge routes, BFF routing and the event stream — decide which system serves what. The new listing service is the system of record for listings it created; the Legacy Mimic writer keeps Yardstick's table current so that modules still in the monolith keep working and rollback stays possible.*
 
 **Read paths before write paths.** Pages and read APIs can be fed from read models built from the event stream while the monolith remains the only writer. Moving them first delivers visible value (performance, SEO, deploy independence) with low data risk. The platform research for this book describes this order as a reference-architecture inference for listing sites: extract read-heavy, SEO-critical page types first from CDC-fed projections, and write paths such as insertion, payments and messaging last.
 
@@ -141,9 +150,9 @@ Listings and accounts are migrated differently because listings are short-lived 
 
 **Listings** are short-lived. Most Tradeyard listings live days or weeks, so the cheapest migration for most of them is no migration at all: new listings are created in the new service from the cut-over date of their cohort, and existing listings stay in Yardstick until they end. Only long-lived listings (pro sellers' stock, listings renewed many times) and the archive need a bulk move. A backfill reads Yardstick's tables through Relay's snapshot mode, writes into the new service, and publishes on the backfill topic, so that downstream copies are corrected rather than duplicated (see [[listing-data-management]]).
 
-**Accounts** are long-lived and carry identity, credentials, payment links and history. They need a per-user migration. The best public description in the research is Kleinanzeigen's. In a June 2025 post, an engineer described migrating "the whole platform to a new system" that ran in parallel with the legacy one: all user data was migrated, and users were then switched incrementally, with rollback possible; a reverse proxy routed each user's traffic by migration state; core user data moved first, then listings, transactions and messages; and, instead of dual writes, the team streamed changes asynchronously with Debezium CDC, accepting a synchronization delay of up to a minute as "a business decision". They rejected the transactional outbox because millions of user updates a day would overwhelm polling and because of the risk of missing write paths in a legacy code base. A per-user state machine (identified, eligible, migration requested, migrated, transitioned) recorded progress, and bi-directional sync loops were broken with a version field rather than timestamps. The post does not name either platform ([Berlin Tech Blog, 2025](https://medium.com/berlin-tech-blog/handling-user-migration-with-debezium-apache-kafka-and-a-synchronization-algorithm-with-cycle-3c239b32326f)). It also records a constraint every monolith owner should check early: the production MySQL cluster used statement-based binary logs without global transaction IDs, so the team added row-format replicas for CDC.
+**Accounts** are long-lived and carry identity, credentials, payment links and history. They need a per-user migration, which at Veldmark is the identity team's slice (below); its design borrows from the best public description in the research, Kleinanzeigen's. In a June 2025 post, an engineer described migrating "the whole platform to a new system" that ran in parallel with the legacy one: all user data was migrated, and users were then switched incrementally, with rollback possible; a reverse proxy routed each user's traffic by migration state; core user data moved first, then listings, transactions and messages; and, instead of dual writes, the team streamed changes asynchronously with Debezium CDC, accepting a synchronization delay of up to a minute as "a business decision". They rejected the transactional outbox because millions of user updates a day would overwhelm polling and because of the risk of missing write paths in a legacy code base. A per-user state machine (identified, eligible, migration requested, migrated, transitioned) recorded progress, and bi-directional sync loops were broken with a version field rather than timestamps. The post does not name either platform ([Berlin Tech Blog, 2025](https://medium.com/berlin-tech-blog/handling-user-migration-with-debezium-apache-kafka-and-a-synchronization-algorithm-with-cycle-3c239b32326f)). It also records a constraint every monolith owner should check early: the production MySQL cluster used statement-based binary logs without global transaction IDs, so the team added row-format replicas for CDC.
 
-At Veldmark, accounts move with **Veldmark ID**, the group identity rolled out in 2028, so the per-user migration is the identity team's slice, not Yardstick Exit's (see [[identity-and-verification]] and [[sellers-and-accounts]]).
+The lessons Veldmark keeps are one writer, CDC and loops broken by version; its accounts move with **Veldmark ID**, the group identity rolled out in 2028, so the per-user migration is the identity team's slice, not Yardstick Exit's (see [[identity-and-verification]] and [[sellers-and-accounts]]).
 
 ### Search migration with relevance parity
 
@@ -158,13 +167,13 @@ Relevance parity is therefore measured in layers:
 | Layer | Method | What it catches | Typical gate |
 | --- | --- | --- | --- |
 | Analyzer parity | A test set of real queries; tokens before and after must match | Lost synonyms, broken decompounding, accent handling | 100% on the curated set; reviewed exceptions |
-| Offline result comparison | Recorded queries replayed against frozen copies of both indices; overlap measures such as rank-biased overlap; zero-result rate | Large regressions, missing documents, broken filters | Zero-result rate within a tolerance; every large divergence explained |
+| Offline result comparison | Recorded queries replayed against frozen copies of both indices; overlap measures such as rank-biased overlap (how far two ranked lists agree, weighted toward the top); zero-result rate | Large regressions, missing documents, broken filters | Zero-result rate within a tolerance; every large divergence explained |
 | Shadow traffic | Live queries mirrored; latency and errors measured | Performance under real load, timeouts | Latency within budget at peak |
-| Online experiment | Users randomized between engines | The outcome: contacts, saves, sessions with a contact | **Non-inferiority** on the primary outcome metric |
+| Online experiment | Users randomized between engines | The outcome: contacts, saves, sessions with a contact | **Non-inferiority** on the primary outcome metric (not worse than the old engine by more than an agreed margin) |
 
 The last row is the definition that matters. The question is not "are the results the same?" but "do buyers find and contact sellers at least as well?" — in classifieds, contacts are the observable success signal, as [[ranking]] argues. Ranking experiments in two-sided markets have interference problems that [[experimentation]] covers; for an engine swap, user-level randomization is usually adequate because the engine does not change sellers' incentives.
 
-Two documented migrations show the sequence. Marktplaats replaced eBay's Voyager search engine with Elasticsearch in 2015: new services behind the same interfaces, several hundred reused integration and acceptance tests, recorded-query replay, then a ramp of 1% of traffic on a Friday, 50% by the end of the following week and then 100%, with Voyager kept warm. It took two to three developers about three months with zero downtime, and many test failures came from "hidden functionality in other parts of the system that we couldn't detect in the code of the legacy services" (2015 post, republished 2017).
+Two documented migrations show the sequence. Marktplaats replaced eBay's Voyager search engine with Elasticsearch in 2015: new services behind the same interfaces, several hundred reused integration and acceptance tests, the recorded-query replay described under shadow traffic above, then a ramp of 1% of traffic on a Friday, 50% by the end of the following week and then 100%, with Voyager kept warm. It took two to three developers about three months with zero downtime, and many test failures came from "hidden functionality in other parts of the system that we couldn't detect in the code of the legacy services" (2015 post, republished 2017).
 
 At Vinted, **the indexing path was modernized before the engine**, which is the order Veldmark follows. Its rebuild of the indexing pipeline, from delta jobs to CDC-fed Flink read models, cut item visibility latency from up to seven minutes to about one ([Vinted Engineering, 2023](https://vinted.engineering/2023/09/25/search-indexing-pipeline/)). Vinted then moved from six Elasticsearch clusters to one Vespa deployment between May 2023 and April 2024, using shadow traffic first and then A/B tests of relevance, and reports search latency improved 2.5 times and change-to-visible time down from 300 seconds to 5 ([Vinted Engineering, 2024](https://vinted.engineering/2024/09/05/goodbye-elasticsearch-hello-vespa/)).
 
@@ -180,15 +189,6 @@ The rule I use for platform migrations: **do not change URLs because the platfor
 - **Route by pattern at the edge,** so a page type moves from old to new renderer with no URL change, and back again if needed.
 - **Put every unavoidable change in a redirect registry** driven by domain identifiers (category, location, listing), as [[web-and-seo-architecture]] describes, and monitor crawl errors, indexed pages and organic contacts per page type during and after the move.
 - **Status codes are part of parity.** A new renderer that answers `200` where the old one answered `410` for removed listings, or `404` for empty facets, changes the crawl budget, even if every page looks right to a user.
-
-### Feature parity and the behavior catalog
-
-Feature parity is a trap because nobody knows the full feature set of a fifteen-year-old marketplace. The alternative is a **behavior catalog** per slice: every observable behavior of the old system — including those found in cron jobs, templates, admin tools and search configuration — with a decision for each: *carry*, *change* or *retire*, and an owner. The catalog is built from code reading, from logs of what actually runs, and from shadow comparisons, which find the behaviors that reading missed.
-
-Retiring is the step most migrations skip. Every carried behavior is cost on the new platform; every behavior retired deliberately is cost removed. A behavior that is retired by accident, on the other hand, is a seller-facing incident.
-
-![A conveyor carries hidden behaviors out of an old monolith to a sorting station that routes each into Carry, Change or Retire bins.](assets/images/43-modernization-and-migration/behavior-catalog-sorting.jpeg)
-**Figure 4:** *A behavior catalog replaces the feature-parity trap: every observable behavior of the old system, including the ones hidden in cron jobs and admin tools, gets an owner and a decision to carry, change or retire it.*
 
 ### Kill switches and rollback
 
@@ -223,11 +223,11 @@ Double running is real money. Adevinta's 2025 strategic report attributed a more
 
 ### The sequence
 
-The Yardstick Exit team's plan, approved by the advice forum in October 2027, moves 23 capabilities in six waves. The ordering principle is read paths first, then the write path that unblocks the most teams, then search, then the long tail, and the system of record's archive last.
+The Yardstick Exit team's plan, approved by the advice forum in October 2027, moves 23 capabilities in waves 0 to 6. The ordering principle is read paths first, then the write path that unblocks the most teams, then search, then the long tail, and the system of record's archive last.
 
 | Wave | When | Slices | Seam |
 | --- | --- | --- | --- |
-| 0 | Jul – Dec 2027 | Listing event contract v1 via Yardstick Relay; event-driven indexer on Solr; landing pages, listing detail pages and the four SEO services | Event interception; edge routes |
+| 0 | Jul – Dec 2027 | Listing event contract v1 via Yardstick Relay; event-driven indexer on Solr; landing pages, listing detail pages and the four SEO services (see [[web-and-seo-architecture]]) | Event interception; edge routes |
 | 1 | Q4 2027 – Q1 2028 | Alert matching in comparison mode; web and mobile BFFs in front of all 118 app endpoints | Event stream; BFF |
 | 2 | Q2 2028 | **Insertion flow** to the new listing service (outbox); Tradeyard VAS on Tally with one shadow billing month; Legacy Mimic writer | BFF by seller cohort; events |
 | 3 | Q2 – Q4 2028 | **Search** to the group OpenSearch platform: Portugal in Q2, then Poland, then Belgium and the Netherlands in Q4; alerts switched off in Yardstick | Search contract (Listing Search API v1) |
@@ -245,16 +245,16 @@ The insertion flow is the slice that unblocks the most teams, because publicatio
 
 **G1, shadow (January – March 2028).** Every Yardstick submission is replayed into the new service in dry-run mode, and the two outcomes are compared on category, normalized attributes, moderation route, entitlement result, fee and published document. In the first week **6.8%** of submissions differ. Most differences are expected (changed or retired behaviors). Nine behaviors appear that the catalog missed, among them a cron job that silently converted a price of €0 into "price on request" in Portugal, and a Polish rule that waived the vehicle insertion fee for accounts created before 2015. Each gets an owner and a decision. The gate threshold — unexplained differences below **0.5%** of submissions for two consecutive weeks — is met in mid-March.
 
-**G2, canary (April 2028).** Tradeyard Portugal goes first, because it is the smallest market (about 210,000 new listings a week) and has no Safe Deal. The BFF routes 1% of Portuguese sellers' new listings to the new service, then 10%. The new service's listings reach Yardstick's `ads` table through the Legacy Mimic writer within about 3 seconds p95, so messaging and admin work unchanged. Rollback is rehearsed twice with real cohorts: the BFF flag routes the cohort back, and Yardstick continues to serve their existing listings, which it already holds. Guardrails over the canary weeks: share of submissions published, time from submission to searchable, first-contact rate within 48 hours, and support tickets per thousand listings — all within tolerance.
+**G2, canary (April 2028).** Tradeyard Portugal goes first, because it is the smallest market (about 210,000 new listings a week) and has no Safe Deal. The BFF routes 1% of Portuguese sellers' new listings to the new service, then 10%. The new service's listings reach Yardstick's `ads` table through the Legacy Mimic writer within about 3 seconds p95, so messaging and admin work unchanged. Because Portugal is small, its canary runs straight into its own ramp, reaching 100% of new listings on 28 April. Rollback is rehearsed twice with real cohorts: the BFF flag routes the cohort back, and Yardstick continues to serve their existing listings, which it already holds. Guardrails over the canary weeks: share of submissions published, time from submission to searchable, first-contact rate within 48 hours, and support tickets per thousand listings — all within tolerance.
 
-**G3, ramp (May – June 2028).** Poland follows in May, Belgium in early June and the Netherlands from mid-June, each ramped by seller cohort over about three weeks: 1%, 10%, 50%, 100%. Pro sellers move last in each country, after their API clients have been tested against the new endpoints. By 30 June 2028, all new Tradeyard listings are created in the new service; Yardstick still holds the listings created before each cohort's switch, until they end.
+**G3, ramp (May – June 2028).** Poland follows in May, Belgium in early June and the Netherlands from mid-June, each ramped by seller cohort over two to three weeks: 1%, 10%, 50%, 100%. Pro sellers move last in each country, after their API clients have been tested against the new endpoints. By 30 June 2028, all new Tradeyard listings are created in the new service; Yardstick still holds the listings created before each cohort's switch, until they end. The rollbacks, in the table below, were short.
 
 | Insertion flow, Tradeyard (2028) | Portugal | Poland | Belgium | Netherlands |
 | --- | --- | --- | --- | --- |
 | New listings per week | 0.21M | 0.62M | 0.42M | 1.05M |
 | Canary start | 7 April | 5 May | 2 June | 16 June |
 | 100% of new listings on the new service | 28 April | 26 May | 23 June | 30 June |
-| Rollbacks during ramp | 1 (rehearsal) | 1 (fee rule bug, 40 minutes) | 0 | 1 (image upload timeouts at the Sunday peak, 2 hours) |
+| Rollbacks during ramp | 2 (both rehearsals) | 1 (fee rule bug, 40 minutes) | 0 | 1 (image upload timeouts at the Sunday peak, 2 hours) |
 
 **G4 for insertion is not declared in 2028.** It waits until the last listing created in Yardstick has ended and the Mimic writer is no longer needed by insertion, which the plan sets for Q1 2029. Until then the forum keeps the option of routing writes back, and the point of no return is explicit: the first new feature that exists only in the new insertion flow, VAS purchase through Tally at insertion, cannot be rolled back to Yardstick without losing it. The forum accepts that loss of rollback in May 2028, for that feature only, in a recorded decision.
 
@@ -272,7 +272,7 @@ The parity gates for Tradeyard Portugal, set before the migration began:
 | p95 latency at the Sunday-evening peak, shadow traffic, four weeks | ≤ 250 ms | 180 ms |
 | Search sessions with a contact, two-week 50/50 experiment | Non-inferior: not more than 1% relative below the old engine | 8.8% vs 8.7% for Solr (difference not significant) |
 
-The overlap line shows why identical results are the wrong target: fewer than three-quarters of the top ten agreed, and buyers contacted sellers at the same rate. The relevance parity gate passed; the ramp to 100% in Portugal took one week, with Solr kept warm for four more. Poland followed on the same gates; Belgium and the Netherlands moved in Q4 2028 together with Yardstick's search extraction, when the Yardstick alert cron job also stopped sending (see [[saved-searches-and-alerts]]).
+The overlap line shows why identical results are the wrong target: fewer than three-quarters of the top ten agreed, and buyers contacted sellers at the same rate. The relevance parity gate passed; the ramp to 100% in Portugal took one week, with Solr kept warm for four more. Poland followed on the same gates; Belgium and the Netherlands moved in Q4 2028 together with Yardstick's search extraction (the last countries' search moving out of Yardstick), when the Yardstick alert cron job also stopped sending (see [[saved-searches-and-alerts]]).
 
 ![Old and new search engines return differently ordered result lists for the same query, yet produce the same row of buyer-seller contacts, marked equal.](assets/images/43-modernization-and-migration/relevance-parity-outcomes.jpeg)
 **Figure 5:** *Relevance parity is about outcomes, not identical results: on Tradeyard Portugal fewer than three-quarters of the top ten results matched, and buyers contacted sellers at the same rate.*
@@ -285,6 +285,8 @@ During each wave the SEO team watches four numbers per page type and country: in
 
 ### Progress, end of 2028
 
+By December 2028, capabilities implemented only in Yardstick had fallen from 23 to 6, and every new listing was created outside it.
+
 | Measure | Sep 2027 | Dec 2028 |
 | --- | --- | --- |
 | Capabilities implemented only in Yardstick | 23 | 6 |
@@ -296,6 +298,8 @@ During each wave the SEO team watches four numbers per page type and country: in
 | Transitional components alive | 2 (Relay, CDC connectors) | 3 (Relay, Mimic writer, archive exporter), all with 2029 end dates |
 
 ## Trade-offs
+
+Each choice in the plan is right under some conditions and wrong under others:
 
 | Decision | Option | When it is right | When it is wrong |
 | --- | --- | --- | --- |
@@ -312,6 +316,8 @@ During each wave the SEO team watches four numbers per page type and country: in
 
 ## Vertical Differences
 
+The trade-offs fall differently by vertical. The professional verticals have one advantage: cohorts are natural. Moving a software vendor's or a dealer management system (DMS) vendor's customers together, with the vendor's integration tested once, is easier than moving millions of private sellers whose apps are three versions behind. Their disadvantage is that **external parties must change their integrations**, and their timetable, not yours, sets the pace. A migration that keeps the external contract stable — the Supply Contract v1 at Veldmark (see [[listing-ingestion]]) — removes that dependency.
+
 | Topic | General classifieds | Real estate | Automotive | Jobs |
 | --- | --- | --- | --- | --- |
 | Main migration risk | Private sellers' insertion experience; long tail of app versions | Feed integrations from many software vendors; agency trust | Dealer feeds and the seller API; package billing | Expiry and structured data for search engines |
@@ -320,9 +326,9 @@ During each wave the SEO team watches four numbers per page type and country: in
 | Parity that matters most | Contacts per search; publication outcomes | Duplicate clustering and listing counts per agency | Lead delivery and billing per dealer | Applications per posting; expired jobs removed |
 | SEO sensitivity | High: landing pages | High: area and building pages | High: model and dealer pages | Very high: job-posting structured data and expiry |
 
-The professional verticals have one advantage: cohorts are natural. Moving a software vendor's or a DMS vendor's customers together, with the vendor's integration tested once, is easier than moving millions of private sellers whose apps are three versions behind. Their disadvantage is that **external parties must change their integrations**, and their timetable, not yours, sets the pace. A migration that keeps the external contract stable — the Supply Contract v1 at Veldmark (see [[listing-ingestion]]) — removes that dependency.
-
 ## Failure Modes
+
+Each failure below lacks one element of the method:
 
 - **The rewrite that never ships.** A new platform is built beside the old one for two years with no traffic, chasing a feature list that grows as the old system keeps changing. When it finally launches, parity disputes take another year.
 - **Dual writes.** Application code writes to both systems "temporarily". A timeout after the first write leaves them inconsistent, and nobody knows which one is right. Use one writer and asynchronous propagation.
@@ -337,7 +343,7 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 
 ## The Chief Architect's View
 
-**Treat the migration as a portfolio of slices, each with an owner and a business case.** A monolith retirement is not one project; it is twenty or thirty migrations with different risks, customers and teams. Each slice needs an owning team from the target organization (see [[organizing-marketplace-engineering]]), a behavior catalog, stage gates with numbers, and a rollback answer. The enabling team plans and helps; it does not own the slices.
+Group-level decisions prevent these failures. **Treat the migration as a portfolio of slices, each with an owner and a business case.** A monolith retirement is not one project; it is twenty or thirty migrations with different risks, customers and teams. Each slice needs an owning team from the target organization (see [[organizing-marketplace-engineering]]), a behavior catalog, stage gates with numbers, and a rollback answer. The enabling team plans and helps; it does not own the slices.
 
 **Spend early on seams.** The edge routes, the BFFs and the event contract cost months in 2027 and delivered little visible value on their own. They are what made every later wave reversible. I would defend that spend against any pressure to "just start rebuilding pages".
 
@@ -347,9 +353,11 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 
 **Protect liquidity, and say so in the gates.** The business does not care which system serves a page; it cares that buyers keep finding and contacting sellers, that sellers keep publishing, that dealers are billed correctly and that search engines keep sending traffic. Put those metrics into every gate. A migration that passes every technical check and loses contacts has failed.
 
-**Who decides and what to watch.** The owning team decides its slice's design and proposes gate criteria; the advice forum reviews the criteria before the slice starts and the G3-to-G4 decisions; the CTO decides the sequence when it moves funding or dates; finance signs off billing parallel runs. Watch the progress table above, the business guardrails per wave, rollback rehearsals performed, transitional components past their end date, and the double-running cost.
+**Who decides and what to watch.** The owning team decides its slice's design and proposes gate criteria; the advice forum reviews the criteria before the slice starts and the G3-to-G4 decisions; the CTO decides the sequence when it moves funding or dates; finance signs off billing parallel runs. Watch the September 2027 to December 2028 progress table, the business guardrails per wave, rollback rehearsals performed, transitional components past their end date, and the double-running cost.
 
 ## Questions to Ask
+
+These questions test the decisions above:
 
 1. What are the slices, in what order, and which team in the target organization owns each one?
 2. Where are the seams (edge, BFF, events, code abstraction), and can each one route back in minutes without a deploy?
@@ -364,7 +372,9 @@ The professional verticals have one advantage: cohorts are natural. Moving a sof
 
 ## From Migration to AI
 
-Yardstick's retirement is a 2029 event; the platform that replaces it will itself be replaced, in parts, during the next decade. Before that question, the next chapter, [[ai-in-listing-systems]], looks at the technology shift most likely to reshape listing creation, search and moderation on the new platform, and at the architecture that keeps it under control.
+Yardstick's retirement shows what seams, gates, the behavior catalog and outcome parity add up to: every step stays reversible until a recorded decision ends it. That bounds the liquidity the move puts at risk, which was the opening's question: by December 2028 six capabilities were left in Yardstick, no listing URL had changed, and search sessions with a contact held at 8.8% against 8.7%. Build the seams first, write each slice's gates in liquidity numbers, and record each point of no return as a decision.
+
+Yardstick's retirement is a 2029 event. The platform that replaces it is delivered capability by capability, and its structured services, such as the taxonomy and attribute service, Listing Search API v1 and the shared trust-and-safety platform, are what the next technology shift will run on. That platform will itself be replaced, in parts, during the next decade, the question [[long-term-evolution]] takes up. Before that, the next chapter, [[ai-in-listing-systems]], looks at the technology shift most likely to reshape listing creation, search and moderation on the new platform, and at the architecture that keeps it under control.
 
 ## Sources and Evidence
 

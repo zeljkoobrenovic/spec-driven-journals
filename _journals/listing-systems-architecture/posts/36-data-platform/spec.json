@@ -1,0 +1,2185 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "data-platform",
+  "journal": "listing-systems-architecture",
+  "part": "part-7",
+  "title": "Data Platform for Marketplaces: Events, Lakehouse and Data Products",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published index.md (paragraph for paragraph, in its own order) and spec.md (accepted 2026-10-21), which it replaces. Intent outcome, acceptance criteria AC-1 to AC-3, the thesis and the role are copied unchanged from the data-platform entry in journal-spec.json; supporting claims S1 to S6 are written here. Units added by this conversion: roadmap p04, one lead-in paragraph each for Trade-offs (p54) and Vertical Differences (p55), and a synthesis paragraph p62 before the published hand-off (p63).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "What a marketplace data platform is for; the tracking plan, its common envelope (listing ID, ranking and experiment context, consent state) and server-side facts.",
+        "One substrate with many owners: a tenant-partitioned lakehouse, contracts and quality gates at the source, domain-owned data products, a separate store for personal data.",
+        "Governed metrics (a qualified contact with one steward, definition, computation and version), data for professionals, legal and commercial limits on sharing across brands, quality, freshness and cost."
+      ],
+      "believe": [
+        "The tracking plan is the real schema of a marketplace, and liquidity metrics must be governed metrics.",
+        "Cross-brand sharing is a decision about purpose that belongs in auditable access policy, not in whoever holds warehouse credentials."
+      ],
+      "can_do": [
+        "Write a definition card for a governed liquidity metric and decide which metrics to govern.",
+        "Design a tracking plan whose events can be joined to ranking, experiments and consent.",
+        "Decide what the group centralizes (substrate, rules, metrics) and what domains own (data products)."
+      ]
+    },
+    "audience": {
+      "who": "Chief architects, heads of data and ML, analytics engineering leads and engineering directors of multi-brand listing marketplaces.",
+      "already_knows": [
+        "APIs, databases, event streams, search engines and Kubernetes (the book's baseline), including CDC, Kafka and warehouses such as Snowflake and BigQuery.",
+        "From earlier chapters: liquidity metrics (liquidity-and-network-effects), contacts and leads (messaging-and-leads), the listing event stream, its outbox and envelope, and 'tenant' as one brand in one country (event-driven-listings), systems of record and erasure (listing-data-management), contacts from organic sessions (web-and-seo-architecture), the billable lead (monetization-models).",
+        "Veldmark (fictional), its brands Tradeyard, Motorvane, Hearthly, Keybridge and Valuo, Yardstick, Common Ground, Safe Deal, Veldmark ID, Motorvane Dealer Hub, the architecture advice forum, the cast (Henrik de Boer, Priya Raman, Ingrid Halvorsen, Emma Laurent, Lucía Ortega, Felix Brandt, Sven Lindqvist), Femke's bike, the Essen Golf, and the failure patterns Vanity Liquidity and Deal-Shaped Architecture."
+      ],
+      "does_not_know": [
+        "The terms this chapter owns: data platform, tracking plan, common envelope, data contract, data product, governed metric, metrics layer, qualified contact, pro data product.",
+        "Lakehouse, open table formats (Iceberg, Delta Lake), the medallion layout, data mesh, quarantine tables.",
+        "ePrivacy Art. 5(3) and GDPR purpose limitation as they bear on analytics; controller boundaries."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given conflicting brand numbers and a data-sharing request, the reader names the contract that resolves each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "The board wants one 'contacts per live listing' number for three brands by Wednesday. One brand counts every buyer message, one counts e-mails, calls and bookings per channel, one deduplicates per user, listing and day. One listing received 14 conversations and the first brand reports 52 contacts for it, one of them from a phisher. Separately, an agency-software subsidiary's data is requested to improve a sister portal's ranking. Using only this chapter: what do you build, and how do you answer the request?",
+        "expected": "A governed metric, a qualified contact v1.0, with one steward, written definition, computation and version: counted once per buyer and listing from the server-side delivery event, with fraud restated, computed once in the metrics layer and served to dashboards, experiments and professional reports, with old definitions labeled legacy for a quarter (the listing counts 13). The request is refused by purpose-bound access policy: data held for the subsidiary is tagged and excluded, and the isolation is audited externally."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of the opening alone (the callouts and the paragraphs before the first heading) can predict the chapter's sections.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the callouts and the paragraphs before the first heading: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "A group's data spread over several warehouses with conflicting definitions; the tracking plan as the schema; governed liquidity metrics; federated ownership on one substrate with access by purpose. Then the three contacts at Veldmark, what the platform is for, the tracking plan, architecture with its quality controls, data products, governed metrics, data for professionals, sharing across brands, freshness and cost, Veldmark's Common Ground data platform, trade-offs, vertical differences, failure modes, the Chief Architect's view and questions. Evidence: classifieds engineering and investor sources (Adevinta, OLX, Scout24, AutoScout24, Vinted, Zalando), the data-mesh and lakehouse literature, EU law, and the fictional Veldmark."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reverse outline of the chapter, written without the spec, lists the same controlling ideas in the same order as the post spec's sections and paragraphs.",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should a marketplace group collect, govern and use its data?",
+    "claim": "A marketplace group should collect, govern and use its data through three contracts: one tracking plan from which client SDKs are generated, whose events carry the listing ID, ranking and experiment context and consent state, with governed facts recorded on the server; a short catalog of governed liquidity metrics, each with one steward, written definition, computation and version, starting with a qualified contact counted once per buyer and listing with fraud excluded; and purpose-bound access policy for any use across brands; with domains owning data products on one shared, tenant-partitioned lakehouse whose sources enter through contracts and quality gates.",
+    "disputed_by": "The view that each brand keeps its own warehouse and definitions, that client analytics events are the record of behavior, and that the group compares brands by reconciling their dashboards; or the opposite, a central data team that owns every pipeline and table.",
+    "so_what": "A Chief Architect who accepts this takes to the architecture forum, in order, who owns which governed metrics, the tracking plan with server-side facts, a durable copy in open formats partitioned by tenant, a purpose taxonomy co-owned with the data protection officer, and cost attribution; delivers the tracking plan and the contact definition on the existing warehouses before migrating storage; switches professional reports and the board pack to the new definition at the same time; and watches how often two dashboards disagree about the same number.",
+    "how_why": "In March 2027 Veldmark's CEO asked for contacts per live listing by brand and got three definitions from three warehouses: Femke's bike had 14 conversations in 24 hours and 52 contacts on Tradeyard's dashboard, one sender being the phisher; the Essen Golf's 23 leads came from 19 people. Under qualified contacts v1.0 the bike counts 13. The September 2027 decision put group data products as Iceberg tables on S3 partitioned by tenant, generated SDKs from tracking plan v1's 64 core events in place of about 1,140 event names in Tradeyard's apps and web, admitted every source through a contract, served twelve governed metrics from one catalog, and enforced Keybridge's isolation as audited access policy.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "One governed tracking plan, from which client SDKs are generated, is the real schema of a marketplace: its events carry the listing ID, ranking and experiment context and consent state on a common envelope so they join to domain events, and the facts the group counts are recorded on the server."
+      },
+      {
+        "id": "S2",
+        "claim": "The platform is one shared substrate: every source enters through a versioned data contract and quality gate, personal data is split into its own store at the gate, and the durable copy lives in open table formats partitioned by tenant, so the group can absorb or sell a brand."
+      },
+      {
+        "id": "S3",
+        "claim": "Domains own data products on that substrate (the team that owns a fact owns its source product; the team that owns a decision owns the consumer product), while the substrate, contracts, catalog and governance rules stay central."
+      },
+      {
+        "id": "S4",
+        "claim": "Metrics that compare brands or decide money are a short catalog of governed metrics, each with one steward, written definition, computation and version, monitored, starting with a qualified contact counted once per buyer and listing at server-side delivery with fraud excluded through a 72-hour restatement, and the same governed metric serves the board, experiments, billing and professional reports."
+      },
+      {
+        "id": "S5",
+        "claim": "Using data across brands is a decision about purpose under law and contract, so it is enforced as purpose-tagged, closed-by-default access policy with an audit trail, and a neutrality commitment such as Keybridge's is a policy an external reviewer can read."
+      },
+      {
+        "id": "S6",
+        "claim": "Quality, freshness and cost are owned, not defaulted: producers own quality at the source, freshness follows the consumer, every dataset and workload has a cost owner, and the contracts are delivered on the existing warehouses before storage is migrated."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns the liquidity measures the earlier chapters rely on into governed data contracts the group can compare and the experiment and ML platforms can read.",
+    "supports": [
+      "P7-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene poses the three contact definitions; metrics answers with the card and replay; practice gives Veldmark's whole design"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "trade-offs, verticals, failure-modes, ca-view, questions: the book's standard judging sections"
+      }
+    ],
+    "rationale": "The scene comes first because its question is the one the chapter answers. Purpose comes next because the platform's consumers and the join of domain and behavioral events justify every later contract. The tracking plan precedes the architecture because the contract gate and the source products receive its events. The architecture precedes data products because ownership is assigned on a substrate the reader has seen; the architecture glosses data product in one clause where three of its layers hold them, and the next section defines the term. Adevinta Spain's personal-data split sits in the architecture beside the contract gate it belongs to, not in the tracking plan, where it would use data contracts before they are defined. Governed metrics come after data products because the contact definition lives in the contacts data product and counts server-side delivery events defined in the tracking plan; placed earlier, the card would name an owner and a fact the reader has not met. The quality controls sit in the architecture beside the contract gate where they start, because producers own quality at the source. Professional data and sharing extend the governed metric and access rules to external and cross-brand use, and freshness and cost keep the whole running. Veldmark's design can only be presented once all its parts exist, and the judging sections apply the whole design, so they come last."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Most marketplace data platforms are built backwards: warehouse first, tracking second, ML third, professional statistics last, until the platform holds a great deal of data and very few facts."
+    },
+    "bridge": {
+      "from_reader_world": "Part VI priced, billed and tested against contact counts, and web-and-seo-architecture steered Tradeyard on contacts from organic sessions without saying what a contact is in each brand.",
+      "to_topic": "The data platform, which applies Part VII's rule (a shared platform earns trust through contracts) to data and makes 'contact' mean the same thing in every brand."
+    },
+    "thesis_statement": {
+      "text": "The tracking plan is the real schema of a marketplace; liquidity metrics must be governed metrics with one owner, definition, computation and version; ownership federates to domains on one shared substrate, and cross-brand sharing belongs in auditable, purpose-bound access policy.",
+      "placement": "KEY POINTS callout (three bullets), with p02 naming the four contracts and putting technology after them."
+    },
+    "roadmap": {
+      "placement": "Paragraph p04, which names the sections in order and the kinds of evidence, with the IN THIS CHAPTER callout.",
+      "promises": [
+        {
+          "promise": "Start at Veldmark, where one board question meets three warehouses and three definitions of a contact.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Say what a marketplace data platform is for and which kinds of data reach it.",
+          "kept_in": [
+            "purpose"
+          ]
+        },
+        {
+          "promise": "Specify the tracking plan, its envelope and consent.",
+          "kept_in": [
+            "tracking"
+          ]
+        },
+        {
+          "promise": "Lay out the architecture of one substrate with many owners, with its quality controls, and data products.",
+          "kept_in": [
+            "architecture",
+            "data-products"
+          ]
+        },
+        {
+          "promise": "Define governed metrics, starting with the contact definition card.",
+          "kept_in": [
+            "metrics"
+          ]
+        },
+        {
+          "promise": "Cover data for professionals, the limits on sharing across brands, and freshness and cost.",
+          "kept_in": [
+            "pro",
+            "sharing",
+            "quality"
+          ]
+        },
+        {
+          "promise": "Apply the design in Veldmark's Common Ground data platform.",
+          "kept_in": [
+            "practice"
+          ]
+        },
+        {
+          "promise": "Close with trade-offs, vertical differences, failure modes, the Chief Architect's view and questions.",
+          "kept_in": [
+            "trade-offs",
+            "verticals",
+            "failure-modes",
+            "ca-view",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Most marketplace data platforms are built backwards, warehouse first, then tracking, then ML, then professional statistics, so they end up holding a great deal of data and very few facts.",
+        "function": "context",
+        "organization": "narration",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Finance's warehouse arrives first; a vendor tracking snippet names events by sprint; ML finds impressions never logged with positions; dealer statistics disagree with the dealer's inbox.",
+            "shows": "Shows how a platform without contracts accumulates data that cannot be trusted as facts."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "States the problem the contracts solve."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "This chapter takes the opposite route, applying Part VII's rule that a shared platform earns trust through contracts: starting from what a marketplace needs to know, it makes 'contact' mean the same thing in every brand and works back to four contracts (tracking plan, data contracts, governed metrics, purpose-bound access policy), with technology choices after them.",
+        "function": "claim",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S4",
+            "S5"
+          ],
+          "how": "Names the contracts the thesis argues for and puts technology after them."
+        },
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Platforms built backwards, and web-and-seo-architecture's organic contacts, which no brand defines the same way.",
+          "introduces": "The opposite route: contracts first.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Two neighbors own adjacent ground (event-driven-listings the listing stream, listing-data-management the system of record and erasure propagation), and experimentation and ml-platform build on the exposure, metric and training data designed here.",
+        "function": "context",
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "Sets the boundary of the substrate the chapter designs."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The four contracts this chapter owns.",
+          "introduces": "What neighboring chapters own.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter runs from Veldmark's board question through the platform's purpose, the tracking plan, the architecture with its quality controls, data products, governed metrics, data for professionals, sharing across brands and freshness and cost, to Veldmark's design and the judging sections, on evidence from classifieds engineering and investor sources, the data-mesh and lakehouse literature, EU law and the fictional Veldmark.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "Announces the sections that argue the claims."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The chapter's scope and neighbors.",
+          "introduces": "The order of the sections and the evidence they use.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Veldmark: Three Warehouses, Three Contacts",
+      "controlling_idea": "Veldmark's CEO asks for comparable contacts per live listing and gets three definitions from three warehouses, which poses the chapter's question of who owns the word 'contact'.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S2"
+        ],
+        "how": "Shows the cost of ungoverned metrics and of keeping each acquired brand's warehouse."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The request comes first, then why it fails, then concrete listings, then the diagnosis that the rest of the chapter answers."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The four contracts and the problem of platforms built backwards.",
+        "introduces": "Veldmark as the running example.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "On Monday 15 March 2027 Henrik de Boer, Veldmark's Group CEO, asks for last week's contacts per live listing for every brand by Wednesday, because the board pack will for the first time compare Tradeyard, Motorvane and Hearthly.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Henrik de Boer's e-mail of Monday 15 March 2027; the investor's operating partners want one comparable liquidity number.",
+              "shows": "Poses the question the chapter answers; Veldmark is labeled fictional.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Priya Raman knows the three listing brands sit in different warehouses and each counts a contact correctly by its own, different definition, while Keybridge, on Azure Synapse, has no buyers and no contacts to count.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Tradeyard: every buyer message plus phone reveals; Motorvane: leads per channel (e-mail form, call of any length, test-drive booking); Hearthly: form or phone reveal deduplicated per user, listing and day, excluding new-build campaign pages. Tradeyard and Motorvane on separate Snowflake accounts, Hearthly on BigQuery, Keybridge on Azure Synapse.",
+              "shows": "Each figure is correct and none is comparable.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The CEO's request.",
+            "introduces": "Why it cannot be answered as asked.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Ingrid Halvorsen shows Femke's bike, which had 14 conversations in 24 hours but 52 Tradeyard 'contacts', one of them from a phisher suspended within minutes.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Femke's €240 Rotterdam bike, 7 March, 14 conversations in 24 hours, 52 contacts counted, a phisher who sent a fake Safe Deal link at 20:11 and was suspended at 20:26.",
+              "shows": "Shows a definition that inflates counts and includes fraud.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Three definitions.",
+            "introduces": "A listing that shows what one definition does.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Ingrid's diagnosis is that the group has no data problem but three definitions of its most important event, three event vocabularies and nobody who owns the word, and the chapter is the design that followed.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S1"
+            ],
+            "how": "States the ownership problem governed metrics and a tracking plan solve."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two examples.",
+            "introduces": "The diagnosis and the design that follows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "purpose",
+      "heading": "What a Marketplace Data Platform Is For",
+      "controlling_idea": "A data platform is where the bounded contexts' facts meet; six kinds of consumers make it architecture, and liquidity can only be computed from the join of domain and behavioral events.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the platform and shows why its events must share identifiers."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Definition, then consumers, then the conclusion they force, then the kinds of data, the join that matters and the kind to retire."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Ingrid's diagnosis.",
+        "introduces": "What the platform is for, before designing it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A data platform is the shared pipelines, storage, compute, metadata and access controls through which data is used for anything other than serving the live product; it is not a system of record but the place where those records' facts meet.",
+          "function": "definition"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A listing marketplace needs six kinds of output from its data platform, each imposing its own requirement.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Steering, product analytics and experiments, machine learning, professional-seller data products, regulatory reporting, group data and partner products, with what each needs and the requirement it imposes.",
+              "shows": "Each consumer adds a contract the platform must honor."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The definition.",
+            "introduces": "The consumers the platform serves.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "The table is the argument for treating the platform as architecture rather than tooling, because a platform that must train ranking, guard experiments, serve 21,400 dealers and prove what happened to a listing cannot run on a weekly batch and a loose vocabulary.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Motorvane's 21,400 dealers.",
+              "shows": "Professional serving is a production workload.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Justifies contracts at the platform level."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Six consumers.",
+            "introduces": "What their combined requirements imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Data reaches the platform in three forms, domain events, CDC snapshots and behavioral events, each with its own producer, meaning and contract owner, and confusing them causes most data quality problems.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Domain events, CDC snapshots, behavioral events: example, producer, what each can tell you, contract owner.",
+              "shows": "Each kind carries a different kind of fact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Platform as architecture.",
+            "introduces": "The kinds of data it receives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Liquidity lives in the join of domain and behavioral events, so behavioral events must carry the same listing identifier, category version and experiment context as domain events, or the platform can only count.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: domain events and behavioral events joined on a shared listing ID.",
+              "shows": "Shows the join as the source of the liquidity measure."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Grounds the envelope requirements of the tracking plan."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three kinds of data.",
+            "introduces": "Why the domain and behavioral kinds must join.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "CDC should be temporary in the data platform as well: it gets legacy history into the platform, but every CDC-fed table needs a planned replacement fed by domain events, because the monolith's schema was never designed for analysts.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Keeps sources under owned contracts."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Domain and behavioral events as the lasting sources.",
+            "introduces": "The third kind, CDC, as a temporary one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tracking",
+      "heading": "The Tracking Plan: The Schema Nobody Can Recall",
+      "controlling_idea": "The tracking plan is the governed catalog of behavioral events and the most important schema in a marketplace, because client events cannot be recalled; it must record two-sided mechanics with a common envelope that carries consent.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Argues the tracking-plan contract."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Definition and claim first, then evidence from companies, then the contents of the plan, then consent and its consequence for counting."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Behavioral events that must join to domain events.",
+        "introduces": "The contract that governs them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "A tracking plan is the versioned catalog of behavioral events, and it is the most neglected schema in a marketplace because client events ship inside app binaries that cannot be recalled.",
+          "function": "definition"
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Vinted (2019) and Zalando (2021) both found tracking schemas a precondition for trustworthy data: Vinted generated mobile tracking code from schemas and repaired web events in flight, and Zalando credited a team that unified the schema.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vinted Engineering 2019 (two-week mobile rollout, Kotlin and Swift generated from schemas); Zalando Engineering 2021 ('unified the schema').",
+              "shows": "Two companies reached the same rule independently.",
+              "source": "Vinted Engineering, 2019; Zalando Engineering, 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Client events cannot be recalled.",
+            "introduces": "What two companies did about it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "At group scale Adevinta's 2022 platform carried nearly a billion UBCT-classified events a day on Kafka in mixed Avro and JSON, the only cross-marketplace classification found, and the mixed formats show how hard one standard is to impose.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog, 2022: nearly a billion events a day, UBCT classification, Kafka as backbone, Avro and JSON topics (older evidence).",
+              "shows": "Group-wide standards are hard; the plan must be governed.",
+              "source": "Adevinta Tech Blog, 2022"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Single-company evidence.",
+            "introduces": "Evidence from a classifieds group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A marketplace tracking plan must record two-sided mechanics, what supply was shown to whom, in what order and why, and what contact followed, in core events brands may extend but not redefine.",
+          "function": "recommendation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight core events (search_performed, results_impression, listing_viewed, contact_initiated, contact_delivered, saved_search_created/alert_opened, listing_submitted, experiment_exposure) with producer, required properties and why each is core.",
+              "shows": "Each event serves a named consumer; the server-side ones carry facts."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "Specifies the core of the plan."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The case for a governed plan.",
+            "introduces": "What a marketplace plan must contain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "list",
+          "controlling_idea": "Every event carries a common envelope (IDs, times, the brand-and-country tenant, identifiers, build, consent state and experiment assignments), and two rules follow: facts are server-side and intentions client-side, and impressions are compacted, not dropped.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Clients lose events to ad blockers, crashes and missing consent; impressions are needed for position-bias correction, ranking training and showing paid exposure.",
+              "shows": "Explains each rule."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1"
+            ],
+            "how": "States the envelope and the server-side rule of the thesis."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The core events.",
+            "introduces": "What every event carries and the rules that follow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The consent state must travel with the event because EU law limits both collection (ePrivacy Art. 5(3)) and use (GDPR purpose limitation).",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "ePrivacy Directive Art. 5(3); GDPR Art. 5(1)(b).",
+              "shows": "Collection and use are limited separately, so consent must be known downstream.",
+              "source": "EUR-Lex"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S5"
+            ],
+            "how": "Justifies consent on the envelope."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Consent state on the envelope.",
+            "introduces": "The law that requires it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Consent biases client-side counts differently by country and device, so governed liquidity metrics should be built from server-side facts, with client events used for behavior and attribution and their coverage reported.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "If 30% of web sessions decline analytics consent, client funnels are biased samples.",
+              "shows": "Shows why client counts cannot be the governed facts."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S4"
+            ],
+            "how": "Links the server-side rule to governed metrics."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Consent on the event.",
+            "introduces": "Its effect on what can be counted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture",
+      "heading": "Architecture: One Substrate, Many Owners",
+      "controlling_idea": "A reference platform has five layers and one rule, every arrow in passes a contract, quality is controlled at the source at each layer, and its durable copy belongs in open formats partitioned by tenant because marketplace groups change shape.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Lays out the shared substrate, the contract gate, quality at the source and the storage decision."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole architecture first, then its gate in detail and the quality controls that start there, then the storage choice and the reason it matters most for groups."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The tracking plan as the contract for behavioral data.",
+        "introduces": "The platform that receives all sources.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "controlling_idea": "The reference architecture has five layers (collection, contract gate, source-aligned products, domain entities and metrics, consumer-aligned products) and one rule: every arrow into the platform passes through a contract; the paragraph glosses in one clause each the terms its table uses (data product, data contract, metrics layer) and says the owners follow the next section's rule.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: reference data platform with contract gates, a separate personal store, and metrics computed once.",
+              "shows": "Shows the layers and the rule."
+            },
+            {
+              "kind": "table",
+              "what": "Layer, responsibility, owner and interface for each of the five layers.",
+              "shows": "Assigns an owner to each layer."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S3"
+            ],
+            "how": "Describes the substrate and who owns each layer."
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The layering mirrors the medallion layout, and Adevinta Spain's 2024 account maps bronze, silver and gold onto data products with verticals as domains, while warning that wide domain tables bring privacy and governance challenges.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Adevinta Tech Blog, 2024: bronze 'a space for source-aligned data products'; silver 'one big tables'; warning on 'additional privacy and governance challenges as the table grows'.",
+              "shows": "A marketplace has built this layering; wide tables carry risk.",
+              "source": "Adevinta Tech Blog, 2024"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The five layers.",
+            "introduces": "A documented marketplace layout like them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A data contract is a versioned, machine-readable agreement between producer and platform, and Adevinta Spain's immutable contracts, generated pipelines and quarantine tables cut Time to Effective Data from about five days to about 30 minutes.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Adevinta Spain 2024: JSON contracts in GitHub with schema URL, validity, personal fields, service levels; Airflow and Spark generated per contract; quarantine with raw event, error and version.",
+              "shows": "Shows a contract gate in production and its payoff.",
+              "source": "Adevinta Tech Blog, 2024"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Defines the gate the substrate depends on."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The contract gate layer.",
+            "introduces": "What a data contract is and one working example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Three properties of that design are worth copying: immutable contracts, quarantine as feedback to producers, and personal data separated at the gate.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S6"
+            ],
+            "how": "Turns the example into rules for the gate."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Adevinta Spain's contract gate.",
+            "introduces": "What to copy from it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Adevinta Spain applies the third property in production: fields without analytical value are never ingested, and analytical personal data goes to a separate per-site personal table, which its 2024 post says makes right-to-be-forgotten requests easier.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adevinta Tech Blog, 2024 (source-aligned data products).",
+              "shows": "Shows personal data separated at the gate in a working platform.",
+              "source": "Adevinta Tech Blog, 2024"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Shows the personal-data split of the substrate."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Personal data separated at the gate.",
+            "introduces": "How Adevinta Spain does it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "Validation at the gate is the first of several quality controls: quality is cheapest at the source, so the platform makes producers' obligations explicit with a control at each layer, each catching a different failure at the earliest point that can see it.",
+          "function": "recommendation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Schema validation and quarantine, volume and freshness checks per tenant, referential checks, metric anomaly detection, reconciliation: where each runs, what it catches.",
+              "shows": "Each control catches a different failure at the cheapest point."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Puts quality with the producer."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Validation and the personal-data split at the contract gate.",
+            "introduces": "The quality controls at every other layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "For a group the storage decision is where the durable copy lives and in what format; of four options, open storage with a warehouse as main compute fits most marketplace groups in 2027.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Armbrust et al., CIDR 2021: lakehouse 'based on open direct-access data formats'.",
+              "shows": "Defines the lakehouse.",
+              "source": "CIDR 2021"
+            },
+            {
+              "kind": "table",
+              "what": "One managed warehouse, lakehouse on open table formats, open storage plus a warehouse as main compute, one warehouse per brand: strengths, weaknesses, when right.",
+              "shows": "Shows each option's conditions; per-brand warehouses only as a transition."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Chooses the storage model in the thesis."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Contracts and quality controls at the gate and after it.",
+            "introduces": "Where the data lives after the gate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "Portability weighs more in marketplaces because groups change shape, as Adevinta's 2025 move to a decentralized model shows, so a durable copy in open formats partitioned by tenant can be split when a brand is sold and can absorb an acquisition.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Strategic Report 2025, Aurelia UK Feederco Ltd (published 2026): 'a decentralised, standalone operating model', 'parallel running of central and local services'.",
+              "shows": "A real group reversed its centralization.",
+              "source": "Aurelia UK Feederco Ltd, 2026"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2"
+            ],
+            "how": "Justifies open, tenant-partitioned storage."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The recommended storage option.",
+            "introduces": "Why portability decides it for marketplaces.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "data-products",
+      "heading": "Data Products: Federate Ownership, Not Substrate",
+      "controlling_idea": "Domains should own data products on one shared platform, as every documented classifieds case does, with ownership following the fact and the decision.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Argues federated ownership on a central substrate."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Definition, cases, the reading of the cases, then the ownership rule it supports."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "One shared substrate.",
+        "introduces": "Who owns what on it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "controlling_idea": "A data product is a dataset a named team owns and publishes with a contract, service levels, access policy and support, a term from Dehghani's 2019 data mesh essay, which also called for a self-serve platform and global governance.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Dehghani, 2019: domains 'host and serve' datasets; 'data infrastructure components in a self-service manner'; standards 'should belong to a global governance'.",
+              "shows": "Data mesh itself keeps a shared platform and global rules.",
+              "source": "martinfowler.com, 2019"
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "form": "list",
+          "controlling_idea": "Classifieds cases show a consistent shape though not a uniform outcome: Adevinta moved from a centralized domain to a data products platform, Zalando kept central governance, and AutoScout24 cut dashboards and gave each an owner and definitions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Adevinta Annual Report 2019 ('built once; used many times'); Adevinta Tech Blog 2023 and 2024 (data products platform, governance as code); SiliconANGLE 2021 on Zalando; AutoScout24 2025 (500+ dashboards to about 150).",
+              "shows": "Each case keeps one platform and distributes ownership.",
+              "source": "Adevinta, SiliconANGLE, AutoScout24"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The data-product definition.",
+            "introduces": "How marketplaces applied it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Ownership federates but the substrate and the rules do not: every documented case keeps one platform, catalog and governance, which matters where 'data mesh' can become a polite name for three warehouses.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: anatomy of a data product; the contacts product read by board, dealer report and experiment.",
+              "shows": "Shows one owned product with many readers."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "States the supporting claim."
+          },
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The cases.",
+            "introduces": "What they have in common.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The team that owns a fact in production owns its source and domain data products, and the team that owns a decision owns the consumer product, which gives a marketplace ownership matrix.",
+          "function": "recommendation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Listing history, search sessions and impressions, qualified contacts, moderation actions, orders and fees, market prices: owner, consumers, note.",
+              "shows": "Applies the rule; puts the governed contact definition with messaging and leads."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S4"
+            ],
+            "how": "Assigns ownership, including the contact product."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Federated ownership.",
+            "introduces": "The rule that assigns it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "metrics",
+      "heading": "Governed Metrics: One Definition of a Contact",
+      "controlling_idea": "Liquidity metrics are two-sided and channel-dependent, so a governed contact definition with one owner, written rules and versioned restatement makes brands comparable, and a short monitored catalog is enough.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Argues and demonstrates the governed-metric contract."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Definition, the card, its reasoning and consequence for billing, the replay and its meaning, then scope of the catalog and its monitoring."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The contacts data product and its owner.",
+        "introduces": "The governed definition that product publishes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "A governed metric has a named owner, written definition, single computation, version and restatement rules, served by a metrics layer, and it is urgent in marketplaces because two-sided, channel-dependent metrics move by large factors with small choices.",
+          "function": "definition",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Defines the contract."
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The contact definition card approved by Veldmark's forum in May 2027 fixes the name, owner, definition, channels, buyer identity, exclusions, timing, restatement and denominator of a qualified contact.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Qualified contact v1.0: first contact per distinct buyer and listing in a rolling 30 days; channels; exclusions including fraud or spam within 72 hours; counted at delivery; final after 72 hours; versions side by side for a quarter.",
+              "shows": "A complete governed definition the reader can copy.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Gives the definition card."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The governed-metric definition.",
+            "introduces": "Veldmark's card for a contact.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Each row closes an argument the brands had implicitly, and the 72-hour fraud restatement, which removes Femke's phishing buyer, ties liquidity to trust and safety and prevents Vanity Liquidity by definition.",
+          "function": "analysis",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Explains why the definition's rules matter."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The card.",
+            "introduces": "What each choice settles.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Billing and steering must derive from the same contacts data product even when billing is stricter, or the dealer's invoice and the board pack disagree.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Motorvane's proposed billable lead with its 14-day window (monetization-models).",
+              "shows": "A stricter rule still reads the same product.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Extends one definition to billing."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One definition for steering.",
+            "introduces": "Its consequence for billing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Before the forum approved the card, Priya's team tested it in April by replaying 8–14 March 2027, the week that began the day after Femke listed her bike, with the bike's first 24 hours, and added the Essen Golf in late April once its first 10 days were in (23 leads from 14 e-mails, 7 calls and 2 test drives, from 19 people, none excluded); the figures moved for each brand for a stated reason.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Bike 52 to 13; Essen Golf 23 to 19; Tradeyard index 100 to 37; Motorvane 100 to 86; Hearthly 100 to 106, with why each moved.",
+              "shows": "The definition changes numbers in both directions, for traceable reasons.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The definition on the card.",
+            "introduces": "The April replay that tested it before approval.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The headline was not Tradeyard's fall but that the brands' figures moved by different amounts and in different directions, so the old comparisons had been distorted and for the first time the brands could be compared on one definition; the country figures behind the Tradeyard row showed Tradeyard Portugal far below the Netherlands.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: one ruler replaces each brand's own, bike from 52 to 13.",
+              "shows": "Illustrates comparability."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: how a qualified contact is computed from the server-side delivery event with 72-hour restatement.",
+              "shows": "Shows the computation."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Shows what governance buys."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The replayed figures.",
+            "introduces": "What they revealed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Govern only metrics that compare marketplaces or decide money; Veldmark's first catalog has twelve.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Twelve governed metrics, from live listings to removals per thousand new listings.",
+              "shows": "Shows a short catalog in practice.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Limits the catalog."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first governed metric.",
+            "introduces": "Which others to govern.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Governed metrics need monitoring, as Adevinta Benelux's Artemis showed by catching a drop of about 100,000 leads a day on iOS, because an instrumentation failure looks like a liquidity collapse.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta Tech Blog, 2024: more than 140 metrics, a drop of about 100,000 leads a day worth about €41,000 a day, fixed in under a day.",
+              "shows": "Monitoring separates instrumentation from market change.",
+              "source": "Adevinta Tech Blog, 2024"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S6"
+            ],
+            "how": "Adds monitoring to the metric contract."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The catalog.",
+            "introduces": "What keeps it trustworthy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pro",
+      "heading": "Data for Professionals: Insights as a Product",
+      "controlling_idea": "Professional data products are served, tenant-isolated, causal where they claim value and aggregated with minimum cell sizes, and they must read the same governed contact metric as the board.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S3",
+          "S5"
+        ],
+        "how": "Extends governed metrics and access policy to external consumers."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Governed metrics for internal consumers.",
+        "introduces": "The same metrics served to professional sellers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "A pro data product is any dataset served to professional sellers, and real-estate portals go further and sell valuation data, as Meilleurs Agents and Scout24 report and Valuo does for Veldmark.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Meilleurs Agents: 6% median estimate error for 2021 (self-reported, older); Scout24 Transaction Enablement €106.6 million for 2025.",
+              "shows": "Pro data is a real revenue line.",
+              "source": "Online Marketplaces, 2022; Scout24, 2026"
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Pro data products differ from internal analytics in four ways that change the architecture: they are served, customer-isolated, causal where they claim value, and aggregated with minimum cell sizes.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "OLX Tech Blog, 2026: propensity-score matching estimated +17.6% to +97.4% uplift between packages, validated by a randomized test.",
+              "shows": "Naive dashboards misstate value.",
+              "source": "OLX Tech Blog, 2026"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S5"
+            ],
+            "how": "Sets the serving and isolation requirements."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What pro data products are.",
+            "introduces": "How they differ from internal analytics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Pro data products must read the same governed contact metric as the board, or the marketplace loses an argument with its dealers it cannot afford to lose.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Applies one definition to external reports."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Four differences.",
+            "introduces": "The one thing that must stay the same.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sharing",
+      "heading": "Sharing Data Across Brands: The Legal and Commercial Limits",
+      "controlling_idea": "Cross-brand data flows are limited by purpose, consent, controller boundaries and contracts, so the architecture must make the difference between legitimate and forbidden flows enforceable as access policy.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Argues purpose-bound access policy."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim, the legal frame, then two Veldmark cases from hard isolation to a borderline decision."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Data served within a brand's own customers.",
+        "introduces": "Data used across brands.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "Pro data products stay inside one brand, but the synergy case assumes data flows freely between brands, while some flows are legitimate, some need a new basis and some are forbidden, so the architecture must make the difference enforceable.",
+          "function": "claim",
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "States the claim."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Data served within a brand's own customers.",
+            "introduces": "Data used across brands.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Four regimes limit sharing, and each becomes a control the platform enforces (purpose tags, consent filters, legal-entity attributes or hard isolation) rather than a rule people must remember.",
+          "function": "explanation",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Purpose limitation, consent and ePrivacy, controller boundaries, contracts and competition: what each constrains and its architectural consequence.",
+              "shows": "Turns legal limits into tags, filters, attributes and isolation.",
+              "source": "GDPR Art. 5(1)(b); ePrivacy Directive"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Maps limits to policy."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Flows must be told apart.",
+            "introduces": "The limits that tell them apart.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "Keybridge's neutrality is enforced as architecture: its Synapse environment is not federated, only contract-named aggregate fields leave it, and the policy and audit log are readable by the independent reviewer.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "March 2027 Keybridge decision; Emma Laurent's request accepted by Ingrid.",
+              "shows": "Neutrality expressed as auditable policy.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows a neutrality commitment as policy."
+          },
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The contracts-and-competition row.",
+            "introduces": "Veldmark's most sensitive case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "In Poland the line falls between aggregated market data, a group analytics question, and dealer-level data used across brands, a commercial decision for the forum and legal.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Tradeyard's cars section and Motorvane compete for the same Polish dealers; aggregated price levels and demand by region versus one brand's dealer-level performance data used for the other's sales calls.",
+              "shows": "Purpose and aggregation level decide the flow.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Shows purpose deciding a borderline flow."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A case of hard isolation.",
+            "introduces": "A case decided by aggregation level.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "heading": "Freshness and Cost",
+      "controlling_idea": "Once access policy settles what may be used, freshness should follow the consumer and cost needs an owner or it grows with traffic.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Argues owned freshness and cost."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The access contracts on what data may be used.",
+        "introduces": "Keeping the platform useful and affordable: freshness and cost.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p49",
+          "controlling_idea": "Freshness targets should follow the consumer: board metrics at D+3, experiment guardrails in hours, fraud features in seconds outside the analytical platform.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Sets freshness by consumer."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The access contracts on what data may be used.",
+            "introduces": "Keeping the platform useful and affordable: freshness and cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "list",
+          "controlling_idea": "Behavioral data grows with traffic, not revenue, so cost needs owners, retention tiers, compact envelopes and removal of unused datasets.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Adevinta Tech Blog, 2024: logging cost cut 35%, more than €30,000 a year; Adevinta multi-cloud governance on ownership metadata; AutoScout24 500+ to about 150 dashboards.",
+              "shows": "Small choices matter at volume; ownership underpins cost allocation.",
+              "source": "Adevinta Tech Blog, 2024; AutoScout24, 2025"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "Gives the cost levers."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Freshness.",
+            "introduces": "Cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice: Veldmark's Common Ground Data Platform",
+      "controlling_idea": "Against a €21 million data estate built on three warehouses, Veldmark's September 2027 design applies the chapter in five decision records and delivers the contracts before the storage migration.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Applies every supporting claim to the scene's problem."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The scene's three warehouses and three contacts, and the design rules built since.",
+        "introduces": "The design Veldmark adopted.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p51",
+          "controlling_idea": "Veldmark spent about €21 million on its data estate in 2026 for about 2.6 billion behavioral events a day, most of it on three separate warehouses, and Common Ground, the group's 2027–2030 shared-platform program, targets €13 million a year by 2030.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "€21M: Snowflake €11.5M, BigQuery €4.2M, Synapse €1.1M, tracking and BI €4.2M; 2.6B events a day, 1.9B Tradeyard; €13M target toward the €38M run-cost reduction.",
+              "shows": "Shows what three warehouses cost and the target the design must meet.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6",
+              "S2"
+            ],
+            "how": "Sets the cost baseline for the design."
+          }
+        },
+        {
+          "id": "p52",
+          "form": "list",
+          "controlling_idea": "The design taken to the forum in September 2027 had five parts: open storage with one main engine, one tracking plan with generated SDKs, contracts at the gate, twelve governed metrics, and purpose-bound access.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Iceberg on S3 partitioned by tenant and time; Snowflake as main compute; Hearthly on BigQuery through 2028; 64 core events replacing about 1,140 names; Yardstick CDC under contract; qualified contacts v1.0 with legacy metrics labeled for a quarter; purpose tags owned by Lucía Ortega.",
+              "shows": "Each part applies one contract.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S1",
+              "S2",
+              "S4",
+              "S5"
+            ],
+            "how": "Applies the contracts."
+          },
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The cost of three warehouses and three contacts.",
+            "introduces": "The five-part design that answered them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The forum had approved the contact definition in May; in September it decided to deliver that definition's rollout and the tracking plan first, on the existing warehouses, leaving storage migration for 2028; listing history was built on the event backbone rather than CDC, and Felix Brandt accepted the shared definition on condition that dealer reports switch with the board pack.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Storage migration left for 2028; event backbone live since 1 July 2027 (Listing event contract v1).",
+              "shows": "Sequence lets the contracts pay back before migration.",
+              "source": "_research/scenario-ledger.md (Veldmark is fictional)"
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S6",
+              "S4"
+            ],
+            "how": "Shows contracts before engines."
+          },
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The five parts.",
+            "introduces": "The order they were delivered in.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-offs",
+      "heading": "Trade-offs",
+      "controlling_idea": "Each of the platform's main choices has two defensible options, and the chapter's rule picks by what the data is used for: central and server-side for what compares brands or decides money, local for the rest.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows the conditions under which each contract applies."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The design and its application.",
+        "introduces": "The choices behind it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Veldmark's design settled seven recurring choices, each with two options, and the chapter's answer depends on whether the data compares brands, decides money or crosses a brand boundary.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Where metrics are defined, behavioral collection, facts for liquidity, durable storage, ownership, personal data, cross-brand data: option A, option B, how to choose.",
+              "shows": "Gives the conditions for each option."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verticals",
+      "heading": "Vertical Differences",
+      "controlling_idea": "Contact channels, outcome data, pro products and sensitive data differ by vertical, and real estate and general classifieds differ most in where outcome data comes from.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S2"
+        ],
+        "how": "Shows the governed metrics and contracts varying by vertical."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Choices that hold across marketplaces.",
+        "introduces": "How they differ by vertical.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "The vertical changes what a contact is, where outcomes come from and which data is sensitive.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "General classifieds, real estate, automotive, jobs: dominant contact channel, hardest metric, outcome data, pro data product, sensitive data, volume driver.",
+              "shows": "Shows the definition card and contracts must be set per vertical."
+            }
+          ]
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Real estate needs external outcome data under its own contracts and licensing, while general classifieds stop at the contact unless on-platform payments such as Safe Deal supply an outcome.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Public transaction records (France's DVF) and agencies' reported sales in real estate; Tradeyard Safe Deal as the on-platform outcome in general classifieds.",
+              "shows": "Outcome data has different sources per vertical."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S2",
+              "S4"
+            ],
+            "how": "Shows contracts for external datasets and the limits of sell-through."
+          },
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The vertical table.",
+            "introduces": "The two verticals that differ most on outcomes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Failure Modes",
+      "controlling_idea": "The platform fails in recognizable ways when one of its contracts is missing.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows the cost of ignoring each supporting claim."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "What the right design looks like.",
+        "introduces": "What goes wrong without it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p57",
+          "form": "list",
+          "controlling_idea": "Eight failure modes, from counting messages as contacts to unaudited cross-brand access, each have a cause and a fix from the chapter.",
+          "function": "analysis"
+        }
+      ]
+    },
+    {
+      "id": "ca-view",
+      "heading": "The Chief Architect's View",
+      "controlling_idea": "The data platform is a set of contracts the Chief Architect must make someone own: five decisions in order, named deciders and signals to watch.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S1",
+          "S2",
+          "S5",
+          "S6"
+        ],
+        "how": "Turns the design into group-level decisions."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "Decisions first, then their owners, then the signals that show whether they hold."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The failure modes.",
+        "introduces": "The decisions that prevent them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p58",
+          "form": "list",
+          "controlling_idea": "Five decisions go to the architecture forum in order: governed metrics and their owners, the tracking plan with server-side facts, where the durable copy lives, the purpose taxonomy and access model, and cost attribution.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S1",
+              "S2",
+              "S5",
+              "S6"
+            ],
+            "how": "Orders the so-what of the thesis."
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "Each decision has an owner: the Chief Architect for shape and contract mechanisms, the Head of Data & ML for substrate and stewardship, domains for data products, the CPO for steering metrics, the DPO for purposes.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S3",
+              "S5"
+            ],
+            "how": "Assigns ownership."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What to decide.",
+            "introduces": "Who decides.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "What to watch includes server-side share of governed metrics, contract coverage, quarantine rates, consent coverage, cost per thousand live listings and, most telling, how often two dashboards disagree.",
+          "function": "recommendation",
+          "advances_thesis": {
+            "supports": [
+              "S4",
+              "S6"
+            ],
+            "how": "Gives the signals."
+          },
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who decides.",
+            "introduces": "What to watch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Ask",
+      "controlling_idea": "Ten questions test a marketplace's data platform against the chapter's contracts.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "how": "Gives an audit drawn from every section."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The Chief Architect's decisions.",
+        "introduces": "Questions that test whether they are made.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "list",
+          "controlling_idea": "Ten questions test the contact definition, server-side facts, impressions, contracts, personal data, separability, cross-brand flows, report consistency, cost ownership and instrumentation monitoring.",
+          "function": "recommendation"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "From Measurement to Causation",
+    "synthesis": "The contracts, not the engines, answered Henrik's question: a tracking plan with server-side facts, one governed contact definition and purpose-bound access let every report that reads the contacts product give the same number.",
+    "so_what": "Measurement the group can compare is what lets it ask whether a change caused an effect; without it, experiments and models argue over definitions.",
+    "callback": {
+      "to": "Henrik de Boer's request for comparable contacts per live listing, and the opening's platforms built backwards with much data and few facts.",
+      "how": "The reader now sees the question answered with one number per brand, and Femke's bike counting 13 wherever it is read."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Deliver the tracking plan and the contact definition first, on the warehouses you have, and switch the board pack and professional reports together."
+    },
+    "hand_off": {
+      "to": "experimentation",
+      "relationship": "sequence",
+      "carries_over": "One definition of a contact, exposure logged with its ranking context and shared data products give trustworthy measurement.",
+      "introduces": "The next question after measurement, causation: whether a change caused an effect when buyers and sellers affect each other."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The whole chapter, from Henrik's question to the review questions.",
+      "introduces": "What the contracts achieved.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p62",
+        "controlling_idea": "The contracts, not the choice of engine, answered Henrik's question, so the group now has facts rather than data, and the first step for any group is to deliver the tracking plan and the contact definition on the warehouses it has.",
+        "function": "synthesis",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4",
+            "S6"
+          ],
+          "how": "Synthesizes the contracts and gives the takeaway."
+        }
+      },
+      {
+        "id": "p63",
+        "controlling_idea": "With one definition of a contact, exposure logged with its ranking context and shared data products, Veldmark can ask whether a change caused an effect, which in a two-sided market is harder than an A/B tool suggests and which experimentation takes up.",
+        "function": "transition",
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "Hands the measurement contracts to experimentation."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Trustworthy measurement.",
+          "introduces": "The question it makes possible: causation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The listing event stream, outbox and schema evolution.",
+      "covered_in": [
+        "event-driven-listings"
+      ]
+    },
+    {
+      "topic": "Systems of record, read models and erasure mechanics across operational copies.",
+      "covered_in": [
+        "listing-data-management"
+      ]
+    },
+    {
+      "topic": "Experiment design and statistics.",
+      "covered_in": [
+        "experimentation"
+      ]
+    },
+    {
+      "topic": "Feature stores and model governance.",
+      "covered_in": [
+        "ml-platform"
+      ]
+    },
+    {
+      "topic": "Advertising consent mechanics and audiences.",
+      "covered_in": [
+        "advertising-platforms"
+      ]
+    },
+    {
+      "topic": "Regulatory detail of DSA and DAC7.",
+      "covered_in": [
+        "marketplace-regulation"
+      ]
+    },
+    {
+      "topic": "Pro tooling product design.",
+      "covered_in": [
+        "professional-seller-tooling"
+      ]
+    },
+    {
+      "topic": "The tenancy model in full.",
+      "covered_in": [
+        "multi-country-platforms"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Thesis rubric (pass), notes not taken because the claim is copied from the journal spec: the claim says 'three contracts' but also names a fourth element (domain data products on one lakehouse); S6 (owned quality, freshness and cost; contracts before migration) supports the so_what more than the claim; S2 adds the personal-data store and separability, which the claim does not name. S4's fraud wording was aligned with the claim."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-10-19",
+      "decision": "Built the chapter around one board question ('how many contacts last week?') rather than a technology survey, because the governed contact metric is where the platform's value and politics are both visible."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Recommended open table formats plus a warehouse as main compute, rejecting 'one warehouse' (blocks acquisitions on other clouds) and 'warehouse per brand' (Deal-Shaped Architecture), citing Adevinta's 2025 decentralization as the portability argument."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Made 'server-side for facts, client-side for context' a core rule, because consent and client loss bias client-side counts differently by country."
+    },
+    {
+      "date": "2026-10-19",
+      "decision": "Treated Keybridge neutrality as the canonical cross-brand sharing case, expressed as access policy with external audit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "spec.md's seven success criteria were inventories or covered by the journal entry's outcome (know, believe, can_do) and AC-1 to AC-3; none is carried over. 'Every company claim carries a dated source' and the diagram and table counts are house-style rules kept in the style guide.",
+      "rejected": [
+        "Carrying the criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a roadmap paragraph (p04) naming the sections and kinds of evidence so a reader of the opening can predict the chapter (AC-2).",
+      "rejected": [
+        "Relying on the IN THIS CHAPTER callout, which names topics but not sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gave Trade-offs and Vertical Differences one lead-in sentence each (p54, p55) so each table belongs to a unit.",
+      "rejected": [
+        "Leaving the tables unattached, which hides them from the draft readers."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added a synthesis paragraph (p62) before the published hand-off so the conclusion has a synthesis, so-what, callback and takeaway; the published hand-off paragraph is kept as p63.",
+      "rejected": [
+        "Rewriting the published hand-off paragraph to carry all five."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Glossed 'tenant' on first use (the journal spec's Part VII flow note): a professional customer in the consumer table, and one brand in one country at the envelope, with a pointer to multi-country-platforms.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 1 (escalate on two spec faults, both corroborated by the two flow readers): the architecture table used data product, data contract and metrics layer before they were defined, so p23 now glosses all three (data products defined in the next section, the other two later) rather than moving Data Products ahead of the architecture; Veldmark's 2026 data-estate cost and the Common Ground target (p51) moved from Quality, Freshness and Cost to the start of In Practice, where it sets the baseline the design answers. Draft revised at the failing units: Part VII's rule now points to the part introduction; Keybridge's absence from the contact table explained at its first mention; the Essen Golf presented as a second example the team added after the March meeting (Ingrid shows only the bike), removing a March meeting that showed April data; 'lakehouse' glossed with a pointer; p27 states which storage option fits; p29 says what the Dehghani quotations show; p51 says what the cost figures show; openers added for purpose, architecture, metrics, pro data, In Practice, trade-offs, failure modes, the Chief Architect's view and questions; In Practice says the contact definition was approved in May and put first in September. Roadmap, conclusion, lead-ins and glosses written in this pass were shortened to stay within max_words.",
+      "rejected": [
+        "Raising max_words.",
+        "Moving Data Products ahead of the architecture (the architecture would then assign owners on a substrate not yet shown).",
+        "Keeping the Essen Golf on Ingrid's screen in March."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft check round 2 (escalate on one spec fault, corroborated by both flow readers): the Essen Golf, listed a month after the March meeting, still broke the scene's time frame, so its narrative moved from the scene (p07) to the replay paragraph (p37), where the team adds it, in the past tense; no fact cut. Draft revised: 'lakehouse' glossed in one clause at first body use; p23 glosses data contract and metrics layer in one clause each and says owners follow the next section's rule; p53 says the definition was approved in May and put first in September. Own additions (conclusion, trade-offs lead-in) shortened to stay within max_words.",
+      "rejected": [
+        "Raising max_words.",
+        "Adding per-listing replay figures, which the ledger does not give."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Set length.max_words to 8,598 (the published 8,189 words by check_draft's count plus 5%), because spec.md set no word limit.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Research note accepted under the author's delegation, 2026-11-12: Whether any classifieds group has published a governed definition of 'contact' or 'lead'; none was found, so the chapter relies on Veldmark."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Research note accepted under the author's delegation, 2026-11-12: Feature-store and metrics-layer products are deliberately not named; revisit if a classifieds case documents one."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Research note accepted under the author's delegation, 2026-11-12: National exemptions for consent-free audience measurement differ; the chapter states the principle only."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow-rubric notes and the reasons for the notes not taken accepted under the author's delegation, 2026-11-12 (p21 in the architecture, glosses in p23 and p51; p43 kept separate from p36; judging sections already named in p04; no per-section flow for one- to four-unit sections; recurring names in audience.already_knows)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Escalation resolved under the author's delegation: Ingrid shows only the bike in the March meeting and the Essen Golf enters at the replay (accepted). Replay timing: the replay ran in April, before the May approval, as the published table row '(replayed in April)' already says; the prose now says so and adds the Golf in late April once its 10 days were in. The bike's listing date (7 March) and the replay week (8–14 March) are both canonical; the prose now says the week began the day after Femke listed her bike and the bike's first 24 hours were replayed with it. The Golf's 23 to 19 is fully explained by duplicates, so the prose says the replay excluded none.",
+      "rejected": [
+        "Widening the replay window.",
+        "Saying the replay ran after the May approval, which contradicts the published '(replayed in April)'."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p38 softened to what the replay table shows (rule 3): the brands' figures moved by different amounts and in different directions (37, 86, 106), so the old comparisons were distorted and the brands could be compared on one definition; 'Motorvane and Hearthly were closer in contacts per live listing than their dashboards had claimed' removed because the index-only table cannot show it. The published Tradeyard Portugal versus Netherlands finding is kept and attributed to the country figures behind the Tradeyard row.",
+      "rejected": [
+        "Adding per-brand or per-country replay figures to the ledger."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The dealer sense of 'tenant' replaced by 'customer-isolated' in the consumer table and the pro data products list (p42); 'tenant' now means only one brand in one country (the rental 'tenant files' in the vertical table is the ordinary word).",
+      "rejected": [
+        "Keeping both senses with glosses."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order: both round-3 flow readers wanted the producer-quality controls next to the contract gate, so p48 moved from 'Quality, Freshness and Cost' to the architecture, after the personal-data split (p21), with a new elaboration transition; the section is renamed 'Freshness and Cost' and opens with a sequence transition from the access contracts (p49); p27's transition, the roadmap (p04, promises), the architecture's controlling idea and flow, the post flow rationale updated; AC-2's expected answer, copied from the journal spec, is left for the orchestrator to change there. Metric monitoring (p40) stays in Governed Metrics (single-reader point); the moved paragraph names Artemis with a pointer to it.",
+      "rejected": [
+        "Keeping quality with freshness and cost.",
+        "Also moving p40 next to the gate, which would introduce Artemis before metrics."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Draft fixes from round 3: 'lakehouse' and its forward gloss dropped from the CDC paragraph (p14: 'into the platform'); p53 now says the forum approved the definition in May and in September decided to deliver its rollout and the tracking plan first; p45 and p48 say what their tables show; p44 opens with a contrast from pro data products; p49 opens with a sequence from access policy. max_words raised from 8,598 to 9,457 (+10%, rule 2) to make these fixes without cutting published text."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "p23's one-clause glosses of data product, data contract and metrics layer kept with the architecture before Data Products (round-3 spec finding): no option was clearly better, and the round-1 decision rejected moving Data Products ahead of the architecture. p19's 'This one rule removed the largest disagreement between Veldmark's brands' kept as published (single-reader minor point)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/listing-systems-architecture/journal-spec.json",
+      "contributed": "Intent outcome, acceptance criteria AC-1 to AC-3, thesis, role, transition_in and experimentation's transition_in for the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "liquidity-and-network-effects",
+      "contributed": "Liquidity metric vocabulary."
+    },
+    {
+      "kind": "internal",
+      "ref": "event-driven-listings, listing-data-management",
+      "contributed": "Upstream event and data ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "experimentation, ml-platform",
+      "contributed": "Downstream consumers."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-data-ml.md Parts 2, 8, 9; _research/brief-adevinta.md 4.2; _research/brief-monetization-economics.md 5.3; _research/scenario-ledger.md",
+      "contributed": "Research briefs and the canonical Veldmark figures."
+    },
+    {
+      "kind": "external",
+      "ref": "Adevinta Tech Blog (2022–2024); Adevinta Annual Report 2019; Strategic Report 2025, Aurelia UK Feederco Ltd (2026)",
+      "contributed": "UBCT events, data contracts, lakehouse to data mesh, Artemis, logging cost, decentralization."
+    },
+    {
+      "kind": "external",
+      "ref": "Vinted Engineering (2019); Zalando Engineering (2021); SiliconANGLE (2021)",
+      "contributed": "Tracking schemas and generated SDKs; Zalando's domain ownership."
+    },
+    {
+      "kind": "external",
+      "ref": "AutoScout24 Tech Blog (2025); OLX Tech Blog (2026); Scout24 preliminary results (2026); Online Marketplaces (2022)",
+      "contributed": "BI consolidation, causal measurement of packages, Transaction Enablement revenue, valuation accuracy."
+    },
+    {
+      "kind": "external",
+      "ref": "Dehghani (2019); Armbrust et al., CIDR (2021)",
+      "contributed": "Data mesh; lakehouse."
+    },
+    {
+      "kind": "external",
+      "ref": "GDPR; ePrivacy Directive",
+      "contributed": "Purpose limitation and device-storage consent."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Escalation resolved under the author's delegation: quality controls moved into the architecture beside the contract gate, section renamed Freshness and Cost; replay timing, bike date, p38 claim, tenant wording, May/September sequence, table explanations and transitions fixed; max_words 9,457. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 3 (escalate; no further round): one closing edit to p53 ('scheduled its rollout'); remaining failures recorded in open_questions. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 2 (escalate on one spec fault): the Essen Golf moved from the scene (p07) to the replay (p37); p23 and p53 re-described; draft revised at the failing units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft check round 1 (escalate on two spec faults): p51 moved into In Practice; p23 glosses data product, data contract and metrics layer; p06, p07 and p53 re-described to match the revised scene and sequence; draft revised at the failing units. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (status draft): one paragraph per unit, reconstructed from the published text; flow rubric: personal-fields paragraph moved into the architecture, data product and Common Ground glossed; added roadmap, two table lead-ins and a synthesis paragraph; 'tenant' glossed; spec.md removed. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-21",
+      "change": "Renamed failure patterns to match where-listing-systems-go-wrong. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-20",
+      "change": "Cross-chapter consistency sweep (3 headings); sharpening pass 6,908 → 6,938 prose words; consistency fix on Ingrid's line and the replay table; 3 mermaid diagrams replaced with generated illustrations. (AI-mediated session)"
+    },
+    {
+      "date": "2026-10-19",
+      "change": "Initial spec and article; editorial review pass; 2 inline illustrations. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 9457
+  }
+}
