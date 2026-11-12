@@ -14,8 +14,8 @@ logo: "assets/images/05-commerce-platform-landscape/logo.jpeg"
 > **KEY POINTS:**
 >
 > * **The category decides where the work lands.** A hosted platform keeps the core in the vendor's hands and pushes variation to apps; a suite keeps integration inside one vendor's data model; open source moves hosting and upgrades to you; composable moves the integration burden to you. Pick the category by who you have to carry that work.
-> * **Commerce platforms are priced on your sales, not on their software.** Shopify's FY2025 filing puts 76% of its revenue in fees that move with merchant sales; Lightspeed's FY2026 transaction revenue is more than twice its subscriptions; Shopware, Saleor and BigCommerce tie their plans to gross merchandise value. The subscription is the entry ticket.
-> * **Between 2023 and 2026 the market converged on "keep your backend, add a layer".** commercetools, Adobe and Salesforce now sell modules that sit beside an existing stack, Shopware absorbed integration and payments into the platform, and Commerce.com reported that replatforming demand is soft. Read every 2026 pitch, "composable" and "agentic" included, as a layer to add, not a reason to move.
+> * **Commerce platforms are priced on your sales, not on their software.** Shopify's FY2025 filing puts 76% of its revenue in fees that move with merchant sales; Lightspeed's FY2026 transaction revenue is more than twice its subscriptions; Shopware, Saleor and BigCommerce tie their plans to gross merchandise value, the value of the merchant's orders. The subscription is the entry ticket.
+> * **Between 2023 and 2026 the market converged on "keep your backend, add a layer".** commercetools, Adobe and Salesforce now sell modules that sit beside an existing stack, Shopware absorbed integration and payments into the platform, and Commerce.com reported that demand for replatforming (moving a shop to another platform) is soft. Read every 2026 pitch, "composable" and "agentic" included, as a layer to add, not a reason to move.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -24,23 +24,25 @@ logo: "assets/images/05-commerce-platform-landscape/logo.jpeg"
 > * **The Lynchpin** — a vendor's revenue mix, ownership and strategic reviews are public signals of how long a capability will be funded; this chapter shows where to read them.
 
 <br>
-Two commerce platforms can offer the same cart, catalog and checkout features while giving a merchant very different work to do. With one, the vendor runs the servers and storefront. With another, the merchant must operate a separate storefront and manage upgrades. Those responsibilities determine the team and budget needed after the purchase.
+Two shop platforms can offer the same cart, catalog and checkout features while giving a merchant very different work to do. With one, the vendor runs the servers and storefront. With another, the merchant must operate a separate storefront and manage upgrades. Those responsibilities determine the team and budget needed after the purchase.
 
 Pricing and customization add further differences. A percentage fee grows with revenue; changes to a platform's core can make upgrades expensive. A feature comparison can miss both. Evaluating the **operating model** means asking who runs each part, how costs change and what the merchant would need to move elsewhere.
 
-The seven categories below describe those choices, their pricing models and documented changes from 2023 to 2026. Use the map to question vendor claims and identify which responsibilities your team would take on. [[build-buy-or-assemble]] provides the decision method; [[commerce-capability-map]] and [[boundaries-and-systems-of-record]] explain capabilities and ownership.
+**Where we are in the order's journey.** The operating model matters for the order this book follows. Eva buys a jacket and socks for €235 from Kestrel & Pine, the fictional outdoor brand. Its shop platform, the hosted product it bought to run its webshop, runs the storefront, cart and checkout. The category of that product determines which later jobs it can handle and which need separate systems.
 
-**Where we are in the order's journey.** Eva buys a jacket and socks for €235 from Kestrel & Pine, the fictional outdoor brand. Its platform runs the storefront, cart and checkout. The platform category determines which later jobs it can handle and which need separate systems.
+This chapter starts from two proposals put to Kestrel & Pine. It names the seven categories of platform, shows how to read a vendor's numbers, and then goes through the categories vendor by vendor and through their prices. It compares the categories, fits them to the four scale stages and turns to what vendors pitched from 2023 to 2026. It ends by testing the two proposals and listing how a chosen category fails later. [[build-buy-or-assemble]] provides the decision method; [[commerce-capability-map]] and [[boundaries-and-systems-of-record]] explain capabilities and ownership.
 
 ## Setting the Scene at Kestrel & Pine: Two Pitches in One Week
 
-Kestrel & Pine has used a hosted **software-as-a-service (SaaS)** commerce platform since 2016. The vendor runs it; the merchant pays **€2,300 a month plus payment and transaction fees** on its enterprise tier. Three localized storefronts share one merchant account, or tenant, with 41 apps.
+Kestrel & Pine has run its shop platform as a hosted **software-as-a-service (SaaS)** product since 2016. The vendor runs it; the merchant pays **€2,300 a month plus payment and transaction fees** on its enterprise tier. Three localized storefronts share one merchant account, or tenant, with 41 apps.
 
-Around it sit separate finance and purchasing, warehouse, store till, marketplace, returns and integration systems. Total technology spend in 2026 was about **€2.6 million**, or 5.4% of revenue. The platform subscription is only one part of that cost.
+Around it sit separate finance and purchasing, warehouse, store till, marketplace, returns and integration systems. Its technology team has 14 people, three of them on storefronts and apps. Total technology spend in 2026 was about **€2.6 million**, or 5.4% of revenue. The shop platform's subscription is only one part of that cost.
 
-In February 2027, Head of Engineering Noor Visser heard two proposals. An outside consultancy offered a **composable** system: separate commerce, storefront, search, content and integration products. Its illustrative estimate was **€3.2 million over eighteen months**.
+In February 2027, Head of Engineering Noor Visser heard two proposals. An outside consultancy offered a **composable** system: separate commerce, storefront, search, content and integration products, and with them an availability service. Its illustrative estimate was **€3.2 million over eighteen months**.
 
-The existing agency offered a **headless** storefront: a separate application calling the current platform through its API, hosted by the platform vendor, with a separate content system. That estimate was **€240,000 over nine months**. Both cited the Black Friday Oversell, when stale stock figures caused 1,340 oversold units and about €96,000 in costs.
+The existing agency offered a **headless** storefront: a separate application calling the current shop platform through its API, hosted by the platform's vendor, with a separate content system. The agency argued it would make pages faster. That estimate was **€240,000 over nine months**.
+
+Both cited the Black Friday Oversell, when stale stock figures caused 1,340 oversold units and about €96,000 in costs.
 
 Mara Lindqvist, the CEO, asked Noor three questions afterwards. *What kind of platform are we on now? What would each of these cost us in year three? And what would a move fix that nothing else fixes?* Noor did not have the vocabulary for the first question on the spot, which is why this chapter exists. By March her answer had become Waypoint decision **W4: stay and surround**. What follows is the map she drew.
 
@@ -49,7 +51,9 @@ Mara Lindqvist, the CEO, asked Noor three questions afterwards. *What kind of pl
 
 ## Seven Kinds of Platform
 
-A **commerce platform** is the software that shows products, holds a cart, takes an order and the payment, and hands the order to whoever fulfills it. Some products stop there; others bundle warehouse, order management or finance too. The market sells this in seven shapes. The table is my synthesis; the categories overlap, and several vendors sell in more than one (Adobe sells on-premises, platform-as-a-service and SaaS).
+In the market's vocabulary, a **commerce platform** is the product a merchant buys: the software that shows products, holds a cart, takes an order and the payment, and hands the order to whoever fulfills it. Some products stop there; others bundle warehouse, order management or finance too. This book calls that product the shop platform; in this chapter "platform" always means that product.
+
+The market sells the product in seven shapes. The table is my synthesis; the categories overlap, and several vendors sell in more than one (Adobe, described below, sells one product in three deployment shapes).
 
 | Category | What you buy | Who runs it | Where the integration work lands |
 | --- | --- | --- | --- |
@@ -58,21 +62,38 @@ A **commerce platform** is the software that shows products, holds a cart, takes
 | **Open source and its forks** (Magento and Mage-OS, WooCommerce, Shopware, PrestaShop) | Source code to host, extend and upgrade yourself; paid editions optional | You or your agency | On your agency, with upgrades as the recurring cost |
 | **Composable and headless vendor** (commercetools, Elastic Path, Medusa, Saleor) | API-only commerce services; you assemble the rest | The vendor for the services; you for the rest | On you, by design |
 | **ERP-centered commerce** (Odoo, JTL, PlentyONE, Business Central, NetSuite) | A storefront attached to the ERP that already owns stock, orders and finance | The vendor's cloud or your servers | Inside the ERP, while its pace is fast enough |
-| **Specialist layer** (OMS, PIM, WMS, returns, search, channel, iPaaS, payments vendors) | One capability | The vendor | On the connectors between the layer and your platform |
+| **Specialist layer** (vendors of order management, product information, warehouse, returns, search, channel, integration and payments software) | One capability | The vendor | On the connectors between the layer and your platform |
 | **Specialist group** (Katapull) | Several specialist products under one owner, pre-integrated | The group | Among the group's products; on you at its edge |
 
-Four terms carry the table. **SaaS** (software as a service) is software the vendor runs for many customers at once; you configure it and the vendor upgrades everyone on the same day. A **suite** is one vendor's set of modules designed to work together. **Headless** means the storefront (what shoppers see) is separated from the commerce engine (catalog, cart, orders) and talks to it only through an **API** (application programming interface: the contract by which one program calls another). **Composable** means buying commerce as separate services, from one or several vendors, and assembling them. A **webhook**, which several tables mention, is a notification a platform sends to another system when something changes.
+Four terms in the table need defining. **SaaS** is software the vendor runs for many customers at once; you configure it and the vendor upgrades everyone on the same day. A **suite** is one vendor's set of modules designed to work together. **Headless** means the storefront (what shoppers see) is separated from the commerce engine (catalog, cart, orders) and talks to it only through an API. **Composable** means buying commerce as separate services, from one or several vendors, and assembling them.
 
-The column that matters most is the fourth. **Every category moves the integration work somewhere; none removes it.** Kestrel & Pine's 34 integrations exist because it chose a hosted platform and bought specialist layers around it. A suite would have fewer joins and one larger contract; a composable assembly more joins, all its own. The choice is who carries the work, at what price, with what freedom to change.
+The column that matters most is the fourth. **Every category moves the integration work somewhere; none removes it.** Kestrel & Pine's 34 integrations exist because it chose a hosted platform and bought specialist layers around it. A suite would have fewer joins (connections between systems) and one larger contract; a composable assembly more joins, all its own. The choice is who carries the work, at what price, with what freedom to change.
 
 ![Diagram: Each platform category asks the merchant for a different kind of work and joins the specialist layers in a different place](assets/images/05-commerce-platform-landscape/fig01-each-platform-category-asks-merchant-different.jpeg)
 **Figure 2:** *Each platform category asks the merchant for a different kind of work and joins the specialist layers in a different place; the integration burden moves, it never disappears.*
 
+## How to Read a Vendor's Claims
+
+The vendor paragraphs that follow are full of numbers, and the table below takes its examples from them. Comparing two vendors starts with the **unit, the date and the definition** behind every number. The unit met most often is **GMV** (gross merchandise volume): the total value of orders through a platform, which is not the vendor's revenue.
+
+| Claimed unit | Dated example | The trap |
+| --- | --- | --- |
+| **GMV** | Shopify $378.4 billion in 2025; commercetools "$100B run-rate" in April 2026 | A run-rate is not a full year; BigCommerce's plan GMV is "gross order value minus 10%", not its reported GMV |
+| **Merchants, customers, brands, users** | Shopify's filing counts a merchant as a paying shop, so one brand with three stores counts three times; commercetools "500+ enterprises" in April 2026 and "more than 600" in July; Katapull "4,500+ customers" and "27,500+ users" | Dormant installs inflate open-source counts; "users" exceeds "customers" by a factor of five to ten |
+| **Marketplaces, integrations, apps** | ChannelEngine "over 1,300 marketplaces"; Shopify "more than 21,000 apps" (31 December 2025) | A listing proves a connector exists, not that it is maintained or used |
+| **Surveys, analyst charts, performance claims** | MACH Alliance (a vendor alliance, described below), February 2026: 78% of mature adopters see "clear ROI from AI"; Gartner's 2025 quadrant rated 19 vendors, Forrester's Q3 2026 wave 10; Shopware Nexus "cut integration costs by 40%" (June 2026) | The vendor chose the sample; vendor counts change yearly and absence is not a verdict; unaudited claims are marketing |
+
+Market-share data need the same care. W3Techs, which crawls websites, reported on 7 November 2026 that WooCommerce runs 47.3% of sites with a detectable e-commerce technology, Shopify 32.5% and Shopware 0.2%; the EHI study of the 1,000 largest German shops put Shopware first. Both are true; they count different populations.
+
+## The Seven Kinds, Vendor by Vendor
+
+Each of the seven kinds is described below from its vendors' public record.
+
 ### Hosted SaaS platforms
 
-The hosted platform is the default for a merchant that starts online, and the category with the most public evidence, because two of its vendors are listed. **Shopify**'s annual report for the year ended 31 December 2025 (filed 11 February 2026) reports gross merchandise volume (**GMV**, the total value of orders through the platform, which is not the vendor's revenue) of **$378.4 billion** and revenue of **$11.56 billion**. Its euro pricing page in November 2026 lists plans from Basic at €28 a month to Plus "starting at €2,100 a month", card rates from 1.9% + €0.25 down to 1.4% + €0.25, and a fee of 2% down to 0.2% on orders paid through another payment provider; larger Plus merchants may pay "a variable platform fee based on your revenue and business model". The same filing says most merchants are on the two cheapest plans while most GMV comes from Plus and enterprise merchants: one product, two populations ([[case-shopify]] takes this apart).
+The hosted platform is the default for a merchant that starts online, and the category with the most public evidence, because two of its vendors are listed. **Shopify**'s annual report for the year ended 31 December 2025 (filed 11 February 2026) reports GMV of **$378.4 billion** and revenue of **$11.56 billion**. Its euro pricing page in November 2026 lists plans from Basic at €28 a month to Plus "starting at €2,100 a month", card rates from 1.9% + €0.25 down to 1.4% + €0.25, and a fee of 2% down to 0.2% on orders paid through another payment provider; larger Plus merchants may pay "a variable platform fee based on your revenue and business model". The same filing says most merchants are on the two cheapest plans while most GMV comes from Plus and enterprise merchants: one product, two populations ([[case-shopify]] takes this apart).
 
-**BigCommerce** renamed its parent **Commerce.com** on 31 July 2025, keeping BigCommerce as the engine. Its November 2026 pricing page assigns plans by trailing-twelve-month GMV, with a 0.9% charge above $33,333 a month on the Scale plan: a subscription that upgrades you when you sell more is a GMV price in disguise. Its results for the quarter ended 30 June 2026 (filed 6 August 2026) showed revenue of $84.5 million, up 0.1%, and management saying B2C replatforming "remains softer than historically".
+**BigCommerce** renamed its parent **Commerce.com** on 31 July 2025, keeping BigCommerce as the engine. Its November 2026 pricing page assigns plans by trailing-twelve-month GMV (sales over the last twelve months), with a 0.9% charge above $33,333 a month on the Scale plan: a subscription that upgrades you when you sell more is a GMV price in disguise. Its results for the quarter ended 30 June 2026 (filed 6 August 2026) showed revenue of $84.5 million, up 0.1%, and management saying B2C (business-to-consumer) replatforming "remains softer than historically".
 
 **Lightspeed** closed a strategic review on 6 February 2025 and chose to "focus on growing retail in North America and hospitality in Europe"; its FY2026 results (21 May 2026) showed transaction-based revenue of $815.1 million against subscription revenue of $370.7 million. Its Dutch eCom product still sells (€68 to €259 a month, November 2026).
 
@@ -84,7 +105,7 @@ Below these sit the Dutch **CCV Shop** (€36 to €129 a month, "not a percenta
 
 A suite sells to large merchants through implementation partners, with negotiated prices, so its public evidence is thinner. **SAP Commerce Cloud** is described here only from its open-source storefront project Spartacus, which talks to the platform through its REST API (accessed November 2026), and from an October 2026 analyst note on SAP Connect 2026 that reports an "SAP Commerce Cloud, cloud ERP edition" for midsize organizations and warns buyers to "separate products that are available now from forward-looking demonstrations". SAP's product page refused automated fetching; I quote no feature list for it.
 
-**Salesforce** announced on 6 July 2026 "its biggest Agentforce Commerce release yet": one platform across B2C, B2B, point of sale and order management, with three generally available agents "natively connected to catalog, inventory, and orders". Its pricing page shows "Contact for pricing" for every edition; the trade describes Salesforce as priced on a percentage of GMV, but the only written source here is a competitor's page, so treat that as industry belief.
+**Salesforce** announced on 6 July 2026 "its biggest Agentforce Commerce release yet": one platform across B2C, B2B, point of sale and order management, with three generally available agents (AI programs that act for a shopper or for staff) "natively connected to catalog, inventory, and orders". That connection inside one vendor's product is what a suite sells. Its pricing page shows "Contact for pricing" for every edition; the trade describes Salesforce as priced on a percentage of GMV, but the only written source here is a competitor's page, so treat that as industry belief.
 
 **Adobe Commerce** is the clearest public example of one product in three deployment shapes. Adobe's information center (updated 21 October 2026) lists "Adobe Commerce on-premises" (you run everything), "Adobe Commerce on cloud infrastructure" (platform-as-a-service: Adobe runs the hosting, you own custom code) and "Adobe Commerce as a Cloud Service" (fully managed SaaS with continuous updates). Beside them, **Adobe Commerce Optimizer** is a SaaS for storefront, catalog and merchandising that "can work alongside an existing Adobe Commerce or third-party commerce backend"; partner reports place both launches in June 2025. The middle option is where the **Forked Platform** pattern lives: the vendor runs the servers, the merchant owns the code, and deep customization can block every upgrade ([[extensibility-and-app-ecosystems]]).
 
@@ -92,25 +113,27 @@ A suite sells to large merchants through implementation partners, with negotiate
 
 **Open source** means the code is published under a license that lets you run and change it. It does not mean free: hosting, upgrades, security patches and the agency that applies them are the recurring price. Adobe bought Magento in 2018 and renamed Magento Commerce to Adobe Commerce in 2021; **Magento Open Source** continues, and a community **fork** (a copy maintained separately) called **Mage-OS** describes itself as an "independent, community-driven distribution of Magento Open Source", run by an association founded in 2022. Mage-OS 4.0.0 shipped on 30 October 2026; 3.6.0, two weeks earlier, was a security port of an Adobe patch, which is the dependency chain an open-source merchant lives with: Adobe publishes a fix, the distribution ports it, the agency applies it, the merchant tests it. **WooCommerce**, the open-source commerce plugin for WordPress, claims "more than 4 million stores" and prices hosting at $25 to $350 a month (November 2026).
 
-**Shopware**, from Germany, has the most public evidence and the most instructive pricing. Its Community Edition is free; the paid plans (Rise "from €600 a month", Evolve "from €2,400 a month", November 2026) are "based on your gross merchandise value", and a fair-usage rule requires a paid plan once the shops on one account pass €1 million of GMV in a rolling year. So "open source" is free below the Growing stage and GMV-priced above it. The EHI Retail Institute's 2026 report found 12.5% of the 1,000 largest German B2C shops on Shopware, first place for the fifth year. In October 2025 PayPal raised its stake to more than 40%; on 10 June 2026 Shopware launched **Shopware Payments** on PayPal's infrastructure and **Nexus**, an orchestration layer it positions as replacing middleware. [[case-composable-movement]] follows Shopware in detail.
+**Shopware**, from Germany, has the most public evidence and the most instructive pricing. The EHI Retail Institute's 2026 report found 12.5% of the 1,000 largest German B2C shops on Shopware, first place for the fifth year. Its Community Edition is free; the paid plans (Rise "from €600 a month", Evolve "from €2,400 a month", November 2026) are "based on your gross merchandise value", and a fair-usage rule requires a paid plan once the shops on one account pass €1 million of GMV in a rolling year. So "open source" is free for the smallest merchants and GMV-priced above that.
+
+Shopware is also absorbing payments and integration. In October 2025 PayPal raised its stake to more than 40%; on 10 June 2026 Shopware launched **Shopware Payments** on PayPal's infrastructure and **Nexus**, an orchestration layer it positions as replacing middleware (integration software between systems). [[case-composable-movement]] follows Shopware in detail.
 
 ### Composable and headless vendors
 
-Composable commerce assembles separate products for jobs such as catalog, search and checkout. Headless commerce separates the storefront from the commerce engine. Both offer choices about what to replace, while leaving the merchant responsible for connecting and operating the selected parts.
+The categories so far are built around one core product. Composable and headless vendors split that core: the merchant chooses which parts to buy, and must then connect and operate every part it selected.
 
-**commercetools**, founded in Munich in 2006 and the best-known composable vendor, reported on 22 April 2026 that it had passed a "$100B GMV run-rate" with more than 600 million orders a year (a run-rate annualizes a recent period; it is not a full-year figure). On 26 February 2025 it had cut about 10% of staff after missing growth targets; on 21 January 2026 it launched **AgenticLift**, which lets companies "layer agentic commerce capabilities on top of your existing commerce solution"; on 15 July 2026 it began selling its cart-and-order engine and its product catalog as standalone modules that integrate "with their existing technology stack". The flagship of composable now sells layers for stacks that are not composable. **Saleor**, an open-source entry, prices its cloud from $1,599 a month up to $200,000 of monthly GMV with 0.8% above (November 2026): API-only vendors price on GMV too.
+**commercetools**, founded in Munich in 2006 and the best-known composable vendor, reported on 22 April 2026 that it had passed a "$100B GMV run-rate" with more than 600 million orders a year (a run-rate annualizes a recent period; it is not a full-year figure). On 26 February 2025 it had cut about 10% of staff after missing growth targets; on 21 January 2026 it launched **AgenticLift**, which lets companies "layer agentic commerce capabilities on top of your existing commerce solution"; on 15 July 2026 it began selling its cart-and-order engine and its product catalog as standalone modules that integrate "with their existing technology stack". The flagship of composable now sells layers for stacks that are not composable.
+
+**Saleor**, an open-source entry, prices its cloud from $1,599 a month up to $200,000 of monthly GMV with 0.8% above (November 2026): API-only vendors price on GMV too.
 
 **MACH** is the acronym a vendor alliance coined in June 2020 for Microservices, API-first, Cloud-native SaaS and Headless; the MACH Alliance's founders were commercetools, Contentstack, EPAM and Valtech. By November 2026 its principles page lists three principles (Open, Composable, Connected) and no longer defines microservices or headless. Here it is enough to know that "composable" and "MACH" name a category and a sales argument, not a verdict; the movement's rise, turn and own survey data are the subject of [[case-composable-movement]].
 
 ### ERP-centered commerce
 
-An **ERP** (enterprise resource planning system) keeps the books: purchasing, stock valuation, invoices, the general ledger. ERP-centered commerce makes the ERP the owner of products, stock and orders and treats the webshop as a front end. **Odoo** sells its eCommerce app free within a per-user ERP price (€19.90 or €35.90 per user per month, November 2026): the webshop costs nothing, the seats do. **JTL** (Germany) markets the ERP as the core with shop, WMS, marketplaces, EDI and POS around it; **PlentyONE** (formerly plentymarkets, renamed November 2024) bundles PIM, OMS, WMS and a free shop; **NetSuite SuiteCommerce** is described in Oracle's help pages as three products on one account. The strongest signal that this category is mainstream comes from Microsoft: its documentation dated 22 September 2026 says the Shopify Connector app "is preinstalled for all new sign-ups and trials" of Dynamics 365 Business Central. An ERP vendor shipping a connector to a hosted platform by default is "ERP as hub, storefront in front" declared as the expected shape.
-
-The strength of this category at the Starting and Growing stages is one system and no integration problem. Its limit arrives at the Omnichannel stage, when stores, marketplaces and a warehouse each need stock in near real time and the ERP's batch cadence cannot serve them ([[erp-and-back-office-integration]]).
+An **ERP** (enterprise resource planning system) keeps the books: purchasing, stock valuation, invoices, the general ledger. ERP-centered commerce makes the ERP the owner of products, stock and orders and treats the webshop as a front end. **Odoo** sells its eCommerce app free within a per-user ERP price (€19.90 or €35.90 per user per month, November 2026): the webshop costs nothing, the seats do. **JTL** (Germany) markets the ERP as the core with shop, WMS, marketplaces, EDI and POS (point of sale, the store till) around it; **PlentyONE** (formerly plentymarkets, renamed November 2024) bundles product information (PIM), order management (OMS), warehouse management (WMS) and a free shop; **NetSuite SuiteCommerce** is described in Oracle's help pages as three products on one account. The strongest signal that this category is mainstream comes from Microsoft: its documentation dated 22 September 2026 says the Shopify Connector app "is preinstalled for all new sign-ups and trials" of Dynamics 365 Business Central. An ERP vendor shipping a connector to a hosted platform by default is "ERP as hub, storefront in front" declared as the expected shape.
 
 ### Specialist layers and specialist groups
 
-Every category above is surrounded by **specialist layers**, each owning one capability and selling to every platform. The book's vocabulary comes from them, so the table defines each once.
+Every category above is surrounded by **specialist layers**, each owning one capability and selling to every platform. The book's vocabulary comes from them, so the table defines each once. Two are easily confused: an order management system (OMS) decides which location fulfills an order and what to promise; a warehouse management system (WMS) decides where goods sit and how to pick them. [[order-management]] and [[warehouse-and-fulfillment]] keep the two apart.
 
 | Layer | What it owns, in plain words | Examples (vendor pages, accessed November 2026) |
 | --- | --- | --- |
@@ -123,9 +146,9 @@ Every category above is surrounded by **specialist layers**, each owning one cap
 | **iPaaS** (integration platform as a service) | The flows between systems: connectors, mapping, retries, errors | Celigo; Boomi; Workato |
 | **PSP** (payment service provider) | Taking the payment and settling the money | Adyen (interchange + 0.60% + $0.13); Stripe (1.5% + €0.25 on EEA cards in NL); Mollie (iDEAL €0.32) |
 
-OMS and PIM are the two layers Kestrel & Pine lacks and the two Waypoint buys (W2 and W3). An OMS decides which location fulfills an order and what to promise; a WMS decides where goods sit and how to pick them; [[order-management]] and [[warehouse-and-fulfillment]] keep the two apart.
+A **specialist group** is a third shape beside suite and composable: several specialist products under one owner, kept as separate brands but pre-integrated. The Dutch group **Katapull** is the public example. Its site (accessed November 2026) names eight labels, one per role: Logic4 (ERP and webshop), Vendit (POS), Picqer (WMS), EffectConnect (marketplaces), DeliveryMatch (shipping), Returnista (returns), Transus (EDI, electronic data interchange: structured business documents between trading partners) and Highbiza (an online-performance agency). Five companies joined forces on 31 March 2025; Transus joined at a date no public page gives; Returnista followed on 16 February 2026 and Picqer, the eighth label, on 7 October 2026. The about page claims "4,500+ customers in 40+ countries"; no revenue, GMV or ownership figures are public, and I infer none. The group reduces the joins a merchant must build, at the cost of one owner across several layers.
 
-A **specialist group** is a third shape beside suite and composable: several specialist products under one owner, kept as separate brands but pre-integrated. The Dutch group **Katapull** is the public example. Its site (accessed November 2026) names eight labels, one per role: Logic4 (ERP and webshop), Vendit (POS, point of sale: the store till software), Picqer (WMS), EffectConnect (marketplaces), DeliveryMatch (shipping), Returnista (returns), Transus (EDI, electronic data interchange: structured business documents between trading partners) and Highbiza (an online-performance agency). Five companies joined forces on 31 March 2025; Transus joined at a date no public page gives; Returnista followed on 16 February 2026 and Picqer, the eighth label, on 7 October 2026. The about page claims "4,500+ customers in 40+ countries"; no revenue, GMV or ownership figures are public, and I infer none. The group reduces the joins a merchant must build, at the cost of one owner across several layers.
+One official statistic reframes this landscape: Eurostat's enterprise figures for 2024 (published February 2026) put web sales at 8.39% of EU enterprise turnover and sales by **EDI**-type messages (the business documents of [[edi-and-e-invoicing]]) at 11.07%. By value, more European enterprise e-commerce runs over EDI than over webshops, which is why Part V is not a side topic.
 
 ## How Platforms Are Priced, and What the Price Tells You
 
@@ -135,7 +158,7 @@ A platform's price is an architectural fact, because it tells you what the vendo
 | --- | --- | --- | --- |
 | **Flat subscription tier** | Fixed monthly fee; limits rise with the tier | Shopify Basic €28 to Advanced €384; CCV Shop €36 to €129; Lightspeed eCom NL €68 to €259 (all Nov 2026) | Cheap to start; limits force upgrades |
 | **Subscription with GMV thresholds** | Your tier is set by trailing sales; a percentage applies above a cap | BigCommerce 0.9% above $33,333 a month; Saleor 0.8% above $200,000 a month; Shopware paid above €1 million of GMV (Nov 2026) | Cost grows with revenue; the vendor takes a share once you are large |
-| **GMV share (enterprise)** | A negotiated percentage of sales, often with a floor | Shopify Plus "variable platform fee" above a $2,300 to $2,500 base (Nov 2026); Salesforce, widely described as 1% to 3% (unconfirmed) | Raises exit cost; wholesale (large orders, low margin) must negotiate separately |
+| **GMV share (enterprise)** | A negotiated percentage of sales, often with a floor | Shopify Plus "variable platform fee" above a base of $2,300 to $2,500 in US dollars (Nov 2026); Salesforce, widely described as 1% to 3% (unconfirmed) | Raises exit cost; wholesale (large orders, low margin) must negotiate separately |
 | **Payment fee share** | The platform earns on card processing and charges a **transaction fee** per order when you use another PSP | Shopify 0.2% to 2% third-party fee; BigCommerce 0.6% to 2%; Lightspeed $815 million transaction revenue against $371 million subscriptions (FY2026) | Payments are the platform's core revenue; your PSP choice is constrained by the platform contract |
 | **Per order, user, request** | A fee per unit above an included quota | Picqer €0.28 per extra order; Odoo €19.90 per user; Algolia $0.50 per 1,000 extra searches; Shopware Nexus €10 per 1,000 executions (Nov 2026) | Peak days and catalog size cost money |
 | **Per transaction (payments)** | One blended rate, or **interchange** (the card schemes' part of the fee) plus a margin | Adyen interchange + 0.60% + $0.13; Stripe NL 1.5% + €0.25; Mollie iDEAL €0.32 (Nov 2026) | Blended is simpler; interchange-plus is cheaper at volume but needs reconciliation ([[commerce-payments]]) |
@@ -143,14 +166,43 @@ A platform's price is an architectural fact, because it tells you what the vendo
 
 The pattern across the rows: **a vendor prices on the thing it sits in the path of.** GMV pricing assumes the vendor owns checkout; per-order pricing assumes it sees every order; per-request pricing assumes it is in the request path. This is why Shopify's FY2025 filing reports 76% of revenue as "merchant solutions" that are "directionally correlated with the level of GMV", with 65.6% of GMV through its own payment service, and why Lightspeed is, by revenue mix, a payments company with software attached.
 
-**A Kestrel & Pine illustration.** Kestrel & Pine's records put the platform at €2,300 a month, €27,600 a year, "plus payment and transaction fees". Assume (an illustration, not one of Kestrel & Pine's records) that the platform's checkout carries the €27.0 million of D2C (direct-to-consumer) revenue plus the 62% of wholesale orders placed through the B2B (business-to-business) portal, about €7.4 million: roughly €34.4 million of GMV a year. At a 0.2% third-party transaction fee, the kind a top-tier hosted plan charges when the merchant brings its own PSP, that is about €69,000 a year, two and a half times the subscription; at a negotiated 1% platform fee on GMV, about €344,000, twelve times. Neither is what Kestrel & Pine pays; the point is that **the subscription line is the smallest line**, and a comparison that puts "€2,300 a month" against a competitor's list price compares entry tickets. [[build-buy-or-assemble]] builds the full cost model.
+**A Kestrel & Pine illustration.** Kestrel & Pine's records put the shop platform at €2,300 a month, €27,600 a year, "plus payment and transaction fees". Assume (an illustration, not one of Kestrel & Pine's records) that the shop platform's checkout carries the €27.0 million of D2C (direct-to-consumer) revenue plus the 62% of the €12.0 million wholesale line that is ordered through the B2B (business-to-business) portal, about €7.4 million: roughly €34.4 million of GMV a year. At a 0.2% third-party transaction fee, the kind a top-tier hosted plan charges when the merchant brings its own PSP, that is about €69,000 a year, two and a half times the subscription; at a negotiated 1% platform fee on GMV, about €344,000, twelve times. Neither is what Kestrel & Pine pays; the point is that **the subscription line is the smallest line**, and a comparison that puts "€2,300 a month" against a competitor's list price compares entry tickets. [[build-buy-or-assemble]] builds the full cost model.
 
 ![An iceberg whose small visible tip is the subscription, with much larger fee bands below the waterline.](assets/images/05-commerce-platform-landscape/05-subscription-is-the-tip.jpeg)
 **Figure 3:** *The subscription line is the smallest line: on about €34.4 million of GMV a year, a 0.2% fee is two and a half times the €27,600 subscription and a 1% fee twelve times.*
 
+## The Trade-offs Between Categories
+
+The categories and their prices can now be compared on five criteria a newcomer can check. Specialist layers have no column, because they are added to any of the other six. The table is my judgment, from the evidence above and from patterns common among growing merchants.
+
+| Criterion | Hosted SaaS | Enterprise suite | Open source | Composable | ERP-centered | Specialist group |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Time to first sale** | Days | Months | Weeks to months | Months; a storefront must be built | Weeks | Weeks |
+| **Who upgrades** | The vendor, everyone at once | The vendor or partner, per release | You or your agency | The vendor for services; you for what you built | The vendor | Each label's vendor |
+| **Integration burden** | On apps and connectors | Low inside; high at the edge | On your agency | On you, by design | Low until the ERP's scheduled updates are too slow | Low among labels; on you at the edge |
+| **Cost shape** | Subscription plus a share of sales and payments | Negotiated, often GMV-linked, plus partner fees | Agency and hosting; GMV-priced editions above a threshold | Subscription with GMV caps plus the build | Per user plus ERP license | Per product |
+| **Exit cost** | Moderate: export, rebuild theme and apps | High: one contract, one data model | Moderate to high: custom code tied to the core | High: every join is yours to rebuild | High: the ERP is the hub | High across several labels at once |
+
+**The rule I use:** choose the category by the team you have, not the team you want. A composable assembly needs people who build and run storefronts, integrations and services. A hosted platform with specialist layers needs people who own connectors and contracts. A suite needs a budget and a vendor manager. The category you cannot staff is the wrong one, whatever its feature list says.
+
+## Across Scale Stages: Which Categories Fit Which Stage
+
+Which category a team can carry depends on the merchant's scale stage; the table gives, per stage, the categories that typically fit, what becomes necessary and the warning signs of outgrowing them. The four stages are the book's (Starting, Growing, Omnichannel, Group); [[commerce-business-models]] defines them and [[commerce-scaling-stages]] works them.
+
+| Stage | Typical category | What becomes necessary | Warning signs of outgrowing it |
+| --- | --- | --- | --- |
+| **1 — Starting** (under about €2M) | Hosted SaaS or a site builder; an ERP-centered package for stock-heavy sellers; a 3PL (third-party logistics provider: a warehouse that ships for you) | The platform's own apps and payment service | The first store, wholesale account or marketplace; the first spreadsheet holding product data the platform cannot |
+| **2 — Growing** (about €2M to €20M) | Hosted SaaS with the first specialist layers (accounting or ERP, a channel connector, a returns tool); open source with an agency | A named owner per integration; the platform's GMV tier and transaction fee reviewed against a PSP of your own | Pricing thresholds crossed in one year; the agency's customizations block an upgrade; stock in three systems |
+| **3 — Omnichannel** (about €20M to €200M) | Hosted SaaS or open source surrounded by OMS, PIM, WMS and channel layers; a specialist group; a suite for the partner-led | Systems of record per fact; an OMS and a PIM; integration standards; composable layers per capability around a kept core | The joins fail at peak; a replatforming pitch after every incident; nobody knows how many apps write stock |
+| **4 — Group** (over about €200M, or several brands) | A suite with a platform team, or a composable core with product teams | Tenancy and isolation; shared services against brand autonomy; versioned contracts for in-house APIs | One stack forced on every brand before the benefit is measured (One Size Fits None); a platform team that cannot keep the assembled services upgraded |
+
+A category that fits one stage becomes a limit at the next, and ERP-centered commerce shows it plainly. Its strength at the Starting and Growing stages is one system and no integration problem. Its limit arrives at the Omnichannel stage, when stores, marketplaces and a warehouse each need stock in near real time and the ERP's scheduled batch updates cannot serve them ([[erp-and-back-office-integration]]).
+
+The judgment for composable follows the same line: **at the Starting and Growing stages, "composable" is a vendor category, not an instruction**; at the Omnichannel stage it is something you do per capability, around a core you keep; only at the Group stage, with a platform team, is an API-only core realistic.
+
 ## What Changed, 2023 to 2026
 
-The three years before this book's research cut-off (7 November 2026) moved in one direction: vendors retreated from physical logistics, pulled payments into the platform, and began selling layers beside a merchant's existing stack rather than replacing it.
+Most merchants, then, keep their core and add around it, and vendors now sell accordingly. The three years before this book's research cut-off (7 November 2026) moved in one direction: vendors retreated from physical logistics, pulled payments into the platform, and began selling layers beside a merchant's existing stack rather than replacing it.
 
 | Date | Event | What it tells a merchant |
 | --- | --- | --- |
@@ -163,66 +215,26 @@ The three years before this book's research cut-off (7 November 2026) moved in o
 | 15 July 2026 | commercetools began selling its order engine and catalog as standalone modules "without replacing their existing platforms" | The composable flagship sells itself by the piece |
 | 6 August 2026 | Commerce.com reported flat revenue and B2C replatforming "softer than historically" | Replatforming demand itself is weak |
 
-The newest surface is the **AI assistant as a channel**. Shopify's Agentic plan (accessed November 2026) has "no monthly fee" and syndicates products to ChatGPT, Gemini, Copilot and Perplexity so shoppers "check out in conversations", with "no Shopify online store required". For a merchant this is one more channel, priced as a channel; [[ai-and-agentic-commerce]] separates what is available from what is announced.
-
-## How to Read a Vendor's Claims
-
-Comparing two vendors starts with the **unit, the date and the definition** behind every number.
-
-| Claimed unit | Dated example | The trap |
-| --- | --- | --- |
-| **GMV** | Shopify $378.4 billion in 2025; commercetools "$100B run-rate" in April 2026 | A run-rate is not a full year; BigCommerce's plan GMV is "gross order value minus 10%", not its reported GMV |
-| **Merchants, customers, brands, users** | Shopify's filing counts a merchant as a paying shop, so one brand with three stores counts three times; commercetools "500+ enterprises" in April 2026 and "more than 600" in July; Katapull "4,500+ customers" and "27,500+ users" | Dormant installs inflate open-source counts; "users" exceeds "customers" by a factor of five to ten |
-| **Marketplaces, integrations, apps** | ChannelEngine "over 1,300 marketplaces"; Shopify "more than 21,000 apps" (31 December 2025) | A listing proves a connector exists, not that it is maintained or used |
-| **Surveys, analyst charts, performance claims** | MACH Alliance, February 2026: 78% of mature adopters see "clear ROI from AI"; Gartner's 2025 quadrant rated 19 vendors, Forrester's Q3 2026 wave 10; Shopware Nexus "cut integration costs by 40%" (June 2026) | The vendor chose the sample; vendor counts change yearly and absence is not a verdict; unaudited claims are marketing |
-
-Market-share data need the same care. W3Techs, which crawls websites, reported on 7 November 2026 that WooCommerce runs 47.3% of sites with a detectable e-commerce technology, Shopify 32.5% and Shopware 0.2%; the EHI study of the 1,000 largest German shops put Shopware first. Both are true; they count different populations. One official statistic reframes the landscape: Eurostat's enterprise figures for 2024 (published February 2026) put web sales at 8.39% of EU enterprise turnover and sales by **EDI**-type messages (the business documents of [[edi-and-e-invoicing]]) at 11.07%. By value, more European enterprise e-commerce runs over EDI than over webshops, which is why Part V is not a side topic.
-
-## The Trade-offs Between Categories
-
-The categories differ on five criteria a newcomer can check. The table is my judgment, from the evidence above and from patterns common among growing merchants.
-
-| Criterion | Hosted SaaS | Enterprise suite | Open source | Composable | ERP-centered | Specialist group |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Time to first sale** | Days | Months | Weeks to months | Months; a storefront must be built | Weeks | Weeks |
-| **Who upgrades** | The vendor, everyone at once | The vendor or partner, per release | You or your agency | The vendor for services; you for what you built | The vendor | Each label's vendor |
-| **Integration burden** | On apps and connectors | Low inside; high at the edge | On your agency | On you, by design | Low until the ERP's cadence is too slow | Low among labels; on you at the edge |
-| **Cost shape** | Subscription plus a share of sales and payments | Negotiated, often GMV-linked, plus partner fees | Agency and hosting; GMV-priced editions above a threshold | Subscription with GMV caps plus the build | Per user plus ERP license | Per product |
-| **Exit cost** | Moderate: export, rebuild theme and apps | High: one contract, one data model | Moderate to high: custom code tied to the core | High: every join is yours to rebuild | High: the ERP is the hub | High across several labels at once |
-
-**The rule I use:** choose the category by the team you have, not the team you want. A composable assembly needs people who build and run storefronts, integrations and services. A hosted platform with specialist layers needs people who own connectors and contracts. A suite needs a budget and a vendor manager. The category you cannot staff is the wrong one, whatever its feature list says.
-
-## Across Scale Stages: Which Categories Fit Which Stage
-
-The four stages are the book's (Starting, Growing, Omnichannel, Group); [[commerce-business-models]] defines them and [[commerce-scaling-stages]] works them.
-
-| Stage | Typical category | What becomes necessary | Warning signs of outgrowing it |
-| --- | --- | --- | --- |
-| **1 — Starting** (under about €2M) | Hosted SaaS or a site builder; an ERP-centered package for stock-heavy sellers; a 3PL (third-party logistics provider: a warehouse that ships for you) | The platform's own apps and payment service | The first store, wholesale account or marketplace; the first spreadsheet holding product data the platform cannot |
-| **2 — Growing** (about €2M to €20M) | Hosted SaaS with the first specialist layers (accounting or ERP, a channel connector, a returns tool); open source with an agency | A named owner per integration; the platform's GMV tier and transaction fee reviewed against a PSP of your own | Pricing thresholds crossed in one year; the agency's customizations block an upgrade; stock in three systems |
-| **3 — Omnichannel** (about €20M to €200M) | Hosted SaaS or open source surrounded by OMS, PIM, WMS and channel layers; a specialist group; a suite for the partner-led | Systems of record per fact; an OMS and a PIM; integration standards; composable layers per capability around a kept core | The joins fail at peak; a replatforming pitch after every incident; nobody knows how many apps write stock |
-| **4 — Group** (over about €200M, or several brands) | A suite with a platform team, or a composable core with product teams | Tenancy and isolation; shared services against brand autonomy; versioned contracts for in-house APIs | One stack forced on every brand before the benefit is measured (One Size Fits None); a platform team that cannot keep the assembled services upgraded |
-
-The judgment: **at the Starting and Growing stages, "composable" is a vendor category, not an instruction**; at the Omnichannel stage it is something you do per capability, around a core you keep; only at the Group stage, with a platform team, is an API-only core realistic. The layers the 2026 vendors now sell beside existing stacks are the shape an Omnichannel merchant can absorb.
+The newest surface is the **AI assistant as a channel**, which vendors call agentic commerce. Shopify's Agentic plan (accessed November 2026) has "no monthly fee" and syndicates products to ChatGPT, Gemini, Copilot and Perplexity so shoppers "check out in conversations", with "no Shopify online store required". For a merchant this is one more channel, priced as a channel; [[ai-and-agentic-commerce]] separates what is available from what is announced. An Omnichannel merchant can add this channel, and the other layers the 2026 vendors now sell beside existing stacks, without replacing its platform.
 
 ## Kestrel & Pine's Place on the Map
 
-Noor's answer to Mara's first question fits in one figure. The platform is a hosted SaaS product (€2,300 a month plus fees); the ERP (€3,900 a month) is an ERP-centered product used as the back office, not as the hub; the WMS (€2,100), the marketplace connector (€900), the returns portal (€650 plus €0.95 per return), the iPaaS (€1,200), the POS, the PSP, the EDI provider and the shipping service are specialist layers; and the two things Kestrel & Pine lacks, an OMS and a PIM, are specialist layers too.
+Noor's answer to Mara's first question fits in one figure. The shop platform is a hosted SaaS product (€2,300 a month plus fees); the ERP (€3,900 a month) is an ERP-centered product used as the back office, not as the hub; the WMS (€2,100), the marketplace connector (€900), the returns portal (€650 plus €0.95 per return), the iPaaS (€1,200), the POS, the PSP, the EDI provider and the shipping service are specialist layers; and the two things Kestrel & Pine lacks, an OMS and a PIM, are specialist layers too, and Waypoint buys both (W2 and W3). Her second question, the cost in year three, needs the cost model of [[build-buy-or-assemble]].
 
 ![Diagram: Kestrel & Pine is a hosted platform surrounded by specialist layers](assets/images/05-commerce-platform-landscape/fig02-kestrel-pine-hosted-platform-surrounded-specialist.jpeg)
 **Figure 4:** *Kestrel & Pine is a hosted platform surrounded by specialist layers; Waypoint adds the two layers it lacks beside the platform rather than replacing the center.*
 
-Noor tested both proposals against that failure. The composable option asked a 14-person technology team, with three people on storefronts and apps, to operate several new systems and their integrations. Only its availability service addressed the oversell. The same capability could be bought with an order management system (OMS) and connected to the existing platform: Waypoint's stock-ownership decision, W1.
+For Mara's third question, Noor tested both proposals against the Black Friday Oversell. The composable option asked the 14-person technology team to operate several new systems and their integrations. Only its availability service addressed the oversell. The same capability could be bought as a module of an order management system (OMS) and connected to the existing shop platform: Waypoint's stock-ownership decision, W1.
 
-The proposal also assumed one cutover date. Together, the operating burden and migration risk illustrated **The Giant's Boots** and **The Burned Bridge**: adopting another organization's architecture without its capacity, then moving without a route back.
+The composable proposal also assumed one cutover date, one day on which every system switches. Together, the operating burden and migration risk illustrated **The Giant's Boots** and **The Burned Bridge**: adopting another organization's architecture without its capacity, then moving without a route back.
 
-The headless proposal left the stock chain untouched. Its performance case weakened when Noor traced slow product pages to scripts from eleven apps. A quarter of agency time spent on performance fixed that problem ([[storefront-architecture]]). She declined both proposals because neither justified its cost against the problems measured.
+The headless proposal left the stock chain untouched. Its speed argument weakened when Noor traced slow product pages to scripts from eleven apps. Three months of agency time, redirected to performance work, later fixed that problem ([[storefront-architecture]]).
 
-W4 says stay on the hosted platform, add the OMS, the PIM and the availability service beside it, and review in 2029. The honest cost is the one the trade-off table names: the fee grows with sales, the PSP choice is constrained by the platform contract, and every added layer is a join that W5 must govern. Noor's note to Mara ended: *we are not choosing a platform; we are choosing which work we are willing to own.*
+Noor declined both proposals: neither justified its cost against the problems measured, and neither fixed anything that a smaller change could not. W4 says stay on the hosted shop platform, add the OMS with its availability service and the PIM beside it, and review in 2029. The honest cost is the one the pricing and trade-off tables name: the fee grows with sales, the PSP choice is constrained by the platform contract, and every added layer is a join that W5 must govern. Noor's note to Mara ended: *we are not choosing a platform; we are choosing which work we are willing to own.*
 
 ## When It Goes Wrong
 
-A platform category fails slowly, in four ways the public record illustrates.
+A category chosen well can still fail, slowly, in four ways the public record illustrates.
 
 **The vendor stops funding your region or product.** Lightspeed's February 2025 strategic review named two growth engines, neither of them European online retail. Detection: read your vendors' results, strategic reviews and ownership changes once a year, and watch the revenue mix; a vendor whose transaction revenue outgrows its subscriptions will steer product toward payments. Recovery: an exit plan per platform, written before it is needed ([[build-buy-or-assemble]]).
 
@@ -233,6 +245,8 @@ A platform category fails slowly, in four ways the public record illustrates.
 **An acquisition changes the product.** PayPal's stake in Shopware became Shopware Payments within eight months; Katapull added two labels in 2026. Neither is a failure, but each changes what the platform will push. Detection: ownership in the yearly vendor review. Recovery: contracts that name the capability you depend on and its support period, so **The Lynchpin** has a date attached.
 
 ## What to Take Away
+
+The two platforms of the opening had the same cart, catalog and checkout. What separates them is who runs each part, how the price moves with the merchant's sales and who carries the integration work; the categories, the price lists and the vendors' record each describe those three things. A move to another category changes who owns the work; it does not remove it. So the question for any pitch is what it would fix that an added layer would not.
 
 **Established.**
 
@@ -261,7 +275,11 @@ A platform category fails slowly, in four ways the public record illustrates.
 5. For every "500+ customers" or "1,300 marketplaces" in a vendor deck, what is the unit, the date and the definition?
 6. Which capabilities do we lack as layers (OMS, PIM, availability), can each be added beside the platform, and who of the people we have would own the joins?
 
-Part I ends here, with the business, the capability map, the ownership of facts and the market in view. [[part-2]] starts the catalog: the product record, the price, the promotion, the search result and the stock figure that every channel shows, beginning with [[product-information]] and the PIM Kestrel & Pine buys in Q3 2027.
+## Where Part I Ends
+
+The chapters of Part I are one line of reasoning: the order's journey, the business model, the capability map and the ownership table say what a merchant must be able to do before it can judge any product. The part opened with one order whose promises depend on systems the shopper never sees; Kestrel & Pine's failures were facts in those systems that nobody owned, so it keeps its shop platform and adds what is missing. Before comparing platforms, map your capabilities, name one record per fact and choose by the integration work you can carry.
+
+[[part-2]] applies the rule of one record per fact and the capability map to the first group of facts on the map, those a shopper sees before buying: the product record, the price, the promotion, the search result and the stock figure that every channel shows. It begins with [[product-information]] and the PIM Kestrel & Pine buys in Q3 2027.
 
 ## Sources and Evidence
 

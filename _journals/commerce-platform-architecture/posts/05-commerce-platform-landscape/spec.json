@@ -1,0 +1,1762 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-platform-landscape",
+  "journal": "commerce-platform-architecture",
+  "part": "part-1",
+  "title": "Suites, SaaS, Open Source and Composable: The Platform Landscape in 2026",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/05-commerce-platform-landscape/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: after the reconstruction the order of ideas was changed from the flow rubric (see decision_log) and the chapter was revised to match.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Seven platform categories and where each puts the integration work and the cost.",
+        "That most platforms are priced on the merchant's sales, with dated figures."
+      ],
+      "believe": [
+        "A platform category moves integration work; it does not remove it."
+      ],
+      "can_do": [
+        "Read a vendor's 2026 pitch as a layer to add or a move to make, and say who would carry the work afterwards."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who has inherited a platform and is about to sit through a replatforming pitch. The chapter is written at the level of Noor Visser in February 2027, before she had the vocabulary to answer 'what kind of platform are we on?'. Analysts and leaders who must read vendor decks and analyst charts get the reading guide.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 incidents and the names of the failure patterns, in outline (meet-kestrel-and-pine, where-commerce-platforms-go-wrong).",
+        "From journey-of-an-order: the thirteen steps of an order, promise and handoff, the three status lines, that a system is any software or outside service that takes part in handling an order, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems that make and keep promises, Kestrel & Pine's seven systems in the order walk and thirteen in its landscape.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub, availability service, D2C, B2B.",
+        "From commerce-business-models: the business models and the four scale stages (Starting, Growing, Omnichannel, Group).",
+        "From commerce-capability-map: the capability map.",
+        "From boundaries-and-systems-of-record: bounded contexts, system of record, single writer, events and reconciliation, and the Waypoint decisions W1 to W8."
+      ],
+      "does_not_know": [
+        "The category names and what separates them: hosted SaaS platform, enterprise suite, open source and fork, composable, headless, MACH, ERP-centered commerce, specialist layer, specialist group.",
+        "Deployment words: on-premises, platform-as-a-service, tenant, replatforming.",
+        "Pricing words: GMV as a pricing base, transaction fee, interchange, run-rate, trailing sales.",
+        "The layer acronyms as products one can buy: OMS, PIM, POS.",
+        "How to read a vendor's number (unit, date, definition) and a vendor's public record (revenue mix, strategic review, ownership)."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given two platforms with the same feature list, the reader names three operating-model differences to ask about before comparing features.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Two platforms both offer cart, catalog and checkout. What would you ask before comparing features?",
+        "expected": "Who runs hosting and upgrades; how the price moves with sales; who carries integration and what leaving costs."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a one-line description of a product, the reader places it in a category and says where the integration work lands.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "One vendor sells a storefront, cart and checkout that it hosts for many merchants, with an app store. A second vendor sells cart and catalog services reachable only through an API, with no storefront. Using only this chapter: which kind of platform is each, and with each, where does the work of connecting it to a merchant's other systems land?",
+        "expected": "The first is a hosted SaaS platform: the integration work lands on the apps, webhooks and connectors the merchant installs. The second is a composable (headless, API-only) vendor: the integration work lands on the merchant, by design, who must also build or buy the storefront."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given a platform's monthly list price, the reader says why it is not the cost and names the lines that move with sales.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A hosted platform quotes a merchant €2,300 a month. Using only this chapter: why is that figure not what the platform will cost, and what would you ask for before comparing it with another vendor's price?",
+        "expected": "The subscription is the smallest line; platforms are priced mainly on the merchant's sales and payments (payment fees, a transaction fee when another payment provider is used, a tier or percentage tied to GMV). Ask for the total paid in a year including those fees and what share of it is a percentage of sales."
+      },
+      {
+        "id": "AC-4",
+        "statement": "Given a proposal to replace a platform after an incident, the reader says what the chapter advises and who would carry the work after the move.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "After a stock incident, a consultancy proposes that a merchant with stores, marketplaces and a small technology team replace its hosted platform with a composable set of separate products. Using only this chapter: what does the author advise, and who would carry the integration work after such a move?",
+        "expected": "Keep the platform and add the missing capability as a layer beside it (an order management system or availability service), because a move does not remove the integration work: with composable it lands on the merchant, whose team would have to build and run the joins. Choose by the team you have; composable per capability around a kept core at that stage."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a number from a vendor's deck, the reader asks for its unit, its date and its definition, and can name one way such a number misleads.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A vendor's presentation says '500+ customers' and '$100 billion GMV run-rate'. Using only this chapter: what would you ask about each number before comparing this vendor with another?",
+        "expected": "The unit, the date and the definition of each. A run-rate annualizes a recent period and is not a full year, and GMV is the value of orders through the platform, not the vendor's revenue; 'customers' may count shops, brands, enterprises or users, which differ by large factors."
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What kinds of platforms exist, who sells them, how they are priced and how the market changed up to 2026?",
+    "claim": "The category of a commerce platform decides where the integration work and the cost land rather than whether they exist, so a merchant should choose by the work it can carry, and should read every 2026 pitch as a layer to add beside what it has, not a reason to move.",
+    "disputed_by": "Feature comparisons and vendor claims that one category (composable, suite, hosted) is the modern answer for everyone.",
+    "so_what": "A merchant that replatforms to escape integration work finds the same work on the other side, under a different owner and price.",
+    "how_why": "Hosted platforms push variation to apps, suites keep integration inside one data model, open source moves hosting and upgrades to the merchant and composable moves integration to the merchant; by 2026 vendors in every category sell modules that sit beside an existing stack.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Platforms with the same features differ in operating model: who runs each part, how the cost moves and what leaving costs."
+      },
+      {
+        "id": "S2",
+        "claim": "The market sells commerce platforms in seven categories, and each category puts the integration work in a different place; none removes it."
+      },
+      {
+        "id": "S3",
+        "claim": "Platforms are priced mainly on the merchant's sales and payments, so the subscription is the smallest line of the cost."
+      },
+      {
+        "id": "S4",
+        "claim": "Between 2023 and 2026 vendors in every category began selling layers that sit beside an existing stack, so a 2026 pitch is a layer to add."
+      },
+      {
+        "id": "S5",
+        "claim": "A vendor's numbers and public record can be read: every number has a unit, a date and a definition, and funding, upgrades, price and ownership change in ways a merchant can watch."
+      },
+      {
+        "id": "S6",
+        "claim": "A merchant should choose the category by the work its team can carry at its scale stage, which for Kestrel & Pine means keeping its shop platform and adding layers beside it."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Closes the part by connecting the map and the ownership decisions to what a merchant can buy.",
+    "supports": [
+      "P1-5"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "grouping",
+        "applies_to": "tour, wrong: parallel categories and parallel failure modes"
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to place: two proposals posed, then tested once the map exists"
+      }
+    ],
+    "rationale": "The scene poses three questions the reader cannot yet answer. The categories are named first because every later section uses their names. The reading guide comes before the vendor-by-vendor section because that section is where the reader meets the vendors' numbers; placed after it, the guide arrived when the numbers had already been taken at face value (round 1 of the draft check). Pricing follows the vendors because the price lists were met one by one and the cost-shape row of the trade-off table and the stage table's fee reviews need the pricing models; the trade-offs precede the stages because the stages apply the rule the trade-offs end on. The 2023–2026 record comes after the stages because its reading (vendors now sell what a merchant below the Group stage can absorb) needs the stage judgment, and it stands directly before the test of Kestrel & Pine's proposals because those are two such pitches. The test comes only then, since it uses the categories, the prices, the team rule and the stage. The failure modes could precede the test; they stay last because 'When It Goes Wrong' closes the body in every chapter of the book."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "Two commerce platforms can offer the same cart, catalog and checkout features while giving a merchant very different work to do: with one the vendor runs the servers and storefront; with another the merchant must operate a separate storefront and manage upgrades."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone comparing two products starts with their feature lists.",
+      "to_topic": "The work a platform leaves to the merchant (running, upgrading, paying fees that grow with sales, leaving) is its operating model, and the categories of the market are different operating models."
+    },
+    "thesis_statement": {
+      "text": "The category decides where the integration work and the cost land, not whether they exist; pick the category by who you have to carry that work, and read every 2026 pitch as a layer to add, not a reason to move.",
+      "placement": "KEY POINTS callout, first and third bullets; paragraph p02 names the operating model in prose"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03, the last paragraph of the introduction",
+      "promises": [
+        {
+          "promise": "Start from two proposals put to Kestrel & Pine in one week.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Name the seven categories and show how to read a vendor's numbers.",
+          "kept_in": [
+            "kinds",
+            "claims"
+          ]
+        },
+        {
+          "promise": "Go through the categories vendor by vendor, and through their prices.",
+          "kept_in": [
+            "tour",
+            "pricing"
+          ]
+        },
+        {
+          "promise": "Compare the categories and fit them to the four scale stages.",
+          "kept_in": [
+            "tradeoffs",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Turn to what vendors pitched from 2023 to 2026.",
+          "kept_in": [
+            "changed"
+          ]
+        },
+        {
+          "promise": "Test the two proposals and list how a chosen category fails later.",
+          "kept_in": [
+            "place",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Two commerce platforms with the same cart, catalog and checkout features can leave a merchant with very different work, because who runs the servers, the storefront and the upgrades decides the team and budget needed after the purchase.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Two platforms with the same features: with one the vendor runs servers and storefront; with the other the merchant operates a separate storefront and manages upgrades.",
+            "shows": "Equal feature lists hide unequal work, which is the chapter's subject in one case."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Pricing and customization differ too and a feature comparison misses both, so a platform is evaluated by its operating model: who runs each part, how costs change and what the merchant would need to move elsewhere.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "Equal features, unequal work after the purchase.",
+          "introduces": "Price and customization as two further differences, and the name for all of them: the operating model.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "In the running order, Eva buys from Kestrel & Pine, whose shop platform runs the storefront, cart and checkout; the category of that product determines which later jobs it can handle and which need separate systems.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's €235 order of a jacket and socks from Kestrel & Pine.",
+            "shows": "Ties the market survey to the one order the book follows.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The operating model of a platform.",
+          "introduces": "The order the book follows, for which the operating model of Kestrel & Pine's shop platform decides which later jobs need separate systems.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter starts from two proposals put to Kestrel & Pine, names the seven categories, shows how to read a vendor's numbers, goes through the categories vendor by vendor and through their prices, compares them and fits them to the scale stages, then turns to what vendors pitched from 2023 to 2026, tests the two proposals and lists how a chosen category fails later.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Kestrel & Pine's shop platform and the question of its category.",
+          "introduces": "The order of the chapter, section by section, from the two proposals to the failure modes.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Two Pitches in One Week",
+      "controlling_idea": "Kestrel & Pine runs a hosted shop platform among separate systems, and two proposals to replace or rebuild it raised a question its head of engineering could not yet answer: what kind of platform is it on?",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows the operating-model questions (what kind of platform, what it costs in year three, what a move would fix) as questions a merchant is actually asked."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first step.",
+        "introduces": "Kestrel & Pine's shop platform, its surroundings and the two proposals to replace or rebuild it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Kestrel & Pine has run its three storefronts on a hosted software-as-a-service shop platform since 2016, for €2,300 a month plus payment and transaction fees, with 41 apps installed.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Hosted SaaS since 2016; €2,300 a month plus payment and transaction fees on the enterprise tier; three localized storefronts in one merchant account (tenant); 41 apps.",
+              "shows": "Fixes what the merchant has before anyone proposes replacing it.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Separate systems for finance and purchasing, the warehouse, the store tills, marketplaces, returns and integration surround the shop platform; a 14-person technology team looks after them, and total technology spend of about €2.6 million in 2026 makes the subscription only one part of the cost.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Technology spend 2026 about €2.6 million, 5.4% of revenue.",
+              "shows": "The subscription (€27,600 a year) is a small part of what the landscape costs.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "scenario",
+              "what": "A technology team of 14, three of them on storefronts and apps.",
+              "shows": "The team against which any proposal's work must be measured.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "place",
+            "carries_over": "The hosted shop platform and its fee.",
+            "introduces": "The separate systems around it, the team that looks after them and what the whole costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "In February 2027 an outside consultancy proposed to replace the shop platform with a composable system of separate commerce, storefront, search, content and integration products, with its own availability service, estimated at €3.2 million over eighteen months.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The consultancy's composable rebuild: about €3.2 million, eighteen months (illustrative).",
+              "shows": "The first of two proposals the chapter's map is used to judge.",
+              "source": "Kestrel & Pine scenario ledger; consistency ruling 13a"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "What Kestrel & Pine runs, with whom and at what cost.",
+            "introduces": "The first proposal of February 2027: a composable replacement with its own availability service.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The existing agency proposed a headless rebuild of the storefronts on the current shop platform for €240,000 over nine months, arguing that it would make the pages faster.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The agency's headless storefront rebuild: about €240,000, nine months.",
+              "shows": "A second proposal of very different size.",
+              "source": "Kestrel & Pine scenario ledger; consistency ruling 13a"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The €3.2 million composable proposal.",
+            "introduces": "The much smaller headless proposal and its speed argument.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08b",
+          "controlling_idea": "Both proposals cited the Black Friday Oversell, when stale stock figures caused 1,340 oversold units and about €96,000 in costs.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The Black Friday Oversell: 1,340 oversold units, about €96,000.",
+              "shows": "Two proposals of very different size were offered as answers to the same incident.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Two proposals of very different size.",
+            "introduces": "The one incident both cited, the Black Friday Oversell.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The CEO's three questions (what kind of platform are we on, what would each proposal cost in year three, what would a move fix that nothing else fixes) found Noor without the vocabulary for the first, and the map she drew to answer them is this chapter; it ends at Waypoint decision W4, stay and surround.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Mara Lindqvist's three questions to Noor Visser; W4 reached by March 2027.",
+              "shows": "The chapter's question is a working question a head of engineering was asked."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: a fork with three paths: demolish and rebuild the shop, replace only its front, keep the shop and add two annexes.",
+              "shows": "The two proposals and the third answer side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two proposals and the incident behind them.",
+            "introduces": "The CEO's three questions, the vocabulary Noor lacked for the first, and the decision the chapter ends at.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kinds",
+      "heading": "Seven Kinds of Platform",
+      "controlling_idea": "The market sells the shop platform in seven categories, and each puts the integration work in a different place without removing it.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Defines the product and the categories and states the rule that integration work moves and never disappears."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The product is defined, then the table of categories, then the four terms the table uses (readers of round 2 could not hold terms defined before the table they belong to), then the rule about the fourth column, which the vendor-by-vendor section illustrates."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Mara's first question: what kind of platform are we on?",
+        "introduces": "The seven kinds the market sells.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "In the market's vocabulary a commerce platform is the product a merchant buys to show products, hold a cart, take the order and the payment and hand the order on, which this book calls the shop platform; in this chapter 'platform' means that product, and 'commerce platform' in the book's sense stays the whole set of systems.",
+          "function": "definition"
+        },
+        {
+          "id": "p10b",
+          "controlling_idea": "The market sells the product in seven overlapping categories that differ in what is bought, who runs it and where the integration work lands.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven categories (hosted SaaS platform, enterprise suite, open source and its forks, composable and headless vendor, ERP-centered commerce, specialist layer, specialist group), each with examples, what you buy, who runs it and where the integration work lands.",
+              "shows": "Each category is a different answer to who runs the product and who carries the integration work.",
+              "source": "The author's synthesis from vendor pages and filings (2025–2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The product called a platform.",
+            "introduces": "The seven categories in which the market sells it, in one table.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Four terms in the table need defining: SaaS is software the vendor runs for many customers at once, a suite is one vendor's modules designed to work together, headless separates the storefront from the commerce engine behind an API, and composable means buying commerce as separate services and assembling them.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The category table.",
+            "introduces": "Four terms in it that need defining.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The fourth column matters most: every category moves the integration work somewhere and none removes it, so the choice is who carries the work, at what price and with what freedom to change.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Kestrel & Pine's 34 integrations exist because it chose a hosted platform and bought specialist layers around it; a suite would have fewer joins and one larger contract, a composable assembly more joins, all its own.",
+              "shows": "The same merchant would carry a different amount and kind of integration work in each category.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: each category asks the merchant for a different kind of work and joins the specialist layers in a different place.",
+              "shows": "The burden changes place from category to category and never reaches zero."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table's four columns.",
+            "introduces": "The fourth, where the integration work lands, and the rule that it moves and is never removed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "claims",
+      "heading": "How to Read a Vendor's Claims",
+      "controlling_idea": "A vendor's number, and a market-share figure, can be compared only when its unit, date and definition are known.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Gives the reader the test to apply to every number in the vendor-by-vendor section and in any pitch."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The seven categories and the rule about where the work lands.",
+        "introduces": "What to ask of the vendor numbers the next section is full of, before meeting them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "The vendor paragraphs that follow are full of numbers, and no number can be compared across vendors until its unit, its date and its definition are known; the table takes its examples from those paragraphs.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four kinds of claimed unit (GMV; merchants, customers, brands, users; marketplaces, integrations, apps; surveys, analyst charts and performance claims), each with a dated example and the trap.",
+              "shows": "The same word counts different things at different vendors, so a number cannot be compared until its unit, date and definition are known.",
+              "source": "Vendor filings, releases and pages (2025–2026)"
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Market-share data need the same care, because two true figures can rank the same vendor last and first when they count different populations.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "W3Techs (7 November 2026): WooCommerce 47.3% of sites with a detectable e-commerce technology, Shopify 32.5%, Shopware 0.2%; EHI: Shopware first among the 1,000 largest German shops.",
+              "shows": "A count of websites and a count of large shops rank the same vendor last and first.",
+              "source": "W3Techs (2026); EHI via Shopware (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Vendor numbers and their traps.",
+            "introduces": "Market-share data, which need the same care.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tour",
+      "heading": "The Seven Kinds, Vendor by Vendor",
+      "controlling_idea": "The public record of each category's vendors shows who runs the product, how it is priced and where the integration work lands.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Gives each category dated public evidence, read by unit, date and definition, and shows the work moving from category to category."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "One sentence says how each category is read; the categories then follow the rows of the category table, the specialist layers and the group last because they are defined by what surrounds the other five; the Eurostat statistic closes the section because it puts the whole list of webshop vendors in proportion and follows the one vendor paragraph that names an EDI provider."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The seven categories, and the habit of asking a number's unit, date and definition.",
+        "introduces": "Each category read from its vendors' filings, price lists and announcements.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12b",
+          "controlling_idea": "Each of the seven kinds is described below from its vendors' public record.",
+          "function": "transition"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The hosted platform is the default for a merchant that starts online, and Shopify's filing and price list show its shape: a monthly plan plus fees that move with sales, with most merchants on the cheapest plans and most sales volume from the largest merchants.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Shopify FY2025: GMV $378.4 billion, revenue $11.56 billion; plans from Basic €28 to Plus from €2,100 a month; card rates 1.9% + €0.25 down to 1.4% + €0.25; 2% down to 0.2% on orders paid through another provider; a variable platform fee for larger Plus merchants.",
+              "shows": "A hosted platform charges a subscription and, on top of it, fees tied to the merchant's sales.",
+              "source": "Shopify Form 10-K (11 February 2026); Shopify pricing page (November 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The promise of a record per category.",
+            "introduces": "The first category, hosted SaaS, through Shopify's filing and price list.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "BigCommerce, now under the parent Commerce.com, assigns plans by the merchant's trailing sales, which is a price on sales under a subscription's name, and its 2026 results report flat revenue and soft demand for replatforming.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Plans assigned by trailing-twelve-month GMV with 0.9% above $33,333 a month on the Scale plan; quarter ended 30 June 2026: revenue $84.5 million, up 0.1%; B2C replatforming 'remains softer than historically'.",
+              "shows": "A subscription tier set by sales is GMV pricing; the vendor itself reports that merchants are not moving platforms.",
+              "source": "BigCommerce pricing page (November 2026); Commerce.com Q2 2026 results (6 August 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Shopify's plan-plus-fees pricing.",
+            "introduces": "BigCommerce: plans assigned by sales, and soft replatforming demand.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Lightspeed earns more than twice as much from transactions as from subscriptions and has named growth engines that exclude European online retail, which the author reads, as a labeled inference, as a vendor-risk signal for a Dutch merchant on its e-commerce product.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Strategic review closed 6 February 2025: 'focus on growing retail in North America and hospitality in Europe'; FY2026 transaction-based revenue $815.1 million against subscription revenue $370.7 million; Dutch eCom €68 to €259 a month.",
+              "shows": "The revenue mix and the stated strategy are public signals of where a vendor will invest.",
+              "source": "Lightspeed releases (2025, 2026); pricing page (November 2026)"
+            },
+            {
+              "kind": "reasoning",
+              "what": "Callout 'INFERENCE, NOT DOCUMENTED': Lightspeed has announced no change to its European e-commerce product; the risk reading is the author's.",
+              "shows": "Separates the documented fact from the author's reading of it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Two listed hosted vendors.",
+            "introduces": "A third, Lightspeed, whose revenue mix and strategy are a risk signal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Below the listed vendors sit smaller hosted products such as the Dutch CCV Shop, priced at a flat monthly fee and not as a share of sales, and the site builders.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "CCV Shop: €36 to €129 a month, 'not a percentage of your sales'.",
+              "shows": "Flat pricing exists at the small end of the hosted category.",
+              "source": "CCV Shop pricing page (November 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vendors that earn on the merchant's sales.",
+            "introduces": "Small hosted products priced at a flat fee.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Enterprise suites sell to large merchants through implementation partners at negotiated prices, so their public evidence is thin; SAP Commerce Cloud is described here only from its open-source storefront project and one analyst note.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The Spartacus storefront project (accessed November 2026) and an October 2026 analyst note reporting an 'SAP Commerce Cloud, cloud ERP edition' and warning buyers to 'separate products that are available now from forward-looking demonstrations'.",
+              "shows": "What can be said about SAP from public sources, and that the author quotes no feature list.",
+              "source": "SAP on GitHub; SoftwareReviews (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The hosted category and its public evidence.",
+            "introduces": "Enterprise suites, sold through partners, with thinner evidence; SAP first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Salesforce sells one platform across consumer and business selling, point of sale and order management, now with AI agents connected to it, and publishes no price; that it charges a percentage of sales is industry belief, not a documented fact.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "6 July 2026: 'its biggest Agentforce Commerce release yet', three generally available agents 'natively connected to catalog, inventory, and orders'; pricing page shows 'Contact for pricing' for every edition.",
+              "shows": "A suite's selling point is one connected data model; its price is negotiated and not public.",
+              "source": "Salesforce press release and pricing page (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "SAP, described from two public sources.",
+            "introduces": "Salesforce: one connected platform and no public price.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Adobe Commerce shows one product in three deployment shapes (on-premises, platform-as-a-service, fully managed SaaS), and the middle shape, where the vendor runs the servers and the merchant owns the code, is where deep customization can block every upgrade.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Adobe's information center (updated 21 October 2026) lists Adobe Commerce on-premises, on cloud infrastructure and as a Cloud Service; Adobe Commerce Optimizer 'can work alongside an existing Adobe Commerce or third-party commerce backend'; partner reports place both launches in June 2025.",
+              "shows": "Within one vendor the deployment shape, not the feature list, decides who runs hosting and who applies upgrades; the vendor also sells a layer beside another backend.",
+              "source": "Adobe Experience League (2026); Rightpoint (2025)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Suites with thin public evidence.",
+            "introduces": "Adobe, the clearest public example: one product in three deployment shapes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Open source means the code may be run and changed, not that it is free: hosting, upgrades, security patches and the agency that applies them are the recurring price, as the chain from an Adobe fix to a Mage-OS release to the merchant's own test shows.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Magento Open Source and the community fork Mage-OS: 4.0.0 shipped 30 October 2026; 3.6.0, two weeks earlier, was a security port of an Adobe patch. WooCommerce claims 'more than 4 million stores' and prices hosting at $25 to $350 a month.",
+              "shows": "An open-source merchant depends on a chain of parties for every fix and pays for hosting and upgrades.",
+              "source": "Mage-OS; WooCommerce pricing (November 2026); Wikipedia on Magento"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Products a vendor runs or co-runs.",
+            "introduces": "Open source: code the merchant runs and upgrades itself, with Magento's open edition and its fork.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Shopware, the leader among large German shops, shows that an open-source platform can be free for the smallest merchants and priced on sales above that.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "12.5% of the 1,000 largest German B2C shops (EHI 2026), first for the fifth year; Community Edition free; Rise from €600 and Evolve from €2,400 a month 'based on your gross merchandise value'; a paid plan required above €1 million of GMV in a rolling year.",
+              "shows": "'Open source' is free for the smallest merchants and GMV-priced above that.",
+              "source": "Shopware pricing and press releases (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Open source and its recurring costs.",
+            "introduces": "Shopware: free at small scale, priced on sales above it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21b",
+          "controlling_idea": "Shopware is also absorbing payments and integration into the platform, with PayPal as a large shareholder.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "PayPal's stake above 40% (October 2025); Shopware Payments on PayPal's infrastructure and Nexus, an orchestration layer positioned as replacing middleware, launched 10 June 2026.",
+              "shows": "An open-source platform pulls payments and orchestration inside.",
+              "source": "Shopware press releases (2026); Ecommerce News Europe (2025)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Shopware's pricing.",
+            "introduces": "Shopware absorbing payments and integration, with PayPal as shareholder.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Composable and headless vendors give the merchant a choice of what to replace and leave it responsible for connecting and operating every part it selects.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Categories built around one core product.",
+            "introduces": "Composable and headless vendors, defined above, and what they leave to the merchant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "commercetools, the best-known composable vendor, reports large volume, cut staff after missing growth targets, and since 2026 sells layers and standalone modules for stacks that are not composable.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "22 April 2026: '$100B GMV run-rate', more than 600 million orders a year; 26 February 2025: about 10% of staff cut; 21 January 2026: AgenticLift 'on top of your existing commerce solution'; 15 July 2026: cart-and-order engine and product catalog as standalone modules.",
+              "shows": "The flagship of composable now sells pieces to add beside an existing platform.",
+              "source": "commercetools press releases (2026); TechCrunch (2025)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "What composable leaves to the merchant.",
+            "introduces": "commercetools and Saleor.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23b",
+          "controlling_idea": "Saleor shows that API-only vendors price on the merchant's sales too.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Saleor cloud from $1,599 a month up to $200,000 of monthly GMV, 0.8% above (November 2026).",
+              "shows": "Pricing on sales is not particular to hosted platforms.",
+              "source": "Saleor pricing (November 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "commercetools, which sells by the piece.",
+            "introduces": "Saleor, an API-only vendor that prices on the merchant's sales.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "MACH is an acronym a vendor alliance coined in 2020 and has since loosened, so 'composable' and 'MACH' name a category and a sales argument, not a verdict.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Coined June 2020 for Microservices, API-first, Cloud-native SaaS and Headless by founders commercetools, Contentstack, EPAM and Valtech; by November 2026 the principles page lists Open, Composable, Connected.",
+              "shows": "The label is the vendors' own and its definition has moved.",
+              "source": "EPAM (2020); MACH Alliance (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The composable vendors.",
+            "introduces": "MACH, the acronym their alliance coined.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "ERP-centered commerce makes the ERP the owner of products, stock and orders and treats the webshop as a front end, and Microsoft preinstalling a connector to a hosted platform shows the vendors expect this shape.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Odoo's eCommerce app free within €19.90 or €35.90 per user per month; JTL, PlentyONE and NetSuite SuiteCommerce bundle shop and back office; Microsoft's documentation (22 September 2026): the Shopify Connector 'is preinstalled for all new sign-ups and trials' of Business Central.",
+              "shows": "An ERP vendor shipping a storefront connector by default treats 'ERP as hub, storefront in front' as normal.",
+              "source": "Odoo pricing; vendor pages; Microsoft Learn (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Commerce assembled from separate services.",
+            "introduces": "Commerce attached to the ERP that already owns stock, orders and finance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Every category is surrounded by specialist layers, each owning one capability and selling to every platform (OMS, PIM, WMS, returns, search, channel integration, iPaaS and PSP); of these an OMS, which decides which location fulfills an order and what to promise, is easily confused with a WMS, which decides where goods sit and how to pick them.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight layers, each with what it owns in plain words and vendor examples with claims and prices (accessed November 2026).",
+              "shows": "Each capability on the map can be bought alone, from vendors that are not platform vendors.",
+              "source": "Vendor pages (November 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The five kinds of core platform.",
+            "introduces": "The specialist layers that surround every one of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A specialist group is a third shape beside suite and composable: several specialist products under one owner, kept as separate brands and pre-integrated, which reduces the joins a merchant builds at the cost of one owner across several layers; the Dutch group Katapull is the public example.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Katapull's eight labels (Logic4, Vendit, Picqer, EffectConnect, DeliveryMatch, Returnista, Transus, Highbiza); five companies joined 31 March 2025, Returnista 16 February 2026, Picqer 7 October 2026; '4,500+ customers in 40+ countries'; no revenue, GMV or ownership figures public.",
+              "shows": "The shape exists in the market, and what is not public about it is said.",
+              "source": "Katapull; Dutch IT Channel (2025–2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Layers bought one at a time.",
+            "introduces": "A group that sells several, pre-integrated, under one owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36b",
+          "controlling_idea": "One official statistic puts the whole landscape of webshop vendors in proportion: by value, more European enterprise e-commerce runs over EDI messages than over webshops.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Eurostat 2024 data (published February 2026): web sales 8.39% of EU enterprise turnover, EDI-type sales 11.07%.",
+              "shows": "What is counted as e-commerce decides how large the webshop market looks; selling between businesses by message is the larger part.",
+              "source": "Eurostat (February 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The vendors of the seven kinds, the last of them a group that includes an EDI provider.",
+            "introduces": "One official statistic that puts the webshop landscape in proportion: EDI carries more enterprise selling than webshops.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "heading": "How Platforms Are Priced, and What the Price Tells You",
+      "controlling_idea": "Platforms are priced on what the vendor sits in the path of, mostly the merchant's sales and payments, so the subscription is the smallest line.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Turns the prices met category by category into seven models and one pattern, and shows the size of the fee lines on Kestrel & Pine's own numbers."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The prices quoted vendor by vendor.",
+        "introduces": "The pricing models that recur across all the categories and what a price reveals.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "A platform's price tells what the vendor's product really is, and seven pricing models recur across the seven categories.",
+          "function": "claim",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Seven pricing models (flat subscription tier, subscription with GMV thresholds, enterprise GMV share, payment fee share, per order/user/request, per payment transaction, free core with paid services), each with how it works, dated examples and what it means for the merchant.",
+              "shows": "Most models charge on the merchant's sales, orders or payments, not on the software.",
+              "source": "Vendor pricing pages (November 2026); Lightspeed FY2026 results"
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A vendor prices on the thing it sits in the path of: pricing on sales assumes it owns checkout, per-order pricing that it sees every order, per-request pricing that it is in the request path.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Shopify's FY2025 filing: 76% of revenue is 'merchant solutions' that are 'directionally correlated with the level of GMV', with 65.6% of GMV through its own payment service; Lightspeed's revenue mix.",
+              "shows": "The largest hosted vendors earn mainly from the merchant's sales and payments.",
+              "source": "Shopify Form 10-K (2026); Lightspeed FY2026 results"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The seven rows of the pricing table.",
+            "introduces": "The pattern across them: a vendor prices on what it sits in the path of.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "For Kestrel & Pine the subscription is the smallest line: on an assumed €34.4 million of sales through the shop platform's checkout, a 0.2% fee is about two and a half times the €27,600 subscription and a 1% fee about twelve times.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Labeled assumption: €27.0 million D2C plus the 62% of the €12.0 million wholesale line ordered through the B2B portal, about €7.4 million: about €34.4 million GMV; 0.2% is about €69,000 a year, 1% about €344,000; neither is what Kestrel & Pine pays.",
+              "shows": "A comparison of monthly list prices compares entry tickets, not costs.",
+              "source": "Kestrel & Pine scenario ledger for €2,300 a month and the revenue figures; the fee rates are an illustration"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: an iceberg whose visible tip is the subscription, with larger fee bands below the waterline.",
+              "shows": "The fee lines dwarf the subscription."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The pattern.",
+            "introduces": "Kestrel & Pine's subscription set against fees on its sales.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "heading": "The Trade-offs Between Categories",
+      "controlling_idea": "The categories trade off on five checkable criteria, and the category to choose is the one the merchant's present team can staff.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Puts the operating-model differences side by side, the price among them, and draws the rule for choosing."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The seven categories and the way each is priced.",
+        "introduces": "The five criteria on which the categories can be compared side by side.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "The categories differ on five criteria a newcomer can check: time to first sale, who upgrades, the integration burden, the shape of the cost and the cost of leaving.",
+          "function": "comparison",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six categories against five criteria (time to first sale, who upgrades, integration burden, cost shape, exit cost); the author's judgment.",
+              "shows": "No category is best on every row; each trades speed and low burden now against cost and exit later.",
+              "source": "The author's judgment from the evidence in the chapter"
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "The author's rule is to choose the category by the team the merchant has, not the team it wants, because each category needs different people and the one that cannot be staffed is the wrong one.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The trade-off table.",
+            "introduces": "The author's rule: choose by the team you have.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: Which Categories Fit Which Stage",
+      "controlling_idea": "Which category fits depends on the merchant's scale stage: ERP-centered commerce limits at the Omnichannel stage, and composable becomes realistic as a core only at the Group stage.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Applies the rule to the four stages the reader already knows."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The rule of choosing by the team you have.",
+        "introduces": "What that means at each of the four scale stages.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "Which category a team can carry depends on the merchant's scale stage: each of the book's four stages has categories that typically fit it, things that become necessary and warning signs of outgrowing the approach.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages (Starting, Growing, Omnichannel, Group), each with typical category, what becomes necessary and warning signs.",
+              "shows": "Fit depends on the merchant's shape; the same category that fits one stage limits the next.",
+              "source": "The author's judgment; stage bands from the Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "A category that fits one stage becomes a limit at the next, and ERP-centered commerce shows it plainly: strong at the Starting and Growing stages, where one system means no integration problem, and limited at the Omnichannel stage, when stores, marketplaces and a warehouse need stock faster than the ERP's batch updates.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The stage table's pattern of fit and outgrowing.",
+            "introduces": "One category followed through it: ERP-centered commerce, strong early and limited at the Omnichannel stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "At the Starting and Growing stages 'composable' is a vendor category and not an instruction, at the Omnichannel stage it is something done per capability around a kept core, and only at the Group stage, with a platform team, is an API-only core realistic.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The ERP-centered category across the stages.",
+            "introduces": "The same reading for composable: a vendor category early, a practice per capability later, a core only for a Group.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "changed",
+      "heading": "What Changed, 2023 to 2026",
+      "controlling_idea": "From 2023 to 2026 vendors in every category moved toward selling layers beside a merchant's existing stack, which is what a merchant below the Group stage can absorb.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Dates the convergence that the thesis's last clause rests on, after the reader knows why a kept core suits most merchants."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The judgment that below the Group stage a merchant keeps its core and adds per capability.",
+        "introduces": "The vendors' side of the same conclusion: what they began to sell between 2023 and 2026.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "In the three years before November 2026 the market moved in one direction: vendors retreated from physical logistics, pulled payments into the platform, and began selling layers beside a merchant's existing stack instead of replacing it.",
+          "function": "evidence",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight dated events from 6 June 2023 (Shopify sells most of Shopify Logistics to Flexport) to 6 August 2026 (Commerce.com reports B2C replatforming 'softer than historically'), each with what it tells a merchant.",
+              "shows": "Vendors from every category now sell something that sits beside a kept platform.",
+              "source": "Vendor releases and filings (2023–2026); TechCrunch (2025)"
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The newest thing vendors sell is the AI assistant as a sales channel, which for a merchant is one more channel, priced as a channel; like the other layers of 2026 it is an addition an Omnichannel-stage merchant can absorb without moving.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify's Agentic plan (accessed November 2026): 'no monthly fee', syndicates products to ChatGPT, Gemini, Copilot and Perplexity so shoppers 'check out in conversations', 'no Shopify online store required'.",
+              "shows": "Even the newest offer is an addition to what a merchant has, not a replacement of it.",
+              "source": "Shopify Agentic plan page (November 2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Eight dated events.",
+            "introduces": "The newest offer, the AI assistant as a channel, read the same way.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "place",
+      "heading": "Kestrel & Pine's Place on the Map",
+      "controlling_idea": "Placed on the map, Kestrel & Pine is a hosted shop platform with specialist layers; both proposals fail against its team and its measured problems, and it stays and adds the layers it lacks.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S6",
+          "S4"
+        ],
+        "how": "Works the whole method on the running example and reaches W4."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The place on the map answers the CEO's first question; the two proposals are then tested in the order the scene introduced them, which answers her third; the decision comes last because it depends on both tests."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The map: categories, prices, fit by stage and what vendors now pitch.",
+        "introduces": "Kestrel & Pine placed on it, and the two proposals of the opening scene tested.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p41",
+          "controlling_idea": "Kestrel & Pine is a hosted SaaS shop platform surrounded by specialist layers, with an ERP used as the back office and not as the hub; the two things it lacks, an OMS and a PIM, are specialist layers too, and Waypoint buys both (W2, W3). That answers the CEO's first question; her second, the cost in year three, needs the full cost model of a later chapter.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Shop platform €2,300 a month plus fees; ERP €3,900; WMS €2,100; marketplace connector €900; returns portal €650 plus €0.95 per return; iPaaS €1,200; POS, PSP, EDI provider and shipping service.",
+              "shows": "Each of the company's systems has a place in one of the seven categories.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: Kestrel & Pine as a hosted platform surrounded by specialist layers, with Waypoint's two added layers beside it.",
+              "shows": "Answers the CEO's first question in one picture."
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The composable proposal asked the 14-person technology team to operate several new systems and their integrations, and only its availability service addressed the oversell, a capability that can be bought with an OMS and connected to the existing shop platform.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "A 14-person technology team with three people on storefronts and apps; Waypoint's stock-ownership decision W1.",
+              "shows": "The proposal's one relevant part can be added as a layer, and the rest is work the team cannot carry.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Kestrel & Pine's place on the map.",
+            "introduces": "The composable proposal tested against the oversell and the team.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "The composable proposal also assumed one cutover date, so its operating burden and migration risk were two named failure patterns: The Giant's Boots, another organization's architecture without its capacity, and The Burned Bridge, a move without a route back.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The operating burden of the composable proposal.",
+            "introduces": "Its single cutover date, and the two failure patterns the proposal illustrates.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The headless proposal left the stock chain untouched, and its speed argument weakened when Noor traced the slow pages to scripts from eleven apps, which three months of agency time later fixed.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Slow product pages traced to scripts from eleven apps; a quarter of agency time spent on performance fixed it.",
+              "shows": "The problem the headless rebuild was sold on had a cheaper cause and fix.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The composable proposal.",
+            "introduces": "The headless proposal, which left the stock chain untouched.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Noor declined both proposals because neither fixed anything that a smaller change could not, which answers the CEO's third question; W4 keeps the hosted shop platform, adds the OMS with its availability service and the PIM beside it and sets a review in 2029, and its cost is stated: the fee grows with sales, the platform contract constrains the PSP choice and every added layer is a join to govern.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Waypoint decisions W4 and W5; Noor's note: 'we are not choosing a platform; we are choosing which work we are willing to own.'",
+              "shows": "The decision is a choice of which work to carry, with its price named.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Two proposals tested and found to fix nothing a smaller change could not.",
+            "introduces": "The refusal of both, and W4, stay and surround, with its cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "A chosen category fails slowly, through the vendor's funding, a core that cannot be upgraded, the price and the ownership, and each can be detected in advance.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows what in the vendor's public record and the merchant's own costs to watch after choosing."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Four parallel failure modes, each with detection and recovery."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "A decision made and its cost named.",
+        "introduces": "The ways a category that was chosen well can fail later.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "A category chosen well can still fail, slowly, in four ways the public record illustrates.",
+          "function": "claim"
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The vendor stops funding the merchant's region or product; yearly reading of the vendor's results, reviews, ownership and revenue mix detects it, and an exit plan written in advance is the recovery.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Lightspeed's February 2025 strategic review named two growth engines, neither of them European online retail.",
+              "shows": "The signal was public before any product change.",
+              "source": "Lightspeed (2025)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four slow failures.",
+            "introduces": "The first: the vendor stops funding the region or product.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The core is changed until it cannot be upgraded; the number of vendor releases the platform is behind detects it, and moving extensions to sandboxed or API-based mechanisms is the recovery.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Platform-as-a-service deployments and every open-source platform let the merchant or its agency change the core: the Forked Platform.",
+              "shows": "The categories that allow core changes are the ones that can lose the upgrade path."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Vendor funding.",
+            "introduces": "The second: a core changed until it cannot upgrade.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "The price crosses several thresholds in one year as a merchant moves from Growing to Omnichannel; a yearly total-cost review of every line priced on sales, orders or requests detects it, and negotiating on actual sales, with the business-customer share separated, is the recovery.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The platform's GMV tier, the PSP's volume pricing and the per-order quotas of the WMS and channel tools crossed at about the same time; '€2,300 a month' was never the price.",
+              "shows": "Usage-priced lines rise together at a stage transition."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The upgrade path.",
+            "introduces": "The third: the price crossing several thresholds at once.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "An acquisition changes what the product will push; ownership in the yearly vendor review detects it, and contracts that name the capability depended on and its support period are the recovery.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "PayPal's stake in Shopware became Shopware Payments within eight months; Katapull added two labels in 2026.",
+              "shows": "A change of owner changes product direction within months.",
+              "source": "Shopware (2026); Katapull (2026)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The price.",
+            "introduces": "The fourth: an acquisition that changes the product.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The categories, the price lists and the vendors' 2023–2026 record describe the same three things from different sides: who runs the product, how its price moves with the merchant's sales and who carries the integration work. A move between categories changes the owner of that work and does not remove it, so the question to put to any pitch is what it would fix that an added layer would not.",
+    "so_what": "A merchant that can say who carries the work in each category can refuse a move that would only change the work's owner and price; Kestrel & Pine stays on its shop platform and adds the layers it lacks.",
+    "callback": {
+      "to": "The introduction's two platforms with the same cart, catalog and checkout features; and, for the part, the part opening's single order whose promises depend on systems the shopper never sees.",
+      "how": "The first paragraph of the conclusion returns to the two platforms and says what separates them; the next-to-last paragraph returns to the part's single order and performs the part's closing."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Choose the category by the work you can own, treat every 2026 pitch as a layer to add, and take the six questions to your own platform; before comparing platforms at all, map the capabilities and name one record per fact."
+    },
+    "hand_off": {
+      "to": "part-2",
+      "relationship": "example",
+      "carries_over": "Part I's rule of one record per fact and its capability map.",
+      "introduces": "The first group of facts on the map, those a shopper sees before buying."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failure modes and their recoveries.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p50a",
+        "controlling_idea": "The two platforms of the opening, equal in features, differ in who runs them, how the price moves with sales and who carries the integration work, and those three answers, not the features, are what the categories, the price lists and the vendors' 2023–2026 record each describe; a move to another category changes who owns the work and does not remove it, which is why Kestrel & Pine's answer to its CEO was to stay and add layers.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's two platforms and the CEO's three questions set against the chapter's answer.",
+            "shows": "The reader can now say what to ask of two platforms with the same feature list."
+          }
+        ]
+      },
+      {
+        "id": "p51",
+        "form": "list",
+        "controlling_idea": "Established: the market sells commerce in seven shapes that decide who runs the servers, who upgrades and where the integration work lands; platforms are priced mainly on sales and payments; and between 2023 and 2026 the leading vendors moved to selling layers beside existing stacks while replatforming demand softened.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the public record establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "form": "list",
+        "controlling_idea": "Depends on context: which category fits depends on the stage and on what the merchant can staff, for the hosted platform with layers, ERP-centered commerce, a composable core and a specialist group alike.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the public record establishes.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p53",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: choose the category by the work you can own, and treat every 2026 pitch, 'composable' and 'agentic' included, as a layer to add beside the stack you have.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54",
+        "form": "list",
+        "controlling_idea": "Six questions let the reader place their own platform in a category, total what it really costs, read its vendor's public record and name the layers that could be added beside it.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own platform.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p55a",
+        "controlling_idea": "Part I's five chapters are one line of reasoning: the order's journey, the business model, the capability map and the ownership table say what a merchant must be able to do before it can judge any product, which is why Kestrel & Pine keeps its shop platform and adds the missing capabilities (its problems were facts nobody owned, which no replacement product would have fixed); so before comparing platforms, map the capabilities, name one record per fact and choose by the integration work you can carry.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The part opening's single order, whose promises depend on systems the shopper never sees, set against the five chapters.",
+            "shows": "Performs the part's closing declared in the journal spec: synthesis, so-what, callback and take-away."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "This chapter's answer about what the market sells.",
+          "introduces": "What the five chapters of Part I say together, and what to do before comparing platforms.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p55",
+        "controlling_idea": "Part II applies the rule of one record per fact and the capability map to the first group of facts on the map, those a shopper sees before buying: the product record, the price, the promotion, the search result and the stock figure every channel shows.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Part I's rule of one record per fact and its capability map.",
+          "introduces": "The first group of facts on the map, those a shopper sees before buying.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The decision method for choosing or changing a platform and the full cost model; migration mechanics.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "replatforming-and-migration"
+      ]
+    },
+    {
+      "topic": "Architecture styles as engineering (monolith, modular monolith, microservices, composable as a style).",
+      "covered_in": [
+        "commerce-architecture-styles"
+      ]
+    },
+    {
+      "topic": "Tenancy, pods and rate limits; apps, plugins and the Forked Platform mechanics; storefront delivery.",
+      "covered_in": [
+        "multi-tenancy-and-isolation",
+        "extensibility-and-app-ecosystems",
+        "storefront-architecture"
+      ]
+    },
+    {
+      "topic": "The composable movement's history, commercetools and Shopware in depth, and the MACH survey data; Shopify in depth.",
+      "covered_in": [
+        "case-composable-movement",
+        "case-shopify"
+      ]
+    },
+    {
+      "topic": "Agentic commerce protocols and their regional status; ERP as hub versus commerce as hub.",
+      "covered_in": [
+        "ai-and-agentic-commerce",
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "The capability map itself; the scale stages as a model.",
+      "covered_in": [
+        "commerce-capability-map",
+        "commerce-scaling-stages"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Salesforce Commerce Cloud's pricing model is stated only as an industry belief; if a Salesforce document confirms or denies GMV-based pricing, the pricing table should be updated.",
+    "SAP Commerce Cloud is described from Spartacus and one analyst note because sap.com refused automated fetching; a reviewer with access to SAP's product pages should check the 'cloud ERP edition' wording.",
+    "The commercetools CEO sequence (founder to Andrew Burton in July 2024; Doug McNary signing results by April 2026) is documented at both ends but the handover itself was not found in a release.",
+    "Prices and plan names on every vendor page are volatile; the chapter should be re-dated at the next edition.",
+    "Thesis rubric (a reader given only the thesis object, 2026-11-12): FAIL on 'does the claim answer the question'. The question is a four-part survey (what kinds, who sells them, how priced, how the market changed) and the claim answers a different one (how a merchant should choose and how to read a 2026 pitch); it says nothing on 'who sells them'. The reader suggested changing the question (for example 'What does a platform's category decide for the merchant, and what did 2026 change?'). The other three tests passed, with the remark that disputed_by opposes only the first half of the claim. Nothing was changed: the thesis is the journal spec's.",
+    "Flow rubric note taken only in part: the CEO's second question (what would each proposal cost in year three) is answered nowhere in the chapter, and no ledger line gives year-three costs for the two proposals. The chapter now says that the second question needs the full cost model of build-buy-or-assemble. The author may prefer to drop the question from the scene or to add a ledger figure.",
+    "Flow rubric note not taken: merge the 'Established' and 'Depends on context' lists (p51, p52). Kept apart because the three-tier take-away is the book's house format.",
+    "Second flow run (sound with notes), notes not taken: move the acquisition failure (p50) next to the vendor-funding failure (p47), both being vendor-side; move 'When It Goes Wrong' before the test of the proposals so the decision is the body's climax; have the test of the proposals apply the unit-date-definition reading to the €3.2 million estimate and to the agency's speed claim, so the reading guide pays off in the scenario (this would need facts the ledger does not hold); trim the repetition of 'choose by the work you can carry' across the conclusion (p50a, p53, p55a), which is there because p55a performs the part's take-away as the journal spec words it.",
+    "Flow rubric note not taken: frame the six questions as the reader's version of the CEO's three. That would need a new lead-in unit; the callback is made in the conclusion's first paragraph instead.",
+    "Round 1 of the draft check, one reader, not acted on: the scene's first sentence (Kestrel & Pine runs a hosted SaaS product) answers the CEO's first question before the chapter says Noor could not answer it, so 'fits in one figure' later arrives as something already told. The scene needs the fact to describe the company; the author may prefer to hold the word 'hosted SaaS' back until the place on the map.",
+    "Round 1, one reader, not acted on: in the vendor paragraphs (hosted SaaS, Katapull) the dated detail crowds out 'where the work lands'. The detail is the chapter's evidence and no statement about a real vendor was cut.",
+    "Round 2 of the draft check, one reader each, not acted on: the link between Adobe Commerce (suites) and Magento (open source) is given only in the open-source paragraph; 'interchange' appears in a price example of the layer table before the pricing table explains it (the cell quotes a real vendor's price and was left as it is); the CEO's second question is deferred in one clause that is easy to miss.",
+    "The yearly review as the one detector of all four failure modes (first flow rubric) was written into the failure section's opening and taken out again after round 2 to hold the word limit; each failure paragraph names its own detection.",
+    "Round 3 of the draft check ended in ESCALATE (15 passed, 17 failed; the two-revision budget was spent). Cheap draft faults were fixed afterwards without a further round ('the same conclusion' reworded; the ERP's 'cadence' said as scheduled updates; middleware glossed; the €12.0 million wholesale total given beside the 62%), so the check report is stale and the chapter needs one more check before the spec can be accepted. What remains is listed in the entries that follow.",
+    "The Eurostat statistic (p36b: web sales 8.39% of EU enterprise turnover, EDI-type sales 11.07%, 'which is why Part V is not a side topic') has now been found out of place by both flow readers in three positions: inside the reading guide's market-share paragraph (round 1), as its own paragraph in the reading guide (round 2) and at the end of the vendor section (round 3); round 3's judge also found that it supports none of the chapter's supporting claims. It argues for Part V, not for this chapter's thesis. Options for the author: cut it here and let the Part V introduction or edi-and-e-invoicing carry it; move it to the 'Established' list of the take-away; or add a supporting claim about the size of the webshop market.",
+    "The CEO's second question (cost in year three) is now a corroborated fault (round 3, both readers; the judge also found p41 double because of the deferral clause). The ledger holds no year-three cost for the two proposals; its build-buy-or-assemble line gives illustrative incremental costs over 2027–2029 (composable rebuild about €3.2M; stay-and-surround about €1.33M). Options: drop the second question from the scene; reword it to the 2027–2029 cost and answer it from that ledger line; or give the deferral its own short paragraph.",
+    "The reading guide's table (p35) takes its examples from vendors the reader meets only in the next section (round 2 and round 3, both readers each time). The guide was moved before the vendors because round 1's readers had taken the vendors' numbers at face value before reaching it. Options: keep only the rule (unit, date, definition) and the GMV definition before the vendors and move the table after them as a recap; or restrict the table's examples to vendors named in the category table.",
+    "Round 3, judge, spec: the Adobe paragraph (p19) holds a second idea, Commerce Optimizer as a layer beside another backend, between the three deployment shapes and 'the middle option'. Dividing it would mean rearranging dated statements about a real vendor; left for the author.",
+    "Round 3, judge, draft, not fixed for lack of room under the word limit: the ERP-centered paragraph (p25) opens with the definition of ERP and does not set the category against composable, as its transition declares.",
+    "Round 3, one reader each, not acted on: 'Where Part I Ends' reads as a second ending not announced in the roadmap; most rows of the 2023–2026 table repeat, with the same dates, events already told in the vendor paragraphs; the 34 integrations (category section) are not distinguished from the 41 apps (scene); Shopify Plus 'starting at €2,100', the US-dollar base of $2,300 to $2,500 and Kestrel & Pine's own €2,300 a month look alike; 'tenancy and isolation', 'versioned contracts' and 'platform team' in the Group row of the stage table and 'orchestration' are not explained.",
+    "The draft stands at the word limit (6,500). Every further gloss or transition needs a cut elsewhere; the author may prefer to raise the limit or to cut a vendor paragraph."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 of the draft check escalated on spec faults (auto mode, same pre-approval). Both flow readers again found the Eurostat statistic out of place in the reading guide, so it now closes the vendor-by-vendor section, after the one vendor paragraph that names an EDI provider, with the author's original opening ('One official statistic reframes…'). Two paragraphs the reverse outliner found double were divided: the incident both proposals cited (p08b) and Shopware's absorption of payments and integration (p21b). Both readers stumbled on the four terms defined before the table they belong to, so the table (p10b) again precedes the terms (p11), as in the published chapter; and both read the vendor section's opening sentence as a statement about hosted platforms, so it is now its own unit under the section heading (p12b).",
+      "rejected": [
+        "Keeping the Eurostat statistic in the reading guide with a different framing sentence.",
+        "Cutting the Eurostat statistic."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on spec faults (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author; intent, thesis, role and acceptance criteria untouched). Both flow readers found the position of 'How to Read a Vendor's Claims' unclear after the timeline, because the numbers it tests are met in the vendor paragraphs, so the reading guide now follows the category table and precedes the vendors, which form their own section, 'The Seven Kinds, Vendor by Vendor'. This reverses the 2026-11-07 decision to put pricing before the reading guide. Both readers found the Eurostat point outside the reading guide's subject: it is now its own paragraph (p36b), framed as the same question (what is counted) put to the market. Three paragraphs the reverse outliner found double were divided: Saleor leaves the commercetools paragraph (p23b), and the refusal of both proposals moves from the headless paragraph (p44) to the decision (p45). The transition into 'What Changed' is declared as similarity, which is what the prose says, not contrast.",
+      "rejected": [
+        "Keeping the reading guide after the timeline and only signalling it in the vendor paragraphs.",
+        "Moving the Eurostat statistic into 'What Changed', where it is not a change.",
+        "Cutting the Saleor sentence, a dated vendor fact."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Taken: the bridge to the running order (p04) precedes the roadmap (p03), which now announces every section; the trade-offs and the stages move up to follow pricing, so the comparison of categories sits next to their definition and price, and the 2023–2026 record and the reading guide move down to stand directly before the test of the two proposals; the four words (p11) come before the category table (p10 split, p10b new); the second definition of composable and headless (p22) keeps only the consequence; the OMS-versus-WMS distinction joins the layer table's paragraph (p27) and 'Kestrel & Pine lacks an OMS and a PIM' moves to its place on the map (p41), so p28 is gone; the ERP category's strength and limit by stage (p26) moves into the stages; the scene now states the team size, the composable proposal's availability service and the agency's speed argument, which the test of the proposals relies on; the failure modes name their shared yearly review once (p46); the conclusion opens with a paragraph that returns to the two platforms of the opening (p50a new), and a paragraph performing Part I's closing precedes the hand-off (p55a new).",
+      "rejected": [
+        "Keeping the published section order.",
+        "Merging the Established and Depends-on-context lists.",
+        "Inventing a year-three cost for the two proposals."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec with one paragraph per unit of the published chapter in the published section order (55 units), so that the first structural check passed against the unchanged text and any reordering was a visible decision.",
+      "rejected": [
+        "Writing the spec with the order already changed, which would have described a chapter that does not exist."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of the former spec.md that listed contents were rewritten as reader outcomes or dropped. Added beyond the journal spec's AC-1, all at minor severity, for the author to keep or drop: AC-2 (place a product in a category), AC-3 (why a list price is not the cost), AC-4 (what the chapter advises on a replacement proposal), AC-5 (unit, date and definition of a vendor number), AC-6 (no term before it is explained). Dropped as inventories or editorial checks: the tables and paragraphs each section must contain, the dating of every vendor fact, agreement of Kestrel & Pine's figures with the ledger, the count of diagrams and questions. The 6,500-word limit is kept as length.max_words.",
+      "rejected": [
+        "Carrying the nine inventory criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose seven categories (adding specialist layers and specialist groups to the usual five) because the ledger's merchant lives in the joins between a platform and its layers, and because the Dutch group model (Katapull) is a real third shape beside suite and composable.",
+      "rejected": [
+        "The usual five categories."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Put pricing before the timeline and the reading guide, because the price is the clearest public evidence of what a vendor's product really is, and the Kestrel & Pine fees-versus-subscription illustration is the chapter's most transferable lesson.",
+      "rejected": [
+        "Pricing after the timeline and the reading guide."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Framed the Kestrel & Pine scene as two replatforming pitches so the chapter shows the Giant's Boots and the Burned Bridge without naming a vendor; recorded the pitches in the ledger. (The same day's editorial review reframed them per consistency ruling 13: a consultancy's composable rebuild and the agency's headless storefront rebuild; no ERP-partner pitch.)",
+      "rejected": [
+        "Naming a vendor in the scene."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Cut the draft from about 8,700 to under 6,500 words by removing a systems table that duplicated meet-kestrel-and-pine and shortening every vendor paragraph to its dated facts.",
+      "rejected": [
+        "Keeping the systems table."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine",
+      "contributed": "The systems landscape, the 41 apps, the 34 integrations and the Waypoint decisions."
+    },
+    {
+      "kind": "internal",
+      "ref": "commerce-capability-map, boundaries-and-systems-of-record",
+      "contributed": "The capabilities and the ownership rules the categories map onto."
+    },
+    {
+      "kind": "internal",
+      "ref": "build-buy-or-assemble, commerce-architecture-styles, extensibility-and-app-ecosystems, case-shopify, case-composable-movement",
+      "contributed": "The chapters that own what this one only names."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-landscape.md and _research/brief-shopify.md",
+      "contributed": "The verified vendor facts, pricing, timeline and the claims-reading table."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md, _research/consistency-issues.md (ruling 13a) and _research/style-guide.md",
+      "contributed": "Kestrel & Pine's figures, the two February 2027 pitches and the rules."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-1, commerce-platform-landscape)",
+      "contributed": "Intent outcome, AC-1, thesis and role, copied unchanged; the part's closing, which this chapter carries; Part II's transition_in, which the hand-off follows."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify FY2025 Form 10-K (2026) and pricing pages (accessed 2026-11); Commerce.com Q2 2026 SEC exhibit; Lightspeed strategic review (2025) and FY2026 results",
+      "contributed": "The pricing and revenue-mix evidence."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Experience League (2026), Shopware releases and pricing (2025–2026), commercetools releases (2026), TechCrunch (2025), Microsoft Learn (2026), Katapull and Dutch IT Channel (2025–2026)",
+      "contributed": "The categories and the 2023–2026 timeline."
+    },
+    {
+      "kind": "external",
+      "ref": "MACH Alliance (2020, 2026), W3Techs (2026), Eurostat (2026)",
+      "contributed": "Definitions, usage shares and the EDI-versus-web statistic."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 3 (escalate: 15 passed, 17 failed). Cheap draft faults fixed afterwards without a further round; remaining findings recorded under open_questions. The check report is stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 13 passed, 17 failed) resolved in the spec: p36b moved to the end of the vendor section; p08b, p12b and p21b new; p10b before p11; ideas of p08, p11, p13, p21, p35, p36b, p39, p26, p44, p46 revised; transitions of the moved units rewritten. 62 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 15 passed, 29 failed) resolved in the spec: sections now scene, kinds, reading guide, vendors (new section, split from kinds), pricing, trade-offs, stages, changed, place, failure modes; p23b and p36b new; ideas of p03, p13, p23, p26, p35, p36, p44, p45 revised; roadmap, flow rationale and the transitions of every moved unit rewritten. 59 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Second flow run: sound with notes; flow rationale corrected, remaining notes under open_questions. Thesis rubric: fail on 'answers the question' (recorded under open_questions; thesis unchanged). Flow rubric (sound with notes) taken: sections reordered to scene, kinds, pricing, trade-offs, stages, changed, claims, place, failure modes; p04 before p03; p10 split (p10b new) with p11 before the table; p22 narrowed; p28 merged into p27 and p41; p26 moved to the stages; p50a and p55a added to the conclusion; ideas of p03, p06, p07, p08, p09, p34, p41, p42, p44, p46 revised; roadmap, flow rationale and the transitions of every moved unit rewritten. 57 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent outcome, AC-1, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter (55 units, published order); record-keeping sections carried over. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document references rephrased as Kestrel & Pine's records."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: reframed the February 2027 pitches per consistency ruling 13 (consultancy composable rebuild about €3.2M; agency headless storefront rebuild about €240,000; no ERP-partner pitch); moved the CCV Shop sentence out of the inference callout; completed the Katapull timeline (Transus undated, Picqer eighth label); pointed scale stages to their owning chapter."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

@@ -1,0 +1,1504 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-capability-map",
+  "journal": "commerce-platform-architecture",
+  "part": "part-1",
+  "title": "The Map of a Commerce Platform: Capabilities and Layers",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/03-commerce-capability-map/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter. It is a contract, not a description: the places where the chapter does not yet do what the spec asks are listed under open_questions.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "About two dozen capabilities in six layers and the kind of business fact each one owns.",
+        "The three ways vendors cover the map: suite, platform plus apps, best-of-breed assembly."
+      ],
+      "believe": [
+        "A capability is a job the business needs done, not a product; drawing jobs first makes gaps and overlaps visible."
+      ],
+      "can_do": [
+        "Place any system or vendor product on the map and say which capabilities it claims."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer, product manager or analyst who has just joined a merchant and needs to understand what all the software is for, and the consultant or leader who must judge a vendor's proposal.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people and its 2026 incidents, in outline (meet-kestrel-and-pine), and the names of the failure patterns (where-commerce-platforms-go-wrong).",
+        "From journey-of-an-order: the thirteen steps of an order, promise and handoff, the three status lines, what a system is, 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the seven systems in the order walk at Kestrel & Pine and the thirteen in its full landscape, and PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and availability service.",
+        "From commerce-business-models: the business models (D2C, B2B, wholesale, marketplace selling), and the four scale stages (Starting, Growing, Omnichannel, Group)."
+      ],
+      "does_not_know": [
+        "The map's own vocabulary: capability, layer, business fact, flow, natural home, copy, derived fact, writer, write audit.",
+        "PIM, OMS, POS, ATP (available-to-promise), GTIN, Peppol, BI, GMV.",
+        "Freshness, consistency (exact or eventual), reconciliation.",
+        "Suite, hosted SaaS platform, app, best-of-breed, composable, MACH, headless, ERP-centered commerce, specialist group."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a vendor's product description, the reader names the capabilities it covers and one it does not.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A vendor says its product 'unifies orders across channels and routes them to the best location'. Which capabilities on the map is that, and which neighbouring capability is not included?",
+        "expected": "Order management and sourcing; not warehouse management (or not inventory counting)."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a company that describes its landscape as a list of systems, the reader says why gaps and overlaps cannot be seen in that list and what to draw to see them.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A company lists its software: a shop platform, an ERP and a warehouse system, each with a stock field. Using only this chapter: why can the company not tell from that list whether it has a gap or an overlap, and what should it draw to find out?",
+        "expected": "Every system looks complete from the inside, so a list of systems hides both. Draw the jobs (capabilities) first and place the systems in them afterwards: an overlap shows as one box with several names (here, stock), a gap as an empty box."
+      },
+      {
+        "id": "AC-3",
+        "statement": "Given a value that is computed from other facts, the reader says that it is derived, what it is computed from, and why editing the result by hand does harm.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A support agent wants to type a higher 'available' number for a jacket into the shop's admin screen, because the web page shows fewer than the warehouse has. Using only this chapter: what kind of fact is that number, how is it produced, and what goes wrong if it is edited by hand?",
+        "expected": "A derived fact: available-to-promise, computed from stock on hand minus commitments to unshipped orders minus any buffer. Its owner is the calculation; a hand edit bypasses it and lets the storefront promise what the warehouse cannot deliver."
+      },
+      {
+        "id": "AC-4",
+        "statement": "The reader names the flows that must be exact in near real time and says what the other flows need instead.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: which movements of facts between systems must be exact almost immediately, and what do the other movements need instead?",
+        "expected": "Prices, orders and payments. The others tolerate lag as long as a reconciliation compares the copies; finance can run as a daily batch."
+      },
+      {
+        "id": "AC-5",
+        "statement": "Given a merchant that is not a vendor, the reader states the author's rule for covering the map and the work that stays with the merchant whichever vendor it picks.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A merchant with a web shop, stores, a marketplace channel and its own warehouse asks how it should cover the map with products. Using only this chapter: what is the author's rule, and what work stays with the merchant whichever vendor it chooses?",
+        "expected": "Cover the center with one product it does not customize, cover operations with products built for operations, and own the joins itself. The joins (the integration between the boxes) stay with the merchant; no vendor covers the whole map."
+      },
+      {
+        "id": "AC-6",
+        "statement": "A reader new to commerce meets no term in this chapter before it is explained, and every acronym is expanded on first use.",
+        "check": "known_before_new",
+        "method": "rubric",
+        "severity": "minor"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What are all the parts of a commerce platform, what does each do, and how do they usually connect?",
+    "claim": "A commerce platform is best mapped as capabilities, the jobs the business needs done, each owning one kind of business fact; systems are placed on that map afterwards, and no vendor covers all of it.",
+    "disputed_by": "The habit of describing a platform as a list of products or vendors, which hides both the jobs nobody does and the jobs two systems both claim.",
+    "so_what": "Where two systems both believe they own a fact is where money leaks; the map is the tool that finds those places before an incident does.",
+    "how_why": "Products bundle and split jobs differently per vendor, so only the jobs are stable enough to compare one landscape with another.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Drawing the jobs first and placing the systems afterwards shows the gaps and overlaps that a list of systems hides."
+      },
+      {
+        "id": "S2",
+        "claim": "The jobs fall into about two dozen capabilities in six layers, and each capability is the natural home of one kind of business fact, recorded or derived, while every other holder keeps a copy."
+      },
+      {
+        "id": "S3",
+        "claim": "A small number of flows join the capabilities, each with its own need for freshness and exactness, and the joins are where copies arrive late, get lost or get duplicated."
+      },
+      {
+        "id": "S4",
+        "claim": "Vendors cover the map in three ways, none covers all of it, and the joins between what they cover stay with the merchant."
+      },
+      {
+        "id": "S5",
+        "claim": "The map stays the same as a merchant grows; what changes is how many boxes need their own system."
+      },
+      {
+        "id": "S6",
+        "claim": "Read against the map, a product page, a landscape or an incident shows which boxes are claimed, empty, written by several systems or held by the wrong one, before the business feels it."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns the journey and the business models into a stable map of jobs, which the ownership chapter then assigns facts on.",
+    "supports": [
+      "P1-3"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "large_to_small",
+        "applies_to": "map: layers, then capabilities, then notes on the table, then the derived facts"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "three-ways and when-it-goes-wrong: parallel options and parallel failures"
+      }
+    ],
+    "rationale": "The chapter builds the map, then uses it twice. Building: the scene shows the method working once, so the reader wants the terms; the definitions come before the map because the map is drawn in them, and placed after it the table's 'fact' column would have no meaning; the flows follow the boxes because an arrow needs two boxes. First use, vendors: the three ways come only after boxes and flows because coverage is measured in boxes and joins, and reading one product page follows directly because it asks of a single product what the three ways asked of a kind of product; with the stages between them, as published, the two vendor sections were split by a section about the merchant. The vendors come before the merchant's own landscape because that landscape is made of bought products: the stage table and the failures speak of shop platforms, apps and suites, which would be unexplained if the order were reversed. Second use, the merchant's own landscape: the stages come first because they say how many boxes should be filled at all; the four failures follow because one of them (the giant's map) is the stage test broken and the others need the 'home', 'copy' and 'writer' of the map; Kestrel & Pine's landscape comes last because its table shows three of the failures at once and its plan uses the repair the failures section names (a single writer per fact). Told before the failures, as published, the plan applied repairs the reader had not met; and ending the body on the whiteboard returns to the scene the chapter started from."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A merchant asks for store pickup. Checkout, the store and the stock system all have to cooperate, and buying a pickup app helps only if the app can get stock reserved and tell store staff what to prepare."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has joined a merchant has heard a request like 'add store pickup' answered with 'there is an app for that'.",
+      "to_topic": "The request is a change to several business jobs at once, so the first question is which jobs, and which systems do them today: that is a map of capabilities."
+    },
+    "thesis_statement": {
+      "text": "A capability is a job the business needs done, not a product; every capability owns one kind of business fact; draw the map in capabilities first and place systems on it, and no vendor covers all of it.",
+      "placement": "KEY POINTS callout, all three bullets; paragraph p01 defines a capability in prose"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p03, the last paragraph of the introduction",
+      "promises": [
+        {
+          "promise": "Start from the whiteboard on which Kestrel & Pine drew its jobs before its systems.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the terms, then lay out about two dozen capabilities in six layers with the fact each one owns.",
+          "kept_in": [
+            "capability",
+            "map"
+          ]
+        },
+        {
+          "promise": "Add the flows that connect the capabilities.",
+          "kept_in": [
+            "flows"
+          ]
+        },
+        {
+          "promise": "Place vendors on the finished map: the three ways products cover it, and how to read one product page against it.",
+          "kept_in": [
+            "three-ways",
+            "reading"
+          ]
+        },
+        {
+          "promise": "End with a merchant's own landscape: how many boxes need their own system at each scale stage, the four ways a landscape goes wrong on the map, and Kestrel & Pine's thirteen systems placed box by box.",
+          "kept_in": [
+            "stages",
+            "when-it-goes-wrong",
+            "in-practice"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A request such as store pickup needs several systems to cooperate, so working out what must change starts from the business jobs involved; a capability is one such job, and several systems may contribute to it.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A merchant asks for store pickup: checkout, the store and the stock system must cooperate, and a pickup app helps only if it can get stock reserved and tell store staff what to prepare.",
+            "shows": "One ordinary request touches several jobs, so a product bought for it does not settle what must change."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Without a shared view of which capability must change, which system handles it and who depends on its answer, teams buy overlapping tools and leave the handoff between them unowned.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Kestrel & Pine reached 34 integrations and 41 apps through individually reasonable decisions.",
+            "shows": "Overlap and unowned handoffs build up one sensible purchase at a time.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "Starting from the business jobs involved.",
+          "introduces": "Two further requests, the three questions the approach asks, and what happens without a shared view.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Each step Eva's jacket passed through in the previous chapter is a capability on the map this chapter draws, and each handoff is a connection that someone must build and own.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Capabilities, the systems that handle them and the handoffs between them.",
+          "introduces": "The order from journey-of-an-order, whose steps are capabilities and whose handoffs are connections.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter draws the shared view as a map: it starts from Kestrel & Pine's whiteboard, defines the terms, lays out the capabilities in six layers with the fact each owns, adds the flows, places vendors on the finished map (the three ways products cover it, and how to read a product page), and ends with a merchant's own landscape (how many boxes need their own system at each stage, the four ways a landscape goes wrong, and Kestrel & Pine's systems placed box by box).",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The need for a shared view of capabilities and connections, now tied to the order the reader already followed.",
+          "introduces": "The map as the shared view, the order in which the chapter builds and uses it, and the two chapters that take over from it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: A Whiteboard in February 2027",
+      "controlling_idea": "Drawing the jobs needed to sell a jacket before placing the thirteen systems showed Kestrel & Pine, within an hour, the gaps and overlaps that five years of buying systems one at a time had hidden.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Shows the method working once, at one company, before any term is defined."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "January's scattered knowledge, February's whiteboard, what it showed within the hour, March's program: told in any other order the findings would come before the method that produced them."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The claim that a shared view of the jobs must come before the systems.",
+        "introduces": "The morning one company drew that view, and what it showed.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "In January 2027 Kestrel & Pine had thirteen systems and no shared picture of them: the integrations, the apps and what reached the ERP were each known to a different person.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Ruben Alves tracked the 34 integrations, Milan Petrov knew the 41 apps, Sanne de Wit knew what reached the ERP.",
+              "shows": "The knowledge existed and was not joined.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "Noor drew the jobs needed to sell a jacket first and placed the thirteen systems into those boxes only afterwards, and starting with the jobs made the gaps visible.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The jobs on the whiteboard: show the jacket, price it, check stock, take the order and payment, pick, ship, accept a return, invoice and count the sale.",
+              "shows": "The jobs can be listed without naming a system.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "Thirteen systems and no shared picture.",
+            "introduces": "The whiteboard, drawn jobs first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "list",
+          "controlling_idea": "Within an hour the whiteboard showed four empty boxes (product information and order management, then customer identity and availability, which had no owner either, with the delivery promise unowned in a smaller way) and one box with six writers (warehouse stock), a writer being any system, app or person that can change a fact.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "No PIM and no OMS; warehouse stock written by the WMS feed, by hand in the ERP, by hand in the platform and by three apps, with the POS writing store stock separately; the Black Friday Oversell of November 2026 (1,340 units oversold, 1,120 orders canceled or delayed, about €96,000) and the App That Wrote Stock of March 2026 (phantom reservations on 600 variants) both on that box.",
+              "shows": "The two incidents the reader already knows sit on a box the whiteboard marks.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Jobs drawn first, systems placed afterwards.",
+            "introduces": "What became visible: empty boxes, a box with six writers, boxes with no owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The whiteboard became the first working document of the Waypoint program approved in March, and the rest of the chapter is that whiteboard, generalized.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What the whiteboard showed.",
+            "introduces": "What it became, and that the chapter now generalizes it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "capability",
+      "heading": "What a Capability Is, and Why It Comes Before the Systems",
+      "controlling_idea": "A capability is a job named without reference to who does it, and because systems overlap while jobs do not, only a map drawn in capabilities shows overlaps and gaps.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Gives the whiteboard's boxes and arrows exact names and says why the jobs are drawn first."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The reason for drawing capabilities first needs the capability and system definitions; facts and flows are defined last because a fact is what a capability keeps and a flow runs between two capabilities."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The whiteboard's boxes, drawn before the systems.",
+        "introduces": "Exact terms for what was drawn: capability, system, vendor product, business fact, flow.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "controlling_idea": "A capability is a job the business needs done, named without reference to who does it; a system is software that does one or more such jobs, and a vendor product is a system someone sells, usually claiming several capabilities at once.",
+          "function": "definition",
+          "organization": "classification"
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The distinction matters because systems and vendor products overlap and capabilities do not: drawn in capabilities, an overlap shows as one box with two names and a gap as an empty box, while drawn in systems both are invisible.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The ERP, the WMS and the shop platform all have a stock field, yet there is one job called 'know what is physically on the shelf'.",
+              "shows": "Three systems can claim one job, and each looks complete from the inside."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: three systems that each look complete beside a grid of capability boxes where one box has three names and another is empty.",
+              "shows": "The same landscape hides its overlap and its gap in one drawing and shows them in the other."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Capability, system and vendor product as three different things.",
+            "introduces": "Why the map is drawn in capabilities.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "A business fact is something the business needs to be true about the world and a flow is the movement of a fact, or a request about it, from one capability to another, so the map is boxes and arrows.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Capabilities as the boxes of the map.",
+            "introduces": "The two remaining terms: business fact and flow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "map",
+      "heading": "The Map: Six Layers",
+      "controlling_idea": "About two dozen capabilities fall into six layers, and each capability is the natural home of one kind of business fact, recorded or derived, while some capabilities hold copies by design.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Lays out the map itself: the layers, the capabilities and the fact each one is the home for."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "After a paragraph on where the map comes from: layers, then the capabilities in them, then three notes on reading the table (two rows, one column, the entries marked as copies), then the derived facts; the notes cannot come before the table they explain, the notes on home and copy sit next to the derived facts because all three are about where a fact lives, and the derived facts come last because they are the exception to the table's rule that a fact is recorded in its home."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The vocabulary of boxes, facts and arrows.",
+        "introduces": "The boxes themselves, in six layers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "The map is the author's synthesis from the specialist vendors' own product descriptions and several product families' capability inventories; it is a teaching map, not a standard.",
+          "function": "context"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "A layer is a group of capabilities that share a purpose and a rhythm, and from the shopper inward the six layers are experience, offer, transaction, operations, partners and back office, and foundations.",
+          "function": "description",
+          "organization": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: six layers of a commerce platform and the directions in which they feed each other.",
+              "shows": "The six layers just named, in one picture, with what each passes to the next."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six-layer map.",
+            "introduces": "What a layer is and what each of the six is for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "For each capability the table gives the job in plain words, the business fact it is the natural home for and the chapter that works it out, and the one-line jobs are enough to place a system.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Twenty-four capabilities in six layers: layer, capability, the job in plain words, the fact it is the natural home for, the chapter that owns it.",
+              "shows": "Every part of a commerce platform has one row, one job and one fact, so any system can be placed against it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The six layers.",
+            "introduces": "The twenty-four capabilities inside them, one row each.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15b",
+          "controlling_idea": "Business-to-business ordering has two rows of its own in the table, the B2B buyer experience and EDI and e-invoicing, because it is a capability in its own right and not an add-on to the web shop.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Eurostat's 2024 figures put EDI-type sales at 11.07% of EU enterprise turnover against 8.39% for web sales, as commerce-business-models showed.",
+              "shows": "Orders between companies' systems are too large a share of commerce to be treated as a feature of the web shop.",
+              "source": "Eurostat, 2026 (2024 reference year), via commerce-business-models"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table of capabilities.",
+            "introduces": "The first of three notes on reading it: why business-to-business ordering has its own rows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The 'natural home' column says which system should hold a fact when two systems both hold it: the home is the one system that should write the fact; how to make that decision stick is the next chapter's subject.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A note on two of the table's rows.",
+            "introduces": "A note on its 'natural home' column.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15a",
+          "controlling_idea": "Several capabilities (the search index, the service view, the marketplace listing, the data warehouse) hold copies by design, which is safe as long as everyone knows they are copies and they are rebuilt from the home, never edited in place.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the capability map as a poster, twenty-four boxes in six bands, with search, service, marketplaces and analytics dashed as copies.",
+              "shows": "The table as one picture, with the copies marked."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The natural home of a fact and its writer.",
+            "introduces": "The entries marked 'a copy' and the rule that makes a copy safe.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Some capabilities own a calculation, not a record: availability is computed as available-to-promise, stock on hand minus commitments to unshipped orders minus any buffer held back.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Facts that are recorded in a home and copied elsewhere.",
+            "introduces": "Facts that are computed from other facts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "A derived fact needs one owner for its calculation whichever product runs it, because editing the result by hand bypasses the calculation and lets the storefront promise what the warehouse cannot deliver.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The delivery promise combines cut-off times, carrier lead times and location in the same way.",
+              "shows": "Availability is not the only derived fact."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: on hand minus already promised minus buffer equals what a channel may sell.",
+              "shows": "The owner of a derived fact is the computation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Availability as a calculation.",
+            "introduces": "Who owns a calculation, and what a hand edit does to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "flows",
+      "heading": "How the Pieces Talk: The Typical Flows",
+      "controlling_idea": "Eight typical flows carry facts between capabilities, each with its own need for freshness and exactness, and the joins they form are where commerce platforms fail.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Adds the arrows to the boxes and says which of them must be exact and fast."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The opening sentence asserts that the arrows differ in rhythm, the table is the evidence, the two patterns are read from it, and the closing claim about the joins needs all three; stated first, that claim would have nothing under it."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The boxes of the map.",
+        "introduces": "The arrows between them and what each must guarantee.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "The arrows carry a small number of fact types, each with its own rhythm: eight flows almost every merchant above the first stage runs, each with a direction, a freshness need, a consistency need and a consequence when it is slow or down.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight flows (product content, prices, stock and availability, orders, payments, shipments and tracking, returns and refunds, finance) with from and to, freshness needed, consistency, what happens if slow and if down.",
+              "shows": "The requirements differ per flow, so the flows cannot all be built the same way.",
+              "source": "The author's judgement from industry practice"
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Two patterns stand out in the table: only prices, orders and payments need exactness in near real time while everything else tolerates lag if a reconciliation stands behind it, and finance works in periods, not seconds.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: product, price and availability flow outward to the channels; orders flow inward and down to the warehouse; stock, shipments and returns flow back; finance receives a daily batch.",
+              "shows": "The directions of the flows in one picture."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The eight flows and their requirements.",
+            "introduces": "The two patterns in them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Every arrow is a place where one system's fact becomes another system's copy, and a copy can be late, lost or duplicated, which is why the joins, not the boxes, are where commerce platforms fail.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The flows and their different requirements.",
+            "introduces": "The joins as the place where failures happen.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "three-ways",
+      "heading": "Three Ways to Cover the Map",
+      "controlling_idea": "No vendor sells the whole map: a suite, a platform plus apps and a best-of-breed assembly each cover part of it, and each leaves joins to the merchant.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Places vendors' products on the map and shows what each way of buying leaves uncovered."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The three ways in parallel, from most covered by one vendor to least, then the two variants, then the comparison of the three ways and the specialist group on one table, then the rule; the rule comes last because it is read off the comparison, and the comparison needs its four options described first."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The whole map, boxes and arrows.",
+        "introduces": "How products that can be bought cover it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "No merchant builds the whole map and no vendor sells all of it; in practice it is covered in one of three ways, often mixed.",
+          "function": "claim"
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "A suite supplies most of the experience, offer and transaction layers in one vendor's data model, so the joins inside the covered boxes are the vendor's problem, while the warehouse, the carriers, the PSP, the marketplaces, the EDI partners and the ERP stay outside.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Salesforce described its Agentforce Commerce release of 6 July 2026 as one platform across B2C, B2B, point of sale and order management.",
+              "shows": "A suite's own claim is many boxes in one platform.",
+              "source": "Salesforce press release, 6 July 2026"
+            },
+            {
+              "kind": "source",
+              "what": "Adobe's October 2026 information center lists three ways to run Adobe Commerce and a separate SaaS, Commerce Optimizer, that can work alongside a third-party commerce backend.",
+              "shows": "Even a suite vendor sells parts that sit beside someone else's product.",
+              "source": "Adobe, October 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Three ways to cover the map.",
+            "introduces": "The first: a suite.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "A platform plus apps covers the center of the map (storefront to basic order handling) cheaply and well and rents the rest from many small vendors, each writing into the merchant's data, and leaves the operations and partner layers for the merchant to assemble.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's pricing page in November 2026 lists plans from €28 to a Plus tier 'from €2,100' a month, with lower card rates on higher tiers.",
+              "shows": "The center is cheap to start, and the platform also earns from payments.",
+              "source": "Shopify pricing, accessed November 2026"
+            },
+            {
+              "kind": "statistic",
+              "what": "Lightspeed's fiscal 2026 transaction-based revenue was $815.1 million against subscription revenue of $370.7 million.",
+              "shows": "A platform vendor earns more from payments than from subscriptions.",
+              "source": "Lightspeed fiscal 2026 results"
+            },
+            {
+              "kind": "fact",
+              "what": "Shopify completed the sale of most of Shopify Logistics to Flexport on 6 June 2023.",
+              "shows": "Hosted platforms retreat from the operations layer.",
+              "source": "Shopify, 2023"
+            },
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's 41 apps, three of them writing stock.",
+              "shows": "Apps are many small vendors writing into the merchant's data.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "One vendor covering many boxes.",
+            "introduces": "A platform that covers the center and rents the edges as apps.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Best-of-breed, or composable, buys one product per box, each best in its class and replaceable, and its cost is the joins.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "The MACH Alliance was founded in June 2020 by commercetools, Contentstack, EPAM and Valtech.",
+              "shows": "The assembly is a named alternative to the suite.",
+              "source": "EPAM, 2020"
+            },
+            {
+              "kind": "quotation",
+              "what": "Manhattan: an OMS is a platform 'designed to track and manage the lifecycle of an order from start to finish'; Akeneo: a PIM is a system 'to centralize, manage, enrich, and distribute product information for commerce'.",
+              "shows": "The specialist boxes are real product categories with their own definitions.",
+              "source": "Manhattan Associates and Akeneo, n.d., accessed November 2026"
+            },
+            {
+              "kind": "statistic",
+              "what": "The Alliance's February 2026 survey of 600 enterprise technology leaders found 37% naming integration complexity as a primary concern.",
+              "shows": "The cost of the joins is admitted by the assembly's own advocates.",
+              "source": "MACH Alliance, 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 6: the same grid covered by one suite block, by a platform block with app tiles, and by one product per box joined by many lines.",
+              "shows": "The three ways differ in who covers the boxes and where the joins fall."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A platform that covers the center.",
+            "introduces": "One product per box, joined by APIs and an integration platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Two variants are worth naming: ERP-centered commerce, which makes the ERP the center and the storefront a front end, and a specialist group, which pre-integrates several best-of-breed products under one owner.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Microsoft's documentation of 22 September 2026 says its Business Central Shopify Connector 'is preinstalled for all new sign-ups and trials'.",
+              "shows": "ERP plus hosted storefront is a mainstream small-merchant shape.",
+              "source": "Microsoft, 2026"
+            },
+            {
+              "kind": "case",
+              "what": "Katapull, a Dutch group: five companies joined forces on 31 March 2025; on 7 October 2026 a WMS vendor became its eighth label.",
+              "shows": "Six operational and partner boxes can come from one group, with the storefront still bought elsewhere.",
+              "source": "Katapull public pages; Dutch IT Channel, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The three main ways.",
+            "introduces": "Two variants of them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Set side by side, the three ways and the specialist group differ in which boxes one vendor covers, where the joins live, who defines 'order' and 'product', the shape of the cost, the time to a first sale, whom each fits and where each limits; ERP-centered commerce has no column because it combines a hosted storefront with an ERP and is not a separate way of buying.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Trade-offs of suite, platform plus apps, best-of-breed and specialist group: boxes covered by one vendor, where the joins live, who defines 'order' and 'product', cost shape, time to first sale, fits, limits.",
+              "shows": "Every column has joins that fall to the merchant; the options differ in where.",
+              "source": "The author's judgement"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three ways and the two variants, described one by one.",
+            "introduces": "The same options compared on the same seven rows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26a",
+          "controlling_idea": "The author's rule for a merchant that is not a vendor is to cover the center with one product it does not customize, cover operations with products built for operations, and own the joins itself.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's Waypoint decision W4: stay on the SaaS shop platform and surround it with an OMS, a PIM and an availability service.",
+              "shows": "The rule applied to one merchant.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The trade-offs, where every column leaves joins to the merchant.",
+            "introduces": "The author's rule, and Kestrel & Pine's decision as that rule applied.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "reading",
+      "heading": "Reading a Vendor's Product Page Against the Map",
+      "controlling_idea": "The map turns a vendor's feature list into three questions: which boxes the product claims, which facts it owns or copies, and what unit is behind its numbers.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Gives the reader the procedure for placing a vendor product on the map."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "No vendor covers the whole map, so every product is a claim on some of its boxes.",
+        "introduces": "A procedure for reading one product's page: which boxes, which facts, which unit.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "A product page lists features, and the map turns the list into three questions: which boxes the product claims, which fact it owns and which it copies, and what unit is behind its numbers.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A channel-integration product that claims 'order management' usually imports marketplace orders and pushes status back; a platform that claims 'inventory' usually holds a stock number per location.",
+              "shows": "A claimed box is often a flow or a copy."
+            },
+            {
+              "kind": "quotation",
+              "what": "Fluent Commerce, an OMS vendor: 'your ERP stays the system of record'.",
+              "shows": "A vendor can state which fact its product does not own.",
+              "source": "Fluent Commerce, n.d., accessed November 2026"
+            },
+            {
+              "kind": "statistic",
+              "what": "'1,300 marketplaces' (ChannelEngine, November 2026); '4,500+ customers' and '27,500+ users' (Katapull); Shopify's 2025 GMV of about $378 billion against revenue of about $11.6 billion.",
+              "shows": "Vendor numbers count different units.",
+              "source": "ChannelEngine; Katapull; Shopify Q4 2025 results and Digital Commerce 360, 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 7: a brochure read through a magnifying glass that leads to three question cards.",
+              "shows": "The three questions in one picture."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The same three questions apply to the systems a company already has, and the remaining sections turn from vendors to a merchant's own landscape.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Three questions for a vendor's page.",
+            "introduces": "The same questions for one's own systems, which the rest of the chapter takes up.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The map does not change with scale; what changes is how many boxes have their own system, and a box deserves one when its capability has more than one producer and more than one consumer and its present holder cannot carry the workflow.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Says when a box needs its own system, so the map is not read as a shopping list."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Vendors' products, read against the map.",
+        "introduces": "The merchant's own landscape, and the first thing to ask of it: how many boxes should have their own system at its stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "The map stays the same across the four scale stages while the number of boxes with their own system grows, from three or four at Starting to twelve or more at Omnichannel, with some boxes shared across brands at Group.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages: boxes with their own system, typical shape, warning sign that the shape is ending.",
+              "shows": "Each stage fills more boxes and has a sign that it is ending.",
+              "source": "The author's judgement; stages from commerce-business-models"
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The producer-and-consumer test: a box should get a dedicated system when its capability has more than one producer and more than one consumer and the system that holds it today cannot carry the workflow.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine is at stage 3 with four boxes still empty.",
+              "shows": "The company is past the point where the test says to fill them.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "example",
+              "what": "A PIM is unnecessary at stage 1 and overdue at stage 3 with four channels; an OMS is overkill with one channel and one warehouse and overdue the day a second order source appears.",
+              "shows": "The test gives different answers at different stages for the same box."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 8: four copies of the same map on rising steps, with more boxes filled at each.",
+              "shows": "The map is constant and the filling changes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Boxes filled per stage.",
+            "introduces": "Kestrel & Pine's stage and the test for filling a box.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "when-it-goes-wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "A landscape goes wrong on the map in four ways (an overlap, a gap, a box held by a system bought for another box, and a map copied from a giant), and each is visible on the map before it shows in the business.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S6"
+        ],
+        "how": "Generalizes Kestrel & Pine's marks into four failures a reader can look for, each with how to detect it."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Four parallel failures: the two about ownership first (too many owners, none), then the two about fit (a system in the wrong box, a map for the wrong size)."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "How many boxes a landscape should fill at its stage.",
+        "introduces": "The four ways a landscape gets the filling wrong, each with how it is detected on the map.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "controlling_idea": "The map fails in four ways, and each shows up on the map before it shows up in the business.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 9: four small maps labeled Overlap, Gap, Wrong box and Giant's map.",
+              "shows": "The four failures as marks on the map."
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "An overlap is two systems owning one fact; it is found by a write audit that lists every system, app, script and person that can change the fact, and repaired by naming a single writer and re-publishing the fact from it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The App That Wrote Stock: a pre-order app adjusted inventory in the platform while the WMS feed also wrote it; 600 variants carried phantom reservations for two weeks. The first weekly reconciliation in May 2027 found 2.3% of active variants with a different quantity between the WMS and the platform (illustrative).",
+              "shows": "Two writers of one recorded fact produce differences that only a comparison finds.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Four failures.",
+            "introduces": "The first: an overlap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "A gap is a fact nobody owns; it fills itself with spreadsheets and copies that start acting as records, shows as the empty box, and is repaired by naming a home before buying a system for it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's product content lived in four places and its order status in four.",
+              "shows": "With no box named, every holder acts as the record.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A fact with two owners.",
+            "introduces": "A fact with none.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "A box held by a system that was bought for a different box works at the stage it was bought in and becomes the bottleneck later; it is found by comparing the box the system was bought for with the boxes it now holds, and repaired by giving the box to a system built for it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Kestrel & Pine's ERP holds purchasing, the ledger, the item master, manual wholesale orders and the stock master: five jobs, two of them badly.",
+              "shows": "A system can cover boxes it was never bought for.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Facts with too many owners or none.",
+            "introduces": "A fact owned by a system bought for something else.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A map copied from a far larger company gives a stage-2 merchant a system per box and a platform team to run them; the boxes are the same, the number of systems that should fill them is not, and a box that fails the producer-and-consumer test stays inside the shop platform.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A merchant at stage 2 that draws a stage-4 map has bought the Giant's Boots; below the producer-and-consumer test the box stays inside the platform.",
+              "shows": "The stage test, not the size of the map, decides how many systems."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Applies the stage test as a limit on filling boxes."
+          },
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Boxes held badly.",
+            "introduces": "Boxes filled that did not need filling.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Kestrel & Pine's Systems on the Map",
+      "controlling_idea": "Placed on the map, Kestrel & Pine's thirteen systems leave four boxes empty and several with more than one writer, and the Waypoint decisions are a plan to fill the first and thin the second.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S6"
+        ],
+        "how": "Applies the map to one landscape and shows every 2026 incident on an empty or over-written box."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The four failures and how each shows on the map.",
+        "introduces": "One whole landscape, Kestrel & Pine's thirteen systems placed box by box, where the first three failures are all found.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "Noor's February whiteboard as a table, reduced to the boxes that were not simply covered, shows the four empty boxes, the boxes with several writers and the systems doing jobs they were not bought for, each with what it cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Thirteen rows: capability, system in January 2027, status on the map; product information, order management, availability and identity are empty; pricing has three writers (the Price Drift, €179 for nine days, about €8,200 lost); refunds issued by hand in the PSP console (the Double Refund, €19,400); the ERP does five jobs; 62% of wholesale orders through the portal and 38% keyed by hand; 34 integrations.",
+              "shows": "Each incident the reader knows sits on an empty box or a box with several writers.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 10: Kestrel & Pine's thirteen systems fill most of the map, but four boxes have no system.",
+              "shows": "The table as one picture."
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The Waypoint decisions read as a plan to fill the empty boxes and thin the overlaps: a PIM, an OMS with an availability service as one of its modules, the WMS as the single writer of physical stock, and integration standards for the arrows, with identity still open.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W3 (PIM, Q3 2027), W1 and W2 (OMS with an availability service, Q4 2027; the WMS as single writer of physical stock), W5 (integration standards).",
+              "shows": "Each decision answers one mark on the map.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Empty boxes and overlaps.",
+            "introduces": "The decisions that answer them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The boxes, the arrows and the vendors' coverage are one argument made three times: a fact has one natural home, every other holder is a copy fed by a flow, and a product is a claim on some boxes that leaves the flows between them to the merchant. So three marks on the map (an empty box, a box with more than one writer, a box whose fact is derived) say both where a landscape will fail and what no purchase will fix.",
+    "so_what": "A reader who draws the jobs first finds the places where two systems both believe they own a fact, or none does, before an incident finds them, and reads a vendor's page for what it leaves to the merchant.",
+    "callback": {
+      "to": "The store-pickup request of the opening, where a pickup app helps only if it can get stock reserved and tell store staff what to prepare.",
+      "how": "The reader can now say why in the chapter's terms: pickup is several boxes (cart and checkout, inventory and availability, store operations) and the flows between them, and an app is a claim on one box at most."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Draw the map in capabilities before systems, mark the empty boxes, the boxes with more than one writer and the boxes whose fact is derived, and take the nine questions to a design review, a vendor demo or the first week in a new company."
+    },
+    "hand_off": {
+      "to": "boundaries-and-systems-of-record",
+      "relationship": "contrast",
+      "carries_over": "The capability map, which says what the parts are and what each should own.",
+      "introduces": "What happens when two parts hold the same fact and disagree, which the map alone cannot settle."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "Kestrel & Pine's map and the plan read from it.",
+      "introduces": "The chapter's answer set against its opening, then what holds across the chapter, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p37a",
+        "controlling_idea": "The store-pickup request of the opening is several boxes and the flows between them, so a pickup app is a claim on one box at most; the same holds for the whole map (a fact has one natural home, every other holder is a copy fed by a flow, and a product covers boxes and leaves the flows between them to the merchant), which is why the map is worth drawing before anything is bought.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's request set against the map: pickup needs checkout to take the order, availability to reserve the stock and store operations to tell the staff, and the flows between them.",
+            "shows": "The reader can now say what the pickup app of the opening could not do alone, in the chapter's terms."
+          }
+        ]
+      },
+      {
+        "id": "p38",
+        "form": "list",
+        "controlling_idea": "Established: a commerce platform is a set of capabilities spread over several systems, no vendor covers the whole map, and business-to-business ordering is a first-class capability.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "By Eurostat's 2024 figures, EDI-type sales are a larger share of EU enterprise turnover than web sales (the figures are in the map section).",
+            "shows": "Business-to-business ordering by structured message is larger than web sales.",
+            "source": "Eurostat, 2026 (2024 reference year)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, sorted by how settled they are, starting with what the public record establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p39",
+        "form": "list",
+        "controlling_idea": "Depends on context: how many boxes get a dedicated system, which of the three ways fits the team, and whether a specialist group is a good deal.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What the public record settles.",
+          "introduces": "What changes with the merchant's stage, shape and team.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p40",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: draw the map in capabilities before systems and mark empty boxes, boxes with more than one writer and boxes whose fact is derived; for a merchant that is not a vendor the durable shape is a center it does not customize, operations products built for operations, and joins it owns.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p41",
+        "form": "list",
+        "controlling_idea": "Nine questions let the reader apply the map in a design review, a vendor demo or a first week.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p42",
+        "controlling_idea": "The map says what the parts are and what each should own; it does not yet say what happens when two parts hold the same fact and disagree, which is the subject of the next chapter.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The capability map, which says what the parts are and what each should own.",
+          "introduces": "What happens when two parts hold the same fact and disagree, which the map alone cannot settle.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Deciding which system is the record when several hold a fact.",
+      "covered_in": [
+        "boundaries-and-systems-of-record"
+      ]
+    },
+    {
+      "topic": "Vendor categories, pricing models and the market timeline.",
+      "covered_in": [
+        "commerce-platform-landscape"
+      ]
+    },
+    {
+      "topic": "The economics of suite versus assembly; the stages as a model.",
+      "covered_in": [
+        "build-buy-or-assemble",
+        "commerce-scaling-stages"
+      ]
+    },
+    {
+      "topic": "The internals of any single capability; each row of the capability table links to the chapter that owns it."
+    },
+    {
+      "topic": "Integration styles and reliability.",
+      "covered_in": [
+        "part-6"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "The six-layer grouping is the author's; the Domain Coverage page may want to reconcile it with the Productscape model families' own groupings.",
+    "'Store operations' and 'point of sale' are listed as two capabilities that share one fact (store stock); a reviewer may prefer to merge them.",
+    "The flows table's freshness figures are judgement; inventory-and-availability and pricing-architecture may tighten them.",
+    "Thesis rubric (a reader given only the thesis object, 2026-11-12): FAIL on 'answers the question'. The question has three parts (what the parts are, what each does, how they connect) and the claim says nothing about how they connect; it is also a claim about how to map a platform where the question asks for an inventory. The reader's other remarks: disputed_by is worded against the view it states ('habit', 'which hides'), and 'best mapped' is the claim's one evaluative word. The thesis is copied from the journal spec and was not changed here; the author decides there whether to add the flows to the claim or reword the question.",
+    "Flow rubric note not taken: the author's-synthesis list (p40) holds two ideas and its second bullet repeats the rule of p26a. Kept, because the three-tier take-away (established, depends on context, the author's synthesis) is the book's house format and the rule is the chapter's recommendation.",
+    "Flow rubric note not taken: the layer definition's 'a purpose and a rhythm' is only half paid when the layers are listed (each gets a purpose; rhythm gets content in the flows section). The definition moved to the layers paragraph (p13) and the author's wording is kept.",
+    "Second flow run (sound with notes), note not taken: work the store-pickup request through in the body, for instance as a pickup app's product page read with the three questions, so that the conclusion's 'one box at most' is earned there. Not done because it would add a worked example the author did not write; the conclusion places the request on the map in two sentences.",
+    "Round 1 of the draft check, for the author to confirm: both flow readers asked why ERP-centered commerce has no column in the trade-off table. The chapter now says it has none because it combines a hosted storefront with an ERP and is not a separate way of buying; that reason is inferred from the Microsoft example, not taken from the author.",
+    "Round 1, for the author to confirm: both flow readers found the capability table giving store stock two homes ('shared with POS') against the one-home rule. The store-operations row now names stock counts and transfers as its fact and says store stock has its home in the point of sale, which is ledger decision W1 (the POS is the system of record for store stock). This also answers the older open question about merging the two capabilities, unless the author prefers the merge.",
+    "Round 1, not changed: both flow readers found that the house heading 'Across Scale Stages: When It Fits and When It Limits' does not say what 'It' is. The heading is used by 37 chapters of the book and is kept; the section now opens by saying that a shape that fits one stage limits the next.",
+    "Round 1, not changed: the opening callout names three failure patterns (The Spaghetti Junction, The Giant's Boots, The Lynchpin) and the failures section names four failures of its own; only The Giant's Boots is picked up by name. The callout is the book's house format and outside the spec's paragraphs.",
+    "Round 3 (the last round) ended in escalate with nine findings that both readers reported; every structural check, the introduction, the conclusion and all five cold-reader criteria passed. Fixed afterwards without a further round: the scene's list no longer promises 'three things'; the Adobe sentence is two sentences; 'illustrative' is no longer attached to a second figure; 'because none was' is completed; the third failure's label says 'system', as its text does; 'seats' is glossed. The check report is therefore stale.",
+    "Round 3, remaining, the author's evidence (spec fault, both readers): in the platform-plus-apps paragraph (p23) a POS vendor, Lightspeed, is the evidence for a point about shop platforms, and the paragraph runs through pricing, payments revenue, logistics and apps. The author decides whether Lightspeed stays there.",
+    "Round 3, remaining, the author's text (spec fault, both readers): Katapull's 'six operational and partner boxes' include its POS, which the capability table places in the experience layer, and 'the storefront platform still bought elsewhere' follows a list that starts with an ERP-and-webshop product.",
+    "Round 3, remaining (spec fault, both readers): three ways, two variants and four table columns. The reason now given for ERP-centered commerce having no column did not satisfy either reader; the author decides between a fifth column and dropping the specialist-group column.",
+    "Round 3, remaining (both readers, different reasons): the layers paragraph (p13). One reader never gets a 'rhythm' per layer after the definition promises one; the other loses the partners sentence in the EDI parenthesis.",
+    "Round 3, remaining (both readers): the take-aways mention a team of fourteen and 'app governance', neither of which the body prepares; the May 2027 reconciliation is told in the failures section before decision W1 is listed in the last section.",
+    "Round 3, remaining (one reader each): product identity appears in three rows of the capability table and the customer in two; 'everything else tolerates some lag' beside 'seconds to minutes' for stock; 'a merchant that is not a vendor' excludes a group the chapter never introduces; the Fluent quotation names no fact; 'producer' is hard to tell from 'writer'; the giant's map is the number-of-boxes question again after 'filling the right number of boxes is not enough'; the Kestrel & Pine table says January where the whiteboard is February and adds the pricing overlap, which the scene did not show; the Waypoint decisions are listed out of numeric order and the availability service is a product in W4's sentence and a module in W1's; the take-aways claim vendor definitions for eight specialist categories where the body quotes two. Terms: MACH's first three words, 'data model', 'platform team', B2C.",
+    "Round 2, not changed (one reader each): the scene gives detailed findings before the vocabulary is defined (the other reader found the scene sound); 'home' is a capability in the table and a system in the note under it; 'one owner whichever product runs it' sits beside 'its owner is the computation' (Figure 4's caption); 'several systems may contribute' to a capability in the introduction against 'only one system should be doing it'; physical stock appears in three rows of the capability table; 'natural home' heads a table column one paragraph before it is explained; 'state model', 'tenancy' and 'extensibility' in the table are left to their chapters.",
+    "Round 1, not changed (one reader): 'an OMS is ... overdue the day a second order source appears' reads against the stage table, where a second order source ends stage 1 and the OMS arrives at stage 3. Both are the author's sentences.",
+    "Round 1, not changed (one reader): the Kestrel & Pine table's availability row lists four holders of stock beside 'six writers of stock'.",
+    "Second flow run, note not taken: split the reading section's list so each of the three questions is its own paragraph, or fold the section into 'Three Ways'. Kept as one numbered list, as published.",
+    "Second flow run, note not taken: the author's synthesis names three marks (empty box, several writers, derived fact) and the failures section names four failures; the derived fact is not one of the four and the wrong box and the giant's map are not among the marks. The opening paragraph of the conclusion no longer repeats the three marks; the two lists themselves are the author's.",
+    "Flow rubric note not taken: drop the store-pickup opening for Eva's jacket. Kept; the conclusion now returns to it (p37a).",
+    "Flow rubric note taken in part: the reader found p30 (a system bought for one box that has grown into three) and p36 (a box held by a system bought for another box) to be one observation. p30 is now the bridge from vendors to the merchant's own landscape and keeps the observation as one sentence; p36 keeps the diagnosis."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 of the draft check escalated on two spec faults found by both flow readers (pre-approved changes to order and evidence). The bridge from chapter 1 (p04, 'Where we are in the order's journey') read as a step back after the roadmap: it now precedes the roadmap (p03), which ends the introduction and leads into the scene, as in chapter 2. The Eurostat figures appeared for the first time in the take-aways: they are now the evidence of the note on the business-to-business rows (p15b), and the take-away (p38) states the comparison without repeating them.",
+      "rejected": [
+        "Keeping the house position of 'Where we are' at the end of the introduction.",
+        "Leaving the figures in the take-aways only."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on spec faults (auto mode; changes to order, paragraph ideas and transitions were pre-approved by the author; intent, thesis, role and acceptance criteria untouched). 'Writer' was defined in the note on the natural-home column (p15) after carrying weight in the scene: the definition moves to the scene's list (p07), where the word first appears, and the list now names the four empty boxes together before the box with six writers. The comparison paragraph (p26) says why ERP-centered commerce has no column. Figure 2 moves from the provenance paragraph (p12) to the layers paragraph (p13), after the layers are defined, and Figure 7 from the bridge paragraph (p30) to the three questions (p29). The store-stock rows of the capability table give the fact one home (the point of sale), as ledger decision W1 has it.",
+      "rejected": [
+        "Changing the house heading of the scale-stage section.",
+        "Adding a fifth column to the trade-off table.",
+        "Leaving 'writer' undefined until the table notes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The author asked for the flow rubric's notes to be taken without review (auto mode). Taken: the roadmap paragraph (p03) announces every section in order; the vendor sections are adjacent (three ways, then reading a product page) and the three sections about a merchant's own landscape follow (stages, the four failures, Kestrel & Pine's systems on the map), so 'In Practice' moves from before the failures to after them and its plan no longer uses repairs the reader has not met; the layer definition moves from p09 to the layers paragraph (p13); the note on the table is split into the natural home (p15) and copies by design (p15a), and a third note (p15b) says why business-to-business ordering has its own rows, which the take-aways claimed with no support in the body; the trade-off table gets its own comparison paragraph (p26) and the rule becomes p26a; p30 becomes the bridge to the merchant's own landscape; the stage test is named where it is given (p28) and its producer and consumer are glossed; the wrong-box failure gets a repair (p36) and the giant's map its remedy (p37); the scene's list and the Kestrel & Pine table use one count (four empty boxes, as the ledger has it); a synthesis paragraph (p37a) opens the conclusion, returns to the store-pickup request and says why the map matters. Every transition_in the moves invalidated was rewritten and the flow rationale says what would break. In this chapter the hosted product is 'the shop platform' and 'commerce platform' is the whole set of systems, as in chapters 1 and 2.",
+      "rejected": [
+        "Keeping the published section order.",
+        "Moving the stages before the three ways, which would use 'platform plus apps' in the stage table before it is defined.",
+        "Removing the business-to-business take-away and its Eurostat figure."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec with one paragraph per unit of the published chapter in the published section order, so that the first structural check passed against the unchanged text and any reordering was a visible decision.",
+      "rejected": [
+        "Writing the spec with the order already changed, which would have described a chapter that does not exist."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Success criteria of the former spec.md that listed contents were rewritten as reader outcomes or dropped. Added beyond the journal spec's AC-1, all minor, for the author to keep or drop: AC-2 (why a list of systems hides gaps and overlaps; from 'capabilities are defined before systems'), AC-3 (derived facts; from 'derived facts are distinguished from recorded facts'), AC-4 (which flows must be exact; from 'a flows table gives freshness, consistency and failure behavior'), AC-5 (the author's rule for covering the map; from 'suite, platform plus apps and best-of-breed are each explained'), AC-6 (no term before it is explained; from 'a reader new to the field can define every term'). Dropped as inventories: the capability table listing every capability of the PLAN contract; Kestrel & Pine's systems placed with the ledger numbers (agreement with the ledger is a duty of every edit, not a reader outcome); the presence of the take-away tiers, the questions and the scale-stage table. The 6,500-word limit is kept as length.max_words.",
+      "rejected": [
+        "Carrying the nine inventory criteria over as they were."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose capabilities-first over systems-first for the map, because overlaps and gaps are invisible in a systems view; the Kestrel & Pine scene makes the same move on a whiteboard.",
+      "rejected": [
+        "A systems-first map."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Six layers rather than the three or four of most vendor diagrams, so that operations (warehouse, carrier, store, returns) and partners (marketplaces, EDI, ERP) each get a layer; those are the layers hosted platforms do not cover, which is the chapter's point about vendor coverage.",
+      "rejected": [
+        "The three or four layers of most vendor diagrams."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Reduced the Kestrel & Pine placement table to the boxes that are empty or overlapping, after the first draft exceeded the length cap; the fully covered boxes are listed in one sentence instead.",
+      "rejected": [
+        "A row for every covered box."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used no research-and-practitioner source; the layers and flows are synthesis, and the chapter says so rather than borrowing authority from a reference that does not describe this map.",
+      "rejected": [
+        "Citing a reference model that does not describe this map."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Systems landscape, incidents, Waypoint decisions."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-platform-landscape.md",
+      "contributed": "Platform categories, specialist layers, MACH, pricing, vendor-claim units, Katapull public facts."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-commerce-business-models.md",
+      "contributed": "Eurostat EDI figure, when OMS, PIM and WMS are introduced."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/productscape-digest.md",
+      "contributed": "Cross-model capability inventory, used as a checklist of capabilities only."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, journey-of-an-order, commerce-business-models, boundaries-and-systems-of-record, commerce-platform-landscape",
+      "contributed": "Neighbors: what the reader already knows and what is left to later chapters."
+    },
+    {
+      "kind": "external",
+      "ref": "Salesforce press release (2026-07-06); Adobe Commerce platform and services page (2026-10-21)",
+      "contributed": "The suite's coverage in the vendors' own words."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify pricing (accessed 2026-11); Shopify Logistics sale (2023-06-06); Shopify Q4 2025 results (2026-02-11); Lightspeed FY2026 results (2026-05-21)",
+      "contributed": "Hosted-platform pricing, the retreat from logistics, payments revenue, GMV against revenue."
+    },
+    {
+      "kind": "external",
+      "ref": "Microsoft Business Central Shopify Connector documentation (2026-09-22)",
+      "contributed": "ERP-centered commerce as a mainstream small-merchant shape."
+    },
+    {
+      "kind": "external",
+      "ref": "Manhattan Associates, 'What is an OMS'; Akeneo; Fluent Commerce; ChannelEngine (all n.d., accessed 2026-11)",
+      "contributed": "Specialist vendors' definitions of their own boxes; a stated system-of-record boundary; a connector-count claim."
+    },
+    {
+      "kind": "external",
+      "ref": "Katapull pages (accessed 2026-11) and Dutch IT Channel (2025)",
+      "contributed": "The specialist-group shape, from public pages only."
+    },
+    {
+      "kind": "external",
+      "ref": "EPAM MACH founding release (2020-06-24); MACH Alliance Enterprise Technology Report (2026-02-18)",
+      "contributed": "The MACH Alliance's founding and the 37% integration-complexity figure."
+    },
+    {
+      "kind": "external",
+      "ref": "Eurostat, E-commerce statistics (2024 reference year)",
+      "contributed": "EDI-type sales 11.07% against web sales 8.39% of EU enterprise turnover."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Round 3 (escalate: 15 passed, 26 failed, of which 17 one-reader or term findings recorded as minor). Cheap draft faults fixed afterwards without a further round; remaining findings recorded under open_questions. The check report is stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 15 passed, 28 failed, of which 14 one-reader or term findings recorded as minor) resolved in the spec: p04 before p03; Eurostat figures moved from p38 to p15b. Round 2's draft faults fixed in the chapter: the scene's first list item unpacked, 'empty' used one way, Waypoint introduced where first named, the Adobe, Shopify, Lightspeed, MACH and Katapull passages restructured, Kestrel & Pine's four empty boxes named in the stages, the May 2027 reconciliation placed in time, the ERP's five jobs attributed, the team of fourteen anchored; glosses for app, rhythm and stock master; the roadmap says the vendor sections use public pages and reports."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 14 passed, 40 failed, of which 22 one-reader or term findings recorded as minor) resolved in the spec: ideas of p07, p15 and p26 revised, Figures 2 and 7 re-attached (p13, p29). The chapter is revised to match and the round's draft faults fixed: the two further requests in the introduction, the layer labels of the capability table, the inventory and store-stock rows, the flows table's named cells, 'only three flows', the Adobe, Shopify, Lightspeed and Katapull evidence, the Fluent quotation, the opening of the reading section, the stage test stated before its application, the May 2027 reconciliation, the giant's map's recovery, the Waypoint decision numbers and the lead-in to the Kestrel & Pine table; glosses for writer, join, reconciliation, item master, click-and-collect, parity, system of record and Business Central."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Second flow run (sound with notes): the three notes on the table reordered (two rows, the natural-home column, the copies) so that home, copy and derived fact are adjacent; 'writer' defined in p15; p37a no longer repeats the three marks of p40; flow rationale says why vendors come before the merchant's own landscape. 46 paragraphs."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes) taken: sections reordered to scene, capability, map, flows, three ways, reading a product page, stages, failures, Kestrel & Pine on the map; p03 rewritten as the roadmap; layer definition moved to p13; p15 split (p15a new) and p15b added; p26 split (p26a new); p37a added to the conclusion; roadmap, flow rationale and the transitions of every moved unit rewritten. 46 paragraphs. The chapter is revised to match."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter (42 units); record-keeping sections carried over. Status draft."
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Added the capability-map poster to 'What each capability owns' (24 capabilities in six layers, copies dashed)."
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Added four figures: three ways to cover the map, the map filling with scale, reading a vendor page, and four ways the map fails."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: aligned the empty boxes with the ledger (four: product information, order management, availability, customer identity), linked the scale stages to their owning chapter, and defined theme, headless, Peppol and BI."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}
