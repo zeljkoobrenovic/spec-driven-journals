@@ -67,7 +67,7 @@ Explaining what went wrong in the bump test, and building a platform that would 
 | Term | Definition | Why it matters in a marketplace |
 | --- | --- | --- |
 | **Randomization unit** | The entity assigned to a variant | Buyers, sellers, listings, region × category cells and time slots give different biases and different power |
-| **Analysis unit** | The entity over which metrics are averaged | Must match or be nested in the randomization unit; analyzing per buyer a test randomized per region understates uncertainty |
+| **Analysis unit** | The entity over which metrics are averaged | Must match the randomization unit or contain it; analyzing per buyer a test randomized per region understates uncertainty |
 | **Interference** | A unit's outcome depends on other units' assignments | The default condition for ranking, pricing and visibility changes, not an edge case |
 | **Cluster randomization** | Assigning groups of units that interact mainly with each other (a city's bike market, a district's rentals) as one unit | Contains most interference inside clusters, at the cost of fewer effective units |
 | **Guardrail metric** | A metric that must not degrade beyond a set threshold for a change to ship, regardless of the primary result | Protects liquidity, the other side of the market, and the control group itself |

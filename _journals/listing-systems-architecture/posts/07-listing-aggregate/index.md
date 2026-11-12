@@ -273,7 +273,7 @@ The command interface is small and explicit. I prefer intent-named commands to a
 | `ApplyEnforcement`, `LiftEnforcement` | Any | `ListingRestricted`, `ListingBlocked`, `ListingRestored` | Search, alerts, messaging: minutes, faster for fraud |
 | `Archive`, `Purge` (clock) | Terminal states | `ListingArchived`, `ListingPurged` | Every copy, including media and analytics, within the erasure deadline |
 
-The table names events by meaning; the contract folds them into twelve domain event types: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field (see [[event-driven-listings]]). Three properties make the contract work.
+The table names eighteen events by meaning; the contract folds them into twelve domain event types: drafts and internal moderation steps stay inside Supply, and related transitions share one type distinguished by a `cause` field (see [[event-driven-listings]]). Three properties make the contract work.
 
 **Events carry state, not only notice.** Each event carries the new version, the publication state, the overlay and the changed fields, so a consumer that missed an event can still converge on the latest one. A consumer receiving version 7 when it holds version 5 applies version 7; a consumer receiving version 5 when it holds 7 ignores it.
 

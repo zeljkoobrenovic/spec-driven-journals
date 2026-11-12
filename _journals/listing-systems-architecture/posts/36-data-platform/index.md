@@ -40,7 +40,7 @@ The chapter starts with Veldmark's board question, then covers the platform's pu
 
 On Monday 15 March 2027, Henrik de Boer, Veldmark's Group CEO, sends a short e-mail to his leadership team. Veldmark is the fictional marketplace group this book follows (see [[meet-veldmark]]). The board pack for the first quarter will, for the first time, show "contacts per live listing" for every brand, because the investor's operating partners want one liquidity number that can be compared across Tradeyard, Motorvane and Hearthly. He asks for last week's figures by Wednesday.
 
-Priya Raman, Head of Data & ML, already knows what will happen. Tradeyard and Motorvane run Snowflake, in separate accounts with separate models. Hearthly runs BigQuery. Keybridge runs Azure Synapse, but has no buyers, so no contacts to count. Each brand has a "contacts" table and each table is correct by its own definition:
+Priya Raman, Head of Data & ML, already knows what will happen. Tradeyard and Motorvane run Snowflake, in separate accounts with separate models. Hearthly runs BigQuery. Keybridge runs Azure Synapse, but has no buyers, so no contacts to count; the question therefore spans three warehouses. Each brand has a "contacts" table and each table is correct by its own definition:
 
 | Brand | What its dashboard calls a contact (March 2027) | Source |
 | --- | --- | --- |
