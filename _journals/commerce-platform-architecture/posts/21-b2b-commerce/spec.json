@@ -1,0 +1,1571 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "b2b-commerce",
+  "journal": "commerce-platform-architecture",
+  "part": "part-5",
+  "title": "Selling to Businesses: Accounts, Contract Prices, Quotes and Approvals",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/21-b2b-commerce/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap paragraph, p05, and a conclusion paragraph that answers the opening, p47); these are listed in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The B2B object model the platforms share (an organization with locations, people and roles, with prices, assortments and terms attached to the organization or location) and the differences from a consumer purchase: contract and tiered prices excluding VAT, quotes, payment terms, credit limits, pre-season orders and the buyer's own approval rules.",
+        "The price layers (list, tier, contract, quote), the rule that the most specific wins, and why a quote freezes the price the order and the invoice use.",
+        "The four ways to give business customers a channel (a B2C platform's B2B features, a dedicated B2B platform, an ERP-driven web store, the buyer's own system through EDI or punchout) and where each fits."
+      ],
+      "believe": [
+        "The ERP owns the money facts (company identity, wholesale and contract prices, payment terms, credit limits, invoices) and publishes them; the platform owns the session facts (logins, roles, the buyer's approval rules).",
+        "The share of wholesale orders keyed in by hand measures the facts the portal cannot see: it is a list of missing integrations, not of missing features."
+      ],
+      "can_do": [
+        "Write the ownership table for the company account, contacts, prices, quotes, terms and credit, approval rules, orders and invoices at their own company.",
+        "Decide whether a credit check at order placement should ask the ERP synchronously or accept the order and hold it, and choose among the four channel options by the buyers and the facts the checkout needs."
+      ]
+    },
+    "audience": {
+      "who": "Newcomers who have joined a brand, wholesaler, manufacturer or commerce vendor with a business-customer channel; most of all the engineer or architect asked to 'move wholesale onto the portal', who must decide what the portal reads from the ERP. Product managers choosing between a consumer platform's B2B features and a dedicated B2B platform come next.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: product, variant, SKU and GTIN with one owning system per attribute; prices selected once at order placement and frozen, dated copies compared daily; available-to-promise and per-channel buffers; checkout creating the order once; one order record with three status lines; tax from three facts, one invoice per shipment, credit notes as the only correction.",
+        "From the previous chapter: a marketplace connector owns nothing, each channel gets one available-to-promise figure, and every marketplace order is created in the order record under the marketplace's id."
+      ],
+      "does_not_know": [
+        "Company account, contact, location, roles; contract pricing, tiered pricing, customer-specific assortment; prices excluding VAT for business buyers.",
+        "Quote, quote validity, draft order; payment terms (net 30), credit limit, open balance, credit check; the buyer's approval workflow, budgets and cost centers.",
+        "Pre-season and in-season orders; punchout, cXML, OCI; B2B2C; ERP-driven web store; Peppol."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a steady share of e-mailed wholesale orders, the reader names the facts the portal cannot see and the integrations that would bring those orders in, not a new B2B platform.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand's B2B portal takes 62% of its wholesale orders; the rest arrive by e-mail or phone and are keyed into the ERP, and that share has not fallen in two years. The larger accounts have pre-season discounts agreed per account, and finance holds some portal orders by hand a day after they are placed. Using only this chapter: why do these buyers keep e-mailing, and what would bring their orders into the portal?",
+        "expected": "The portal cannot see what they agreed or what they owe: pre-season and contract prices live in the ERP's customer price lists and in e-mail, credit is checked only in the ERP at order entry, and portal and keyed orders are two records. Publish contract and pre-season price lists from the ERP as price events with effective dates into each account's catalog; check credit at placement against the ERP's open balance, synchronously if the ERP answers fast enough or by accepting and holding the order with an event-driven release; create every wholesale order, however it arrives, in one order record. Missing integrations, not missing features."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given an invoice priced from a changed price list after a quote was accepted, the reader names the rule that was broken and the design that prevents it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A business buyer accepts a quote at a negotiated price; before the goods ship, the seasonal price list changes, and the invoice shows the new list price. Using only this chapter: what went wrong, and how should quotes, orders and invoices be designed?",
+        "expected": "A quote freezes the price: it is stored as an object with a validity date, the order is created from it, and the invoice is generated from what shipped at the price the order carried, never recomputed from the current price list. Which price layer wins (most specific: quote over contract over tier over list) is written down and implemented once in the pricing source, so the portal, the order and the invoice compute the same price."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say whether a punchout cart is an order and where the eventual order goes.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: a corporate buyer's procurement system opens the supplier's shop, the buyer fills a cart, and the cart returns to the procurement system. Is that an order, and where should the eventual order be created?",
+        "expected": "No: the cart is a requisition returned to the buyer's procurement system for its own approval. The order arrives later as a cXML OrderRequest or an EDI ORDERS and is created in the same order record as a portal order, with the buyer's purchase order number as its uniqueness key."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "What differs when the buyer is a company (accounts with several people and locations, negotiated prices, quantity breaks, payment terms, credit limits, approvals, pre-season orders); which records every B2B platform needs; who should own the company account, contacts, prices, terms, credit and orders; the choices for building a wholesale channel; independent shops ordering from Kestrel & Pine through its portal or by e-mail, with Bergzicht's EDI orders left to the next chapter. Evidence: Kestrel & Pine's wholesale figures and the platforms' B2B documentation."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What is different when the buyer is a company?",
+    "claim": "When the buyer is a company, the customer is an organization with locations, people and roles, the price is a stack of dated agreements, and payment is terms within a credit limit. A portal can replace e-mail and phone orders only if it reads those agreements at checkout from the system that owns them (the ERP for terms, credit and wholesale prices) and every wholesale order, however it arrives, is created in one order record.",
+    "disputed_by": "The view that B2B is a feature set to switch on: a platform's company accounts, price lists and net terms let business customers order like consumers, the share still ordering by e-mail or phone reflects buyers' habits or features the portal lacks, and the remedy is a richer B2B platform.",
+    "so_what": "In 2026, 38% of Kestrel & Pine's 9,400 wholesale orders were keyed into the ERP by hand, a share unchanged since 2024, because the larger accounts' pre-season terms lived in the ERP's customer price lists, the portal could not check credit, and portal and keyed orders were two records. On 25 February 2027 De Kaap Buitensport e-mailed a pre-season order worth €6,384 because the portal showed €6,720 at list, and the ERP held it over its €15,000 credit limit until Lea Moreau approved it by e-mail. A merchant that accepts the claim decides who owns the company account, the price and the credit limit before it chooses or configures a B2B platform, and reads its keyed-order share as a list of missing integrations.",
+    "how_why": "Every platform can hold company accounts, price lists, terms and credit, so when nobody names an owner each system keeps its own copy and the copies drift. A wholesale invoice must match the price the buyer was shown for the same date and quantity, so the layering rule (quote over contract over tier over list) and the frozen quote are implemented once in the pricing source and published with effective dates. What a customer owes is known only to receivables, so a credit check against a nightly copy accepts orders finance later holds, and a portal that cannot check credit sends larger orders back to e-mail, where the ERP checks them at entry. Orders that enter through different doors land in different systems unless all are created in one record keyed on the buyer's purchase order number.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A business buyer is an organization with locations, people and roles, to which prices, assortments, payment terms and a credit limit are attached, and every major platform models it that way under different names."
+      },
+      {
+        "id": "S2",
+        "claim": "Every platform can hold the company account, the prices and the credit, so each fact needs one named owner: the ERP owns the money facts (company identity, wholesale and contract prices, terms, credit, invoices) and publishes them as events; the platform owns the session facts (logins, roles, the buyer's approval rules)."
+      },
+      {
+        "id": "S3",
+        "claim": "A B2B price is a stack of dated layers (list, tier, contract, quote) in which the most specific wins; the rule is implemented once in the pricing source, and a quote freezes the price the order and the invoice use."
+      },
+      {
+        "id": "S4",
+        "claim": "Payment terms and the credit limit are receivables facts, so the credit check at order placement asks the ERP, synchronously or by accepting and holding the order with an event-driven release, never a nightly copy; the buyer's own approval rules are the opposite control and live in the platform."
+      },
+      {
+        "id": "S5",
+        "claim": "The four ways to give business customers a channel (a consumer platform's B2B features, a dedicated B2B platform, an ERP-driven web store, the buyer's own system through EDI or punchout) fit different buyers and differ in which system answers at checkout; whichever is chosen, every wholesale order is created in one order record keyed on the buyer's purchase order number."
+      },
+      {
+        "id": "S6",
+        "claim": "The share of wholesale orders keyed in by hand counts the facts the portal cannot see, so it is a list of missing integrations, not of missing features."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part its business buyers: the agreements (prices, terms, credit) the checkout must read from the ERP that owns them, one order record for portal, keyed, EDI and punchout orders, and the keyed-order share as the measure of what the portal cannot see.",
+    "supports": [
+      "P5-1",
+      "P5-3",
+      "P5-5"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene: the 38% and the three reasons behind it, then W2"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages"
+      }
+    ],
+    "rationale": "The 38% comes first so every term arrives as part of explaining why those orders are keyed by hand. What differs for a business buyer comes next because it names the objects (account, price, terms, credit, approvals) that every later section assigns or checks. Ownership follows because the price and credit sections then explain facts whose owner the reader already knows; the price layers precede credit because a credit check adds the new order's value, built from those layers, to the open balance before comparing it with the limit; the flow requirements follow both, because they move the facts those sections explain. The choices come once the reader knows which facts the checkout must read, because each option is defined by where those facts live; the stages say which option fits when, and the recommendation comes at their end, once the reader knows both the options and Kestrel & Pine's stage. The worked order follows the choices so that its after-Waypoint column shows the recommendation's three integrations at work, and the failures come last because each is read against the rule that prevents it. Moving ownership after pricing and credit would leave both sections without the owner they rely on; moving the choices before ownership would compare options by features, the view the thesis disputes."
+  },
+  "introduction": {
+    "hook": {
+      "type": "intriguing_example",
+      "content": "A consumer buys a jacket and pays before dispatch; an outdoor shop orders sixty jackets at a negotiated price, for delivery to two locations, and pays thirty days after the invoice, with buyer, approver and bookkeeper as different people."
+    },
+    "bridge": {
+      "from_reader_world": "The previous chapter's marketplace orders came from consumers under rules the marketplace sets; anyone who has bought for a company knows that a business purchase comes with an agreement.",
+      "to_topic": "Checkout must check that agreement (price, terms, credit, approvals) before it promises, so the question becomes which system owns each part of it."
+    },
+    "thesis_statement": {
+      "text": "Every platform can hold company accounts, prices, terms and credit, so the copies drift unless each has an owner; a portal can replace e-mail and phone orders only if it reads those agreements at checkout from the system that owns them (the ERP for wholesale prices, terms and credit) and every wholesale order, however it arrives, is created in one order record.",
+      "placement": "KEY POINTS callout and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p05",
+      "promises": [
+        {
+          "promise": "Start from the 38% of Kestrel & Pine's wholesale orders still keyed in by hand.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Set out what differs when the buyer is a company and the records every B2B platform shares.",
+          "kept_in": [
+            "different"
+          ]
+        },
+        {
+          "promise": "Say who should own each of those facts and what the checkout needs from them.",
+          "kept_in": [
+            "ownership"
+          ]
+        },
+        {
+          "promise": "Explain how a price is layered and frozen by a quote, how terms, credit and the buyer's approvals work, and what each flow to the checkout must achieve.",
+          "kept_in": [
+            "pricing",
+            "credit",
+            "flows"
+          ]
+        },
+        {
+          "promise": "Compare four ways to give business customers a channel and how the answer changes with scale.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Work one shop's pre-season order through the portal before and after Waypoint, and end with what goes wrong.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A business purchase differs from a consumer's: after the previous chapter's consumer orders through marketplaces, an outdoor shop orders sixty jackets at a negotiated price, to two locations, on thirty-day terms, with different people buying, approving and paying, and B2B commerce must represent that agreement or checkout accepts orders the seller cannot fulfil on the promised terms.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A consumer's jacket paid before dispatch against a shop's sixty jackets at a negotiated price, two delivery locations, payment thirty days after the invoice.",
+            "shows": "The chapter's problem in one contrast: the business order carries an agreement the checkout must respect."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The agreement includes an account price, quantity breaks, payment terms, a credit limit, approvals and pre-season delivery in agreed size combinations, and checkout must check those conditions before it commits.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The agreement a business order carries.",
+          "introduces": "Its parts: price, quantity breaks, terms, credit limit, approvals, pre-season orders.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Those checks depend on who owns the company account, contacts, prices, terms, credit and orders; because every platform can hold all of them, unowned copies drift, and a portal can replace e-mail and phone only if it reads the agreements at checkout from their owner (the ERP for wholesale prices, terms and credit) and every wholesale order is created in one order record.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The conditions checkout must check.",
+          "introduces": "The ownership question they depend on and the chapter's claim.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Kestrel & Pine sells to consumers such as Eva and to wholesale customers; the chapter follows independent shops ordering through its portal or by e-mail, and leaves Bergzicht Outdoor's EDI orders to the next chapter and the wholesale journey.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The chapter's claim about business buyers.",
+          "introduces": "Where Kestrel & Pine's wholesale orders stand in the order's journey and which of them this chapter follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from the 38% of Kestrel & Pine's wholesale orders keyed in by hand, then sets out what differs for a business buyer and the records every platform shares, who owns each fact, price layers and quotes, terms, credit and approvals, what each flow to the checkout needs, four channel options and how they change with scale, one shop's pre-season order before and after Waypoint, and what goes wrong; its evidence is Kestrel & Pine's wholesale figures and the platforms' own B2B documentation.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The shops this chapter follows.",
+          "introduces": "The order of the chapter and its evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The 38%",
+      "controlling_idea": "Kestrel & Pine's portal takes 62% of 9,400 wholesale orders and the other 38% are keyed into the ERP, because the portal cannot see pre-season terms, cannot check credit and keeps a different order record from the ERP; W2 answers the last point.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S6"
+        ],
+        "how": "Gives the case the chapter answers: a keyed-order share that has not fallen because the facts the portal needs live in the ERP and the orders live in two records."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The channel's size, then the two doors orders come through, then why the second door stays busy, then the chapter's problem stated and Waypoint's answer; the reasons only make sense once the reader knows what the portal and the ERP each hold."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The chapter's order and its starting point, the 38%.",
+        "introduces": "Kestrel & Pine's wholesale channel in figures.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Lea Moreau, Head of Wholesale, manages 1,100 active accounts in three countries that produced €12.0 million in 2026 through 9,400 orders averaging €1,277 on 30-day terms; Bergzicht is the one retail chain on EDI.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "1,100 accounts (NL 640, BE 210, DE 250); €12.0M; 9,400 orders; €1,277 average; 30-day terms.",
+              "shows": "The size of the channel the chapter is about.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Since 2023 shops have ordered through the platform's B2B portal, with company accounts, price lists and payment terms in the same platform account as the consumer storefronts, and it takes 62% of wholesale orders.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Portal since 2023; 62% of wholesale orders.",
+              "shows": "The self-service door already exists and carries most orders.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The wholesale channel's size.",
+            "introduces": "The first door: the portal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The other 38% arrive by e-mail or phone and are keyed into the ERP, where Sanne de Wit's finance team manages terms, credit limits and invoices, facts the portal needs to take more of the work.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "38% keyed into the ERP.",
+              "shows": "The second door, and the system that holds the facts the portal lacks.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The portal's 62%.",
+            "introduces": "The 38% keyed into the ERP.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "form": "list",
+          "controlling_idea": "Asked by Noor Visser in February 2027 why the 38% has not fallen since 2024, Lea's answer is that the portal cannot express what those shops agreed: the larger accounts' pre-season terms live in the ERP and in e-mail, the portal cannot check credit, and a portal order and a keyed order are two records.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Three illustrative reasons: one price list per country against per-account pre-season terms; no credit check, so finance holds portal orders a day later and larger orders are keyed because the ERP checks at entry; two order records for one shop.",
+              "shows": "The keyed share is caused by facts the portal cannot see, not by buyers' habits.",
+              "source": "_research/scenario-ledger.md, b2b-commerce line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The 38% and the ERP that holds terms and credit.",
+            "introduces": "Why the share has not fallen.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "The portal is good at what the platform owns and weak at what the ERP owns, and neither holds the order record for the whole channel; W2 creates every wholesale order in the OMS from Q4 2027 while the ERP keeps finance.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: portal orders in the platform and keyed orders in the ERP today; every wholesale order created once in the OMS under W2.",
+              "shows": "The two-record problem and the one-record answer side by side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The three reasons.",
+            "introduces": "The chapter's problem in one company and Waypoint's answer for the order record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "different",
+      "heading": "What Is Different When the Buyer Is a Company",
+      "controlling_idea": "A business purchase adds facts a consumer purchase lacks (a company account with people and roles, negotiated and tiered prices, quotes, terms and credit, pre-season orders, the buyer's approvals), and every platform models them as an organization with places, people and permissions, with prices and terms attached to the organization or the place.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the objects the rest of the chapter assigns owners to and shows that the platforms agree on their shape."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The contrasts with a consumer purchase first, then the three facts the systems fight over, then the vendors' shared vocabulary, then two vendors' own definitions; the vendor table needs the vocabulary the contrast table defines."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The facts behind the 38%: terms, credit, negotiated prices.",
+        "introduces": "The general differences between a business and a consumer purchase.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "The contrasts between a consumer and a business purchase, which are industry practice, define the vocabulary: company account, contract and tiered pricing excluding VAT, quote, payment terms and credit limit, order size, pre-season and in-season orders, approval workflow and the invoice as the document that matters.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Consumer against business: who buys, price, how the price is agreed, payment, order size, when orders are placed, who may commit, the document that matters.",
+              "shows": "Each row is a fact a business order carries that a consumer order does not."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Each row is a fact that must live somewhere and be readable by the checkout at the moment of the promise, and three of them, the company account, the price and the credit limit, are the ones the ERP and the platform contest.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The rows of the contrast table.",
+            "introduces": "Why they matter to the architecture: each needs a home, and three are contested.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The documented object models of Shopify, commercetools, SAP Commerce, Adobe Commerce, BigCommerce and OroCommerce converge on the same shapes, in a table that is the author's synthesis as of November 2026.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six vendors against six concepts: buying organization, who may do what, customer-specific prices and assortment, negotiation, spending control, pay later; blank cells mean not verified.",
+              "shows": "The objects exist on every platform under different names."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The vocabulary of a business purchase.",
+            "introduces": "How the platforms name it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Shopify's and commercetools' own definitions show the common structure: organization, places, people and permissions, with prices and terms attached to the organization or the place, not to the person.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify's Company, CompanyLocation and CompanyContact definitions; commercetools' Business Units and Associates.",
+              "shows": "Two vendors' words for the same four parts.",
+              "source": "shopify.dev; commercetools documentation, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the B2B object model every platform shares.",
+              "shows": "Prices and terms hang on the organization, and the order draws on all of them at checkout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The converging table.",
+            "introduces": "Two vendors' definitions that show the shared structure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ownership",
+      "heading": "Who Owns What",
+      "controlling_idea": "Because both the ERP and the platform can hold the company account, the prices and the credit, each fact needs one owner: the ERP owns the money facts and publishes wholesale and contract prices as events, and the platform owns the session facts.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "States the ownership rule and the requirements each flow must meet, with the credit check as the decisive one."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The conflict, then the connector documentation that names it and the platforms that leave it open, then the ownership table, then the pattern it shows; the pattern can only be read off a table the reader has seen. The flow requirements wait until the price and credit sections have explained the facts they move."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The three contested facts and the shared object model.",
+        "introduces": "Which system should own each of them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "The company account is the first place two systems claim the customer: the shop platform needs the company, its contacts and its catalog to run the portal, the ERP needs the customer, its terms and its credit to invoice, and either can hold all of it, so neither should.",
+          "function": "claim"
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Microsoft's Business Central connector documentation and Shopify's ERP-integration guidance both say to decide the system of record for each field, and most businesses keep customers, payment terms and credit limits in the ERP.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Microsoft Learn (14 October 2026): 'decide which system is the system of record for customer data. Most businesses manage customer records, payment terms, and credit limits in Business Central…'; Shopify enterprise blog (28 August 2026): 'name the system of record for each'.",
+              "shows": "The connector vendors state the ownership problem and the usual answer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Two systems that can both hold the account.",
+            "introduces": "Vendors' advice to pick one owner per field.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The advice to pick one owner comes from connector documentation because no platform resolves ownership: consumer platforms added B2B objects and B2B-first platforms brought RFQs and budgets, and all can hold terms and credit.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The connector vendors' advice to name one owner per field.",
+            "introduces": "Why that advice comes from connectors: every platform can hold the same facts.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The author's ownership table names a system of record, readers and a reason for each fact: company identity, contacts and roles, list and tiered prices, contract and pre-season agreements, quotes, terms and credit, the buyer's approval rules, orders and invoices.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine facts with system of record, readers and why there.",
+              "shows": "Each fact gets one owner and a reason."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Platforms that can all hold the facts and leave the owner open.",
+            "introduces": "The author's table that names one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The pattern is that the ERP owns the money facts and the platform the session facts, with wholesale and contract prices published by the ERP as price events with effective dates to the OMS and the platform's B2B catalogs, feeding no channel directly; SAP describes the same split for its own suite.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "SAP Learning: master data replicated from the ERP to commerce, storefront orders sent to the ERP.",
+              "shows": "A suite vendor uses the same split."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The rows of the ownership table.",
+            "introduces": "The pattern they show and what each flow needs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "VAT follows the buyer: one fact in the ownership table's first row, the VAT number, decides the tax treatment of every invoice (B2B prices shown and invoiced excluding VAT; a cross-border EU business customer with a valid VAT number commonly invoiced without Dutch VAT), so it must be master data with an owner and a validation date.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The ownership table's first row (company identity and VAT number) and the money facts the ERP owns.",
+            "introduces": "Why the VAT number in particular needs an owner.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "heading": "How a Price Becomes a Promise",
+      "controlling_idea": "A B2B price is a stack of layers (list, tier, contract, quote) in which the most specific wins under one rule implemented in the pricing source, and a quote freezes the price the order and invoice use.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Explains the layering rule and the frozen quote that keep the portal price and the invoice price equal."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The layers, then which wins, then the top layer, the quote, in general and on three platforms, then the decision common to all of them; the quote can only be read as 'the most specific layer' after the stack is shown."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Wholesale and contract prices sourced once by the ERP and published as events (ownership section).",
+        "introduces": "How that price is built from layers.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "form": "list",
+          "controlling_idea": "B2B pricing has four layers, list wholesale price, tiered or volume price, contract or customer-group price and quote, and each must say whether it beats or adds to the one below.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Kestrel & Pine's list wholesale prices: Ridgewalker €95, Trailhead fleece €57, merino socks €8.50; Shopify's price breaks; Adobe's shared catalogs; OroCommerce's scheduled adjustments.",
+              "shows": "Each layer exists in the scenario and on the platforms.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The rule that matters is which layer wins, usually the most specific without stacking, written down and implemented once in the pricing source so the portal, the OMS and the invoice compute the same price.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: four stacked layers with the quote on top setting the price used by portal, order and invoice.",
+              "shows": "One rule, one price for every reader."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The four layers.",
+            "introduces": "The rule that decides between them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "A quote freezes the price: it records a negotiated offer and how long the buyer may accept it, and the accepted price must survive later price-list changes.",
+          "function": "claim",
+          "organization": "description",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The quote as the top layer.",
+            "introduces": "What a quote does to the price.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "commercetools models negotiation as three objects and calls quotes legally binding, and Adobe's purchase-order flow keeps the original price if the item's price changes.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "commercetools: 'Quotes are legally binding custom offers presented to a Buyer'; Adobe: 'If the price of an item changes after the PO is created, the original price is used'.",
+              "shows": "Two vendors implement the frozen price."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The frozen quote.",
+            "introduces": "Two vendors that implement it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "On Shopify no native request-a-quote page was found in November 2026; the documented mechanism is the draft order that quote apps fill.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify developer documentation: draft orders created 'for contacts to review and approve'.",
+              "shows": "Where no quote object exists, the frozen price is carried by another object the order is created from."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vendors with a quote object.",
+            "introduces": "A vendor without one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Under every name the decision is the same: a price stated to a named buyer with a validity date is stored as an object the order is created from, not recomputed later from the price list.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Three vendors' ways of handling quotes.",
+            "introduces": "The one design decision they share.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "credit",
+      "heading": "Credit, Terms and the Buyer's Own Controls",
+      "controlling_idea": "Payment terms and the credit limit are the seller's receivables facts, which the ERP owns and the checkout must check against today's balance at order placement, while the buyer's approval workflow is the buyer's own control, held in the platform.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Defines terms, credit and approvals and says which system holds and checks each."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The seller's two controls, terms then credit, because the credit check uses the open balance the terms create, then the buyer's control as the contrast."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The price an order carries.",
+        "introduces": "How and when the buyer pays for it, and who may let it through.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "Payment terms say when the buyer must pay and must be stored as structured data with a trigger; the ERP owns the invoice date and tracks what is overdue, and the platform needs a copy to show the agreement and let the buyer order without a card.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify Admin API 2026-10 payment terms types: NET, FIXED, RECEIPT, FULFILLMENT, UNKNOWN.",
+              "shows": "Terms can be typed data, not free text."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The credit limit is the seller's control: a credit check at order time compares the open balance plus the new order with the limit and accepts, holds or rejects; a nightly copy of the balance keeps finance holding orders by hand, asking the ERP at order time or receiving balance changes as events lets the portal answer at once, and a copy of the limit on the platform is a mirror, not a check.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "BigCommerce B2B Edition's available credit and net terms; Microsoft's connector carrying credit limits to Shopify as metafields.",
+              "shows": "Platforms can hold the limit, but holding it is not checking it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The terms that set when a buyer pays.",
+            "introduces": "The limit on how much the buyer may owe.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The buyer's approval workflow is the opposite control, the buyer's own rule that an order above an amount needs a manager; commercetools, SAP Commerce and Adobe model it, and it matters for chains and corporate buyers more than for independent shops.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "commercetools' tiered Approval Rules and 'a single instance of rejection will lead to the rejection of the entire Approval Flow'; SAP's cost centers, budgets and purchase limits; Adobe's administrators who 'bypass all approval rules'.",
+              "shows": "The buyer's control exists on the platforms and is separate from the seller's."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: a portal order at the Omnichannel stage, with prices from the pricing source, the credit decision from the ERP and the order in the order record.",
+              "shows": "The approval and release are states in the order record, not e-mails."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The seller's credit control.",
+            "introduces": "The buyer's own control.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "flows",
+      "heading": "What the Flows Need",
+      "controlling_idea": "Once price and credit are explained, each flow from its owner to the checkout has a freshness, consistency and latency requirement; the credit check decides whether the portal can replace e-mail, and stock follows the same rule.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Turns the ownership rule into requirements on each flow and names the one that decides the 38%."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The owners, the price layers and the credit controls of the three previous sections.",
+        "introduces": "What each flow between those owners and the checkout must achieve.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "With the price and the credit explained, the four flows between their owners and the checkout (price lookup, credit check, order creation, invoice) each have a freshness, consistency and latency requirement, and the credit check decides whether the portal can replace e-mail.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What the flows need: price lookup, credit check, order creation, invoice, with freshness, consistency, latency and failure.",
+              "shows": "Each flow's requirement and the failure when it is not met; the credit-check row is the one that decides the 38%."
+            }
+          ]
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "Stock, which the table leaves out, follows the same ownership logic: wholesale is promised from available-to-promise with a wholesale allocation, so wholesale and consumer channels do not sell the same units.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four flows the table lists.",
+            "introduces": "One flow it leaves out: stock.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "A merchant has four realistic ways to give business customers a channel, and the choice depends on who the buyers are and which system can answer at checkout; whichever is chosen, rep orders and B2B2C use the same order object.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S2"
+        ],
+        "how": "Compares the channel options by where prices, credit and orders live, and recommends one with the integrations that make it work."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four options in order of how far they move from the consumer platform, each with what it is, evidence and where it fits; then the comparison table with the punchout rule, and the two variations (sales reps, B2B2C) that apply to any option. The recommendation waits for the stage table, so the reader knows which option fits when before hearing the choice."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The facts and flows the checkout must read.",
+        "introduces": "The ways to build a channel that reads them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "A merchant that sells to businesses has four realistic ways to give them a channel, chosen less by features than by who the buyers are and which system can answer at checkout.",
+          "function": "claim"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The first option, a consumer platform's B2B features, adds company accounts, buyer-specific catalogs and payment terms to the platform that serves consumers and reuses its catalog and checkout, if it can represent the agreements.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four options.",
+            "introduces": "The first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Shopify runs B2B on all its plans with a catalog cap below Plus, Adobe ships a B2B module and BigCommerce serves B2B APIs from a separate domain.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify Help Center; Adobe B2B guide (1 October 2026); BigCommerce B2B Edition documentation.",
+              "shows": "The option exists on the main consumer platforms, with limits."
+            },
+            {
+              "kind": "fact",
+              "what": "BigCommerce deprecated its older B2B authentication token on 30 September 2025.",
+              "shows": "B2B features on consumer platforms are recent and still changing."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The first option.",
+            "introduces": "Three platforms that offer it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "It is Kestrel & Pine's choice and fits a brand selling the same products to many small shops and consumers; it limits when terms, credit and negotiated prices must come from the ERP in real time and the platform cannot express them.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The first option on three platforms.",
+            "introduces": "Kestrel & Pine's use of it and where it fits and limits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The second option, a dedicated B2B platform such as OroCommerce or SAP Commerce, fits a wholesaler or manufacturer whose whole business is B2B with quotes and buyer controls, at the cost of a second platform and catalog copy beside a consumer storefront.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "OroCommerce documentation (version 7.0); SAP Commerce's budgets and cost centers.",
+              "shows": "What dedicated platforms model."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Adding B2B to a consumer platform.",
+            "introduces": "A platform built for B2B.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The third option, an ERP-driven web store such as Sana Commerce, reads prices, terms, stock and orders from the ERP directly and suits a B2B-first company with one ERP and modest traffic, until ERP response times, consumer traffic or new channels make the dependency a limit.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "sana-commerce.com, accessed November 2026.",
+              "shows": "The option as a vendor markets it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A separate B2B platform with its own copies.",
+            "introduces": "A store that keeps no copies and reads the ERP.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The fourth option is the buyer's own system: large buyers send EDI orders or punch out, opening the supplier's catalog from their procurement system and returning the cart to it as a requisition.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Options in which the buyer comes to the seller's store.",
+            "introduces": "The option in which the seller comes to the buyer's system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The cXML User's Guide describes punchout as a button that opens the supplier's catalog and returns the order information to the procurement application, and SAP's OCI is the equivalent for SAP procurement.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "cXML User's Guide 1.2.037 (2018): 'procurement applications display a button instead of product or pricing details … they click a button that returns the order information to the procurement application.'",
+              "shows": "The standard's own description of punchout."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Punchout described in general.",
+            "introduces": "The standard that defines it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "A punchout cart is not an order: the supplier waits for the cXML OrderRequest or EDI ORDERS and creates it in the same order record as a portal order, and builds punchout only for buyers whose approval workflow requires it; a table then compares the four options by where each keeps prices, the credit check and the order record.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four options against fits, where prices live, credit check, order record, limits and Kestrel & Pine's use.",
+              "shows": "Where each option keeps the contested facts and the order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cart returned to the buyer's procurement system.",
+            "introduces": "What that means for when an order exists and where it goes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Whichever option is chosen, two variations must fit the same model: a sales rep's order is the same order object as the shop's own with a different creator, and B2B2C names two flows, a brand feeding a retailer and a business's own end users buying under its terms.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The four options compared.",
+            "introduces": "Two variations any option must cover: orders placed by sales reps and B2B2C.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The B2B channel outgrows the platform's features not when the account count grows but when the facts the checkout needs stop living in the platform; for Kestrel & Pine those facts can be published into the platform, so the author recommends staying with its B2B features and adding three integrations.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S6",
+          "S2",
+          "S4"
+        ],
+        "how": "Shows which channel design each stage needs, reads the keyed share as the signal, and recommends the integrations that answer it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four options compared and the variations they must cover.",
+        "introduces": "How the fit of each changes from stage to stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The four options do not fit equally at every stage, and a table shows for each stage what is typical, what becomes necessary and the warning signs of outgrowing the channel.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages against what is typical, what becomes necessary and warning signs of outgrowing it.",
+              "shows": "The necessary measures grow with where the facts live, not with account counts."
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The judgement from the stage table: the channel outgrows the platform's features when the facts the checkout needs stop living in the platform; Kestrel & Pine's 38% has held since 2024 because those facts live in the ERP and were never brought to the platform, which is a signal of missing integrations so long as the platform can carry them once published.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The stage table.",
+            "introduces": "The judgement it supports, with Kestrel & Pine's 38% as the signal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "The author recommends that a brand like Kestrel & Pine keep the platform's B2B features and fix the three gaps behind the 38%: ERP price events for contract and pre-season lists, a credit check at placement against the ERP's open balance, and every wholesale order created in the OMS, provided the ERP exposes prices and balances by API.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The 38% as the signal that the facts were never brought to the platform.",
+            "introduces": "The author's recommendation: bring them, on the platform Kestrel & Pine already has.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The stage table, then its judgement, then the recommendation that answers the signal it names; the recommendation needs both the options and the stage at which Kestrel & Pine stands."
+      }
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "De Kaap Buitensport's pre-season order shows why one Kestrel & Pine order stays off the portal in February 2027 and how the recommendation's three integrations bring it on, under assumptions to test.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S6"
+        ],
+        "how": "Applies the ownership rule, the frozen price and the credit check to one real-sized order before and after Waypoint."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The order as it runs in February 2027, then as it should run after Waypoint (both in the table), then the assumptions the second column rests on; the order is read against the recommendation just made."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The recommendation's three integrations.",
+        "introduces": "One order worked through as it is and as it should be after Waypoint.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "controlling_idea": "De Kaap Buitensport's pre-season order of 25 February 2027 (60 Ridgewalker jackets and 120 pairs of socks, €6,720 at list, €6,384 with its 5% terms, a €15,000 credit limit) is e-mailed, held over the limit, approved by e-mail in expectation of a payment due on 2 March and keyed in today, and priced, checked and created once in the OMS after Waypoint.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Price, credit, approval, order record, stock and invoice in February 2027 against after Waypoint.",
+              "shows": "Each of the three gaps (price, credit, two records) in one order, and what closes it.",
+              "source": "_research/scenario-ledger.md, b2b-commerce lines and Part V editor-review line"
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The after-Waypoint column assumes the ERP answers a credit check in under a second at the portal's volume and the platform's catalogs carry per-account, effective-dated lists; both should be tested before the 38% is promised to fall.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The after-Waypoint column.",
+            "introduces": "The assumptions it depends on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Six failures recur (portal price differing from invoice, stale credit balance, duplicate orders, wrong unit, invalid VAT number, expired quote), each detectable and cheaper to prevent in the object model than to fix at month-end.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows each failure as a fact read from the wrong place or not modelled, with its detection and recovery."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "De Kaap's order as it should run.",
+        "introduces": "The ways B2B orders go wrong.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Six failures recur in B2B channels, and a table gives for each how it shows, how to detect it and how to recover.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six failures with how each shows, detection and recovery.",
+              "shows": "Each failure has a detector and a structural fix."
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "The first two failures in the table are the Kestrel & Pine story, the others arrive with scale, and all are cheaper to prevent in the object model than to fix at month-end.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The failure table.",
+            "introduces": "Which rows are Kestrel & Pine's story and why prevention is cheaper.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "The table first, then which failures Kestrel & Pine has already met and why all are cheaper to prevent in the object model."
+      }
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The outdoor shop of the opening, De Kaap's held order and the 38% are one problem: every platform can store the agreement, and what decides whether a business buyer uses the portal is whether the checkout reads price, terms and credit from the ERP that owns them and creates the order in the one record every wholesale order shares.",
+    "so_what": "The remedy for a keyed-order share is integration work on the platform already in place (prices published from the ERP, a credit check at placement, one order record), not a richer B2B platform.",
+    "callback": {
+      "to": "The opening's outdoor shop ordering sixty jackets at a negotiated price, on thirty-day terms, within a credit limit.",
+      "how": "Paragraph p47 says what the checkout must read for that shop's order to go through the portal, and reads the 38% as the count of orders where it did not."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the ownership table for your own company account, prices, terms and credit, count the wholesale orders keyed by hand and name the missing fact behind each reason, and take the eight questions to your own channel."
+    },
+    "hand_off": {
+      "to": "edi-and-e-invoicing",
+      "relationship": "elaboration",
+      "carries_over": "The wholesale portal as the self-service path of the business channel, and the fourth channel option this chapter only named: the buyer's own system, sending EDI orders or punching out.",
+      "introduces": "The documents the largest buyers send and expect (order, despatch advice, invoice), the system each must come from, and the e-invoicing mandates that now reach business invoices."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and how each is prevented in the object model.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p47",
+        "controlling_idea": "The opening's shop orders through the portal only if the checkout reads its price, terms and credit from the ERP that owns them and creates the order in the one record every wholesale order shares; every platform can store the agreement, Kestrel & Pine's 38% counts the orders for which those reads did not happen, and so the remedy is integration work on the platform already in place, not a richer platform.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's sixty-jacket order and the 38% set against the chapter's answer.",
+            "shows": "The reader can now say what the portal must read and why the keyed share measures missing integrations."
+          }
+        ]
+      },
+      {
+        "id": "p48",
+        "form": "list",
+        "controlling_idea": "Established: every major platform's B2B model has the same shape, a quote freezes a price and the order is created from it, and payment terms and credit limits are receivables facts managed in the ERP.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p49",
+        "form": "list",
+        "controlling_idea": "Depends on context: the consumer platform's B2B features fit many small resellers if prices come from one source and credit reaches the ERP; a synchronous credit check needs a fast ERP, otherwise accept and hold; punchout and EDI only for buyers who require them, with their orders in the same record.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the keyed-order share is the best single measure of a B2B architecture and a list of missing integrations, and ownership of the account, the price and the credit limit is decided before any B2B platform is chosen.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find, at their own company, the owner of the account, where contract prices live, which price wins, how fresh the credit check is, why orders arrive outside the portal, whether quotes are objects, how invoices are priced and whether punchout and EDI orders reach the same record.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "controlling_idea": "Portal orders are the channel's self-service path, but the largest buyers send documents from their own systems, the fourth option; the next chapter opens the EDI envelope, from the ORDERS message to the despatch advice whose labels cost Kestrel & Pine €14,200, and the e-invoicing mandates now reaching business invoices, which Kestrel & Pine's Belgian customers' bookkeeping already expects.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The questions about the reader's own channel.",
+          "introduces": "What this chapter leaves to the next: the buyers who send documents.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "EDI messages, transports, identifiers, chargebacks and e-invoicing mandates.",
+      "covered_in": [
+        "edi-and-e-invoicing"
+      ]
+    },
+    {
+      "topic": "The ERP's role, the hub debate and batch versus event integration with ERPs.",
+      "covered_in": [
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "Price computation, price lists and the pricing engine in general; this chapter covers only the B2B layering rule and the quote.",
+      "covered_in": [
+        "pricing-architecture"
+      ]
+    },
+    {
+      "topic": "VAT rules, invoice numbering and the ledger.",
+      "covered_in": [
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "Wholesale fulfillment (cartons, pallets, SSCC labels).",
+      "covered_in": [
+        "warehouse-and-fulfillment"
+      ]
+    },
+    {
+      "topic": "Customer identity matching across systems.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "The end-to-end wholesale order.",
+      "covered_in": [
+        "journey-wholesale-order"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 14 passed, 26 failed, 16 of them minor; round 3 is past the revision budget), the cheap, plainly right fixes were made without another round: 'punchout' glossed in the failure-pattern callout ('a punchout session from its procurement system'); Business Central glossed as Microsoft's ERP product and 'one tenant' as one account on the shop platform (rule 2, rule 6); the BigCommerce token-deprecation sentence moved from p42, where both readers found it a non sequitur, to option 1's BigCommerce evidence (p32), replacing 'the trace of a partner-built origin' with plain words; 'Both can hold all of it; neither should' made explicit. 6,581 words against 6,700.",
+      "rejected": [
+        "Starting a fourth round."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) remaining round-3 findings left as they are because readers in earlier rounds asked for the current position: the VAT paragraph at the end of 'Who Owns What' (both round-2 readers asked for it there; round 3 calls it a detour); the recommendation at the end of the stages section (both flow-rubric runs asked for it after the stage judgement); 'Sales reps and B2B2C' after the comparison table (readers never agreed on a move). 'The first two rows are the Kestrel & Pine story' stays: the ledger gives Kestrel & Pine no duplicate-order incident and the opening callout names the patterns, not the table rows (rule 1). The fallback in the recommendation ('the ERP-driven store … for the wholesale channel alone') and in the take-away ('an ERP-driven store or a dedicated B2B platform') are the author's and answer different situations.",
+      "rejected": [
+        "Adding the failure-pattern names to the failure table: new material."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the market-size paragraph (p43) is cut. Readers found it out of place in every position tried (both round-1 readers after the recommendation in 'In Practice', both round-2 readers in the scene, and both flow-rubric runs), and it supports no supporting claim directly. Its sources stay in Sources and Evidence; the open question about a European figure is closed with it.",
+      "rejected": [
+        "Moving it a third time (before 'Where we are' or to the start of 'What Is Different'): no reader position held, and rule 3 prefers the cut.",
+        "Reducing it to one derived sentence: comparing the 2023 digital figure with the 2025 total would be arithmetic across years and definitions the sources do not make (rule 2)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) the VAT paragraph (p26) moves from the end of 'How a Price Becomes a Promise' to the end of 'Who Owns What', the move both round-2 flow readers asked for; its opening now ties the VAT number to the ownership table's first row.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) 'What the flows need' becomes its own section, 'What the Flows Need', after the credit section (both round-2 readers found it out of place as a credit subsection; one asked for exactly this, the other for a label covering price and credit). The stock sentence becomes its own short paragraph (p55) with a lead-in; the roadmap (p05) announces the section.",
+      "rejected": [
+        "Splitting the table across the price and credit sections: the table compares the flows side by side."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) 'Sales reps and B2B2C' (p40) stays after the comparison table: readers in both rounds found it appended but proposed different moves (before the table, into 'Who Owns What', before 'The Choices', a footnote). 'The model above' is made specific ('the company-account model of the second section').",
+      "rejected": [
+        "Cutting it: it supports S5 (rep orders are the same order object, no unowned writer)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: round-2 transition failures fixed by adding a one-sentence lead to the stage table (p53) and to the failure table (p54), so each section opens with a sentence rather than a table; the stages transition no longer names the recommendation, which now comes at that section's end. Corroborated draft fix: the approval row says Lea approves in expectation of the €4,100 payment due on 2 March. Single-reader minors fixed where cheap: 'While' read as contrast ('Since'); 'that approval workflow' in the punchout paragraph names the requisition-and-approval cycle; 'no storefront reads the ERP live' narrowed to prices, so it no longer seems to conflict with the live credit check; the credit row gives the over-limit amount at the pre-season price as well (€1,184, scenario ledger Part V editor-review line); 'open balance' glossed in the ownership table; Noor Visser's role (Head of Engineering, ledger cast) given at first mention.",
+      "rejected": [
+        "Changing 'the first two rows are the Kestrel & Pine story' (one reader): the ledger gives Kestrel & Pine no duplicate-order incident."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the open questions carried from spec.md are settled by rule 2: the page keeps what it says with its cited sources (Shopify: no native quote object found, draft orders documented; the plan expansion 'recent and undated'; intra-EU business VAT stated as common practice, with chapter 14 carrying the rule). The European market-figure question is moot after the cut.",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit raised from 6,500 to 6,700 (within the author's 10% allowance of 2026-11-12): round 1's readers asked for glosses (chargeback, ORDERS, budgets and cost centers, punchout, the Omnichannel stage, one order number) and for transitions that link the moved paragraphs; with the roadmap and conclusion paragraphs the contract requires, the draft is 6,582 words. No new material was added.",
+      "rejected": [
+        "Cutting author sentences to stay at 6,500."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check escalated on three spec faults that both flow readers reported (auto mode; changes to order, paragraph ideas and transitions pre-approved; intent, thesis, role and acceptance criteria untouched). (1) The 'What the flows need' table and the credit-check paragraph (p19) previewed price and credit before their sections: the subheading, the table and p19 move to the end of the credit section, where p19 now summarises the four flows after price, terms and credit are explained; p18 keeps only the ownership pattern. (2) The market-size paragraph (p43) interrupted the recommendation and the worked order (both readers suggested the opening scene): it moves into the scene after the channel's figures (p06), where its off-portal share frames the 62% and 38%; 'In Practice' is now De Kaap's order and its assumptions. (3) 'Sales reps and B2B2C' (p40) read as bolted on after the comparison table: it gets a subheading and an opening sentence saying both are variations every option must cover (the two readers proposed different moves, so its position stands, rule 10). Transitions rewritten for p07, p19, p20 (pricing), p43, and In Practice.",
+      "rejected": [
+        "Moving the flows table into each of the price and credit sections (one reader's alternative): the table compares the flows side by side.",
+        "Folding the sales-rep material into 'Who Owns What' (one reader's suggestion): the other reader proposed a different move."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the spec from the published chapter, one paragraph per unit (check_draft.py units). Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role are copied from the journal spec unchanged; supporting claims S1 to S6 are this post's own. The old spec.md's eight success criteria are not carried over: the term list is covered by audience.does_not_know and the standard checks; the business-problem-first, ownership, price-layering, punchout and 38% criteria are covered by AC-1 to AC-4; the table, take-away-tier, question-count and ledger-match criteria were inventories or process notes and are dropped. No criteria were added. The word limit stays 6,500 (the old spec's upper bound).",
+      "rejected": [
+        "Keeping the old success criteria as custom criteria: most list contents, which the outcome rules exclude."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units the contract asks for and the published page lacked are added to the spec so the prose step supplies them: a roadmap paragraph (p05) that announces every section; the thesis stated in prose in p03 (the published p03 named the ownership question but not the claim); a first conclusion paragraph (p47) with synthesis, so-what and callback to the opening's shop; an opening sentence in p01 that performs this chapter's transition_in (contrast with the previous chapter's consumer orders through marketplaces).",
+      "rejected": [
+        "Leaving the conclusion as the three take-away lists: they summarise by settledness and do not answer the opening."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric, first run (sound with notes); the author asked for the rubric notes to be taken without review (auto mode). Taken: the platforms-converge paragraph (p42) moves from 'In Practice' into 'Who Owns What' after the connector advice it repeated, so 'In Practice' is the market's off-portal share and one order; the credit-check mechanics (nightly copy against asking the ERP at order time) move from p19 to p28, where the credit limit is defined, and p19 keeps only the verdict that this row decides the portal's fate; p28 says the check adds the new order to the open balance, matching the post rationale; the credit section's rationale no longer contradicts the ownership section; the conclusion's first paragraph (p47) ends on the remedy (integrations on the current platform) instead of repeating the author's-synthesis bullet.",
+      "rejected": [
+        "Merging the stage table into 'The Choices' before the recommendation: the stages section is house format in every chapter (see chapter 13's decision log).",
+        "Cutting the market-size paragraph (p43): kept in 'In Practice' as the lead into De Kaap's order, one order in the share not yet on a portal.",
+        "Splitting the four-option table out of the punchout paragraph: a table cannot be its own unit in the draft format.",
+        "Merging p13 and p14 (vendor table and two vendors' definitions): the rubric called it minor."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric, second run (sound with notes), taken without review (auto mode). Both rubric runs asked for the stage judgement before the recommendation: the recommendation (p39) moves from the end of 'The Choices' to the end of the stages section, after the judgement, so the worked order in 'In Practice' follows the recommendation directly; the stage judgement now says the 38% signals facts never brought to the platform, which removes the conflict the rubric found with the recommendation to stay on the platform; p42 no longer repeats that the platforms converge (said in p13), only that none resolves ownership.",
+      "rejected": [
+        "Folding the stages section into 'The Choices': its heading is house format; moving the recommendation achieves the same order.",
+        "Moving the market-size paragraph (p43) to the scene or cutting it (asked by both runs): it would split the scene's 62%/38% sequence; kept as the lead into De Kaap's order. Logged in open_questions.",
+        "Adding a unit-of-measure rule before 'When It Goes Wrong': the contrast table's 'cartons, inner packs and size runs' row and the failure row's recovery cover it; adding a paragraph would be new material."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Known inconsistencies fixed: Lea Moreau is 'Head of Wholesale' (scenario ledger, cast table), not 'Wholesale lead'; the hand-off's 'the e-invoicing mandates that now reach every business customer in Belgium' is hedged as consistency item 5 requires ('the e-invoicing mandates now reaching business invoices; the bookkeeping of Kestrel & Pine's Belgian customers already expects a Peppol invoice'); where the page means the hosted product it says 'the shop platform' (book-wide vocabulary). The page already follows consistency item 3 (the ERP owns wholesale list and contract prices, business terms and credit limits, publishes them as events and feeds no channel directly).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Built the chapter around ownership (who holds the company, the price, the credit) rather than around a feature comparison, because every platform surveyed can hold all three and the reader's decision is which one should. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used the 38% of hand-keyed orders as the organizing measure and invented ledger-consistent reasons for it (pre-season terms in the ERP, no credit check, two order records), so that the recommendation is a list of integrations the reader can check. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Added a second fictional wholesale account (De Kaap Buitensport) because Bergzicht is the EDI example owned by chapter 22 and the portal path needed its own worked order with a credit-limit hold. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept punchout to one paragraph and a row in the trade-off table rather than a section, since the contract says 'briefly' and chapter 22 owns procurement integration. (from spec.md)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (wholesale row, B2B portal row, cast, W2, b2b-commerce lines, Part V editor-review line) and _research/consistency-issues.md (rulings 3, 4, 5, 17)",
+      "contributed": "The wholesale figures, the 38% and its reasons, De Kaap Buitensport's order, Lea Moreau's title, the ERP's price ownership, W2's dates and the Belgian e-invoicing hedge."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (b2b-commerce; edi-and-e-invoicing transition_in; part-5)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to the next chapter."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, edi-and-e-invoicing, erp-and-back-office-integration, pricing-architecture, tax-invoicing-and-ledger",
+      "contributed": "The wholesale line and W2; the document channel this chapter hands off to; ERP ownership; the pricing source; VAT and invoices. (from spec.md)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-b2b-edi-erp.md",
+      "contributed": "The verified platform, market and procurement facts. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify Help Center and developer documentation (B2B, catalogs, payment terms), accessed 2026-11",
+      "contributed": "The native B2B model and plan constraints."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools documentation (Business Units, Quotes, Approval Rules and Flows), accessed 2026-11",
+      "contributed": "The most explicit public object model for quoting and approval."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Commerce B2B guide (2026-10-01) and purchase-order flow",
+      "contributed": "Purchase orders and the frozen-price rule."
+    },
+    {
+      "kind": "external",
+      "ref": "BigCommerce B2B Edition documentation, accessed 2026-11",
+      "contributed": "Net terms, available credit, API deprecation."
+    },
+    {
+      "kind": "external",
+      "ref": "SAP Spartacus B2B documentation and SAP Learning",
+      "contributed": "Budgets, cost centers and approval (with an evidence-age note); the ERP-to-commerce split."
+    },
+    {
+      "kind": "external",
+      "ref": "Microsoft Learn, Business Central Shopify connector (2026-10-14)",
+      "contributed": "The system-of-record advice for customers, terms and credit."
+    },
+    {
+      "kind": "external",
+      "ref": "OroCommerce and Sana Commerce pages",
+      "contributed": "Dedicated B2B and ERP-driven alternatives."
+    },
+    {
+      "kind": "external",
+      "ref": "cXML User's Guide (2018) and TradeCentric (2026)",
+      "contributed": "Punchout."
+    },
+    {
+      "kind": "external",
+      "ref": "Forrester (2022) and Digital Commerce 360 (2024, 2026)",
+      "contributed": "Market size with definitions."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "'a retail chain's many branches' restored to the ledger's figure: 'a retail chain's 38 branches, as Bergzicht has' (Bergzicht Outdoor has 38 shops; rule 1)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After the confirming round 3 (escalate): glosses for punchout, Business Central and tenant; BigCommerce token fact moved to option 1; check report now stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 2 (escalate), auto-resolved: p43 cut; VAT paragraph moved to 'Who Owns What'; new section 'What the Flows Need' (p19, p55); lead sentences p53 and p54 for the stage and failure tables; open questions closed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After round 1: flows table and p19 moved to the end of the credit section; market-size paragraph (p43) moved into the scene; p40 framed as a variation of every option."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: p42 moved to 'Who Owns What'; credit-check mechanics moved from p19 to p28; p47 ends on the remedy; rationales aligned. Second rubric run: recommendation (p39) moved to the end of the stages section; stage judgement reworded; p42 trimmed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json, reconstructed from the published chapter; roadmap, thesis paragraph and conclusion synthesis added to the contract; Lea Moreau's title and the Belgian mandate hedge fixed."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: dropped 'recorded in the ledger' from illustrative labels. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences, ERP publishes wholesale and contract prices as events and feeds no channel directly (item 3), credit-check figure corrected to the discounted order, acronyms expanded, timetoread corrected. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (from spec.md)"
+    }
+  ],
+  "length": {
+    "max_words": 6700
+  }
+}

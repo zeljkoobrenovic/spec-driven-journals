@@ -26,28 +26,30 @@ logo: "assets/images/29-commerce-architecture-styles/logo.jpeg"
 <br>
 A commerce team wants to release checkout changes without waiting for a catalog release. Separating the programs may help, but each new connection must carry data and handle failures. The benefit depends on whether independent releases are worth that extra work for this team. A large company's successful redesign cannot answer that question on the merchant's behalf.
 
-Read a company's account for its date, scale, problem and limits. Then identify what you control. On a hosted platform, the vendor decides most internal architecture; your team owns surrounding connectors, custom apps and data pipelines. A separation can be useful when those programs need different release schedules or operating capacity. Without that need, it adds coordination without removing a practical obstacle.
+An **architecture style** describes how a system's running programs divide work and data. A **deployment unit** is a program built, tested and released as one piece. Splitting it creates another program to operate and another boundary across which data and failures must be handled. The extra work of carrying data and failures across that boundary is the split's **distribution cost**.
 
-An **architecture style** describes how a system's running programs divide work and data. A **deployment unit** is a program built, tested and released as one piece. Splitting it creates another program to operate and another boundary across which data and failures must be handled.
+**Where we are in the order's journey.** Eva's jacket order at Kestrel & Pine, the fictional outdoor brand, crosses deployment units run by two parties: the vendor's platform code and the merchant's own integrations. Every network crossing can add delay or fail independently. This chapter examines which separations earn that cost.
 
-**Where we are in the order's journey.** Eva's jacket order at Kestrel & Pine, the fictional outdoor brand, crosses the vendor's platform code and the merchant's integrations. Every network crossing can add delay or fail independently. This chapter examines which separations earn that cost.
+To judge whether a separation earns that cost, read the account of the company it is copied from for its date, scale, problem and limits, and check that the part to be split is yours to split. A separation can be useful when those programs need different release schedules or operating capacity. Without that need, it adds coordination without removing a practical obstacle.
+
+The chapter starts from the board's "are we behind?" question after Kestrel & Pine was offered a €3.2 million rebuild of a platform that had held on Black Friday. It then defines the four styles; reads the dated accounts of Amazon, Zalando, Shopify, two consolidations, Netflix and Uber, and composable commerce; sets out what each split costs in an order; and sizes the merchant's own code to its teams and its scale stage. It ends with Noor's memo, the ways the choice goes wrong and what to take away.
 
 ## "Are We Behind?" at Kestrel & Pine
 
-Kestrel & Pine reviewed two February 2027 proposals: a consultancy's **composable rebuild**, assembling separate commerce services for about **€3.2 million over eighteen months**, and the agency's separate storefront on the existing platform. [[commerce-platform-landscape]] and [[storefront-architecture]] describe them.
+Kestrel & Pine reviewed two February 2027 proposals: a consultancy's **composable rebuild**, assembling separate commerce services for about **€3.2 million over eighteen months**, and the agency's separate storefront on the existing platform. Noor Visser, Head of Engineering, declined both; [[commerce-platform-landscape]] and [[storefront-architecture]] describe them.
 
-The review also considered an enterprise suite and **stay and surround**: keep the platform and add missing capabilities. It chose the latter as decision W4 of **Waypoint**, the improvement program launched in March with **€1.1 million for 2027–2028** ([[build-buy-or-assemble]]).
+The review also considered an enterprise suite and **stay and surround**: keep the platform and add missing capabilities. The review chose stay and surround as decision W4 of **Waypoint**, the improvement program launched in March with **€1.1 million for 2027–2028** ([[build-buy-or-assemble]]).
 
-In April 2027, a board member forwarded CEO Mara Lindqvist an article about a fashion retailer with roughly three thousand technology staff that had abandoned its monolith. Mara asked Head of Engineering Noor Visser whether Kestrel & Pine had chosen correctly. The question was reasonable; the team-size difference mattered.
+In April 2027, a board member forwarded CEO Mara Lindqvist an article about a fashion retailer with roughly three thousand technology staff that had abandoned its monolith (one program holding the whole system). Mara asked Noor whether Kestrel & Pine had chosen correctly. The question was reasonable, but it compared companies of very different sizes.
 
-Noor had fourteen people in technology, nine of them engineers. On Black Friday 2026 the platform itself had held at 2,300 orders in the peak hour; what failed was the chain of connectors between the platform, the ERP (enterprise resource planning system: finance, purchasing, invoicing), the WMS (warehouse management system) and the marketplace connector, which let the Ridgewalker jacket sell for two hours after the warehouse ran out. The rebuild option would have rebuilt the part that worked while leaving the joins that failed to "phase two". Noor's memo to the board is the rest of this chapter.
+Noor had fourteen people in technology, nine of them engineers. On Black Friday 2026 the platform itself had held at 2,300 orders in the peak hour; what failed was the chain of connectors between the platform, the ERP (enterprise resource planning system: finance, purchasing, invoicing), the WMS (warehouse management system) and the marketplace connector, which let the Ridgewalker jacket sell for two hours after the warehouse ran out. The rebuild option would have rebuilt the part that worked while leaving the joins that failed to a later "phase two". Her answer, a memo to the board, comes near the end of this chapter.
 
 ![Illustration: nine small engineers climb a ladder into enormous boots labeled Microservices, beside a pair of boots that fit.](assets/images/29-commerce-architecture-styles/29-the-giants-boots.jpeg)
 **Figure 1:** *The famous accounts describe companies with thousands of engineers; a microservices rebuild copied from them by nine engineers is The Giant's Boots, paying the costs without the reasons.*
 
 ## Four Styles in Plain Words
 
-Three ideas separate the styles: the **deployment unit**, defined above; **data ownership**, which program may read and write a given table or record directly; and the **boundary**, the rule that one part of the system may only reach another through a defined interface, and how that rule is enforced (by a tool, by a review, or not at all).
+Three ideas separate the styles: the **deployment unit**, defined above; **data ownership**, which program may read and write a given table or record directly; and the **boundary**, the rule that one part of the system may only reach another through a defined interface, and how that rule is enforced (by a tool, by a review, or not at all). The table compares the four styles on these three ideas, with a dated example of each. MACH, in the last row, is the industry label for composable commerce; its letters originally stood for microservices, API-first, cloud-native and headless.
 
 | Style | What is deployed | Who owns the data | How boundaries are enforced | Documented example |
 | --- | --- | --- | --- | --- |
@@ -59,9 +61,23 @@ Three ideas separate the styles: the **deployment unit**, defined above; **data 
 ![Diagram: The four styles differ in how many separately deployed pieces exist and who owns the joins between them](assets/images/29-commerce-architecture-styles/fig01-four-styles-differ-how-many-separately.jpeg)
 **Figure 2:** *The four styles differ in how many separately deployed pieces exist and who owns the joins between them; in a modular monolith the joins are function calls inside one program, in microservices they are network calls between a company's own services, and in composable they are integrations between vendors that the merchant must own.*
 
-Two clarifications a newcomer needs. First, **"monolith" is not an insult.** It is one program with one database, which is also the shape in which every transaction is cheapest and every fact is consistent. Second, **composable is a different kind of thing from the other three.** They describe how one organization structures code it writes. Composable describes how a merchant *buys*: several API-first products (an engine, a search service, a PIM, an OMS, a payment provider) assembled behind a storefront the merchant builds or buys. The merchant does not write the services; it writes the joins, and the distribution costs the big companies document for microservices transfer to that integration layer almost unchanged.
+Two clarifications a newcomer needs. First, **"monolith" is not an insult.** It is one program with one database, which is also the shape in which every transaction is cheapest and every fact is consistent.
 
-Two terms from earlier chapters recur. A **system of record** ([[boundaries-and-systems-of-record]]) is the one system allowed to be right about a fact: the WMS for physical stock, the OMS (order management system) for the order. **Eventual consistency** ([[events-consistency-and-reconciliation]]) means a copy of a fact in another system may be out of date for a while, and will catch up. Every style with more than one deployment unit lives with it, and with **idempotent** handling: processing the same message twice must have the same effect as processing it once.
+Second, **composable is a different kind of thing from the other three.** They describe how one organization structures code it writes. Composable describes how a merchant *buys*: several API-first products (an engine, a search service, a PIM, an OMS, a payment provider) assembled behind a storefront the merchant builds or buys. The merchant does not write the services; it writes the joins, and the distribution costs the big companies document for microservices transfer to that integration layer almost unchanged.
+
+The same split between building and buying applies to any merchant on a hosted platform: it owns some code and rents the rest. The platform's core sits outside the merchant's code, as the WMS, the PSP and the carriers do. The vendor's engineers build and run it and pay its distribution costs; the merchant's costs land in the connectors, apps, themes and data pipelines it builds around that core. The table compares the two sides.
+
+| Question | A platform vendor | A merchant on a hosted platform |
+| --- | --- | --- |
+| Who must be modular? | Thousands of engineers shipping one product to millions of tenants | A dozen engineers shipping connectors, apps and pipelines around a bought core |
+| What is the unit of change? | A component or service inside the platform | A connector, an app, a theme, a data pipeline |
+| Where does distribution cost land? | In the vendor's engineering budget | In the merchant's integration layer, as integration debt ([[integration-styles]]) |
+| What does "microservices" buy? | Release independence for many teams | Nothing directly; the merchant does not deploy the platform |
+| What does "composable" buy? | A product category to sell | Replacing one capability (search, OMS, PIM) without replacing the core, at the price of owning the joins |
+
+A vendor's internal style is also not something a merchant can verify. A WMS vendor's page saying it is "built on microservices" (Manhattan's does, as of November 2026) says nothing about uptime, release cadence or the API contract, which are the things to ask about ([[api-contracts-and-versioning]]).
+
+Whoever owns them, the joins between deployment units rely on two terms from earlier chapters. A **system of record** ([[boundaries-and-systems-of-record]]) is the one system allowed to be right about a fact: the WMS for physical stock, the OMS (order management system) for the order. **Eventual consistency** ([[events-consistency-and-reconciliation]]) means a copy of a fact in another system may be out of date for a while, and will catch up. Every style with more than one deployment unit lives with it, and with **idempotent** handling: processing the same message twice must have the same effect as processing it once.
 
 ## What the Famous Examples Actually Show
 
@@ -87,17 +103,15 @@ What this shows: microservices gave Zalando team autonomy at hundreds of teams, 
 
 Shopify is the counter-example, and its own account runs from 2019 to 2024. In February 2019 it described its Rails codebase as one of the largest in existence, worked on for over a decade by more than a thousand developers, and said that around 2016 "the downsides of the monolith were outweighing the benefits". It rejected microservices explicitly: they would add test and deployment pipelines and infrastructure per service, network calls that add latency and reduce reliability, and coordinated deploys for large refactors; the team "wanted more modularity without more deployment units". Instead it regrouped code into business components (orders, shipping, inventory, billing), each meant to have a public interface and "exclusive ownership of its associated data", and built a tool, Wedge, to score each component's isolation. The payoff it claimed: the isolation work let it replace a legacy tax engine.
 
-By September 2020 the core had "over 2.8 million lines of Ruby code", 37 components and an Architecture Guild of about 400 members, and Shopify said it split out services "only for good reasons", naming storefront rendering and credit-card vaulting. The same post is candid: "every component depended on over half of all the other components", with "lots of circular dependencies". Packwerk, open-sourced that month, is a static check that records existing boundary violations in a list so that new ones are blocked without fixing everything at once. Shopify's FY2025 annual report (filed February 2026) confirms the broad shape today: a multi-tenant platform, Ruby on Rails, "single branch" software on which all merchants run the latest version, and about 7,600 employees.
+By September 2020 the core had "over 2.8 million lines of Ruby code", 37 components and an Architecture Guild of about 400 members, and Shopify said it split out services "only for good reasons", naming storefront rendering and credit-card vaulting. The same post is candid: "every component depended on over half of all the other components", with "lots of circular dependencies". Packwerk, open-sourced that month, is a static check that records existing boundary violations in a list so that new ones are blocked without fixing everything at once.
 
-The February 2024 Packwerk retrospective is the latest first-party account and the most useful. Privacy checks "were removed from Packwerk with the release of version 3.0" because they pushed teams into API design instead of dependency management. Several common ways of loading code are "untracked and invisible to the tool", so "a package can show zero violations and still fail at runtime". Isolating one base package with zero violations and zero dependencies "took many months of hard work".
+The one documented case of Shopify carving a hot path (code that serves the most traffic or has the strictest speed needs) out of the monolith is the Storefront Renderer, rewritten from 2019 because storefront code "has much stricter performance requirements" than, say, payment processing; by August 2020 it reported server response times four to six times faster. It was carved for latency, behind a verifier that compared old and new responses on live traffic, not for team autonomy.
 
-The rate at which the tool found problems "vastly outpaced" teams' capacity to fix them; "we have discussed removing Packwerk from our monolith", and it stayed because it "has provided value in holding the line against new dependencies at the base layer".
+The February 2024 Packwerk retrospective is the latest first-party account and the most useful. Privacy checks "were removed from Packwerk with the release of version 3.0" because they pushed teams into API design instead of dependency management. Several common ways of loading code are "untracked and invisible to the tool", so "a package can show zero violations and still fail at runtime". Isolating one base package with zero violations and zero dependencies "took many months of hard work". The rate at which the tool found problems "vastly outpaced" teams' capacity to fix them; "we have discussed removing Packwerk from our monolith", and it stayed because it "has provided value in holding the line against new dependencies at the base layer".
 
 Most important: "domains and the boundaries between them do not reflect the way Shopify's code actually functions in practice", so components became organizational groupings rather than enforced units. Two quoted lessons: "Packwerk is a sharp knife, and it must be wielded with care" and "running code, more than any metric, will always be the best indicator of real progress".
 
-The one documented case of Shopify carving a hot path out of the monolith is the Storefront Renderer, rewritten from 2019 because storefront code "has much stricter performance requirements" than, say, payment processing; by August 2020 it reported server response times four to six times faster. It was carved for latency, behind a verifier that compared old and new responses on live traffic, not for team autonomy.
-
-What this shows: a company with a thousand developers kept one deployment unit, got real value from ownership and from one cheap gate at the base layer, and found that enforced domain boundaries did not match runtime coupling. The honest reading is not "Shopify modularized its monolith" but "Shopify spent seven years learning which modularity was worth paying for".
+What this shows: a company with a thousand developers kept one deployment unit, got real value from ownership and from one cheap gate at the base layer, and found that enforced domain boundaries did not match runtime coupling. The honest reading is not "Shopify modularized its monolith" but "Shopify spent the seven years to 2024 learning which modularity was worth paying for". Shopify's FY2025 annual report (filed February 2026) confirms the broad shape today: a multi-tenant platform, Ruby on Rails, "single branch" software on which all merchants run the latest version, and about 7,600 employees.
 
 ### The consolidations: Segment (2018) and Prime Video (2023)
 
@@ -107,21 +121,27 @@ In 2023 Prime Video's video-quality team replaced a serverless, orchestrated pip
 
 Both are consolidations of *one subsystem* that had been cut too fine. The transferable claim is "right-size the unit of deployment to the data flow across it", not "reverse the architecture".
 
+### The cost of many services: Netflix (2008–2016) and Uber (2020)
+
+Two accounts record what running many services costs in people and time. Netflix's own account of its move to cloud microservices runs from August 2008 to January 2016: seven years. Uber reported in 2020 that with about 2,200 critical microservices a root-cause investigation could run through about 50 services owned by 12 teams, a simple feature needed 10 touchpoints, services had a half-life of about 1.5 years, and ownership had blurred into "networked monoliths" that must be deployed together; its remedy grouped services into about 70 domains behind gateways, the modular-monolith discipline rebuilt on top of microservices.
+
 ### Composable and MACH: a style whose definition moved (2020–2026)
 
-Composable commerce assembles separate products through their interfaces. The label describes a purchasing and integration approach; an industry alliance's changing definition needs to be read alongside the concrete responsibilities it leaves with the merchant.
+Composable, defined above as a way of buying rather than of writing code, is promoted by an alliance that has changed its definition several times; what has stayed the same is the work it leaves with the merchant.
 
 The MACH Alliance was announced in June 2020 by commercetools, Contentstack, EPAM and Valtech, with the acronym spelled out as "Microservices, API-first, Cloud-Native, and Headless". It passed 100 members in December 2023. In August 2025 it listed five guiding principles without restating the acronym, and as of November 2026 its principles page states three (Open, Composable, Connected) and no longer defines microservices or headless at all.
 
-Its own February 2026 survey of 600 enterprise technology decision-makers reports that 37% cite integration complexity as a primary concern, a finding against interest from a vendor alliance whose respondents are its adopters.
+Its own February 2026 survey of 600 enterprise technology decision-makers reports that 37% cite integration complexity as a primary concern, a finding that works against the alliance's own case, since the people answering are its adopters.
 
 In the same period commercetools, the alliance's flagship vendor, cut about 10% of staff in February 2025 after missing growth targets (widely reported), and in January 2026 launched a product it describes as layering agentic capabilities "on top of your existing commerce solution". The composable champions now sell composable incrementally.
 
-What a composable vendor sells as a unit is visible in its documentation. A commercetools Project is "the top-level container" for a merchant's data, isolated from other Projects, with published limits (25 API Extensions per Project as of November 2026). Its API Extensions, synchronous call-outs to the merchant's own code before a cart or order is saved, carry a plain warning: "if it fails or takes a second longer to return a result, the whole API call fails or takes a second longer." That sentence is the distribution cost of microservices, delivered to the merchant's doorstep. And none of the accounts above describes a company with fourteen people in technology.
+What a composable vendor sells as a unit is visible in its documentation. A commercetools Project is "the top-level container" for a merchant's data, isolated from other Projects, with published limits (25 API Extensions per Project as of November 2026). Its API Extensions, synchronous call-outs to the merchant's own code before a cart or order is saved, carry a plain warning: "if it fails or takes a second longer to return a result, the whole API call fails or takes a second longer." That sentence is the distribution cost of microservices, delivered to the merchant's doorstep.
+
+Across all these accounts, from Amazon to commercetools, none describes a company with fourteen people in technology.
 
 ## What Each Style Costs
 
-Splitting a system lets teams change and deploy parts independently. It also turns some local calls into network requests that can fail or arrive late, leaving the merchant to coordinate records across systems.
+The accounts above recorded what splitting cost. In general terms, splitting a system lets teams change and deploy parts independently. It also turns some local calls into network requests that can fail or arrive late, leaving the merchant to coordinate records across systems.
 
 Martin Fowler's 2015 "Microservice Trade-Offs" names the benefits as strong module boundaries, independent deployment and technology diversity, and the costs as **distribution** (remote calls are slower and can fail), **eventual consistency** ("because of their laudable insistence on decentralized data management") and **operational complexity** ("there's just no way to handle dozens of services without the automation and collaboration that continuous delivery fosters"). His "MonolithFirst" of the same year adds the point that decides most cases: "even experienced architects working in familiar domains have great difficulty getting boundaries right at the beginning", so "the premium of microservices is a drag you should do without" early on.
 
@@ -135,11 +155,13 @@ In commerce those costs land on specific promises. The table takes three steps o
 
 The third row is the honest one: some boundaries exist whatever style you choose, because the WMS, the PSP (payment service provider) and the carriers are other companies' systems. The question a style answers is how many *additional* boundaries of that kind you create inside your own code.
 
-The people cost is the one the pitch decks omit. Netflix's own account of its move to cloud microservices runs from August 2008 to January 2016: seven years. Uber reported in 2020 that with about 2,200 critical microservices a root-cause investigation could run through about 50 services owned by 12 teams, a simple feature needed 10 touchpoints, services had a half-life of about 1.5 years, and ownership had blurred into "networked monoliths" that must be deployed together; its remedy grouped services into about 70 domains behind gateways, the modular-monolith discipline rebuilt on top of microservices. Segment's three engineers keeping 140 services alive is the same cost at a company a hundredth of Uber's size.
+The people cost is the one rebuild proposals usually leave out, and the accounts above record it: Netflix's migration took seven years, Uber's 2,200 services blurred into "networked monoliths", and Segment needed three engineers to keep 140 services alive.
+
+Set side by side, each style serves a different number of teams, gives price, stock and order a different kind of consistency, and fails in its own typical way:
 
 | | Monolith | Modular monolith | Microservices | Composable |
 | --- | --- | --- | --- | --- |
-| Teams it serves well | One, up to roughly ten engineers | A few teams on one release train; Shopify ran it with a thousand developers | Many teams releasing on their own schedules | A merchant with an integration team that can own every join |
+| Teams it serves well | One, up to roughly ten engineers | Several teams on one release train (Shopify: about a thousand developers) | Many teams releasing on their own schedules | A merchant with an integration team that can own every join |
 | Consistency of price, stock, order | Transactional | Transactional | Eventual; needs idempotent handling, reliable publishing and reconciliation | Eventual, between vendors; reconciliation is the merchant's |
 | Release independence | None | None by default; ownership per module | Full | Per vendor, on the vendor's schedule |
 | Operating cost | One pipeline, one runtime | Plus one boundary check | A pipeline, monitoring and on-call per service; a platform team | An integration platform, contracts and reconciliation per vendor pair |
@@ -148,39 +170,26 @@ The people cost is the one the pitch decks omit. Netflix's own account of its mo
 
 ## Modularity Sized to the Team
 
-A team must be able to understand and operate the boundaries it creates. Separate services still require coordination when their owners cannot make changes independently.
+Given those costs, how many boundaries can a merchant's own team understand and operate? Separate services still require coordination when their owners cannot make changes independently.
 
-Melvin Conway wrote in 1968 that organizations "are constrained to produce designs which are copies of the communication structures of these organizations". Every account above is Conway's observation at work: Amazon's two-pizza teams produced services; Zalando's 260 teams produced 4,000 applications; Shopify's one release train produced one deployment unit with internal ownership. Team Topologies, the 2019 book by Matthew Skelton and Manuel Pais, rests on the premise that "teams can only handle so much complexity before breaking down".
+Two observations bear on that question. Melvin Conway wrote in 1968 that organizations "are constrained to produce designs which are copies of the communication structures of these organizations". Every account above is Conway's observation at work: Amazon's two-pizza teams produced services; Zalando's 260 teams produced 4,000 applications; Shopify's one release train produced one deployment unit with internal ownership. Team Topologies, the 2019 book by Matthew Skelton and Manuel Pais, rests on the premise that "teams can only handle so much complexity before breaking down".
 
-The rule I use follows from that. **Create one deployment unit per team that must release without waiting for another team.** Not per domain, flow or capability: per team with its own release need. A four-person integration team gets one deployable with modules inside it; a storefront team gets the theme and its apps. When those two teams block each other's releases, that is the evidence for a second unit, and not before.
+The rule this chapter uses follows from that. **Create one deployment unit per team that must release without waiting for another team.** Not per domain, flow or capability: per team with its own release need. A four-person integration team gets one deployable with modules inside it; a storefront team gets the theme and its apps. When two teams that share a deployable block each other's releases, that is the evidence for a second unit, and not before.
 
 ![Illustration: a small team juggling many tangled services, beside the same team carrying one deployable with modules inside.](assets/images/29-commerce-architecture-styles/29-one-unit-per-team.jpeg)
 **Figure 3:** *One deployment unit per team that must release without waiting for another: a small team gets one deployable with modules inside, and a second unit only when two teams block each other's releases.*
 
-Three disciplines make a single unit work for years, all in the public record.
+Three disciplines, all in the public record, keep a single unit healthy for years and decide when to split it.
 
-**Decide who owns each fact before you split anything.** Fowler's warning about boundaries and Shopify's finding that domains and their boundaries "do not reflect the way Shopify's code actually functions in practice" are the same warning. In commerce the boundaries that matter are the systems of record: who owns stock, the order, the product. Kestrel & Pine's Waypoint decisions W1 to W3 are exactly that, made before a line of custom code was moved.
+**Decide who owns each fact before you split anything.** Fowler's warning about boundaries and Shopify's finding that domains and their boundaries "do not reflect the way Shopify's code actually functions in practice" are the same warning. In commerce the boundaries that matter are the systems of record: who owns stock, the order, the product. Kestrel & Pine's Waypoint decisions W1 to W3 (who owns stock, the order record and product information) are exactly that, made before a line of custom code was moved.
 
 **Enforce boundaries cheaply and gate new violations rather than chase zero.** Packwerk's design, a list of existing violations and a block on new ones, is the transferable idea, and Shopify's retrospective says where it earned its keep: holding one base layer clean. A merchant's version is a dependency check in the build of its integration code that says, for example, the stock module may not import from the orders module.
 
 **Split a hot path only on measured evidence, behind a verifier.** Shopify's Storefront Renderer is the model: a measured latency need, a rewrite, a comparison of old and new responses on live traffic, a fallback. If you cannot name the measurement, you do not have the evidence for the split.
 
-The vendor's view and the merchant's view differ, and the pitch deck blurs them.
-
-| Question | A platform vendor | A merchant on a hosted platform |
-| --- | --- | --- |
-| Who must be modular? | Thousands of engineers shipping one product to millions of tenants | A dozen engineers shipping connectors, apps and pipelines around a bought core |
-| What is the unit of change? | A component or service inside the platform | A connector, an app, a theme, a data pipeline |
-| Where does distribution cost land? | In the vendor's engineering budget | In the merchant's integration layer, as integration debt ([[integration-styles]]) |
-| What does "microservices" buy? | Release independence for many teams | Nothing directly; the merchant does not deploy the platform |
-| What does "composable" buy? | A product category to sell | Replacing one capability (search, OMS, PIM) without replacing the core, at the price of owning the joins |
-
-A vendor's internal style is also not something a merchant can verify. A WMS vendor's page saying it is "built on microservices" (Manhattan's does, as of November 2026) says nothing about uptime, release cadence or the API contract, which are the things to ask about ([[api-contracts-and-versioning]]).
-
-![Diagram: Kestrel & Pine's own code in 2027 is one deployment unit with a module per flow, surrounded by bought systems](assets/images/29-commerce-architecture-styles/fig02-kestrel-pine-s-own-code-2027.jpeg)
-**Figure 4:** *Kestrel & Pine's own code in 2027 is one deployment unit with a module per flow, surrounded by bought systems; the boundaries that matter are the systems of record on the outside, not service boundaries on the inside.*
-
 ## Across Scale Stages: When It Fits and When It Limits
+
+Applied stage by stage, the rule gives one judgement. Through stage 3 the right number of deployment units for a merchant's own code is one, perhaps two, and the energy goes into boundaries around systems of record. Microservices become a real question only at stage 4, when the organization rather than the traffic is the bottleneck, and even then the documented path is incremental and takes years. Composable read as "replace one capability at a time around a kept core" fits stage 3; read as "an API-only core and a custom storefront" it is a stage 4 choice that needs a platform team. Kestrel & Pine is at stage 3, Omnichannel. The table shows what each stage typically has, what it needs and the signs that it is outgrowing that shape.
 
 | Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |
 | --- | --- | --- | --- |
@@ -189,28 +198,31 @@ A vendor's internal style is also not something a merchant can verify. A WMS ven
 | **3 — Omnichannel** (about €20M–€200M) | A dozen systems; an OMS and PIM beside the platform; an integration team of two to five; a modular monolith for own code | Modules per flow with a dependency check; OMS and PIM bought rather than built; a second deployable only when two teams block each other | A rebuild proposal sized for a company a hundred times larger; a "service" per flow with one engineer each; releases that need three teams to coordinate |
 | **4 — Group** (over about €200M, or several brands) | Platform teams; shared storefront, integration and data services across brands; some services the group writes itself | Standard stacks, API guidelines and a paved road, a supported default toolset (Zalando's 2020 and 2023 lessons); a deployable per stream-aligned team (a team owning one flow of business change end to end); a boundary gate in every shared codebase | Six languages for similar services; a service half-life under two years; a feature that needs ten teams; functionality built twice |
 
-The judgement: through stage 3 the right number of deployment units for a merchant's own code is one, perhaps two, and the energy goes into boundaries around systems of record. Microservices become a real question only at stage 4, when the organization rather than the traffic is the bottleneck, and even then the documented path is incremental and takes years. Composable read as "replace one capability at a time around a kept core" fits stage 3; read as "an API-only core and a custom storefront" it is a stage 4 choice that needs a platform team.
-
 ## In Practice: Noor's Memo
 
-Noor's memo to the board (May 2027) ran to two pages. The numbers below are Kestrel & Pine illustrations.
+Noor's memo to the board (May 2027) applied that stage-3 judgement to Kestrel & Pine. It ran to two pages. The numbers below are Kestrel & Pine illustrations.
 
-She started with the headcount. Nine engineers, shaped from April 2027 as a "Buy" team of three storefront and apps engineers, a "Fulfil and Return" team of two back-end engineers, an integration pair under Ruben Alves and a data pair ([[organizing-commerce-engineering]]). Three of those groups write code, and none has yet waited on another to release. By the rule above, Kestrel & Pine's own code needs one storefront codebase and one integration service, shared by the integration pair and the Fulfil and Return team until the day they block each other. The rebuild option had described about a dozen services for nine engineers.
+She started with the headcount. Nine engineers, shaped from April 2027 as a "Buy" team of three storefront and apps engineers, a "Fulfil and Return" team of two back-end engineers, an integration pair under Ruben Alves and a data pair ([[organizing-commerce-engineering]]). Three of those groups (Buy, Fulfil and Return, and the integration pair) write code, and none has yet waited on another to release. By the rule above, Kestrel & Pine's own code needs one storefront codebase for the Buy team, which already releases on its own through the theme and its apps, and one integration service, shared by the integration pair and the Fulfil and Return team until the day they block each other. The platform runs the theme and apps, so the integration service is the one deployable the team runs itself. The rebuild option had described about a dozen services for nine engineers.
 
-She then matched the rebuild against the incidents. The Black Friday Oversell, the Three-Status Order, the Price Drift and the Store Stock Mirage were all failures of ownership and of the joins, not of the platform's internal structure; an API-only engine would have recreated every one of those joins in new code. Waypoint decides ownership (W1 to W3), buys the missing hubs and makes the copies trustworthy (W5); none of it depends on the platform's internals.
+She then matched the rebuild against the incidents. The Black Friday Oversell, the Three-Status Order, the Price Drift, the Double Refund and the Store Stock Mirage were all failures of ownership and of the joins, not of the platform's internal structure; an API-only engine would have recreated every one of those joins in new code. Waypoint decides ownership (W1 to W3), buys the missing hubs and makes the copies trustworthy (W5, integration standards: an owner, a contract and a reconciliation job per integration); none of it depends on the platform's internals. In the table, stay and surround costs well under half as much and addresses the incidents in 2027; the rebuild addresses none until "phase two".
 
 | | The composable rebuild option *(illustrative)* | Stay and surround as approved |
 | --- | --- | --- |
-| Cost over 2027–2029 | About €3.2M, 18 months | About €1.33M including subscriptions; the €1.1M Waypoint budget |
+| Cost over 2027–2029 | About €3.2M, with 18 months to build | About €1.33M: the €1.1M Waypoint budget for 2027–2028 plus subscriptions |
 | What is rebuilt | Storefront, commerce engine, order service, every integration to them | Nothing; the platform stays (W4) |
 | What is bought | An API-only engine; the rest custom | OMS with availability module, PIM (product information management system); standards on the existing iPaaS (integration platform as a service) |
 | Deployment units the team must run | About a dozen services plus a storefront | One integration service; vendors run the rest |
-| Incidents addressed in 2027 | None until "phase two" | Oversell (W1), Three-Status Order (W2), Price Drift and Double Refund (W5 contracts and reconciliation) |
+| Incidents addressed in 2027 | None until "phase two" | Oversell (W1), Three-Status Order (W2), Price Drift and Double Refund (W5 contracts and reconciliation); Store Stock Mirage (W1's availability service, with an interim store buffer) |
 | Reversibility | One-date cutover of storefront and checkout: The Burned Bridge | Each hub added beside the platform; decision revisited in 2029 |
 
-The one piece of the rebuild option Noor kept was the vocabulary. She wrote the integration rule into the engineering handbook: one repository, one deployable, a module per flow (stock, orders, prices, products, returns), a dependency check in the build that blocks new cross-module imports, and a measured latency problem as the only accepted reason to split anything. The agency scripts that move in-house during 2027, and every new connector outside the iPaaS, land in that one service. The answer to "are we behind?" was no: Kestrel & Pine stood where every documented company stood before it split, and those companies split for reasons Kestrel & Pine did not have.
+The memo ended with a rule and an answer. Noor wrote the integration rule into the engineering handbook: one repository, one deployable, a module per flow (stock, orders, prices, products, returns), a dependency check in the build that blocks new cross-module imports, and a measured latency problem as the only accepted reason to split anything. The agency scripts that move in-house during 2027, and every new connector outside the iPaaS, land in that one service. The answer to "are we behind?" was no: Kestrel & Pine stood where every documented company stood before it split, and those companies split for reasons Kestrel & Pine did not have.
+
+![Diagram: Kestrel & Pine's own code in 2027 is one deployment unit with a module per flow, surrounded by bought systems](assets/images/29-commerce-architecture-styles/fig02-kestrel-pine-s-own-code-2027.jpeg)
+**Figure 4:** *Kestrel & Pine's own code in 2027 is one deployment unit with a module per flow, surrounded by bought systems; the boundaries that matter are the systems of record on the outside, not service boundaries on the inside.*
 
 ## When It Goes Wrong
+
+Five failures show how the choice goes wrong. Several match the patterns named at the top of this chapter. A distributed monolith and an over-decomposed integration layer are what The Giant's Boots produce in a small team. Composable without a platform team becomes The Spaghetti Junction. A half-finished migration is recovered piece by piece, never by The Burned Bridge.
 
 **The distributed monolith.** Services that must be deployed, tested and rolled back together, with the network added for nothing; Uber named it "networked monoliths" in 2020. Detection: a release that needs three teams in one meeting; a change to one service that always needs a change to another. Recovery: merge the pair, or redraw the boundary around the data that actually flows, as Uber's domains did.
 
@@ -224,13 +236,15 @@ Zalando's price-and-stock pipeline (described in 2025) reprocessed payloads that
 
 **The over-decomposed integration layer.** Each connector becomes a separately operated service, multiplying deployments and support work.
 
-Segment's 140 services for 140 destinations is the shape a merchant's 34 integrations take when each is its own deployable with its own queue. Detection: engineers who spend their weeks keeping connectors alive; library versions that differ per connector. Recovery: one integration service with a module per flow and recorded traffic replayed as tests, as Segment did.
+Segment's 140 services for 140 destinations is the shape Kestrel & Pine's 34 integrations (Noor's February 2027 count, [[integration-styles]]) would take if each were its own deployable with its own queue. Detection: engineers who spend their weeks keeping connectors alive; library versions that differ per connector. Recovery: one integration service with a module per flow and recorded traffic replayed as tests, as Segment did.
 
 **Composable without a platform team.** The merchant buys separate components without assigning a team to maintain their joins.
 
 The MACH Alliance's own 2026 survey puts integration complexity first among its adopters' concerns. Detection: every vendor pair joined by a different script with a different owner; a vendor's call-out timeout failing your checkout. Recovery: an integration inventory ([[integration-styles]]) and a contract per join (W5).
 
 ## What to Take Away
+
+The checkout team at the start of this chapter and the board's question have the same answer. A split pays only when teams must release apart, and its costs land wherever the joins are. On a hosted platform the joins inside the core are the vendor's; the joins the merchant writes, its connectors, apps and pipelines, are its own. So Kestrel & Pine's nine engineers, none of whose groups had yet blocked another, needed one shared integration service with clear owners for each fact, not a rebuild; they were not behind.
 
 **Established.**
 

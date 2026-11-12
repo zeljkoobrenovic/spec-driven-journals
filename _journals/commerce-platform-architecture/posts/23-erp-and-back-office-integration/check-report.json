@@ -1,0 +1,691 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/23-erp-and-back-office-integration/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/23-erp-and-back-office-integration/index.md",
+  "spec_sha": "18f1aad31f32bbe8",
+  "draft_sha": "1c03ee8a295f926e",
+  "run_at": "2026-11-12T22:57:39+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: ERP ownership, flows, choosing the hub",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: ERP keeps the books; hub depends on scale stage; finance batch vs real-time availability and owning the connector",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns addressed: accidental hub, lagging order copy, partner-owned connector",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "ERP as the ledger and record keeper whose data different consumers need at different speeds",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Invoices and B2B terms end in the ERP; and other systems tend to connect through it",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Accidental ERP hub makes stock freshness wait on the accounting cycle",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Thesis: separate books from selling; ERP hub only at one channel, OMS hub beyond",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Running example: Eva's order must reconcile in Sanne's month-end close",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶1",
+      "summary": "K&P's cloud ERP scope and its partner-built connector",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶2",
+      "summary": "Engineering has to reverse-engineer the opaque connector",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶3",
+      "summary": "What the connector actually does: slow schedules, non-idempotent, no retry",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶4",
+      "summary": "Three 2026 incidents traced to the connector",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶5",
+      "summary": "Finance's slow close from scattered order sources raises what the ERP should own",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶6",
+      "summary": "Waypoint's finance-only rule assigns ownership across systems",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Connector Nobody Could Read ¶7",
+      "summary": "ERP consumes daily batches and publishes B2B terms; connector to be retired",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What an ERP Does in a Commerce Business ¶1",
+      "summary": "ERP's four jobs, none needing real-time commerce data",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What an ERP Does in a Commerce Business ¶2",
+      "summary": "Mid-market ERP vendors pitch themselves as the whole back end, true only at small size",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What an ERP Does in a Commerce Business ¶3",
+      "summary": "Inventory valuation as accounting, separating stock value from stock quantity",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "What Flows Between Commerce and the ERP ¶1",
+      "summary": "Seven data flows with direction and cadence",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "What Flows Between Commerce and the ERP ¶2",
+      "summary": "Flows' differing requirements argue against one shared connector",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "What Flows Between Commerce and the ERP ¶3",
+      "summary": "Pointer that the table's last row sums up the argument",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Batch or Events: The ERP's Rhythm ¶1",
+      "summary": "Batch vs event defined, with vendor cadence examples",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Batch or Events: The ERP's Rhythm ¶2",
+      "summary": "Finance can be batch, availability needs freshness; owners publish changes",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Batch or Events: The ERP's Rhythm ¶3",
+      "summary": "Real reason to decouple is differing pace of change",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Batch or Events: The ERP's Rhythm ¶4",
+      "summary": "K&P's stock chain broke the rule, exposed by the oversell",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶1",
+      "summary": "Defines integration hub and frames three answers plus an accident",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶2",
+      "summary": "ERP as hub and where it fits",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶3",
+      "summary": "Commerce platform as hub, fit for D2C, breaks with many order sources",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶4",
+      "summary": "OMS as hub for omnichannel stages",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶5",
+      "summary": "iPaaS with no hub as accidental non-design",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Who Is the Hub? Three Answers and a Non-Answer ¶6",
+      "summary": "Finance-only rule as OMS-as-hub stated as ownership",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Decision rule for the hub from channel count and availability needs",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "ERP's role narrowing by scale stage; K&P mismatched",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Connectors as Products ¶1",
+      "summary": "Vendor connectors, illustrated by Business Central's explicit ownership rules",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Connectors as Products ¶2",
+      "summary": "Connector maintenance burden; and Shopify's advice to name owners and disagreement rules",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Connectors as Products ¶3",
+      "summary": "SAP's suite-era division fits only its intended merchant",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Master Data: Who May Create and Change What ¶1",
+      "summary": "Master data ownership defined, with recommended owner table",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Master Data: Who May Create and Change What ¶2",
+      "summary": "Vendors agree: ERP owns item identity and cost, PIM owns content",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "What Never Belongs in the ERP, and the Partner as a Dependency ¶1",
+      "summary": "What never and always belongs in the ERP",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "What Never Belongs in the ERP, and the Partner as a Dependency ¶2",
+      "summary": "ERP partner as hidden dependency; own the connector as a contract",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Eva's order flowing to the ERP in nightly batches",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "ERP postings for Eva's order",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Exchange handled by batch, invisible to the customer",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Wholesale order where the ERP keeps its full role",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "Retiring the partner connector via a written contract and phased switch-off",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Duplicate sales orders: detection and recovery",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Sale posted before payment captured",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Double refund found via ERP reconciliation",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Missing ERP item breaks the batch",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Nightly batch overruns at peak",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Silent partner connector change causing price drift",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Answer to Sanne's question: ERP owns the books, receives the rest",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings: ERP jobs, batch default, per-field ownership",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices of hub and connector",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: finance-only rule and owning the connector contract",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Diagnostic questions about ownership, latency and the connector",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Part V's four problems are one: things held in the wrong place",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶3",
+      "summary": "Part V's common remedy and K&P's ownership decisions",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶4",
+      "summary": "Reader exercise mapping each channel's ownership",
+      "matched_spec_paragraph": "p58a"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶5",
+      "summary": "Hand-off to the next part on integration",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 58 outline units match the controlling idea of their aligned spec paragraph in spec order (p01-p59, including batch-events p26, p27, p29, p28 and the Part V close p57-p59); the three introduction callouts have no spec paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Flagged units are joined by the spec: Introduction ¶2 (p02 joins the documents ending in the ERP with others connecting through it), Connectors ¶2 (p31 joins the connector's small print with Shopify's two contract rules); the KEY POINTS callout is a three-bullet summary by design, not a paragraph unit.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit advances its section's supporting claims (S1-S5): scene to S2/S5, jobs to S1, flows and batch to S2, hub/trade-offs/stages to S3, connectors and master data to S4, never-in-ERP to S1/S5, cases and failures to S2/S5.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0 (p14, table)",
+      "draft_locus": "What an ERP Does in a Commerce Business ¶1",
+      "quote": "As the last column shows, none of them needs anything from commerce in real time",
+      "finding": "The prose points the reader to the wrong column: the last column is 'What commerce needs from it', and only its ledger row says 'Nothing in real time'; the claim is carried by the third column 'What it needs from commerce'. The table's point is therefore misexplained (flowA re-read the table to resolve it).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in (p28, example)",
+      "draft_locus": "Batch or Events: The ERP's Rhythm ¶3 -> ¶4",
+      "quote": "Kestrel & Pine's 2026 stock chain, described in the scene, broke that rule",
+      "finding": "The example is meant to apply 'the rule and its reason' (finance can be batch, availability cannot), but the preceding paragraph states the change-not-performance reason, not a rule, so 'that rule' has no clear antecedent; both flow readers had to look back to find which rule.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9 (never-in-erp, p45) and /flow/rationale",
+      "draft_locus": "What Never Belongs in the ERP, and the Partner as a Dependency ¶2",
+      "quote": "Behind the line between the ERP and the commerce systems sits the firm that built the link",
+      "finding": "Both readers mark the position of the partner half of this section as unclear: it is about who owns the connector and would sit next to Connectors as Products. The difficulty comes from the declared order, which places p45 here.",
+      "fault": "spec",
+      "corroborated_by": "flowA: 'Why the partner half sits here rather than beside Connectors is unclear'; flowB: same words",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2 (flows p17-p18) and /sections/3/paragraphs/0 (p26)",
+      "draft_locus": "What Flows Between Commerce and the ERP ¶1 (table)",
+      "quote": "Event on creation, consumed by the ERP in a daily batch",
+      "finding": "Both readers re-read the flows tables because 'batch' and 'event' are used as cadences there but defined only in the next section. The order of sections can stay; a short gloss at the first use (or in the flows lead-in) would remove the stumble.",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'batch and event are only defined in the following section... I re-read the table after the definitions'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in (p28)",
+      "draft_locus": "Batch or Events: The ERP's Rhythm ¶4",
+      "quote": "Kestrel & Pine's 2026 stock chain, described in the scene, broke that rule",
+      "finding": "Both readers lost the thread at 'that rule': the paragraph before is about change pace, the one before that about batch versus freshness.",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'I had to look back to find which rule'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5-6 (p12-p13) with /introduction/paragraphs/3 (p04)",
+      "draft_locus": "Setting the Scene at Kestrel & Pine ¶6-¶7",
+      "quote": "Waypoint, the company's improvement program, narrows the ERP's role to finance",
+      "finding": "Both readers met the full answer twice before the first concept section (thesis in the introduction, then Waypoint's finance-only rule with W1/W2/W3/W5 at the end of the scene), so the hub comparison reads as justification of a known result. The repetition follows from the declared order (scene as problem_solution ending in Waypoint's answer after a thesis paragraph).",
+      "fault": "spec",
+      "corroborated_by": "flowB: 'The scene already gives the full answer... the hub comparison reads as a justification of a known result'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/3 (p42)",
+      "draft_locus": "In Practice ¶4",
+      "quote": "enters the ERP as an EDI order today and the OMS from Q4 2027",
+      "finding": "'today' is ambiguous inside a scenario dated April 2027; both readers stopped on it (flowA also on 'Under Waypoint's target flow' for an April 2027 order the OMS only takes in October 2027).",
+      "fault": "draft",
+      "corroborated_by": "flowB: '\"Today\" is ambiguous inside a scenario dated April 2027'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/0 (p14)",
+      "draft_locus": "What an ERP Does in a Commerce Business ¶1",
+      "quote": "As the last column shows, none of them needs anything from commerce in real time",
+      "finding": "flowA re-read the jobs table: the last column is what commerce needs from the ERP, not what the ERP needs from commerce. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4 (p24)",
+      "draft_locus": "Who Is the Hub? ¶5",
+      "quote": "Kestrel & Pine's thirty-four integrations and three definitions of \"order\" are the result",
+      "finding": "flowA: the scene never mentions these figures (only KEY POINTS does), leaving unclear whether Kestrel & Pine is in the ERP-hub or the iPaaS state. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0 (p35)",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "Set side by side on the same criteria, the four answers give a rule",
+      "finding": "flowA: the long opening gives the recommendation before the table, and the 'Right when' row repeats the hub table's 'Fits' column, which the stage table repeats a third time. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/7 (p58a) after p56",
+      "draft_locus": "Questions to Ask ¶4",
+      "quote": "For each channel through which orders reach your company from outside its shop, write down",
+      "finding": "flowA: a second action list after Questions to Ask felt out of place; the order (questions p56 before the part close p57-p58a) is the spec's. Reported by one reader only (minor).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/5 (p57)",
+      "draft_locus": "Questions to Ask ¶2",
+      "quote": "Either a value reached the outside party from a copy that an intermediary held or from a system that did not own it, or an order never left the tool its channel arrived through.",
+      "finding": "flowA had to re-read the part-close synthesis sentence. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2 (p03)",
+      "draft_locus": "Introduction ¶3",
+      "quote": "The ERP can become the hub by accident.",
+      "finding": "flowB: 'hub' is used here and in the scene but defined only in the hub section. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4 (p05)",
+      "draft_locus": "Introduction ¶5",
+      "quote": "Where we are in the order's journey.",
+      "finding": "flowB: the Eva paragraph between the thesis and the roadmap breaks the run from answer to roadmap; the placement is the spec's. Reported by one reader only (minor).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2 (p29)",
+      "draft_locus": "Batch or Events: The ERP's Rhythm ¶3",
+      "quote": "The business reason to keep the ERP out of the real-time path is not performance but **change**",
+      "finding": "flowB: the change-not-performance argument slightly interrupts between the claim and the Kestrel & Pine example (spec order p27, p29, p28). Reported by one reader only (minor).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4 (p24, table)",
+      "draft_locus": "Who Is the Hub? table",
+      "quote": "wrong at stages 1–2",
+      "finding": "flowB: the hub table uses stage numbers while the prose uses stage names; they line up only in the next section's table. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2 (p32)",
+      "draft_locus": "Connectors as Products ¶3",
+      "quote": "Like Business Central's rules, that division fits the merchant it was written for, as the note below argues.",
+      "finding": "flowB: the note is entirely about Business Central, not SAP, so the pointer only half lands. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1 (p40)",
+      "draft_locus": "In Practice ¶2",
+      "quote": "which [[payments-to-ledger]] in the finance book explains in depth",
+      "finding": "flowB: 'the finance book' was never introduced. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/2 (p41)",
+      "draft_locus": "In Practice ¶3",
+      "quote": "in the batch of 22 April",
+      "finding": "flowB: the three-day gap after the 19 April exchange is not explained. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/2 (p48)",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "quote": "€19,400 twice",
+      "finding": "flowB: ambiguous whether €19,400 in total or on each path. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/5 (p51)",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "quote": "**The partner changes the connector.**",
+      "finding": "flowB: placed right after the connector's retirement, briefly unclear whether this failure applies before or after it. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2 (p09)",
+      "draft_locus": "Setting the Scene ¶3",
+      "quote": "Stock arrives from the warehouse every fifteen minutes, then goes to the platform hourly; German consumer prices use the same connector.",
+      "finding": "flowA: the price clause is out of place in a sentence about stock, and the stock chain is explained again in the next paragraph and Figure 1, so the first mention reads as a false start. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1 (p40)",
+      "draft_locus": "In Practice ¶2",
+      "quote": "recognized when the parcel is delivered on 15 April",
+      "finding": "flowA: the flows table lists shipments, not deliveries, so it is unclear where the ERP learns the delivery date. Reported by one reader only (minor).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3 (p04); /sections/2 (p17 table); definition in /sections/3/paragraphs/0 (p26)",
+      "draft_locus": "Introduction ¶4; What Flows Between Commerce and the ERP ¶1 (table)",
+      "quote": "receive orders, shipments and payments in daily batches",
+      "finding": "'batch' is not in known-23.txt (events are) and is used as a cadence term in the introduction and both flows tables before it is glossed in Batch or Events; it needs a gloss at first use.",
+      "fault": "draft",
+      "corroborated_by": "flowA: 'defines \"batch\" and \"event\" only after two tables have already used those words'",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/1 (p40)",
+      "draft_locus": "In Practice ¶2",
+      "quote": "in the finance book",
+      "finding": "'the finance book' is not in known-23.txt and is never introduced; the earlier table cites the same link without it.",
+      "fault": "draft",
+      "corroborated_by": "flowB: '\"The finance book\" was never introduced'",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with a concrete puzzling scenario (finance closing the books, the ERP whose updates decide when a shopper learns a jacket sold out), states the thesis and gives a roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Opens by answering the opening question, sorts what holds by how settled it is, and closes Part V with material the part established; no in-conclusion opener, rephrased-thesis-only, new subtopic or body evidence beyond what the part close requires.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p52 answers Sanne's question across the sections; the author's synthesis gives the so-what (a smaller, more important job; the connector contract is what you are buying); the part close names the one problem behind Part V's four cases and that the remedies are ownership decisions and contracts, with a concrete take-away list.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The chapter began with an ERP whose scheduled updates decided how quickly a shopper learned that a jacket had sold out' and Sanne's question call back to the introduction; 'The part opened with a jacket sold through the merchant's own shop, a marketplace and a retail chain' calls back to the part opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicts the sections in order (unreadable connector, four jobs and flows, batch vs availability, three hubs and the accident by cost and stage, connectors and master data, never-in-ERP and the partner, Eva's €235 order to Sanne's April close, a wholesale order, the connector's retirement, failures) and the evidence (Kestrel & Pine's connector and incidents, vendor documentation).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer names the ERP in the stock chain (the Oversell) and the undocumented connector's silent price failure, the ERP's finance-only ownership with prices, terms and credit leaving as events, daily batches from owners, stock from the WMS and availability from an OMS/availability service, and the field-level contract with owner, idempotency, reconciliation and alert. It omits 'retired flow by flow', which the draft states (scene ¶7, In Practice ¶5), so the draft is not the cause.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Platform for the D2C brand with the ERP as finance subscriber, the ERP for the B2B-heavy single-channel business, an OMS with a finance-only ERP for the omnichannel merchant; no hub is an accident with nobody owning the cross-channel order record, thirty-four integrations and three definitions of 'order', acceptable only as a transition.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Two sales orders and double revenue; one ERP document per order number enforced by the batch, a daily OMS-to-ERP count, cancel before posting and a reversing entry after. The answer does not mention per-line reporting, but the draft ties that safeguard to the missing-item failure as spec p46/p49 declare, so the gap is the expected answer's, not the draft's.",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "WMS knows the quantity, the ERP the value under IAS 2 and a costing method; the ERP's batch cycles and slow audited releases make availability late (the Black Friday Oversell); availability comes from the WMS and an OMS or availability service.",
+      "severity": "minor"
+    }
+  ]
+}

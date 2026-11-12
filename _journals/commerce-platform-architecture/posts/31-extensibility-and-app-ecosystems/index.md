@@ -28,13 +28,15 @@ A merchant needs a size guide, a pre-order flow or a loyalty scheme that its pla
 
 The risk becomes clear when extensions change the same fact. A stock badge only reads inventory; a pre-order app may change it while a warehouse feed overwrites the same number. Both can work as designed and still give shoppers an unreliable availability promise. Assigning permissions and an owner at installation gives the merchant a way to prevent that conflict and someone to investigate when it occurs.
 
-Kestrel & Pine, the fictional outdoor brand, supplies the example: **41 apps, 6 unused and 3 writing stock**. Head of Engineering Noor Visser introduces an ownership rule in April 2027.
+Kestrel & Pine, the fictional outdoor brand, supplies the example. The previous chapter found its stock-writing apps among the heaviest users of its API budget on Black Friday 2026, with nobody deciding which app came first. Kestrel & Pine has **41 apps, 6 unused and 3 writing stock**. Head of Engineering Noor Visser introduces an ownership rule in April 2027.
 
 **Where we are in the order's journey.** Eva's jacket page includes a size guide, stock badge and review widget; a notification app later sends tracking. Each extension reads data, and some can change it. This chapter establishes what they may touch and who answers for the result.
 
+The chapter starts from Kestrel & Pine's spreadsheet of 41 apps. It then sets out the five ways a platform lets other code in, what the vendor's app review checks and what it misses, why two writers of one fact fail, how deep customization stops a platform from being upgraded, and where custom behavior should live. It ends with the scale stages, Kestrel & Pine's governance rule and the ways extensions go wrong. The evidence is the vendors' own documentation, dated, and Kestrel & Pine's app inventory.
+
 ## Setting the Scene at Kestrel & Pine: Forty-One Apps and One Spreadsheet
 
-In April 2027, Noor and storefront manager Milan Petrov inventory all 41 apps. Milan knows about twenty well. The agency installed 22 over several years; others came from campaigns, pilots and former staff.
+In April 2027, Noor and Milan Petrov, the ecommerce and marketplaces manager who owns the storefronts and apps, inventory all 41 apps. Milan knows about twenty well. The agency installed 22 over several years; others came from campaigns, pilots and former staff.
 
 The illustrative bill is about **€2,900 monthly**, spread across platform and agency invoices and three company cards. Recording each app's purpose, owner and permissions lets Noor identify unused subscriptions and conflicting stock writers. A count of installed apps alone would reveal neither which costs to stop nor which behavior needs changing.
 
@@ -47,7 +49,7 @@ The illustrative bill is about **€2,900 monthly**, spread across platform and 
 | Agency utilities and pilots | 3 | 1 | 0 | A search pilot nobody switched off |
 | **Total** | **41** | **6** | **7** | **3 of the 7 write inventory** |
 
-Three apps can write inventory, separately from the main warehouse feed. That feed copies **warehouse management system (WMS)** counts through the **integration platform as a service (iPaaS)**, the hosted flow tool, into the platform hourly ([[integration-styles]]).
+Three apps can write inventory, separately from the main warehouse feed. That feed is one chain: the **integration platform as a service (iPaaS)**, the hosted tool that runs Kestrel & Pine's data flows, carries the **warehouse management system (WMS)** counts to the ERP (enterprise resource planning system), and the ERP's hourly sync writes them into the platform ([[integration-styles]]).
 
 One app copies stock adjustments between locations. A pre-order app reserves units by altering the same number the warehouse feed later overwrites. This caused **the App That Wrote Stock** incident in March 2026: about 600 variants showed phantom reservations for two weeks. A third app still has write permission for a sales channel no longer used. All three need an explicit decision about their access.
 
@@ -55,9 +57,9 @@ Noor's question to Milan was not "which app did it". It was: **who in this compa
 
 ## Five Ways to Extend a Platform
 
-Merchants need behavior that a shared platform's core does not provide. **Extensions** add that behavior through defined entry points, allowing the platform to serve different businesses without a separate core for each. Shopify's annual report for the year ended 31 December 2025 (filed 11 February 2026) describes its platform as "'single branch' software, which means that all of our merchants use the latest version", serving "millions" of merchants with "more than 21,000 apps" in its App Store at year end. At a different scale, SAP Commerce describes itself as "a flexible, modular architecture based on extensions".
+Answering Noor's question starts with how programs get into a platform at all. Merchants need behavior that a shared platform's core does not provide. **Extensions** add that behavior through defined entry points, allowing the platform to serve different businesses without a separate core for each. Shopify's annual report for the year ended 31 December 2025 (filed 11 February 2026) describes its platform as "'single branch' software, which means that all of our merchants use the latest version", serving "millions" of merchants with "more than 21,000 apps" in its App Store at year end. At a different scale, SAP Commerce describes itself as "a flexible, modular architecture based on extensions".
 
-Three things decide how dangerous an extension is: **where it runs** (inside the platform's process or outside it), **what it may touch** (everything the platform can reach, or only the data its permissions cover) and **how tightly it is coupled to the platform's version** (whether a release can break it silently, or whether it talks to a versioned interface with a stated support window).
+Three things decide how dangerous an extension is: **where it runs** (inside the platform's process or outside it), **what it may touch** (everything the platform can reach, or only the data its permissions, called **scopes**, cover) and **how tightly it is coupled to the platform's version** (whether a release can break it silently, or whether it talks to a versioned interface with a stated support window).
 
 In plain words, an **extension point** is a named place in the platform's flow where the platform agrees to run, or call, someone else's code. Platforms offer five kinds.
 
@@ -77,7 +79,7 @@ WooCommerce's extension guide adds the warning that matters most: "backwards com
 
 ### Theme code: the storefront's own extension point
 
-**Theme code** is the set of templates and scripts the platform renders into pages; [[storefront-architecture]] owns it. It is a second place where apps land: before Shopify's Online Store 2.0 (announced 29 June 2021), apps typically injected code into theme files and uninstalling could leave "ghost code" behind, which theme app extensions were introduced to end. Agency-edited theme files are the storefront's version of the Forked Platform: the more templates edited by hand, the more a theme update becomes a merge.
+**Theme code** is the set of templates and scripts the platform renders into pages; [[storefront-architecture]] owns it. It is a second place where outside code lands: before Shopify's Online Store 2.0 (announced 29 June 2021), apps typically injected code into theme files and uninstalling could leave "ghost code" behind. Theme app extensions, which let an app add blocks to a theme without editing its files, were introduced to end that. Agency-edited theme files carry a risk the chapter returns to as the Forked Platform, a platform changed so deeply that it can no longer be upgraded: the more templates edited by hand, the more a theme update becomes a merge.
 
 ### Apps over APIs: outside the process, limited by scopes
 
@@ -87,7 +89,7 @@ Apps are loosely coupled because the API is versioned. Shopify "releases a new A
 
 ### Functions and call-outs: a fixed input, a fixed output, a time budget
 
-The newest mechanism runs the merchant's small program at a named moment in the platform's own flow, with a fixed input, a fixed output and a limit on how long it may take. Shopify Functions plug into targets such as discounts, delivery and payment customization, cart and checkout validation and order routing. The function is compiled to WebAssembly (a portable binary format that runs in a sandbox), receives JSON the platform produces, returns a list of operations, cannot be called by URL and has no network access; the documented limits for API version 2026-10 are 11 million instructions per run for carts of up to 200 lines, 10 MiB of memory and a 256 KiB module. The earlier mechanism, Scripts (Ruby code running inside checkout for Plus merchants), was retired on 30 June 2026 (help center, accessed November 2026).
+The newest mechanism runs the merchant's small program at a named moment in the platform's own flow, with a fixed input, a fixed output and a limit on how long it may take. Shopify Functions plug into targets such as discounts, delivery and payment customization, cart and checkout validation and order routing. The function is compiled to WebAssembly (a portable binary format that runs in a sandbox), receives JSON the platform produces, returns a list of operations, cannot be called by URL and has no network access; the documented limits for API version 2026-10 are 11 million instructions per run for carts of up to 200 lines, 10 MiB of memory and a 256 KiB module. The earlier mechanism, Scripts (Ruby code running inside checkout for merchants on Shopify's Plus plan), was retired on 30 June 2026 (help center, accessed November 2026).
 
 commercetools' **API Extensions** are the synchronous call-out variant: after a create or update on a cart, order, payment or customer is processed but before it is saved, the platform calls the merchant's endpoint, which may reject the change or return update actions. The documentation is candid: "if it fails or takes a second longer to return a result, the whole API call fails or takes a second longer." The default budget is 2 seconds to connect and 2 seconds to respond, configurable to 10 with a support request; the recommended target is about 50 milliseconds; a project may have 25 extensions; a failure fails the API call and is not retried (n.d., accessed November 2026).
 
@@ -98,13 +100,13 @@ The common design is the lesson. **An extension point is a named moment with a f
 
 ### What each interaction needs from the platform
 
-The requirements differ by interaction; time budgets are the vendors' documented ones where given and assumptions otherwise.
+The five mechanisms meet in four interactions a merchant actually has. The webhook row is the notification half of an app over APIs; the last column names who answers when the interaction fails, the question the rest of the chapter takes up. Time budgets are the vendors' documented ones where given and assumptions otherwise.
 
 | Interaction | Mechanism | Time budget | On failure | Who owns the outcome |
 | --- | --- | --- | --- | --- |
 | Checkout validation or discount | Function or call-out | Milliseconds (Shopify: an instruction count; commercetools: 2 s default) | The platform fails the call or skips the function by its documented rule | The merchant; the shopper waits |
-| Stock write from the warehouse | App over API | Seconds, asynchronous *(assumption)* | Retried; stale stock until it succeeds | The integration owner |
-| Order created notification to an app | Webhook | Shopify: 1 s to connect, 5 s total; 8 retries over 4 hours | After 8 consecutive failures the subscription is deleted | The app's owner, and the merchant |
+| Stock write from the warehouse feed or an app | API call from outside the platform | Seconds, asynchronous *(assumption)* | Retried; stale stock until it succeeds | The integration owner |
+| Order created notification to an app | Webhook (part of an app over APIs) | Shopify: 1 s to connect, 5 s total; 8 retries over 4 hours | After 8 consecutive failures the subscription is deleted | The app's owner, and the merchant |
 | Core method replaced (price, tax, save order) | In-process plugin | Whatever the plugin takes | The platform does what the plugin does, right or wrong | The merchant, entirely |
 
 Every row but the last has a platform rule for failure. The in-process row has none, because the platform no longer knows what it is doing.
@@ -134,41 +136,48 @@ The most important question about any extension is not what it does but **what i
 
 Shopify's inventory documentation (n.d., accessed November 2026) shows the distinction cleanly: its API offers `inventoryAdjustQuantities` (a change per state) and `inventorySetQuantities` (an absolute quantity), and models stock per location in states such as *available*, *committed* (set aside for placed orders) and *on hand*.
 
-Kestrel & Pine's platform is not named and the mechanism is general: **set and adjust do not mix on the same number**, and a reservation belongs in its own state, not subtracted from the physical count. [[inventory-and-availability]] owns the states and the availability service that Waypoint's decision W1 introduces; this chapter owns the rule that got Kestrel & Pine there: **one writer per fact.**
+The mechanism is the same on any platform: **set and adjust do not mix on the same number**, and a reservation belongs in its own state, not subtracted from the physical count. [[inventory-and-availability]] owns the states and the availability service that Waypoint's decision W1 introduces; this chapter owns the rule that got Kestrel & Pine there: **one writer per fact.**
 
 For each fact the platform holds there is one system of record and at most one path by which it is written into the platform; every app that holds the write scope on that fact is either that path or a mistake.
 
 | Fact in the platform | System of record (Kestrel & Pine, after Waypoint) | The one writer into the platform | Apps that may only read |
 | --- | --- | --- | --- |
 | Physical stock and availability | The WMS for physical stock; the availability service for what each channel may promise (W1) | The WMS feed through the iPaaS, until the availability service replaces it (Q4 2027) | Badges, feeds, the pre-order app |
-| Prices | The platform's market price lists for consumer prices; the ERP's (enterprise resource planning system's) for wholesale ([[pricing-architecture]]) | Price events with effective dates from the price lists | Repricing and marketplace apps |
+| Prices | The platform's market price lists for consumer prices; the ERP's for wholesale ([[pricing-architecture]]) | Price events with effective dates from the price lists | Repricing and marketplace apps |
 | Product content | The PIM, product information management system (W3) | The PIM's publication job | Search-engine optimization (SEO) and feed apps |
 | Orders | The OMS, order management system (W2); the platform keeps checkout and order history | The checkout, and the OMS for status | Notification, invoice and analytics apps |
 
 Writing is not forbidden (the returns portal creates exchange orders through the platform's API, with an owner and a reason); every writer is named.
 
-## The Forked Platform: When the Core Has Been Changed
+## The Forked Platform and the Pulled Rug
 
-**The Forked Platform** is a platform whose core or theme has been customized so deeply that it can no longer be upgraded, so every vendor release is a project and, eventually, no release is taken. The vendors who offer in-process mechanisms describe it best.
+The writer problem comes from programs working through the platform's API. A different risk comes from code that changes the platform itself. **The Forked Platform** is a platform whose core or theme has been customized so deeply that it can no longer be upgraded, so every vendor release is a project and, eventually, no release is taken. The vendors who offer in-process mechanisms describe it best.
 
 Adobe Commerce's upgrade guidance says: "The amount of custom work and the number of installed third-party modules strongly affects the complexity of an upgrade", "The quality of the custom work and modules can determine whether an upgrade goes smoothly", skipping releases makes the next upgrade harder, and if upgrades cost more than expected, audit the project (n.d., accessed November 2026).
 
-Adobe ships an Upgrade Compatibility Tool that checks a customized instance's modules and core code against a target version and reports "critical issues, errors, and warnings" (updated 8 October 2026).
+Adobe ships an Upgrade Compatibility Tool that checks a customized instance's modules and core code against a target version and reports "critical issues, errors, and warnings" (updated 8 October 2026). That the vendor builds a tool for the problem shows how common it is.
 
 Its reasoning for its newer out-of-process model is the same lesson from the vendor's side: in-process code "must stay compatible with each Commerce version and its runtime", while App Builder apps can be "developed, deployed, and operated on their own schedule"; the trade-off is that in-process extensibility offers "deep, synchronous control of the Commerce runtime" that out-of-process does not (n.d., accessed November 2026).
 
 The clock that turns a postponed upgrade into a forced migration is the support policy. Adobe's lifecycle page (accessed November 2026) gives each release line roughly three years of standard support from general availability. Version 2.4.4 reached general availability on 12 April 2022 and left standard support on 12 April 2025; 2.4.7 (general availability 9 April 2024) is supported to 31 May 2027. From 1 June 2027 Adobe says it will no longer maintain cloud environments running unsupported versions, including "suspending traffic to the affected infrastructure", so the storefront "will go offline". A merchant still on 2.4.4 has a dated deadline and a bill that grows with every module.
 
-Hosted platforms cannot be forked, but they withdraw extension points, which is the same risk from the other direction. Shopify's checkout template (`checkout.liquid`) stopped working for in-checkout pages on 13 August 2024, by a notice of 13 February 2023; non-upgraded checkouts were "automatically upgraded to an un-customized, out-of-the-box Shopify Checkout"; Scripts followed on 30 June 2026 ([[cart-and-checkout]] tells the story). **An extension point is a promise with a date**, and the merchant's inventory must record which date each app depends on.
+Hosted platforms cannot be forked, but they withdraw extension points, which is the same risk from the other direction; the book's name for it is **the Pulled Rug**. Shopify's checkout template (`checkout.liquid`) stopped working for in-checkout pages on 13 August 2024, by a notice of 13 February 2023; non-upgraded checkouts were "automatically upgraded to an un-customized, out-of-the-box Shopify Checkout"; Scripts followed on 30 June 2026 ([[cart-and-checkout]] tells the story). **An extension point is a promise with a date**, and the merchant's inventory must record which date each app depends on.
 
-So open source and suites put the upgrade risk in the merchant's hands (the merchant may change the core, and must manage module count, module quality and an upgrade calendar under the vendor's support clock), while hosted SaaS puts the deprecation risk there instead (the merchant cannot change the core, and must manage app scopes, API versions per app and the vendor's deprecation calendar). Neither is safe, and both are managed by the same inventory.
+So open source and suites (enterprise platforms the merchant licenses and runs or has hosted) put the upgrade risk in the merchant's hands (the merchant may change the core, and must manage module count, module quality and an upgrade calendar under the vendor's support clock), while hosted SaaS puts the deprecation risk there instead (the merchant cannot change the core, and must manage app scopes, API versions per app and the vendor's deprecation calendar). Neither is safe, and both are managed by the same inventory.
 
 ![Illustration: a patched machine that cannot take an upgrade beside a sealed platform whose plug-ins carry expiry dates, both tracked by one inventory clipboard.](assets/images/31-extensibility-and-app-ecosystems/31-upgrade-or-deprecation-risk.jpeg)
 **Figure 3:** *Open-source and suite platforms put the upgrade risk in the merchant's hands and hosted platforms put the deprecation risk there instead; an extension point is a promise with a date, and one app inventory manages both.*
 
 ## The Choices: Where Custom Behavior Should Live
 
-When a merchant needs the platform to behave differently, there is a ladder of places to put the change. I climb it from the top and stop at the first rung that works: **configuration** (most "customizations" are settings the platform already has; Pete Hodgson's 2017 toggle taxonomy helps decide whether a switch is a release, ops or permissioning toggle, and so whether it belongs in configuration at all); **a platform-native extension point** (a function, a call-out or a workflow tool such as Shopify Flow, which "monitors your store for events" and runs actions); **a public app** for commodity capabilities; **a custom app over the API** for integrations and special behavior, with an owner and an API-version pin; **an in-process plugin** only where the platform allows it and the behavior needs synchronous control of the core; and **editing the core**, never.
+Both risks point the same way: the deeper a change sits, the more it costs later. So when a merchant needs the platform to behave differently, there is a ladder of six places to put the change. I climb it from the top and stop at the first rung that works:
+
+1. **Configuration.** Most "customizations" are settings the platform already has. Pete Hodgson's 2017 taxonomy of feature toggles (switches that turn behavior on or off without a release) sorts switches into release toggles (hiding unfinished work), ops toggles (turning a feature off under load) and permissioning toggles (turning a feature on for some users), which helps decide whether a switch belongs in configuration at all.
+2. **A platform-native extension point**: a function, a call-out or a workflow tool such as Shopify Flow, which "monitors your store for events" and runs actions.
+3. **A public app**, for commodity capabilities.
+4. **A custom app over the API**, for integrations and special behavior, with an owner and an API-version pin.
+5. **An in-process plugin**, only where the platform allows it and the behavior needs synchronous control of the core.
+6. **Editing the core**: never.
 
 | Choice | Upgrade coupling | What it may touch | Latency risk to checkout | Who maintains it | When it is right |
 | --- | --- | --- | --- | --- | --- |
@@ -189,7 +198,7 @@ The mechanisms do not change with scale; the governance does, and the stage deci
 | --- | --- | --- | --- |
 | **1 — Starting** (Kestrel & Pine 2016–2018) | A hosted platform and ten to twenty public apps installed by the founder or the agency; no custom code beyond the theme | A list of installed apps with their scopes, kept from day one; one person who approves installs | Two apps for the same job; an app billed to a card nobody checks; theme edits by hand |
 | **2 — Growing** (2019–2022) | The first custom app or connector (ERP, 3PL or third-party logistics provider, marketplace); thirty apps; agency-built theme features; on open-source platforms, the first in-process modules | A named owner per app and connector; the API version each targets, written down; one writer each for stock and prices; out-of-process mechanisms preferred even where in-process ones are allowed | Stock or price disagreements traced to an app; an upgrade postponed because "the modules might break"; the agency as the only one who knows what an app does |
-| **3 — Omnichannel** (2023–now) | Forty or more apps across storefront, marketing, operations and compliance; apps that write stock, orders and customers; several countries in one tenant | A governance card per app; a quarterly uninstall review; scopes revoked when a system of record moves (W1, W2, W3); on in-process platforms, an upgrade calendar set by the vendor's support clock and a module budget | A phantom-stock or price incident caused by two writers; app subscriptions nobody can account for; a deprecation discovered after its date; a platform release more than a year behind |
+| **3 — Omnichannel** (2023–now) | Forty or more apps across storefront, marketing, operations and compliance; apps that write stock, orders and customers; several countries in one tenant | A governance card per app (one page with its owner, scopes, API version and exit plan); a quarterly uninstall review of unowned, unused and duplicate apps; scopes revoked when a system of record moves (W1, W2, W3); on in-process platforms, an upgrade calendar set by the vendor's support clock and a module budget | A phantom-stock or price incident caused by two writers; app subscriptions nobody can account for; a deprecation discovered after its date; a platform release more than a year behind |
 | **4 — Group** | Several brands, each with its own app list; platform teams; possibly in-process customization on a suite | A shared extension catalog across brands; one upgrade calendar for every vendor; app security review inside vendor management ([[commerce-security]]); the same contract discipline for the group's own APIs | Each brand solving the same need with a different app; a module written for one brand blocking the group's upgrade; **One Size Fits None** when brands are forced to share apps that fit none of them |
 
 The judgement: extensibility is cheap to adopt and expensive to govern, and the bill arrives at the Omnichannel stage as two writers of one fact. A merchant that keeps the list from the Starting stage pays almost nothing for it; one that starts at forty apps pays a week of archaeology, as Kestrel & Pine did.
@@ -198,12 +207,13 @@ The judgement: extensibility is cheap to adopt and expensive to govern, and the 
 
 ### Dated public examples
 
-- **A hosted platform withdrawing in-process code (2021–2026).** Shopify announced WebAssembly-based Functions in beta on 29 June 2021, deprecated its checkout template by a notice of 13 February 2023 effective 13 August 2024, and retired Scripts on 30 June 2026. Over five years the platform replaced free-form code inside checkout with sandboxed, time-budgeted extension points; read that as the direction every hosted platform takes as it grows.
+Beyond the Shopify dates given above, one more dated public example shows the direction vendors are taking.
+
 - **A suite vendor moving extensibility out of process (2025–2026).** Adobe's Commerce as a Cloud Service, whose release notes begin in November 2025, extends through App Builder, API Mesh, events and webhooks rather than in-process modules, with updates delivered continuously and 30 days to evaluate them in a sandbox (Adobe, 20 October 2026). The vendor that documented the upgrade problem most candidly built its SaaS edition without the mechanism that causes it.
 
 ### Kestrel & Pine: the app governance rule
 
-Noor and Milan turned the April 2027 spreadsheet into a rule, approved by Mara Lindqvist alongside Waypoint and recorded on one page per app (the **app governance card**, reproduced in the [[toolkit]]). The rule has five lines.
+Those are the vendors' moves. On its own side of the platform, Noor and Milan turned the April 2027 spreadsheet into a rule, approved by Mara Lindqvist alongside Waypoint and recorded on one page per app (the **app governance card**, reproduced in the [[toolkit]]). The rule has five lines.
 
 1. **Every app has a named owner** in the business (Milan for storefront and marketing apps, Daniel Okafor's team for fulfillment apps, Sanne de Wit's team for tax and invoicing apps, Ruben Alves for connectors); the agency installs nothing without an owner's approval.
 2. **Every app's scopes are recorded** on its card, with the API version it targets and the date that version leaves support.
@@ -211,7 +221,7 @@ Noor and Milan turned the April 2027 spreadsheet into a rule, approved by Mara L
 4. **A quarterly uninstall review.** Any app without an owner, without use in the quarter, or duplicating another is removed.
 5. **Custom behavior goes to the lowest rung that works**: configuration, then the platform's functions and workflows, then a public app, then a custom app with an owner.
 
-The results: the six unused apps were uninstalled in April 2027; inventory write access was withdrawn from all three stock-writing apps by June 2027, after the first weekly reconciliation in May had measured the damage (2.3% of active variants with a different quantity in the WMS and the platform, most from those apps); the pre-order app kept read access and records pre-orders without adjusting stock until the availability service handles pre-order quantities. Thirty-four apps remained in July 2027, at about €2,400 a month (illustrative). The saving is not the point. The point is that Noor can now answer, on one page, the question nobody could answer in March 2026: who is allowed to let a program write stock.
+The results: the six unused apps were uninstalled in April 2027; inventory write access was withdrawn from all three stock-writing apps by June 2027, after the first weekly reconciliation in May had measured the damage (2.3% of active variants with a different quantity in the WMS and the platform, most from those apps); the pre-order app kept read access and records pre-orders without adjusting stock until the availability service handles pre-order allocations. Thirty-four apps remained in July 2027, at about €2,400 a month (illustrative). The saving is not the point. The point is that Noor can now answer, on one page, the question nobody could answer in March 2026: who is allowed to let a program write stock.
 
 ![Illustration: a cluttered shelf of 41 ownerless apps beside a tidy shelf of 34 apps each with an owner tag and card.](assets/images/31-extensibility-and-app-ecosystems/31-forty-one-to-thirty-four.jpeg)
 **Figure 4:** *The April 2027 spreadsheet found 41 apps with nobody's name on them; an owner per app, scopes on a card, one writer per fact and a quarterly uninstall review left 34 by July.*
@@ -228,7 +238,7 @@ The results: the six unused apps were uninstalled in April 2027; inventory write
 
 ## When It Goes Wrong
 
-Extensions fail the way integrations fail, with one difference: the merchant often does not know the extension exists.
+Kestrel & Pine's rule works only while someone keeps it, and the ways extensions fail show why. Extensions fail the way integrations fail, with one difference: the merchant often does not know the extension exists. The table lists five failures. The first is the Secret Agent when the writing app has no owner, and forty-one apps each with its own path into the data are the Spaghetti Junction. Two more carry failure-pattern names: **the Pulled Rug**, the withdrawn extension point or API version met above, and **the Lynchpin**, a capability customers rely on that runs through one app or vendor nobody is watching.
 
 | Failure | What it looks like | Detection | Recovery |
 | --- | --- | --- | --- |
@@ -241,6 +251,8 @@ Extensions fail the way integrations fail, with one difference: the merchant oft
 Every row is found faster, and fixed faster, by a merchant that can list its apps, their owners, their scopes and the facts they write.
 
 ## What to Take Away
+
+The app installed for a missing feature at the start of this chapter and Noor's question have the same answer. The platform decides how far each extension can reach; only the merchant knows which system owns each fact. How deep the code sits decides what the next upgrade costs, and who may write each fact decides whether the shopper's promise holds. One list of apps, with an owner, scopes, an API version and the facts each one writes, manages both. At Kestrel & Pine that list now names one writer of stock, the warehouse feed, and no app, so the stock badge on Eva's jacket page shows a number only one program sets.
 
 **Established.**
 
@@ -261,6 +273,8 @@ Every row is found faster, and fixed faster, by a merchant that can list its app
 - I would rather lose a feature than keep a second writer. When a business need seems to require a second app writing stock or prices, the need is real and the mechanism is wrong: the answer is a reservation state, a price list or an availability service, not another writer.
 
 ## Questions to Ask
+
+Seven questions turn the chapter into a review of your own platform.
 
 1. How many apps, plugins or extensions are installed, and can someone produce the list with an owner per app in an afternoon?
 2. For each fact the platform holds (stock, price, product content, order status, customer), which single path writes it, and which apps hold a write scope on it anyway?

@@ -1,0 +1,502 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/28-commerce-data-and-analytics/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/28-commerce-data-and-analytics/index.md",
+  "spec_sha": "b37b234034f00af3",
+  "draft_sha": "efa88ec3db7bff6b",
+  "run_at": "2026-11-12T23:23:10+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter goals: why counts differ, collecting data, owned metric definitions",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "key points: three causes of differing counts, separate analytical store, owned definitions with a bridge",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed: disagreeing systems, missed edits, uncountable customers",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "departments count 'orders' differently and leadership may misread the gap",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "source systems serve different jobs, so their totals legitimately differ",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "W7 assigns definition ownership to the Data Lead / the chapter's three-part answer",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's order and exchange as events to be counted",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "roadmap of the chapter",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene: Three Answers to One Question ¶1",
+      "summary": "leadership meeting gets three different February order counts",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene: Three Answers to One Question ¶2",
+      "summary": "Data Lead's explanation introduced as a common story",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene: Three Answers to One Question ¶3",
+      "summary": "definition, collection and time explain the differences",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene: Three Answers to One Question ¶4",
+      "summary": "the real question is who owns the definition: nobody",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶1",
+      "summary": "comparison needs one store; facts are used two ways",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶2",
+      "summary": "operational versus analytical data defined",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶3",
+      "summary": "rule to keep analytical queries off operational stores and vice versa",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶4",
+      "summary": "what a data warehouse is, with vendor examples",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶5",
+      "summary": "what a lakehouse is and its origin",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Operational Data and Analytical Data ¶6",
+      "summary": "warehouse vs lakehouse is a vendor choice; one store matters",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶1",
+      "summary": "three mechanisms move data into the analytical store",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶2",
+      "summary": "scheduled extract-and-load and its volume pricing",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶3",
+      "summary": "what a Shopify connector reads and how it syncs incrementally",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶4",
+      "summary": "extraction as a reconciliation sweep; missed edits become permanent gaps",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶5",
+      "summary": "event streams deliver changes live, Walmart example",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Getting the Data Out ¶6",
+      "summary": "bulk platform exports instead of page-by-page API reads",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶1",
+      "summary": "what a metric definition must specify",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶2",
+      "summary": "public definitions differ / vendor lists of usual platform-vs-analytics gaps",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶3",
+      "summary": "the hard cases a definition must settle consistently",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶4",
+      "summary": "metrics layer as the fix for definitional drift",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶5",
+      "summary": "metrics-layer products: dbt, LookML, Cube",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶6",
+      "summary": "definitions must live outside dashboards and have an owner",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶7",
+      "summary": "ownership follows domains, data-mesh style, with central standards",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "One Definition: Metrics and the Metrics Layer ¶8",
+      "summary": "each definition needs a published bridge to system counts",
+      "matched_spec_paragraph": "p29a"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶1",
+      "summary": "the warehouse serves several audiences with different needs",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶2",
+      "summary": "reporting needs defined, reconciled numbers",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶3",
+      "summary": "experimentation needs event data and shared definitions",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶4",
+      "summary": "data science forecasts and the need for raw history",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶5",
+      "summary": "merchandising planning via sell-through and weeks of cover",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "What the Data Is For ¶6",
+      "summary": "partner data products made cheap by sharing / cost shifts to definitions and consent",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Real-Time Dashboards and When They Mislead ¶1",
+      "summary": "each data flow needs its own freshness target",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Real-Time Dashboards and When They Mislead ¶2",
+      "summary": "mixing live rates and monthly counts on one screen confuses",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Real-Time Dashboards and When They Mislead ¶3",
+      "summary": "live figures get revised because data arrives late",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Real-Time Dashboards and When They Mislead ¶4",
+      "summary": "separate live operational signals from lagged business metrics",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶1",
+      "summary": "four designs chosen mainly by stage",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶2",
+      "summary": "design 1: platform reports plus web analytics",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶3",
+      "summary": "design 2: BI tool on operational copies",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶4",
+      "summary": "design 3: warehouse with ELT, modeling and metrics layer",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶5",
+      "summary": "design 4: event stream feeding a lakehouse",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-offs ¶6",
+      "summary": "recommend design 3 plus a published reconciliation",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "how the problem shifts across scale stages",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice: Waypoint W7 at Kestrel & Pine ¶1",
+      "summary": "Data Lead publishes definitions in June 2027",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice: Waypoint W7 at Kestrel & Pine ¶2",
+      "summary": "February restated as one number with a breakdown",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice: Waypoint W7 at Kestrel & Pine ¶3",
+      "summary": "monthly bridge report surfaces unexplained differences as exceptions",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice: Waypoint W7 at Kestrel & Pine ¶4",
+      "summary": "why W7 was cheap and still needed after the OMS",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "failures map to missing parts of the design",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "recap: one store, one owned definition, a bridge",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings: separate stores, differing definitions, extraction as reconciliation",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices: feed method, ownership model, metrics-layer product",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's view: publish with a bridge, define before building",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "diagnostic questions for a merchant's data setup",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Part VI recap: all cases are undecided joins between systems",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶3",
+      "summary": "remedy is owned written records / how to start an integration inventory",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶4",
+      "summary": "hand-off to Part VII on bought platforms",
+      "matched_spec_paragraph": "p58"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "quote": "**Where we are in the order's journey.** Eva's €235 purchase on 13 April 2027 becomes order #1072455",
+      "finding": "Declared 'example' carrying over 'definitions that decide what counts', placed at the start; the paragraph opens on a journey label and an unrelated April date, and the link to definitions arrives only in its last sentence. Both flow readers lost the thread here.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Eva's €235 purchase on 13 April 2027 becomes order #1072455, invoice lines and a parcel dispatched on 14 April.",
+      "finding": "Readers found the jump to April and to Eva's storyline, between the thesis and the roadmap, disconnected; nothing says the chapter returns to her order in In Practice.",
+      "fault": "unclear",
+      "corroborated_by": "second flow reader (flowB), item 3, second bullet"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene ¶1",
+      "quote": "Daniel's report comes from a **business intelligence (BI)** tool reading the **warehouse management system (WMS)**.",
+      "finding": "Only one of the three counts is given a source; readers had to infer from the table headers that Milan's is the platform's and Sanne's the ERP's, and why nobody reports from the data warehouse.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3, third bullet"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Operational Data and Analytical Data ¶4",
+      "quote": "The analytical store has had two names.",
+      "finding": "'Two names' signals synonyms, but the next paragraph presents the lakehouse as a different design that criticised the warehouse (declared relationship p14: contrast); readers re-read to reconcile.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3, fourth bullet"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "The Choices and Their Trade-offs (design table) and Across Scale Stages (stage table)",
+      "quote": "| Warehouse, ELT, metrics layer | ... | Two or more channels; Omnichannel stage; Kestrel & Pine from 2027 |",
+      "finding": "Two mappings of design to stage: the design table puts the warehouse with ELT at Omnichannel and calls BI on copies 'never for a multi-channel merchant', while the stage table makes a warehouse with ELT necessary at Growing and BI on exports typical there; readers had to reconcile them (the AC-3 reader noticed it too).",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 2 (Across Scale Stages) and item 4 first bullet"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "quote": "The chapter began with two correct but different totals at one meeting.",
+      "finding": "Readers take 'the meeting' as the March meeting, which had three counts; the callback to the introduction's finance-and-operations example is ambiguous and made both re-read.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3, first bullet"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "One Definition: Metrics and the Metrics Layer ¶7",
+      "quote": "the order domain (the OMS team after W2) owns the order dataset and its definitions",
+      "finding": "Appears to contradict W7, which gives the order definition to the Data Lead; the tension is resolved only in the takeaways ('under about five data people, one owner'). Reported by one reader only.",
+      "fault": "unclear"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "quote": "Whether definitions are owned centrally or by domains depends on team size: under about five data people, one owner (the Data Lead) with domain reviewers; beyond that, domain ownership with central standards",
+      "finding": "The team-size rule is a new idea introduced in the conclusion: the body (p36) says only that ownership follows domains, so the conclusion resolves a body contradiction (domain ownership vs W7's Data Lead) with a criterion the body never states. The spec puts the dependence only in p53, not in p36.",
+      "fault": "spec",
+      "weak_pattern": "new_idea_or_subtopic"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor"
+    },
+    {
+      "criterion": "AC-6",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor"
+    }
+  ]
+}

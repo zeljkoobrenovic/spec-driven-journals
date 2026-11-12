@@ -1,0 +1,2429 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/27-identity-and-master-data/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/27-identity-and-master-data/index.md",
+  "spec_sha": "0656ede9653c5505",
+  "draft_sha": "2009021d1f72f092",
+  "run_at": "2026-11-12T23:18:34+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "One customer becomes several records across systems at Kestrel & Pine",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "One product variant has a separate identifier in each system",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Defining master data, matching and golden record, with related chapters",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's purchases create records in three systems",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Chapter's answer: named masters, owned cross-reference, exact auto-matching, CDP as copy",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Evas ¶1",
+      "summary": "Loyalty proposal exposes inability to recognize store customers online",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Evas ¶2",
+      "summary": "Counts of the four customer lists",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Evas ¶3",
+      "summary": "674,000 records but no known customer count",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Evas ¶4",
+      "summary": "Eva appears as four records",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "summary": "No shared field; naming the Familiar Stranger; loyalty deferred",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶1",
+      "summary": "Business costs of undecided customer identity across functions",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶2",
+      "summary": "Product-side losses from unmatched identifiers",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶3",
+      "summary": "Defining identifier, customer identity and system of record/master",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶4",
+      "summary": "Six kinds of customer identifier; e-mail as imperfect match key",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶5",
+      "summary": "SKU and GTIN as fixed product identifiers and their uses",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Why One Customer and One Product Matter ¶6",
+      "summary": "Sources for the product table; match on governed ids, link not duplicate",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "Identity as responsibilities spread across existing systems, none assigned at K&P",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "Design rule: master owns record, cross-reference owns links",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶1",
+      "summary": "Defining matching and the history of record linkage",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶2",
+      "summary": "Plain explanation of evidence scoring with two thresholds",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶3",
+      "summary": "Deterministic versus probabilistic matching",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶4",
+      "summary": "Normalization of keys; blocking to limit pair comparisons",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶5",
+      "summary": "Author's five rules for customer matching and reversible merges",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶6",
+      "summary": "Survivorship rule types applied per field",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶7",
+      "summary": "Shopify's published merge survivorship and why one master must be named",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶8",
+      "summary": "Consent evidence must survive a merge under GDPR",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶9",
+      "summary": "Sequence of a new store record finding its master",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶10",
+      "summary": "Three design points the sequence shows",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶11",
+      "summary": "Speed and certainty requirements differ per identity flow",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶12",
+      "summary": "Customer-facing flows are exact or deferred, never fuzzy",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Matching and Merging ¶13",
+      "summary": "Product matching on GTIN and SKU; cross-reference owned by PIM or ERP",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Introducing the ownership options for customer and product identity",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Option: platform customer record as master with deduplication",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "Option: ERP or CRM as master, fits wholesale not consumers",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "Option: cross-reference and matching service beside existing systems",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Option: CDP as master, its definition and identity graph",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "Author's advice: CDP should not be the operational master",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "MDM platform and golden record as a Group-stage option",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Choices ¶8",
+      "summary": "Product master: ERP item master until PIM is needed",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Trade-offs ¶1",
+      "summary": "Comparing the five options' fit and warning signs",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Identity choice across the book's scale stages",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Early identity decisions are cheapest; K&P skipped one",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Public evidence is vendor documentation: Shopify, Business Central, CDP, MDM",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Kestrel & Pine's June 2027 customer-identity rule",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Results of the first matching run",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Eva's records linked into one master",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "Product cross-reference built with the PIM",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "Benefits the identity decision delivered",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Failure modes: wrong merge needs reversible log; overloaded SKU as connector setting",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Synthesis of the chapter's answer via Eva's case",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings on linkage, survivorship, GTIN and consent",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices on masters, CDP, matching, MDM",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: decide early, keep exact and fuzzy records apart",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight questions to apply the chapter",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to analytics and privacy chapters",
+      "matched_spec_paragraph": "p57"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Outline summary 'One customer becomes several records across systems at Kestrel & Pine' matches the controlling idea of p01.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outline summary 'One product variant has a separate identifier in each system' matches the controlling idea of p02.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Outline summary 'Defining master data, matching and golden record, with related chapters' matches the controlling idea of p03.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Outline summary 'Eva's purchases create records in three systems' matches the controlling idea of p04.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Outline summary 'Chapter's answer: named masters, owned cross-reference, exact auto-matching, CDP as copy' matches the controlling idea of p05.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Outline summary 'Roadmap of the chapter and its evidence' matches the controlling idea of p06.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶1",
+      "finding": "Outline summary 'Loyalty proposal exposes inability to recognize store customers online' matches the controlling idea of p07.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶2",
+      "finding": "Outline summary 'Counts of the four customer lists' matches the controlling idea of p08.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶3",
+      "finding": "Outline summary '674,000 records but no known customer count' matches the controlling idea of p09.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶4",
+      "finding": "Outline summary 'Eva appears as four records' matches the controlling idea of p10.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "finding": "Outline summary 'No shared field; naming the Familiar Stranger; loyalty deferred' matches the controlling idea of p11.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Why One Customer and One Product Matter ¶1",
+      "finding": "Outline summary 'Business costs of undecided customer identity across functions' matches the controlling idea of p13.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Why One Customer and One Product Matter ¶2",
+      "finding": "Outline summary 'Product-side losses from unmatched identifiers' matches the controlling idea of p14.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Why One Customer and One Product Matter ¶3",
+      "finding": "Outline summary 'Defining identifier, customer identity and system of record/master' matches the controlling idea of p12.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Why One Customer and One Product Matter ¶4",
+      "finding": "Outline summary 'Six kinds of customer identifier; e-mail as imperfect match key' matches the controlling idea of p15.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Why One Customer and One Product Matter ¶5",
+      "finding": "Outline summary 'SKU and GTIN as fixed product identifiers and their uses' matches the controlling idea of p16.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Why One Customer and One Product Matter ¶6",
+      "finding": "Outline summary 'Sources for the product table; match on governed ids, link not duplicate' matches the controlling idea of p17.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "finding": "Outline summary 'Identity as responsibilities spread across existing systems, none assigned at K&P' matches the controlling idea of p18.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "finding": "Outline summary 'Design rule: master owns record, cross-reference owns links' matches the controlling idea of p19.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Matching and Merging ¶1",
+      "finding": "Outline summary 'Defining matching and the history of record linkage' matches the controlling idea of p24.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Matching and Merging ¶2",
+      "finding": "Outline summary 'Plain explanation of evidence scoring with two thresholds' matches the controlling idea of p25.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Matching and Merging ¶3",
+      "finding": "Outline summary 'Deterministic versus probabilistic matching' matches the controlling idea of p26.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Matching and Merging ¶4",
+      "finding": "Outline summary 'Normalization of keys; blocking to limit pair comparisons' matches the controlling idea of p27.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Matching and Merging ¶5",
+      "finding": "Outline summary 'Author's five rules for customer matching and reversible merges' matches the controlling idea of p28.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Matching and Merging ¶6",
+      "finding": "Outline summary 'Survivorship rule types applied per field' matches the controlling idea of p29.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Matching and Merging ¶7",
+      "finding": "Outline summary 'Shopify's published merge survivorship and why one master must be named' matches the controlling idea of p30.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Matching and Merging ¶8",
+      "finding": "Outline summary 'Consent evidence must survive a merge under GDPR' matches the controlling idea of p32.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Matching and Merging ¶9",
+      "finding": "Outline summary 'Sequence of a new store record finding its master' matches the controlling idea of p20.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Matching and Merging ¶10",
+      "finding": "Outline summary 'Three design points the sequence shows' matches the controlling idea of p21.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Matching and Merging ¶11",
+      "finding": "Outline summary 'Speed and certainty requirements differ per identity flow' matches the controlling idea of p22.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Matching and Merging ¶12",
+      "finding": "Outline summary 'Customer-facing flows are exact or deferred, never fuzzy' matches the controlling idea of p23.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Matching and Merging ¶13",
+      "finding": "Outline summary 'Product matching on GTIN and SKU; cross-reference owned by PIM or ERP' matches the controlling idea of p31.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "The Choices ¶1",
+      "finding": "Outline summary 'Introducing the ownership options for customer and product identity' matches the controlling idea of p34.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Choices ¶2",
+      "finding": "Outline summary 'Option: platform customer record as master with deduplication' matches the controlling idea of p35.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Choices ¶3",
+      "finding": "Outline summary 'Option: ERP or CRM as master, fits wholesale not consumers' matches the controlling idea of p36.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "The Choices ¶4",
+      "finding": "Outline summary 'Option: cross-reference and matching service beside existing systems' matches the controlling idea of p37.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "The Choices ¶5",
+      "finding": "Outline summary 'Option: CDP as master, its definition and identity graph' matches the controlling idea of p38.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "The Choices ¶6",
+      "finding": "Outline summary 'Author's advice: CDP should not be the operational master' matches the controlling idea of p39.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "The Choices ¶7",
+      "finding": "Outline summary 'MDM platform and golden record as a Group-stage option' matches the controlling idea of p41.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "The Choices ¶8",
+      "finding": "Outline summary 'Product master: ERP item master until PIM is needed' matches the controlling idea of p40.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Outline summary 'Comparing the five options' fit and warning signs' matches the controlling idea of p42.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Outline summary 'Identity choice across the book's scale stages' matches the controlling idea of p43.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Outline summary 'Early identity decisions are cheapest; K&P skipped one' matches the controlling idea of p44.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "finding": "Outline summary 'Public evidence is vendor documentation: Shopify, Business Central, CDP, MDM' matches the controlling idea of p45.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Outline summary 'Kestrel & Pine's June 2027 customer-identity rule' matches the controlling idea of p46.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Outline summary 'Results of the first matching run' matches the controlling idea of p47.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Outline summary 'Eva's records linked into one master' matches the controlling idea of p48.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "finding": "Outline summary 'Product cross-reference built with the PIM' matches the controlling idea of p49.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "In Practice ¶6",
+      "finding": "Outline summary 'Benefits the identity decision delivered' matches the controlling idea of p50.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Outline summary 'Failure modes: wrong merge needs reversible log; overloaded SKU as connector setting' matches the controlling idea of p51.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Outline summary 'Synthesis of the chapter's answer via Eva's case' matches the controlling idea of p52.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Outline summary 'Established findings on linkage, survivorship, GTIN and consent' matches the controlling idea of p53.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Outline summary 'Context-dependent choices on masters, CDP, matching, MDM' matches the controlling idea of p54.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Outline summary 'Author's synthesis: decide early, keep exact and fuzzy records apart' matches the controlling idea of p55.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/4",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Outline summary 'Eight questions to apply the chapter' matches the controlling idea of p56.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Outline summary 'Hand-off to analytics and privacy chapters' matches the controlling idea of p57.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Matching and Merging ¶4",
+      "finding": "Marked two_ideas (normalization; blocking), but the spec's controlling idea for p27 deliberately holds both as the preparation matching needs.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Marked two_ideas (wrong merge; overloaded SKU), but the spec's controlling idea for p51 deliberately names both as the two failures singled out from the table.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Why One Customer and One Product Matter ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Why One Customer and One Product Matter ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Why One Customer and One Product Matter ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Why One Customer and One Product Matter ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Why One Customer and One Product Matter ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Why One Customer and One Product Matter ¶6",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Matching and Merging ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Matching and Merging ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Matching and Merging ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Matching and Merging ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Matching and Merging ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Matching and Merging ¶6",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Matching and Merging ¶7",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Matching and Merging ¶8",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Matching and Merging ¶9",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Matching and Merging ¶10",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Matching and Merging ¶11",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Matching and Merging ¶12",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Matching and Merging ¶13",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "The Choices ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Choices ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Choices ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "The Choices ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "The Choices ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "The Choices ¶6",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "The Choices ¶7",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "The Choices ¶8",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5",
+      "draft_locus": "In Practice ¶6",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/4",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Unit carries its spec paragraph's idea, which serves the post's supporting claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "The evidence (scenario) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "The evidence (example) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "The evidence (scenario) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶1",
+      "finding": "The evidence (scenario) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶2",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶3",
+      "finding": "The evidence (statistic) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶4",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "finding": "The evidence (case, figure, image) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Why One Customer and One Product Matter ¶1",
+      "finding": "The evidence (example) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Why One Customer and One Product Matter ¶2",
+      "finding": "The evidence (example) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Why One Customer and One Product Matter ¶3",
+      "finding": "The evidence (subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Why One Customer and One Product Matter ¶4",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4",
+      "draft_locus": "Why One Customer and One Product Matter ¶5",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Why One Customer and One Product Matter ¶6",
+      "finding": "The evidence (source) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "finding": "The evidence (figure, image) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Matching and Merging ¶1",
+      "finding": "The evidence (source) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Matching and Merging ¶5",
+      "finding": "The evidence (figure, image) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "Matching and Merging ¶6",
+      "finding": "The evidence (source) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6",
+      "draft_locus": "Matching and Merging ¶7",
+      "finding": "The evidence (quotation, subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7",
+      "draft_locus": "Matching and Merging ¶8",
+      "finding": "The evidence (source, subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "Matching and Merging ¶9",
+      "finding": "The evidence (figure, image) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Matching and Merging ¶10",
+      "finding": "The evidence (subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Matching and Merging ¶11",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "Matching and Merging ¶12",
+      "finding": "The evidence (subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Matching and Merging ¶13",
+      "finding": "The evidence (figure, image) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "The Choices ¶5",
+      "finding": "The evidence (quotation) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "The Choices ¶7",
+      "finding": "The evidence (quotation) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "finding": "The evidence (source, subheading) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "finding": "The evidence (scenario) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "finding": "The evidence (statistic) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "The evidence (scenario) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "finding": "The evidence (statistic) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "The evidence (table) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "The evidence (reasoning) is introduced and its meaning stated in the adjacent prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Opening sentence expresses the declared similarity relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4/transition_in",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Opening sentence expresses the declared problem_solution relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5/transition_in",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶2",
+      "finding": "Opening sentence expresses the declared cause_effect relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶3",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶4",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶2",
+      "finding": "Opening sentence expresses the declared similarity relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶3",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/3/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶4",
+      "finding": "Opening sentence expresses the declared cause_effect relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/4/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶5",
+      "finding": "Opening sentence expresses the declared similarity relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶6",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in",
+      "draft_locus": "Matching and Merging ¶2",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in",
+      "draft_locus": "Matching and Merging ¶3",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "Matching and Merging ¶4",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "Matching and Merging ¶5",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/5/transition_in",
+      "draft_locus": "Matching and Merging ¶6",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/6/transition_in",
+      "draft_locus": "Matching and Merging ¶7",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/7/transition_in",
+      "draft_locus": "Matching and Merging ¶8",
+      "finding": "Opening sentence expresses the declared emphasis relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/8/transition_in",
+      "draft_locus": "Matching and Merging ¶9",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/9/transition_in",
+      "draft_locus": "Matching and Merging ¶10",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/11/transition_in",
+      "draft_locus": "Matching and Merging ¶12",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/12/transition_in",
+      "draft_locus": "Matching and Merging ¶13",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in",
+      "draft_locus": "The Choices ¶2",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in",
+      "draft_locus": "The Choices ¶3",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/3/transition_in",
+      "draft_locus": "The Choices ¶4",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/4/transition_in",
+      "draft_locus": "The Choices ¶5",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/5/transition_in",
+      "draft_locus": "The Choices ¶6",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/6/transition_in",
+      "draft_locus": "The Choices ¶7",
+      "finding": "Opening sentence expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/7/transition_in",
+      "draft_locus": "The Choices ¶8",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1/transition_in",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2/transition_in",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Opening sentence expresses the declared time relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3/transition_in",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Opening sentence expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4/transition_in",
+      "draft_locus": "In Practice ¶5",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/5/transition_in",
+      "draft_locus": "In Practice ¶6",
+      "finding": "Opening sentence expresses the declared conclusion_summary relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Opening sentence expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2/transition_in",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3/transition_in",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Opening sentence expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/4/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Opening sentence expresses the declared cause_effect relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5/transition_in",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Opening sentence expresses the declared cause_effect relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/10/transition_in",
+      "draft_locus": "Matching and Merging ¶11",
+      "quote": "Identity flows differ in how fast and how sure they must be.",
+      "finding": "Declared elaboration from one flow (the store purchase just walked through) to all identity flows side by side; the opening sentence makes no reference to the store purchase or the walk-through, so the new subsection starts cold and the elaboration is not expressed. A flow reader also found the subsection's place unclear.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶1",
+      "finding": "Section opening expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/transition_in",
+      "draft_locus": "Why One Customer and One Product Matter ¶1",
+      "finding": "Section opening expresses the declared cause_effect relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/transition_in",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "finding": "Section opening expresses the declared problem_solution relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/transition_in",
+      "draft_locus": "Matching and Merging ¶1",
+      "finding": "Section opening expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "The Choices ¶1",
+      "finding": "Section opening expresses the declared sequence relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Section opening expresses the declared elaboration relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "In Practice ¶1",
+      "finding": "Section opening expresses the declared example relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/transition_in",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Section opening expresses the declared contrast relationship.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "## Trade-offs\n\n| Option | Fits when | Strengths | Costs and limits | Warning sign |",
+      "finding": "The section is declared to open with a sentence (conclusion_summary: the five options described one by one, now compared on the same criteria), but it opens directly with the table; the summarizing sentence 'The table compares five options...' only comes after the table, so the boundary from The Choices carries nothing over.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "'The opening asked how a shopper ...' sets the answer against the opening (conclusion_summary).",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction ¶1–¶6",
+      "finding": "Opens from the previous chapter and a concrete puzzling scenario, states the answer and a roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "What to Take Away ¶1–Questions to Ask ¶2",
+      "finding": "Answers the opening, sorts what is established, contextual and the author's view, applies it in questions and hands off; no new subtopic or rephrased-thesis-only ending.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Joins master, cross-reference, exact links, review and reversibility into one answer applied to Eva without data moving, and says why it matters: the merchant can count customers, and the exact record must stay apart from the fuzzy profile ('a marketing match becomes an invoice error').",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Returns explicitly to the opening's shopper, the Ridgewalker variant held by four systems and Eva's four records.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "draft_locus": "whole draft",
+      "finding": "Both readers describe the declared problem_solution order (problem, costs and vocabulary, pieces, mechanism, options compared, the decision, failures, takeaways), with prerequisite order in why/pieces/matching and comparison in choices/trade-offs/stages; no section is 'unclear' to both readers.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Matching and Merging ¶3",
+      "quote": "Not every pair needs a score, though. There are two families of rule.",
+      "finding": "Both readers lost the thread in Matching and Merging: scoring with two thresholds comes first, then a step back to deterministic matching, then a further step back to normalization ('Before either, normalization'), while the numbered rules and Figure 3 run normalize, exact, score. Readers had to rebuild the process order. The draft follows the spec's declared paragraph order (p24 definition, p25 scoring, p26 rule families, p27 normalization and blocking), so the order itself is the cause.",
+      "fault": "spec",
+      "corroborated_by": "flowB (item 3, 'Matching paragraphs: Fellegi–Sunter scoring first, then ... back to deterministic, then \"Before either, normalization\" further back')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "The Choices ¶7",
+      "quote": "That assembled record is the golden record named at the start of the chapter, built by merging sources under survivorship rules.",
+      "finding": "The golden record is defined in the introduction and not used again until the MDM option, about 170 lines later; both readers had forgotten it by then. The spec defines the term in p03 and places its only use in p41, with nothing between.",
+      "fault": "spec",
+      "corroborated_by": "flowB (item 3, '\"the golden record named at the start of the chapter\": defined ~170 lines earlier, unused between')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "Before following Kestrel & Pine out of that position, it helps to see what the public record offers. The public evidence for this chapter is documentation, not case studies",
+      "finding": "Both readers found In Practice's opening paragraph weakly motivated where it sits: it mostly repeats Shopify's customerMerge/consent and Business Central evidence already given in Matching and Why, and it separates the stages section from Kestrel & Pine's decision. The spec places this public-evidence paragraph (p45) here and its content duplicates p17 and p30.",
+      "fault": "spec",
+      "corroborated_by": "flowB (items 2 and 4, 'In Practice: unclear why here; splits scale from K&P's decision; mostly repeats Shopify and Microsoft evidence')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "It names one master for each entity: the shop platform for consumers, the ERP for business customers, and the PIM or the ERP's item master for products. It keeps an owned cross-reference of every system's identifier for each master record",
+      "finding": "Both readers found the introduction using the chapter's new vocabulary (master, cross-reference, merge log, partial matches) before it is explained; 'master' is only defined in Why One Customer and One Product Matter ¶3. The spec requires the answer in the introduction, but the prose could gloss 'master' as it glosses the CDP.",
+      "fault": "draft",
+      "corroborated_by": "flowB (item 3, 'definitions of identifier, system of record and master come after \"master\" is used in the intro')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/10",
+      "draft_locus": "Matching and Merging ¶11",
+      "quote": "Identity flows differ in how fast and how sure they must be.",
+      "finding": "Reader A found Requirements per flow 'unclear' where it sits: it splits customer matching from product matching, and its last row ('New product variant') jumps ahead to products. Both the placement and the product row come from the spec (p22 evidence and the matching section's declared order).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Matching and Merging ¶1",
+      "quote": "and in 1969 Fellegi and Sunter gave the scoring model most tools still use, explained next (cited here through a secondary source, because the paper is paywalled).",
+      "finding": "Reader A found the stacked citation aside hard to parse; the sourcing note interrupts the sentence that introduces the scoring model.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/12",
+      "draft_locus": "Matching and Merging ¶13",
+      "quote": "The GTIN is the match key across companies, the SKU inside one.",
+      "finding": "Reader A noted the GTIN is explained three times (Why ¶2 gloss, Why ¶5 definition, Matching products), which slowed rather than helped.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "(Microsoft's connector documentation of October 2026 maps their staff id to a salesperson)",
+      "finding": "Reader A found this parenthetical unrelated to the point about Shopify's suite POS and the Familiar Stranger.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "The overloaded SKU is the product-side Spaghetti Junction: the estate's identifier policy expressed as a drop-down in one connector's settings.",
+      "finding": "Reader A found the commentary refers to table rows not yet read; the commentary comes before the table. The spec's p51 ('the six failures the table then lists') puts the commentary first, but the prose could frame it so it does not depend on unread rows.",
+      "fault": "unclear",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Trade-offs ¶1",
+      "quote": "The table compares five options: the four ways to own customer identity, and MDM.",
+      "finding": "Reader A found the sentence after the trade-offs table merely restates the table; it would orient the reader if it came before it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Four Evas ¶5",
+      "quote": "Milan and Noor defer online loyalty until that relationship can be maintained",
+      "finding": "Reader B had to reread to work out which relationship is meant (the link between Eva's four records).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/3",
+      "draft_locus": "The Choices ¶4",
+      "quote": "and Kestrel & Pine adopts it beside the shop platform, which stays the master for consumers.",
+      "finding": "Reader B found this gives the decision away before In Practice and blurs which option Kestrel & Pine chose (it combines option 1 and option 3). The spec's p37 controlling idea asks for this sentence.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "Matching and Merging ¶10",
+      "quote": "Three things carry the design:",
+      "finding": "Reader B found the analysis leans on a sequence figure the text never walks through step by step.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "It names one master for each entity",
+      "finding": "'Master' is on does_not_know and is used in the KEY POINTS callout and Introduction ¶5 without a gloss; it is defined only in Why One Customer and One Product Matter ¶3. A flow reader reported the same.",
+      "fault": "draft",
+      "corroborated_by": "flowB (item 3, 'definitions of identifier, system of record and master come after \"master\" is used in the intro')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Matching and Merging ¶3",
+      "quote": "the same normalized e-mail or phone means the same person",
+      "finding": "'Normalized' (does_not_know: normalization) is used here before the term is defined in the next paragraph ('Before either, normalization'); the introduction's 'written one standard way' only partly prepares it. The order comes from the spec (p26 before p27).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction (KEY POINTS callout)",
+      "quote": "write the matching rules and the survivorship rules down",
+      "finding": "'Survivorship' (does_not_know) appears in the KEY POINTS callout long before it is explained in the pieces table and Matching and Merging ¶6.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know",
+      "draft_locus": "whole draft",
+      "finding": "Other does_not_know terms are explained at or before first use: master data, matching and golden record (Intro ¶3), identifier and customer identity (Why ¶3), cross-reference and merge log (Intro ¶5 inline, pieces table), CDP (Intro ¶5), CRM and MDM (pieces table), GLN (identifier table), deterministic/probabilistic matching, thresholds and review band, blocking, survivorship, consent as evidence (Matching and Merging). Terms on already_knows (Waypoint and W-decisions, scale stages, capability map, OMS, PIM, Shopify, the company's people) are used as known.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "intro_answer.md",
+      "finding": "The cold reader predicts the problem (one customer or product as records in each system), the section order matching the roadmap, the terms master data/matching/golden record, Eva's online, store and returns records, and the three kinds of evidence (scenario, vendor documentation, record-linkage research). It does not mention which topics are left to other chapters, a minor omission.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "ac1.md",
+      "finding": "Names the masters (platform for consumers, ERP for business customers, PIM/item master for products), other systems keep records and gain the master id, owned cross-reference with merge log and a named reviewer, normalize first, exact e-mail/phone auto-links, scored partial matches with a middle band to a person, never name plus city alone, never merge in a customer-facing flow, consent from the master with strictest state winning, CDP only a copy; loyalty waits for the master.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/1",
+      "draft_locus": "ac2.md",
+      "finding": "States the objection (probabilistic, audience-oriented profile is fuzzier than the exact owned record invoices, refunds and deletion requests need; 'a marketing match becomes an invoice error') and the role (a marketing copy fed by the master whose matches return as suggestions, not merges). It does not spell out that a wrong merge is a privacy incident, a minor gap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/2",
+      "draft_locus": "ac3.md",
+      "finding": "The listing becomes a second product splitting stock and reviews; GTIN is the only key outside parties understand; the cross-reference of GTIN, SKU, internal and marketplace ids lives beside the product master, in the PIM where there is one and the ERP item master otherwise, never only in a connector.",
+      "severity": "minor"
+    }
+  ]
+}

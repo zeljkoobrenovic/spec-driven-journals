@@ -1,0 +1,1622 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "commerce-data-and-analytics",
+  "journal": "commerce-platform-architecture",
+  "part": "part-6",
+  "title": "Counting the Same Thing Everywhere: Data Platforms, Definitions and Analytics",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/28-commerce-data-and-analytics/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have: the carry-over from the previous chapter in p02, the thesis sentence in p03, a roadmap p05, a lead sentence for the failure table p50, a conclusion paragraph that answers the opening p51, and Part VI's closing (p56, p57) with a hand-off p58 rewritten to Part VII's question; see decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between operational and analytical data, the warehouse or lakehouse, and the three ways data reaches it (scheduled extract-and-load, event streams, platform exports).",
+        "How public definitions of an order or of sales differ (Shopify's sales schema and annual report, Zalando's annual report, Google Analytics 4's purchase event), what a metric definition must settle, and what a metrics layer is.",
+        "The four uses of commerce data (reporting, experimentation, data science, merchandising and inventory planning), data products for partners, and the rule that separates live operational signals from business metrics shown on a lag."
+      ],
+      "believe": [
+        "Three honest systems give three honest counts; none is the company's number until someone owns its definition.",
+        "Define before you build: written definitions with an owner do more for trust than a new warehouse or dashboard.",
+        "The number that gets believed is the number published with its bridge to each system's count."
+      ],
+      "can_do": [
+        "Attribute each difference between two counts to definition, collection or time.",
+        "Write a definition table for order, net sales and return that settles cancellations, exchanges, test orders, split shipments, store transactions, dates and tax.",
+        "Decide which numbers to show live and which on a lag, and whether to feed the warehouse by extract-and-load or by events."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the analyst or data engineer who inherits a warehouse without definitions, and next the product manager or finance partner who has to defend a number; the engineering lead gets the design choices by stage.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what a database, a report and a dashboard are.",
+        "Kestrel & Pine, its people (Mara Lindqvist, Milan Petrov, Sanne de Wit, Daniel Okafor, Hanna Berg, Teun Baas), its thirteen systems and 34 integrations, its incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' and 'commerce platform', business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "Parts II to V: one owner per product, price and stock fact; available-to-promise; checkout creating the order once; refunds as new payments; one order record with three status lines; one invoice per shipment, credit notes and the monthly match; marketplace orders reaching the ERP as a weekly summary and store sales as a nightly total.",
+        "Part VI so far: integration styles and the integration inventory with an owner per flow; events, idempotency keys and the reconciliation sweep; contracts, pinned versions, sunset dates and rate budgets; a master per entity, the cross-reference with its merge log, and automatic links only on exact keys."
+      ],
+      "does_not_know": [
+        "Operational and analytical data; data warehouse; lakehouse; business intelligence (BI) tool.",
+        "Extract-and-load (ELT), a lookback window, event streams as a feed for analytics, platform bulk exports.",
+        "Metric definition, metrics layer (semantic layer), GMV, VAT-inclusive and exclusive bases, IFRS 15 recognition.",
+        "Sell-through, weeks of cover, data product, data mesh, operational signal versus business metric, the bridge between counts."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given three order counts from three systems, the reader explains them by definition, collection and time and says what the company should report, rather than picking one system as right.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "For one month a brand's storefront reports 21,050 orders, its ERP 22,710 and its warehouse report 24,140. The storefront counts orders created, including canceled, test and exchange orders and no marketplace orders; the ERP counts sales orders invoiced, with marketplace orders from a weekly summary; the warehouse report counts parcels shipped. Using only this chapter: which count is right, and what should the company report?",
+        "expected": "None is wrong: they differ by definition (cancellations, test orders, exchanges, parcels against orders, store receipts), by collection (marketplace orders absent from the platform and summarized weekly in the ERP) and by time (creation, invoice and ship dates). An owner, such as the Data Lead, writes one definition (an order counted at confirmation in every channel including marketplace-fulfilled ones, test orders excluded, cancellations counted with their status, an exchange not an order, a split order one order) and publishes the company's count with the bridge to each system's count; a difference the bridge does not explain is an exception to investigate."
+      },
+      {
+        "id": "AC-2",
+        "statement": "The reader can say why a live count and a later report differ and how each should be shown.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A live dashboard showed 2,300 orders in the peak hour; the report a week later says 2,210. Using only this chapter: which is wrong, and how should the two numbers be shown?",
+        "expected": "Neither: the live count was taken before cancellations, refunds, edits and duplicates arrived. Operational signals (orders per minute, error rates, queue depth, integration lag) are shown live and approximate for acting now; business metrics are shown on a lag with a definition, a revision policy and the reconciliation beside them, and the two are not given the same label."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say when to feed the analytical store by extract-and-load and when by events.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: should a merchant feed its data warehouse by scheduled extract-and-load from its platform or by event streams?",
+        "expected": "Extract-and-load with a lookback window until the operational systems emit events; once an OMS and an availability service publish order and stock events, the warehouse reads the same stream. Incremental extraction is a sweep, so a late edit it misses stays a difference until a comparison finds it."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why finance and operations can bring different correct order totals and how that misleads decisions; that the storefront, the ERP and the warehouse count different things and should sometimes differ; that analytics must separate differences that follow from definitions from missing or wrong data; W7 giving the Data Lead the definitions of order, revenue and return, settled before dashboards; Eva's order becoming an order, invoice lines and a parcel, and her exchange a credit note and a second parcel. Evidence: Kestrel & Pine's three February counts and published metric definitions."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      },
+      {
+        "id": "AC-6",
+        "statement": "The conclusion performs Part VI's closing: it sets the part's five cases against the part opening's order that reaches the warehouse twice, stock update that arrives after the last unit has sold and invoice whose customer finance cannot identify, and states what the cases have in common, rather than only listing the part's questions.",
+        "check": "custom",
+        "method": "rubric",
+        "severity": "minor",
+        "probe": "Does the conclusion return to Part VI's opening failures (an order reaching the warehouse twice, a stock update arriving after the last unit sold, an invoice naming a customer finance cannot identify) and say what the part's five cases have in common?",
+        "expected": "Yes: it names the part's cases (the Black Friday stock chain, the Double Refund, the Deprecated Endpoint, Eva's four records, February's three counts), says that in each both ends worked and something about the join had not been decided, and names the remedy as a record with an owner, not a new system."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Why do three reports show three different order counts, and how do you build analytics that the business trusts?",
+    "claim": "Each system counts what it exists to handle (orders created, sales orders invoiced, parcels shipped), from the records that reach it, dated by its own clock, so correct counts differ by definition, collection and time. Analytics are trusted when every system's data is copied into one analytical store, each metric is defined once with an owner, and the company's number is published with a bridge reconciling it to each system's count.",
+    "disputed_by": "The view that one of the counts is right and the others are errors, so the fix is to name a system of record for orders or build a real-time dashboard, and that a data warehouse and a BI tool by themselves give the business one number.",
+    "so_what": "A merchant that accepts the claim writes definitions with owners before it adds dashboards, and treats a difference the bridge does not explain as an incident. For February 2027 Kestrel & Pine's platform counted 21,050 orders, its ERP 22,710 and its warehouse report 24,140, and in March nobody owned the definition. Under W7 the Data Lead, Hanna Berg, published definitions in June 2027, adopted from the July close: February became 23,150 orders, 22,860 net of cancellations, with 9,200 store transactions reported beside them. The bridge found its first unexplained exception in August 2027, 23 marketplace orders dropped from the connector's weekly summary during a vendor outage. The definitions took three weeks; the warehouse already existed.",
+    "how_why": "An operational system stores what its job needs, one record at a time, and dates each record by the moment of that job: creation, invoice or shipment. Copies reach the analytical store by extract jobs with lookback windows or by events, and a late edit missed by both stays a difference until something compares them. Every dashboard that computes 'order' for itself decides cancellations, exchanges, test orders, split shipments and dates again; a definition kept as code in one place, with an owner, takes those choices out of the dashboards, and the bridge sorts each remaining difference into an explained definition or a missing record.",
+    "supporting_claims": [
+      {
+        "id": "D1",
+        "claim": "Each operational system counts what it exists to handle, from the records that reach it, on its own clock, so honest counts differ by definition, collection and time, and none is the company's number until someone owns the definition."
+      },
+      {
+        "id": "D2",
+        "claim": "Operational and analytical work need separate stores, and every system's data is copied into one analytical store by extract-and-load, event streams or platform exports; incremental extraction is a sweep, so a late edit it misses stays a difference until a comparison finds it."
+      },
+      {
+        "id": "D3",
+        "claim": "A metric definition settles what is counted, which records are in or out, which date and tax basis apply and how later changes are reported; public definitions differ, so each metric is defined once, as code in a metrics layer, with a named owner, and every use of the data (reporting, experimentation, data science, planning, partner data products) computes from it."
+      },
+      {
+        "id": "D4",
+        "claim": "Live operational signals and business metrics are different objects: signals are shown live and approximate for acting now, metrics on a lag with a definition, a revision policy and the reconciliation beside them, never under one label."
+      },
+      {
+        "id": "D5",
+        "claim": "The design follows the stage: platform reports at Starting, a warehouse fed by extract-and-load with a metrics layer at Omnichannel, an event stream and lakehouse at Group; at every stage the definitions and their owner matter more than the tool."
+      },
+      {
+        "id": "D6",
+        "claim": "The company's number is published with a bridge to each system's count; the bridge sorts every difference into an explained definition or a missing record, and an unexplained difference is an exception to investigate."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part its last join, between the operational systems and the numbers the business decides by: copies of every system in one analytical store, one owned definition per metric, and the bridge to each system's count; performs the part's closing (the published chapter does not yet do so: it ends with a one-sentence list of the part's questions and the hand-off to Part VII).",
+    "supports": [
+      "P6-5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "opanalytical to realtime: the analytical store, the ways data reaches it, the definitions and bridge computed in it, the uses that depend on them, and the freshness each needs with the live view that sits outside them"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages"
+      }
+    ],
+    "rationale": "The three February counts come first because every later section answers part of the question they raise: why the counts differ and what the company should report. The analytical store comes next because definitions, uses and the bridge all need one place where every system's data is copied; the three ways of getting data there follow, since each explains how a record can be missed on the way (a collection difference in the scene). Definitions, the metrics layer and the bridge come after the store they are computed in and before the uses, because every use depends on shared definitions. The freshness table and real-time dashboards follow the uses because the table compares the uses with the live view, the one view that is not computed from settled definitions. The four designs and the stage table compare the options once the reader has all the parts, including the bridge the recommendation adds; W7 in practice then resolves the scene's three counts with a definition table and a bridge; the failures come last because each is read against a part of the design. Putting the definitions before the store would leave the reader asking where a definition is computed; putting the freshness table before the uses would refer to uses not yet named; putting W7 before the definitions would show the answer before the reader knows what a definition must settle."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Finance and operations bring different order totals to the same meeting and both have counted correctly: finance counts invoices, operations shipments, merchandising products sold, and calling each figure 'orders' hides the difference until leadership mistakes a change in definition for a change in performance."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has sat in a meeting where two reports disagree about last month knows the argument over whose number is right.",
+      "to_topic": "Even with every customer and product linked to one master record, the storefront, the ERP and the warehouse count different things, so the question becomes how analytics tells a difference of definition from missing data and which number the company reports."
+    },
+    "thesis_statement": {
+      "text": "Each system counts what it exists to handle, from the records that reach it, on its own clock, so correct counts differ by definition, collection and time; analytics are trusted when every system is copied into one analytical store, each metric is defined once with an owner, and the company's number is published with the bridge to each system's count.",
+      "placement": "KEY POINTS callout and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "Paragraph p05",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's three February order counts.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Separate operational from analytical data and show the three ways data reaches the analytical store.",
+          "kept_in": [
+            "opanalytical",
+            "data-out"
+          ]
+        },
+        {
+          "promise": "Say what a metric definition settles and where it lives.",
+          "kept_in": [
+            "metrics"
+          ]
+        },
+        {
+          "promise": "Name what the data is for and when a live dashboard misleads.",
+          "kept_in": [
+            "uses",
+            "realtime"
+          ]
+        },
+        {
+          "promise": "Weigh four designs by cost and scale stage.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Follow W7 at Kestrel & Pine to one number and a bridge, and end with what goes wrong.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Finance and operations can bring different order totals to the same meeting and both have counted correctly, and calling each figure 'orders' hides the difference until leadership mistakes a change in definition for a change in performance.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Finance counting invoices, operations shipments, merchandising products sold, each called 'orders'.",
+            "shows": "The chapter's problem in one meeting: correct counts that mislead a staffing or purchasing decision."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Linking every record to a master, as the previous chapter did, does not settle the count: the storefront records orders placed, the ERP invoices and the warehouse parcels, so their totals should sometimes differ, and the analytical system must tell differences of definition from missing or incorrect data.",
+        "function": "explanation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Correct counts that differ, and the previous chapter's master per entity and cross-reference.",
+          "introduces": "Why the counts still differ: each system serves a different job, and what analytics must therefore separate.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "W7 gives Kestrel & Pine's Data Lead the common definitions of order, revenue and return, and the chapter's answer is to settle those definitions before adding dashboards: copy every system into one analytical store, define each metric once with an owner, and publish the company's number with the bridge to each system's count.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The need to tell a definition difference from missing data.",
+          "introduces": "Kestrel & Pine's answer, W7, and the chapter's thesis.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "In the order's journey, Eva's €235 purchase becomes order #1072455, invoice lines and a parcel, and her exchange a credit note and a second parcel, so the reporting question is what each event counts toward, which In Practice answers.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Order #1072455 of 13 April 2027, dispatched 14 April; the exchange on 22 April with a credit note and a second parcel.",
+            "shows": "One purchase produces records in three systems, each of which counts it differently.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Definitions that decide what counts.",
+          "introduces": "Eva's order as the running case.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's three February counts, then covers operational and analytical data, the three ways data reaches the analytical store (scheduled copies, event streams, platform exports), what a metric definition settles against published definitions from Shopify, Zalando and Google Analytics, what the data is for and when live dashboards mislead, weighs four designs by stage, follows W7 to one number and a bridge, and ends with what goes wrong.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The running case and the thesis.",
+          "introduces": "The order of the chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene: Three Answers to One Question",
+      "controlling_idea": "Kestrel & Pine's February 2027 order counts of 21,050, 22,710 and 24,140 are each correct for what they count, and the differences trace to definition, coverage and timing; the real gap was that nobody owned the definition.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "D1"
+        ],
+        "how": "Gives the case the chapter answers: three honest counts and no owner."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The meeting comes first, then Hanna's explanation, then the three causes it shows, then the question Mara asks; the causes only make sense after the reader has seen the table."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap, which starts from the three February counts.",
+        "introduces": "The leadership meeting where the counts met.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "At the March 2027 leadership meeting three managers report February's orders as 21,050 (the shop platform), 22,710 (the ERP) and 24,140 (a BI tool on the WMS), the meeting spends forty minutes without reconciling them, and the data warehouse Kestrel & Pine has run since 2024 has no owned definitions to settle them.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Milan Petrov 21,050 (the shop platform), Sanne de Wit 22,710 (the ERP), Daniel Okafor 24,140 (a BI tool reading the WMS).",
+              "shows": "Three honest systems, three counts, one question.",
+              "source": "Kestrel & Pine scenario ledger (commerce-data-and-analytics line)"
+            },
+            {
+              "kind": "fact",
+              "what": "A data warehouse and BI tool since 2024; three definitions of 'order' in use.",
+              "shows": "The company already has the store; what it lacks is an owned definition.",
+              "source": "Kestrel & Pine scenario ledger (landscape table)"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Hanna Berg's explanation, by Wednesday, shows what each count includes, row by row.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What each count includes: D2C orders created (18,900 incl. 290 canceled and 40 test) against 18,420 invoiced and 19,100 parcels (incl. 640 second parcels); marketplace orders absent from the platform, 3,310 in the ERP from the connector's weekly summary, 2,520 shipped from Duiven with 790 program-fulfilled; wholesale 610, 980, 980; 1,540 exchanges as platform orders and parcels but credit notes in the ERP; store transactions only as a nightly total.",
+              "shows": "Every difference between the counts traces to a row of what is counted, by which date and from which records.",
+              "source": "Kestrel & Pine scenario ledger (commerce-data-and-analytics line)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The three counts at the meeting.",
+            "introduces": "Hanna's explanation and its table.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Three differences explain the totals (definition, collection and time), and a useful report makes those choices visible.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: three people at three windows with three counts, explained by definition, collection and time.",
+              "shows": "The three causes in one picture; none of the counts is the company's number until someone owns the definition."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table's rows.",
+            "introduces": "The three causes they reduce to.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Mara did not ask which number was correct but who owned the definition, and in March 2027 the answer was nobody.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Three causes, none of them an error.",
+            "introduces": "The question that follows: who owns the definition.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "opanalytical",
+      "heading": "Operational Data and Analytical Data",
+      "controlling_idea": "The same facts are used one record at a time to run the business and across all records to analyse it, the two uses need separate stores, and one analytical store (a warehouse or a lakehouse) must receive every system's data.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "D2"
+        ],
+        "how": "Establishes the one place where the counts can be compared."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The distinction first, then why the stores must be apart, then the two forms of the analytical store, then the judgement that for this merchant the form is a vendor choice."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Counts that can only be compared somewhere all of them land.",
+        "introduces": "The two uses of the same facts and the store each needs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "The three counts can only be compared where all of them land, and the first idea a newcomer needs is that the same facts are used in two different ways that want different stores.",
+          "function": "claim"
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Operational data is the live state of the business, read and written one record at a time and fast; analytical data is the history laid out for questions across all records, which read millions of rows and tolerate hours of lag.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Two ways of using the same facts.",
+            "introduces": "Each way defined, with examples.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The two must be kept apart because an analytical query competes with checkout for the same machine, so analytical questions never run against an operational store and an analytical store is never trusted for an operational answer.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A year-long report run against the platform's database on a Friday evening in November; 'the dashboard says it shipped' is not a shipment.",
+              "shows": "Mixing the two uses slows checkout one way and misleads operations the other."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two uses' different load and lag.",
+            "introduces": "Why they need separate stores, and the rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The analytical store comes in two forms; the first, a data warehouse, is a database built for large analytical queries into which copies of every system's data are loaded and modelled, and vendors describe separating storage from compute so one team's queries do not slow another's.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Snowflake's architecture documentation; Google's BigQuery as 'a fully managed serverless data warehouse'.",
+              "shows": "The separation of workloads is how the vendors themselves describe the product.",
+              "source": "Snowflake and Google Cloud documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The analytical store.",
+            "introduces": "Its first name and form, the data warehouse.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "A lakehouse keeps the raw copies in open file formats in cloud storage and runs warehouse-style queries over them, proposed in 2021 against the staleness, duplication and cost of a lake feeding a separate warehouse.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Armbrust, Ghodsi, Xin and Zaharia, CIDR 2021.",
+              "shows": "Where the term and its argument come from.",
+              "source": "CIDR 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The warehouse.",
+            "introduces": "The second form, the lakehouse.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "For a merchant of Kestrel & Pine's size the difference is a vendor choice, not an architecture choice; what matters is that one analytical store exists and every system lands in it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: every operational system copied into one analytical store, modelled once and served through a metrics layer.",
+              "shows": "The whole pipeline the following sections fill in."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Two forms of the analytical store.",
+            "introduces": "Which matters for this merchant: that one exists and receives everything.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "data-out",
+      "heading": "Getting the Data Out",
+      "controlling_idea": "Three mechanisms (extract-and-load, event streams and platform exports) copy operational data into the analytical store, each with its own way of missing a change.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "D2"
+        ],
+        "how": "Explains the collection cause of the scene's differences and why a missed edit stays a difference."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The three mechanisms from the most common to the least; the sweep paragraph follows extract-and-load directly because it reads the connector's behaviour as a reconciliation, and moving it later would separate it from the cursor and lookback window it explains."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "One analytical store every system lands in.",
+        "introduces": "How the data gets there.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "Three mechanisms carry data from the operational systems into the analytical store, and a merchant usually uses all three.",
+          "function": "claim"
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Extract-and-load (ELT) copies a system's tables on a schedule through a connector, and hosted tools sell it by volume.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Fivetran prices by monthly active rows, free tier of 500,000, 15-minute syncs on its Standard plan.",
+              "shows": "What extract-and-load costs and how fresh it is.",
+              "source": "Fivetran pricing page, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three mechanisms.",
+            "introduces": "The first, extract-and-load.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A real connector does what the previous chapters taught: it syncs incrementally on each record's update time, offers a lookback window for late updates, captures deletions separately and backs off on rate limits.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Airbyte's Shopify source, version 4.3.5, changelog of 3 November 2026: streams, update-time cursor, lookback window, deleted-products stream, rate-limit backoff.",
+              "shows": "Extraction relies on the cursor and lookback the reconciliation chapter described.",
+              "source": "Airbyte documentation"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Extract-and-load through a connector.",
+            "introduces": "One connector's documented behaviour.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Incremental extraction is a reconciliation sweep applied to analytics: an edit after the last run is caught by the lookback window or not at all, and a missed edit becomes a permanent difference between the warehouse and the platform.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The connector's cursor and lookback window.",
+            "introduces": "What that means for the counts: a missed edit stays a difference.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Event streams carry each change as it happens through a durable log the warehouse reads at its own pace, giving it the same facts the operational systems act on with no second extraction.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Walmart's inventory events: more than ten sources normalized into one feed, each item and store pair handled by one consumer.",
+              "shows": "The large-scale version of a stream feeding several readers.",
+              "source": "Confluent blog, May 2020 (six years old)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Scheduled extraction and its sweep.",
+            "introduces": "The second mechanism, which carries each change as it happens.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Platform exports deliver many records in one file and spare the rate budget that a page-by-page pull of a year's orders would spend on a report.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's bulk operations; Stripe's Data Pipeline recommended 'for a complete export of API data'.",
+              "shows": "The vendors themselves steer bulk reads away from the API the checkout uses.",
+              "source": "Shopify and Stripe documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two mechanisms.",
+            "introduces": "The third, platform exports.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "metrics",
+      "heading": "One Definition: Metrics and the Metrics Layer",
+      "controlling_idea": "A metric definition settles what is counted, which records and dates apply and how later changes are reported; public definitions differ, so each metric is defined once as code in a metrics layer outside any dashboard, owned by its business domain with central standards, and published with a bridge to each system's count.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "D3",
+          "D6"
+        ],
+        "how": "Gives the definition cause of the scene's differences and the place a single definition lives."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "What a definition is and four public definitions that differ, then the hard rows every definition must settle, then where a definition lives (the metrics layer and its products), the two properties that matter and who the owner is, then the bridge beside it. The reader learns what a definition contains before where it is stored; ownership follows the property it elaborates; the bridge comes last because it presupposes one owned definition."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Every system's data landing in one store by three mechanisms.",
+        "introduces": "What decides how a record in it is counted: the metric definition.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "Once every system lands in one store someone must say how to count, and a metric definition is the written rule for computing a business number; public definitions from large companies show how many decisions hide in a word like 'order'.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Shopify's ShopifyQL sales schema (2026-10), Shopify's FY2025 GMV, Zalando's 2025 GMV and average basket of €62.8, GA4's purchase event and its transaction_id.",
+              "shows": "Four reputable sources count an order or its value on four different bases."
+            }
+          ]
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The four sources use four units, each internally consistent and none interchangeable, which is why analytics vendors publish lists of the usual gaps between a platform's sales and web analytics.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vendor help pages listing the usual platform-versus-analytics gaps (app and subscription orders, POS and draft orders, ad blockers and consent, refunds, currency and tax, attribution windows).",
+              "shows": "The gaps are definitional and recurring; the pages are vendor sources, and the direction of each gap depends on the merchant.",
+              "source": "Elevar help center, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four definitions in the table.",
+            "introduces": "What they add up to: four units, none interchangeable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A definition must settle the hard rows that are always the same: cancellations, returns, exchanges, test orders and split shipments, the date, the currency and tax basis, and how a late change is reported, with Hanna's W7 table later in the chapter as a worked example.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Four public definitions that count an order on four bases.",
+            "introduces": "The hard rows every definition must settle, with Hanna's W7 table later in the chapter as the worked example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The architectural answer to definitional drift is the metrics layer, one place where each metric is defined as code and from which every dashboard computes it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Benn Stancil, 2021: 'there's no central repository for defining a metric'.",
+              "shows": "Names the gap the metrics layer fills: logic re-derived in each dashboard drifts.",
+              "source": "Benn Stancil, 'The missing piece of the modern data stack', 2021"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Definitions that must settle the same hard rows and that drift when each dashboard settles them again.",
+            "introduces": "The metrics layer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The products that followed implement the idea differently: dbt's Semantic Layer, Looker's LookML and Cube.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "dbt: a changed definition 'is refreshed everywhere it's invoked'; LookML describes dimensions and aggregates once; Cube adds access control, caching and APIs.",
+              "shows": "The idea exists as products with different scopes.",
+              "source": "dbt, Google Cloud and Cube documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The metrics layer as an idea.",
+            "introduces": "Products that implement it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The tool matters less than two properties: the definition lives outside any one dashboard, and it has an owner.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Three products.",
+            "introduces": "What matters regardless of the product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Who owns a definition follows the business domains: domains own their datasets and definitions as products, the data team owns the platform and the shared keys, time zones and currency rules that make them joinable, and below about five data people one owner, the Data Lead under W7, holds the definitions.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Zhamak Dehghani, 2019: domains should 'host and serve their own datasets'.",
+              "shows": "The source of domain ownership; the commerce reading is modest, with central standards so four incompatible 'orders' do not return inside the warehouse.",
+              "source": "martinfowler.com, 2019"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The second property: a definition has an owner.",
+            "introduces": "Who that owner is: the domain, with central standards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29a",
+          "controlling_idea": "A definition needs a bridge beside it: the published reconciliation from the company's count to each system's count.",
+          "function": "definition",
+          "advances_thesis": {
+            "supports": [
+              "D6"
+            ],
+            "how": "Introduces the bridge before the designs and W7 rely on it."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A definition outside any dashboard, owned by its domain.",
+            "introduces": "The bridge that accompanies it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "uses",
+      "heading": "What the Data Is For",
+      "controlling_idea": "Every use of the data computes from the shared definitions: the same warehouse serves reporting, experimentation, data science, merchandising and inventory planning, and partners, each with different tolerances.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "D3"
+        ],
+        "how": "Shows that every use of the data depends on the definitions and says who owns them."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The uses in turn, internal first and partners last; partners come last because their data products add a contract and consent to the definitions the internal uses share."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "One owned definition per metric, published with its bridge.",
+        "introduces": "The uses that compute from it and their different tolerances.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "Every use of the data inherits the definitions and their bridge, and the same warehouse serves four internal audiences with different tolerances, and partners from the Omnichannel stage, which a design should name.",
+          "function": "claim"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Reporting is the monthly and weekly record, and it must be defined, reconciled and revised with a stated policy.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four audiences.",
+            "introduces": "The first, reporting.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Experimentation compares two versions on randomly split traffic and needs event-level data with a stable key and the same metric definitions as reporting.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Reporting's definitions.",
+            "introduces": "Experimentation, which must use the same definitions.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Data science builds forecasts and models from the modelled tables and writes back predictions, and it is the main reason to keep raw history.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Experimentation.",
+            "introduces": "Data science.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Merchandising and inventory planning is the most commercially important use at Kestrel & Pine's stage, and its two numbers, sell-through and weeks of cover, depend on one definition of a sale and one view of stock.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Teun Baas reading sell-through on the moss Ridgewalker; Daniel Okafor reading weeks of cover; stock across Duiven, six stores and the marketplace program's location.",
+              "shows": "Planning numbers inherit the definition of a sale and the inventory work of W1."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Data science.",
+            "introduces": "Merchandising and inventory planning, the use that matters most here.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Data products for partners appear at the Omnichannel stage; warehouses now make delivery cheap, which moves the cost to definitions and consent.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Snowflake's Secure Data Sharing with 'no actual data ... copied'; Databricks' open sharing protocol across platforms.",
+              "shows": "Delivery is cheap; a sell-through feed is still a disclosure and a customer-level feed is personal data.",
+              "source": "Snowflake and Databricks documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The internal uses.",
+            "introduces": "Uses outside the company: data products for partners.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "realtime",
+      "heading": "Real-Time Dashboards and When They Mislead",
+      "controlling_idea": "Each flow of data needs its own freshness and completeness, and a live dashboard counts while records are still arriving, so live operational signals and business metrics shown on a lag with a definition, a revision policy and the reconciliation are different objects and must not share a label.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "D4"
+        ],
+        "how": "Explains the time cause of differences for live views and gives the rule for showing each kind of number."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Uses that compute from shared definitions on settled data.",
+        "introduces": "How fresh each flow must be, and the live view that counts before the data has settled.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "controlling_idea": "The uses work on settled data while running the business live does not, so each flow of data (orders and shipments, stock snapshots, finance figures, operational dashboards, board reports) needs its own freshness and completeness, with a different system allowed to disagree.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five flows (orders and shipments, stock snapshots, finance figures, operational dashboards, board reports) with how fresh, how complete, who may disagree and the typical mechanism; illustrative targets.",
+              "shows": "The mechanism follows the flow's needs; finance must reconcile to the cent while an orders-per-minute view can be approximate."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The table's last two rows, a live orders-per-minute dashboard and a monthly order count, are the ones that get confused, and showing both under one label makes the dashboard a fourth opinion.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table's last two rows, live operational dashboards and monthly board reports.",
+            "introduces": "The confusion between a rate and a record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A real-time dashboard counts while orders, refunds and payment records are still arriving, so a live view and a closed-period report can disagree without either calculation being wrong.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "GA4's intraday export is best-effort and some attribution lags up to 24 hours; Stripe: a payout 'might arrive before its reconciliation data is ready'.",
+              "shows": "The vendors document the delays that make a live count provisional.",
+              "source": "Google Analytics, Stripe and Shopify documentation, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A rate for acting now against a record that will be revised.",
+            "introduces": "Why a live count is provisional: records are still arriving, as the vendors document.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Operational signals are rates for acting in the next ten minutes and are shown live and approximate; business metrics are records shown on a lag with a definition, a revision policy and the reconciliation beside them.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A live 2,300 orders against a reported 2,210, with 90 canceled, refunded, edited or duplicated after the dashboard counted them; Figure 3.",
+              "shows": "Mixing the two under one label produces a question with a predictable answer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "A live view and a report that disagree.",
+            "introduces": "The rule that separates the two kinds of number.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The freshness table first, because it sets the live operational view beside the settled reports; then the confusion between its last two rows, the reason a live count is provisional, and the rule that separates them. The table needs the uses of the previous section, which is why it sits here rather than with the mechanisms; the rule needs the confusion stated first."
+      }
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices and Their Trade-offs",
+      "controlling_idea": "Four realistic designs exist for a merchant's analytics, mostly a function of stage, and at Kestrel & Pine's stage the warehouse with extract-and-load and a metrics layer is right, with a reconciliation published with the number.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "D5",
+          "D6"
+        ],
+        "how": "Compares the designs and adds the published reconciliation that no vendor sells."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The designs from the smallest to the largest, then the table that sets them side by side, then the recommendation."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "The store, the feeds, the definitions, the uses and the live rule.",
+        "introduces": "Four designs that combine them differently.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "The store, the feeds, the definitions, the uses and the live rule combine into four realistic designs for a merchant's analytics, and the right one is mostly a function of stage.",
+          "function": "claim"
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The platform's reports plus web analytics need no engineering but give two definitions of 'order' from day one and cannot count other channels alongside.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four designs.",
+            "introduces": "The smallest.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "A BI tool on operational copies is cheap and quick, but every report embeds its own definition, and a wrong report is wrong invisibly.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Much of Kestrel & Pine's reporting in early 2027 still worked this way, beside a data warehouse with no owned definitions.",
+              "shows": "The design the scene's counts came from.",
+              "source": "Kestrel & Pine scenario ledger (landscape table: data warehouse and BI tool, 2024)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Platform reports.",
+            "introduces": "The next design up.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "A warehouse with extract-and-load, a modelling tool and a metrics layer copies every system into one store with metrics defined once and reconciled, the standard Omnichannel design.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Reports that each embed a definition.",
+            "introduces": "The design that defines each metric once.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "An event stream feeding a lakehouse and the operational systems carries order and stock events once to every reader, the Group-stage design.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four designs by cost and skills, definitions, freshness and when each is right.",
+              "shows": "The choice follows the number of channels and the stage."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The Omnichannel design.",
+            "introduces": "The largest design.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The author recommends the third design for a merchant at Kestrel & Pine's stage, with a reconciliation published with the number (the platform's, the ERP's and the warehouse report's counts with the bridge between them), because a number with its bridge is believed and a number alone is argued with.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four designs and the table.",
+            "introduces": "The author's choice and the one addition vendors do not sell.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The subject changes shape with scale: nothing to build at Starting, a warehouse before the second channel at Growing, ownership rather than technology at Omnichannel, federation at Group.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "D5"
+        ],
+        "how": "Shows that the definitions and their owner, not the tool, become the problem as the merchant grows."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Designs that depend on the stage.",
+        "introduces": "Each stage with what is typical, what becomes necessary and the warning signs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "The subject changes shape with scale: at Starting there is one thing to know, at Growing the warehouse is worth building before the second channel, at Omnichannel the problem is ownership, not technology, and at Group it is federation across units.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four stages with what is typical, what becomes necessary and the warning signs of outgrowing it.",
+              "shows": "The specific signs a merchant can check against its own reports."
+            },
+            {
+              "kind": "fact",
+              "what": "Kestrel & Pine had a warehouse for three years before it had a definition.",
+              "shows": "The Omnichannel problem is ownership.",
+              "source": "Kestrel & Pine scenario ledger (warehouse since 2024; W7 in 2027)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice: Waypoint W7 at Kestrel & Pine",
+      "controlling_idea": "Under W7 Hanna Berg's definitions turned February's three counts into one number and a bridge, the bridge found its first exception in August 2027, and the definitions took three weeks because the warehouse already existed.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "D6",
+          "D1"
+        ],
+        "how": "Resolves the scene's three counts with a definition table and a bridge."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The definitions, then the restated February number, then how the bridge changed the monthly report and its first exception, then why it was cheap."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The recommendation of a warehouse with a metrics layer and a published bridge.",
+        "introduces": "Kestrel & Pine doing it under W7.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "Under W7 Hanna Berg published the metric definitions in June 2027, adopted from the July close, settling order, store transaction, net sales, return and customer.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Definitions of order (confirmation in Amsterdam time, every channel incl. program-fulfilled marketplace orders, test excluded, cancellations counted with status, exchange a return outcome, split order one order), store transaction beside orders, net sales excl. VAT recognized at delivery (IFRS 15), return with the 24% item and 19% order rates and 28% exchanges, customer deferred to identity.",
+              "shows": "Each row settles a decision the scene's table left open.",
+              "source": "Kestrel & Pine scenario ledger (commerce-data-and-analytics line; ruling 1)"
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "With the definitions, February 2027 became 23,150 orders, 22,860 net of cancellations, with 9,200 store transactions reported beside them, and Eva's order counts once while her exchange is a return outcome.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "18,860 D2C + 3,310 marketplace + 980 wholesale = 23,150; 22,860 net of cancellations; 9,200 store transactions.",
+              "shows": "One number computed from one definition.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: the bridge from the platform's count to the W7 definition and on to the ERP's and the warehouse's counts.",
+              "shows": "Each count is right about what it counts; the bridge makes the company's number believable."
+            },
+            {
+              "kind": "scenario",
+              "what": "Eva's order #1072455 counted once at confirmation on 13 April; her exchange a return outcome, not a second order.",
+              "shows": "Answers the introduction's question of what each of Eva's events counts toward.",
+              "source": "Kestrel & Pine scenario ledger (W7 definitions)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The definitions.",
+            "introduces": "The restated February number.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The bridge, not the number, changed the meeting: the monthly report shows the W7 count beside each system's count, and a difference the bridge does not explain is an exception, the first of which was 23 marketplace orders the connector's weekly summary had dropped.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "August 2027: 23 marketplace orders dropped from the connector's weekly summary during a vendor outage (illustrative).",
+              "shows": "The bridge finds missing records that a single number would hide.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "One number.",
+            "introduces": "The bridge beside it, which did more.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "W7 was cheap because the definitions took three weeks of conversations on a warehouse and BI tool that already existed, and the OMS from Q4 2027 shrinks the collection problem without removing the need for W7.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "What W7 achieved.",
+            "introduces": "Why it cost little, and what the OMS does and does not settle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Each failure of analytics comes from a missing part of the design (a missed late edit, two clocks, refunds netted on one side, reports on operational stores, browser analytics as the order count, a metric redefined in a dashboard, the warehouse used as a system of record, a partner feed without a contract), and each has a way to notice it and a fix.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "D6",
+          "D2"
+        ],
+        "how": "Shows each part of the design by what happens without it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design working at Kestrel & Pine.",
+        "introduces": "What goes wrong when a part of it is missing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "Most failures in analytics come from a part of the design that is missing, and each shows itself in a recognizable way.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Eight failures with how you notice each and what to do.",
+              "shows": "Each part of the design, read by what happens without it."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The opening's meeting, where finance and operations bring different correct totals, is answered by the chapter's parts together: the counts differ by definition, collection and time; one analytical store receiving every system makes them comparable, one owned definition makes one of them the company's, and the bridge to each system's count turns every remaining difference into either an explained definition or a missing record. For the part: the Black Friday stock chain, the Double Refund, the Deprecated Endpoint, Eva's four records and February's three counts look like five problems in five technologies and are one: in each, both ends worked and something about the join had not been decided, and each chapter's remedy is a record with an owner.",
+    "so_what": "A merchant can explain any two counts by definition, collection and time and write the definition before buying a dashboard; at Kestrel & Pine W7 took three weeks. Across Part VI the remedies were records with owners: W5's integration standards, Eva's four records made one master with three links in July 2027, and February restated as 23,150 orders with a bridge.",
+    "callback": {
+      "to": "The introduction's meeting where finance and operations bring different correct totals; and, for the part, the Part VI opening's order that reaches the warehouse twice, stock update that arrives after the last unit has sold and invoice whose customer finance cannot identify.",
+      "how": "p51 answers the chapter's opening meeting; p56 returns to the part opening and names what its five cases have in common; p57 gives the part's so-what and take-away."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write the definition of an order, net sales and return with an owner and publish the bridge to each system's count every month; for the part, build the integration inventory for your own landscape, one row per flow with its owner, idempotency key, pinned version and sunset date and reconciliation job, then name a master per shared entity and an owner per metric, starting with the rows that have no owner and the flows that move stock, orders or money with nothing comparing their two ends."
+    },
+    "hand_off": {
+      "to": "part-7",
+      "relationship": "place",
+      "carries_over": "The merchant's own landscape and its joins.",
+      "introduces": "The inside of the platforms the merchant buys."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and what notices them.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p51",
+        "controlling_idea": "The opening's two correct but different totals now have an answer: one store makes them comparable, one owned definition makes one of them the company's number, and the bridge sorts every remaining difference into an explained definition or a missing record.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening meeting set against the store, the definition and the bridge.",
+            "shows": "Answers the chapter's opening with what the sections established together."
+          }
+        ]
+      },
+      {
+        "id": "p52",
+        "form": "list",
+        "controlling_idea": "Established: operational and analytical workloads belong in different stores, public metric definitions differ and say so, and incremental extraction from a SaaS platform is a reconciliation sweep.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p53",
+        "form": "list",
+        "controlling_idea": "Depends on context: extract-and-load or events depends on whether the operational systems already emit events, central or domain ownership on team size, and a metrics layer product on how many tools consume the metrics.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the number that gets believed is the one published with its bridge, and definitions should come before building.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find, in their own company, who owns the definition of an order, where metrics are defined, how late changes are reported, which systems are missing from the warehouse, which reports hit operational stores, how late edits are caught, which dashboard numbers are rates and which records, and what partners receive.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "controlling_idea": "Part VI opened with an order that reaches the warehouse twice, a stock update that arrives after the last unit has sold and an invoice whose customer finance cannot identify, and its five cases (the Black Friday stock chain, the Double Refund, the Deprecated Endpoint, Eva's four records and February's three counts) look like five problems in five technologies but are one: in each, both ends worked and something about the join had not been decided.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The part's five cases set against the part opening's three failures.",
+            "shows": "What the part's chapters establish together, which no single chapter states."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's questions, the last of the part's five.",
+          "introduces": "The part's cases read together against its opening.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "controlling_idea": "Each chapter's remedy was a written record with an owner rather than a new system, and at Kestrel & Pine those records produced measurable results, so a reader can start an integration inventory of their own, beginning where no one owns a row.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "case",
+            "what": "W5's integration standards (an owner, a contract and a reconciliation job per flow); Eva's four records one master with three links in July 2027; February restated as 23,150 orders with a bridge.",
+            "shows": "The part's remedies are records with owners, and each found or prevented a measurable problem.",
+            "source": "Kestrel & Pine scenario ledger (W5; events-consistency-and-reconciliation, api-contracts-and-versioning, identity-and-master-data and commerce-data-and-analytics lines)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One problem across the five cases: an undecided join.",
+          "introduces": "The remedy each chapter gave and what it produced, and what the reader does next.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "controlling_idea": "Part VI has dealt with the joins inside the merchant's own landscape; Part VII looks inside the platforms the merchant buys and asks how the way a bought platform is built limits what a merchant can promise, and what is left for the merchant to decide.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "place",
+          "carries_over": "The merchant's own landscape and its joins.",
+          "introduces": "The inside of the platforms the merchant buys.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Integration mechanics (ELT connectors as an integration style, change data capture, iPaaS).",
+      "covered_in": [
+        "integration-styles"
+      ]
+    },
+    {
+      "topic": "Reconciliation jobs and idempotency in the operational systems; this chapter applies the sweep idea to analytics only.",
+      "covered_in": [
+        "events-consistency-and-reconciliation"
+      ]
+    },
+    {
+      "topic": "Customer identity and matching, and therefore customer counts; the chapter defers the 'customer' metric explicitly.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "Experimentation design and search or storefront metrics.",
+      "covered_in": [
+        "commerce-search-and-discovery",
+        "storefront-architecture"
+      ]
+    },
+    {
+      "topic": "Privacy obligations of partner data products.",
+      "covered_in": [
+        "privacy-and-customer-data"
+      ]
+    },
+    {
+      "topic": "Revenue recognition rules in accounting terms; the chapter takes the ERP's basis as given.",
+      "covered_in": [
+        "tax-invoicing-and-ledger"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author: whether the toolkit should carry the W7 definition table as a template for other merchants; it is decided when the toolkit page is written, not in this chapter. (from spec.md)"
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 14 passed, 8 failed; one failure at fault in the spec, the rest past the revision budget), the cheap, plainly right fixes were made without another round. Spec fault (no_weak_conclusion_pattern: the take-away's team-size rule was new in the conclusion): p36 now states it in the body ('Below about five data people, the Data Lead under W7 holds them'), which also removes the apparent conflict between domain ownership and W7. Draft: p06 names each count's source; p13 says 'comes in two forms' instead of 'has had two names' (the lakehouse is a different design); p51 returns to 'finance and operations with correct but different totals' (the introduction's example, not the three-count meeting); p04 says In Practice returns to Eva's order; the design table's warehouse row reads 'Growing and Omnichannel stages' to agree with the stage table. To hold 5,840 words (rule 4), agent additions were cut: the part closing's May 2027 stock-reconciliation figure (both round-3 readers found it out of place), W5's list shortened, the hand-off merged into one sentence, p29a and p22 shortened. Rejected: a fourth round; raising the word limit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) the Eva paragraph p04 keeps its house position between the thesis and the roadmap, with its opening label; the transition finding there (the link to definitions arrives in its last sentence) is answered by the forward pointer to In Practice, not by moving the paragraph. (rule 7) AC-6 passed in all three rounds and is kept."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after round 2 (revise: 17 passed, 13 failed; eight major), the named units were revised: p10 opens from the three counts that need one place (problem_solution), p22 opens with the turn from settled uses to the live view (contrast), p39 gathers the store, feeds, definitions, uses and live rule (conclusion_summary); 'data warehouse', 'warehouse report', 'warehouse system' or 'WMS' everywhere the bare word was ambiguous, including the part closing's 'reaches the warehouse system twice' (rule 3, both flow readers); p06 says Kestrel & Pine has run a data warehouse since 2024 with no owned definitions (ledger landscape table; rule 3) and p41 no longer repeats the year; 'the Wednesday after the meeting'; the event-stream sentence names the log's readers; p29 leads with the hard rows and names W7's table only as a worked example. Rejected: another revision round (the budget is two); raising the word limit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 4) to hold 5,840 words after the round-2 fixes, agent additions and repetition were cut first: the part closing's refund and pinned-version results (W5's remedies stay named in p56), a repeated 'definition, collection and time' in p51, the Shopify refund-row clause in p37 that repeated the metrics table, and words in p02, p10 and p29a. Rejected: cutting the author's Walmart and data-mesh evidence."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) single-reader minor findings taken because cheap: the vendor-gap sentence in p25 split in two; p30 says each use inherits the definitions and their bridge. Not taken: pairing each part case with its undecided question in p56 (single reader; room); moving the Eva paragraph p04 (house element; rule 10, current position stands)."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: open questions from spec.md: the Elevar vendor help page stays the cited source for the platform-versus-analytics gaps, labelled as a vendor page (rule 2); the Databricks sharing name stays as published with its 'naming in flux' hedge (rule 2). Rubric notes not taken earlier are closed: the stage section stays apart from the trade-offs (rule 8, house heading), p04 and p10/p11 stay as the author wrote them (rule 10), section flows for one-paragraph sections are optional. The published chapter's missing part closing is resolved by p56 and p57. Rejected: leaving these for the author."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 7) AC-6, the agent-added part-closing criterion, is kept if it passes the confirming round, as it passed rounds 1 and 2; AC-1 to AC-5 are the journal spec's."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 (escalate: 14 passed, 12 failed; the escalation came from one spec-fault transition). Under the brief's pre-approval for spec-fault failures: the metrics section's transition_in no longer carries over 'a count that is a record rather than a rate' (left from before the rubric reorder) and now carries over the store that every system lands in; the ownership paragraph p36 moved from What the Data Is For to the metrics section after p28 ('it has an owner'), because both flow readers read it as continuing that point; the uses section now opens from the definitions it computes from; the stage paragraph p45 now precedes its table so the elaboration is the section's first sentence. Draft revisions for the named units: 'data warehouse' used wherever the analytical store is meant and 'warehouse report', 'warehouse system' or 'WMS' for Duiven (both flow readers); 'the OMS's count' in p44 corrected to 'the ERP's count' (the OMS arrives in Q4 2027; ledger line commerce-data-and-analytics lists platform, ERP and warehouse) and the event-stream sentence reworded; the meeting 'spends forty minutes ... without reconciling' them; the part closing's 'inventory row' made 'integration inventory' and its list of record types cut as repetition of p56; the roadmap names the three ways and the published definitions it compares (AC-4); p22's opener says what its table rows are; p41 says the data warehouse has run since 2024 (ledger landscape table).",
+      "rejected": [
+        "Treating the transition failure as the author's to decide (the brief pre-approves spec order and transition changes for spec-fault failures).",
+        "Moving the stage table into the trade-offs section (house heading)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, verdict 'sound with notes'); the author asked for the rubric notes to be taken without review. Taken: the requirements table p22 and its follow-up p23 moved from Getting the Data Out to the start of Real-Time Dashboards, where the uses they refer to are known and p23 introduces the rate-versus-record rule p38 states (removes two forward references and the repetition across sections); a bridge paragraph p29a added at the end of the metrics section so the recommendation p44 and W7 rely on a term already explained; p30 says four internal audiences plus partners, matching the five paragraphs that follow; 'data lake' glossed in p14. Transitions of p22, p23, p37 and the realtime section rewritten; section flows declared for data-out and realtime. Not taken: see open_questions. Rubric rerun (fresh agent, 'sound with notes'): taken: p29 (the hard rows) moved to follow p25 so the reader learns what a definition contains before where it lives, with the transitions of p29, p26 and p29a rewritten; the scene's three causes renamed 'definition, collection and time' to match the rest of the chapter (the published labels were 'Coverage' and 'Timing'). Not taken: merging p23 and p38 (author's sentences; p23 states the confusion, p38 the rule), p10 into p11, and resolving p04 (see open_questions). Third rubric run (fresh agent, 'sound with notes'): taken, because all three runs asked: p23 reduced to the confusion in one sentence so the cause (p37) comes before the rule (p38) and the rate-versus-record distinction is stated once; Eva's order and exchange resolved in p47 under the W7 definitions (the introduction's p04 asked what each event counts toward). Not taken: folding p10 into p11; defending the failures' last position and the mechanisms-before-definitions order further in the flow rationale.",
+      "rejected": [
+        "Merging p23 into p38 (both are the author's sentences; p23 now opens the problem p38 resolves).",
+        "Opening the trade-offs section with the bridge (the recommendation should rely on it, not introduce it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json from the published chapter (auto mode). Intent outcome, AC-1 to AC-5, the thesis and role are copied unchanged from the journal spec. The old success criteria are not carried over as they were: 'every term defined' is covered by the standard known_before_new check; the three counts, the dated public definitions and the W7 table with its bridge are outcomes the journal spec's AC-1 already tests; the stage-table, diagrams, tables, Questions, Sources and three-tier take-away criteria are inventories and are dropped; 'closes Part VI and hands off to part-7' is kept as the conclusion's hand-off and the added AC-6.",
+      "rejected": [
+        "Carrying the inventory criteria over as acceptance criteria.",
+        "A known_before_new acceptance criterion for the term list (the open-ended check runs by default)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added AC-6 (minor, rubric): the conclusion performs Part VI's closing, which the journal spec assigns to this chapter. Listed for the author to keep or drop.",
+      "rejected": [
+        "Raising the standard conclusion_calls_back_to_introduction check's severity for the part closing."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added units the contract requires and the published chapter lacked: a carry-over sentence from identity-and-master-data in p02 (the journal spec's transition_in), the thesis sentence in p03, a roadmap p05 (the validator requires every section to be announced), a one-sentence lead p50 for the failure table (a section needs a unit), a conclusion paragraph p51 that answers the opening, Part VI's closing in p56 and p57, and a hand-off p58 that states Part VII's question (the published 'what a merchant should copy and what it should not' misframed Part VII).",
+      "rejected": [
+        "Placing the roadmap in the KEY POINTS callout only.",
+        "Keeping the published one-line list of the part's questions as the part closing."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit: the old spec set none. The published chapter has 5,310 words (tables included); length.max_words is set to 5,840, the published length plus 10%, for the units the contract requires (the part closing, roadmap, thesis sentence and opening answer).",
+      "rejected": [
+        "No limit.",
+        "Holding the published 5,310 words by cutting the author's text to fit the part closing."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Chose the three February 2027 counts (platform 21,050; ERP 22,710; warehouse report 24,140) as the spine and made every difference traceable to a row in a table, rather than describing data architecture abstractly; the numbers are new illustrative ledger facts. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the warehouse-versus-lakehouse question to one paragraph, as a vendor choice at this stage, and spent the words on definitions and ownership, which is where Kestrel & Pine's problem is. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Deferred the 'customer' metric to chapter 27 explicitly instead of defining it here, to avoid re-teaching identity. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used two flowcharts (the pipeline and the bridge) rather than a sequence diagram; the chapter has no request-response flow worth sequencing. (from spec.md)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md (commerce-data-and-analytics line; W5, W7; the Double Refund; events-consistency-and-reconciliation, api-contracts-and-versioning and identity-and-master-data lines; editor-review Part VI) and _research/consistency-issues.md (ruling 1, revenue at delivery)",
+      "contributed": "The three February counts and their breakdown, the W7 definitions, the restated February figures and the August exception; the facts of the part closing."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (commerce-data-and-analytics; part-6 closing; part-7 transition_in and thesis)",
+      "contributed": "Intent, thesis, role, acceptance criteria, the part closing and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, integration-styles, events-consistency-and-reconciliation, api-contracts-and-versioning, identity-and-master-data, inventory-and-availability, product-information",
+      "contributed": "The three definitions of 'order', the cast and volumes; the mechanisms the data platform reuses; rate budgets; the customer master; prerequisites for planning numbers. (from spec.md)"
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-integration-and-data.md (Part 5), _research/brief-commerce-business-models.md",
+      "contributed": "Metrics and GMV definitions. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Snowflake, BigQuery and Databricks documentation; Armbrust et al., Lakehouse (CIDR 2021)",
+      "contributed": "The analytical store and its two forms. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Fivetran pricing; Airbyte Shopify source documentation (2026); Shopify bulk operations; Stripe rate limits and payout reconciliation documentation",
+      "contributed": "The extraction mechanisms and their limits. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify ShopifyQL sales schema (2026-10); Shopify Form 10-K FY2025; Zalando Annual Report 2025; GA4 developer and help documentation",
+      "contributed": "Public metric definitions that differ. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Benn Stancil, 'The missing piece of the modern data stack' (2021); dbt Semantic Layer, LookML and Cube documentation",
+      "contributed": "The metrics layer. (from spec.md)"
+    },
+    {
+      "kind": "external",
+      "ref": "Zhamak Dehghani, data mesh article (2019); Confluent blog on Walmart's inventory events (2020); Snowflake and Databricks sharing documentation; Elevar help page",
+      "contributed": "Domain ownership, event streams at scale, partner data sharing, the usual analytics gaps. (from spec.md)"
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Closing fixes after the confirming round 3: team-size ownership rule stated in p36; count sources named in p06; 'two forms' in p13; p51 callback reworded; Eva pointer in p04; design-table stage aligned; part closing trimmed. check-report.json (round 3) is stale after these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Auto-resolution after round 2: transitions of opanalytical, realtime and choices written into the prose; warehouse wording disambiguated; data warehouse since 2024 stated in the scene; Wednesday anchored; event-stream readers named; p29 leads with the hard rows; part closing tightened; open questions resolved."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 revisions: p36 moved into the metrics section; metrics, uses and stages transitions rewritten; warehouse wording disambiguated; p44 count list corrected to the ERP; roadmap names the three ways and the published definitions; part closing tightened."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric notes taken: p22 and p23 moved into Real-Time Dashboards, bridge paragraph p29a added, p30 and p14 wording. Rubric rerun: p29 moved after p25; scene causes renamed to definition, collection and time. Third rubric run: p23 shortened; Eva's order resolved in p47."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json, reconstructed from the published chapter; added the carry-over from the previous chapter, the thesis sentence, a roadmap, a lead for the failure table, an opening-answering conclusion paragraph, Part VI's closing and a hand-off rewritten to Part VII's question."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut from four sentences to two; net-sales recognition changed to delivery per consistency item 1 (IFRS 15); BI, WMS, D2C, PSP and VAT expanded; 2024 BI-tool claim aligned with the ledger. (from spec.md)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 5840
+  }
+}

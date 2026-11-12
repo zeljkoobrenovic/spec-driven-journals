@@ -1,0 +1,579 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-5",
+  "journal": "commerce-platform-architecture",
+  "part": "part-5",
+  "title": "Part V — CHANNELS: Selling Everywhere",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-5-intro/index.md, 421 words by check_draft's count, nine units) and its former spec.md, then revised the same day (see decision_log); the page was revised to match. One spec paragraph per unit; the KEY POINTS callout, Figure 2 (the outside channels) and Figure 3 (the four promises and their one source) are evidence of the claim paragraph (p04); Figure 1 (outside parties set the rules) is evidence of the hook (p01). The standalone 'Begin with' line is now the headed closing (p09).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part V answers four questions in order: how marketplace listings, stock and orders join the merchant's systems; what changes when the buyer is a company; how structured documents are exchanged with trading partners and what e-invoicing mandates require; and what the ERP should own and how fast each kind of fact must reach it.",
+        "Each outside channel brings an outside party that sets the rules (a marketplace's scorecard, a chain's penalties, a mandate's legal date), and connectors that should translate the channel's requirements without owning prices, stock or orders.",
+        "The ERP's role behind every channel, announced before the B2B and EDI chapters assign it terms, credit, wholesale prices and invoices: it keeps the books and receives orders, shipments and payments from the systems that own them, and the last chapter argues why."
+      ],
+      "can_do": [
+        "Pick the Part V chapter that answers the decision in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture (engineers, product managers, wholesale and marketplace leads) at a merchant that sells beyond its own storefront, who have read Parts I to IV and are about to start the channel chapters, or who arrive with one marketplace, wholesale, EDI or ERP decision in hand and want the chapter that answers it.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Part I: the thirteen steps of an order, promise and handoff, the three status lines, system of record, single writer, events, idempotency and reconciliation; the glosses for PSP, WMS, ERP, iPaaS, EDI, webhook, SKU, channel, marketplace connector, 3PL, OMS, availability service, D2C, B2B, PIM and POS; the four scale stages.",
+        "Parts II and III: one owner per product, price, discount and stock fact; available-to-promise; checkout creating the order once; one order record with three status lines; one invoice per shipment.",
+        "Part IV: the warehouse system as the only writer of on-hand stock; one carrier layer and a computed delivery promise; stores; returns with one refund writer; notifications, status page and service screen as read models over one order record.",
+        "Kestrel & Pine in outline: a fictional outdoor brand, its systems, its incidents, the Waypoint program; Eva's jacket order of 13 April 2027 and the Duiven warehouse."
+      ],
+      "does_not_know": [
+        "Despatch advice (glossed here as a shipment notice); e-invoicing mandates (only named here; owned by edi-and-e-invoicing).",
+        "Seller performance metrics, stock allocation per channel, credit checks and the hub decision: each owned by a Part V chapter and only named here."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the four chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next four chapters tell you, in order?",
+        "expected": "Marketplace listings, imported orders, stock allocation and seller performance; company accounts, negotiated prices, payment terms and credit limits; structured orders, despatch advices, invoices and dated e-invoicing mandates; the ERP's financial and purchasing role, with finance taking complete batches while stock availability needs a faster route."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of this page alone can say why extra sales through outside channels can turn into deductions, and what decides whether they do.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: why can a sale through a marketplace or a retail chain end in a penalty or a deduction, and what does the merchant have to decide to prevent it?",
+        "expected": "Each outside party sets rules the merchant does not negotiate: a marketplace penalizes late dispatch and keeps a scorecard, a chain requires specific pallet labels and invoices and charges penalties, and mandates arrive with legal dates. The merchant must decide where each order becomes authoritative, and connectors must translate the channel's requirements while prices, stock and orders keep their one owner."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What changes when orders arrive from outside the merchant's own shop, and what must the merchant's systems do to keep the promises made to the parties outside?",
+    "claim": "Orders from outside the shop arrive through an intermediary that translates, such as a channel connector or an EDI provider, from an outside party that scores, charges back or imposes legal deadlines. The merchant keeps its promises only when no intermediary is the system of record for any value, every channel's order is created in one order record, each value sent out comes from its one owner, and no sale waits on the ERP.",
+    "disputed_by": "The view that each outside channel is a sales decision served by its own tool: the marketplace connector, the B2B portal, the EDI provider and the ERP each hold the orders, stock and prices their channel needs, the ERP is the natural hub everything connects through, and the outside party's scorecard, chargebacks and mandates are problems for operations and finance rather than requirements on the integrations.",
+    "so_what": "Kestrel & Pine's Part V incidents were values taken from a copy or from a system that did not own them, or orders kept in the tool they arrived through: about 160 marketplace orders in the Black Friday Oversell, 140 of them seller cancellations, and a strike from bol; two days of stale stock to bol from the Deprecated Endpoint; 38% of 9,400 wholesale orders keyed into the ERP by hand; Bergzicht's €14,200 deduction for despatch advices written before packing; an eleven-day January close. A merchant that accepts the claim decides, before it adds a channel, where that channel's orders are created, which system computes each value the outside party receives, and who owns that party's rules and dates.",
+    "how_why": "An outside party acts on what it is sent without asking again and enforces its own rules: a marketplace sells the stock number it was last sent and counts each seller cancellation and late confirmation; a chain's receiving scans pallet labels against the despatch advice; a mandate's network rejects an invoice that lacks a required field. An intermediary that keeps its own copy sends a stale or invented value when the copy lags or a flow fails silently, and an order kept in the channel's own tool is invisible to the warehouse, support and finance. The ERP changes in audited releases on a finance cycle, so a stock figure or an order routed through it moves at that pace.",
+    "supporting_claims": [
+      {
+        "id": "P5-1",
+        "claim": "Every outside channel's order (a marketplace order, seller- or marketplace-fulfilled; a wholesale order from the portal, keyed in or confirmed after a punchout; an EDI order) is created once in the merchant's one order record, keyed on the outside party's identifier and flagged by channel, and is never kept only in the tool it arrived through."
+      },
+      {
+        "id": "P5-2",
+        "claim": "An intermediary (the channel connector, the EDI provider, the ERP partner's connector) translates between systems and owns no fact; the merchant owns its contract: the fields, their direction and cadence, the system of record for each, the partner's guideline and API versions with their dates, and a named internal owner."
+      },
+      {
+        "id": "P5-3",
+        "claim": "Each value sent to an outside party, or used to accept its order, comes from the one system that owns it: a channel's stock number from one available-to-promise calculation, prices from the pricing source with effective dates, terms and credit from the ERP's receivables at order placement, the despatch advice from the warehouse's pack confirmation, and the invoice from the ERP's confirmed shipment."
+      },
+      {
+        "id": "P5-4",
+        "claim": "Outside parties enforce rules the merchant does not negotiate (a marketplace's performance thresholds and API retirement dates, a chain's message guideline and chargebacks, a country's e-invoicing mandate), so each rule becomes a freshness requirement on a flow or a dated obligation with an owner, and a monitor shows when it is missed."
+      },
+      {
+        "id": "P5-5",
+        "claim": "The ERP is the system of record for finance (postings, invoices, receivables, purchasing, stock value, item cost, and business customers' prices, terms and credit); it receives orders, shipments and payments by batch from their owners, publishes what it owns for channels as events, and stays out of every real-time path."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis in its three key points, places the part beside Eva's order through two Amazon.de orders, a shop's pre-season order and Bergzicht's 240-unit reorder, and gives the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the four chapter paragraphs, in the part's reading order"
+      },
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "p04: the rule follows the facts and glosses (B2B portal, ERP, keyed orders, connector, EDI) that p02 and p03 introduce; the order record is known from Part III"
+      }
+    ],
+    "rationale": "The page opens on the part's puzzle (the same jacket sold through a marketplace or a chain can end in a penalty or a deduction), then narrows: to Kestrel & Pine as that merchant, the size of its outside channels and the B2B portal and ERP, with keyed orders that exist only in the ERP; to the concrete routes the part follows for the jacket, set against the single shop of Parts II to IV and passing through a connector or an EDI provider. The rule follows as a prerequisite step: it names the keyed orders, the connector and the ERP that p02 and p03 introduce, and the order record known from Part III, and the chapter order closes it; then one paragraph per chapter; and a one-paragraph closing that names the opening's cause and where to start. The company comes before the routes so the buyers are known as its customers (readers of rounds 1 and 2 asked for this); put the rule first and it answers a problem with no channels in it; put the chapters first and they point at a rule the reader has not met."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A merchant can sell the same jacket through its own shop, a marketplace or a retail chain, yet the marketplace can penalize late dispatch and the chain can deduct money for the wrong pallet labels, so an extra sale handled like a consumer checkout can end in a deduction or a delayed payment."
+    },
+    "bridge": {
+      "from_reader_world": "The opening's merchant, now Kestrel & Pine with its outside channels, and the single shop of Parts II to IV, whose order the merchant's own checkout created (chapter 19's hand-off).",
+      "to_topic": "The same jacket on routes where someone else's system creates the order: two Amazon.de orders of 13 April 2027, one fulfilled by the merchant and one by the marketplace; a shop's pre-season purchase; Bergzicht Outdoor's 240-unit reorder on three pallets; with Kestrel & Pine's €3.0 million of marketplace sales and €12.0 million from 1,100 wholesale accounts, 62% of whose orders arrive through the B2B portal and 38% are keyed into the ERP."
+    },
+    "thesis_statement": {
+      "text": "Where each order becomes authoritative decides whether outside channels keep their promises: every channel's order is created in the order record; connectors translate while prices, stock and orders keep their owner, so each promise sent out comes from its owner; and availability never waits on a scheduled finance-system update.",
+      "placement": "KEY POINTS bullets 1 to 3 and paragraph p04"
+    },
+    "roadmap": {
+      "placement": "paragraph p04 (last sentence)",
+      "promises": [
+        {
+          "promise": "Four chapters apply the rule in turn: marketplaces, business buyers, the documents exchanged with trading partners, and last the ERP.",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A merchant can sell the same jacket through its own shop, a marketplace or a retail chain, but each outside party sets conditions (a marketplace penalizes late dispatch, a chain requires pallet labels and invoices), so handling the extra sale like a consumer checkout can end in deductions or delayed payment.",
+        "function": "example",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: a merchant's building surrounded by a marketplace with a scorecard, a retail chain with a penalty ticket and an authority with a circled calendar date; the caption names the e-invoicing mandate.",
+            "shows": "Each outside channel brings an outside party that sets the rules: a scorecard, penalties, a legal date."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Kestrel & Pine, the fictional outdoor brand, earns €3.0 million through marketplaces and €12.0 million from 1,100 wholesale accounts in 2026; 62% of wholesale orders arrive through the B2B portal and 38% are keyed by hand into the ERP, which keeps finance and purchasing records, so keyed orders exist only in the ERP, outside the order record.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "€3.0M marketplaces, €12.0M from 1,100 wholesale accounts, 62% portal, 38% keyed into the ERP (fictional).",
+            "source": "_research/scenario-ledger.md (revenue table; B2B portal row; b2b-commerce line: a keyed order exists only in the ERP)",
+            "shows": "The outside channels are a large share of the business, and more than a third of wholesale orders exist only in the ERP, outside the order record."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The opening's merchant selling the jacket through a marketplace and a retail chain.",
+          "introduces": "Kestrel & Pine as that merchant: the size of its outside channels, and the B2B portal and ERP through which wholesale orders arrive, with keyed orders that exist only in the ERP.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Unlike in Parts II to IV, someone else's system creates the order and a connector or an EDI provider translates it: the part's examples are routes for the same jacket (two Amazon.de orders on 13 April 2027; a pre-season purchase by De Kaap Buitensport, an outdoor shop; a 240-unit reorder on three pallets by Bergzicht Outdoor, a retail chain), all sharing the warehouse and books of Eva's order.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Two Amazon.de orders of 13 April 2027; De Kaap Buitensport's pre-season purchase; Bergzicht's 240-unit reorder on three pallets (fictional).",
+            "source": "_research/scenario-ledger.md (the marketplace variant; Bergzicht's spring reorder; b2b-commerce line)",
+            "shows": "The part's cases are the same jacket on new routes, so what changes is who creates the order and whose rules apply, not the warehouse or the books."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The single-shop journey of Parts II to IV (chapter 19's hand-off) and Kestrel & Pine's outside channels.",
+          "introduces": "Orders that someone else's system creates and an intermediary (a connector or an EDI provider) translates, as the part's concrete examples.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The part's claim and roadmap: the keyed orders and the opening's penalties come from one decision, where each order becomes authoritative; every channel's order should be created in the order record, and connectors translate while prices, stock and orders keep their owner, so each promise sent out (stock, price and credit, pallet contents, the invoice) comes from its owner (KEY POINTS bullet 3 adds that availability never waits on the ERP); the chapters take marketplaces, business buyers, trading-partner documents, then the ERP.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "KEY POINTS callout: every outside channel is a way into the same order record; the intermediaries translate and must not own; outside parties keep score and set the calendar, so availability never waits on a scheduled finance update.",
+            "shows": "The part's argument in three lines for a reader who skims."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 2: three kinds of outside party, three intermediaries that translate (the marketplace connector, the B2B portal and the EDI provider), one order record every channel's order is created in, an ERP that receives daily batches and feeds no channel directly (its wholesale prices and credit leave it only as events).",
+            "shows": "The rule as one shape: many ways in, one order record, the ERP behind it."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 3: four promises to outside parties (stock a marketplace may sell, price and credit a shop gets, what is on each pallet, what is owed as a legal invoice) and the one system allowed to make each; the caption glosses chargeback (a buyer's deduction) and strike (a marketplace penalty).",
+            "shows": "'Each value sent out comes from its owner' made concrete for the four chapters."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The keyed orders of p02, the routes of p03 and the opening's penalties.",
+          "introduces": "The one decision both come from, the rule the part argues, then the chapter order.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the four chapters decides one question about orders from outside the shop and names one Kestrel & Pine case; each builds on, or turns from, the one before it.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P5-1",
+          "P5-2",
+          "P5-3",
+          "P5-4",
+          "P5-5"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one or more of the part's supporting claims, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Marketplaces come first because their orders are closest to the consumer order of Parts II to IV, so only the outside party and the connector are new; the B2B chapter turns from consumers to companies and assigns terms, credit and wholesale prices to the ERP; the EDI chapter needs those accounts and contract prices for its largest buyers' documents; the ERP chapter comes last because it gathers what the earlier chapters hand the ERP. Putting B2B first would teach the order-record rule on negotiated agreements; putting the ERP earlier would argue its role before the reader has seen what channels need from it."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The rule and the chapter order announced in p04.",
+        "introduces": "One paragraph per chapter: its subject in bold, its case and what it decides.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "The marketplace chapter covers listings, imported orders, stock allocation and seller performance: stale stock causes cancellations and penalties, a retired connector interface left one channel outdated for two days, and the connector needs a technical contract and a responsible owner.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P5-1",
+              "P5-2",
+              "P5-3",
+              "P5-4"
+            ],
+            "how": "Introduces the chapter on the connector that owns nothing, one stock figure per channel and the owned API calendar."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Stale stock causing cancellations and penalties (the Black Friday Oversell); two days of stale stock after a retired API version (the Deprecated Endpoint) (fictional).",
+              "source": "_research/scenario-ledger.md, incidents 1 and 10; marketplaces-and-channel-integration line",
+              "shows": "A copy held by an intermediary, and a date nobody owned, became penalties."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The B2B chapter turns from consumer buyers to companies, with accounts, negotiated prices, payment terms and credit limits: De Kaap's purchase, held over its credit limit, shows that accepting an order takes more than checking stock, so finance's terms must reach the portal reliably.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P5-1",
+              "P5-3",
+              "P5-5"
+            ],
+            "how": "Introduces the chapter on agreements the checkout must read from the ERP that owns them."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "De Kaap Buitensport's pre-season order of 25 February 2027, held by the ERP over its €15,000 credit limit (fictional).",
+              "source": "_research/scenario-ledger.md, b2b-commerce line",
+              "shows": "Accepting a company's order needs its terms and credit, which the ERP owns, not only stock."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The marketplace's consumer buyer.",
+            "introduces": "Buyers that are companies, with agreements a consumer checkout cannot express.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "For the largest buyers, the EDI chapter follows structured orders, despatch advices (shipment notices) and invoices: Bergzicht's €14,200 deduction for mismatched pallet labels shows the shipment notice must describe what was packed, and the chapter separates trading-partner requirements from dated e-invoicing mandates.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P5-1",
+              "P5-2",
+              "P5-3",
+              "P5-4"
+            ],
+            "how": "Introduces the chapter on one internal source per document, the partner card and the mandate calendar."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Bergzicht's €14,200 deduction for despatch advices whose pallet labels did not match what arrived (fictional; the ASN Chargeback).",
+              "source": "_research/scenario-ledger.md, incident 5",
+              "shows": "A document written by a system that did not pack the pallets cost money."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The wholesale channel of the B2B chapter.",
+            "introduces": "Its largest buyers, who send documents from their own systems.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Last, the ERP chapter gives the ERP a clear financial and purchasing role: the ERP partner's connector, which took three weeks to understand, shows the cost of undocumented ownership, and finance can take complete batches while stock availability needs a faster route.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P5-2",
+              "P5-5"
+            ],
+            "how": "Introduces the chapter that places the ERP behind every channel, out of the path of the sale."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The partner-built connector Noor Visser and Ruben Alves spent three weeks reconstructing (fictional).",
+              "source": "erp-and-back-office-integration; _research/scenario-ledger.md, erp-and-back-office-integration line",
+              "shows": "Nobody at the merchant knew what the ERP connector owned."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The chapters before it and what they hand the ERP.",
+            "introduces": "The last chapter: the ERP's own role.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Begin",
+    "synthesis": "The chapters' cases (the stale stock, the credit hold and the deduction) began as orders outside the order record or promises from the wrong system, which no single chapter paragraph says of all of them.",
+    "so_what": "The reader knows the penalties are settled by where an order is created and which system sends each value, not by more channels or tools, and starts with the marketplaces.",
+    "callback": {
+      "to": "The opening's jacket sold through a marketplace or a chain that ends in a penalty or a deduction (p01).",
+      "how": "The closing names the cause of those penalties."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with marketplaces-and-channel-integration."
+    },
+    "hand_off": {
+      "to": "marketplaces-and-channel-integration",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first question, marketplace listings, imported orders, stock allocation and seller performance, and the two Amazon.de orders of 13 April 2027.",
+      "introduces": "What the marketplace grades, what the channel connector may and may not hold, and where marketplace orders and marketplace-held stock belong."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The four chapters and the case each names.",
+      "introduces": "What their cases share with the opening's penalties, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p09",
+        "controlling_idea": "The chapters' cases, the stale stock, the credit hold and the deduction, began as orders outside the order record or promises from the wrong system; begin with the marketplace chapter.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any chapter's content (seller metrics, allocation policies, credit checks, EDI messages, mandates, the hub decision); the page summarizes and does not re-argue.",
+      "covered_in": [
+        "marketplaces-and-channel-integration",
+        "b2b-commerce",
+        "edi-and-e-invoicing",
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "The Waypoint decisions in detail.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "Integration mechanics (events, idempotency, contracts).",
+      "covered_in": [
+        "part-6"
+      ]
+    },
+    {
+      "topic": "The part's closing (the four incidents read together as one fault, set against the opening's jacket).",
+      "covered_in": [
+        "erp-and-back-office-integration"
+      ]
+    },
+    {
+      "topic": "Scale-stage comparisons (each chapter has its own table)."
+    },
+    {
+      "topic": "External factual claims; the page makes none of its own."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "After the confirming draft-check round 3 (escalate: 14 passed, 17 failed; 8 blocking, all at fault in the draft), cheap fixes applied without another round, as the brief allows, within 526 words: 'charge back' glossed in KEY POINTS bullet 3 as 'deduct payments' (rule 6; both rounds); p02 says keyed orders sit outside the order record (both readers); p04 lists the four promises Figure 3 shows and drops 'The ERP takes orders in daily batches; no sale waits on it' (both readers found it a rule without a reason; KEY POINTS bullet 3 and p08 carry the point); p05 'a retired connector interface'; p08 names the ERP partner's connector (ledger, erp-and-back-office-integration line); the closing names the chapters' cases (stale stock, credit hold, deduction). To pay for these, p03 drops the seller- versus marketplace-fulfilled detail of the Amazon.de orders (the rubric rerun and one reader; chapter 20 owns it) and the Sources line drops 'and labeled assumptions'. Not acted on: the density of p04's author sentence on connectors (both readers; the author's wording, and rewording would not fit), 'trading partner' and 'electronic document providers' in the author's callout (one reader each). The flow rubric rerun after the move: sound with notes; its note that the rationale said p02 and p03 introduce the order record is corrected (the order record is known from Part III). No further round was run, so these fixes are unchecked and check-report.json is stale.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)",
+        "Cutting the roadmap sentence of p04 (one reader; it is the page's only announcement of the chapter order before the list)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after draft-check round 2 (revise: 13 passed, 10 failed, 4 blocking and 6 minor, all at fault in the draft): p04 opens on 'The keyed orders and the opening's penalties' (both readers could not resolve 'These'), and replaces 'No sale waits on the ERP's daily batches' with 'The ERP takes orders in daily batches; no sale waits on it', which states the batches before the rule (both readers; ledger, erp-and-back-office-integration line: the ERP consumes orders by daily batch).",
+      "rejected": [
+        "Glossing the daily batch with the current hourly connector (a fact the page does not need)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the Kestrel & Pine paragraph moves before the routes paragraph (rule 3: both flow readers of round 1 and both of round 2 asked for this move); the units swap ids (company p02, routes p03), their transitions and the flow rationale are rewritten, the routes become 'the part's examples' and p04 picks up 'the keyed orders' from p02.",
+      "rejected": [
+        "Keeping the routes first and naming the company in them (round 2's readers still asked for the move)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: Figure 2's caption names its three intermediaries (the marketplace connector, the B2B portal and the EDI provider), as the figure shows (rule 6; one reader, minor; captions are not counted).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: glosses not added for length (rule 6 'if it fits'; the page is at its 526-word limit): 'charge back' in KEY POINTS bullet 2 stays glossed only in the Figure 3 caption (terms readers of both rounds, minor); 'a retired interface' in p05 stays (one reader, minor; the author's sentence); Figure 2's 'leave it only as events' stays (author's caption, one reader).",
+      "rejected": [
+        "Raising the limit beyond published plus 25%"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: to stay within 526 words after these fixes: the Sources line reads 'Public claims are sourced and dated in the chapters that make them'; p07's 'The chapter also' becomes 'It also'; p02's routes drop an 'and'. The author's cut scope sentence (round 1) stays cut (rule 5: it does not fit).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: criteria (rule 7): AC-1 and AC-2 are the journal spec's; no criteria were added. Open questions: none remain; the part's closing belongs to erp-and-back-office-integration by the journal spec (non_goals).",
+      "rejected": []
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1 (revise: 11 passed, 15 failed, 12 blocking and 3 minor; all at fault in the draft), under the author's standing approval, same units and order: p02 says the routes are Kestrel & Pine's and who De Kaap (an outdoor shop) and Bergzicht (a retail chain) are, and ties Eva's order to the shared warehouse and books (both flow readers); p03 says what its numbers show: keyed orders exist only in the ERP (ledger, b2b-commerce line); p04 opens on those keyed orders and the opening's penalties as coming from one decision, replacing 'The shared decision' (both readers), and calls the values sent out promises, which Figure 3 names; 'e-invoicing' qualifies 'mandates' in KEY POINTS bullet 3 and the Figure 1 caption (both readers; a gloss in the author's callout); the Figure 3 caption glosses chargeback and strike (minor, captions are not counted). To stay within 526 words: the author's scope sentence 'This part follows the systems needed to honor each channel's agreement' is cut (rule 5: it does not fit), p04's ERP sentence shortened to 'No sale waits on the ERP's daily batches', the closing shortened, and the Sources line drops 'under that chapter's Sources and Evidence'. Moving the Kestrel & Pine paragraph before the examples (both readers suggested it) was not done: naming the company in p02 removes the difficulty without a move.",
+      "rejected": [
+        "Moving p03 before p02 (the judge put the fault on the draft; resolved by naming the company in p02)",
+        "Raising the limit above 526"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis and its five supporting claims P5-1 to P5-5 unchanged; each chapter paragraph supports what that chapter's role.supports lists in the journal spec. Intent outcome, AC-1, AC-2 and role are copied from the post entry; the hook from the part's opening. No criteria were added.",
+      "rejected": [
+        "Writing a separate thesis for the page: it would restate the part's claim."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). The seven success criteria were inventories and are not carried as criteria: three KEY POINTS then <br> (house format, kept); a lead that frames the part in business terms, places it beside Eva's order and names Kestrel & Pine as fictional once (p01 to p03); one or two mermaid diagrams (obsolete: redrawn as illustrations on 2026-11-07); the chapter-list format (kept; its outcome is AC-1); figures matching the ledger (checked, see changelog; the spec.md line also listed €96,000, the €15,000 limit, 6 April 2027 and 1 January 2026, which the page does not carry); no Across Scale Stages, 500–900 words, a one-line Sources and Evidence (see length).",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length: max_words 526 = the published 421 words (check_draft's count, which includes the KEY POINTS callout and the Sources line) plus 25%, as the brief allows a part intro, for the transition from Part IV, the stated rule (the part claim was only half stated: no order record and no ERP role) and the headed closing; target 510. The old spec's 500–900 range is replaced.",
+      "rejected": [
+        "Keeping 900 (would invite new material)",
+        "Keeping the published 421 (no room for the claim the contract asks for)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. The author asked for the rubric notes to be taken without review. Taken: the connector and the EDI provider are introduced in p02 before the rule in p04 uses them (the EDI gloss moves from p03 to p02 to pay for it); De Kaap Buitensport is named in p02, so p06's case calls back to it; the step from p03 to p04 is declared as a prerequisite step, not large_to_small; the section's controlling idea says each chapter builds on or turns from the one before (B2B turns from marketplaces). No unit moved, so the rubric was not rerun.",
+      "rejected": [
+        "Cutting the roadmap clause at the end of p04 (section 1 follows at once): it is the page's only announcement of the four chapters before the list, which AC-1 tests"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order of ideas and prose changes against the published page, without the author's review (the author asked for this pass to run unattended): (1) p02 opens on the contrast with Parts II to IV (chapter 19's hand-off: orders someone else's system creates) and dates the Amazon.de orders 13 April 2027 (ledger, the marketplace variant), as the opening bridge and chapter 20's transition_in ask; (2) p04 states the whole part claim (one order record; intermediaries own nothing, each value from its owner; the ERP keeps the books from daily batches and no sale waits on it), which intent know 3 asks for before the B2B and EDI chapters, and ends with the roadmap sentence; (3) chapter paragraphs p06 to p08 open on the journal spec's transitions (contrast from consumer to company buyers; the largest buyers; last); 'despatch advices' glossed as shipment notices; De Kaap's purchase tied to p02's pre-season purchase and to its credit limit (ledger, b2b-commerce line); (4) 'Begin with' becomes a headed one-paragraph closing 'Where to Begin' with the callback, as in parts 3 and 4.",
+      "rejected": [
+        "A separate roadmap paragraph (over the length)",
+        "Performing the part's closing here: the journal spec assigns it to erp-and-back-office-integration."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 1 shows the three outside parties, their intermediaries and the one order record rather than the four chapters' systems in detail, because each chapter draws its own flows and the intro's job is the shape of the part. (Carried from spec.md, dated 2026-11-07; now Figure 2.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 states the part's common rule (one honest source per promise) instead of a reading-order diagram, because the four chapters share that rule more than a sequence. (Carried from spec.md, dated 2026-11-07; now Figure 3.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns: Schrödinger's Order, The Pulled Rug, The Lynchpin, The Long Fuse; The Spaghetti Junction and The Price Nobody Can Explain left to the chapters. (Carried from spec.md, dated 2026-11-07; the FAILURE PATTERNS block was dropped on 2026-11-08.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-5 and its post entry part-5)",
+      "contributed": "Intent, AC-1, AC-2 and role (post entry); thesis, supporting claims, opening hook and bridge (part); the chapters' transitions; marketplaces-and-channel-integration's transition_in for the hand-off; chapter 19's hand-off for the opening."
+    },
+    {
+      "kind": "internal",
+      "ref": "marketplaces-and-channel-integration, b2b-commerce, edi-and-e-invoicing, erp-and-back-office-integration",
+      "contributed": "The chapters summarized, in their words and numbers."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, config.yaml, PLAN.md, _research/scenario-ledger.md, _research/consistency-issues.md, _research/INTRO-BRIEF.md",
+      "contributed": "Reading order, the fictional facts and their rulings, and the shape and length of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming draft-check round 3: escalate (14 pass, 17 fail: 8 blocking, 9 minor). Cheap fixes in KEY POINTS, p02 to p05, p08, p09 and the flow rationale within 526 words; check-report.json is stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 2: revise (13 pass, 10 fail: 4 blocking, 6 minor). Fixes in p04; company paragraph moved before the routes by rule 3; Figure 2 caption; resolved under the author's standing instruction; 526 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 1: revise (11 pass, 15 fail: 12 blocking, 3 minor). Revised p01 to p04 and p09, KEY POINTS bullet 3 and two captions; 523 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec) and revised the page to match; status draft. Numbers checked against the ledger: €3.0M marketplaces, €12.0M and 1,100 accounts, 62%/38% (revenue table and B2B portal row); €14,200 (incident 5); 240 units on three pallets (Bergzicht's spring reorder); two Amazon.de orders of 13 April 2027 (the marketplace variant). Flow rubric notes taken in p02, p03, p06 and the flow. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: trimmed failure patterns to three, aligned the ERP wording with the price-event ruling (consistency item 3), expanded EDI and ERP on first use. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and part introduction. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 526,
+    "target_words": 515
+  }
+}

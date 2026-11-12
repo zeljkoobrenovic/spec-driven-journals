@@ -1,0 +1,645 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/22-edi-and-e-invoicing/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/22-edi-and-e-invoicing/index.md",
+  "spec_sha": "4a4cb2231c0bf189",
+  "draft_sha": "241404c27603dd54",
+  "run_at": "2026-11-12T22:47:42+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a retail chain's document demands shape the supplier's systems",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "EDI defined as structured document exchange chains may require",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "e-invoicing mandates turn the invoice into a transmitted document with a receipt",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "where this chapter sits in the order journey and the Bergzicht scenario",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "each inter-company document has one internal source / e-invoice delivery status must be held by the ERP",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment ¶1",
+      "summary": "Bergzicht as EDI customer and the three main messages",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment ¶2",
+      "summary": "a €14,200 payment deduction for mismatched pallet labels",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment ¶3",
+      "summary": "naming the incident the ASN Chargeback, not a card dispute",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment ¶4",
+      "summary": "cause: ERP wrote the despatch advice before the WMS packed and labeled",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment ¶5",
+      "summary": "which system knows each document's truth, and decision W6's fix",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What EDI Is and Why It Has Not Gone Away ¶1",
+      "summary": "EDI's parts: message, standard, transport, mapping",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What EDI Is and Why It Has Not Gone Away ¶2",
+      "summary": "the two dominant standards, EDIFACT/EANCOM and X12",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What EDI Is and Why It Has Not Gone Away ¶3",
+      "summary": "GS1 survey: most used messages and transport, and EDI's stability",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What EDI Is and Why It Has Not Gone Away ¶4",
+      "summary": "EDI persists first because the buyer mandates it",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What EDI Is and Why It Has Not Gone Away ¶5",
+      "summary": "the other reasons EDI persists: meaning, network effects, regulator tolerance",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "The Documents: Order, Despatch Advice, Invoice ¶1",
+      "summary": "the five documents and the system of truth for each",
+      "matched_spec_paragraph": "p17a"
+    },
+    {
+      "draft_locator": "The Documents: Order, Despatch Advice, Invoice ¶2",
+      "summary": "the ASN as a receiving plan keyed by the pallet label",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "The Documents: Order, Despatch Advice, Invoice ¶3",
+      "summary": "a syntax acknowledgment is not business acceptance",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Identifiers: What, Where and This Pallet ¶1",
+      "summary": "the GS1 identifiers GTIN, GLN and SSCC",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Identifiers: What, Where and This Pallet ¶2",
+      "summary": "the SSCC must come from the system that builds the pallet",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Transport: Point-to-Point or Network ¶1",
+      "summary": "point-to-point versus network transports and Peppol's four-corner model",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Mapping, Onboarding and the Chargeback Economy ¶1",
+      "summary": "per-partner guidelines make mapping a recurring cost that providers sell",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Mapping, Onboarding and the Chargeback Economy ¶2",
+      "summary": "two chargeback families, data compliance being an architecture problem",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How EDI Documents Reach the Order Record and the Ledger ¶1",
+      "summary": "an EDI order is a channel into the single order record",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How EDI Documents Reach the Order Record and the Ledger ¶2",
+      "summary": "what each document must never be generated from",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "How EDI Documents Reach the Order Record and the Ledger ¶3",
+      "summary": "flows have different requirements, so not one integration flow",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Punchout: When the Buyer's System Owns the Order ¶1",
+      "summary": "punchout explained via cXML and OCI",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Punchout: When the Buyer's System Owns the Order ¶2",
+      "summary": "punchout inverts the flow; a punchout cart is not an order",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "E-Invoicing: The Invoice Becomes a Transmitted Legal Document ¶1",
+      "summary": "e-invoice defined and its three layers: model, syntax, network profile",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "E-Invoicing: The Invoice Becomes a Transmitted Legal Document ¶2",
+      "summary": "EDI invoice versus Peppol invoice comparison",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "E-Invoicing: The Invoice Becomes a Transmitted Legal Document ¶3",
+      "summary": "architectural consequences: ERP holds status, clearance rejection, platforms do not issue invoices",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Mandate Calendar ¶1",
+      "summary": "Belgium's 2026 Peppol mandate as the example",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Mandate Calendar ¶2",
+      "summary": "the volatile calendar of national mandate dates",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Mandate Calendar ¶3",
+      "summary": "mandates are domestic, foreign suppliers often not bound / ViDA brings cross-border in 2030, so build once",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "option one: the provider's web portal",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "option two: a provider integrated with internal systems",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "option three: in-house EDI",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "option four: an e-document gateway",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "recommendation: integrated provider with WMS-sourced ASN and partner cards",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Kestrel & Pine runs a stage 2 setup at stage 3",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Bergzicht's spring reorder arrives and the ERP creates the order",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "order response, WMS-printed SSCC labels and DESADV from packing",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "invoice from shipped quantities; labels and ASN now agree",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "a Belgian shop's B2B portal order",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "the ERP issues a reverse-charge Peppol invoice and stores its status",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "Peppol for all Belgian customers by choice, not obligation",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "duplicate ORDERS and idempotent handling",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "a changed partner guideline nobody noticed",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "ASN from the wrong system: detection and recovery",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "a rejected e-invoice and the daily undelivered report",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "provider outage handled by persistence and heartbeats / consultant leaving handled by partner cards",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "callback: three documents, three sources; the deduction was an ownership failure",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established facts about EDI, the ASN and e-invoicing law",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "what depends on context: connection route, obligation, order home",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "each document has one honest source / e-invoice needs delivery-state discipline in the ERP",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to ask about EDI, ASN, partners and invoicing",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "hand-off to the ERP chapter",
+      "matched_spec_paragraph": "p57"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 58 outline summaries match the controlling idea of the aligned spec paragraph, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Four units marked two_ideas (Introduction ¶5, Mandate Calendar ¶3, When It Goes Wrong ¶5, What to Take Away ¶4) hold exactly the pairs the spec joins in p05, p33, p51 and p55.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit serves its section's advances_thesis claims (S1-S5); no orphan unit.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Quotations (Jumbo, GS1, cXML, European Commission, Belgian government), statistics (GS1 survey, SPS Commerce), the Documents, Transport, never-from, EDI-vs-Peppol, Mandate, Choices and Stages tables and Figures 1, 3 and 4 are each introduced or followed by prose saying what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/order-record/paragraphs/2 (p26)",
+      "draft_locus": "How EDI Documents Reach the Order Record and the Ledger ¶3 (flow-requirements table)",
+      "quote": "| ORDERS in → order record | Minutes; chains commonly expect a response within hours *(an assumption, not a published rule)* | Exactly once: a duplicate ORDERS must not create two orders | Batch acceptable |",
+      "finding": "The table's columns (How fresh / How fast / How available) are never explained and the prose does not say what the table shows beyond a one-line claim; 'Minutes' under fresh beside 'Batch acceptable' under fast reads as contradictory, and 'A late ASN is a refused delivery' sits under availability. Both flow readers could not decode it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Every declared transition_in is expressed at its boundary (e.g. 'Once each document is right, it still has to travel.', 'The standards are public; the cost is per partner.', 'Data and label chargebacks are prevented where documents are produced', 'In EDI the buyer sets the invoice's format; under e-invoicing, the law does.', 'Which route fits also depends on the stage a company has reached.').",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe the organising principle as problem → vocabulary built bottom-up → rule → e-invoice and calendar → choices → practice → failures, matching the declared prerequisite_order with problem_solution and comparison; both say the roadmap matches the section order and no section's place is structurally wrong.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/order-record/paragraphs/0 (p24)",
+      "draft_locus": "How EDI Documents Reach the Order Record and the Ledger ¶1",
+      "quote": "Until then the ERP remains the interim home of EDI orders, as in the spring reorder worked later in this chapter; the stage table below lists that setup as a warning sign at Kestrel & Pine's stage, which is why the OMS takes them over.",
+      "finding": "Hardest passage for both readers: a new date (January 2027), two forward references and an exception to the rule just stated, packed into the paragraph that states the rule; readers had to re-read to work out where EDI orders live now. flow-A: 'This is the hardest passage in the chapter.' The order is sound; the paragraph should state the rule and put the interim-ERP fact in its own short, plain sentence(s).",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3 (6th bullet): same passage, 'This was the hardest passage', two forward references and an exception to the rule",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/order-record/paragraphs/2 (p26)",
+      "draft_locus": "How EDI Documents Reach the Order Record and the Ledger ¶3",
+      "quote": "The flows have different requirements, which is the argument against forcing all of them through one integration flow on one schedule:",
+      "finding": "Both readers met an argument against a position nobody had proposed, and could not decode the table's fresh/fast/available columns after re-reading.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3: 'Nothing earlier proposed forcing everything through one flow'; column meanings blurred",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/transport/paragraphs/0 (p21); /sections/e-invoicing/paragraphs/0 (p29)",
+      "draft_locus": "E-Invoicing ¶1 (Figure 2) vs Transport ¶1",
+      "quote": "OpenPeppol calls it the **four-corner model**: the sender hands the document to its access point, which delivers it to the receiver's access point",
+      "finding": "The four-corner model is explained in prose in Transport but its Figure 2 sits three sections later in E-Invoicing with no prose referring to it; both readers had to recall the earlier explanation. Move the figure to Transport (or the prose beside the figure).",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3: 'Peppol's four-corner model is explained in prose in the Transport section, but its figure (Figure 2) appears in the E-Invoicing section'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/mandates/paragraphs/0 (p40)",
+      "draft_locus": "The Mandate Calendar ¶1",
+      "quote": "The law, not the buyer, now sets the invoice's form, and Belgium shows how.",
+      "finding": "Nearly repeats the E-Invoicing section's opening sentence, and the Belgian 1 January 2026 / Peppol / PDF-no-longer-counts facts appear a third time (KEY POINTS, introduction, here, and the table); both readers felt a restart rather than progress. The repetition is written into the spec: p40's controlling idea and the e-invoicing section's transition_in both state 'the law now sets the invoice's form', and p03 already carries Belgium.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 3: 'This repeats the bridge sentence that opened the previous section almost word for word'; Belgium facts for the third time",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/e-invoicing/paragraphs/1 (p30); flow.rationale",
+      "draft_locus": "E-Invoicing ¶2 (EDI-vs-Peppol table)",
+      "quote": "| Legal weight in 2026 | Tolerated in Germany through 2027; in Belgium only if it meets the structured-invoice requirement | The format the mandates require |",
+      "finding": "The comparison table leans on mandate facts and the term clearance that the next paragraph and next section supply; both readers proposed putting the calendar (or its Belgium/Germany core) before the table. Readable but ahead of itself; arises from the declared order (calendar after the e-invoice) and the six-row table the spec asks for.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 3: 'Legal weight in 2026' and 'state clearance' rows rely on mandate details and clearance defined later",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/scene/paragraphs/4 (p11)",
+      "draft_locus": "Setting the Scene ¶5",
+      "quote": "and one EDI partner card per trading partner, a record the company keeps of the partner's identifiers, message versions, mapping and internal owner, so that no mapping lives in one person's head again.",
+      "finding": "W6's three clauses and the partner-card definition are packed into one long sentence; when The Choices ¶5 says 'That is W6's third clause.' both readers had to go back and separate the clauses.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 3: 'That is W6's third clause.' I went back to the scene section to count W6's clauses",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/punchout; flow.rationale",
+      "draft_locus": "Punchout: When the Buyer's System Owns the Order",
+      "quote": "Some corporate buyers reach the same order record by another route.",
+      "finding": "Punchout's position between the order-record tables and E-Invoicing read as a detour (flow-A) and its placement after the freshness table was 'unclear' (flow-B); both suggested moving it next to the order-record rule. The position is the spec's (punchout after order-record).",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 2: 'Why it comes after the freshness table rather than straight after the order-record paragraph is unclear'",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/stages/paragraphs/0 (p39)",
+      "draft_locus": "Across Scale Stages ¶1 and stage table",
+      "quote": "Kestrel & Pine sits at stage 3 with a stage 2 setup: one chain, one provider, mappings built by one consultant, the ASN from the wrong system.",
+      "finding": "Present tense contradicts W6 (already said to have fixed the ASN) and the corrected April 2027 flow that follows; the stage-3 row says 'into the OMS' though Kestrel & Pine has no OMS. Date-stamp the assessment ('at the time of the deduction').",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 3: stage table lists stage 3 'into the OMS' although Kestrel & Pine has no OMS yet (same passage)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/practice/paragraphs/4 (p45)",
+      "draft_locus": "In Practice ¶5",
+      "quote": "at dispatch on 23 April the ERP issues the invoice in the same numbering sequence",
+      "finding": "One overloaded sentence (reverse charge, due date, UBL, Peppol BIS, provider as access point, stored status); 'the same numbering sequence' has no referent, and the fact that the EDI provider is Kestrel & Pine's Peppol access point is introduced in passing here rather than in Transport or E-Invoicing.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3: 'sent through the EDI provider, which is also Kestrel & Pine's Peppol access point' is a new fact introduced in passing (same passage)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/practice/paragraphs/5 (p46)",
+      "draft_locus": "In Practice ¶6",
+      "quote": "Kestrel & Pine has sent Peppol invoices to all Belgian business customers since January 2026 by choice",
+      "finding": "Why a Dutch supplier sends Peppol at all comes after the walkthrough, when the reader is already asking it during the Belgian variant; the order is the spec's (p46 after p44-p45).",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/practice/paragraphs/1 (p42)",
+      "draft_locus": "In Practice ¶2",
+      "quote": "The order record allocates the units and an ORDRSP order response confirms the lines.",
+      "finding": "After 'The ERP ... creates the order', the reader was unsure whether 'the order record' means the ERP's order, the future OMS's, or an abstract concept; the chapter never says plainly that for now the ERP's order is the order record.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4 (p05)",
+      "draft_locus": "Introduction ¶5",
+      "quote": "Because every order ends in the same warehouse and the same books, this chapter's answer is that **each document between companies has one internal source**.",
+      "finding": "Opening felt front-loaded: the whole answer, the Belgian date and the roadmap appear in both the KEY POINTS and the introduction before the incident is told. The thesis paragraph is required by the spec.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/what-edi/paragraphs/3-4 (p15, p16)",
+      "draft_locus": "What EDI Is ¶4-¶5",
+      "quote": "Four reasons, stated as industry practice, of which the first is the strongest.",
+      "finding": "The four reasons split 1+3 across a paragraph break made the reader check that the count added up; the split is the spec's.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/what-edi/paragraphs/4 (p16)",
+      "draft_locus": "What EDI Is ¶5",
+      "quote": "Germany lets an EDI procedure that does not yet meet its e-invoice rules (explained later in this chapter) run to the end of 2027",
+      "finding": "Forward reference to material the reader does not have yet; flagged, so low cost. The forward reference is in the spec's controlling idea.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/what-edi/paragraphs/1 (p13)",
+      "draft_locus": "What EDI Is ¶2",
+      "quote": "the message pairs are functional equivalents, not field-for-field translations.",
+      "finding": "'Message pairs' refers to EDIFACT/X12 pairs shown only in the Documents table two sections later.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/documents/paragraphs/0 (p17a)",
+      "draft_locus": "The Documents ¶1 (table)",
+      "quote": "| Order | ORDERS | 850 | Buyer | Items, quantities, delivery date and address | The buyer's purchasing system; it creates an order record on the seller's side |",
+      "finding": "Column says 'Internal system of truth' but the Order row names the buyer's system, which is not internal to the seller; resolved only by the second half of the cell.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/0 (p34)",
+      "draft_locus": "The Choices ¶1",
+      "quote": "There are four ways to meet the EDI and e-invoicing requirements. **A provider's web portal.** You log in",
+      "finding": "The first option starts inside the paragraph that announces the four options, while the other three each start a paragraph; a small layout stumble.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know ('mapping'); /sections/scene/paragraphs/3 (p10)",
+      "draft_locus": "Setting the Scene ¶4",
+      "quote": "because the only person who knew the EDI mappings was an external consultant engaged in 2025.",
+      "finding": "'Mapping' (on does_not_know) is used in the failure-patterns box and in the scene before What EDI Is ¶1 defines it; guessable, but used before explained.",
+      "fault": "draft",
+      "corroborated_by": "flow-A item 3: \"Mappings\" is used here before it is defined in the next section",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know ('VAN'); /sections/scene/paragraphs/0 (p07)",
+      "draft_locus": "Setting the Scene ¶1",
+      "quote": "Kestrel & Pine's **EDI provider**, a service that relays trading-partner documents, also called a value-added network (VAN).",
+      "finding": "VAN is glossed at first use but equated with the provider company, while the Transport table defines it as the network the provider runs; the reader had to stop and decide which. Explained, but muddled.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "All other does_not_know terms (EDIFACT, EANCOM, X12, ORDERS, ORDRSP, DESADV/ASN, INVOIC, CONTRL/997, GLN, SSCC, AS2, SFTP, Peppol, access point, four-corner model, message implementation guideline, chargebacks, cXML, OCI, EN 16931, UBL, Peppol BIS 3.0, clearance, ViDA) are explained at or before first substantive use; terms from earlier chapters are used as known.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (a chain's documents can hold up receiving or payment), bridges to EDI and e-invoicing, states the thesis and a roadmap; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "What to Take Away opens with a synthesis against the opening, then established / depends on context / author's synthesis as the spec declares; no new subtopic, no body evidence re-run, no 'in conclusion' opener.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'the penalty is explained by the system that wrote the document, not by the pickers, and the remedy is an ownership rule, not a new provider' gives synthesis and so-what; the questions turn it into action.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The retail chain at the start of this chapter wanted three documents: a purchase order, a shipment notice per pallet and an invoice its software could read.' answers the opening hook.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro-only reader predicted every roadmap section in order (deduction, EDI and why it persists, documents, identifiers, transport, partner rules, document sources and punchout, e-invoice and calendar with Belgium 2026 / Germany 2027 / Netherlands 2030, choices and scale, Bergzicht's April 2027 reorder and a Belgian invoice, failures) and the evidence (the deduction, GS1/X12 standards, retailers' conditions, official mandate pages). It did not mention Eva's order, which the expected answer names but neither the spec's p04 nor the draft introduction includes.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer names the ERP writing the despatch advice at release with ERP pallet numbers before packing, merged/split pallets, SSCC labels and despatch advice both from the WMS pack confirmation, a pre-send DESADV comparison and a partner card; explicitly not the pickers.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer gives Belgium since 1 January 2026 over Peppol with the hedge for a non-established Dutch supplier and customers' Peppol expectation; Germany receive 2025, issue 2027 or 2028, domestic scope; Netherlands 1 July 2030; ViDA 1 July 2030; and the ERP keeping transmission status, rejections, archive and a daily issued-but-not-delivered report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answer treats the repeated ORDERS as a duplicate or change keyed on buyer order number plus GLN, never a new order (idempotent), and the CONTRL as parse-only, not acceptance or payment.",
+      "severity": "minor"
+    }
+  ]
+}

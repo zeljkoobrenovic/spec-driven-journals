@@ -1,0 +1,307 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/part-6-intro/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/part-6-intro/index.md",
+  "spec_sha": "4f7267eb0a1d44ae",
+  "draft_sha": "00d6ce38cfa7ea7d",
+  "run_at": "2026-11-12T22:45:40+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Systems can work while the handoffs between them fail; this part makes joins recoverable",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Every step of Eva's purchase crosses a join between systems",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Scale of the landscape: 13 systems, 34 integrations, 13 unowned",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Waypoint adds owned integration decisions; roadmap of the five chapter questions",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶1",
+      "summary": "Integration-styles chapter: choosing a style per flow, each with an owner",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶2",
+      "summary": "Events chapter: idempotency, outbox and reconciliation for safe recovery",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶3",
+      "summary": "API contracts chapter: versioning and retirement dates, shown by a forgotten script",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶4",
+      "summary": "Identity chapter: shared meaning by linking records of the same customer or product",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶5",
+      "summary": "Analytics chapter: why valid reports disagree and common definitions",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Where to Begin ¶1",
+      "summary": "Opening failures are fixed by decisions at joins; start with integration styles",
+      "matched_spec_paragraph": "p10"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All ten outline summaries match the controlling ideas of their aligned spec paragraphs p01-p10.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Only Introduction ¶4 was marked two_ideas (claim + roadmap); the spec's p04 deliberately joins the claim and the roadmap, so it is one declared idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Each chapter paragraph introduces the chapter of one supporting claim (P6-1..P6-5); the intro paragraphs set up and state the part claim; the closing ties failures to decisions.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1/evidence/0",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "Duplicate refunds and stock differences demonstrate their roles.",
+      "finding": "The two cases are named but the prose does not say what they show (a repeat with no key paid twice; a copy nobody compared drifted) or which mechanism each illustrates; 'demonstrate their roles' leaves the evidence unexplained. Other evidence (Figures 1-3, the 2021 script, Eva's four records, the three February counts, KEY POINTS) is explained by the surrounding prose.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All declared transitions are present at their boundaries: p02 'Where we are in the order's journey ... crosses a join' (elaboration), p03 'Those steps run across' (elaboration), p04 'The iPaaS ... cannot own a flow. So ... adds decisions, each with an owner' (problem_solution), chapters section announced by 'five questions, one chapter each' (elaboration), p06/p07 follow the announced question order (sequence, implicit in the list), p08 'Moving the data is half the work; the other half is shared meaning' (contrast), p09 'Last,' (sequence), closing 'Each opening failure is settled by...' (conclusion_summary).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both readers describe a problem-to-plan/route order matching the declared problem_solution pattern, and give a clear reason for each section's position (none unclear). The lost-thread points below are recorded separately.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "In January 2027, nobody owned 13 of the integrations. Eva's order in April crosses eight of the systems.",
+      "finding": "Both readers lost the thread here: the ownership fact sits between two system-count sentences, the date jumps from January to April, and the fact is used only two units later; both suggest putting it directly before the iPaaS sentence. The spec's p03 controlling idea fixes this order (round 2 put January before April), so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 1: ownership fact between system counts, January→April jump, used later (flow-A item 1: two unconnected facts, Jan→April jump, fits next to Waypoint)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "quote": "The iPaaS moves messages but cannot own a flow.",
+      "finding": "'The iPaaS' arrives with a definite article as if introduced; nothing on this page mentions Kestrel & Pine's integration platform, and the following 'So' depends on a gap the reader must infer (back to the 13 unowned integrations).",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 2: iPaaS appears without setup; 'So' depends on linking back (flow-A item 2: same)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "So the company's **Waypoint** improvement program adds decisions, each with an owner: integration standards, customer identity rules and shared metric definitions. They make the flows explainable and recoverable.",
+      "finding": "Both readers re-read this sentence: reader A finds 'adds decisions' vague and 'They' ambiguous; reader B cannot map the three named decisions onto the five questions that follow (no decision named for recovery or contracts).",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 3: three decisions vs five questions (flow-A item 3: 'adds decisions' vague, 'They' unclear) - same passage",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction ¶4",
+      "quote": "recognize the same customer or product, and count.",
+      "finding": "The final roadmap item 'and count' is too terse to understand until the analytics chapter paragraph; both readers re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 4: 'count' too short to understand until the last chapter entry (flow-A item 4: same)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Chapters in this part ¶4",
+      "quote": "Moving the data is half the work; the other half is shared meaning.",
+      "finding": "The pivot repeats KEY POINTS bullet 3 word for word mid-list and the first three chapters were never labelled as 'moving the data', so it reads as a recycled key point rather than a signpost of the two groups the spec declares.",
+      "fault": "draft",
+      "corroborated_by": "flow-B item 5: first three never labelled 'moving the data', reads as repeated key point (flow-A item 5: repeats key point, reads as recycled)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2/evidence/1",
+      "draft_locus": "Introduction ¶3 (Figure 2 caption)",
+      "quote": "a stock figure that takes up to two hours to travel from the warehouse to the marketplaces",
+      "finding": "The caption's two-hour stock claim is mentioned nowhere in the text (flow-A only).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "Duplicate refunds and stock differences demonstrate their roles.",
+      "finding": "Vague: the reader cannot tell which mechanism goes with which example (flow-B only).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/synthesis",
+      "draft_locus": "Where to Begin ¶1",
+      "quote": "the doubled order by ignoring repeats, the late stock update by a style chosen for freshness, the unknown customer by one authoritative identity. Begin with the first chapter",
+      "finding": "The mapping points to chapters 2, 1 and 4 in that order, so it does not match the chapter list, and 'Begin with the first chapter' then has no stated reason; both readers suggest chapter order. The spec's synthesis prescribes the opening's order (changed in round 2), so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flow-B item 7: mapping in order 2,1,4; no reason to start at chapter 1 (flow-A item 7: had to scroll back; order no longer matches the chapter list)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "KEY POINTS bullet 2",
+      "quote": "Idempotency keys, outboxes, compensations and reconciliation jobs",
+      "finding": "'outboxes' (on does_not_know) is used in the callout before its gloss in the events chapter paragraph. It is explained later on the page, so not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "KEY POINTS bullet 2",
+      "quote": "compensations",
+      "finding": "'compensations' is not in already_knows and is never explained anywhere on the page.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "KEY POINTS bullet 2",
+      "quote": "plus a version and sunset date on every contract",
+      "finding": "'contract' and 'sunset date' are used before explanation; the page later speaks of 'interface changes and retirement dates' but never ties 'sunset date' to retirement or says what a contract is. Sunset dates are on does_not_know as 'named here', and the api-contracts paragraph's retired-version example effectively explains retirement, so not corroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "KEY POINTS bullet 1; Chapters in this part ¶1",
+      "quote": "scheduled publication for products",
+      "finding": "'scheduled publication' is never explained and does not appear among the four named styles (files, shared databases, direct calls, messages), so the reader cannot place it. Reported by the terms reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2/evidence/1",
+      "draft_locus": "Introduction ¶3 (Figure 2 caption)",
+      "quote": "eight systems, four styles, and a stock figure",
+      "finding": "'four styles' is used before the styles are named in the integration-styles paragraph, and does not obviously match the styles named in KEY POINTS. Terms reader only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (three failures at working joins), as the spec's hook declares; no weak pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The closing ties the opening's failures to decisions and names where to begin; no new subtopic, no 'in conclusion', not a mere restated thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "It says the failures are settled by decisions at the join, not a new tool (synthesis), and tells the reader to begin with integration-styles (so-what/takeaway).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Names the decision each of the opening's three failures lacked (doubled order, late stock update, unknown customer).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader names all five chapters in order with the expected content: styles per flow with an owner; idempotency, outbox, reconciliation; interface changes and retirement dates; connecting customer/product records; why valid reports disagree and how a common definition separates missing data from expected differences.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The answer locates the failure in the exchange (late, twice, wrong shape, not at all; separate customer records) and lists what Waypoint adds besides the iPaaS (owner and check per flow, safe retries and reconciliation, versions and sunset dates, customer identity, metric definitions), noting the iPaaS cannot own a flow.",
+      "severity": "minor"
+    }
+  ]
+}

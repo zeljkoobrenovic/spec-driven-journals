@@ -1,0 +1,636 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "part-4",
+  "journal": "commerce-platform-architecture",
+  "part": "part-4",
+  "title": "Part IV — FULFILLMENT: From Warehouse to Doorstep and Back",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the published page (posts/part-4-intro/index.md, 479 words by check_draft's count, ten units: four lead paragraphs, five chapter paragraphs and 'Begin with ...') and its former spec.md, then reordered the same day (see decision_log); the page was revised to match. One spec paragraph per unit; the KEY POINTS callout and Figures 2 and 3 are evidence of the claim paragraph (p04), Figure 1 of Eva's paragraph (p03). The one-line 'Begin with' unit became the headed closing (p10).",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Part IV answers five questions in order: what the warehouse system must receive and report, how carriers are connected and a delivery date computed, what a store adds and how its cross-channel services work, how a return moves money and stock, and how the customer and the agent learn the order's status.",
+        "After checkout, the physical facts (stock on the shelf, the parcel's whereabouts, store stock, what came back) are known first by the system on the spot."
+      ],
+      "can_do": [
+        "Pick the Part IV chapter that answers the decision in front of them."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture (engineers, product managers and operations leads joining a fulfillment, logistics, store, returns or customer-service team) who have read Parts I to III and are about to start the fulfillment chapters, or who arrive with one warehouse, delivery, store, return or 'where is my order' decision and want the chapter that answers it.",
+      "already_knows": [
+        "What buying and receiving a parcel is like from the shopper's side.",
+        "Roughly what an API, a database and a queue are.",
+        "Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), system of record, single writer, events, idempotency and reconciliation; the glosses for WMS, ERP, POS, 3PL, iPaaS, OMS and webhook; the Waypoint program and its decisions W1 to W8; the incidents in outline.",
+        "Parts II and III: available-to-promise and one writer each for on hand and committed; checkout creating the order once; refunds as new payments with one writer; one order record with three status lines; one invoice per shipment.",
+        "Kestrel & Pine in outline (a fictional outdoor brand) and Eva's jacket order of 13 April 2027 as the book's worked order."
+      ],
+      "does_not_know": [
+        "The returns bench (where returned items are inspected and graded); glossed by context here, owned by returns-and-exchanges.",
+        "Pick waves, cut-off and backlog as inputs to a delivery promise; named here, owned by warehouse-and-fulfillment and shipping-and-delivery.",
+        "The fulfillment order and its accept-or-reject answer; owned by warehouse-and-fulfillment, only named here as 'the work instruction and response'."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader of this page alone can name the five chapters' subjects in reading order.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only this page: what will each of the next five chapters tell you, in order?",
+        "expected": "The instruction and response between order management and the warehouse; carrier integration and credible delivery dates; the store's till as a source of orders, stock and customer records; the return request, inspection, stock decision and refund as separate steps with owners; notifications, the status page and the support view built from shared facts."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader of this page alone can say why a shop can promise 'tomorrow' and deliver a day later although nobody was slow.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this page: why was Eva promised Wednesday and delivered Thursday, and what should the promise have been based on?",
+        "expected": "A static storefront rule ignored the warehouse's timing: her order came after the last dispatch work of the day. The promise should be computed from the warehouse's collection schedule and backlog, the stock's location and the carrier's performance, not written as a sentence."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Once the order is placed, how are the promises made about it (a delivery date, a collection, a return and its refund, the status the customer sees) kept?",
+    "claim": "Promises about a placed order are kept only where each physical fact has one system that witnesses and writes it (the warehouse system, the store's till, the carrier, the returns bench) and that applies each instruction once, as a keyed request it accepts or rejects; where each promise is computed from that system's events or released by its confirmation; and where the customer and the service agent read one status built from those events.",
+    "disputed_by": "The view that fulfillment is operations' work rather than architecture: once checkout has taken the order and the money, promises are kept by enough pickers, reliable carriers and helpful agents, and the storefront's delivery sentence, the shop platform's order status and its default refund flow are enough.",
+    "so_what": "Kestrel & Pine's four Part IV incidents were promises made without the witness's facts or acted on by more than one system: the Queue That Waited (roughly 8,000 Black Friday orders missed next-day delivery while the page promised it), the Store Stock Mirage (37 collection items already sold), the Double Refund (212 returns, €19,400) and the Three-Status Order (11 tickets). A merchant that accepts the claim names the witness and the writer of each physical fact, and the event each promise reads, before it buys a faster warehouse, a new till or more service capacity.",
+    "how_why": "The storefront promises in seconds; the physical work happens hours or days later in buildings and vans the order record cannot see, and its facts (an empty pick location, a unit sold at the till, a parcel scan, a worn jacket on the bench) are known first by the system on the spot and reach the others by message, late or twice. A promise read from a copy or a static sentence is wrong whenever the copy lags or the queue grows; a status set by one integration overwrites what others know; and an action that two systems can take, such as a refund, is taken twice.",
+    "supporting_claims": [
+      {
+        "id": "P4-1",
+        "claim": "Each physical fact has one system that witnesses it and is its only writer: the warehouse system for on-hand stock at the warehouse, the till for store stock and store sales, the carrier's scans for the parcel's whereabouts and the returns bench's disposition for what came back; every other system holds a copy fed by that system's events."
+      },
+      {
+        "id": "P4-2",
+        "claim": "The order record instructs the place that does the work through a fulfillment order that the place accepts or rejects and that carries a key, so a repeated instruction creates no second pick; after acceptance a cancellation or an edit is a request the place answers, and self-service and agents' actions check that state first."
+      },
+      {
+        "id": "P4-3",
+        "claim": "A promise about time or place is computed from the warehouse's cut-off, capacity and backlog, the stock's location and the carrier's measured transit time per lane, with a buffer and a margin, and a promise against store stock becomes a commitment only when a person at the store confirms it."
+      },
+      {
+        "id": "P4-4",
+        "claim": "On the way back, the warehouse's disposition is the event that releases the refund and the restock, and one system issues the refund with the return id as its key, whether the return started in the portal, at a store counter or on a marketplace."
+      },
+      {
+        "id": "P4-5",
+        "claim": "The customer and the agent see one status, derived from these events and kept in one order record as separate goods (per shipment), money and return states; the notifications, the status page and the agent's view are read models over that record."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Performs the part's opening: states the part thesis, places the part on Eva's jacket from Duiven on 14 April 2027 to the exchange shipped on 22 April, and gives the reading order.",
+    "supports": []
+  },
+  "flow": {
+    "pattern": "large_to_small",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "chapters: the five chapter paragraphs, in the part's reading order"
+      }
+    ],
+    "rationale": "The page opens where Part III left the order (recorded and paid) on the gap between a confirmation in seconds and physical work that can slip a day, and narrows to Eva's one jacket out and back, delivered a day late, then to the company she bought from and its volumes; it then widens once, from her order to who knows each physical fact first and the three rules that follow for every order (with Figure 2, which pictures the systems), then gives the roadmap in its own paragraph, before narrowing again to one paragraph per chapter in the order of Eva's parcel, each opening on one case, with Figure 3 after them mapping the named incidents onto the promises; it ends by naming the cause of the opening's day-late delivery and sending the reader to the warehouse. Eva's order comes directly after the opening because it is the sequence the opening describes; the company comes after her order because it is where she bought; the rules come after both because they name the places her order passes through; Figure 3 comes after the chapter list because its caption names incidents the chapter paragraphs introduce. Put the rules first and they name systems the reader has not been shown; put the company between the opening and Eva's order and 'the sequence' loses its referent (round 1 readers); put Figure 3 before the chapters and its incident names come before the text introduces them (round 1 readers)."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Checkout confirms an order in seconds, but someone still has to pick and pack the goods before the carrier's collection, and a late instruction or an empty shelf can push delivery back a day."
+    },
+    "bridge": {
+      "from_reader_world": "Part III's hand-off, the order recorded and paid, as the shopper sees it: checkout confirms and charges in seconds.",
+      "to_topic": "The physical work that follows over days in a warehouse, a van, a store and on a returns bench; Kestrel & Pine's scale; and Eva's jacket, bought on 13 April 2027, picked and packed at Duiven on 14 April, delivered on 15 April a day later than promised, size L requested on 19 April, return inspected and replacement shipped on 22 April, with store pickup and a counter exchange as other routes."
+    },
+    "thesis_statement": {
+      "text": "After checkout each physical fact is known first by the system on the spot, so a promise holds only when the system that knows a fact is its only writer, each promise is computed from that writer's events (a refund waits for the returns bench), and messages, the status page and support read one order record.",
+      "placement": "KEY POINTS bullets 1 to 3 and paragraph p04"
+    },
+    "roadmap": {
+      "placement": "paragraph p05",
+      "promises": [
+        {
+          "promise": "Five chapters following Eva's parcel out and back: the warehouse, the carrier and the delivery date, a side trip to the stores, the return and its refund, and the status the customer sees.",
+          "kept_in": [
+            "chapters"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Checkout confirms and charges an order in seconds, but the goods still have to be picked and packed before the carrier's collection, so an order that reaches the warehouse late or an empty shelf can push delivery back a day, and returns and store collections depend on the same work.",
+        "function": "example",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A confirmation and charge in seconds against picking and packing before the carrier's collection; an order that reaches the warehouse late or an empty shelf pushing delivery back a day.",
+            "shows": "The gap between the promise and the physical work that has to keep it."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Eva's jacket order shows the sequence: ordered at 21:14 on Tuesday 13 April 2027 with delivery promised for Wednesday, picked and packed at Duiven, the warehouse, on 14 April, delivered by PostNL on Thursday 15 April a day late, size L requested on 19 April, the return inspected and the replacement shipped on 22 April.",
+        "function": "example",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Eva's jacket, 13 to 22 April 2027 (fictional).",
+            "shows": "One order through the warehouse, the carrier and the returns bench, with the day-late delivery the part explains.",
+            "source": "_research/scenario-ledger.md (Eva's jacket)"
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 1: timeline of Eva's jacket, packed at Duiven on 14 April, delivered in Nijmegen on 15 April, size L requested on 19 April, exchange shipped on 22 April.",
+            "shows": "The part's sequence on one order."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The physical work after checkout and a delivery that can slip a day.",
+          "introduces": "One order that goes through that work out and back, delivered a day late.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Eva bought from Kestrel & Pine, a fictional outdoor brand that makes such promises at scale: 336,000 parcels and 9,400 wholesale shipments a year from its one warehouse, four carriers, six stores on separate till software and 72,000 return parcels.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "336,000 parcels, 9,400 wholesale shipments, one warehouse (Duiven), four carriers, six stores on their own POS, 72,000 return parcels in 2026 (fictional).",
+            "shows": "How many promises of this kind the company makes, and the places they pass through.",
+            "source": "_research/scenario-ledger.md (Fulfillment and logistics; Stores)"
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Eva's order.",
+          "introduces": "The company she bought from, its warehouse, carriers, stores and returns, and their volume.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "At each step a system on the spot knows the facts first, so the company's Waypoint improvement program draws three rules: the system that knows a fact is its only writer (for returns, the returns bench, where they are inspected); a promise such as a delivery date or a refund is computed from that writer's events; and messages, the status page and the support agent read one order record.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "KEY POINTS callout: the physical world has its own systems of record; a promise about it is a computation, not a sentence; one writer per fact, one source per view.",
+            "shows": "The part's argument in three lines for a reader who skims."
+          },
+          {
+            "kind": "figure",
+            "what": "Figure 2: the order record instructs the warehouse and the stores; the warehouse and carriers move the parcel; every physical fact returns as an event to the one record that notifications, the status page and the agent read.",
+            "shows": "The three rules as one picture: witnesses, events, one record."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The places Eva's order and Kestrel & Pine's volumes pass through.",
+          "introduces": "Who knows each physical fact first, the rules that follow and the chapters that take each place.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The five chapters follow Eva's parcel out and back: the warehouse, the carrier and the delivery date, a side trip to the stores, the return and refund, and the status the customer sees.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The three rules and the places they apply to.",
+          "introduces": "The order in which the chapters take those places.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "chapters",
+      "heading": "Chapters in this part",
+      "controlling_idea": "Each of the five chapters decides one question about keeping the order's promises and opens on one Kestrel & Pine case, in the order of Eva's jacket out and back.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "P4-1",
+          "P4-2",
+          "P4-3",
+          "P4-4",
+          "P4-5"
+        ],
+        "how": "Each paragraph introduces the chapter that argues one or more of the part's supporting claims, so the list is the part's argument in outline."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Each chapter uses what the one before it fixed. The warehouse comes first because it defines the fulfillment order, the warehouse system as the writer of on-hand stock, and the cut-off, capacity and backlog; the shipping chapter computes the delivery promise from those three and adds the carrier's events and one vocabulary for them; the stores chapter reuses the fulfillment order, labels and carrier pickup for ship-from-store and the computed promise for collection, and adds the till as a second witness of stock and orders; the returns chapter needs the carrier's 'delivered' event, which starts the 14-day clock, the warehouse's receiving and stock events, and the store-return rule the stores chapter set, and adds the returns bench's disposition as the witness of what came back; the service chapter comes last because its messages, status page and agent view read the events every earlier chapter defined. Putting shipping before the warehouse would ask the reader to compute a promise from a cut-off and backlog not yet explained; putting stores before shipping would describe ship-from-store and the collection promise before labels, carrier pickup and the computed promise exist; putting returns before stores would leave its store-return section pointing forward; putting service earlier would describe messages for events whose emitters the reader has not met and would leave the part without the chapter that joins its events into one status."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's five places in the order of Eva's parcel.",
+        "introduces": "One paragraph per chapter: the question in bold and the case it opens on.",
+        "form": "sentence",
+        "placement": "end_of_previous"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "First, the warehouse chapter defines the work instruction and response between order management and the warehouse: the Queue That Waited, a four-hour Black Friday backlog, shows a warehouse with spare picking capacity while customers wait for orders that never reached it.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P4-1",
+              "P4-2",
+              "P4-3"
+            ],
+            "how": "Introduces the chapter on the fulfillment order, the warehouse as writer of on-hand stock and the cut-off and backlog."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Black Friday 2026: a four-hour backlog in the order feed to the WMS (fictional).",
+              "shows": "The fault was the instruction's path to the warehouse, not the warehouse.",
+              "source": "_research/scenario-ledger.md (warehouse-and-fulfillment line, the Queue That Waited)"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Then the shipping chapter explains carrier integration and credible delivery dates: Eva's Wednesday promise came from a fixed storefront rule that ignored that her order missed Duiven's last picking batch at 21:00, so the promise must read collection schedules, backlog, location and carrier performance.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P4-1",
+              "P4-3"
+            ],
+            "how": "Introduces the chapter that computes the delivery promise from the warehouse's timing and the carrier's events."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's 21:14 order after Duiven's last wave at 21:00; 'ordered before 22:00' rule; promised Wednesday 14 April, delivered Thursday 15 April (fictional).",
+              "shows": "A promise written as a sentence is wrong whenever the warehouse's timing moves.",
+              "source": "_research/scenario-ledger.md (warehouse-and-fulfillment line, Duiven's weekday rhythm)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The warehouse, where the parcel is picked and packed.",
+            "introduces": "The carrier that takes it and the date promised for it.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Off Eva's route, the stores chapter treats the store till as another source of orders, stock and customer records: in the Store Stock Mirage, Utrecht's trial of collection in store promised 37 items already sold.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P4-1",
+              "P4-3"
+            ],
+            "how": "Introduces the chapter on the till as a second witness of stock and the staff confirmation behind a collection promise."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Utrecht's click-and-collect pilot promised 37 items already sold (the Store Stock Mirage, December 2026; fictional).",
+              "shows": "A promise read from a copy of store stock instead of the till.",
+              "source": "_research/scenario-ledger.md (incident 6)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Eva's parcel route from warehouse to door.",
+            "introduces": "The other routes, through a store, and the store's till.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "On the way back, the returns chapter separates the return request, inspection, stock decision and money movement: Eva's size exchange and January 2027's 212 double refunds (the Double Refund) show why each needs its own state and authorized owner; refund and restock wait for inspection, and one system issues refunds.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P4-4"
+            ],
+            "how": "Introduces the chapter on the disposition as the event that releases refund and restock, with one refund writer."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Eva's exchange (19 to 22 April 2027); the Double Refund, 212 returns refunded twice in January 2027 (fictional).",
+              "shows": "Two systems could refund; the remedy is one writer, released by inspection.",
+              "source": "_research/scenario-ledger.md (incident 3; returns-and-exchanges line)"
+            },
+            {
+              "kind": "reasoning",
+              "what": "Refund and restock wait for the warehouse's inspection; one system issues refunds.",
+              "shows": "Backs KEY POINTS bullet 3 ('one refund writer keyed by the return, stock that rises only on the warehouse's verdict'), which the body otherwise leaves unexplained.",
+              "source": "_research/scenario-ledger.md (returns-and-exchanges and commerce-payments lines)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The routes out to the customer, by parcel or through a store.",
+            "introduces": "The way back: the return and its refund.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Last, the service chapter aligns messages, the status page and the support view: the Three-Status Order drew eleven tickets because no system could say that the order ships in two parcels.",
+          "function": "description",
+          "advances_thesis": {
+            "supports": [
+              "P4-5"
+            ],
+            "how": "Introduces the chapter on one status built from the events of every earlier chapter."
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Order #1052877, two parcels, eleven tickets (the Three-Status Order, December 2026; fictional).",
+              "shows": "Without one record, no system could say 'ships in two parcels'.",
+              "source": "_research/scenario-ledger.md (customer-service-and-notifications line)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: the four promises of Part IV ('delivered tomorrow', 'ready for collection', 'your order was delivered', 'your refund is on its way') and the inputs each needs; the Queue That Waited, the Store Stock Mirage, the Three-Status Order and the Double Refund in the same order, are the four made without them.",
+              "shows": "Read after the five chapter paragraphs that name them, the four incidents are promises made without their inputs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The events of the warehouse, the carrier, the store and the returns bench.",
+            "introduces": "The status that the customer and the agent see, built from them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Where to Begin",
+    "synthesis": "Read together, the cases need no faster work: each promise came from the wrong place, and the opening's late delivery is one more such case. No chapter paragraph says this of all of them.",
+    "so_what": "The reader knows the part's problems are settled by where a promise reads its facts, not by faster work, and starts where the order first meets the work: the warehouse.",
+    "callback": {
+      "to": "The opening's order whose delivery can slip a day (p01) and Eva's day-late delivery (p02).",
+      "how": "The closing names the late delivery as one more promise taken from the wrong place."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Begin with warehouse-and-fulfillment."
+    },
+    "hand_off": {
+      "to": "warehouse-and-fulfillment",
+      "relationship": "elaboration",
+      "carries_over": "The part introduction's first question, the work instruction and response between order management and the warehouse, and Eva's paid order waiting for Duiven.",
+      "introduces": "What happens to the order inside the warehouse and what the warehouse system must receive and report."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The five chapters, the case each opens on and Figure 3's four incidents.",
+      "introduces": "What they explain about the opening's late delivery, and where to begin.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p11",
+        "controlling_idea": "None of the cases needed faster work: each promise came from the wrong place, as did the opening's late delivery; begin with the warehouse chapter, where Eva's paid order reaches Duiven.",
+        "function": "synthesis"
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Teaching any chapter's content (the fulfillment order, carrier events, store stock, dispositions, the status read models); the page summarizes and does not re-argue.",
+      "covered_in": [
+        "warehouse-and-fulfillment",
+        "shipping-and-delivery",
+        "stores-and-omnichannel",
+        "returns-and-exchanges",
+        "customer-service-and-notifications"
+      ]
+    },
+    {
+      "topic": "The Waypoint decisions in detail.",
+      "covered_in": [
+        "meet-kestrel-and-pine"
+      ]
+    },
+    {
+      "topic": "The availability calculation and the order state machines, which Parts II and III own.",
+      "covered_in": [
+        "inventory-and-availability",
+        "order-management"
+      ]
+    },
+    {
+      "topic": "The part's closing (the incidents read together as one fault, set against the opening).",
+      "covered_in": [
+        "customer-service-and-notifications"
+      ]
+    },
+    {
+      "topic": "Scale-stage comparisons (each chapter has its own table)."
+    },
+    {
+      "topic": "External factual claims; the page makes none of its own."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Confirming draft-check round 3: escalate (54 pass, 20 fail; 5 blocking: three judged spec faults, two draft). Cheap, plainly right fixes applied without another round, within 571 words: p04 puts the returns bench under the one-writer rule and the refund under the computed promise, so the three rules count as three (both flow readers); p05 calls the stores 'a side trip' (both readers: 'Off Eva's route' contradicted 'follow Eva's parcel'); p10 says 'the order ships' instead of 'it ships'; Figure 3's caption says the incidents are 'in the same order' as the promises; length paid by 'still', 'can', 'the store had' and 'can confirm'. Not fixed, logged under the standing instruction: 'pick wave' and 'the warehouse's verdict' in KEY POINTS (the author's callout; rule 6 glosses only in the body and the body has no room); 'the work instruction and response' (does_not_know, named only; a gloss does not fit, rule 4); the Queue That Waited not described as a promise in p06 and the callout not mapping one-to-one onto the rules (judged unclear/spec; the callout is the author's and Figure 3 now pairs each incident with its promise); minor single-reader points ('collection' in two senses, the unstated storefront rule, 'location', 'authorized owner', 'faster work', Eva before the company). Nothing is left that a RESOLVE rule settles; no thesis rewrite is needed. check-report.json is stale after these fixes.",
+      "rejected": [
+        "A fourth round (the brief allows one confirming round)",
+        "Editing the author's KEY POINTS"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (escalate: 47 pass, 32 fail; 22 blocking, three at fault in the spec). Rule 3 (both flow readers and the outliner, rounds 1 and 2): the claim paragraph is split; p04 states the three rules and a new p05 gives the roadmap; chapter paragraphs renumbered p06 to p10, the closing p11; transitions and roadmap placement rewritten.",
+      "rejected": [
+        "Keeping rules and roadmap in one paragraph (rejected in round 1; both readers in round 2 asked for the split)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (escalate: 47 pass, 32 fail; 22 blocking, three at fault in the spec). Rule 3 and draft fixes for every corroborated point: p02 gives the 21:14 order time and names Duiven as the warehouse at first use; p03 says what the volumes show ('makes such promises at scale'); p01's 'store services … people, space and time' becomes 'Returns and store collections depend on the same work'; p04 gives the rules separate subjects (the system that knows a fact; that writer's events; the returns bench, glossed) and frames Waypoint as the company's improvement program; p06 and p07 open on 'First' and 'Then'; p08 glosses the pickup pilot as a trial of collection in store and says what was promised; p09 splits the returns sentence; Figure 2's caption says 'support agent' and Figure 3's caption names the four promises from the figure itself (captions are not counted in the limit).",
+      "rejected": [
+        "Glossing 'the work instruction and response' in p06 (does_not_know; rule 6: about 15 words, does not fit within 571)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (escalate: 47 pass, 32 fail; 22 blocking, three at fault in the spec). Spec fault on the closing (repeated p06's cause): the synthesis now sets all the cases, with the opening's late delivery, against 'faster work', and the so_what is the rule, not faster work.",
+      "rejected": [
+        "Removing the callback to the late delivery"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (escalate: 47 pass, 32 fail; 22 blocking, three at fault in the spec). Rule 4 (length, 571): to pay for the fixes, agent additions were cut first: 'Part III left the order recorded and paid' (the hook now says 'confirm and charge', which carries the hand-off), 'the system that knows it', the examples of systems in p04, the nightly-copy cause in p08, 'keyed on the return' and 'a split order' in p09/p10, '(a side route)' in the roadmap and 'Begin where the facts start'. 'Collection schedules, backlog, location and carrier performance must inform the promise' (the author's) is kept for AC-2. Rule 5: the author's 'Store pickup and counter exchange provide alternative routes' and 'The chapter examines the data needed before offering cross-channel services or replacing the till' stay cut (no room).",
+      "rejected": [
+        "Raising the limit"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12, after draft-check round 2 (escalate: 47 pass, 32 fail; 22 blocking, three at fault in the spec). Rule 6 minor terms not glossed for lack of room: 'pick wave' in KEY POINTS (the author's callout; the body says 'picking batch'), PostNL as a carrier, 'location', 'stock decision', 'wholesale', 'keyed by the return'. KEY POINTS unchanged (author's). Rule 7: no criteria were added; AC-1 and AC-2 are the journal spec's. Flow rubric rerun (round 2, sound with notes): Duiven before introduction (fixed), keyed-instruction rule absent from p04 (not added, length), the 'large_to_small' label for a narrow-widen-narrow page (kept; the rationale describes the widening).",
+      "rejected": [
+        "Changing the declared pattern label"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After draft-check round 1 (revise: 48 pass, 24 fail, of which 17 blocking and 7 minor; two at fault 'unclear', from the spec's order), under the author's standing approval to change the spec's order, paragraph ideas and transitions. Both flow readers asked for the same moves (rule 3): Eva's order (now p02) comes directly after the opening and the company (now p03) after it, linked by 'Eva bought from'; 'Store pickup and counter exchange provide alternative routes' leaves Eva's timeline (the stores entry says 'Off Eva's route' and the roadmap '(a side route)'); Figure 3 moves after the chapter list, as evidence of p09, so its incident names follow the paragraphs that introduce them (the Store Stock Mirage and the Double Refund are now named there). Draft fixes: p01 says what the late instruction is ('the order reaches the warehouse late'); p02 states the Wednesday promise and the weekdays; p04 is split into the three rules, glosses the returns bench (does_not_know) and says whose confirmation releases a refund; p06 says 'last picking batch' instead of 'pick wave'; p09 says why there were eleven tickets (ledger, customer-service-and-notifications line: no system could produce 'your order ships in two parcels'); the closing says the promise came from a fixed rule and why to begin at the warehouse. To stay within 571 words (rule 4, agent additions first): the quoted 'ordered before 22:00' rule in p06 (an agent addition), 'which this book follows', 'the system that knows it' and 'improvement' are cut, and by rule 5 the author's sentences 'Store pickup and counter exchange provide alternative routes' and 'The chapter examines the data needed before offering cross-channel services or replacing the till' are cut for length.",
+      "rejected": [
+        "Cutting the company paragraph (its figures are the author's)",
+        "Keeping Figure 3 beside the rules with a sentence naming the four promises (over the limit)"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh reader, order of ideas only): sound with notes. The author asked for the rubric notes to be taken without review. Taken: the declared rationale now says the claim paragraph widens from Eva's order to every order before the chapter list narrows again, and that the four broken promises are Figure 3's incidents; p04 adds 'or confirmation' so the claim carries the thesis's 'released by its confirmation'. No unit moved, so the rubric was not rerun. Not taken, by rule 4 (length) and rule 3: moving the roadmap out of p04 (the introduction must predict the five chapters for AC-1, which is checked on the introduction alone); stating the keyed accept-or-reject instruction in p04 (about nine words over the 571 limit; the warehouse chapter paragraph names 'the work instruction and response'); hinting in p01 that the promise itself can be wrong (the closing's resolution is deliberate; the hook is the journal spec's). Waypoint is not glossed: Part I introduced it (already_knows).",
+      "rejected": [
+        "Moving the roadmap into the chapters section",
+        "Rewriting the journal spec's hook"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Conversion of spec.md, taken without review at the author's request (auto mode). The seven success criteria were inventories and are not carried as criteria: three KEY POINTS then <br> (house format, kept); a lead that is business first, places the part on Eva's jacket and names Kestrel & Pine as fictional once (now p01 to p03); one or two mermaid diagrams (obsolete: redrawn as illustrations on 2026-11-07); the chapter-list format (kept; its outcome is AC-1); every number matching the ledger (checked at conversion, see changelog; the spec.md list also named 8,500 m², 24%, #1052877 and roughly 8,000 orders, which the published page does not carry); no Across Scale Stages and a one-line Sources and Evidence (kept); 500 to 900 words (see length).",
+      "rejected": [
+        "Carrying the checklist over as acceptance criteria: they say what the page contains, not what a reader can do."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The post entry in the journal spec has a question and no thesis. A part intro performs the part's opening, so this spec uses the part's thesis and its five supporting claims P4-1 to P4-5 unchanged; each chapter paragraph introduces the chapter that argues them, following the chapters' role.supports. Intent outcome, AC-1, AC-2 and role are copied from the post entry; hook, bridge and roadmap from the part's opening. No acceptance criterion was added.",
+      "rejected": [
+        "Writing a separate thesis for the page: it would restate the part's claim."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Length, by the author's standing instruction of 2026-11-12 (rule 4): the published page has 479 words by check_draft's count (the old spec's 500 to 900 counted the whole file); target 551 = 479 + 15%; max_words 571 = target plus the one sentence in p08 that backs KEY POINTS bullet 3 ('refund and restock wait for the warehouse's inspection, and one system issues refunds').",
+      "rejected": [
+        "Keeping 900 (rule 4 sets part intros at the published length plus 15%)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Order of ideas changed from the published page, without the author's review (the author asked for this pass to run unattended): (1) p01 opens on Part III's hand-off ('Part III left the order recorded and paid') and drops the scope sentence 'This part explains how the systems planning that physical work supply dates and statuses the customer can rely on' (vague; p04 now states the claim). (2) Kestrel & Pine's facts (p02) move before Eva's order (p03), so her order runs through a warehouse, carrier and stores already named; Duiven is named as the warehouse. (3) The Waypoint paragraph becomes the claim (p04): who knows each fact first, the three rules, and a roadmap of the five chapters, which the published intro did not have; its sentences 'Customer messages must reflect those records' and 'The chapters below show why each decision matters' are folded into it. (4) Figures 2 and 3 stay with the claim. (5) Chapter paragraphs open on what the previous one hands on; p06 says why Eva's promise failed (21:14 order after Duiven's last wave at 21:00, the static 'before 22:00' rule; ledger, warehouse-and-fulfillment line and editor-review line on Part III item 5) so AC-2 can be answered from the page; p08 backs KEY POINTS bullet 3; incident names from Figure 3 are used where they cost few words (the Queue That Waited, the Three-Status Order). (6) 'Begin with [[warehouse-and-fulfillment]].' becomes the one-paragraph headed closing 'Where to Begin' with the callback and the hand-off.",
+      "rejected": [
+        "A separate witnesses paragraph before the claim (75 words over the limit).",
+        "Keeping the published order (company facts after Eva's order)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Rule 5: the author's sentence 'The chapter builds that explanation from shared facts.' (service chapter) is cut for length; the page is at its limit. 'Store pickup and counter exchange provide alternative routes', 'The chapter examines the data needed before offering cross-channel services or replacing the till' and the other chapter sentences are kept.",
+      "rejected": [
+        "Restoring it over the limit."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 1 shows the systems the five chapters cover around the order record rather than the order's step-by-step path, because the chapters each draw their own flows and the intro's job is the shape of the part. (Carried from spec.md; it is now Figure 2, after the timeline was added.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Figure 2 states the part's common rule (each promise computed from the fact of the system that keeps it) and maps the four incidents onto it, instead of a reading-order diagram. (Carried from spec.md; now Figure 3.)"
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Four failure patterns: The Phantom Stock, Schrödinger's Order, The Boomerang, The First Snowfall; others left to the chapters. (Carried from spec.md; the FAILURE PATTERNS block was dropped on 2026-11-08.)"
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (part-4 and its post entry part-4)",
+      "contributed": "Intent, AC-1, AC-2 and role (post entry); thesis, supporting claims, opening hook, bridge and roadmap (part); warehouse-and-fulfillment's transition_in for the hand-off; tax-invoicing-and-ledger's hand-off (p70) for the opening."
+    },
+    {
+      "kind": "internal",
+      "ref": "warehouse-and-fulfillment, shipping-and-delivery, stores-and-omnichannel, returns-and-exchanges, customer-service-and-notifications",
+      "contributed": "The chapters summarized, in their words and numbers."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine, _research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "The fictional facts and their rulings."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md (Part IV contracts) and _research/INTRO-BRIEF.md",
+      "contributed": "Shape and length of a part introduction."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming draft-check round 3: escalate (54 pass, 20 fail: 5 blocking). Closing fixes in p01, p04, p05, p08, p10 and Figure 3's caption at 571 words; check-report.json stale. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 2: escalate (47 pass, 32 fail). Escalation auto-resolved (RESOLVE rules 3 to 7): p04 split into p04 and p05, p01 to p11 revised, captions of Figures 2 and 3 clarified; 571 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft-check round 1: revise (48 pass, 24 fail: 17 blocking, 7 minor). Spec and draft: p02/p03 swapped, Figure 3 moved to p09, p01, p04, p06 to p10 revised; 571 words. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric: sound with notes; rationale corrected, p04 adds 'or confirmation'. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome spec) and reordered the page; status draft. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-08",
+      "change": "Openers: dropped IN THIS PART and FAILURE PATTERNS blocks; tightened KEY POINTS (author request). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 1 conceptual figure (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: acronyms expanded (WMS, POS, disposition), wave timing and Store Stock Mirage wording aligned with the ledger, timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and part introduction. Status accepted. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 571,
+    "target_words": 551
+  }
+}

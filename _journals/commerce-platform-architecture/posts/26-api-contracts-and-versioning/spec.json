@@ -1,0 +1,1704 @@
+{
+ "spec_version": "0.1",
+ "kind": "post",
+ "id": "api-contracts-and-versioning",
+ "journal": "commerce-platform-architecture",
+ "part": "part-6",
+ "title": "Promises Between Systems: API Contracts, Webhooks and Versioning",
+ "status": "draft",
+ "revised": "2026-11-12",
+ "basis": "Reconstructed from the published chapter (posts/26-api-contracts-and-versioning/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph p05, a roadmap p06 and a conclusion paragraph that answers the opening p55); see decision_log.",
+ "intent": {
+  "outcome": {
+   "know": [
+    "The four parts of an API contract (shape, meaning, timing, lifetime), how each breaks, and the machine-readable formats contracts are written in (OpenAPI, AsyncAPI, JSON Schema, CloudEvents).",
+    "Additive change with tolerant readers (Google AIP-180, Zalando's rules), the three ways to version (dated, as Shopify and Stripe do; semantic; in the media type), and deprecation as a date pair with monitoring and consent (RFC 9745, RFC 8594, Zalando's rules).",
+    "What Shopify and Stripe document about their webhooks: at-least-once, unordered, retried, signed, and in Shopify's case deleted after eight consecutive failed deliveries."
+   ],
+   "believe": [
+    "A consumer cannot prevent a vendor's change; it can know which version each flow pins, when that version expires, and who acts on the notice.",
+    "A 'deprecated' label without a date is a warning, not a deprecation.",
+    "A webhook is a signed hint, not a ledger."
+   ],
+   "can_do": [
+    "For any integration, say which version it pins, when that version expires, who owns the upgrade, and whether its webhook receiver verifies, deduplicates and sweeps.",
+    "Write a contract card for a flow, and, as a provider, change an API by adding and retire a version by an announced date pair."
+   ]
+  },
+  "audience": {
+   "who": "Readers new to commerce architecture; most of all the integration engineer and the application support specialist who inherit scripts and connectors (Ruben Alves's position), and next the engineering lead who negotiates vendor contracts and the product manager who owns a marketplace channel and needs the questions to ask.",
+   "already_knows": [
+    "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+    "Kestrel & Pine, its people, its thirteen systems and 34 integrations, its 2026 and January 2027 incidents in outline and the names of the sixteen failure patterns.",
+    "From Part I: the thirteen steps of an order, promise and handoff, the three status lines, 'system', 'the shop platform' and 'commerce platform', business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+    "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+    "Parts II to V: one owner per product, price, discount and stock fact; available-to-promise; checkout creating the order once; refunds as new payments; one order record with three status lines; one invoice per shipment and the monthly match; the WMS as the only writer of on-hand stock; the marketplace connector that owns nothing; the ERP receiving orders, shipments and payments by batch; one source per EDI document.",
+    "From the earlier chapters of Part VI: integration styles and triggers, the iPaaS and the integration inventory with an owner per flow (integration-styles); at-least-once delivery, the idempotency key, the outbox or webhook plus sweep, retries with backoff and the dead-letter queue, compensation and the reconciliation job (events-consistency-and-reconciliation)."
+   ],
+   "does_not_know": [
+    "API contract and its four parts; OpenAPI, AsyncAPI, JSON Schema and CloudEvents.",
+    "Additive change, breaking change and the tolerant reader.",
+    "Versioning: dated, semantic and media-type versions; pinning; Shopify's fall-forward rule.",
+    "Deprecation and sunset; the Deprecation and Sunset headers; RFC and IETF.",
+    "HMAC signatures, replay tolerance and the Standard Webhooks headers.",
+    "Rate limits and cost points; consumer-driven contracts and Pact; the contract card."
+   ]
+  },
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "statement": "Given a script that stopped when a vendor retired an API version, the reader names what failed and the consumer-side record that prevents it, not a different connector.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "A script written in 2021 pushes stock to one marketplace through a connector's API, with the API version fixed in its code. The connector announces in November that the version retires on a Monday in February, by e-mail to a developer who has since left the agency. The script logs the errors and tries again every hour; two days later the marketplace escalates canceled orders. Using only this chapter: what failed, and what would have prevented it?",
+    "expected": "The provider kept its contract by announcing the date; the consumer had no owner for the contract's lifetime. Prevention: the pinned version and its sunset date in the integration inventory row, the vendor's changelog read monthly from a role mailbox, a calendar entry three months ahead assigned to the flow's owner, a test of the next version in the vendor's sandbox, an alert when the job fails that pages the owner after two failed runs, and a daily stock comparison; no new flow against a version with less than six months of support. Not a different connector or marketplace."
+   },
+   {
+    "id": "AC-2",
+    "statement": "Given four changes to an API, the reader says which are safe without a new version and what consumers must do for additions to be safe.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "Using only this chapter: which of these changes can a provider make without a new version, and what must consumers do for the safe ones to stay safe: adding an optional field; renaming a field; changing 'available' from physical stock to available-to-promise; adding a new value to a list of allowed values?",
+    "expected": "Adding an optional field and adding an allowed value are compatible additions; renaming a field and changing what a field means break consumers and need a new version with a dated deprecation of the old one. Consumers must be tolerant readers that ignore fields and values they do not know."
+   },
+   {
+    "id": "AC-3",
+    "statement": "The reader can say what a webhook receiver must do.",
+    "check": "custom",
+    "method": "cold_reader",
+    "severity": "minor",
+    "probe": "Using only this chapter: your system receives order webhooks from a commerce platform. What must the receiver do, and why?",
+    "expected": "Verify the signature computed over the raw body, answer with a success code quickly and do the work from a queue, deduplicate on the delivery or event id, and run a periodic sweep that fetches what was missed, because deliveries can be missed, duplicated and reordered; alert when traffic drops to zero, because a subscription can be deleted after repeated failures without any error."
+   },
+   {
+    "id": "AC-4",
+    "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+    "check": "intro_predicts_content",
+    "method": "cold_reader",
+    "severity": "major",
+    "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+    "expected": "How a connector breaks when the system it calls changes; what an API and its contract cover (fields, meanings, responses, failure behavior) and how providers and consumers manage change; Kestrel & Pine as a consumer of vendor contracts in most of its 34 integrations and a provider to its agency and trading partners, which must track vendor deadlines and give its own consumers notice; Eva's order arriving through a platform notification, her return through a portal API, marketplace stock through another API. Evidence: the Deprecated Endpoint, vendor documentation and published API guidelines."
+   },
+   {
+    "id": "AC-5",
+    "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+    "check": "reverse_outline_matches_spec",
+    "method": "reverse_outline",
+    "severity": "blocker"
+   }
+  ]
+ },
+ "thesis": {
+  "question": "How do you change a system other systems depend on without breaking them, and how does a merchant keep working when the systems it depends on change?",
+  "claim": "Write the contract down: what the system accepts and returns, what each value means, its rate limits and timeouts, and until when. A provider changes it only by adding what consumers can ignore, versions removals, renames and changes of meaning, and announces a deprecation date and a later sunset date while monitoring who still calls. A consumer records each pinned version, its sunset date and an owner, and verifies, deduplicates and periodically re-fetches webhook data.",
+  "disputed_by": "The view that API change is the vendor's problem: the vendor's connector or the integration platform keeps integrations working, deprecation notices reach whoever needs them, and webhooks are a reliable record of what happened.",
+  "so_what": "A merchant that accepts the claim adds two columns to its integration inventory (the pinned version and its sunset date), reads vendor changelogs from a role mailbox, and, when it becomes a provider itself, publishes its contract, changes it by adding and watches who still calls a version before turning it off. Kestrel & Pine learned this from a 2021 agency script that pushed stock to the bol marketplace with its connector API version fixed in code. The connector retired that version on Monday 8 February 2027, after announcing it in November 2026 to a contact who had left the agency in 2025; the script logged errors and kept running, bol showed Monday's stock for two days, and the failure was found on 10 February through bol's escalation about canceled orders. From March 2027 every inventory row carries both columns, and no new flow goes live on a version with less than six months of support.",
+  "how_why": "Providers must change to add features and fix faults, and their consumers upgrade on their own schedules. A consumer written to ignore unknown fields survives additions, so only removals, renames and changes of meaning need a new version. Breakage also comes from the parts of a contract that are rarely written down: a call limit lowered at peak, a retry window changed, or a version whose end date the provider chose. A consumer therefore stays safe only while it knows which version each flow pins, when it expires and who reads the notice. Webhooks are retried and reordered by design, and an unsigned request can be forged, so a receiver that checks the signature, ignores a delivery id it has seen and fetches what it missed stays correct when deliveries are lost or repeated.",
+  "supporting_claims": [
+   {
+    "id": "S1",
+    "claim": "A contract has four parts, shape, meaning, timing and lifetime, and each breaks in its own way; written in a machine-readable format it can be compared version by version, its guarantees differ per flow, its timing clauses include rate limits that decide whether a flow can finish, and a merchant holds it both as a consumer of vendors' contracts and as a provider of its own."
+   },
+   {
+    "id": "S2",
+    "claim": "A provider changes a contract by adding what tolerant consumers can ignore; removals, renames and changes of meaning need a new version (dated, semantic or in the media type), and the consumer pins the version it relies on and puts the upgrade on a calendar."
+   },
+   {
+    "id": "S3",
+    "claim": "A deprecation is a date pair, announced and then sunset, with monitoring of who still calls and the consumers' consent; on the consuming side it becomes two columns of the integration inventory (the pinned version and its sunset date), a role mailbox for vendor notices and a calendar entry assigned to the flow's owner."
+   },
+   {
+    "id": "S4",
+    "claim": "Webhooks are delivered at least once, unordered and signed, so the receiver verifies the signature, stores a delivery before acknowledging it, deduplicates, and runs a periodic sweep for what was never delivered."
+   },
+   {
+    "id": "S5",
+    "claim": "Every contract needs an owner: the provider team inside a company; with a vendor, a notice period in the commercial contract, the inventory row and a sandbox test of each new version; per flow the merchant pins and schedules, floats or delegates, and the contract card records the choice."
+   }
+  ]
+ },
+ "role": {
+  "contribution": "Gives the part its contracts: the four parts of a contract, additive change and dated deprecation on the provider's side, the pinned version and sunset date with an owner on the consumer's side (two columns added to the integration inventory), the contract card, and webhooks as signed hints to verify, deduplicate and sweep.",
+  "supports": [
+   "P6-3",
+   "P6-2"
+  ]
+ },
+ "flow": {
+  "pattern": "prerequisite_order",
+  "additional_patterns": [
+   {
+    "pattern": "problem_solution",
+    "applies_to": "scene and contract: the retired version that stopped the bol stock push, then what a contract promises and which of its parts the incident broke"
+   },
+   {
+    "pattern": "grouping",
+    "applies_to": "changing, versioning and deprecation: how a provider changes a contract, from the change that needs no version to the version that is retired"
+   },
+   {
+    "pattern": "comparison",
+    "applies_to": "trade-offs and stages"
+   }
+  ],
+  "rationale": "The Deprecated Endpoint comes first so that every term arrives as part of the answer to why a working script stopped. The four parts of a contract come next because every later section treats one of them: change and versioning treat shape and meaning, deprecation and rate limits treat lifetime and timing for the calls a merchant makes, webhooks treat the messages it receives. Additive change precedes versioning because a version is needed only for the changes additions cannot make, and versioning precedes deprecation because only a named version can be retired on a date. Rate limits follow deprecation so that all clauses about outgoing calls sit together; webhooks follow because their receiver rules rely on the previous chapter's deduplication and sweep and their payload versions on the versioning section. Ownership asks who keeps all these contracts, ending with partners'. The trade-offs and stages compare the consumer's options once ownership is defined; In Practice applies them to the bol stock flow; the failures come last because each is read against a part of the contract or a rule already given. Webhooks before rate limits would split the outgoing-call clauses; trade-offs before ownership would offer postures with no one to choose them; the failures before In Practice would list symptoms without the card that catches them; versioning before additive change would teach versions for changes that need none; deprecation first would retire versions the reader cannot name."
+ },
+ "introduction": {
+  "hook": {
+   "type": "puzzling_scenario",
+   "content": "A connector keeps sending the same requests while the platform it calls changes; if the platform stops accepting a field or changes what a response means, stock stops reaching a marketplace, or orders the warehouse, although nobody changed the connector."
+  },
+  "bridge": {
+   "from_reader_world": "The previous chapter made a flow safe against messages that repeat, arrive late or go missing; the reader knows how a receiver survives an unreliable delivery.",
+   "to_topic": "Those mechanisms assume the other side keeps its interface, so the question becomes how a system other systems depend on can change without breaking them, and how a merchant keeps working when its vendors change theirs."
+  },
+  "thesis_statement": {
+   "text": "Write the contract down: what the system accepts and returns, what each value means, its call limits and timeouts, and until when. A provider changes it only by adding what consumers can ignore, gives removals, renames and changes of meaning a new version, and retires an old version on two announced dates while watching who still calls. A consumer records which version each flow uses, when that version ends and who will act, and checks the notifications it receives against the sender's records.",
+   "placement": "KEY POINTS callout and paragraph p05"
+  },
+  "roadmap": {
+   "placement": "Paragraph p06",
+   "promises": [
+    {
+     "promise": "Start from the Deprecated Endpoint, Kestrel & Pine's February 2027 incident.",
+     "kept_in": [
+      "scene"
+     ]
+    },
+    {
+     "promise": "Say what a contract promises and how its guarantees differ per flow.",
+     "kept_in": [
+      "contract"
+     ]
+    },
+    {
+     "promise": "Show how a provider changes a contract: by adding, by versioning, and by retiring a version on announced dates, which adds two columns to the integration inventory.",
+     "kept_in": [
+      "changing",
+      "versioning",
+      "deprecation"
+     ]
+    },
+    {
+     "promise": "Cover rate limits, how to receive webhooks safely, and who owns a contract, including partners'.",
+     "kept_in": [
+      "rate-limits",
+      "webhooks",
+      "ownership"
+     ]
+    },
+    {
+     "promise": "Weigh the consumer's choices and the scale stages, show the contract card for the bol stock flow, and end with what goes wrong.",
+     "kept_in": [
+      "trade-offs",
+      "stages",
+      "in-practice",
+      "wrong"
+     ]
+    }
+   ]
+  },
+  "paragraphs": [
+   {
+    "id": "p01",
+    "controlling_idea": "The previous chapter's mechanisms protect a flow against messages that repeat, arrive late or go missing, but not against the other side changing: a connector can keep sending the same requests while the platform it calls stops accepting a field or changes what a response means, so stock stops reaching a marketplace, or orders the warehouse, although nobody changed the connector, and preventing that needs an agreement about the interface and how it will evolve.",
+    "function": "context",
+    "organization": "illustration",
+    "evidence": [
+     {
+      "kind": "scenario",
+      "what": "A connector whose unchanged requests fail after the platform it calls changes.",
+      "shows": "The chapter's problem in one case: both sides work, and the interface between them changed."
+     }
+    ]
+   },
+   {
+    "id": "p02",
+    "controlling_idea": "An application programming interface (API) defines how one program asks another for data or action, and its contract covers accepted fields, meanings, responses and failure behavior; a managed transition lets the provider add features and fix problems while consumers get time to adapt.",
+    "function": "definition",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The agreement about an interface and how it evolves.",
+     "introduces": "The names API and contract, and why both sides need a managed transition.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p03",
+    "controlling_idea": "Kestrel & Pine consumes vendor contracts in most of its 34 integrations (the shop platform, the payment provider, carriers, the returns portal and the marketplace connector) and provides interfaces to its agency and trading partners, so it must track vendor deadlines and give its own consumers notice.",
+    "function": "context",
+    "evidence": [
+     {
+      "kind": "fact",
+      "what": "34 integrations; vendors named by role; the agency and trading partners as consumers.",
+      "shows": "The merchant sits on both sides of the contract.",
+      "source": "Kestrel & Pine scenario ledger"
+     }
+    ],
+    "transition_in": {
+     "relationship": "example",
+     "carries_over": "What a contract covers and why transitions must be managed.",
+     "introduces": "Kestrel & Pine as both consumer and provider.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p04",
+    "controlling_idea": "In the order's journey, Eva's jacket reaches the warehouse through a platform notification, her return uses a portal API and marketplace stock uses another API, so every exchange depends on a contract that can expire; the previous two chapters covered how systems talk and how messages are recovered.",
+    "function": "context",
+    "transition_in": {
+     "relationship": "example",
+     "carries_over": "Kestrel & Pine's contracts as consumer and provider.",
+     "introduces": "The exchanges of Eva's order that depend on contracts.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p05",
+    "controlling_idea": "Keeping contracts working has two halves: the provider writes the contract down, changes it only by adding and retires old versions on dates announced in advance while watching who still calls; the consumer writes down which version each flow uses, when it ends and who acts, and checks the notifications it receives against the sender's records.",
+    "function": "claim",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "Every exchange depends on a contract that can expire.",
+     "introduces": "The thesis, split into the provider's and the consumer's obligations.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p06",
+    "controlling_idea": "The chapter starts from the Deprecated Endpoint, says what a contract promises, shows how a provider changes a contract by adding, versioning and retiring on announced dates (which adds two columns to the integration inventory), covers rate limits, webhooks and who owns a contract, weighs the consumer's choices and the scale stages, shows the contract card for the bol stock flow and ends with what goes wrong; the evidence is the incident, Shopify's and Stripe's documentation and Google's and Zalando's published API rules.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The chapter's answer in two halves.",
+     "introduces": "The order of the chapter and its kinds of evidence.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "sections": [
+  {
+   "id": "scene",
+   "heading": "Setting the Scene: The Deprecated Endpoint",
+   "controlling_idea": "In February 2027 a retired API version stopped the bol stock push for two days because nobody owned the contract's lifetime on the consuming side.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S5"
+    ],
+    "how": "Gives the case the chapter answers: a provider that kept its promise and a consumer with no owner for the version's end date."
+   },
+   "flow": {
+    "pattern": "chronological",
+    "rationale": "The escalation comes first because that is how the failure was found; the script's history and the retirement explain it, the two days of stale stock show its cost, and the lesson and W5's answer come last because they depend on all three."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The roadmap, which starts from the Deprecated Endpoint.",
+    "introduces": "The incident itself.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p07",
+     "controlling_idea": "On 10 February 2027 Milan Petrov receives a bol escalation about canceled jacket and fleece orders, and Ruben Alves finds that the stock update script stopped working on Monday.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "case",
+       "what": "The bol seller-support escalation on Wednesday 10 February 2027.",
+       "shows": "How the failure surfaced: through a partner's complaint, not an alert.",
+       "source": "Kestrel & Pine scenario ledger (api-contracts-and-versioning line)"
+      }
+     ]
+    },
+    {
+     "id": "p08",
+     "controlling_idea": "The agency wrote the script in 2021 with its API version fixed in code, and the connector retired that version on 8 February 2027 after publishing the date in November and e-mailing a technical contact who had left the agency in 2025.",
+     "function": "cause_effect",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "2021 script; version fixed in code; retirement Monday 8 February 2027; announced November 2026; contact left in 2025.",
+       "shows": "The provider announced the date; the notice reached nobody.",
+       "source": "Kestrel & Pine scenario ledger (api-contracts-and-versioning line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The script that stopped on Monday.",
+      "introduces": "Why it stopped: a version fixed in 2021 and retired on a published date.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p09",
+     "controlling_idea": "Every later call returned an error that the script logged and retried hourly, so for two days bol showed Monday's stock.",
+     "function": "description",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Two days of stale stock on bol.",
+       "shows": "The cost of a failure that was logged but not alerted.",
+       "source": "Kestrel & Pine scenario ledger (api-contracts-and-versioning line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "time",
+      "carries_over": "The retirement on Monday.",
+      "introduces": "What the script did from then on and what bol showed.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p10",
+     "controlling_idea": "The provider followed its published schedule while the consumer had no owner tracking it, so a deprecation notice is useful only if someone acts on it (The Pulled Rug); Noor Visser adds pinned versions and retirement dates, alongside a named owner, to the contracts W5 (Waypoint's integration standards) requires.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The two days of stale stock.",
+      "introduces": "The lesson and W5's answer.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "contract",
+   "heading": "What a Contract Promises",
+   "controlling_idea": "An API contract states shape, meaning, timing and lifetime, is written down so versions can be compared, binds the merchant as consumer and as provider, and must say different things for different flows.",
+   "function": "definition",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Defines the four parts every later section treats and the per-flow requirements the contract card records."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The definition and its four parts come first because the other paragraphs use them; why the unwritten three matter follows the table; the formats explain how a contract is written down; the two roles say who holds it; the per-flow table and its two rows bring the definition down to the flows the chapter follows."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "A notice nobody acted on and W5's contracts.",
+    "introduces": "What such a contract contains.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p11",
+     "controlling_idea": "An API contract is the written description of what a system promises to accept and return, including errors, call limits and how long all of that stays true; it lets two parties build against each other without reading each other's code, and it has four parts that each break in their own way.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Shape, meaning, timing and lifetime, with what each covers, how it breaks and an example from the chapter.",
+       "shows": "Each part has its own failure, and the Deprecated Endpoint is a lifetime failure."
+      }
+     ]
+    },
+    {
+     "id": "p12",
+     "controlling_idea": "Shape is the part people write down, while meaning, timing and lifetime are where incidents come from, so a contract that documents only fields is incomplete.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "analogy",
+       "what": "A lease that names the apartment but not the rent or the end date.",
+       "shows": "A fields-only contract omits what decides most failures."
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 1: a contract with only the shape section filled in.",
+       "shows": "The three unwritten parts carry the risk."
+      }
+     ],
+     "transition_in": {
+      "relationship": "emphasis",
+      "carries_over": "The four parts in the table.",
+      "introduces": "Which of them are usually missing.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p13",
+     "controlling_idea": "Contracts are written in machine-readable formats (OpenAPI, AsyncAPI, JSON Schema, CloudEvents) so tools can check them, and a written contract can be compared between versions, which is the only reliable way to know whether an integration is affected.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "OpenAPI 3.2.1 (September 2026), AsyncAPI 3.0.0 (December 2023), JSON Schema 2020-12, CloudEvents.",
+       "shows": "The standard formats a merchant will meet in vendors' documents."
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Most of a contract goes unwritten.",
+      "introduces": "The formats for writing it down and why writing it down matters.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p14",
+     "controlling_idea": "A merchant is on both sides: as a consumer it must know which version each integration uses and when it expires and test the next one before the old one disappears; as a provider it owes its consumers a published document, additive change and a dated, monitored deprecation, a role that grows when the OMS exposes order status.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "example",
+       "what": "The OMS (bought under W2, the single record of every order) exposing order status to the agency, the returns portal and a later shopper-facing agent.",
+       "shows": "How the merchant becomes a provider at the Omnichannel stage.",
+       "source": "Kestrel & Pine scenario ledger (W2, W8)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Written contracts that can be compared.",
+      "introduces": "Who holds them: the merchant as consumer and as provider.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p15",
+     "controlling_idea": "Not every contract needs the same guarantees, and the illustrative requirements table shows four flows that differ in freshness, consistency, speed and what the contract must say.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Order webhook to the WMS, stock push to the marketplace connector, availability check at checkout, order status from the OMS, each with direction, freshness, consistency, speed and contract content (figures illustrative).",
+       "shows": "A contract card's contents follow from the flow's needs."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The obligations of consumer and provider.",
+      "introduces": "How they differ by flow.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p16",
+     "controlling_idea": "Two rows carry the chapter: the order webhook needs the receiving discipline of the webhook section and the stock push needs the version discipline of the next three sections, and the Deprecated Endpoint was that stock-push flow with no contract card, the one-page record of a flow's contract that W5 requires and the chapter shows at its end.",
+     "function": "transition",
+     "transition_in": {
+      "relationship": "emphasis",
+      "carries_over": "The four flows in the table.",
+      "introduces": "The two the chapter follows and where each is treated.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "changing",
+   "heading": "Changing Without Breaking",
+   "controlling_idea": "A provider that only adds, and consumers that ignore what they do not know, can change a contract with no version at all; versions are needed only for what additions cannot fix.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "States the rule for change that needs no version and its limit."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The claim that most change needs no version comes first, Google's and Zalando's rules support it, the combined rule states it plainly, and its limit hands on to versioning; the limit must come last because it is what the next section answers."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "The stock push's need for version discipline.",
+    "introduces": "The cheapest discipline: changes that need no version.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p17",
+     "controlling_idea": "The cheapest way to version an API is not to: if every change is one a consumer written against the old shape can survive, nothing needs retiring, and two published rule sets define what is survivable.",
+     "function": "claim"
+    },
+    {
+     "id": "p18",
+     "controlling_idea": "Google's AIP-180 says a minor or patch release must not break existing client code, allows adding optional fields, enumeration values and methods, and classes removing, renaming, retyping or changing defaults or behavior as breaking.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "AIP-180 (created July 2019, updated October 2025): existing client code 'must not be broken'; changing a field's type 'even to a wire-compatible type' is breaking.",
+       "shows": "A published definition of compatible and breaking change.",
+       "source": "google.aip.dev/180"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Two rule sets define survivable change.",
+      "introduces": "The first: Google's.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p19",
+     "controlling_idea": "Zalando's API Guidelines make the same rules mandatory (#106 to #108, #113), and rule #108 is the consumer's half: a tolerant reader ignores fields it does not know and does not fail on a list value it does not recognize, so the provider can add fields and values without asking anyone.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Zalando rules #106 MUST not break backward compatibility, #107 SHOULD prefer compatible extensions, #108 MUST prepare clients to accept compatible extensions, #113 SHOULD avoid versioning (changelog to 16 March 2026).",
+       "shows": "A second, mandatory rule set that adds the consumer's obligation.",
+       "source": "Zalando RESTful API Guidelines"
+      }
+     ],
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "Google's rules.",
+      "introduces": "Zalando's matching rules and the tolerant reader.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p20",
+     "controlling_idea": "Together the rules give the workhorse of API change in commerce, the provider only adds and the consumer ignores what it does not understand, so most of a platform's quarterly change goes unnoticed by a tolerant consumer.",
+     "function": "synthesis",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The provider's and the consumer's rules.",
+      "introduces": "The combined rule in one line.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p21",
+     "controlling_idea": "Additive change cannot fix a field whose meaning was wrong or a whole generation of an API built on a different model, such as Shopify's REST Admin API declared legacy in 2024, and for those you need versions.",
+     "function": "counterargument",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Shopify's REST Admin API 'a legacy API as of October 1, 2024'; new public apps GraphQL-only from 1 April 2025.",
+       "shows": "Change too large to make by adding.",
+       "source": "Shopify REST Admin API reference"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Additive change as the default.",
+      "introduces": "Its limit, which versions address.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "versioning",
+   "heading": "Versioning: Dated, Semantic or in the Media Type",
+   "controlling_idea": "Versioning names generations of a contract in one of three ways; whichever a vendor uses, the consumer must pin the version and calendar the upgrade, because an expired version either fails loudly or is silently answered by a newer one.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S2"
+    ],
+    "how": "Sets out the versioning strategies and derives the consumer's two obligations."
+   },
+   "flow": {
+    "pattern": "comparison",
+    "rationale": "The definition comes first; dated versions follow because the chapter's vendors use them, with Shopify's window, its fall-forward rule and the bol script's loud failure kept together so the reader sees what an expired version does while Shopify is in view; Stripe follows as a different promise on the same idea; semantic and media-type versions complete the three strategies; the table compares them with additive change; the author's reading closes with the consumer's obligations, which need the comparison. Putting fall-forward after the table would separate it from the Shopify paragraph it qualifies."
+   },
+   "transition_in": {
+    "relationship": "problem_solution",
+    "carries_over": "Change too large to make by adding.",
+    "introduces": "Versions, and the three ways to name them.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p22",
+     "controlling_idea": "Versioning is naming generations of a contract so that a consumer can say which one it relies on, and three strategies are in common use.",
+     "function": "definition"
+    },
+    {
+     "id": "p23",
+     "controlling_idea": "Dated versions name each version by a date that the consumer states on every call, and Shopify's quarterly versions, each supported for at least twelve months with nine months of overlap and stated in the URL, are the clearest public example.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Shopify releases 'a new API version every three months at 5pm UTC on the first day of the quarter'; latest stable 2026-10, accessible until 16 October 2027; 'Each stable version is supported for a minimum of 12 months'; 'Deprecated fields or types are removed in a subsequent release'.",
+       "shows": "A dated model with a forced upgrade window.",
+       "source": "Shopify API versioning documentation, accessed 2026-11"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Three strategies.",
+      "introduces": "The first, dated versions, with Shopify.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p27",
+     "controlling_idea": "Shopify's fall-forward rule answers a call to an inaccessible version with the oldest accessible version instead of an error, which is kinder than failing and more dangerous because it is silent.",
+     "function": "explanation",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'If your app targets an inaccessible version, Shopify falls forward and responds using the oldest accessible stable version'.",
+       "shows": "An expired version can change behavior without an error.",
+       "source": "Shopify API versioning documentation"
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Shopify's dated versions and their support window.",
+      "introduces": "What happens when a call names a version past that window: the fall-forward rule.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p29",
+     "controlling_idea": "The connector in the Deprecated Endpoint failed loudly with an error, while a fall-forward would have kept the script running against a changed contract, the quiet version of the same incident.",
+     "function": "analysis",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Shopify's silent fall-forward.",
+      "introduces": "The loud failure the bol script met.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p24",
+     "controlling_idea": "Stripe also uses dates but pins each account to its first version, lets callers override it per request and keeps old versions working through version change modules; since 2024 it ships monthly non-breaking versions and two major releases a year.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Brandur Leach, Stripe, 2017: account pinning, the Stripe-Version header, version change modules, compatibility with every version since 2011; Stripe 2024 release process; current version 2026-10-28.endive.",
+       "shows": "A dated model in which consumers may stay.",
+       "source": "Stripe blog and versioning documentation"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "Shopify's forced window and what an expired version does there.",
+      "introduces": "Stripe's different support promise on the same dated idea.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p25",
+     "controlling_idea": "Semantic versions use major.minor.patch numbers in which only a major change may break consumers, the convention for software libraries that Stripe applies to its SDKs.",
+     "function": "definition",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Dated versions at Shopify and Stripe.",
+      "introduces": "The second strategy.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26",
+     "controlling_idea": "Media-type versioning carries the version in the Accept header, which Zalando requires because a resource's address should not change when its representation does.",
+     "function": "comparison",
+     "transition_in": {
+      "relationship": "sequence",
+      "carries_over": "Semantic versions.",
+      "introduces": "The third strategy.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p26a",
+     "controlling_idea": "The comparison table sets the three strategies beside additive change and splits dated versions by whether consumers may stay, so that each row says who has to move when the contract changes.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Additive only, dated with forced upgrade, dated with consumers allowed to stay, media type, semantic: where the version lives, who moves, a public example and when each fits.",
+       "shows": "The strategies side by side, so the reader can place a vendor."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "Three strategies described one by one.",
+      "introduces": "The comparison of all of them with additive change.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p30",
+     "controlling_idea": "In the author's reading Shopify and Stripe offer the same contract with a different default, and for a merchant both mean two obligations: pin the version explicitly and put the upgrade on a calendar, because a merchant that pins nothing is on the vendor's changing default.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The strategies compared in the table, and the loud and quiet failure of an expired dated version.",
+      "introduces": "What both dated models require of the consumer.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "deprecation",
+   "heading": "Deprecation: A Date Pair, Monitoring and Consent",
+   "controlling_idea": "A deprecation is an announced date and a later sunset date, kept by a provider that monitors use and obtains consent and by a consumer that records the dates in the integration inventory and acts on them.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S3"
+    ],
+    "how": "Defines the date pair, the provider's duties and the two inventory columns on the consuming side."
+   },
+   "flow": {
+    "pattern": "grouping",
+    "rationale": "The definition and the standard headers come first; the provider's duties follow because they extend the headers; the consumer's half comes last because it is the half the merchant controls and the one the Deprecated Endpoint lacked."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Pin the version and calendar the upgrade.",
+    "introduces": "The dates that go on the calendar.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p31",
+     "controlling_idea": "Deprecation is the announced, dated withdrawal of part of a contract and the sunset is the date it stops working; RFC 9745 and RFC 8594 define headers for the two dates, so 'deprecated' alone is a warning and 'deprecated on this date, gone on that date' is a deprecation.",
+     "function": "definition",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "RFC 9745 (IETF, 2025) Deprecation header; RFC 8594 Sunset header, whose date 'MUST NOT be earlier than the one given in the Deprecation header field'; a deprecation with no Sunset 'doesn't imply the resource will go offline'.",
+       "shows": "The date pair is a published standard.",
+       "source": "RFC 9745, RFC 8594"
+      }
+     ]
+    },
+    {
+     "id": "p32",
+     "controlling_idea": "Zalando's rules show what a provider owes beyond the headers: the consumers' consent to a sunset date, the date and migration guidance in the specification, monitoring of who still calls, the headers, and no new use of deprecated APIs. Together they make the date pair enforceable: a version is switched off only after the provider has seen who still calls and they have agreed, which is where the provider's and the consumer's timelines must meet.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Rules #185, #187, #188, #189, #191.",
+       "shows": "A provider's full deprecation duties.",
+       "source": "Zalando RESTful API Guidelines"
+      },
+      {
+       "kind": "figure",
+       "what": "Figure 2: the provider's and the consumer's timelines must meet before the sunset date.",
+       "shows": "The Deprecated Endpoint is a consumer timeline with nobody on it."
+      }
+     ],
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The two dates.",
+      "introduces": "The provider's duties around them.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p33",
+     "controlling_idea": "The consumer's half is small: the integration inventory from the integration-styles chapter gains two columns, the pinned version and its sunset date, the vendor's changelog is read monthly from a role mailbox, and each sunset date becomes a calendar entry three months ahead assigned to the flow's owner; Kestrel & Pine adds that no new flow goes live against a version with less than six months of published support.",
+     "function": "recommendation",
+     "evidence": [
+      {
+       "kind": "fact",
+       "what": "Shopify's app requirements: 'apps using APIs that will be deprecated within 90 days can't be submitted'.",
+       "shows": "A vendor enforces the same calendar on its own app developers, which shows the obligation is the consumer's.",
+       "source": "Shopify app requirements checklist"
+      },
+      {
+       "kind": "fact",
+       "what": "From March 2027 every inventory row carries the pinned version and sunset date; changelogs go to a role mailbox read monthly; no new flow on a version with less than six months of support.",
+       "shows": "Kestrel & Pine adopted exactly this.",
+       "source": "Kestrel & Pine scenario ledger (api-contracts-and-versioning line)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "What a provider owes.",
+      "introduces": "What the consuming merchant controls.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "rate-limits",
+   "heading": "Rate Limits",
+   "controlling_idea": "Rate limits are timing clauses that decide whether a flow can finish within its schedule.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S1"
+    ],
+    "how": "Completes the timing part of the contract."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The definition comes first, the published limits are the evidence, the arithmetic and the shared bucket are the reasoning about what they mean for Kestrel & Pine."
+   },
+   "transition_in": {
+    "relationship": "additional_support",
+    "carries_over": "The pinned version and its sunset date: until when a consumer may call.",
+    "introduces": "A second timing clause: how often it may call.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p41",
+     "controlling_idea": "A version's sunset date says until when a consumer may call and a rate limit says how often: the maximum number or cost of calls in a period, above which the provider answers with an error, a timing clause that decides whether an integration can finish before its next run.",
+     "function": "definition"
+    },
+    {
+     "id": "p42",
+     "controlling_idea": "Shopify meters its GraphQL Admin API in cost points refilled per second by plan, with a mutation costing 10 points and a 1,000-point query maximum, and Stripe limits live mode to 100 requests per second per account and 25 per endpoint.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "statistic",
+       "what": "100/200/1,000/2,000 points per second by plan; object 1 point, mutation 10; query maximum 1,000; Stripe 100 per second per account, 25 per endpoint, 429 response.",
+       "shows": "Published limits a merchant's flows must fit within.",
+       "source": "Shopify rate limits; Stripe rate limits, accessed 2026-11"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "What a rate limit is.",
+      "introduces": "Two vendors' published limits.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p43",
+     "controlling_idea": "Applied as an illustration to Kestrel & Pine's roughly 17,000 active variants, a stock push of one mutation each needs about 28 minutes at 100 points per second, so batch operations are a necessity and the contract card records the expected call rate; and because limits are shared by every app on a store, a chatty app can starve the WMS connector at peak.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "reasoning",
+       "what": "17,000 x 10 = 170,000 points; 28 minutes at 100 points per second, under three at 1,000 (illustration).",
+       "shows": "An hourly job can fail to finish inside its own hour.",
+       "source": "Kestrel & Pine scenario ledger (17,000 active variants)"
+      }
+     ],
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "Published limits.",
+      "introduces": "What they mean for an hourly stock push and for shared buckets.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "webhooks",
+   "heading": "Webhooks Done Well",
+   "controlling_idea": "The best-documented providers say their webhooks can be missed, duplicated and reordered, so the receiver verifies, stores before acknowledging, deduplicates and sweeps, using the previous chapter's mechanisms.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S4"
+    ],
+    "how": "Shows from vendors' own words that a webhook is a signed hint and gives the receiver's rules."
+   },
+   "flow": {
+    "pattern": "assertion_evidence_reasoning",
+    "rationale": "The bridge and definition come first; Shopify, Stripe and Standard Webhooks are the evidence, compared in a table; the reading of the table states what holds for every provider; the receiver's rules follow from it; Shopify's subscription-version detail comes last because it ties the section back to versioning without interrupting the delivery evidence."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "Versions, sunset dates and rate limits for the calls a merchant makes.",
+    "introduces": "The contracts of messages that travel the other way.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p34",
+     "controlling_idea": "Versions, sunset dates and rate limits govern the calls a merchant makes, but many messages travel the other way: a webhook is an HTTP request the source system sends to a registered URL when something happens, the most common way a hosted platform reports change and the mechanism most often trusted beyond what it promises.",
+     "function": "definition"
+    },
+    {
+     "id": "p35",
+     "controlling_idea": "Shopify documents that delivery is not guaranteed, that ordering is not guaranteed, that apps should run reconciliation jobs, that it retries eight times over four hours and deletes an API-created subscription after eight consecutive failures, and that the same webhook may arrive more than once.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'Webhook delivery isn't always guaranteed'; 'doesn't guarantee ordering'; 'use reconciliation jobs'; 'retries 8 times over the next 4 hours'; 'After 8 consecutive failures, the subscription is automatically deleted'; 'your app might receive the same webhook more than once'.",
+       "shows": "The provider itself calls webhooks a hint.",
+       "source": "Shopify webhooks and HTTPS delivery documentation, accessed 2026-11"
+      }
+     ],
+     "transition_in": {
+      "relationship": "example",
+      "carries_over": "Webhooks trusted beyond their promise.",
+      "introduces": "What the first provider promises.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p36",
+     "controlling_idea": "Stripe documents three days of retries, no ordering, occasional duplicates and a fast success answer before business logic, and signs with an HMAC over a timestamp and the payload with a five-minute replay tolerance.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "'up to three days with an exponential back off'; 'doesn't guarantee the delivery of events in the order'; 'might occasionally receive the same event more than once'; 'quickly return a successful status code (2xx) before any complex logic'.",
+       "shows": "A second provider says the same.",
+       "source": "Stripe webhooks documentation, accessed 2026-11"
+      }
+     ],
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "Shopify's webhook statements.",
+      "introduces": "Stripe's matching statements.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p37",
+     "controlling_idea": "The Standard Webhooks specification generalizes the pattern into three headers and tells consumers to use the webhook id as an idempotency key, and the table compares the three on signature, replay, duplicate key, retries, ordering and response time.",
+     "function": "evidence",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Shopify, Stripe and Standard Webhooks compared on six properties.",
+       "shows": "The properties are the same across providers.",
+       "source": "Standard Webhooks 1.0.0"
+      }
+     ],
+     "transition_in": {
+      "relationship": "similarity",
+      "carries_over": "Two providers' statements.",
+      "introduces": "The vendor-neutral standard and the comparison.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p38",
+     "controlling_idea": "Read as a contract, the table says delivery is at least once at best, order is not promised, the signature is the only proof of origin and the receiver owns deduplication and a periodic sweep, so the receiving design is the same for every provider.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 3: a receiver that verifies, stores, answers fast and processes later, with deduplication and a nightly sweep.",
+       "shows": "The receiving design in one picture."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The comparison table.",
+      "introduces": "What it means for every receiver.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p39",
+     "form": "list",
+     "controlling_idea": "Because notifications reduce delay and only a comparison job checks completeness, four rules make webhook delivery manageable: authenticate the delivery, store it before acknowledging it, deduplicate both the delivery and the business action, and compare periodically with the provider's records, the last two as the previous chapter describes.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "cause_effect",
+      "carries_over": "The same receiving design for every provider.",
+      "introduces": "Its four rules.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p35a",
+     "controlling_idea": "One more Shopify detail ties webhooks back to versioning: payloads (the message bodies) follow the version of the subscription (the registration that asks for a kind of event) that created them, so an old subscription keeps sending old-shaped payloads after the app's other calls have moved on and belongs in the version column too.",
+     "function": "explanation",
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The four receiver rules.",
+      "introduces": "A versioning detail of the same webhooks.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "ownership",
+   "heading": "Who Owns a Contract",
+   "controlling_idea": "Every contract needs an owner: inside a company the provider team; with a vendor, a notice period in the commercial contract, the inventory row and a consumer test, because consumer-driven contracts stop at the vendor's schema; partners' contracts need the same.",
+   "function": "explanation",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Says who keeps each contract the chapter has described."
+   },
+   "flow": {
+    "pattern": "large_to_small",
+    "rationale": "The provider team's ownership inside a company comes first, then the 'only door' rule, which the next paragraph applies to vendors; the three parts of vendor ownership are the merchant's case; consumer-driven contracts show where the in-house idea stops with a vendor; partners close the section because the same records apply to them, which would be unexplained before vendor ownership is set out."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "The contract clauses described so far.",
+    "introduces": "Who keeps each contract.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p45",
+     "controlling_idea": "A contract needs an owner, and inside a company that is the provider team, which publishes the document, keeps the compatibility rules, announces deprecations and monitors use, as Zalando's API First practice and API Guild show.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Zalando Engineering 2015: a guild of about twenty, 'a sounding board and review resource, not an approval board', 'We cannot afford to break our APIs'.",
+       "shows": "An organization behind the rules, and its reason.",
+       "source": "Zalando Engineering 2015"
+      },
+      {
+       "kind": "quotation",
+       "what": "InfoQ 2016: 'We see API definitions as a source truth, part of a contract between a service provider and consumers'.",
+       "shows": "Ownership by the provider.",
+       "source": "InfoQ 2016"
+      }
+     ]
+    },
+    {
+     "id": "p45a",
+     "controlling_idea": "The often-told Amazon mandate, known only from Steve Yegge's 2011 recollection, gives the useful rule that the contract is the only door into another team's data.",
+     "function": "claim",
+     "evidence": [
+      {
+       "kind": "quotation",
+       "what": "Yegge 2011: 'no direct reads of another team's data store', not confirmed by Amazon.",
+       "shows": "The contract as the only access path.",
+       "source": "Yegge 2011"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "The provider team as owner.",
+      "introduces": "The rule that every access goes through the contract.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p46",
+     "controlling_idea": "For a merchant of Kestrel & Pine's size the rule applies to vendors first: integrations use a vendor's documented API and never read the ERP's database or scrape an admin page, because an undocumented path has no contract and no deprecation notice.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "The contract is the only door.",
+      "introduces": "What the rule means for a merchant's vendors.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p47",
+     "controlling_idea": "With vendors, ownership has three parts: a commercial contract that names a minimum notice period and a role as technical contact, the inventory row with the pinned version and sunset date, and a consumer test against the vendor's sandbox for each new version.",
+     "function": "process",
+     "transition_in": {
+      "relationship": "elaboration",
+      "carries_over": "Integrations only through documented vendor APIs.",
+      "introduces": "The three records that make a vendor contract owned.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p48",
+     "controlling_idea": "Consumer-driven contracts, in which a provider's contract follows what its consumers use and Pact verifies the provider against the consumers' tests, work between services inside one company, while with a SaaS vendor the vendor's schema is the contract and the sandbox test is as far as the idea goes.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "source",
+       "what": "Ian Robinson, 2006; Pact documentation, August 2026.",
+       "shows": "The idea and its tool, and why it stops at a vendor."
+      }
+     ],
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The consumer test against a vendor's sandbox.",
+      "introduces": "The fuller in-house version of that test and its limit.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    },
+    {
+     "id": "p44",
+     "controlling_idea": "Partner APIs exposed by a marketplace, a carrier or a wholesale customer are contracts too, with the same four parts and usually thinner documents, so they need the same owner and records; the ASN Chargeback was a shape-and-meaning failure of the EDI contract with Bergzicht Outdoor.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "case",
+       "what": "The ASN Chargeback of 2026: the despatch advice said one thing, the pallets another.",
+       "shows": "Partners' contracts break in the same parts, so they need owners too.",
+       "source": "Kestrel & Pine scenario ledger"
+      }
+     ],
+     "transition_in": {
+      "relationship": "additional_support",
+      "carries_over": "Contracts with vendors and services, and who owns them.",
+      "introduces": "Partners' contracts, which need the same.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "trade-offs",
+   "heading": "The Choices and Their Trade-offs",
+   "controlling_idea": "As a consumer the merchant pins and schedules, floats on the default or delegates to a connector per integration; as a first-time provider it should adopt Zalando's compatibility rules and defer the full deprecation machinery.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5",
+     "S2"
+    ],
+    "how": "Turns the chapter's rules into choices with costs and failure modes."
+   },
+   "transition_in": {
+    "relationship": "cause_effect",
+    "carries_over": "Who owns a vendor contract.",
+    "introduces": "The postures an owner can take.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p49",
+     "controlling_idea": "A consumer has three postures per integration, pin and schedule, float on the default, or delegate to a connector, and only pinning fits a flow that carries orders, stock or money; the agency script sat between pinning and floating, stating a version nobody scheduled.",
+     "function": "comparison",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Pin and schedule, float on the default, delegate to a connector: meaning, maintenance cost, failure mode, when right.",
+       "shows": "Only pinning fits a flow that carries orders, stock or money."
+      }
+     ]
+    },
+    {
+     "id": "p50",
+     "controlling_idea": "As a provider, a merchant offering its first APIs should take Zalando's compatibility rules wholesale and defer the full deprecation machinery until it has consumers it cannot call on the phone.",
+     "function": "recommendation",
+     "transition_in": {
+      "relationship": "contrast",
+      "carries_over": "The consumer's postures.",
+      "introduces": "The provider's choice.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "stages",
+   "heading": "Across Scale Stages: When It Fits and When It Limits",
+   "controlling_idea": "The topic never disappears but its owner moves from the vendor to the merchant's scripts, then to the merchant as provider, then to a named function, and the Growing-stage habit of pinning and scheduling pays most.",
+   "function": "comparison",
+   "advances_thesis": {
+    "supports": [
+     "S5"
+    ],
+    "how": "Shows how ownership of contracts grows with the merchant."
+   },
+   "transition_in": {
+    "relationship": "elaboration",
+    "carries_over": "The choices a merchant makes now.",
+    "introduces": "How they change with scale.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p51",
+     "controlling_idea": "Who owns contracts moves with scale, from the vendor at Starting to the merchant's first scripts at Growing, where most Pulled Rugs are planted, to the merchant as provider at Omnichannel and a named function at Group, and in the author's judgement the Growing-stage habit of pinning and scheduling pays most.",
+     "function": "synthesis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Typical integrations, what becomes necessary and the warning signs at each of the four stages.",
+       "shows": "The duties grow with the stage while the rule stays."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "in-practice",
+   "heading": "In Practice: The Contract Card for the bol Stock Flow",
+   "controlling_idea": "After the Deprecated Endpoint the bol stock flow got a contract card that gives it an owner, a pinned version, a sunset date, an alarm and a check, and needed no new system.",
+   "function": "example",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S5"
+    ],
+    "how": "Applies the chapter to the flow that failed."
+   },
+   "transition_in": {
+    "relationship": "example",
+    "carries_over": "The Growing-stage habit of pinning and scheduling.",
+    "introduces": "That habit applied to the flow that failed.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p52",
+     "controlling_idea": "Under W5 Ruben rewrote the inventory row for the failed flow as a contract card with an owner, a style, the pinned contract, its sunset, the system of record, idempotency, failure handling, reconciliation and the expected rate.",
+     "function": "example",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "The contract card for the stock push to bol (fictional details).",
+       "shows": "Every field answers a question the incident left open.",
+       "source": "Kestrel & Pine scenario ledger (api-contracts-and-versioning line)"
+      }
+     ]
+    },
+    {
+     "id": "p53",
+     "controlling_idea": "The card is ordinary and needs no new system, and by the end of 2027 the inventory shows the pinned version and sunset date of all 34 integrations, which is what Noor shows the board: not a platform, a calendar.",
+     "function": "analysis",
+     "evidence": [
+      {
+       "kind": "figure",
+       "what": "Figure 4: the stock pipe before and after, with owner, version, sunset date, alert and check attached.",
+       "shows": "The card adds records, not systems."
+      }
+     ],
+     "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The card's fields.",
+      "introduces": "What the card is worth and what the board sees.",
+      "form": "sentence",
+      "placement": "start_of_this"
+     }
+    }
+   ]
+  },
+  {
+   "id": "wrong",
+   "heading": "When It Goes Wrong",
+   "controlling_idea": "Five contract failures are recognized by their symptoms, and recovery is the same in every case: the sweep and the reconciliation job find what the failure hid and the inventory says who fixes it.",
+   "function": "cause_effect",
+   "advances_thesis": {
+    "supports": [
+     "S3",
+     "S4"
+    ],
+    "how": "Maps each failure to the part of the contract or the receiver rule that prevents it."
+   },
+   "transition_in": {
+    "relationship": "contrast",
+    "carries_over": "The flow with a contract card.",
+    "introduces": "What happens to flows without one.",
+    "form": "sentence",
+    "placement": "start_of_this"
+   },
+   "paragraphs": [
+    {
+     "id": "p54",
+     "controlling_idea": "A flow without a contract card fails in one of five ways (the version expires, silent fall-forward, a deleted webhook subscription, duplicate or reordered deliveries, meaning changed without a version), each with a symptom short of a partner's complaint, and recovery is the same in every case: the sweep and the reconciliation job find what the failure hid and the inventory says who fixes it.",
+     "function": "synthesis",
+     "evidence": [
+      {
+       "kind": "table",
+       "what": "Five failures with how you notice and what to do.",
+       "shows": "Each failure has a symptom short of a partner's complaint."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "conclusion": {
+  "heading": "What to Take Away",
+  "synthesis": "The opening's connector that keeps sending the same requests while the system it calls changes is answered by the chapter's two halves meeting in one record: the provider changes by adding and retires on a monitored date pair; the consumer writes the pinned version, its sunset date and its owner into the inventory and treats each webhook as a signed hint to verify, deduplicate and sweep. The Deprecated Endpoint broke where the consumer's half was missing.",
+  "so_what": "A merchant keeps selling while its vendors change without buying anything: two inventory columns, a role mailbox, a calendar entry and a webhook receiver that does four things.",
+  "callback": {
+   "to": "The introduction's connector that keeps sending the same requests while the platform it calls changes.",
+   "how": "Paragraph p55 names the bol stock script as that connector and says which records would have caught the change."
+  },
+  "takeaway": {
+   "type": "course_of_action",
+   "content": "For every flow that moves orders, stock or money, record the pinned version, its sunset date and its owner, read vendor notices from a role mailbox, and give every webhook receiver a signature check, deduplication and a sweep."
+  },
+  "hand_off": {
+   "to": "identity-and-master-data",
+   "relationship": "sequence",
+   "carries_over": "Contracts that fix how two systems speak to each other: the shape, meaning, timing and lifetime of what passes between them.",
+   "introduces": "The next question: whether the records on both sides refer to the same customer or product, with Eva held by the platform, the POS and the returns portal under no shared identifier."
+  },
+  "transition_in": {
+   "relationship": "conclusion_summary",
+   "carries_over": "The failures and their recovery.",
+   "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+   "form": "sentence",
+   "placement": "start_of_this"
+  },
+  "paragraphs": [
+   {
+    "id": "p55",
+    "controlling_idea": "The opening's connector that kept sending the same requests while the system it called changed was, at Kestrel & Pine, the bol stock script: the provider kept its promise by announcing the date and nobody held the consumer's half; the two halves meet in the inventory, where the provider's date pair and the consumer's pinned version, sunset date and owner sit on one row, beside a webhook receiver that verifies, deduplicates and sweeps, and none of it needs a new system.",
+    "function": "synthesis",
+    "evidence": [
+     {
+      "kind": "reasoning",
+      "what": "The hook's connector set against the provider's and the consumer's obligations.",
+      "shows": "Answers the opening with what the sections established together."
+     }
+    ]
+   },
+   {
+    "id": "p56",
+    "form": "list",
+    "controlling_idea": "Established: additive change is safe and removal is not, a deprecation is a date pair plus monitoring, and webhooks are at least once, unordered and signed with the receiver owning deduplication and a sweep.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "elaboration",
+     "carries_over": "The chapter's answer in one paragraph.",
+     "introduces": "The points it rests on, starting with what the sources establish.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p57",
+    "form": "list",
+    "controlling_idea": "Depends on context: whether to force upgrades or carry old versions depends on the number of consumers and the cost of silent change, consumer-driven contract tests pay only between services one organization owns, and delegating version tracking moves the obligation rather than removing it.",
+    "function": "synthesis",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established.",
+     "introduces": "What depends on the merchant's situation.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p58",
+    "form": "list",
+    "controlling_idea": "The author's synthesis: the cheapest fix for The Pulled Rug is a calendar with two inventory columns, a role mailbox and a six-month minimum of support for new flows, and a merchant's first API should be treated as if a stranger will call it.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "contrast",
+     "carries_over": "What is established and what depends on context.",
+     "introduces": "The author's own judgement, labelled as such.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p59",
+    "form": "list",
+    "controlling_idea": "Six questions let the reader check, in their own company, the pinned versions and their owners, where vendor notices go, the webhook receiver, silent fall-forward, the APIs the merchant provides and how a silent flow is noticed.",
+    "function": "recommendation",
+    "transition_in": {
+     "relationship": "cause_effect",
+     "carries_over": "The take-aways.",
+     "introduces": "Questions that apply them to the reader's own company.",
+     "form": "phrase",
+     "placement": "start_of_this"
+    }
+   },
+   {
+    "id": "p60",
+    "controlling_idea": "Contracts decide how systems speak to each other, and the next question is whether they speak about the same thing: when the platform, the POS and the returns portal each hold a record called Eva Janssen with no shared identifier, no contract can say they are one customer, which is the subject of identity and master data.",
+    "function": "transition",
+    "transition_in": {
+     "relationship": "sequence",
+     "carries_over": "The questions about the reader's own contracts.",
+     "introduces": "The next chapter's question about shared identity.",
+     "form": "sentence",
+     "placement": "start_of_this"
+    }
+   }
+  ]
+ },
+ "non_goals": [
+  {
+   "topic": "Integration styles, iPaaS and the integration inventory itself; this chapter only adds two columns (pinned version, sunset date).",
+   "covered_in": [
+    "integration-styles"
+   ]
+  },
+  {
+   "topic": "Idempotency keys, the outbox pattern, retries, dead-letter queues and reconciliation jobs in depth; this chapter names them where webhooks need them and points back.",
+   "covered_in": [
+    "events-consistency-and-reconciliation"
+   ]
+  },
+  {
+   "topic": "Rate limits as a tenancy mechanism; peak planning.",
+   "covered_in": [
+    "multi-tenancy-and-isolation",
+    "peak-load-and-reliability"
+   ]
+  },
+  {
+   "topic": "App permissions, scopes and app governance.",
+   "covered_in": [
+    "extensibility-and-app-ecosystems"
+   ]
+  },
+  {
+   "topic": "EDI message standards and the ASN Chargeback.",
+   "covered_in": [
+    "edi-and-e-invoicing"
+   ]
+  },
+  {
+   "topic": "Webhook endpoint security beyond signature verification.",
+   "covered_in": [
+    "commerce-security"
+   ]
+  }
+ ],
+ "modalities": [],
+ "open_questions": [
+  "Should the book's toolkit carry the contract card as a template (the bol stock flow card is the first instance)? Decide when toolkit is written. (from spec.md; needs the author)",
+  "Shopify's version numbers (2026-10), Stripe's (2026-10-28.endive) and the OpenAPI version (3.2.1) will change within a year; a review before print should refresh them and keep the 'accessed 2026-11' dating. (from spec.md; needs the author)",
+  "Whether Kestrel & Pine's marketplace connector publishes Deprecation and Sunset headers is left unstated; a later chapter may decide. (from spec.md; needs the author)"
+ ],
+ "decision_log": [
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (ESCALATE: the four acceptance criteria, the reverse outline and the introduction and conclusion checks pass; four transition failures and seven corroborated flow points remained), the cheap, plainly right fixes were applied without another round: the Amazon paragraph (p45a) rewritten as grammatical sentences that start from owning the contract; the journey paragraph (p04) opens from Kestrel & Pine's contracts; the formats paragraph (p13) opens as a consequence of the unwritten parts; the ownership section (p45) opens from the clauses that need an owner; the webhook bridge no longer promises versioned payloads at the start; p16 names the sections it points to; the semantic-versions sentence split; 'the same kind of contract' in p30; Zalando glossed as a European online fashion retailer (rule 2); 'sunset' glossed in the requirements table."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 10: the journey paragraph (p04) stays before the thesis paragraph, where the first flow rubric placed it, although both round-3 flow readers found it a break in the introduction; its opening now links it to the paragraph before."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 12 not needed: remaining minor findings of round 3 (CloudEvents not followed up, the roadmap's density, 'last write wins', 'degraded answer', the Accept header, the Stripe major-release sentence, Rate Limits read as a detour by one reader) are single-reader or uncorroborated and left as they are; the confirming round's report is stale after the closing fixes."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: Rate Limits moved before Webhooks Done Well so that the clauses about outgoing calls (versions, sunset dates, rate limits) sit together; both round-2 flow readers asked for it (one round-1 reader too); transitions into rate-limits, webhooks and ownership rewritten; rejected: keeping webhooks before rate limits."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3: in Versioning, Shopify's fall-forward rule (p27) and the bol script's loud failure (p29) now follow the Shopify paragraph directly, before Stripe; asked by a reader in round 1 and a reader in round 2; this also fixes the round-2 transition failure into the author's reading (p30), which now opens from the loud or quiet failure; rejected: leaving them after the table."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3 and rule 10: Shopify's subscription-version paragraph (p35a), found out of place by both round-2 readers between Shopify's and Stripe's webhook evidence and by a round-1 reader in Webhooks at all, moved to the end of Webhooks Done Well, where it ties webhooks back to versioning; rejected: moving it back to Versioning (opposed by two rubric runs; rule 10)."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 3 and rule 10: the partner-API paragraph (p44), moved to ownership after round 1 by both readers' request and found to open that section badly by both round-2 readers, now closes Who Owns a Contract and says partners need the same owner and records; rejected: returning it to Rate Limits (rule 10)."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: one controlling idea per paragraph (spec fault, round 2): p26 split into the media-type strategy (p26) and the reading guide to the strategy table (p26a); p45 split into the provider team as owner, with Zalando's guild (p45), and the Amazon 'only door' rule (p45a); rejected: leaving both bundled."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: evidence and AC-2 fixes: p32 now says what Zalando's rules and Figure 2 show (the date pair is enforceable only where the two timelines meet); p49 states that only pin and schedule fits a flow carrying orders, stock or money and names the postures before the table; p19's tolerant reader also does not fail on an unknown list value (supported by AIP-180's classing new enumeration values as compatible; no new claim about Zalando)."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 6, glosses and corroborated draft fixes: p05 thesis restated in plainer sentences; the roadmap glosses the two inventory columns and the contract card; the scene glosses deprecation notice and pinned version; p16 no longer says 'second row'; the fictional-scenario disclaimer in p09 cut (both round-2 readers; the chapter's closing line already says Kestrel & Pine is fictional); 'minor or patch release', REST and GraphQL, and the rate-limit bucket glossed."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 4: length stays within the old limit (6,500 counted words; draft about 6,300); no extension used."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 7: no acceptance criteria were added beyond the journal spec's AC-1 to AC-5, so none is dropped."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: rule 12 not needed for the earlier rubric notes: the inventory columns recurring in p47 after p33 stay (one clause of the author's naming the record; rule 10, no two readers asked to cut it); the 'Depends on context' bullet on forcing upgrades rests on the versioning table's 'Fits when' column; sections of one or two paragraphs declare no section flow."
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Round 1 ended in ESCALATE with three failures at fault in the spec; changed the spec's order and paragraph ideas as the brief pre-approves, without touching intent, thesis, role or criteria: the hook and p01 now name a connector whose stock stops reaching a marketplace, or orders the warehouse, so the conclusion's callback (p55) to the bol stock script is direct (both flow readers); the Zalando API Guild moved from the deprecation paragraph p32 (two ideas) to the ownership paragraph p45 (both flow readers); the partner-API paragraph p44 moved from the rate-limit section, now headed 'Rate Limits', to the start of Who Owns a Contract (both flow readers and two rubric runs); the webhooks section opens with a bridge from calls the merchant makes to messages it receives (p34); When It Goes Wrong opens with a sentence setting its table against the contract card (p54); the thesis paragraph p05 is shorter and uses no term the introduction has not given; p16 points to the next three sections.",
+   "rejected": [
+    "Moving Shopify's subscription-version paragraph p35a back to Versioning (one flow reader asked; two rubric runs asked for its current place; rule 10).",
+    "Moving the requirements table later (one reader).",
+    "Reordering the versioning section so the fall-forward rule follows Shopify directly (one reader)."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Second flow rubric run (sound with notes); took the notes both runs made, without review as the author asked: Shopify's subscription-version detail moved from Versioning into Webhooks Done Well (now p35a, after Shopify's delivery promises), removing the forward reference to webhooks; the one-line close 'Notifications reduce delay. The comparison job checks completeness.' merged into the lead of the four rules (p39); The Pulled Rug named in the scene's lesson (p10); the conclusion's callback (p55) says the opening's case struck a stock flow, the bol script, rather than an order flow.",
+   "rejected": [
+    "Moving the partner-API paragraph (p44) to Who Owns a Contract: asked by one run only.",
+    "Grounding the 'force upgrades or carry old versions' bullet in a body paragraph: the versioning table's 'Fits when' column already carries it."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Took the flow rubric's notes without review, as the author asked for this pass (verdict: sound with notes): the order's-journey paragraph (p04) now precedes the thesis (p05) so the thesis and the roadmap sit together; 'contract card' is glossed at its first use (p16); the comparison-table sentence (p26) no longer speaks of 'five ways'; the six-month minimum of support is grounded in the deprecation section (p33) before the conclusion uses it; the trade-offs paragraph (p49) no longer says the agency script floated on the default (it stated a version that nobody scheduled, which agrees with the incident); the post-level rationale says what would break for the later sections.",
+   "rejected": [
+    "Moving the Shopify webhook-version paragraph (p28) into the webhook section: webhooks are already glossed in earlier chapters and the detail belongs with fall-forward.",
+    "Cutting the inventory restatement in Who Owns a Contract (p47): it is one clause of the author's and names the record that ties vendor ownership together.",
+    "Folding 'Notifications reduce delay' (p40) into the rule list: it is the author's closing line.",
+    "Retitling or expanding When It Goes Wrong: its table gives each failure's symptoms.",
+    "Naming The Pulled Rug again in the scene: the failure-patterns callout introduces it."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Converted spec.md to spec.json from the published chapter. Intent outcome, thesis, role and AC-1 to AC-5 copied unchanged from the journal spec; audience written for this chapter. Old success criteria: the term-definition and acronym criterion is covered by the standard known_before_new check against audience.does_not_know; 'business problem first', 'four parts linked to failures', the dated and labelled sources, the ledger-consistent incident, the stage table, the diagrams and tables and the three take-away tiers are inventories or editorial constraints and are dropped as criteria (the reader outcomes they served are the journal spec's AC-1 to AC-4). No acceptance criteria were added. The old spec named no word limit; the book's chapter limit of 6,500 counted words (used by every sibling chapter) is set as length.max_words.",
+   "rejected": [
+    "Carrying the inventory criteria over as minor acceptance criteria.",
+    "Setting the limit at the published length."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Added the units the contract asks for and the published chapter lacked: p01 now opens with the contrast to the previous chapter's recovery mechanisms that this chapter's transition_in declares; p04 states the thesis; p06 is a roadmap that announces every section; p55 opens the conclusion by answering the hook. The sweep bullet of the webhook rules points back to events-consistency-and-reconciliation instead of re-teaching it.",
+   "rejected": [
+    "Leaving the thesis to the KEY POINTS callout alone.",
+    "Putting the contrast with chapter 25 in the 'Where we are' paragraph, after the hook."
+   ]
+  },
+  {
+   "date": "2026-11-12",
+   "decision": "Ledger-driven wording: Milan Petrov's title is 'Ecommerce and Marketplaces Manager' (ledger cast table; the page said 'Ecommerce Manager'); Kestrel & Pine's hosted product is 'the shop platform' (book-wide vocabulary; the page said 'commerce platform' in p03 and 'Kestrel & Pine's platform' in p43); W5 is glossed as Waypoint's integration standards at first use.",
+   "rejected": []
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Chose the Deprecated Endpoint as the spine over the ASN Chargeback (also a Pulled Rug) because the API case shows the consumer's calendar obligation directly, while the EDI case belongs to chapter 22. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Quoted Shopify, Stripe and Zalando rather than summarizing them, so that newcomers see vendors stating in their own words that webhooks can be missed and reordered; kept the Standard Webhooks spec as the vendor-neutral baseline. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Cut a third diagram (the consumer-versus-provider map) to stay under the length cap; the same point is made in one paragraph. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "decision": "Local fictional details added for the scene (the 2021 script, the retirement date of 8 February 2027, discovery on 10 February, the departed agency contact) are recorded in the ledger so other chapters can reuse them. (from spec.md)"
+  }
+ ],
+ "sources": [
+  {
+   "kind": "internal",
+   "ref": "_research/scenario-ledger.md (api-contracts-and-versioning, marketplaces-and-channel-integration and organizing-commerce-engineering lines; incident 10; W1, W2, W5; cast) and _research/consistency-issues.md",
+   "contributed": "The Deprecated Endpoint's dates and facts, the March 2027 inventory columns and six-month rule, 17,000 active variants, the cast's titles."
+  },
+  {
+   "kind": "internal",
+   "ref": "journal-spec.json (api-contracts-and-versioning; part-6; identity-and-master-data transition_in)",
+   "contributed": "Intent, thesis, role, acceptance criteria and the hand-off."
+  },
+  {
+   "kind": "internal",
+   "ref": "meet-kestrel-and-pine, integration-styles, events-consistency-and-reconciliation, where-commerce-platforms-go-wrong (from spec.md)",
+   "contributed": "The 34 integrations, W5, the integration inventory this chapter extends, idempotency and sweeps, The Pulled Rug, The Message in a Bottle, The Lynchpin."
+  },
+  {
+   "kind": "internal",
+   "ref": "_research/brief-integration-and-data.md (Part 3), _research/brief-shopify.md (Part 5), _research/brief-cases-amazon-zalando.md (A3, B3) (from spec.md)",
+   "contributed": "Research behind the vendor, guideline and case material."
+  },
+  {
+   "kind": "external",
+   "ref": "Shopify developer documentation (API versioning, REST Admin API legacy notice, webhooks, HTTPS delivery, GraphQL Admin rate limits, app requirements), n.d., accessed 2026-11",
+   "contributed": "Dated versions, fall-forward, webhook delivery rules, cost points, the 90-day rule."
+  },
+  {
+   "kind": "external",
+   "ref": "Stripe documentation (versioning, webhooks, rate limits) and blog posts (Brandur Leach 2017; 2024 release process)",
+   "contributed": "Account pinning, version change modules, webhook rules, limits."
+  },
+  {
+   "kind": "external",
+   "ref": "Zalando RESTful API Guidelines (changelog to 2026-03-16); Zalando Engineering 2015; InfoQ 2016",
+   "contributed": "Compatibility and deprecation rules by number; the API Guild; API First."
+  },
+  {
+   "kind": "external",
+   "ref": "RFC 9745 (2025), RFC 8594; Google AIP-180 (2019, updated 2025); Standard Webhooks 1.0.0; OpenAPI 3.2.1; AsyncAPI 3.0.0; CloudEvents; JSON Schema 2020-12",
+   "contributed": "The standards the chapter cites."
+  },
+  {
+   "kind": "external",
+   "ref": "Ian Robinson, 'Consumer-Driven Contracts' (2006); Pact documentation (2026); Steve Yegge's 2011 gist",
+   "contributed": "Consumer-driven contracts and the recollected Amazon mandate."
+  }
+ ],
+ "changelog": [
+  {
+   "date": "2026-11-12",
+   "change": "Confirming draft-check round 3 (ESCALATE, 16 pass / 26 fail, of them 11 blocking); closing fixes to transitions p04, p13, p45, p45a, the webhook bridge and glosses; check report now stale."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "After draft-check round 2 (ESCALATE), auto-resolved by the author's standing instruction: Rate Limits before Webhooks; fall-forward beside Shopify; subscription-version detail at the end of Webhooks; partner APIs at the end of ownership; p26 and p45 split; evidence sentences for Zalando's rules and the postures table; tolerant reader covers list values; plainer thesis paragraph and glosses."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "After draft-check round 1: hook aligned with the stock incident; Zalando guild moved to ownership; partner APIs moved to ownership and the rate-limit section renamed 'Rate Limits'; webhook bridge, When It Goes Wrong lead, shorter thesis paragraph, glosses for rate budget, replay, payload, subscription, sandbox, version change modules, Standard Webhooks and variants."
+  },
+  {
+   "date": "2026-11-12",
+   "change": "Converted spec.md to spec.json, reconstructed from the published chapter; added the contrast opening, the thesis paragraph, the roadmap and the opening-answering conclusion paragraph."
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Editorial review pass: WHY IT MATTERS cut from four sentences to two; IETF/RFC and 2xx explained; 2015/2016 Zalando sources flagged as old; American spelling; OpenAPI 3.2.1, Stripe version and Shopify webhook retries verified. (from spec.md)"
+  },
+  {
+   "date": "2026-11-07",
+   "change": "Initial spec and article. (from spec.md)"
+  }
+ ],
+ "length": {
+  "max_words": 6500
+ }
+}

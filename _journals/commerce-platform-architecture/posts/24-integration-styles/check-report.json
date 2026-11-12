@@ -1,0 +1,718 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/24-integration-styles/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/24-integration-styles/index.md",
+  "spec_sha": "82316e363c45367e",
+  "draft_sha": "fc00523b740f8466",
+  "run_at": "2026-11-12T23:11:39+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a lost or duplicated order handoff to the warehouse harms the customer",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "definition of integration and its consequences, with the Black Friday oversell",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "different flows need different timing and recovery",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "two-part thesis: choose exchange per flow and give each flow an owner in an inventory",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "where Eva's order crosses systems in this chapter",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Thirty-Four Lines Nobody Had Drawn ¶1",
+      "summary": "Noor asks for an inventory and only the iPaaS flows are listed",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Thirty-Four Lines Nobody Had Drawn ¶2",
+      "summary": "Noor builds the full 34-row inventory, counted by method and builder",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Thirty-Four Lines Nobody Had Drawn ¶3",
+      "summary": "unowned and unchecked flows behind the incidents make the case for Waypoint standards",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "What an Integration Is, and Why the Joins Cost Money ¶1",
+      "summary": "integration need arises when a system of record's fact is copied elsewhere",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What an Integration Is, and Why the Joins Cost Money ¶2",
+      "summary": "four business properties of an integration: freshness, reliability, coupling, ownership",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What an Integration Is, and Why the Joins Cost Money ¶3",
+      "summary": "style drives the first three properties, inventory the fourth",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "The Four Styles: File, Shared Database, Direct Call, Message ¶1",
+      "summary": "the four integration styles with commerce examples",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "The Four Styles: File, Shared Database, Direct Call, Message ¶2",
+      "summary": "synchronous versus asynchronous exchange trade-offs",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "The Four Styles: File, Shared Database, Direct Call, Message ¶3",
+      "summary": "tight coupling as the key warning",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Five Ways to Trigger an Exchange ¶1",
+      "summary": "triggers decide when an exchange starts; overview table",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Five Ways to Trigger an Exchange ¶2",
+      "summary": "webhooks are unguaranteed notifications needing reconciliation polling",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Five Ways to Trigger an Exchange ¶3",
+      "summary": "vendor docs on webhook ordering, missed events and queued processing",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Five Ways to Trigger an Exchange ¶4",
+      "summary": "change data capture and its translation-of-meaning limit",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Five Ways to Trigger an Exchange ¶5",
+      "summary": "event notification versus event-carried state transfer",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶1",
+      "summary": "three ways to wire the whole landscape",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶2",
+      "summary": "point-to-point connectors grow into the Spaghetti Junction",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶3",
+      "summary": "a hub/iPaaS centralizes flows but does not create ownership",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶4",
+      "summary": "link-count arithmetic of point-to-point versus hub",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶5",
+      "summary": "vendor connectors encode an ownership model",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶6",
+      "summary": "iPaaS pricing differs by metering unit, so compare per flow at your volume",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Point to Point, Hub, or the Vendor's Connector ¶7",
+      "summary": "price points signal which merchant stage they target",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Trade-Offs ¶1",
+      "summary": "three judgements: direct calls only when needed, webhook plus polling, batch still valid",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Choosing Per Flow ¶1",
+      "summary": "choose style per flow from its needs, not a company strategy",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Choosing Per Flow ¶2",
+      "summary": "the author's rule mapping needs to styles",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Choosing Per Flow ¶3",
+      "summary": "Waypoint decision W5 applies the per-flow rule",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "table of integration practice across the four scale stages",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "styles stay constant with scale; the discipline around them grows",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Integration Inventory and Integration Debt ¶1",
+      "summary": "operational definition of integration debt",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "The Integration Inventory and Integration Debt ¶2",
+      "summary": "vendor deletions and API retirements make the debt's interest real",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "The Integration Inventory and Integration Debt ¶3",
+      "summary": "the inventory's columns, one row per flow",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "The Integration Inventory and Integration Debt ¶4",
+      "summary": "no flow without a row or owner; ownership progress and review cadence",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Eva's order path to the warehouse before Waypoint",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "payment, finance and slow stock flows with no recorded owner",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "under Waypoint the OMS becomes the order hub",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "new stock path and reconciliation checks after Waypoint",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "silent stopped sync: the Price Drift and missed-run alerts",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "dropped webhooks caught by polling and reconciliation",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "backed-up queue and queue health metrics",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "retired API version breaks an agency-owned script",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "two flows writing the same stock fact",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "PSP outage breaks synchronous checkout calls",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "per-flow style plus owner together resolve the opening case",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings: stable styles, unreliable webhooks, connector ownership models",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent points: sync intervals, when iPaaS pays, hub choice",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's synthesis: per-flow style and owned inventory",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to audit a company's integrations",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "hand-off to the next chapter on consistency and reconciliation",
+      "matched_spec_paragraph": "p55"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "All 53 outline summaries match the controlling idea of the aligned spec paragraph, in spec order; no unit is unmatched."
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reverse outliner marked no unit as holding two ideas."
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Every unit supports S1 (styles p13-p15), S2 (triggers p16-p19, p35), S3 (wiring p21-p28), S4 (trade-offs, per flow, stages), S5 (inventory, In Practice, failures) or frames/synthesizes the thesis."
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶1",
+      "quote": "The table is the author's synthesis of the vendor documentation cited under \"In Practice\" and in the next chapter.",
+      "finding": "The trigger table's source pointer is stale: the vendor documentation now sits in the next two paragraphs of this section (p17, p35, moved there in round 2), and In Practice cites no vendor documentation, so a reader who follows the pointer finds nothing (first flow reader, item 3.5).",
+      "fault": "draft"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Other evidence is explained where it appears: the Hohpe-Woolf and Gartner quotations, the Shopify, Stripe and Business Central documentation, the link arithmetic, the price points with the per-flow comparison at 950 orders a day, the inventory columns and excerpt, and each incident with its fix."
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶3 -> ¶4",
+      "quote": "Change data capture reads a database's transaction log, the record every database keeps of each change, and turns it into a stream of \"row inserted, updated, deleted\" events.",
+      "finding": "The spec asks this paragraph to open by introducing CDC as the second mechanism that needs plain words, carrying over the webhook discussion; the draft starts the definition with no bridge, after an intervening paragraph of vendor documentation, so the link back to \"Two of these mechanisms need plain words\" is lost.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/7/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "The four stages are the book's (see [[commerce-scaling-stages]]).",
+      "finding": "The declared contrast (the trade-offs so far read as if for one merchant, now by stage) is not expressed, and it cannot be truthfully: p30 already gives the rule per stage (Growing, Omnichannel and beyond) in the section before, so the carry-over the spec declares no longer holds.",
+      "fault": "spec"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "All other transition_in entries are expressed at their boundaries (e.g. \"The style says how the data moves. A second choice says when\"; \"Between point to point and a hub sits a third answer\"; \"Back to the hub\"; \"The first piece of that discipline\"; \"Under Waypoint\"; \"The chapter opened with an order whose message...\")."
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Both flow readers describe the declared prerequisite order (problem, vocabulary, comparison, choice, discipline, application, failures), find every section's position clear and say the overall order is sound. The hub/vendor-connector order both readers queried is settled in the decision log (rule 10, opposite requests in rounds 1 and 2); the incident names, W decisions, Kestrel & Pine people and bol are in audience.already_knows."
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Thirty-Four Lines Nobody Had Drawn ¶2",
+      "quote": "Flows that are events, webhooks or queues",
+      "finding": "The scene's inventory table counts the 34 flows by style before the styles are defined (and labels a trigger, the webhook, as a style), so both readers had to work out how the rows map onto the four styles and re-read the recount by builder. p08's controlling idea declares this by-method breakdown in the scene, ahead of the sections that define the styles.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB), item 3.1 (\"The inventory table comes before the styles are defined\"; re-read the 14 / 9 / 11 row)"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶1",
+      "quote": "Five mechanisms start an exchange... The table has a sixth row... A direct call appears both as a style and here",
+      "finding": "First reader: \"I had to count the rows and re-read to see which five were meant.\" The paragraph never names the five triggers, so the six-row table and the double role of the direct call have to be reconciled by counting.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3.4 (\"I had to count the rows and reconcile them with the 'five triggers'\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶3",
+      "quote": "The same documentation says more than the retry figures",
+      "finding": "First reader: it \"restates the Shopify and Stripe points just made... It felt repetitive.\" p17 and p35 both report the vendors' webhook documentation and both tell the reader to run reconciliation jobs; the spec declares both paragraphs with that overlap in their controlling ideas.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB), item 3.5 (\"Lines 94 and 96 both report what the Shopify and Stripe webhook documentation says... the same point made twice\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Point to Point, Hub, or the Vendor's Connector ¶7",
+      "quote": "The low end is priced for a Growing-stage merchant's first three integrations; a $50,000 pre-commitment signals a Group-stage buyer.",
+      "finding": "First reader: the one-sentence paragraph \"stands loose\". The sentence has no link to the price comparison it elaborates and uses stage names before the stages section.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3.7 (\"The one-line paragraph 'The low end is priced...' stands on its own and uses stage names before the stages section\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "The Trade-Offs ¶1",
+      "quote": "The table sets webhook plus polling beside the styles because that pairing is how most receivers get changes from a hosted vendor.",
+      "finding": "First reader: \"The explanation... comes only after the table, so I was puzzled while reading it.\" The column that mixes a trigger pairing with the styles is explained only after the reader has met it.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3.8 (\"The explanation comes only after the table (line 135), so I paused at the header\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Choosing Per Flow ¶1",
+      "quote": "\"Consistency\" below means how closely the copies must agree with the system of record; \"freshness\" is how old a copy may be.",
+      "finding": "First reader: \"'Freshness' and 'Consistency' are defined but 'Latency of the exchange' is not, so I could not tell latency from freshness.\" A column of the needs table is left undefined; the round-2 rejection rested on this being a single-reader point, which no longer holds.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3.9 (\"The text defines freshness and consistency but not latency... I could not tell what latency adds\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Choosing Per Flow ¶2",
+      "quote": "Those values are typical, my recommendation rather than a standard. From those needs, the rule I use:",
+      "finding": "The per-flow rule table is organised by Growing stage and Omnichannel and beyond before the Across Scale Stages section, so stage advice comes in two places; first reader: \"the stage advice comes in two places, and those places disagree about stock.\" The spec places the per-stage rule in p30 ahead of the stages section (p33/p34).",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB), item 3.10 and reordering 1 (\"These are applied before the 'Across Scale Stages' section that follows\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "Read as rows of that inventory, Eva's order shows what the columns change.",
+      "finding": "First reader: \"The sentence is awkward, and the prose that follows does not use the columns. Only the later table does.\" The opening also says \"before the change\" before Waypoint is named in the section.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB), item 3.11 (\"This sentence is hard to parse. The prose that follows is not set out as inventory rows\")"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "quote": "A Starting-stage merchant and a Group should both choose events for stock and batch for finance.",
+      "finding": "First reader's main lost-thread point: this contradicts the per-flow table (a scheduled push every 15-30 minutes at Growing) and the take-away (\"a scheduled stock sync every 15-30 minutes is normal and acceptable\"). The sentence is not in p34's controlling idea; cheap and plainly right to fix.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶2",
+      "quote": "run a periodic reconciliation job that asks the source for everything changed since the last run.",
+      "finding": "First reader: the term changes meaning; the scene used reconciliation for comparing both ends, here it describes polling.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Choosing Per Flow ¶3",
+      "quote": "the reason the rule is per flow is this table",
+      "finding": "First reader: the section has two tables, so \"this table\" is ambiguous.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶5",
+      "quote": "These two terms follow Martin Fowler's 2017 article.",
+      "finding": "Second reader: the source comes at the end, after the terms have been used, and the paragraph reads as an aside after CDC.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/10/paragraphs/2",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "quote": "On Friday 27 November 2026, the same evening as the oversell but a separate failure",
+      "finding": "Second reader: the Black Friday Oversell, the chapter's headline incident, has no entry of its own in When It Goes Wrong; the spec gives it none.",
+      "fault": "spec"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "major",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Thirty-Four Lines Nobody Had Drawn ¶2",
+      "quote": "5 still unowned in April 2027, after the ownership map",
+      "finding": "\"Ownership map\" is used in the scene table and explained only in the inventory section (p43), and it is not in audience.already_knows.",
+      "fault": "draft",
+      "corroborated_by": "first flow reader (flowA), item 3.2 (\"The ownership map is only explained much later\")"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "The Four Styles: File, Shared Database, Direct Call, Message ¶1",
+      "quote": "risky across vendors, because any schema change breaks the other side",
+      "finding": "Terms reader only, not on does_not_know: \"Schema\" is never explained (also \"schema registry\" in the stage table).",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶1",
+      "quote": "Timeouts, partial success, retry storms under load",
+      "finding": "Terms reader only, not on does_not_know: \"Retry storm\" (trigger table, reused in the trade-off table) is never explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶1",
+      "quote": "Rate limits, large pages, clock differences",
+      "finding": "Terms reader only, not on does_not_know: \"Rate limits\" (polling row; \"rate-limit budget\" in the inventory table) is never explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Five Ways to Trigger an Exchange ¶3",
+      "quote": "might overwhelm your endpoint hosts.",
+      "finding": "Terms reader only, not on does_not_know: \"Endpoint\" is never explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "The Trade-Offs ¶1",
+      "quote": "Medium: on the payload format and the callback address",
+      "finding": "Terms reader only, not on does_not_know: \"Payload\", \"callee\" and \"callback address\" in the trade-off table are never explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "The Trade-Offs ¶1",
+      "quote": "Receiving changes from a SaaS vendor",
+      "finding": "Terms reader only, not on does_not_know: \"SaaS\" is never expanded or glossed.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "Point to Point, Hub, or the Vendor's Connector ¶6",
+      "quote": "with a $50,000 minimum for its pre-commit model",
+      "finding": "Terms reader only, not on does_not_know: \"Pre-commit model\" and the metering unit \"concurrency\" are not explained; the idea of differing metering units itself is given.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Choosing Per Flow ¶1",
+      "quote": "An identity service or customer data platform",
+      "finding": "Terms reader only, not on does_not_know: \"Identity service\" and \"customer data platform\" (Customers row) are never explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Choosing Per Flow ¶2",
+      "quote": "plus a daily reconciliation and a safety buffer",
+      "finding": "Terms reader only, not on does_not_know: \"Safety buffer\" is used in the stock row and only made clear in the take-away's \"stock buffer you can afford to oversell\".",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/8/paragraphs/1",
+      "draft_locus": "The Integration Inventory and Integration Debt ¶2",
+      "quote": "Shopify declared its REST Admin API legacy as of 1 October 2024 and removes deprecated fields on a published schedule",
+      "finding": "Terms reader only, not on does_not_know: \"REST Admin API\", \"legacy\" and \"deprecated fields\" are not explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "a price-parity warning from a marketplace",
+      "finding": "Terms reader only, not on does_not_know: \"Price-parity warning\" is still not explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "severity": "minor",
+      "spec_locus": "/sections/10/paragraphs/4",
+      "draft_locus": "When It Goes Wrong ¶5",
+      "quote": "two weeks of phantom reservations on 600 variants",
+      "finding": "Terms reader only, not on does_not_know: \"Phantom reservations\" is not explained.",
+      "fault": "draft"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "Every term on audience.does_not_know is explained at or before first use: integration style and the four styles, synchronous/asynchronous, queue and broker, polling, scheduled batch, CDC, event notification and event-carried state transfer, point to point, hub, vendor connector, iPaaS metering units, integration inventory and integration debt."
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The introduction opens on the puzzling scenario of a lost or doubled order message, defines the term with the Black Friday case, states the two-part thesis and gives a roadmap; no weak pattern."
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The conclusion answers the opening case with both halves and sorts the take-aways by how settled they are, then hands off; it does not merely restate or open a new topic."
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "p50 sets the order handoff against the per-flow style and the owner together and names where the incidents lacked one half; p53 and the questions turn it into the course of action (inventory with owners before any tool)."
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "\"The chapter opened with an order whose message to the warehouse is lost or arrives twice.\" p50 answers it with the webhook or event, polling sweep, idempotent receiver and owner."
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The intro reader predicted every expected element: customer harm from a lost or doubled handoff, what an integration is and decides, styles, triggers and wiring with iPaaS cost, per-flow choice by needs and stage, the inventory and debt, Eva's order and the stock path, the failures, recovery and versioning left to linked chapters; evidence from Kestrel & Pine's 34 integrations, the Black Friday delay and vendor documentation."
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reader summed the hops to over two hours, gave 570 orders per fifteen minutes at 38 a minute, stock as events per SKU and location into an availability service with reconciliation and a safety buffer, orders by webhook with a polling sweep and duplicate-ignoring consumers, finance by nightly batch reconciled against the PSP payout report, and the inventory with a named owner per row as the first step."
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "major",
+      "finding": "The reader rejected the company-wide 'event-driven' claim and the guarantee, cited Shopify's eight retries over four hours, deletion after eight failures and 'isn't always guaranteed', duplicates and out-of-order deliveries, and added a polling sweep or reconciliation job, idempotent receivers and an alert when the flow goes quiet."
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "severity": "minor",
+      "finding": "The reader placed the payoff where flows and builders make point to point unmanageable, usually at Omnichannel; compared vendors per flow at own volume because units differ; and said a hub gives no ownership and without owner, contract and reconciliation recreates the tangle in one place."
+    }
+  ]
+}

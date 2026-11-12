@@ -1,0 +1,1478 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "customer-service-and-notifications",
+  "journal": "commerce-platform-architecture",
+  "part": "part-4",
+  "title": "Where Is My Order? Notifications, Service and the Customer Record",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/19-customer-service-and-notifications/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap in the introduction, a conclusion paragraph that answers the opening, and Part IV's closing, which the journal spec assigns to this chapter); these are listed in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Which event and which system emit each customer message (confirmed, shipped with tracking, ships in two parcels, out for delivery, delivered, ready for collection, return received, refund issued).",
+        "The order status page as a read model and a privacy boundary, and the separate status machines (order, money, goods per shipment, returns) that platforms keep.",
+        "The four ways to build the service layer (platform notifications and a helpdesk, a tracking vendor, a notification service and service view over the OMS, a built layer) and where each fits."
+      ],
+      "believe": [
+        "The status page, the notifications and the agent's screen are three read models over one order record; any difference between them is a defect.",
+        "'Where is my order' contacts per shipped order measure the integrations, not the staffing."
+      ],
+      "can_do": [
+        "Say which system must emit each customer message and which system the status page and the helpdesk must read.",
+        "Choose the measures (contacts and WISMO per 100 shipped orders, contacts per split shipment, status disagreements) that show where the joins fail."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all a product manager asked to 'reduce support tickets', an engineer wiring notifications to a new warehouse or OMS integration, and a head of customer service choosing between a helpdesk integration and an OMS service view.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline (the Three-Status Order, the Double Refund, the Queue That Waited, the Store Stock Mirage among them) and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part III: checkout creates the order once with payment pending until the provider's signed message; one writer and a key for every refund (the Double Refund); the order's one home with three status lines, goods status per shipment, split shipments and the fulfillment order.",
+        "From the earlier chapters of Part IV: the warehouse system as writer of on-hand stock and the fulfillment order it accepts or rejects; carrier scans mapped to one vocabulary and the 'shipped' message sent on the carrier's first scan, not at label print; the store's till and click-and-collect; the return request and the warehouse's disposition as two records, the disposition releasing the refund or the held replacement, one refund writer keyed on the return id."
+      ],
+      "does_not_know": [
+        "Transactional notification, order status page, read model, service view, WISMO.",
+        "Helpdesk, tracking-and-notifications vendor, notification service; the fulfillment order's request status.",
+        "Marketplace service standards and the Order Defect Rate; the restricted data token.",
+        "Utility templates and per-message pricing on messaging channels."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a two-parcel order that read 'Delivered' after the first parcel, the reader names the missing message, the only kind of system that could emit it, and what every view should read.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A two-line order ships its first item; the second waits for replenishment. The status page and the e-mail say 'Delivered', the warehouse says 'In picking', and the customer writes eleven times in six days while the agent switches between five systems. Using only this chapter: which message was missing, which system could have sent it, and what should the page and the agent read?",
+        "expected": "'Your order ships in two parcels', with when the second leaves; only a record that holds the order's lines together with their fulfillment state (an order management system) can emit it, and the platform-only landscape had no emitter. The page, the notifications and the agent's view should read that one record, showing the goods state per line or parcel, the money state and any return state, not one status word."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a helpdesk that still reads the shop platform after an OMS took over and a 'shipped' e-mail sent at label print, the reader names the failure and the rule.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A merchant has moved its orders to an order management system, but its helpdesk still reads the shop platform, and the 'shipped' e-mail goes out when the label prints. Using only this chapter: what goes wrong, and what is the rule?",
+        "expected": "The agent and the status page can show different orders, and customers are told 'shipped' while the parcel still waits for the carrier. The service view must read the system that owns the goods state, so the helpdesk is re-pointed at the OMS; 'shipped' is triggered by the carrier's handover scan, with a tracking link that already works."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say when a customer may cancel herself and how 'where is my order' contacts should be measured.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: when may a customer cancel her order without contacting anyone, and how should a merchant measure 'where is my order' contacts?",
+        "expected": "Only before the warehouse has accepted the work; after that a cancellation is a request to the warehouse, so a self-service cancel must check the fulfillment state first. Count 'where is my order' contacts per shipped order (for example per 100 shipped orders, including peak week), not as a share of tickets, and read them as a signal of the tracking and notification layer."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "Why customers receive conflicting answers about one order; the three views (notifications, the order status page, the agent's service view) and the systems whose facts feed them; separate status machines; 'where is my order' as a measurement; Eva's messages from 13 to 22 April. Evidence: Kestrel & Pine's Three-Status Order tickets, platform and helpdesk documentation, vendor data on service contacts."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does the customer learn what is happening, and what does a service agent need to see?",
+    "claim": "The customer learns what is happening from notifications and a status page; the service agent needs the goods state of each line or parcel, the money state and any return state. The notifications, the status page and the agent's screen must be read models over one order record fed by events from the platform, the warehouse, the carrier and the returns flow, because disagreements between them reach the service desk as customer contacts.",
+    "disputed_by": "The view that notifications are e-mail templates the shop platform sends, that agents should look each answer up in the system that holds it (the platform, the warehouse, the carrier, the payment provider), and that 'where is my order' contacts are a staffing cost to be reduced with more agents or a chatbot.",
+    "so_what": "Order #1052877 (a €119 fleece and €18 socks) produced 11 tickets in six days: the integration marked the whole order fulfilled on the first shipment, so the page said 'Delivered' while the warehouse said 'In picking' and the ERP 'Not invoiced', the agent worked from five tabs, and no system could send 'your order ships in two parcels'. A merchant that accepts the claim points the status page, the notifications and the helpdesk at the system that owns the goods state (at Kestrel & Pine the OMS from Q4 2027 under W2), gates self-service on the fulfillment state, and reports contacts per shipped order and per split shipment beside its integration monitors.",
+    "how_why": "Each fact about the order is first known by a different system: the platform knows the order and the payment, the warehouse the shipment and its tracking number, the carrier the scans, the returns flow what came back. A view that reads one of them shows only its fact, and a single status string lets the latest event, such as the first parcel's delivery, overwrite the others; the message 'two parcels' can come only from a record that holds the lines and their fulfillment state together. A cancel or address change is safe only before the warehouse accepts the work, so self-service must read the goods state. Contacts per shipped order rise when tracking numbers arrive late, promises slip or splits go unannounced, which makes them a measure of the joins.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Every customer message is triggered by an event that one system witnesses (the shop platform for the order, its payment, cancellation and refund; the warehouse or 3PL for the shipment and its tracking number; the carrier for the scans; the returns flow for what came back), and the message customers most needed, 'ships in two parcels', had no system able to emit it."
+      },
+      {
+        "id": "S2",
+        "claim": "An order has separate status machines (the order, the money, the goods per line or shipment, the returns); a single status string lets the latest event overwrite the others, so the page and the agent must show each state, not one word."
+      },
+      {
+        "id": "S3",
+        "claim": "The notifications, the status page and the agent's view must be read models over one order record, and the service view must read the system that owns the goods state; any difference between views is a defect that reaches the service desk as a contact."
+      },
+      {
+        "id": "S4",
+        "claim": "Self-service and agent actions write back through the order record's own rules: a cancel or address change is gated on the fulfillment state, and a refund has one command that every tool invokes with the order and return ids as its key."
+      },
+      {
+        "id": "S5",
+        "claim": "'Where is my order' contacts counted per shipped order, with contacts per split shipment and sampled status disagreements, measure the notification and tracking joins rather than the staffing."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows the customer's and the agent's side of every event in the part, makes one status built from those events the rule for every view, and performs the part's closing (the published chapter does not yet do so: it ends with a one-sentence summary and the hand-off to Part V).",
+    "supports": [
+      "P4-2",
+      "P4-5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "needs to pieces: the messages, their emitters and the status page are named before the shape that joins them into one record"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages: four ways to build the service layer on the same criteria, then which fits at which stage"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "practice, the worked example: Eva's messages from 13 to 22 April 2027"
+      }
+    ],
+    "rationale": "The eleven tickets come first so that every later term answers a question the reader has already seen asked: why the page said 'Delivered', why the agent needed five tabs, why nobody said 'two parcels'. The message map and the status page come next because they name, per message, the system that must emit it, which the shape of the solution then joins into one record; putting the components first would ask the reader to accept one record before seeing that each message has a different witness. The section on that shape starts with the state machines, because they explain why one record must still keep several states and the component table names them. The choices follow because each is a way of building that shape, and the scale stages after them because they say which choice fits when. In Practice applies the rules to channels, refunds, Eva's order and the measures, and the failures come last because each is read against the rule that prevents it. Moving the failures earlier would describe breakages before the reader knows the design they break; moving the scale stages before the choices would assign choices the reader has not met. Marketplace service sits in In Practice, after the merchant's own refund path, because it applies the rules where someone else owns the conversation; among the build choices it read as out of place."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A customer receives a shipping e-mail, checks a page that says 'Delivered' and then hears from support that the order is still being picked: three answers, and she still does not know when the parcel will come."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has ordered online has had a shipping e-mail, a tracking page and, sometimes, an answer from support that did not agree.",
+      "to_topic": "The disagreement starts with facts held in different systems (the shop platform, the warehouse, the carrier, the returns flow), so the question becomes what the customer and the agent must read so that every view gives the same answer."
+    },
+    "thesis_statement": {
+      "text": "Notifications, the status page and the agent's screen are three read models of one order record, fed by events from the platform, the warehouse, the carrier and the returns flow; the agent needs the goods state per line or parcel, the money state and any return state, and every disagreement between the views reaches the service desk as a contact.",
+      "placement": "KEY POINTS bullets 1 and 2 and paragraph p02"
+    },
+    "roadmap": {
+      "placement": "Paragraph p03",
+      "promises": [
+        {
+          "promise": "Start from the Three-Status Order's eleven tickets.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Say which system must emit each message, and treat the status page and 'where is my order' contacts.",
+          "kept_in": [
+            "needs"
+          ]
+        },
+        {
+          "promise": "Show the separate states an order record keeps and the one-record shape built around it.",
+          "kept_in": [
+            "pieces"
+          ]
+        },
+        {
+          "promise": "Compare the four ways to build the service layer and how the answer changes with scale.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Apply it in practice, to marketplace orders, Eva's messages and the measures, and end with what goes wrong, including the Familiar Stranger.",
+          "kept_in": [
+            "practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A customer who gets a shipping e-mail, a page saying 'Delivered' and support saying the order is still being picked has three answers and still does not know when to expect the parcel; conflicting messages create contacts and weaken trust in promises that may have been kept.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "One customer, three channels, three answers about one order.",
+            "shows": "The chapter's problem in one case: the views of one order disagree."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The disagreement starts with facts held in different systems (the platform knows the order and the payment, the warehouse the shipment, the carrier delivery, the returns flow what came back), so the notifications, the status page and the agent must read one order record built from those events, showing the goods state per line or parcel, the money state and any return state.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The three conflicting answers.",
+          "introduces": "Where they come from, and the chapter's answer: one record read by every view.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter connects three views (transactional notifications, the order status page and the agent's service view) and goes from the eleven tickets of the Three-Status Order through the message map, the record's separate states and the one-record shape, the four ways to build it and its scale stages, to practice (marketplaces, Eva, measures) and the failures, with the kinds of evidence it uses.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "One record read by every view.",
+          "introduces": "The three views by name, the chapters they draw on, and the order of the chapter.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The previous chapter closed Eva's return on the warehouse's disposition and shipped her size L, and she saw only a few messages of that work; this chapter follows those messages from order #1072455's confirmation on 13 April 2027 to the replacement's dispatch on 22 April, with the page she checks and the record support needs.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The roadmap and the three views.",
+          "introduces": "Where Eva's order stands: the return closed, and the messages she saw of the part's work.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order",
+      "controlling_idea": "The Three-Status Order shows the cost of views that read different systems: eleven tickets in six days, five tabs for the agent, and no system able to say 'two parcels'.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Shows one status string overwritten by the first parcel's delivery and the missing message that no system could emit."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The customer's three conflicting answers and Eva's messages.",
+        "introduces": "The Kestrel & Pine case where this happened: order #1052877.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The statuses, the mechanism, the tickets day by day, the answer no system held, then the decision that addresses it: the reader sees the cost before the cure."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "controlling_idea": "Kestrel & Pine's Three-Status Order, #1052877, produced 11 support tickets over six days in December 2026 while the shop platform said Delivered, the WMS In picking and the ERP Not invoiced.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Order #1052877, 11 tickets, six days, three statuses.",
+              "source": "Kestrel & Pine scenario ledger, incident 2",
+              "shows": "Three systems each told a different truth about one order."
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "controlling_idea": "The €137 order held a €119 fleece that shipped on 7 December and €18 socks that waited for replenishment, and the integration treated the first shipment as fulfilment of the whole order, so the page and e-mail said Delivered when PostNL delivered the fleece on 8 December.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Fleece shipped 7 December, delivered 8 December; socks on replenishment; the iPaaS flow marked the whole order fulfilled.",
+              "source": "Kestrel & Pine scenario ledger, customer-service-and-notifications and order-management lines",
+              "shows": "How the first parcel's event overwrote the order's status."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three statuses.",
+            "introduces": "The mechanism behind 'Delivered'.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "The WMS kept the order In picking and the ERP waited for 'order complete', and nobody told the customer to expect two parcels; the ticket table shows what she asked and what the agent could see each day.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The eleven tickets, 8 to 14 December: channel, the customer's question, what the agent could see, what the agent did.",
+              "source": "Kestrel & Pine scenario ledger (tickets by e-mail, chat and phone); the voucher is marked as a local detail",
+              "shows": "The customer's and the agent's views side by side: the agent never had the one true answer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The page's 'Delivered'.",
+            "introduces": "The other two systems' statuses and the eleven tickets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The useful answer, 'the order ships in two parcels, and the second leaves on the 14th', was held by no system; agents checked five tabs and only finance could see the ERP.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The eleven tickets.",
+            "introduces": "The one answer that would have ended them and why nobody had it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Waypoint addresses this with a bought order management system by Q4 2027 under W2 and order status through an API under W8, so customers and agents get one explainable record.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: an agent with five tabs that disagree, then one view showing the order's two parcels.",
+              "shows": "The move from five sources to one record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "No system held the answer.",
+            "introduces": "Kestrel & Pine's decisions that give it a home.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "needs",
+      "heading": "What the Customer Needs to Know, and Which System Knows It",
+      "controlling_idea": "Each customer message is an event some system must emit, the status page is a read model of the same facts, and 'where is my order' contacts measure how well that layer works.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "how": "Maps each message to its emitter, defines the status page as a read model, and reframes WISMO as a measure."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "No system held the answer 'two parcels'.",
+        "introduces": "Which system holds each answer the customer needs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The messages and their emitters first, because the status page shows the same facts, and the measurement last, because it counts the contacts the first two fail to prevent."
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "controlling_idea": "A transactional notification is a message triggered by an event on the customer's own order, so the list of notifications is a list of events some system must emit; Shopify's inventory names three emitters (the platform, the warehouse or fulfillment app, the carrier), and the notification map adds the returns flow and the order confirmation sent once the payment provider's signed message marks the order paid.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's customer-notifications help page: confirmation, shipping confirmation, shipping update, out for delivery, delivered, refund, canceled.",
+              "source": "Shopify Help Center, n.d., accessed November 2026",
+              "shows": "A platform's own inventory of messages, each triggered by an event."
+            },
+            {
+              "kind": "table",
+              "what": "The notification map: message, event behind it, emitting system, lag the customer tolerates.",
+              "shows": "Each message has one emitter, and the confirmation waits for the provider's signed message, as chapters 11 and 12 established."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "'Ships in two parcels' is the message that would have ended the eleven tickets, and it had no emitter at Kestrel & Pine in 2026 because no system held the order's lines with their fulfilment state; an order management system produces it as a side effect.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The notification map.",
+            "introduces": "The row with no emitter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The order status page is the customer's self-service answer to 'where is my order' and a read model: a view assembled from the order record and the tracking stream for reading, not where either is written.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The messages pushed to the customer.",
+            "introduces": "The page the customer pulls between messages.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Shopify's page shows the design choices in miniature: five customer-facing states, no updates without a tracking number, and less detail for a visitor who is not logged in.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Five states 'Confirmed, On its way, Out for delivery, Delivered, and Attempted delivery'; 'If you fulfill an order without a tracking number, then no shipping updates are received'; access without login for three weeks.",
+              "source": "Shopify Help Center, n.d., accessed November 2026",
+              "shows": "The page depends on tracking numbers and is a privacy boundary."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The status page as a read model.",
+            "introduces": "One platform's page as the example.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Three rules follow: the page reads the same status as the notifications and the agent, it receives tracking numbers at handover, and it shows a stranger holding the link as little as possible.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Shopify's design choices.",
+            "introduces": "The three rules they imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "WISMO is the contact that asks for delivery status and is consistently reported as the largest single contact category, but the only figure with a stated basis is Gorgias's 18% of tickets in 2023; other vendor figures are shares of tickets, not of shipped orders, and no independent study was found.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "18% of incoming requests on average (Gorgias, 2023, mostly small Shopify merchants); vendor figures from 10% to 50%; the Branvas 2026 critique.",
+              "source": "Gorgias 2023; Branvas 2026",
+              "shows": "WISMO is large, but its usual measure is not comparable across merchants."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A page that goes silent or disagrees with the messages.",
+            "introduces": "The contact that results, and how it is counted.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Measured per shipped order, WISMO is a direct measure of the notification and tracking layer: it rises when tracking numbers arrive late, promises slip, splits go unannounced or the page reads a system that is behind.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: a notification pipeline leaking into a bucket of tickets read by a WISMO gauge.",
+              "shows": "Each gap in the layer appears as a contact."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The safe statement about WISMO as a share of tickets.",
+            "introduces": "The architectural statement: WISMO per shipped order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "heading": "How the Pieces Fit Together",
+      "controlling_idea": "One order record keeps separate status machines and emits events; the notifications, the status page and the service view read it, and self-service writes back through its rules, gated on the goods state.",
+      "function": "description",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Explains why the record keeps several states, gives the target shape, and gates self-service on the goods state."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Messages, a page and contacts that each depend on a different system's facts.",
+        "introduces": "The shape that joins them in one record.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The separate states the record must keep come first, because the component table names them and the Three-Status Order was just told; then the whole shape built around that record, then the requirement that matters most (consistency). Putting the shape first made readers in two rounds meet 'state machines' in the component table before they were explained. Self-service closes the section because it is the component that writes back through the record; among the build choices readers in rounds 1 and 3 found it out of place."
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "controlling_idea": "One record does not mean one status: the Three-Status Order was three systems each telling the truth about a different thing, and platforms model this openly with separate order, payment and fulfilment states (Shopify) or order, shipment and payment states (commercetools).",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's three status families plus the fulfilment order's statuses; commercetools' order, shipment (with Partial and Backorder) and payment states.",
+              "source": "Shopify Help Center and commercetools orders API, n.d., accessed November 2026",
+              "shows": "Separate status machines are the platforms' own model."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "The agent's screen and the status page should show the goods state per line, the money state and any return state; a single word is a subject line, not what the views should read.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the Three-Status Order as one status overwritten by the first parcel while the socks and the invoice waited.",
+              "shows": "What one status word loses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Separate status machines.",
+            "introduces": "What the service views must therefore show.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "With those states in one record, the target shape follows: the record emits events, a notification service turns them into messages, a status page and a service tool read the same record, and self-service writes back through the record's rules.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: one order record fed by the platform, the warehouse, the carrier and the returns portal drives the notifications, the status page and the agent's view.",
+              "shows": "Every view reads one record."
+            },
+            {
+              "kind": "table",
+              "what": "Components: responsibility, what each must never do, and Kestrel & Pine in 2027.",
+              "shows": "Each component's job and its forbidden shortcut."
+            },
+            {
+              "kind": "table",
+              "what": "Requirements for the flows: freshness, consistency, speed and availability for confirmation, shipped notification, status page, service view and self-service cancel.",
+              "shows": "Freshness may vary; consistency between views may not."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The separate states the record must keep.",
+            "introduces": "The target shape built around that record.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "The consistency column is the point: freshness can be minutes, but two views of one order may never differ, because the difference is what the customer writes in about.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The requirements table.",
+            "introduces": "The one column that cannot be relaxed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Self-service cancels, address changes and returns must check the fulfilment state first, because once the warehouse has accepted the work a cancellation is a request to the warehouse, not a change to a record.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'You can edit only unfulfilled line items'; after acceptance 'the merchant can no longer cancel it directly and must submit a cancellation request'.",
+              "source": "Shopify order editing and FulfillmentOrder documentation, n.d., accessed November 2026",
+              "shows": "The platform's own rule that edits are gated on the fulfilment state."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: which self-service actions are safe in which goods state.",
+              "shows": "Cancel and address change before acceptance, a request afterwards, only a return once the carrier has the parcel."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Gates the customer's own actions on the goods state in the order record."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "One record whose views may never differ.",
+            "introduces": "Self-service, which writes back through that record and must read its goods state first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "A merchant has four ways to build the service layer, and the right one is the one whose views read the system that owns the goods state.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Compares the four ways and states the rule for choosing."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The target shape.",
+        "introduces": "The ways to build it.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four options on the same criteria, then the rule that decides between them."
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "A merchant has four realistic ways to build the service layer, and they line up with the scale stages.",
+          "function": "transition"
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The platform's built-in notifications and a helpdesk that reads the platform are right while the platform is the only system that fulfils, and stop being enough when a warehouse system or an OMS holds a state the platform does not.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Zendesk's Shopify integration: orders matched by e-mail or phone, statuses and tracking in the sidebar, refund in any state, cancel only unfulfilled.",
+              "source": "Zendesk, n.d., accessed November 2026",
+              "shows": "What a helpdesk reading the platform can see and do."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four ways.",
+            "introduces": "The first.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "A tracking-and-notifications vendor over the carrier stream solves the carrier half well and the order half not at all: it knows where the parcel is, not whether there is a second one or whether the refund went out.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Narvar's claim that its pages 'convert 10% higher and reduce support costs'.",
+              "source": "Narvar, vendor claim, n.d., accessed November 2026",
+              "shows": "What such vendors sell, labelled as a vendor claim."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The platform-only option.",
+            "introduces": "The second option.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Once an OMS is the order record, a notification service subscribes to its events, the status page reads it and the helpdesk's sidebar is backed by it; this is where Waypoint takes Kestrel & Pine.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Fluent Commerce: agents 'see the same order data the platform used to make its decisions'; Kibo: edit, credit and refund 'without leaving the order screen'.",
+              "source": "Fluent Commerce and Kibo, n.d., accessed November 2026",
+              "shows": "OMS vendors sell the service view from the order side."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The tracking vendor's carrier-only view.",
+            "introduces": "The third option, over the order record.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "A built notification and service layer is right at Group stage for a merchant with engineers and many countries, brands and channels, and the Giant's Boots for anyone smaller; the comparison table sets the four side by side.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four options against carrier events, splits and returns, gated actions, channels, integrations to own, refund paths and stage fit.",
+              "shows": "Only the options over the order record know splits, backorders and returns."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The OMS option.",
+            "introduces": "The fourth option and the comparison.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "The author's rule: the service view must read the system that owns the goods state, so the helpdesk is re-pointed at the OMS the moment an OMS or WMS owns it; the channels are a second-order question.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The comparison table.",
+            "introduces": "The rule that decides between the options.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The service layer changes shape once, when the goods state leaves the shop platform, and Kestrel & Pine is at that point now.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Ties the change of design to the ownership of the goods state, not to volume."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four choices and the rule.",
+        "introduces": "Which choice fits at which stage, with the warning signs.",
+        "form": "phrase",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "controlling_idea": "The judgement: the layer changes shape exactly once, when the goods state leaves the platform; before that the platform's tools suffice, after it every view must read the order hub, and the eleven tickets are what Kestrel & Pine's delay cost.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four stages: what is typical, what becomes necessary, warning signs of outgrowing the approach.",
+              "shows": "The design steps with the ownership of the goods state."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice",
+      "controlling_idea": "In practice the rules become event-driven messages, a channel chosen per message, one status endpoint, one refund command, Eva's messages from one record, and service measures read as architecture signals.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Applies the emitter rule to carriers and channels, the one-command rule to refunds, and the measure to Kestrel & Pine."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The design and when it changes shape.",
+        "introduces": "How the rules look in practice.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p38 to p39: Eva's messages from 13 to 22 April 2027"
+          }
+        ],
+        "rationale": "Four practice rules on the merchant's own channels, each with its evidence (events, channel costs, the status endpoint, the refund button), then the marketplace case where someone else owns the conversation, then the worked example that uses them, then the measures that show whether they hold. Readers in two rounds found the marketplace paragraphs out of place among the build choices."
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "controlling_idea": "In practice the design comes down to four rules (carrier events, channel costs that change, one status endpoint, one refund command), the service rules of marketplaces, one worked order and a set of measures; the first rule is that carrier events, not polling, trigger the messages customers receive.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "Carriers already emit these events: DPD sends its own Predict messages at depot arrival and departure, and EasyPost reduces every carrier's codes to ten statuses pushed by webhook, five of which the customer needs and all ten the agent.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DPD Belgium Predict notifications; EasyPost's ten tracker statuses with webhooks on update.",
+              "source": "DPD Belgium and EasyPost, n.d., accessed November 2026",
+              "shows": "Carrier events exist and can be pushed, not polled."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Messages triggered by carrier events.",
+            "introduces": "Two carriers' event streams.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "Channels change their economics on published dates, as Meta's WhatsApp pricing did for utility messages on 1 July 2025 and again on 1 October 2026, so a notification service that chooses the channel per message, with cost as an input, survives such changes and one that hard-codes 'WhatsApp for shipped' does not.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What triggers a message.",
+            "introduces": "What sending it costs, per channel.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Template categories; per-message pricing from 1 July 2025 with utility messages in the service window free; charged again from 1 October 2026 with a 1,000-a-month free tier for service messages.",
+              "source": "Meta WhatsApp Business Platform pricing, accessed November 2026",
+              "shows": "A channel's cost moves on published dates."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Order status by API is a prerequisite, not a feature: W8 lists it among what an AI shopping agent would need, and the same endpoint feeds the status page, the helpdesk and the tracking page.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Messages pushed to the customer.",
+            "introduces": "The status that other systems pull.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The service tool's refund button is another refund path, so the order record owns one refund command and every tool invokes it with the order and return ids as the idempotency key.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund, January 2027: 212 returns, €19,400 refunded twice by the returns portal and by hand in the PSP console; the helpdesk's button would be a third path.",
+              "source": "Kestrel & Pine scenario ledger, incident 3",
+              "shows": "Two refund paths paid twice; a third adds risk."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S4"
+            ],
+            "how": "Applies the one-command rule to the agent's own refund action."
+          },
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One read model for every consumer.",
+            "introduces": "One write path for refunds.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "On a marketplace the customer conversation belongs to the marketplace, and the merchant answers under its standards and clocks.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "bol's customer-questions standard, response time and strike process; Amazon's Order Defect Rate 'under 1%' over 60 days.",
+              "source": "bol partner platform, n.d., accessed November 2026; Amazon order performance policy, May 2026",
+              "shows": "Marketplace service has deadlines and penalties the merchant does not set."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Practice on the merchant's own channels, where the merchant owns the conversation and the refund command.",
+            "introduces": "Marketplace orders, where the marketplace owns the conversation and sets the clocks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S3"
+            ],
+            "how": "Brings marketplace messages and ids into the same service view."
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Marketplace messages belong in the helpdesk with their deadlines, and the service view should find an order by the marketplace's id as well as its own.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The marketplace's standards and clocks.",
+            "introduces": "What the helpdesk and the service view must do about them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Personal data is the other difference: Amazon releases a buyer's name and address only through a restricted data token, so the service view holds only what fulfilment needed.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Deadlines and order ids.",
+            "introduces": "The second marketplace difference, personal data.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Eva's order from 13 to 22 April 2027 shows what she receives in the 2026 landscape and in the Q4 2027 target, message by message.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "When, what happened, what Eva receives in the 2026 landscape and in the target; dates from the ledger, message times and channels illustrative.",
+              "source": "Kestrel & Pine scenario ledger, Eva's jacket and shipping-and-delivery lines",
+              "shows": "The same events produce late, duplicated or missing messages today and one message per event in the target."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The practice rules, marketplaces included.",
+            "introduces": "Eva's order run through them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Nothing in the target column needs a new channel; it needs one record emitting the events and one read model, and the messages that matter most are those that pre-empt a ticket.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Eva's two columns.",
+            "introduces": "What separates them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "A small set of measures (contacts and WISMO per shipped order, contacts per split shipment, status disagreements, the worst order, first replies with a true answer) turns the service desk into the platform's most honest monitor.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Measures, definitions, why each is an architecture signal, Kestrel & Pine 2026 values (labelled assumptions) and illustrative targets.",
+              "shows": "Each measure points at a join, not at staffing."
+            }
+          ],
+          "advances_thesis": {
+            "supports": [
+              "S5"
+            ],
+            "how": "Defines the measures that show where the joins fail."
+          },
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Messages that pre-empt tickets.",
+            "introduces": "How to measure whether they do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Hanna Berg's data team can produce most measures once there is one order record, and the first and last belong on Noor's monthly page.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The measures.",
+            "introduces": "Who produces them and where they are reported.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "The service layer fails in eight recurring ways, each detected by a measure or a log and recovered by the rule it broke.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S5"
+        ],
+        "how": "Shows each failure as a broken emitter, a second source or an unmeasured join."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The design and the measures that watch it.",
+        "introduces": "What happens when a rule is broken.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "list",
+          "controlling_idea": "Eight failures (the duplicate notification, the notification that precedes the event, no tracking number, the unannounced split, the carrier outage, the agent and the page disagreeing, the wrong template for the country, the agent who cannot find the person) each come with detection and recovery.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Kestrel & Pine's Black Friday queue backed up for four hours; the Three-Status Order; Eva writing from her loyalty e-mail.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The failures are ones the company has had or would have."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The customer's three answers and the eleven tickets have one cause: each view read a different system, and the one answer the customer needed, 'two parcels', lived in none of them. One order record that keeps goods per line, money and returns, read by the e-mail, the page and the agent, gives one answer, and the number of contacts per shipped order shows whether it does. For the part: the Queue That Waited, Eva's Wednesday promise, the Store Stock Mirage, the Double Refund and the eleven tickets look like five problems in five places and are one: a promise or a status taken from a copy or a sentence instead of from the system that witnessed the physical fact, or an action two systems could take.",
+    "so_what": "The remedies are contracts and rules more than buildings, tills or more agents: the helpdesk pointed at the order hub, 'shipped' on the carrier's scan, a split message, self-service gated on the goods state, one refund command; for the part, a queue allowed to grow and a cut-off that moves with it, a transit table plus the warehouse's cut-off and backlog measured per lane, a two-unit store threshold and a staff confirmation, and refund on disposition by one writer keyed on the return id. A reader can list, for their own operation, which system witnesses each physical fact and which promise reads it.",
+    "callback": {
+      "to": "The introduction's customer with three answers about one order; for the part, the Part IV opening's order confirmed in seconds whose goods still have to be picked and packed before the carrier's collection.",
+      "how": "Paragraph p43 gives the customer the one answer the views could not; p48 returns to the part opening's confirmation in seconds and sets the five incidents against it; p49 gives the part's so-what and take-away."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "For each promise your shop makes after checkout (delivery date, collection, refund, order status), name the system that witnesses the fact it depends on, the event that carries that fact, and the measure that shows when the promise broke; start with promised-versus-delivered per lane and contacts per split shipment."
+    },
+    "hand_off": {
+      "to": "part-5",
+      "relationship": "additional_support",
+      "carries_over": "The single-shop journey of Parts II to IV, from catalog to return.",
+      "introduces": "Orders created by someone else's system, under someone else's rules."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and the rules that prevent them.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p43",
+        "controlling_idea": "The customer of the opening had three answers because each view read a different system, and the answer she needed, 'two parcels', lived in none of them; one order record keeping goods per line, money and returns, read by the e-mail, the page and the agent, gives one answer, and contacts per shipped order show whether it does.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's three answers and the eleven tickets set against the chapter's answer.",
+            "shows": "The reader can now say where each answer came from and what one record changes."
+          }
+        ]
+      },
+      {
+        "id": "p44",
+        "form": "list",
+        "controlling_idea": "Established: platforms keep several status machines; notifications come from three emitters and the status page needs tracking numbers; edits and cancellations are safe only before the warehouse accepts the work; WISMO is the largest reported category, with one sourced figure counted as a share of tickets.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p45",
+        "form": "list",
+        "controlling_idea": "Depends on context: the platform's tools fit while it owns the goods state; a tracking vendor depends on carriers and countries; the channel mix depends on country and pricing.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p46",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: build the status page, the notifications and the agent's screen as three read models over one order record, and measure WISMO per shipped order beside the integration monitors.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p47",
+        "form": "list",
+        "controlling_idea": "Nine questions let the reader find, in their own company, which system each view reads, what triggers 'shipped', what a split order sends, how many refund paths exist, what self-service checks, how WISMO moves, how many tabs an agent opens, how marketplace messages arrive, and what happens with an unknown e-mail.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p48",
+        "controlling_idea": "Part IV opened with an order confirmed in seconds whose goods still had to be picked and packed, and its five cases (the Queue That Waited, Eva's Wednesday promise, the Store Stock Mirage, the Double Refund, the eleven tickets) look like five problems in five places but are one: a promise or a status taken from a copy or a sentence instead of from the system that witnessed the physical fact, or an action two systems could take.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The part opening's confirmation in seconds set against the part's five cases.",
+            "source": "journal-spec.json, part-4 closing",
+            "shows": "Performs the synthesis and callback of the part's closing."
+          }
+        ],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "This chapter's answer: one status built from the events of the part.",
+          "introduces": "What the five chapters of Part IV say together, set against the part opening.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p49",
+        "controlling_idea": "Each chapter's remedy has the same parts (name the system on the spot, compute the promise from its events, let its confirmation commit it, give each money or stock action one writer and a key, build one status from the same events), and Kestrel & Pine's remedies are contracts and rules rather than buildings, tills or more agents, so a reader can list them for their own operation, starting with promised-versus-delivered per lane and contacts per split shipment.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A queue allowed to grow and a cut-off that moves with it; a transit table plus the warehouse's cut-off and backlog measured per lane; a two-unit store threshold and a staff confirmation; refund on disposition by one writer keyed on the return id; the helpdesk pointed at the order hub.",
+            "source": "Kestrel & Pine scenario ledger (warehouse, shipping, stores and returns lines); journal-spec.json, part-4 closing",
+            "shows": "Performs the so-what and take-away of the part's closing."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The one problem behind the five cases.",
+          "introduces": "The remedy's common parts and the list a reader can make.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "controlling_idea": "Parts II to IV followed one shop's order from catalog to return; Part V adds orders created by someone else's system under someone else's rules, starting with marketplaces, where the customer conversation, the deadlines and the order id belong to the marketplace.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "The single-shop journey of Parts II to IV, from catalog to return.",
+          "introduces": "Orders created by someone else's system, under someone else's rules.",
+          "form": "paragraph",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The order state machine, order edits as transactions and the OMS as a product category.",
+      "covered_in": [
+        "order-management"
+      ]
+    },
+    {
+      "topic": "Carrier integration, tracking-event vocabularies and the delivery promise.",
+      "covered_in": [
+        "shipping-and-delivery"
+      ]
+    },
+    {
+      "topic": "Return policies, dispositions and refund reconciliation; this chapter only names the helpdesk as a refund path.",
+      "covered_in": [
+        "returns-and-exchanges"
+      ]
+    },
+    {
+      "topic": "Customer matching, the golden record and consent.",
+      "covered_in": [
+        "identity-and-master-data",
+        "privacy-and-customer-data"
+      ]
+    },
+    {
+      "topic": "Marketplace order import, performance metrics and strikes in full; only the service-side obligations are covered here.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "AI agents in service and agentic commerce; W8 is mentioned only as the reason order status by API matters.",
+      "covered_in": [
+        "ai-and-agentic-commerce"
+      ]
+    },
+    {
+      "topic": "Metric definitions and the data platform.",
+      "covered_in": [
+        "commerce-data-and-analytics"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (rule 12): the only WISMO figure with a stated basis is one vendor's 2023 number (Gorgias, 18% of tickets); no independent or European study was found. The fact needed: a newer or independent source, if the author has one.",
+    "Needs the author (rule 12): round-3 points left after the closing fixes, none corroborated by a rule that settles them: the component table has no sentence saying what its 'must never do' column shows (the page is at the 6,500-word limit); the Requirements subsection opens on its table; the WhatsApp paragraph's date detail is heavy for its point; the Part IV closing (p48, p49) is dense for a reader who does not recall the five cases; Branvas is not glossed (no source in the page says what it is); 'helpdesk' is first explained by example in The Choices. The fact needed: whether the author will trade words elsewhere for these."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-07",
+      "decision": "Chose the eleven tickets as the spine, told as a day-by-day table, rather than a tour of notification channels, because the tickets show the customer's and the agent's views at once and make 'two parcels' the missing message.",
+      "rejected": [
+        "A tour of notification channels."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Gave the Three-Status Order a concrete mechanism (partial shipment collapsed into one status) and recorded it in the ledger, so that chapters 13 and 19 can share it; a vaguer 'the systems disagreed' would not have taught the state-machine point.",
+      "rejected": [
+        "'The systems disagreed' without a mechanism."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Framed the status page, the notifications and the agent's screen as three read models over one record, and made 'which system owns the goods state' the trigger for changing the design, rather than order volume.",
+      "rejected": [
+        "Order volume as the trigger."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept customer identity to one table row, one failure bullet and links, as the contract requires; the Familiar Stranger is chapter 27's."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json from the published chapter. Success criteria: the inventory-style criteria (terms defined, ticket table present, notification map, state machines, trade-off table, state diagram, WISMO sourcing, stage table, mermaid diagrams, identity deferred) are dropped as inventories; their outcomes are carried by the journal spec's AC-1 to AC-5, which are copied unchanged. No criteria were added. The word limit is 6,500, the book-wide chapter limit the other converted chapters use; the old spec.md set none, and the published chapter had 5,468 words.",
+      "rejected": [
+        "Rewriting each old criterion as a new minor criterion: they duplicate AC-1 to AC-4."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Units added that the contract asks for and the published chapter did not have: a roadmap in p03, the carry-over from the returns chapter in p04 (the chapter's transition_in), a conclusion paragraph answering the opening (p43), and Part IV's closing (p48, p49), which the journal spec assigns to this chapter; the published chapter ended with a one-sentence summary and the hand-off.",
+      "rejected": [
+        "Leaving the part closing to the Part V intro."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The notification map's 'Order confirmed' row and the requirements table's confirmation row now say the confirmation is sent once the payment provider's signed message marks the order paid, as chapters 11 and 12 establish (the order is created with payment pending); the published chapter said 'Order placed and payment authorized'. The cart-and-checkout ledger line supports it.",
+      "rejected": [
+        "Keeping 'payment authorized': it contradicts chapters 11 and 12."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Closed the old open question on chapter 13's agreement with the Three-Status Order mechanism: consistency ruling 2 makes the mechanism canonical and says chapters 01, 13 and 19 agree."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes); the author asked for the rubric notes to be taken without review. Taken: the general paragraph on channel economics (p34) and the WhatsApp evidence (p35) merged into one paragraph (p34; id p35 retired); the spec's ideas for p10 and p15 now state the emitter count and the 'largest category' claim the conclusion relies on, which the published prose already made. Not taken (see open_questions): merging the stage section into The Choices, merging p43 with the author's synthesis list, shortening p11 and p39.",
+      "rejected": [
+        "Merging 'Across Scale Stages' into 'The Choices': it is a house section every chapter carries.",
+        "Cutting the author's synthesis list (p46) into p43."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the p34/p35 merge: sound with notes, order unchanged. Its main note (the stage section repeats The Choices) is the same as the first run's and is not taken (house section); its other notes are recorded in open_questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) 'The state machines behind \"status\"' (p19, p20) moves to the start of 'How the Pieces Fit Together', before the target shape and its component table (p17, p18), the move both flow readers asked for in rounds 1 and 2; figures 3 and 4 swap numbers; a subheading 'The target shape' introduces p17; p19 and p17 openers rewritten for their new neighbours.",
+      "rejected": [
+        "Keeping the shape first with a forward reference (round 2 shows both readers still stumbled)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) 'Service for marketplace orders' (p28 to p30) moves from 'The Choices' to 'In Practice', after the refund button (p37) and before Eva's worked example, the move both flow readers asked for in round 2 (and both found the subsection out of place in round 1). The In Practice lead (p32), the roadmap (p03), p28's opener and the section flows are rewritten.",
+      "rejected": [
+        "Moving it before the scale-stage table: one reader's alternative only."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 4) the part closing's 'the decision on the stores' tills waits until 2028' is cut from p49 and from the conclusion's so_what: an addition of this pass with no setup in the chapter, found dense by both round-2 readers; 'witness' in p48 and p49 is replaced by 'the system on the spot that saw the physical fact first', naming the four systems.",
+      "rejected": [
+        "Keeping the journal spec's closing word for word."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 6) glosses added where round-2 readers stumbled: the 24-hour customer service window and service messages in the WhatsApp paragraph; the fulfillment order is known from Part III and gets none. Corroborated draft faults fixed: the Shopify notification and status-page sentences split; the Giant's Boots fragment made a sentence; 'My rule:' becomes 'The rule that follows:'; the 2026-landscape column explained without the December counterfactual; the template failure given a Detection line. Minor points fixed: Eva's exchange named in p04, p05's opener, the In Practice lead names the four rules as the bold headlines do, the five EasyPost statuses tied to Shopify's page, the Message in a Bottle named in its failure bullet."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 8 and rule 10) flow-rubric notes not taken are settled: 'Across Scale Stages' stays a house section and is not merged into 'The Choices'; p43 and the author's synthesis list p46 both stay (the list is the author's text, rule 5); the author's sentences in p11 and p39 stay; p28 and p29 stay separate (no reader asked); the conclusion keeps eight units because it carries Part IV's closing. The 2026 service measures stay labelled assumptions (rule 1: the ledger does not hold them).",
+      "rejected": [
+        "Leaving these in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (ESCALATE: 13 pass, 29 fail; round 3 is past the revision budget), the cheap, plainly right fixes were made without another round: (rule 3) 'Self-service, gated on state' (p27, with Figure 5) moves from 'The Choices' to the end of 'How the Pieces Fit Together', the move both flow readers asked for in rounds 1 and 3; the In Practice rules carry ordinal signposts (Second, Third, Fourth) matching the lead; W8 glossed as Waypoint's decision to prepare for AI shopping agents (rule 6); the roadmap's long sentence split; '(local detail)' becomes '(illustrative)'; the Familiar Stranger failure given a Detection line. WORDS, within 6,500.",
+      "rejected": [
+        "Starting a fourth round."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) 'Service for marketplace orders' stays in In Practice: round 2's readers asked to move it there from The Choices, round 3's readers asked to move it again (to a pointer before the Part V hand-off, or after the measures); the readers of successive rounds asked for different moves, so the current position stands. Likewise 'Where we are' stays in the introduction (the house opener; round 3 readers asked either to drop it or to move Eva's example)."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The Three-Status Order (incident 2 and the customer-service-and-notifications line), the Double Refund, Eva's jacket dates, W2, W4 and W8, Hanna Berg, and the part-closing remedies from the warehouse, shipping, stores and returns lines."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/consistency-issues.md, rulings 2 and 14",
+      "contributed": "The Three-Status Order mechanism is canonical; 'Not invoiced' came from the 'order complete' trigger."
+    },
+    {
+      "kind": "internal",
+      "ref": "order-management",
+      "contributed": "The order record and its state machines."
+    },
+    {
+      "kind": "internal",
+      "ref": "cart-and-checkout and commerce-payments",
+      "contributed": "The order created with payment pending and marked paid by the provider's signed message; the confirmation sent after it."
+    },
+    {
+      "kind": "internal",
+      "ref": "shipping-and-delivery",
+      "contributed": "Tracking events and the computed promise."
+    },
+    {
+      "kind": "internal",
+      "ref": "returns-and-exchanges",
+      "contributed": "The return record, the disposition and the refund path."
+    },
+    {
+      "kind": "internal",
+      "ref": "identity-and-master-data",
+      "contributed": "The customer record."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md (Parts 2, 4 and 6) and _research/brief-integration-and-data.md (Parts 2 and 4)",
+      "contributed": "The verified vendor and research facts."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify help and developer pages (notifications, order status page, order status families, edit orders, fulfillment order), accessed 2026-11",
+      "contributed": "The notification inventory, the status page's states and access rules, the status families, the edit and cancellation constraints."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools orders API, accessed 2026-11",
+      "contributed": "Separate order, shipment and payment state machines."
+    },
+    {
+      "kind": "external",
+      "ref": "Zendesk Shopify integration, Gorgias, Fluent Commerce, Kibo, Narvar pages, accessed 2026-11",
+      "contributed": "Helpdesk and OMS service views (vendor claims)."
+    },
+    {
+      "kind": "external",
+      "ref": "Gorgias 2023 and Branvas 2026",
+      "contributed": "WISMO figures and their basis."
+    },
+    {
+      "kind": "external",
+      "ref": "EasyPost trackers, DPD Belgium Predict",
+      "contributed": "Tracking statuses and carrier notifications."
+    },
+    {
+      "kind": "external",
+      "ref": "Meta WhatsApp Business Platform pricing, accessed 2026-11",
+      "contributed": "Channel economics and dates."
+    },
+    {
+      "kind": "external",
+      "ref": "bol service standards and Amazon order performance policy (2026); Amazon Tokens API",
+      "contributed": "Marketplace service obligations; personal data access."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU",
+      "contributed": "The withdrawal clocks referenced in return messages."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3 ESCALATE (13 pass, 29 fail). Closing fixes without another round: self-service moved into 'How the Pieces Fit Together'; In Practice rules signposted; W8 glossed; roadmap split; Detection added to the Familiar Stranger failure. The check report is stale after these fixes."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 ESCALATE (14 pass, 23 fail; three corroborated flow failures at fault in the spec). Resolved under the author's standing instruction: state machines moved before the target shape; marketplace service moved into In Practice; the tills clause cut and 'witness' replaced in the part closing; corroborated draft faults and cheap minors fixed (see decision_log)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Draft check round 1 (REVISE: 11 pass, 39 fail, 24 blocking, all at fault in the draft). Revised the named units: transitions at scene/needs, p14/p15, p25/p26, stages/practice, p37/p38, p39/p40 and practice/wrong; the comparison table explained; p49 rewritten as one chain; Eva introduced before her return in p04; the reconstruction note moved to the mechanism; self-service and marketplace service tied to the rule; In Practice announced; the five EasyPost statuses tied to the status page's five states; the WhatsApp sentence split; the monthly-page measures named; the Familiar Stranger and the evidence named in the roadmap; state machine and restricted data token glossed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): reconstructed from the published chapter; journal-spec intent, thesis and role copied; roadmap, carry-over from chapter 18, a conclusion paragraph answering the opening and Part IV's closing added; order confirmation aligned with chapters 11 and 12."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 3 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document references rephrased."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences, Three-Status tickets corrected to three channels, Eva's times aligned with the ledger, WhatsApp pricing claim corrected, OMS/3PL/SP-API expanded."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

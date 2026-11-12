@@ -1,0 +1,1454 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "stores-and-omnichannel",
+  "journal": "commerce-platform-architecture",
+  "part": "part-4",
+  "title": "Stores Are Systems Too: Point of Sale and Omnichannel Fulfillment",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/17-stores-and-omnichannel/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph, a roadmap, and a conclusion paragraph that answers the opening); these are listed in decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The four things a store adds (an order source, a stock location, a customer list, a payment path) and the two constraints a web shop lacks: offline operation and fiscal rules, with how those rules differ in Germany, Belgium, Italy and the Netherlands.",
+        "The four cross-channel services and the three problems they share: availability, sourcing and staff tooling.",
+        "The four ways to connect stores (the platform's POS, a specialist POS by events through the order hub, a specialist POS by nightly batch through the ERP, the ERP's POS) and where each fits."
+      ],
+      "believe": [
+        "Store stock may be promised only with a buffer, a confirmation or a count behind it; the store's confirmation, not the online promise, is the commitment.",
+        "'Unified commerce' is a goal state that one platform or an order hub with an identity layer can reach, not a product."
+      ],
+      "can_do": [
+        "Look at a click-and-collect pilot and say where the promise is made, where the commitment is made and how old the store stock behind it is.",
+        "Choose between the platform's POS and a specialist POS by the number of fiscal regimes and the weight of the stores."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the product manager or engineer asked to 'add click-and-collect' to a web shop, the head of operations who owns stores and is being sold 'unified commerce' (Daniel Okafor at Kestrel & Pine), and the architect weighing a POS replacement (Noor Visser).",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its six stores, its 2026 and January 2027 incidents in outline (the Store Stock Mirage, the Double Refund, the Price Drift among them) and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part II: available-to-promise (on hand minus committed minus allocations), one writer each for on hand and committed, per-channel buffers; one pricing source.",
+        "From Part III: checkout creates the order once; one writer and a key for every refund; the order's one home with three status lines, goods status per shipment, routing and sourcing, and the fulfillment order.",
+        "From the earlier chapters of Part IV: the warehouse system as the only writer of on-hand stock, the fulfillment order it accepts or rejects, its cut-off, capacity and backlog; one normalizing layer for carriers, each parcel booked once, scans mapped to one vocabulary, and a delivery promise computed from cut-off, backlog, stock location and lane transit plus a margin."
+      ],
+      "does_not_know": [
+        "Offline capture at the till and who carries the risk of an offline card payment; the terminal provider.",
+        "Fiscalization; the German technical security device (TSE) and sequential transaction numbers; Belgium's registered cash register (GKS); telematic receipts in Italy.",
+        "Click-and-collect (BOPIS), ship-from-store, return-in-store, endless aisle as named services; staff tooling.",
+        "Store inventory record accuracy; RFID; exception-driven cycle counting.",
+        "Unified commerce as vendors define it; P2PE, semi-integrated terminal and PCI DSS scope."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a collection promise made from a nightly copy of store stock, the reader explains the broken promises and names the fixes that need no new system.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A web shop offers 'available for collection today' at one store, based on store stock copied to the back office every night, and in one month promises 37 items the store had already sold. Using only this chapter: why did this happen, and what would have prevented most of it before any new system?",
+        "expected": "The platform promised from a copy up to a day old while the till kept selling, and treated the promise as the commitment. A per-store threshold (never promise the last few units, such as two per variant) and a staff confirmation before the customer is told 'ready', with a weaker promise ('we confirm within two hours'); later, store stock sent by the till as events into an availability service. Not a new POS."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a first store in a new country and a platform vendor's POS offer, the reader names the check that comes first and what decides between the two kinds of POS.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A Dutch brand with stores in the Netherlands and Belgium plans its first store in Germany, and its platform vendor offers its own POS. Using only this chapter: what must be checked first, and what decides between the platform's POS and a specialist POS?",
+        "expected": "Whether the POS meets German fiscal rules: a certified technical security device (TSE) that signs each transaction, sequential transaction numbers and registration with the tax office; that alone can rule a product out. The choice then follows the number of fiscal regimes and the stores' weight: the platform's POS for a web-first brand with a few stores in one lenient regime; a specialist POS integrated by events through the order hub when stores carry a real share of revenue or span regimes."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what prevents a web order returned at a store counter from being refunded twice.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "A web order is returned at a store counter; the till refunds the card, and the returns portal, seeing the item received, refunds it as well. Using only this chapter: what rule prevents this?",
+        "expected": "One refund path per order, decided once: a return recorded at the till closes the portal's request before anything is paid."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "What a store adds to the architecture (orders, stock, customers, payments) and why a till differs from a web shop; how click-and-collect, ship-from-store, return-in-store and endless aisle work, and what store stock is worth as a promise; when to keep or change the POS; Kestrel & Pine's Utrecht pilot and its deferred till decision. Evidence: Kestrel & Pine's stores, vendor documentation, fiscal rules by country and store-inventory research."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does a physical store add to the architecture, and how do click-and-collect, ship-from-store, return-in-store and endless aisle work?",
+    "claim": "A store adds an order source, a stock location, a customer list and a payment path that must keep working offline and meet each country's fiscal rules. Click-and-collect, ship-from-store, return-in-store and endless aisle act on another channel's stock or orders, so all four need store stock sent to availability as events, net of a per-variant buffer, a location chosen by the order hub, and staff tools; a promise against store stock is committed only when staff confirm it.",
+    "disputed_by": "The view that a store is a sales channel with a till, that omnichannel services are features switched on in the platform or bought as 'unified commerce', and that the first step is to replace the stores' POS with the platform's own.",
+    "so_what": "In December 2026 Utrecht's click-and-collect pilot promised 37 items the store had already sold, because the platform read the ERP's nightly copy of store stock and the e-mail to the store was the only commitment. The interim fix (a two-unit threshold per variant, a staff confirmation and 'collection today, we confirm within two hours') costs nothing to build, and Waypoint's W4 decision defers the till choice to 2028, when availability and the order hub are in place and only the till product remains to choose. A merchant that accepts the claim decides who owns store stock and where the commitment sits before its first cross-channel promise, and chooses the till by its countries and the stores' share of sales.",
+    "how_why": "A till must keep selling when its connection drops, so for those hours the store is its own system of record and its sales reach the other systems late; and some countries prescribe how a sale is recorded (Germany requires a certified security device and sequential numbers), which can rule a POS product out. Store stock records are often wrong (65% of nearly 370,000 records in a 2008 study of 37 stores) and a nightly copy makes them older, so a promise at face value breaks; a buffer absorbs the lag and a person's confirmation catches the missing unit before the customer travels. Each service sends work to a location and hands it to staff, so availability, sourcing and staff tooling are needed whichever POS runs.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A store adds four things the architecture must model, each with a named owner: an order source, a stock location, a customer list and a payment path."
+      },
+      {
+        "id": "S2",
+        "claim": "Two constraints make a till a different product from a web checkout: it must keep selling offline, which makes the store its own system of record for those hours, and it must meet each country's fiscal rules, which can rule a POS product out."
+      },
+      {
+        "id": "S3",
+        "claim": "Click-and-collect, ship-from-store, return-in-store and endless aisle each act on another channel's stock or orders, so all four need the same three things: store stock sent to availability as events, a location chosen by the order hub, and tools for store staff."
+      },
+      {
+        "id": "S4",
+        "claim": "Store stock records are often wrong and a nightly copy makes them older, so store stock may be promised only with a buffer, a confirmation or a count behind it, and the commitment is the store's confirmation, not the online promise."
+      },
+      {
+        "id": "S5",
+        "claim": "The POS is chosen by the number of fiscal regimes and the stores' weight, and the joins come before the till: they are the same work whichever POS runs, which is why Waypoint's W4 defers the till to 2028."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Adds the store as a witness of stock and sales that works offline and under fiscal rules, and separates the promise against store stock from the commitment a person at the store makes.",
+    "supports": [
+      "P4-1",
+      "P4-3",
+      "P4-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to the body: the Store Stock Mirage and the deferred till decision first, then what a store adds and how the joins answer the Mirage"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages: four ways to connect stores on the same criteria, then by scale stage"
+      }
+    ],
+    "rationale": "The Utrecht pilot and W4 come first so that every later term arrives as part of the answer to 'why did the shop promise 37 items the store had already sold, and why not just change the till'. What a store adds, with its two constraints, comes next because the components, the services and the POS choices all refer to the store as order source, stock location, customer list and payment path, and the offline and fiscal rules are what later limit the platform's POS. How the pieces fit follows: the components and the four services need the store's four contributions, and the section ends on what store stock is worth as a promise and the interim fix, which closes the Mirage opened in the scene. The four ways to connect stores come after the joins, because the comparison is about which arrangement provides the joins and the fiscal and offline rules already explained; W4's deferral is named after the comparison table as its outcome, and the section ends on 'unified commerce', the vendor term under which the first two options are sold. The stages place the choices by scale; In Practice shows them with outside programs and documentation and ends on the Utrecht pilot before and after; the failures come last because every arrangement, the chosen one included, meets them. Moving the choices before the joins would compare tills before the reader knows what they must connect to; moving the store-stock evidence before the services would justify a buffer before the reader has met the promise it protects. The stages come before In Practice so that the examples can be read against a stage the reader already has."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A shopper brings a web order to a nearby store for an exchange. The store's point of sale (POS), its till software and hardware, must find the purchase, work out the amount paid and record the returned item; if the online platform holds those facts separately, staff may have to reconstruct the transaction by hand."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has returned an online purchase at a shop counter has seen the till either find the order at once or not at all; the previous chapter has just delivered Eva's jacket to her door from the warehouse.",
+      "to_topic": "A store is a second system with its own orders, stock, customers and payments, and the services that cross channels depend on what it tells the other systems and how fast."
+    },
+    "thesis_statement": {
+      "text": "A store adds an order source, a stock location, a customer list and a payment path that must keep working offline and meet each country's fiscal rules. Click-and-collect, ship-from-store, return-in-store and endless aisle act on another channel's stock or orders, so all four need store stock sent to availability as events, net of a per-variant buffer, a location chosen by the order hub, and staff tools; a promise against store stock is committed only when staff confirm it.",
+      "placement": "KEY POINTS callout and paragraph p04"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p05",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's Utrecht pilot, the Store Stock Mirage and the deferred till decision.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Show what a store adds to the architecture and its two constraints, offline operation and fiscal rules.",
+          "kept_in": [
+            "adds"
+          ]
+        },
+        {
+          "promise": "Show how the pieces fit, how the four cross-channel services work and what store stock is worth as a promise.",
+          "kept_in": [
+            "pieces"
+          ]
+        },
+        {
+          "promise": "Compare the four ways to connect stores, say what 'unified commerce' means, and show how the answer changes by scale stage.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Show the practice and the Utrecht pilot before and after, and how stores fail.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A shopper who brings a web order to a store for an exchange needs the till to find the purchase, the amount paid and the returned item; if the shop platform holds those facts separately, staff rebuild the transaction by hand, so a service that sounds simple needs systems to cooperate.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A web order brought to a nearby store for an exchange.",
+            "shows": "The chapter's problem in one case: the store needs facts that another system holds."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Separate store and online records work while each channel sells only its own stock; store pickup, shipping from a store or a counter exchange makes one channel act on another channel's stock or order, and those facts must arrive before the next commitment, or the merchant sells the same unit twice or refunds the wrong amount.",
+        "function": "explanation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The exchange at the counter that needs the online facts.",
+          "introduces": "When separate records are enough and the moment they stop being enough.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "So far Eva's order has stayed within one channel: her jacket travels from the Duiven warehouse to her Nijmegen door on a promise computed from the warehouse's cut-off and the carrier's lane; Kestrel & Pine's Nijmegen store could have offered other routes (pickup, dispatch from its shelf, a counter exchange from M to L), and this chapter explains what those routes would require.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "One channel acting on another channel's stock or order.",
+          "introduces": "Eva's order, delivered from the warehouse on a computed date, against the routes that would run through a store.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "A store adds an order source, a stock location, a customer list and a payment path that must keep working offline and meet each country's fiscal rules; the four cross-channel services all need store stock sent to availability as events net of a per-variant buffer, a location chosen by the order hub and tools for staff, and a promise against store stock is committed only when staff confirm it.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Eva's routes through a store and what they would require.",
+          "introduces": "The chapter's answer: what a store adds and what every cross-channel service needs.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's Utrecht pilot and its deferred till decision, then shows what a store adds and its two constraints, how the pieces fit and what store stock is worth as a promise, the four ways to connect stores and what 'unified commerce' means, how the answer changes with scale, the practice and the failures, with evidence from Kestrel & Pine's stores, vendor documentation, four countries' fiscal rules and store-inventory research; neighbouring chapters own available quantities, order coordination and customer records.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The answer stated in general.",
+          "introduces": "The order in which the chapter develops it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision",
+      "controlling_idea": "Kestrel & Pine's stores sell from a POS whose stock reaches the shop platform only through a nightly ERP copy, so the Utrecht click-and-collect pilot promised 37 items already sold, and Waypoint fixes what the store tells the other systems before changing the tills.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Gives the case the thesis answers: a promise from a nightly copy with no commitment, and a till decision deferred behind the joins."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The stores and their systems as they stood, the 2026 pilot, December's broken promises, then February 2027's decision, which says what the decision has in common; each step depends on the one before."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first promise: the Utrecht pilot and the deferred decision.",
+        "introduces": "Kestrel & Pine's stores as they stood in January 2027.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Kestrel & Pine's six stores hold about 1,800 variants each, produced €6.0 million from 118,000 transactions in 2026 (about €51 per receipt), and run a cloud POS chosen in 2019 with a separate card-terminal provider.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Six stores, 1,800 variants each, 118,000 transactions, €6.0 million, about €51 per receipt; a cloud POS since 2019 and a separate terminal provider.",
+              "shows": "The stores are a real channel with their own systems.",
+              "source": "scenario ledger, Stores and revenue table"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Store stock reaches the ERP once a night, and no integration connects the POS to the shop platform.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The stores' own POS.",
+            "introduces": "How, and how slowly, its stock reaches the other systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The Utrecht click-and-collect pilot relied on people: the shop platform checked last night's ERP copy of store stock and e-mailed the store, and staff checked the shelf and contacted the customer.",
+          "function": "description",
+          "organization": "process",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Store stock that reaches the shop platform only through a nightly copy.",
+            "introduces": "A pilot that promises store stock on that copy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "In December 2026 the pilot promised 37 items the store had already sold: the Store Stock Mirage, a stale-stock failure in which the shop platform accepted orders without knowing what the till had sold that day.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Store Stock Mirage: 37 promised items already sold, December 2026.",
+              "shows": "Promising from a nightly copy breaks promises.",
+              "source": "scenario ledger, incident 6"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The pilot's nightly copy and e-mail.",
+            "introduces": "What it produced in December.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "In February 2027 Noor Visser and Daniel Okafor considered replacing the POS with the shop platform's own till; Waypoint instead fixes what the store tells the other systems before committing to new tills: W1 makes the POS the owner of store stock sending changes as they happen to an availability service, W2 brings channel orders into a bought OMS with stores later, and W4 keeps the shop platform and evaluates its POS in 2028.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "W1, W2 and W4 as they bear on stores.",
+              "shows": "The joins are decided before the till.",
+              "source": "scenario ledger, Waypoint decisions"
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The Mirage.",
+            "introduces": "The obvious fix, a new till, and the decision Kestrel & Pine took instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "adds",
+      "heading": "What a Store Adds to the Architecture",
+      "controlling_idea": "A store adds four things the architecture must model (an order source, a stock location, a customer list, a payment path) and two constraints a web shop lacks: it must keep selling offline and it must meet each country's fiscal rules.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the store's four contributions and the two constraints that make a till a different product."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The whole list first, then why the two constraints matter, then each constraint in turn with its evidence and its consequence; the fiscal rule last because it leads straight to the POS choice."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "What the store tells the other systems.",
+        "introduces": "Everything a store adds to the architecture, and its two constraints.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "In plain words, a store adds four things the online architecture must take into account (a second order source, a stock location per store, a second customer list, a second payment path) and two constraints it has never had to live with (offline operation and fiscal rules).",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What the store adds, what it means for the architecture, and the chapter that owns each concept.",
+              "shows": "Each addition has an owner elsewhere in the book; the two constraints are this chapter's."
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The two constraints make a POS a different kind of product from a web platform: a web checkout can refuse to work when a dependency is down and a till cannot, and in some countries, Germany among them, a store sale must be signed by a certified device and numbered, so 'just use the platform's POS' is sometimes not available.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: a store and a web shop side by side, the store with an unplugged cable and an official seal.",
+              "shows": "A store is a second commerce system with two extra constraints."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two constraints in the table.",
+            "introduces": "Why they make a till a different product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "When a till loses its connection it may record sales locally and upload them later, so the merchant must know which sales it may accept, which payment results stay uncertain and how long records can wait.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first constraint, offline operation.",
+            "introduces": "What a till does without a connection.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Vendors document what their POS does offline: Shopify captures offline card payments after reconnection, with a daily limit and declines that surface only later, and Square's offline payments expire after 72 hours with the merchant responsible for them.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify help pages: offline card payments 'captured after your device reconnects', reconnect 'ideally within 24 hours'; Square: offline payments 'expire after 72 hours', 'You're responsible for any expired, declined, or disputed payments'.",
+              "shows": "Offline selling is real, limited and carries merchant risk.",
+              "source": "Shopify and Square help pages, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The questions an offline till raises.",
+            "introduces": "What two vendors document.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "For the hours a store is offline it is an independent system of record for sales and stock: its transactions need identifiers that never collide, its stock changes arrive late in a batch, the merchant carries the risk of a declined card, and any online promise against its stock is a guess.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Offline capture and its limits.",
+            "introduces": "What that makes the store for those hours.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Fiscalization is a legal requirement that every sale be recorded in a way the tax authority can verify; its form differs by country (Germany, Belgium, Italy, the Netherlands), and the differences decide which POS products can be used where.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Fiscal mandates for retail stores in Germany, Belgium, Italy and the Netherlands, with mechanisms, dates and sources.",
+              "shows": "Germany requires a certified TSE and sequential numbers, Italy telematic receipts; Belgium's registered register is for hospitality only; the Netherlands has no certified register.",
+              "source": "§ 146a AO, KassenSichV; FPS Finance GKS; Agenzia delle Entrate 2019; Belastingdienst"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first constraint, offline operation.",
+            "introduces": "The second, fiscal rules.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "For Kestrel & Pine the fiscal point is specific: its Dutch stores and Antwerp face no certified-register mandate, but a first German store would need a POS with a registered TSE, so a store opening in a new country is a POS decision as much as a logistics one.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The fiscal table.",
+            "introduces": "What it means for Kestrel & Pine's stores and a German one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "heading": "How the Pieces Fit Together",
+      "controlling_idea": "The four cross-channel services are the same three problems (availability, sourcing, staff tooling) solved against store stock, and because store stock records are often wrong and a nightly copy older, the online promise needs a buffer and the store's confirmation is the commitment.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Shows what all four services need and why a promise against store stock is committed only by the store."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "assertion_evidence_reasoning",
+            "applies_to": "p23 to p29: the commitment at the store's confirmation, the evidence on store stock records, then the ways to make the promise honest and the interim fix"
+          }
+        ],
+        "rationale": "The landscape as it is and as it should be, then the four services and their shared problems, then the click-and-collect flow where the commitment sits, then the evidence that justifies the buffer and the confirmation, ending on Utrecht's interim fix."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The four things a store adds and its two constraints.",
+        "introduces": "How they connect to the rest of the landscape, now and in the target.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Kestrel & Pine's January 2027 landscape is the shape many Growing-stage merchants have when they open stores: a POS chosen for the stores, an ERP as the meeting point, and the shop platform on the other side of a nightly copy.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: Kestrel & Pine's stores in January 2027.",
+              "shows": "A till sale reaches the shop platform a day later via the ERP, and a collection order never reaches the POS."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The target shape differs in two places, store stock as events into one availability calculation and every store order through one order hub, and gives each component (POS, terminal provider, availability service, OMS, staff tooling, customer record) one responsibility and one owned record; these connections between the store and the other systems are what the chapter calls the joins.",
+          "function": "description",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Components, responsibilities, what each owns and the state at Kestrel & Pine.",
+              "shows": "Each fact has one owner: the POS store stock and transactions, the availability service the available-to-promise number, the OMS the operational order."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The January 2027 landscape.",
+            "introduces": "The target and its components.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Click-and-collect, ship-from-store, return-in-store and endless aisle differ in where the order is placed, which stock is used and where the goods are handed over, and each needs specific things from the architecture.",
+          "function": "definition",
+          "organization": "classification",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four services: order placed, stock used, handover and what each needs.",
+              "shows": "Vendors' several names map to four services with concrete needs."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The target components.",
+            "introduces": "The services they serve, vocabulary first.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Each service is a promise against stock somewhere else, and all four are the same three problems in a different order (availability, sourcing, staff tooling), with requirements for freshness, consistency, speed and offline behaviour that differ by service.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Requirements per flow: freshness of store stock, consistency, speed, behaviour when the link is down.",
+              "shows": "Minutes-old stock, one refund, confirmation before 'ready' and a fallback for each flow."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Four services and their needs.",
+            "introduces": "The three problems they share and how the requirements differ.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "With the OMS and the availability service in place, click-and-collect runs from till sales as stock events through a buffered promise and an order the hub routes to the store; the storefront's 'available for collection' is the promise, the store's 'picked and confirmed' is the commitment, and the customer hears 'ready' only after the second, the order the Utrecht pilot lacked.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: click-and-collect with the joins in place.",
+              "shows": "The confirmation, not the stock number, turns the promise into 'ready'."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The three shared problems.",
+            "introduces": "One service, click-and-collect, traced through the target.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Store inventory records are wrong far more often than people assume: DeHoratius and Raman found 65% of nearly 370,000 records from 37 stores inaccurate, and because the data come from one US retailer before RFID, the reader should take the mechanism rather than the number.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "65% of nearly 370,000 inventory records from 37 stores of one retailer inaccurate (Management Science, 2008).",
+              "shows": "Store stock at face value is often wrong.",
+              "source": "DeHoratius and Raman 2008"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A promise with a buffer and a store confirmation.",
+            "introduces": "Why both are needed: what store stock records are worth.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Auburn's 2018 RFID study found barcode-based order audits wrong in 69% of cases against under 0.01% with RFID; both sources are old and nothing newer with an open method was found.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "69% of audited orders with barcode-data errors against under 0.01% with RFID (Auburn RFID Lab, Project Zipper, 2018).",
+              "shows": "Item-level counting changes accuracy, and records without it are often wrong.",
+              "source": "Retail Dive on Auburn University RFID Lab, 2018"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One old study and the warning about its age.",
+            "introduces": "A second, on what RFID changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "There are four ways to make a store-stock promise honest, in rising order of cost: a per-store safety threshold, a confirmation step, exception-driven cycle counting and RFID.",
+          "function": "recommendation",
+          "organization": "classification",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Store records that are often wrong.",
+            "introduces": "The ways to promise against them honestly.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Kestrel & Pine's interim fix for Utrecht, until the availability service arrives, is the first two (a threshold of two units per variant per store and a staff confirmation before 'ready'), which costs nothing to build and would have prevented most of the 37.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: the Store Stock Mirage and its interim fix.",
+              "shows": "A buffer and a confirmation catch the missing unit before the shopper travels.",
+              "source": "scenario ledger, stores-and-omnichannel line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The four ways.",
+            "introduces": "The two Kestrel & Pine applies at Utrecht.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "A merchant with stores has four realistic ways to connect them (the platform's POS, a specialist POS by events through the order hub, a specialist POS by nightly batch through the ERP, the ERP's POS), and chooses by the number of fiscal regimes and the weight of the stores; 'unified commerce' is the goal state either of the first two reaches.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Compares the arrangements that can provide the joins and gives the rule that decides between them, with W4 as its outcome."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Each option with its evidence and limits, the table across all four, the rule and Kestrel & Pine's place, then the vendor term the options are sold under."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The joins every service needs and Utrecht's interim fix.",
+        "introduces": "The four arrangements that can provide them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "controlling_idea": "A merchant with stores has four realistic ways to connect them to the rest of the landscape, each a real product category and each right somewhere.",
+          "function": "claim"
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The platform's own POS puts the till on the web platform's back end with one catalog, one stock record per location, one order list and one customer list, as Shopify's POS pages describe and the Dutch vendor Vendit promises from the POS side, so the joins disappear.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify POS pages: pickup in store, ship to customer, staff roles, returns at any location; POS Pro €79 per location per month.",
+              "shows": "A real product offers the one record.",
+              "source": "Shopify, accessed November 2026"
+            },
+            {
+              "kind": "quotation",
+              "what": "'if you sell the last item at the till, the article is immediately at zero in your webshop' (translated).",
+              "shows": "One database removes the stock lag.",
+              "source": "Vendit, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four ways.",
+            "introduces": "The first, the platform's POS.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "The platform's POS must be available and fiscally certified in every country the merchant has stores in, inherits the platform's offline rules and couples the tills to the platform contract.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The joins that disappear.",
+            "introduces": "What the first option costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "A specialist POS integrated by events through the order hub keeps a store-grade till and connects it by three integrations (stock events, store receipts into the OMS, fulfillment orders to a store app); this is where Waypoint takes Kestrel & Pine, at the cost of three contracts and their reconciliation.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The first option and its limits.",
+            "introduces": "The second.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A specialist POS integrated by nightly batch through the ERP is Kestrel & Pine's January 2027 state, and it works until someone promises store stock outside the store, when it produces the Mirage.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The same POS connected by events.",
+            "introduces": "Connected by a nightly batch.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The ERP's POS makes store stock, store sales and the books one record, which suits a wholesaler with outlet stores better than a brand whose stores are growing.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four options compared on store stock online, store orders, fiscal coverage, offline, integrations, exit cost and best fit.",
+              "shows": "No option wins on every row; each fits a stage and a shape."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Three options.",
+            "introduces": "The fourth, and the comparison of all four.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The author's rule is to choose by the number of countries and the weight of the stores, not by the vendor's demo; Kestrel & Pine sits between (six stores, two countries, 12.5% of revenue, lenient fiscal regimes), which is why W4 defers the till to 2028, when the question has shrunk to 'which till'.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Six stores in two countries, 12.5% of revenue (€6.0M of €48.0M); W4's 2028 evaluation.",
+              "shows": "Kestrel & Pine's position on the rule.",
+              "source": "scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table.",
+            "introduces": "The rule that decides, and where Kestrel & Pine sits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "'Unified commerce' is a vendor term for online and store operations sharing core systems or records, and Shopify and Adyen define it differently; no independent analyst definition was obtained.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Shopify's 2026 definition (sales channels, inventory and customer data on one back end) and Adyen's (online and in-person payments on one platform with shopper recognition).",
+              "shows": "The term means what its seller sells.",
+              "source": "Shopify 2026; Adyen, accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Options sold as one platform or as connected parts.",
+            "introduces": "The term both are sold under.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "The author uses 'unified commerce' for the goal state (one record per order, stock unit and customer, visible to every channel in near real time), reachable with one platform or with an OMS and an identity layer, and the reader should ask a vendor which they mean.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Vendors' definitions.",
+            "introduces": "The author's: a goal state, not a product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The store joins the architecture at the Growing stage with the first omnichannel promise, so store-stock ownership is decided before that promise, and the POS itself changes only when a new country's fiscal rules or the stores' weight demand it.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5",
+          "S4"
+        ],
+        "how": "Places the joins and the till decision by scale, and says when the till must change."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The rule that chooses the POS by countries and the stores' weight.",
+        "introduces": "How that rule plays out stage by stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Across the four stages, the store joins the architecture at Growing with the first omnichannel promise, the cheapest moment to decide who owns store stock is before that promise, and the POS changes only for a country whose fiscal rules it cannot meet or when the stores' weight justifies one record; Kestrel & Pine has reached the first point with its joins and not the second with its till.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Stages: what is typical, what becomes necessary and the warning signs of outgrowing it.",
+              "shows": "The joins become necessary at Growing; the till changes later, if at all."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Outside programs and documentation show the joins at work (a store-stock feed for ship-from-store, store orders that keep their own identifiers, routing separate from stock deduction, a terminal kept out of card scope), and the Utrecht pilot before and after shows the commitment moving to the store's confirmation.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows each join in real products and in Kestrel & Pine's pilot."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The ownership question first (whose sale it is), because every later example assumes it is settled; then one topic per bold lead (marketplace ship-from-store, store orders, routing, payments), each a claim with its evidence, then the worked Utrecht example that applies them."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The stages and Kestrel & Pine's position.",
+        "introduces": "The joins in practice, starting with the ownership question every store service raises.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Before a store ships its first web order the merchant must settle whose sale it is (whether the revenue and any later refund count for the store or the web shop); the only open adoption figures are old and UK-weighted (27% of European retailers using stores for online fulfilment in 2016; 47% of UK stores offering click-and-collect in 2018), and their lasting finding is that store managers did not know whether online refunds came off their sales.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "UPS 2016: 27%; Savills 2018: 47% click-and-collect, about one in ten ship-from-store, nearly one in three managers in one category unsure how online refunds were booked.",
+              "shows": "Adoption history, and an ownership question that remains.",
+              "source": "UPS 2016 via Post & Parcel; Savills 2018"
+            }
+          ]
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Zalando's Connected Retail let shops ship marketplace orders from store stock (more than 3,400 stores in 2021) and ends by June 2027, showing that ship-from-store works with a proper stock feed and return path and that a merchant's own store-stock feed survives a program's end.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Zalando Connected Retail: 3,400 active stores in nine markets in early 2021; ending by the end of June 2027.",
+              "shows": "Ship-from-store at scale, and programs retire.",
+              "source": "FashionUnited 2021; TextilWirtschaft 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The ownership question to settle before a store ships a web order.",
+            "introduces": "Ship-from-store at scale on a marketplace.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A common order model can carry store and web sales into finance only if it keeps the identifiers specific to each channel, such as the receipt number and the staff member.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Store stock exposed to a marketplace.",
+            "introduces": "Store orders in the merchant's own order model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "Microsoft's Business Central connector maps Shopify POS orders' staff identifier to a salesperson: on a platform with its own POS a store sale travels to the ERP like a web order, while a separate POS needs an import that carries the store's own identifiers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Microsoft Learn, Shopify connector for Business Central (an ERP product), 14 October 2026: POS orders carry a staff identifier.",
+              "shows": "The store's identifiers travel with the order.",
+              "source": "Microsoft Learn 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Orders that keep their channel identifiers.",
+            "introduces": "One documented case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Routing chooses the location that prepares an order and must weigh available stock and the promise before it becomes an instruction to do the work.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Store orders in the order model.",
+            "introduces": "Which location does the work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Adobe Commerce, Shopify and Kibo show a ladder from simple routing rules in the platform to an explainable routing decision separate from the deduction of stock, which is the OMS's job once stores, cost and capacity enter the rule.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Adobe Commerce source priority and distance rules; Shopify's fulfillment order whose location can change only before work starts; Kibo's routing suggestion that 'does not create shipments or deduct inventory'.",
+              "shows": "Routing and stock deduction are separate steps in documented products.",
+              "source": "vendor documentation, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Routing as a decision.",
+            "introduces": "How three products implement it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A point-to-point encrypted, semi-integrated terminal keeps the POS out of PCI DSS scope, and the terminal provider's transaction reference on the receipt later matches the payout file.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Stock and orders.",
+            "introduces": "The store's payment path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The Utrecht pilot before and after: from a promise at order placement on an ERP copy up to a day old, to a two-unit threshold and staff confirmation from April 2027, to POS stock events and a fulfillment order in the store app from Q4 2027.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "December 2026, interim fix from April 2027 and target from Q4 2027: stock seen, promise shown, how the store learns, commitment, broken promises, handover receipt.",
+              "shows": "The commitment moves from order placement to the store's confirmation.",
+              "source": "scenario ledger, stores-and-omnichannel line; labelled assumptions"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The joins in other merchants' programs, products and payment paths.",
+            "introduces": "Kestrel & Pine's own pilot, worked.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "The €0 till sale makes the collection order exist three times (Schrödinger's Order with a store in it), and the interim promise is deliberately weaker than the original because a window kept every time beats 'today' broken.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The worked table.",
+            "introduces": "Two of its details explained.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Stores fail in ways online systems do not (a race for the last unit, duplicate offline uploads, a silent nightly job, a double refund at the counter, a different store price, unlinked customers, a fiscal rule met too late), and each has a detection and a recovery that rests on the joins.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows each store contribution and constraint failing, and the join that recovers it."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The Utrecht pilot working with a buffer and a confirmation.",
+        "introduces": "The ways stores still fail.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "form": "list",
+          "controlling_idea": "Seven store failures, each with how to notice it and how to recover: the till and the web sell the same last unit; offline replay creates duplicates; the nightly job fails silently; return-in-store refunds twice; the store charges a different price; the loyalty list and the web account never meet; a fiscal rule arrives with a store.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund (212 returns, €19,400, January 2027) and the Price Drift (€179 against €199, October 2026) in their store versions; Eva as the Familiar Stranger.",
+              "shows": "Kestrel & Pine's incidents recur at the counter.",
+              "source": "scenario ledger, incidents 3, 4 and 9"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The opening's exchange at the counter, the Utrecht Mirage and the deferred till decision have one answer: what makes a store work with the other channels is what it tells them and how fast, not which till it runs. Store stock as events net of a buffer, store orders recorded in one hub, one refund path and a person's confirmation as the commitment are the same joins under every POS option, so they come first and the till follows the countries and the stores' weight.",
+    "so_what": "A merchant can decide who owns store stock and where the commitment sits before its first cross-channel promise, at no build cost (a threshold and a confirmation), and leave the till choice until the joins are in place, as Kestrel & Pine does with W4's 2028 evaluation.",
+    "callback": {
+      "to": "The opening's shopper who brings a web order to a store for an exchange.",
+      "how": "The first paragraph of the conclusion says what the till needs to serve that shopper and that each need is a join, not a till feature."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Name the owner of store stock and the age of the copy the storefront promises from, put a threshold and a confirmation in front of the first collection promise, settle one refund path per order, check each country's fiscal rules before a lease, and take the eight questions to your own company."
+    },
+    "hand_off": {
+      "to": "returns-and-exchanges",
+      "relationship": "time",
+      "carries_over": "A web order brought back to a store counter, and the one refund path per order that a return at the till requires.",
+      "introduces": "The return as it travels back through the portal, the carrier, the warehouse bench, the payment provider and the ERP, and the event on which money, stock and books each move."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and the join that recovers each.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p47",
+        "controlling_idea": "The opening's exchange at the counter works when the till finds the web order, the refund has one path and the promised stock was there; each is a join rather than a till feature, the same joins Utrecht lacked and every POS option needs, which is why Kestrel & Pine fixes them first and leaves the till to 2028.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's exchange set against the chapter's answer.",
+            "shows": "The reader can say what the till needs and why the joins come before the till."
+          }
+        ]
+      },
+      {
+        "id": "p48",
+        "form": "list",
+        "controlling_idea": "Established: the POS is a system of record for store transactions and, offline, for store stock; store records are far less accurate than assumed; fiscalization differs by country and constrains the POS; routing is separate from stock deduction and a fulfillment order binds work to a location.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the evidence establishes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p49",
+        "form": "list",
+        "controlling_idea": "Depends on context: the platform's POS against a specialist POS by the stores' weight and fiscal regimes; how much a click-and-collect or ship-from-store promise needs before an availability service; whether store sales enter the OMS from day one.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What changes with the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: fix what the store tells the other systems, and how fast, before changing the till, and promise only what a person has confirmed.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's own judgement.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find, in their own company, the owner of store stock and the age of its copy, the till's offline rules, the fiscal fit per country, the moment of commitment, how store receipts reach the order record, the refund paths, the price source and the tills' exit cost.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The take-aways.",
+          "introduces": "The questions to ask at the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p52",
+        "controlling_idea": "A web order brought back to a store counter needs one refund path per order; the next chapter follows the return after that, as it travels through the portal, the carrier, the warehouse bench, the payment provider and the ERP, and the event on which money, stock and books each move.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "time",
+          "carries_over": "The questions, the last of which counts the refund paths.",
+          "introduces": "What happens to a return after it leaves the counter or the customer's door.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The availability calculation, buffers per channel and oversell mechanics in general.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "The order state machine and the OMS as a product category.",
+      "covered_in": [
+        "order-management"
+      ]
+    },
+    {
+      "topic": "Return policies, dispositions and refund reconciliation; only return-in-store's refund-path risk is covered here.",
+      "covered_in": [
+        "returns-and-exchanges"
+      ]
+    },
+    {
+      "topic": "Customer matching and the golden record; this chapter only names the join keys a store can offer.",
+      "covered_in": [
+        "identity-and-master-data"
+      ]
+    },
+    {
+      "topic": "Terminal payments, settlement and payout reconciliation; PCI scope in depth.",
+      "covered_in": [
+        "commerce-payments",
+        "commerce-security"
+      ]
+    },
+    {
+      "topic": "The regulatory calendar as a practice.",
+      "covered_in": [
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "Marketplace programs that use store stock as a channel business.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-07",
+      "decision": "Chose the Store Stock Mirage and the deferred POS decision (W4) as the spine rather than a feature tour of POS products, because the chapter's job is to show how a store joins the architecture, and the deferral is the clearest example of 'fix the joins before the till'."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Framed the four omnichannel services as three shared problems (availability, sourcing, staff tooling) rather than four separate how-tos, so that a newcomer sees one design rather than four features."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Included a country fiscalization table even though Kestrel & Pine has no German store, because fiscal rules are the strongest reason the platform's POS is sometimes not an option, and a German store is the realistic next step for the fictional merchant."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept the Three-Status Order and the Double Refund as cross-references only; their full treatment belongs to chapters 13, 18 and 19."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json, reconstructed from the published chapter one paragraph per unit. Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role copied unchanged from the journal spec; supporting claims S1 to S5 written for this post. Of the old spec.md's eight success criteria: the first (every term defined from the chapter alone) is left to the standard known_before_new check rather than kept as a criterion; the second (business problem before any component) is met by the section order and dropped as a criterion; the fourth and fifth are carried by AC-1 and AC-2; the third, sixth and seventh were inventories of tables, diagrams and sections and are dropped; the eighth (no vendor presented as the answer) is carried by p38 and p39 and dropped as a criterion. No criteria were added beyond the journal spec's.",
+      "rejected": [
+        "Keeping the terms criterion as a minor known_before_new criterion (the standard check already runs on every draft).",
+        "Keeping inventory criteria."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Set length.max_words to 6,500, the journal's cap in _research/WRITER-BRIEF.md; the old spec.md named no limit of its own. The published chapter counted 5,769 words.",
+      "rejected": [
+        "Setting the limit to the published length (the journal cap is the old limit in force)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added units the contract asks for and the published chapter lacked: p03 states the thesis (it replaces the old third paragraph, whose roadmap and cross-references move to p05), p05 is the roadmap announcing every section, and p51 opens the conclusion with a synthesis and a callback to the opening's exchange at the counter. p04 ('Where we are') now picks up the journal spec's transition_in (contrast with Eva's parcel delivered from Duiven); p56 (the hand-off) carries the one refund path per order into the returns chapter, as that chapter's transition_in declares."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Where the text means Kestrel & Pine's hosted product it says 'the shop platform' (book-wide vocabulary); 'the platform's POS' stays as the generic product category of choice 1.",
+      "rejected": [
+        "Renaming the generic category too."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Closed the old open question on Antwerp's receipt rules: consistency ruling 5 and the stores-and-omnichannel ledger line settle that Antwerp follows general Belgian VAT receipt and seven-year record-keeping rules and that the registered cash register applies to hospitality only."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes) notes taken; the author asked for the rubric notes to be taken without review: 'Where we are' moved before the thesis paragraph (hook, bridge, thesis, roadmap); the one-sentence paragraph after the Waypoint list merged into the list's lead; the click-and-collect flow and 'where the commitment sits' merged into one paragraph; the 65% study and its caveat merged; Vendit merged into the platform-POS option; routing glossed where the flow first uses it. Transitions rewritten for each move; paragraphs renumbered p01 to p52.",
+      "rejected": [
+        "Moving the routing evidence out of In Practice (vendor evidence stays with the practice).",
+        "Cutting the overlap between the conclusion's first paragraph and the author's synthesis list."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the missing post-2020 adoption figure and the missing analyst definition of unified commerce stay as the page states them: the 2016 and 2018 surveys labelled as history and every definition attributed to its vendor, as the cited sources support (rule 2). Both former open questions are closed.",
+      "rejected": [
+        "Adding a figure or definition without a cited source."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the adoption paragraph moves to open 'In Practice' and leads with 'whose sale is it' (rule 3: flow readers in rounds 1 and 2 both found it out of place at the end of the section and both round-1 readers asked for it at the start); Zalando's lead and transitions rewritten; paragraphs renumbered.",
+      "rejected": [
+        "Moving it into 'Across Scale Stages' (asked by one reader only)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the worked Utrecht table stays at the end of 'In Practice' and the store-stock evidence stays after the services tables (rule 10: in round 2 one flow reader asked to move each and the other said the current place was right).",
+      "rejected": [
+        "Moving the worked table next to the interim fix.",
+        "Moving 'What store stock is actually worth' before the requirements table."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the remaining first flow-rubric notes are settled by glosses rather than moves (rule 6): routing is glossed where Figure 3 first uses it, 'the joins' is named in p19 and no longer used before it, endless aisle is glossed in p04, the price thread names the stores and the list price. The other rubric notes (moving the €0 sale and the weaker promise, folding the two services tables, trimming the worked table) were not asked for by two readers and are not made.",
+      "rejected": [
+        "Further reordering without corroboration."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round (round 3, escalate: 16 passed, 22 failed, 12 of them minor), cheap fixes applied without another round: p03 opens from 'one channel' to contrast with the routes through a store; p05 announces the kinds of evidence (AC-4's spec fault: the roadmap now carries it, idea updated); p37 says what 'whose sale' decides, opens the section from the joins, and says what its last finding shows; p38's transition relabelled sequence (the Zalando case is ship-from-store at scale, not an answer to the ownership question); the routing ladder sentence split so 'which' is no longer ambiguous; the worked table's lead points back to the interim fix; 'When It Goes Wrong' opens from the working pilot; W4 reworded. The remaining corroborated point, the worked Utrecht table at the end of 'In Practice' (both round-3 readers asked to move it next to the interim fix; in round 2 one reader endorsed its place), stays by rule 10 because readers of successive rounds asked for opposite moves.",
+      "rejected": [
+        "A fourth round (the brief allows none).",
+        "Moving the worked table (rule 10)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine and _research/scenario-ledger.md",
+      "contributed": "The store facts, the Store Stock Mirage, W1, W2 and W4, the stores-and-omnichannel line (Utrecht pilot, €0 sale, interim fix, 'which till' framing, Antwerp's receipt rules)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/consistency-issues.md, ruling 5",
+      "contributed": "Antwerp follows general Belgian VAT receipt rules; GKS is a hospitality obligation."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (stores-and-omnichannel entry; returns-and-exchanges transition_in)",
+      "contributed": "Intent, thesis, role and acceptance criteria; the opening's contrast and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "inventory-and-availability",
+      "contributed": "The availability service and buffer vocabulary the chapter relies on."
+    },
+    {
+      "kind": "internal",
+      "ref": "order-management",
+      "contributed": "The OMS, sourcing and the fulfillment order."
+    },
+    {
+      "kind": "internal",
+      "ref": "identity-and-master-data",
+      "contributed": "The Familiar Stranger and store customer matching."
+    },
+    {
+      "kind": "internal",
+      "ref": "returns-and-exchanges; commerce-payments",
+      "contributed": "The refund path and terminal settlement."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-marketplaces-channels-pos.md (Parts 4 and 5) and _research/brief-inventory-fulfillment-returns.md (Parts 1–3)",
+      "contributed": "The verified vendor, regulatory and research facts."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify, Square, Lightspeed, Vendit, Adyen product and help pages, accessed November 2026",
+      "contributed": "POS features, offline rules, unified-commerce definitions."
+    },
+    {
+      "kind": "external",
+      "ref": "§ 146a AO and KassenSichV (Germany), FPS Finance GKS pages (Belgium), Agenzia delle Entrate 2019 release (Italy), Belastingdienst brochure (Netherlands)",
+      "contributed": "Fiscalization."
+    },
+    {
+      "kind": "external",
+      "ref": "DeHoratius and Raman, Management Science, 2008; Auburn RFID Lab 2018 via Retail Dive",
+      "contributed": "Store inventory accuracy."
+    },
+    {
+      "kind": "external",
+      "ref": "UPS 2016 and Savills 2018 surveys",
+      "contributed": "Adoption history."
+    },
+    {
+      "kind": "external",
+      "ref": "TextilWirtschaft 2026 and FashionUnited 2021",
+      "contributed": "Zalando Connected Retail."
+    },
+    {
+      "kind": "external",
+      "ref": "Adobe Commerce, Shopify, Kibo and Microsoft Learn documentation (2026)",
+      "contributed": "Routing to stores, the fulfillment order, POS orders in the ERP connector."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3 (escalate: 16 passed, 22 failed, 12 minor; one spec fault, AC-4's evidence not announced by the roadmap). Cheap fixes applied afterwards to p03, p05, p37, p38 (transition), p42, p44, p46 and W4 in p10. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Open questions resolved by the author's standing instruction (RESOLVE rules 2, 3, 6 and 10): adoption paragraph moved to open 'In Practice'; open_questions emptied; decisions logged. Confirming round follows."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (revise: 17 passed, 15 failed, 9 minor). Named units revised: endless aisle glossed in p04; the four unlinked customer lists named in p19's table (ledger, the Familiar Stranger); the P2PE paragraph (p42) split into three plain sentences; p43 leads with 'whose sale is it' (idea and transition rewritten to match; heading label 'Whose sale is it'); the Price Drift failure names the Dutch and Belgian stores and the €199 list price; p33 gives the €48.0 million total behind 12.5%. Zalando's lead sentence links it to the ownership paragraph; Noor Visser's role given."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (revise: 16 passed, 16 failed, 3 minor). Named units revised: store cities moved from p07 to p06; KEY POINTS name the Mirage as Kestrel & Pine's case of the Phantom Stock and no longer use 'the joins' before p19; p04 glosses the order hub as the OMS; W4 says the shop platform's own POS; p17 points to the table's own source column; the requirements table's cells answer their columns; p33's fiscal phrase made plain; p36 names its two moments; p43 opens with its transition; p44 drops the unexplained '(local detail)' label; p45 uses the ledger's 37 in a month instead of 'once in thirty'."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis and role copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over; thesis paragraph (p03), roadmap (p05) and conclusion synthesis (p51) added; p04 and p56 aligned with the journal spec's transitions. Status draft. Flow rubric (sound with notes): intro reordered (bridge before thesis); p11 merged into p10, p24 into p23, p26 into p25, p32 into p31; paragraphs renumbered. Second flow rubric (sound with notes): 'the joins' named in p19, p12's German case marked as an example, rationale corrected; no order change."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document references rephrased."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences, SaaS/RFID/PCI DSS/ELSTER defined at first use, KassenSichV amendment date verified, source headings normalized."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

@@ -14,8 +14,8 @@ logo: "assets/images/17-stores-and-omnichannel/logo.jpeg"
 > **KEY POINTS:**
 >
 > * **A store is a second system of record, not a sales channel.** It creates orders, holds stock, knows customers and takes money, often while offline and under fiscal rules of its own. The architecture has to model it as a stock location, an order source and an identity source, each with a named owner.
-> * **Store stock may be promised only with a buffer, a confirmation or a count behind it.** The classic field study found about two-thirds of store inventory records wrong, and a nightly copy makes a wrong number older. The Store Stock Mirage is what promising at face value from a nightly copy produces.
-> * **"Unified commerce" is a goal state, not a product.** One record per order, per stock unit and per customer across channels can be reached with one platform or with an order management system and an identity layer over several. Which path fits depends on the scale stage, which is why Kestrel & Pine fixed the joins first and deferred its point-of-sale decision to 2028.
+> * **Store stock may be promised only with a buffer, a confirmation or a count behind it.** The classic field study found about two-thirds of store inventory records wrong, and a nightly copy makes a wrong number older. The Store Stock Mirage, Kestrel & Pine's case of the Phantom Stock pattern below, is what promising at face value from a nightly copy produces.
+> * **"Unified commerce" is a goal state, not a product.** One record per order, per stock unit and per customer across channels can be reached with one platform or with an order management system and an identity layer over several. Which path fits depends on the scale stage, which is why Kestrel & Pine first fixed what its stores tell the other systems and deferred its point-of-sale decision to 2028.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -28,27 +28,27 @@ A shopper brings a web order to a nearby store for an exchange. The store's **po
 
 Separate store and online records can work while each channel sells only its own stock; a nightly report may be enough for finance. Store pickup, shipping from a store or exchanging a web order at the till creates a new dependency. **One channel now acts on another channel's stock or order.** Those facts must arrive before staff or software make the next commitment, or the merchant can sell the same unit twice or refund the wrong amount.
 
-The chapter explains those cross-channel services, the limits of store stock records and the choice between a platform's own POS and a separate product. [[inventory-and-availability]] covers sellable quantities, [[order-management]] coordinates orders, and [[identity-and-master-data]] links customer records.
+**Where we are in the order's journey.** So far Eva's order has stayed within one channel. Her jacket from Kestrel & Pine, the fictional outdoor brand, travels from the Duiven warehouse to her Nijmegen door, on a date computed from the warehouse's cut-off and the carrier's lane. The company's Nijmegen store could have offered other routes: pickup, dispatch from its shelf or a counter exchange from M to L. This chapter explains what those routes would require.
 
-**Where we are in the order's journey.** Eva's jacket from Kestrel & Pine, the fictional outdoor brand, travels from the Duiven warehouse to her Nijmegen home. The company's Nijmegen store could offer alternatives: pickup, dispatch from its shelf or a counter exchange from M to L. This chapter explains what those alternatives would require.
+The answer starts with what a store is. **A store adds an order source, a stock location, a customer list and a payment path, and it must keep selling offline and meet each country's fiscal rules.** Click-and-collect, ship-from-store, return-in-store and endless aisle (a store selling goods it does not hold, delivered from elsewhere) all need the same three things: store stock sent to the availability service as events, minus a buffer per variant; a location chosen by the order hub, the order management system (OMS); and tools for store staff. A promise against store stock becomes a commitment only when someone in the store confirms it.
+
+The chapter starts with Kestrel & Pine's Utrecht pilot and its deferred till decision. It then shows what a store adds and its two constraints, how the pieces fit together and what store stock is worth as a promise, the four ways to connect stores and what "unified commerce" means, and how the answer changes with scale; it ends with practice and with the ways stores fail. The evidence comes from Kestrel & Pine's stores, vendor documentation, the fiscal rules of four countries and research on store inventory accuracy. [[inventory-and-availability]] covers sellable quantities, [[order-management]] coordinates orders, and [[identity-and-master-data]] links customer records.
 
 ## Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision
 
-Kestrel & Pine's six stores hold about **1,800 variants each**. Their **118,000 transactions** produced **€6.0 million** in 2026, about **€51 per receipt**. They use a cloud POS chosen in 2019 and a separate card-terminal provider.
+Kestrel & Pine's six stores, in Arnhem, Utrecht, Amsterdam, Nijmegen, Eindhoven and Antwerp, hold about **1,800 variants each**. Their **118,000 transactions** produced **€6.0 million** in 2026, about **€51 per receipt**. They use a cloud POS chosen in 2019 and a separate card-terminal provider.
 
-Stock reaches the **enterprise resource planning system (ERP)**, which runs finance and purchasing, once a night. **No integration connects the POS to the online platform.** The stores are in Arnhem, Utrecht, Amsterdam, Nijmegen, Eindhoven and Antwerp.
+Stock reaches the **enterprise resource planning system (ERP)**, which runs finance and purchasing, once a night. **No integration connects the POS to the shop platform.**
 
-The Utrecht **click-and-collect** pilot lets a customer order online and collect at the counter. In 2026 it relied on people: the platform checked last night's ERP stock copy and emailed the store. Staff checked the shelf and contacted the customer.
+The Utrecht **click-and-collect** pilot lets a customer order online and collect at the counter. In 2026 it relied on people: the shop platform checked last night's ERP stock copy and emailed the store. Staff checked the shelf and contacted the customer.
 
-In December, **37 promised items had already sold** before the nightly update. This **Store Stock Mirage** is a stale-stock failure: the platform could accept an order without knowing what the till had sold that day.
+In December, **37 promised items had already sold** before the nightly update. This **Store Stock Mirage** is a stale-stock failure: the shop platform could accept an order without knowing what the till had sold that day.
 
-In February 2027, Noor Visser and operations head Daniel Okafor considered replacing the POS with the platform's own till. Their **Waypoint** improvement program instead repairs the information flow first:
+In February 2027, head of engineering Noor Visser and operations head Daniel Okafor considered replacing the POS with the shop platform's own till. Their **Waypoint** improvement program instead repairs the information flow first, fixing what the store tells the other systems before committing to new tills:
 
 - **W1:** make the POS authoritative for store stock and send changes as they happen. An availability service calculates what each channel may sell.
 - **W2:** bring channel orders into a purchased **order management system (OMS)**, adding stores later.
-- **W4:** keep the hosted platform and evaluate its POS in 2028.
-
-This sequence fixes what the store tells the other systems before committing to new tills.
+- **W4:** keep the shop platform, and evaluate the till its vendor sells in 2028.
 
 ## What a Store Adds to the Architecture
 
@@ -63,7 +63,7 @@ In plain words, a store adds four things the online architecture must now take i
 | **Offline operation** (constraint) | The store must keep selling when the connection drops; for those hours it is its own system of record, reconciled later | this chapter |
 | **Fiscal rules** (constraint) | Some countries prescribe how a sale is recorded and what a receipt must contain, down to a signed transaction counter | this chapter, [[commerce-regulation]] |
 
-The two constraints make a POS a different kind of product from a web platform. A web checkout can refuse to work when a dependency is down; a till cannot. A web order can be a row in a database; in Germany a store sale must be signed by a certified security device and carry a sequential number that makes gaps detectable. That is why "just use the platform's POS" is sometimes right and sometimes not available at all.
+The two constraints make a POS a different kind of product from a web platform. A web checkout can refuse to work when a dependency is down; a till cannot. A web order can be a row in a database; in some countries, Germany among them (see the fiscal rule below), a store sale must be signed by a certified security device and carry a sequential number that makes gaps detectable. That is why "just use the platform's POS" is sometimes right and sometimes not available at all.
 
 ![A store and a web shop side by side, each with orders, stock, customers and payments; the store also has an unplugged cable and an official seal.](assets/images/17-stores-and-omnichannel/17-store-second-system.jpeg)
 **Figure 1:** *A store is a second commerce system, not a channel: like the web shop it creates orders, holds stock, knows customers and takes money, and it must also keep selling offline and follow fiscal rules.*
@@ -87,16 +87,16 @@ Vendors document what their POS does without a connection. Shopify's help pages 
 | **Italy** | Yes | Electronic storage and telematic transmission of daily receipts to the tax agency | From 1 July 2019 (turnover above €400,000) and 1 January 2020 (all others), Agenzia delle Entrate release of 29 June 2019 |
 | **Netherlands** | No certified register | Register data are part of the administration, kept seven years; a voluntary private quality mark | Belastingdienst brochure, n.d., accessed November 2026 |
 
-The table is my compilation of the sources listed at the end. For Kestrel & Pine the point is specific: its five Dutch stores faced no certified-register mandate when the POS was chosen, and Antwerp's receipts follow Belgian VAT and seven-year record-keeping rules, not the hospitality-only black box. A first **German store** would need a POS with a certified TSE, registered with the tax office, and that requirement alone can rule a product out. A store opening in a new country is a POS decision as much as a logistics one.
+The table is my compilation of the sources named in its last column. For Kestrel & Pine the point is specific: its five Dutch stores faced no certified-register mandate when the POS was chosen, and Antwerp's receipts follow Belgian VAT and seven-year record-keeping rules, not the hospitality-only black box. A first **German store** would need a POS with a certified TSE, registered with the tax office, and that requirement alone can rule a product out. A store opening in a new country is a POS decision as much as a logistics one.
 
 ## How the Pieces Fit Together
 
-The January 2027 landscape at Kestrel & Pine is the shape many Growing-stage merchants have when they open stores: a POS chosen for the stores, an ERP as the meeting point, and the web platform on the other side of a nightly copy.
+The January 2027 landscape at Kestrel & Pine is the shape many Growing-stage merchants have when they open stores: a POS chosen for the stores, an ERP as the meeting point, and the shop platform on the other side of a nightly copy.
 
 ![Diagram: Kestrel & Pine's stores in January 2027](assets/images/17-stores-and-omnichannel/fig01-kestrel-pine-s-stores-january-2027.jpeg)
-**Figure 2:** *Kestrel & Pine's stores in January 2027: a sale at the till reaches the platform the next day by way of the ERP, while a click-and-collect order reaches the store as an e-mail and never reaches the POS at all.*
+**Figure 2:** *Kestrel & Pine's stores in January 2027: a sale at the till reaches the shop platform the next day by way of the ERP, while a click-and-collect order reaches the store as an e-mail and never reaches the POS at all.*
 
-The target shape is different in two places: store stock flows as events into one availability calculation, and store orders of every kind pass through one order hub. The components and their responsibilities:
+The target shape is different in two places: store stock flows as events into one availability calculation, and store orders of every kind pass through one order hub. These connections between the store and the other systems are what this chapter calls **the joins**. The components and their responsibilities:
 
 | Component | Responsibility | Owns (system of record for) | At Kestrel & Pine |
 | --- | --- | --- | --- |
@@ -105,7 +105,7 @@ The target shape is different in two places: store stock flows as events into on
 | **The availability service** | Compute what each channel may promise per location from stock events, with buffers | The available-to-promise number (what a channel may still sell: physical stock minus what is promised, minus buffers) | A module of the OMS, from Q4 2027 |
 | **The OMS** | Hold every channel's orders in one state model; route each order line to a location (**sourcing**); hand work to the warehouse or a store | The operational order record | Bought, Q4 2027; store receipts imported "later" |
 | **Store staff tooling** | Show staff what to pick, confirm, mark ready and hand over; look up stock elsewhere; start a return | Nothing; a client of the OMS and the POS | E-mail and phone today |
-| **The customer record** | Recognize the same person across till, web and newsletter | Customer identity | Four unlinked lists; [[identity-and-master-data]] |
+| **The customer record** | Recognize the same person across till, web and newsletter | Customer identity | Four unlinked lists (web accounts, the POS loyalty list, newsletter subscribers, returns-portal contacts); [[identity-and-master-data]] |
 
 ### The four omnichannel services
 
@@ -123,23 +123,19 @@ Each row is a promise made against stock somewhere else, and **all four are the 
 | Flow | How fresh must store stock be | How consistent | How fast | What happens when the link is down |
 | --- | --- | --- | --- | --- |
 | Store sale reduces online availability | Minutes, as an event; nightly is the Mirage | Eventually consistent is fine; the buffer absorbs the lag | Not latency-critical | The store keeps selling; availability holds the last known number minus a larger buffer |
-| Click-and-collect promise | Minutes, plus a per-store buffer | The order must be visible to the store within minutes and confirmed by a person before "ready" is sent | The confirmation, not the promise, is the commitment | Offer collection "within two hours" rather than "now", or route to the warehouse |
+| Click-and-collect promise | Minutes, plus a per-store buffer | A person confirms the pick before "ready" is sent: the confirmation, not the promise, is the commitment | The order visible to the store within minutes | Offer collection "within two hours" rather than "now", or route to the warehouse |
 | Ship-from-store routing | Minutes | The chosen store must accept the fulfillment order before the carrier label exists | Routing in seconds at order time | Fall back to the warehouse |
-| Return-in-store | Order lookup in seconds | Exactly one refund, from one system | Seconds at the counter | Accept the item, record the return, refund when the link returns, never twice |
+| Return-in-store | No store stock is promised; the web order must be found | Exactly one refund, from one system | Order lookup in seconds at the counter | Accept the item, record the return, refund when the link returns, never twice |
 | Endless aisle | Seconds, from the shared availability number | The order is created in the hub, not re-keyed later | Seconds at the counter | Do not promise; take the customer's details and call back |
 
-The target flow for click-and-collect looks like this, with the OMS and the availability service in place:
+Figure 3 shows the target flow for click-and-collect, with the OMS and the availability service in place: the order hub routes the order to the store, that is, chooses the store as the location that prepares it. Notice where the commitment sits. The storefront's "available for collection" is a **promise with a buffer**; the store's "picked and confirmed" is the **commitment**; the customer hears "ready" only after the second. That ordering is the whole design, and the Utrecht pilot lacked it.
 
 ![Diagram: Click-and-collect done with the joins in place](assets/images/17-stores-and-omnichannel/fig02-click-collect-done-joins-place-till.jpeg)
 **Figure 3:** *Click-and-collect done with the joins in place: the till reports every sale as a stock event, the availability service promises only above a buffer, the order hub routes the work to the store, and a person's confirmation, not the stock number, is what turns the promise into "ready".*
 
-Notice where the commitment sits. The storefront's "available for collection" is a **promise with a buffer**; the store's "picked and confirmed" is the **commitment**; the customer hears "ready" only after the second. That ordering is the whole design, and the Utrecht pilot lacked it.
-
 ### What store stock is actually worth as a promise
 
-The buffer and the confirmation are not caution for its own sake. Store inventory records are wrong far more often than warehouse records, and the research is old but unambiguous. DeHoratius and Raman, in *Management Science* in 2008, examined "nearly 370,000 inventory records from 37 stores of one retailer" and found **65% to be inaccurate**; auditing reduced inaccuracy, store complexity increased it.
-
-The data are from one US retailer in the 2000s, before RFID (radio-frequency identification: a tag on each item that a reader counts without line of sight), so take the mechanism rather than the number.
+The buffer and the confirmation are not caution for its own sake. Store inventory records are wrong far more often than warehouse records, and the research is old but unambiguous. DeHoratius and Raman, in *Management Science* in 2008, examined "nearly 370,000 inventory records from 37 stores of one retailer" and found **65% to be inaccurate**; auditing reduced inaccuracy, store complexity increased it. The data are from one US retailer in the 2000s, before RFID (radio-frequency identification: a tag on each item that a reader counts without line of sight), so take the mechanism rather than the number.
 
 Auburn University's RFID Lab reported in 2018 (Project Zipper, eight brands, five retailers) that order audits using barcode data found inaccuracies "in 69% of cases" against "less than 0.01%" with RFID. Both sources are more than three years old; nothing newer with an open methodology turned up in this book's research.
 
@@ -159,9 +155,7 @@ Kestrel & Pine's interim fix for Utrecht, until the availability service arrives
 
 A merchant with stores has four realistic ways to connect them to the rest of the landscape. Each is a real product category, and each is right somewhere.
 
-**1. The platform's own POS.** The web platform's vendor sells a till on the same back end: one catalog, one stock record per location, one order list, one customer list. Shopify's POS pages (n.d., accessed November 2026) describe "buy online, pickup in store, or buy in store, ship to customer", staff roles and "Returns and exchanges at any location"; POS Pro is €79 per location per month on its euro page as of November 2026.
-
-The Dutch vendor Vendit makes the same promise from the POS side: a till "from the same database as your webshop", so that "if you sell the last item at the till, the article is immediately at zero in your webshop" (n.d., accessed November 2026, translated). The joins disappear.
+**1. The platform's own POS.** The web platform's vendor sells a till on the same back end: one catalog, one stock record per location, one order list, one customer list. Shopify's POS pages (n.d., accessed November 2026) describe "buy online, pickup in store, or buy in store, ship to customer", staff roles and "Returns and exchanges at any location"; POS Pro is €79 per location per month on its euro page as of November 2026. The Dutch vendor Vendit makes the same promise from the POS side: a till "from the same database as your webshop", so that "if you sell the last item at the till, the article is immediately at zero in your webshop" (n.d., accessed November 2026, translated). The joins disappear.
 
 The limits: the platform's POS must be available and fiscally certified in every country you have stores in, it inherits the platform's offline rules, and it couples the stores to the platform contract, so changing the platform later means changing the tills too.
 
@@ -181,7 +175,7 @@ The limits: the platform's POS must be available and fiscally certified in every
 | Exit cost | The tills change with the platform | Each part replaceable | Low | The tills change with the ERP |
 | Fits best | Starting and Growing; one country; web-first brands | Omnichannel; several countries; stores that matter | Stores with no omnichannel promises | Wholesalers with outlet stores |
 
-My rule: **choose by the number of countries and the weight of the stores, not by the vendor's demo.** A web-first brand with two stores in one country should take the platform's POS and enjoy the one record. A merchant whose stores earn a serious share of revenue, in more than one fiscal regime, should keep a store-grade POS and spend the money on the events and the order hub. Kestrel & Pine sits between: six stores in two countries, **12.5% of revenue**, one fiscal regime that is lenient and one that is lenient for shops. That is why W4 defers rather than decides: the 2028 evaluation will have an availability service and an OMS in place, and the question will have shrunk to "which till", not "how do stores join the architecture".
+My rule: **choose by the number of countries and the weight of the stores, not by the vendor's demo.** A web-first brand with two stores in one country should take the platform's POS and enjoy the one record. A merchant whose stores earn a serious share of revenue, in more than one fiscal regime, should keep a store-grade POS and spend the money on the events and the order hub. Kestrel & Pine sits between: six stores in two countries, **12.5% of revenue** (€6.0 million of €48.0 million), and neither the Netherlands nor Belgium requires a certified register for shops. That is why W4 defers rather than decides: the 2028 evaluation will have an availability service and an OMS in place, and the question will have shrunk to "which till", not "how do stores join the architecture".
 
 ### "Unified commerce", and who is speaking
 
@@ -198,11 +192,13 @@ I use the term for the **goal state**: one record per order, per stock unit and 
 | **3 — Omnichannel** | Several stores in more than one country, a visible share of revenue; stock events from the POS; an OMS that routes to stores; staff tooling; return-in-store | The availability service with store buffers; store receipts imported into the order hub with fiscal identifiers; one refund path; reconciliation of POS, OMS and ERP; a fiscal checklist per country | Store-stock promises without a confirmation step; ship-from-store launched before routing knows store capacity; a POS API deprecation nobody owns |
 | **4 — Group** | Dozens to hundreds of stores across fiscal regimes; several POS products after acquisitions; RFID in fashion; stores as fulfillment nodes with their own cut-offs and carrier pickups | One fulfillment-order contract every POS and WMS honors; a registry of which store does what; accuracy targets; per-brand decisions on shared versus separate POS | A single POS forced on brands with different fiscal needs (One Size Fits None); store fulfillment that undercuts store sales because the economics were never modeled |
 
-The judgement: the store joins the architecture at the Growing stage, with the first omnichannel promise, and the cheapest moment to decide who owns store stock is before that promise, not after the first broken one. The POS itself rarely needs to change until the merchant opens stores in a country whose fiscal rules its POS cannot meet, or until the stores' weight justifies a single record. Kestrel & Pine has reached the first point with its joins and not the second with its till.
+The judgement: the store joins the architecture at the Growing stage, with the first omnichannel promise, and the cheapest moment to decide who owns store stock is before that promise, not after the first broken one. The POS itself rarely needs to change until the merchant opens stores in a country whose fiscal rules its POS cannot meet, or until the stores' weight justifies a single record. Kestrel & Pine has passed the first moment: it made its first omnichannel promise in the Utrecht pilot, so it is fixing its joins now. It has not reached the second: it has no store in a country with stricter fiscal rules, and its stores do not yet weigh enough to justify one record, so its till can wait.
 
 ## In Practice
 
-**Ship-from-store on someone else's marketplace: Zalando Connected Retail, 2021 to 2027.** Zalando's Connected Retail program let physical shops list their store stock on Zalando and ship the parcels from the store; trade press reported more than 3,400 active stores in nine markets in early 2021. In April 2026 TextilWirtschaft reported a Zalando spokesperson confirming that the program ends by the end of June 2027, to bundle all partners in one central model. Two lessons transfer: ship-from-store works at scale when the store's stock feed and the return path are built properly, and programs retire. A merchant that exposed store stock through its own store-stock feed rather than a program-specific tool faces a connector change, not a redesign ([[marketplaces-and-channel-integration]]).
+**Whose sale is it.** In practice, the joins start with a question every store service raises. Before a store ships its first web order, the merchant must decide whose sale it is: whether the revenue, and any later refund, count for the store or for the web shop. The old adoption figures show how often that was left open. The only open, dated adoption figures found are old and UK-weighted: a 2016 UPS survey of over 700 European retailers put stores used as online fulfillment centers at 27%; a 2018 Savills survey of UK stores found 47% offering click-and-collect, about one in ten in ship-from-store, and nearly one in three store managers in one category who "did not know whether online refunds were deducted from store sales". Treat the percentages as history; the last finding is the one that lasts, because it shows stores doing web work without knowing whose sale it was.
+
+**Ship-from-store on someone else's marketplace: Zalando Connected Retail, 2021 to 2027.** One marketplace program shows ship-from-store at scale. Zalando's Connected Retail program let physical shops list their store stock on Zalando and ship the parcels from the store; trade press reported more than 3,400 active stores in nine markets in early 2021. In April 2026 TextilWirtschaft reported a Zalando spokesperson confirming that the program ends by the end of June 2027, to bundle all partners in one central model. Two lessons transfer: ship-from-store works at scale when the store's stock feed and the return path are built properly, and programs retire. A merchant that exposed store stock through its own store-stock feed rather than a program-specific tool faces a connector change, not a redesign ([[marketplaces-and-channel-integration]]).
 
 **Store orders in one order model.** A common order model can carry both store and web sales into finance, but it must retain the identifiers specific to each channel, such as receipt number and staff member.
 
@@ -210,40 +206,40 @@ Microsoft's documentation for its Business Central connector to Shopify (publish
 
 **Routing to stores.** Routing chooses the location that should prepare an order. That choice must account for available stock and the delivery or pickup promise before it becomes an instruction to do the work.
 
-Adobe Commerce's inventory documentation (updated August 2026) ships two source-selection rules, a fixed priority and a distance rule that picks "the closest source". Shopify binds work to a location through a **fulfillment order** whose assigned location may change only while it is open, scheduled or on hold (n.d., accessed November 2026). Kibo's documentation (n.d., accessed November 2026) describes routing that returns a suggestion, logs why locations were rejected, "does not create shipments or deduct inventory", and lets a pickup order trigger a transfer shipment to the store. That is the ladder: simple rules in the platform, then an explainable routing decision separate from the deduction of stock, which is the OMS's job once stores, cost and capacity enter the rule ([[order-management]]).
+Adobe Commerce's inventory documentation (updated August 2026) ships two source-selection rules, a fixed priority and a distance rule that picks "the closest source". Shopify binds work to a location through a **fulfillment order** whose assigned location may change only while it is open, scheduled or on hold (n.d., accessed November 2026). Kibo's documentation (n.d., accessed November 2026) describes routing that returns a suggestion, logs why locations were rejected, "does not create shipments or deduct inventory", and lets a pickup order trigger a transfer shipment to the store. Together the three form a ladder: simple rules in the platform first, then a routing decision that records its reasons and is kept separate from the deduction of stock. That routing decision becomes the OMS's job once stores, cost and capacity enter the rule ([[order-management]]).
 
-**Store payments and PCI scope.** With **point-to-point encryption** (P2PE; the PCI Security Standards Council lists validated solutions by exact version), the card number is encrypted inside the terminal and decrypted only at the payment provider, so a **semi-integrated** terminal that receives an amount and returns a result keeps the POS out of the scope of PCI DSS (the Payment Card Industry Data Security Standard) ([[commerce-security]]). Keep the terminal provider's transaction reference on the receipt; it later matches the payout file ([[commerce-payments]]).
-
-**Adoption, a decade ago.** The only open, dated adoption figures found are old and UK-weighted: a 2016 UPS survey of over 700 European retailers put stores used as online fulfillment centers at 27%; a 2018 Savills survey of UK stores found 47% offering click-and-collect, about one in ten in ship-from-store, and nearly one in three store managers in one category who "did not know whether online refunds were deducted from store sales". Treat the percentages as history; keep the last finding. "Whose sale is it" must be answered before the first store ships a web order.
+**Store payments and PCI scope.** With **point-to-point encryption** (P2PE), the card number is encrypted inside the terminal and decrypted only at the payment provider; the PCI Security Standards Council lists validated P2PE solutions by exact version. A **semi-integrated** terminal only receives an amount from the POS and returns a result, so card data never pass through the POS. Together they keep the POS out of the scope of PCI DSS, the Payment Card Industry Data Security Standard ([[commerce-security]]). Keep the terminal provider's transaction reference on the receipt; it later matches the payout file ([[commerce-payments]]).
 
 ### Kestrel & Pine, worked: the Utrecht pilot, before and after
 
-The numbers below are Kestrel & Pine illustrations; where they are not among Kestrel & Pine's recorded figures they are labeled as assumptions.
+The table sets the interim fix from "What store stock is actually worth as a promise" between the December failure and the target. The numbers are Kestrel & Pine illustrations; where they are not among Kestrel & Pine's recorded figures they are labeled as assumptions.
 
 | | December 2026 (the Mirage) | Interim fix, from April 2027 | Target, from Q4 2027 |
 | --- | --- | --- | --- |
-| Store stock seen by the platform | ERP copy, up to a day old | Same copy, minus a threshold of 2 units per variant *(assumption)* | POS stock events into the availability service, minutes old, per-store buffer |
+| Store stock seen by the shop platform | ERP copy, up to a day old | Same copy, minus a threshold of 2 units per variant *(assumption)* | POS stock events into the availability service, minutes old, per-store buffer |
 | Promise shown online | "Available for collection today" | "Collection today, we confirm within two hours" | "Ready in two hours" after confirmation, computed per store |
-| How the store learns of the order | E-mail from the platform | E-mail, with a reply template that confirms or declines | Fulfillment order in the store app from the OMS |
+| How the store learns of the order | E-mail from the shop platform | E-mail, with a reply template that confirms or declines | Fulfillment order in the store app from the OMS |
 | Commitment to the customer | At order placement | At the store's confirmation | At the store's confirmation |
 | Broken promises | **37 items** in the month | Illustrative target under 5 *(assumption)* | Measured per store as "promised but not found" |
-| Store receipt for the handover | A POS sale at €0 keyed by hand *(local detail)* | Same | Handover recorded against the OMS order; the POS imports it with its receipt number |
+| Store receipt for the handover | A POS sale at €0 keyed by hand | Same | Handover recorded against the OMS order; the POS imports it with its receipt number |
 
-Two details deserve a sentence. The €0 till sale is how many pilots record a collection, and it is why the order exists three times: in the platform (paid), in an e-mail (picked) and in the POS (a zero sale); that is *Schrödinger's Order* with a store in it. And the interim promise is deliberately weaker than the original: a two-hour window kept every time beats "today" broken once in thirty.
+Two details deserve a sentence. The €0 till sale is how many pilots record a collection, and it is why the order exists three times: in the shop platform (paid), in an e-mail (picked) and in the POS (a zero sale); that is *Schrödinger's Order* with a store in it. And the interim promise is deliberately weaker than the original: a two-hour window kept every time beats "today" broken 37 times in a month.
 
 ## When It Goes Wrong
 
-Stores fail in ways online systems do not, because people and buildings are involved. The ones that matter most, with how to notice them and how to recover:
+Even with a buffer and a confirmation in place, as in the Utrecht interim fix, stores fail in ways online systems do not, because people and buildings are involved. The ones that matter most, with how to notice them and how to recover:
 
 - **The till and the web sell the same last unit.** A store sale and an online reservation race for the final unit before the store's event reaches availability. *Detection*: "promised but not found" per store, counted daily. *Recovery*: the buffer makes it rare and the confirmation step catches it before the customer travels; when it still happens, the OMS reroutes to the warehouse or cancels with a notification, and the variant is counted.
 - **Offline session replay creates duplicates.** A store reconnects after three hours and uploads its sales; the upload is retried after a timeout, and the same receipts arrive twice. *Detection*: daily sales count against the receipt-number range. *Recovery*: every import is **idempotent** on the POS transaction number (receiving the same receipt twice has the same effect as once), which is also what Germany's fiscal transaction counter is for ([[events-consistency-and-reconciliation]]).
 - **The nightly job fails silently.** The POS-to-ERP copy stops on a Friday; by Monday the ERP's store stock is three days old and the platform has promised against it all weekend. *Detection*: a monitor that alarms when the copy is older than its schedule, not only when it errors ([[integration-styles]]). *Recovery*: rerun and reconcile the weekend's orders by hand; the cure is events with a freshness check.
-- **Return-in-store refunds twice.** A web order is returned at the Nijmegen counter; the till refunds to the card through the terminal provider, and the returns portal, seeing the item "received", refunds through the platform's API as well: the store's version of *The Double Refund* (212 returns, €19,400, January 2027). *Recovery*: one refund path per order, decided once; a return recorded at the till closes the portal request before anything is paid ([[returns-and-exchanges]]).
-- **The store charges a different price.** During the Price Drift of October 2026 the German storefront sold the Ridgewalker at €179 while the stores charged €199; the stores were right by accident, because the POS has its own hand-loaded price list. *Recovery*: one pricing source publishing to the POS as to the storefronts ([[pricing-architecture]]).
+- **Return-in-store refunds twice.** A web order is returned at the Nijmegen counter; the till refunds to the card through the terminal provider, and the returns portal, seeing the item "received", refunds through the shop platform's API as well: the store's version of *The Double Refund* (212 returns, €19,400, January 2027). *Recovery*: one refund path per order, decided once; a return recorded at the till closes the portal request before anything is paid ([[returns-and-exchanges]]).
+- **The store charges a different price.** During the Price Drift of October 2026 the German storefront sold the Ridgewalker at €179 while the Dutch and Belgian stores charged its €199 list price; the stores were right by accident, because the POS has its own hand-loaded price list. *Recovery*: one pricing source publishing to the POS as to the storefronts ([[pricing-architecture]]).
 - **The loyalty list and the web account never meet.** Eva Janssen is a POS loyalty customer and an online account with no shared identifier (the *Familiar Stranger* pattern). Return-in-store still works, because the till finds the order, not the person; store purchases simply never reach her online history. *Recovery*: a declared matching rule with a confidence level ([[identity-and-master-data]]).
 - **A fiscal rule arrives with a store.** A German lease is signed before anyone checks whether the POS has a certified TSE (*The Long Fuse*). *Recovery*: store openings go on the regulatory calendar ([[commerce-regulation]]); a POS per country is acceptable, a store without a compliant till is not.
 
 ## What to Take Away
+
+Go back to the shopper who brought a web order to the store for an exchange. The exchange works when the till can find the web order, when the refund has one path, and when the stock the store promised is on the shelf. None of these is a feature of the till; each is a join between the store and the other systems. They are the joins the Utrecht pilot lacked, and every POS option needs them. That is why Kestrel & Pine builds them first and leaves the till decision to 2028.
 
 **Established.**
 
@@ -274,7 +270,7 @@ Stores fail in ways online systems do not, because people and buildings are invo
 7. Does the POS receive prices from the same source as the storefronts and the marketplaces?
 8. If we replaced the platform in five years, would the tills have to change with it?
 
-The store is where a web order can come back to the counter, and the return is where stock, money and the books have to agree again. [[returns-and-exchanges]] follows the jacket on its way back.
+A web order brought back to a store counter needs one refund path per order. The next chapter follows what happens to a return after that, whether it leaves from a counter or from the customer's door: how it travels through the returns portal, the carrier, the warehouse's inspection bench, the payment provider and the ERP, and the event on which money, stock and the books each move. Continue with [[returns-and-exchanges]].
 
 ## Sources and Evidence
 

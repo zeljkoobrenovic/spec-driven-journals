@@ -1,0 +1,1599 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "shipping-and-delivery",
+  "journal": "commerce-platform-architecture",
+  "part": "part-4",
+  "title": "Getting It There: Carriers, Labels, Tracking and the Delivery Promise",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/16-shipping-and-delivery/index.md) and its former spec.md, whose Non-goals, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (the thesis paragraph, a roadmap, and a conclusion paragraph that answers the opening); these are listed in the decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The shipping vocabulary (carrier, service, label, manifest, tracking event, pickup point, cut-off, lane, estimated delivery date, rate shopping, multi-carrier platform) and the three moments shipping touches an order: the promise at checkout, the label at packing and the tracking after collection.",
+        "The four ways to talk to carriers and the four ways to make the promise (static rule, transit table, promise service, predictive model), with what each needs and is blind to.",
+        "What consumer law sets around delivery: 30 days unless agreed, risk with the merchant until possession, refund of only the cheapest standard delivery."
+      ],
+      "believe": [
+        "From the second carrier onward a normalizing layer between the merchant's systems and the carriers is necessary; the choice is whether to buy or build it.",
+        "A promise that is not computed cannot be measured, and the only on-time rate to trust is the one computed from the merchant's own scan history."
+      ],
+      "can_do": [
+        "Specify a first delivery-promise component: its inputs, its safe default when it is unavailable, and the promised-versus-delivered measure per lane.",
+        "Say what stops one parcel from getting two barcodes and what alerts on a missed manifest."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or architect who must connect a warehouse or platform to carriers, or specify a delivery-promise component (Noor Visser at Kestrel & Pine). The e-commerce manager who owns the storefront's promise text (Milan Petrov) and the operations leader who owns carrier contracts (Daniel Okafor) are the second readers.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and January 2027 incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: available-to-promise and one writer for on hand; checkout creating the order once; one order record with three status lines and goods status per shipment; tax from three facts and one invoice per shipment.",
+        "From chapter 15: the warehouse system as the only writer of on-hand stock; the fulfillment order accepted or rejected with a key; shipments reported as packed; Duiven's waves (last at 21:00), the carriers' collections (PostNL at 22:30), the warehouse's cut-off, capacity and backlog; the Queue That Waited."
+      ],
+      "does_not_know": [
+        "Carrier, carrier service, carrier API, label, manifest, tracking event, pickup point and locker, delivery option, lead time and transit time, lane, delivery promise and estimated delivery date (EDD), rate shopping, multi-carrier platform.",
+        "A normalized tracking-event vocabulary and the difference between a label and a booking.",
+        "The consumer-law bounds on delivery (Directive 2011/83/EU, Articles 13(2), 18 and 20); customs for consignments from outside the EU and IOSS; WISMO."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given an order placed after the warehouse's last wave under a static next-day promise, the reader gives the date that should have been shown and the inputs that compute it.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A Dutch storefront shows 'ordered before 22:00, delivered tomorrow'. A customer orders at 21:14 on a Tuesday; the warehouse released its last wave at 21:00, the carrier collects at 22:30, and transit on her lane is one day. Using only this chapter: what date should she have been shown, why, and what does showing it require?",
+        "expected": "Thursday, not Wednesday: the order ships on Wednesday because it missed the last wave, and transit adds one day. It requires a promise computed from the warehouse's cut-off and backlog, the stock's location, the lane's transit time and a margin, and measured as promised-versus-delivered per lane; not a reworded sentence."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a retried label call and parcels that never left 'label created', the reader names each fault and its prevention.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A label call times out and is retried; later that day a batch of labeled parcels is collected but still shows only 'label created' in tracking. Using only this chapter: what went wrong in each case, and what prevents it?",
+        "expected": "The retry booked a second shipment, giving one parcel two barcodes, because the call carried no merchant shipment reference; make the call idempotent by that reference and look up before creating. The second batch was never manifested: a label is not a booking until the day is closed with the carrier; make the close-out a scheduled job with an alert and watch for parcels stuck in pre-transit."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what the order's shipping status should be derived from when several carriers use different codes.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Four carriers send their own scan codes, and the status page, the e-mails and the support agent each read them differently. Using only this chapter: where should the order's shipping status come from?",
+        "expected": "From every carrier's scans mapped onto one small normalized vocabulary (such as pre-transit, in transit, out for delivery, delivered, available for pickup, failure, return to sender, exception), keeping the original event; the status is derived from those events, never set by hand, and the page, the notifications and the agent read the same derived status; each event is stored with its lane."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "How a parcel gets a carrier, a label and a tracking history; one shared interface over several carriers and who builds it; one status vocabulary derived from tracking events; the delivery promise computed from the warehouse's timing and the carrier's transit; Eva's PostNL parcel and whether her date could have been promised correctly. Evidence: Kestrel & Pine's carriers and storefront promise, carrier and vendor documentation, research on delivery promises."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does a merchant connect to its carriers for labels and tracking, and how does it make a delivery promise it can keep?",
+    "claim": "From the second carrier onward a merchant connects through one normalizing layer, bought or built. The layer books each parcel once under the merchant's reference, closes each day's manifest and maps every carrier's scans onto one event vocabulary from which the shipping status is derived. A delivery promise the merchant can keep is computed from the warehouse's cut-off and backlog, the stock's location and each lane's measured transit time plus a margin set from the lane's late parcels, and checked against delivered dates.",
+    "disputed_by": "The view that carriers are integrated one at a time by whoever packs the parcel, that the order's shipping status is whatever the latest carrier message or a person sets, and that a delivery promise is a line of storefront text ('ordered before 22:00, delivered tomorrow') that operations tries to meet.",
+    "so_what": "Eva ordered at 21:14 on 13 April 2027, after Duiven's 21:00 last wave; the storefront's line, written when a 3PL in Tiel shipped the orders, promised Wednesday, and the parcel arrived on Thursday 15 April, the date a computed promise would have shown. On Black Friday 2026 the same line promised next-day delivery while orders queued for four hours. A merchant that accepts the claim buys the normalizing layer early, stores every scan with its lane, and measures promised against delivered per lane before it builds a promise service, as Noor's first version in May 2027 does with a transit table plus the warehouse's cut-off and backlog.",
+    "how_why": "Each carrier has its own API versions and retirement dates, label format, manifest rule and status codes, so a merchant connected to each directly owns one migration per carrier; a normalizing layer absorbs them. A shipment call retried after a timeout books a second barcode unless it carries the merchant's reference, and a label is not a booking until the manifest is closed. Carrier codes differ, so systems reading raw scans disagree, while one vocabulary gives the status page, the notifications and the agent the same status. The promised date is the ship date, set by the cut-off and the backlog, plus the lane's transit time plus a margin for late parcels; a static sentence holds none of these inputs, so it is wrong after the last wave and whenever the queue grows, and nobody notices unless delivered dates are compared with promised ones.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Every carrier has its own API generations, label format, manifest rule and status codes and changes them on its own calendar, so from the second carrier onward a normalizing layer, bought or built, must sit between the merchant's systems and the carriers."
+      },
+      {
+        "id": "S2",
+        "claim": "Booking is a transaction with the carrier: each parcel is booked once under the merchant's own reference, so a retried call cannot create a second barcode, and each day is closed with a manifest, because a label is not a booking until the carrier has the list."
+      },
+      {
+        "id": "S3",
+        "claim": "Every carrier's scans are mapped onto one small event vocabulary, keeping the original; the order's shipping status and its messages are derived from those events, never set by hand, every view reads the same derived status, and each event is stored with its lane."
+      },
+      {
+        "id": "S4",
+        "claim": "A delivery promise the merchant can keep is computed from the warehouse's cut-off and backlog, the stock's location, the lane's transit time and a margin for late parcels; a static sentence holds none of these inputs and is wrong after the last wave and whenever the queue grows."
+      },
+      {
+        "id": "S5",
+        "claim": "The promise is kept honest only by comparing promised with delivered dates per lane, from the merchant's own scan history; a merchant starts with a transit table agreed with the warehouse and builds or buys a promise service when other channels need the same answer by API."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns the warehouse's cut-off and backlog into a computed delivery promise, and adds the carrier's side of the part: one booking per parcel and one event vocabulary from which the shipping status every view reads is derived.",
+    "supports": [
+      "P4-1",
+      "P4-3",
+      "P4-5"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "chronological",
+        "applies_to": "pieces: the three moments in the order a parcel meets them (label and manifest at packing, tracking after collection), then the promise, which reads both"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "practice: the claims of the chapter set against public evidence and then against Eva's parcel"
+      }
+    ],
+    "rationale": "Milan's request and the static sentence come first so that the vocabulary arrives as the words needed to answer it; the vocabulary precedes the moments because every later section uses carrier, label, manifest, tracking event, cut-off and lane. The moments follow the parcel: the booking and the manifest at packing, then the scans after collection, then the promise, which needs the cut-off from chapter 15 and the lane data the scans produce; options, cross-border and cost come last in that section because each changes the label or the promise just explained. The choices can be compared only once the reader knows what a carrier integration and a promise must do, and the stage table needs the choices' names. The public evidence and Eva's parcel test the recommendations on documented cases, and the failures come last because each is one of the earlier mechanisms breaking. Putting the promise before the tracking events would ask the reader to compute a margin from lane data not yet introduced; putting the choices before the moments would compare options against requirements not yet stated."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A shopper sees 'delivered tomorrow' after the warehouse's last dispatch has left; even a carrier that delivers every parcel on time cannot keep that promise."
+    },
+    "bridge": {
+      "from_reader_world": "Every online shopper has seen a delivery date at checkout and has, at some point, received the parcel a day later.",
+      "to_topic": "The date depends on work before collection (the warehouse's waves and the carriers' collection times) and on the journey after it, across several carriers that each speak their own language, so the question becomes how a merchant connects to those carriers and computes a date it can keep."
+    },
+    "thesis_statement": {
+      "text": "From the second carrier onward, connect through one normalizing layer, bought or built, which books each parcel once under the merchant's reference, closes each day's manifest and maps every carrier's scans onto one set of events from which the shipping status is derived; and compute the promise from the warehouse's cut-off and backlog, the stock's location, the lane's measured transit time and a margin for late parcels, checked against delivered dates.",
+      "placement": "KEY POINTS callout and paragraph p04"
+    },
+    "roadmap": {
+      "placement": "Paragraph p05",
+      "promises": [
+        {
+          "promise": "Start from Milan's request for delivery dates on two more storefronts and the static Dutch sentence.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Define the shipping vocabulary.",
+          "kept_in": [
+            "vocabulary"
+          ]
+        },
+        {
+          "promise": "Follow the three moments shipping touches an order (labels and manifests, tracking events, the promise), with delivery options, cross-border shipping and cost.",
+          "kept_in": [
+            "pieces"
+          ]
+        },
+        {
+          "promise": "Compare four ways to talk to carriers and four ways to make the promise, and how they change with scale.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Test the recommendations against public evidence and Eva's parcel from label to doorstep, then list what goes wrong.",
+          "kept_in": [
+            "practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A date shown at checkout must account for the work before collection as well as the journey after it, so 'delivered tomorrow' shown after the last dispatch has left cannot be kept, and a fixed sentence cannot adjust when those conditions change.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A shopper sees 'delivered tomorrow' after the warehouse's last dispatch has left.",
+            "shows": "The chapter's problem in one case: a promise that no carrier can keep because the work before collection is already over for the day."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "Kestrel & Pine's four carriers each have their own labels, interfaces, collection rules and tracking terms, and a shared shipping interface (which Kestrel & Pine already has as a multi-carrier service in the warehouse system's flow) lets checkout and support use one set of rules; for any merchant the choice is who builds and operates it.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "fact",
+            "what": "PostNL (NL), bpost (BE), DHL (DE), DPD as backup.",
+            "shows": "Four carriers already make carrier differences Kestrel & Pine's problem.",
+            "source": "Kestrel & Pine scenario ledger"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The date depends on the work before collection and the carrier's journey.",
+          "introduces": "Kestrel & Pine's four carriers and their differences.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Eva's shipment, confirmed at Duiven at 08:40 on 14 April 2027 after chapter 15's packing, is collected by PostNL that evening and delivered on 15 April; this chapter follows its label and tracking and asks whether checkout could have promised that date.",
+        "function": "context",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The parcel packed and confirmed at Duiven, and the cut-off, capacity and backlog that the storefront's promise ignored.",
+          "introduces": "The carrier's part: labels, manifests and tracking events, and a delivery promise computed from the warehouse's facts and the carrier's transit time.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "The chapter's answer is one normalizing layer from the second carrier onward, which books each parcel once, closes each day's manifest and maps every carrier's scans onto one set of events from which the status is derived, and a promise computed from the warehouse's cut-off and backlog, the stock's location, the lane's transit time and a margin, checked against delivered dates.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The question whether checkout could have promised Eva's date.",
+          "introduces": "The chapter's claim about carriers and the promise.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from Milan's request and the shipping vocabulary, follows the three moments shipping touches an order, compares the choices and the scale stages, and ends with public evidence, Eva's parcel from label to doorstep and what goes wrong; its evidence is Kestrel & Pine's carriers and storefront text, carrier and vendor documentation, and research on delivery promises.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The claim.",
+          "introduces": "The order in which the chapter argues it and the kind of evidence.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene: A Sentence in the Theme",
+      "controlling_idea": "Kestrel & Pine's delivery promise is a sentence in the storefront theme that nothing computes, and Milan's request to extend it to two more storefronts exposes that the promise is wrong after the last wave and at peak and that Waypoint W8 needs a computed answer.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Shows the static promise failing on Eva's evening and on Black Friday, the problem the computed promise solves."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The request first, then the objection that shows why a sentence cannot answer it, then where the sentence came from, then the two evenings it failed, then the decision that requires a computed answer; the failures need the sentence's origin to be understood as a missing computation rather than a typo."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The chapter's claim and roadmap, which start from Milan's request.",
+        "introduces": "The request itself.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "In April 2027 Milan Petrov asks Noor Visser to add delivery dates to the German and Belgian storefronts, while the Dutch one already says 'ordered before 22:00, delivered tomorrow'.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Milan's request; the Dutch storefront's sentence.",
+              "shows": "The business asks for a promise on more storefronts and assumes the existing one is right.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Daniel Okafor points out that carriers collect at different times and transit varies by destination, and that even the Dutch promise ignores Duiven's 21:00 last wave.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Duiven's last picking wave at 21:00 (illustrative, chapter 15).",
+              "shows": "The sentence's 22:00 is later than the last wave, so orders between 21:00 and 22:00 cannot ship that day.",
+              "source": "Kestrel & Pine scenario ledger, warehouse-and-fulfillment line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The request to extend the sentence.",
+            "introduces": "Why the sentence cannot be extended as it is.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "Nothing computes the promise: it is text written when a 3PL in Tiel handled fulfillment, the agency can change it in an hour, and nobody can say how often it is true.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The promise ignores the last wave.",
+            "introduces": "Why: it is text from the Tiel era that nothing computes or measures.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "The sentence failed Eva, who ordered at 21:14 on 13 April, was promised Wednesday and received her parcel on Thursday, and it stayed visible on Black Friday 2026 while orders waited four hours to reach the warehouse.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Eva: ordered 21:14 on 13 April 2027, promised Wednesday 14 April, delivered Thursday 15 April.",
+              "shows": "The sentence is wrong after the last wave on an ordinary evening.",
+              "source": "Kestrel & Pine scenario ledger"
+            },
+            {
+              "kind": "case",
+              "what": "Black Friday 2026: the order queue to the warehouse backed up for four hours while the promise stayed.",
+              "shows": "The sentence is wrong at peak, when the backlog moves the ship date.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Nobody knows how often the sentence is true.",
+            "introduces": "Two evenings on which it was not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Waypoint decision W8 requires availability and delivery dates through APIs, because a service agent, a marketplace or a future shopping agent needs the same computed answer as the storefront, and Milan's request exposes that shared need.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The sentence's two failures.",
+            "introduces": "The Waypoint decision that requires a computed answer instead.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "vocabulary",
+      "heading": "The Vocabulary of Getting It There",
+      "controlling_idea": "A newcomer needs a small shipping vocabulary once (carrier and service, carrier API, label, manifest, tracking event, pickup point and locker, delivery option, cut-off, lead and transit time per lane, delivery promise and EDD, rate shopping, multi-carrier platform) before the moments and choices can be described.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4"
+        ],
+        "how": "Defines the terms in which the normalizing layer and the computed promise are argued."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The words used in Milan's request and Daniel's objection: carrier, collection, cut-off, transit.",
+        "introduces": "Their definitions and the rest of the vocabulary.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "controlling_idea": "Shipping has a small vocabulary a newcomer needs once, set out in one table.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Vocabulary table: carrier and services, carrier API, label, manifest (with DHL's 'transferred only when manifested' rule and 17:45 close-out), tracking event, pickup point and locker, delivery option, cut-off, lead and transit time per lane, delivery promise and EDD, rate shopping, multi-carrier platform.",
+              "shows": "Every term the later sections use, defined in plain words with a source where a carrier's own rule is quoted.",
+              "source": "DHL Parcel DE Shipping API v2 (updated 2026-11-03)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "heading": "How the Pieces Fit Together",
+      "controlling_idea": "Shipping touches the order at three moments with different requirements: the booking and manifest at packing, the tracking events after collection and the promise at checkout, which reads both the warehouse's timing and the lane data the events produce; delivery options, cross-border shipping and cost change the label and the promise.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Argues for one booking per parcel and a manifest, one event vocabulary with a derived status, and a computed promise, and shows why carrier differences need one layer."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The overview and requirements come first; then the label and manifest at packing and the scans after collection, in the order the parcel meets them; the promise comes last although the customer sees it first, because its margin needs the lane data the scans produce and its ship date the cut-off from chapter 15. Options, cross-border and cost close the section because each changes the label or the promise already explained; placed earlier they would modify mechanisms the reader has not met."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The vocabulary.",
+        "introduces": "How the defined pieces meet the order at three moments.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Shipping touches three moments of the order, the label at packing, the tracking after collection and the promise at checkout, which is shown first but reads what the other two produce, with one shipping layer around them.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: three moments, one shipping layer.",
+              "shows": "The promise reads the cut-off and lane table, the WMS creates the shipment through the shipping service, and scans come back through the same service as normalized events that also feed the lane table."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "The requirements differ by moment: the checkout promise must be fast and degrade to a safe default, a label call must create exactly one shipment, the manifest must precede the close-out, tracking events must be idempotent, and the tracking number must reach the order within a minute.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Requirements table for six flows (options and date at checkout, pickup point search, label creation, manifest, tracking events in, tracking number to the order) by freshness, consistency, speed and availability; latencies labelled as assumptions.",
+              "shows": "Each moment has a different failure that matters: a slow promise blocks checkout, a retried label call duplicates a shipment, a missed close-out hides parcels."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The three moments.",
+            "introduces": "What each requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "list",
+          "controlling_idea": "Creating a shipment is a transaction with the carrier, and three details decide whether it is reliable: idempotency by the merchant's reference, manifesting (a label is not a booking), and version drift on each carrier's own calendar.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DHL's manifest rule; PostNL's Warehouse V4 Confirming step and its phased V4 rollout from 2025; DHL Parcel DE 2.2.0 (8 October 2026), Kleinpaket, the November 2026 certificate change; bpost v3 to v5 (17 April 2023).",
+              "shows": "Four carriers, four migration calendars: a merchant integrating directly owns four migrations.",
+              "source": "Carrier developer portals, accessed November 2026"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: four carriers retire API versions on four calendars; one shipping layer absorbs each migration.",
+              "shows": "Why the normalizing layer keeps carrier change out of the order record."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The label-creation and manifest rows of the requirements table.",
+            "introduces": "The carrier's side of the contract in detail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "A merchant needs one meaning for 'in transit' or 'delivered' across carriers, so each carrier's codes are mapped into a shared vocabulary while the original event is kept, and the events must arrive as webhooks, because carriers describe the same parcel differently and their tracking APIs are too limited to poll.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "DHL's Unified Tracking API: codes vary by service, unknown values are undefined; DPD Belgium's depot arrival and departure notifications.",
+              "shows": "Different inputs that must become the same customer-facing status.",
+              "source": "DHL Group, changelog through September 2026; DPD Belgium, n.d."
+            },
+            {
+              "kind": "fact",
+              "what": "DHL's tracking API: initial access of 250 calls per day, one every 5 seconds.",
+              "shows": "Polling cannot be the main tracking source at any real volume; events must be pushed, with polling as a fallback.",
+              "source": "DHL Shipment Tracking Unified API"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The booking and the manifest, after which the carrier scans the parcel.",
+            "introduces": "The scans and why they need one vocabulary.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "A small public vocabulary is enough: EasyPost's ten tracker statuses cover the carriers, Shopify shows that the customer needs only five states and none without a tracking number, and the merchant's own list adapts EasyPost's.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "EasyPost's ten statuses with scan history and webhooks; Shopify's five customer-facing states and 'no tracking number, no updates'.",
+              "shows": "The vocabulary can be small and the customer view smaller.",
+              "source": "EasyPost and Shopify documentation, n.d., accessed November 2026"
+            },
+            {
+              "kind": "table",
+              "what": "Normalized-event table: event, meaning, who consumes it (pre_transit to exception).",
+              "shows": "Each event has a consumer, and 'shipped' is sent on in_transit, the first carrier scan, not on the label."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The need for one shared vocabulary.",
+            "introduces": "A public model of one and the customer's smaller view.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Two rules follow: the order's shipping status and its messages are derived from these events and never set by hand, so every view reads the same status and 'shipped' is sent on the carrier's first scan rather than at label print, and every event is stored with its lane, because the scan history is the only data on how long a lane really takes.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The vocabulary and its consumers.",
+            "introduces": "The two rules it implies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "A static promise is a business rule with no data behind it, while a computed one is an estimate with inputs: the order time, the cut-off, the backlog and the stock location for the ship date, plus the lane's transit and a margin.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: a computed promise.",
+              "shows": "Which inputs set the ship date and which set the delivery date."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Scan history stored per lane.",
+            "introduces": "The promise that uses it, with the warehouse's timing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Computed for Eva at 21:14 on Tuesday 13 April, the promise is Thursday 15 April, the day the parcel arrived, where the static sentence said Wednesday; on Black Friday the same computation would have shown the slip.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Stock at Duiven; last wave 21:00 so ship date Wednesday; PostNL standard one day to Nijmegen; small margin; promise Thursday 15 April.",
+              "shows": "The computation gives the date that was kept, the sentence the date that was broken.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The inputs of a computed promise.",
+            "introduces": "Those inputs for Eva's order.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Even the best-resourced operators treat the promise as a model with a measured effect: Amazon's SPEEDY paper reports a small, measured gain in units from sharper promise slots.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "SPEEDY (ACM SIGSPATIAL, 2025): narrower slots for 60%+ eligible orders; 21-day A/B test, +17 basis points in units.",
+              "shows": "A sharper promise has a real, small, measured effect.",
+              "source": "Sarkar and Mandayam Comar, Amazon Science, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The promise as a computation.",
+            "introduces": "Public evidence that operators model it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "A 2025 paper forecasts fulfillment time as a distribution from location and carrier performance and finds it more accurate than a rule-based system, especially at spotting late deliveries.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Ye, Hijazi and Van Hentenryck (arXiv, 2025): up to 14% higher accuracy and up to 75% better identification of late deliveries than rules.",
+              "shows": "Rules miss the uncertainty that a distribution captures.",
+              "source": "arXiv 2505.17340, 2025"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Amazon's modelled promise.",
+            "introduces": "A second study, which treats the promise as a distribution.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The point for a newcomer is not the models but that the promise has a tail, which a point estimate hides, the margin is meant to hold, and consumer law bounds at 30 days unless agreed.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two studies.",
+            "introduces": "What a newcomer should take from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Article 18 (delivery within 30 days unless agreed).",
+              "shows": "However wide the tail, the law sets its outer bound.",
+              "source": "Directive 2011/83/EU, 2011"
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Showing a date, tail and all, is worth measuring: vendor case studies suggest it helps conversion, but only as a positive effect to measure, not a number to plan on.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Vendor-reported 10-20% conversion lifts (Maude via Wonderment, Natch via Hive, 2024-2026), not peer reviewed.",
+              "shows": "The effect is positive and worth measuring, not a number to plan on.",
+              "source": "Wonderment; Hive"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The promise's tail.",
+            "introduces": "What showing the promise is worth and the legal bounds around it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Three things change the label and the promise: first the delivery option, since pickup points and lockers are a second network with its own lookup, and the option chosen must be stored on the order because it changes the label, the promise, the notifications and the refund.",
+          "function": "explanation",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The promise of a date.",
+            "introduces": "The other choice the customer makes at checkout: where to deliver.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "PostNL Checkout V4 Locations and TimeFrame APIs; Sendcloud '390K+' service points and nShift '1.2 million' points (marketing counts); Directive 2011/83/EU Article 13(2).",
+              "shows": "The networks are large and need a lookup, and the stored option changes even the refund.",
+              "source": "PostNL; Sendcloud; nShift; Directive 2011/83/EU"
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Kestrel & Pine ships only within the EU, but outside the customs union an import declaration, IOSS and customs data per SKU appear, which makes the label call depend on catalog data quality.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "EU import declarations for all goods since 1 July 2021 with a reduced data set up to €150; IOSS; a 2026 Council proposal to delete the €150 threshold; DHL's paperless customs documents from 3 November 2026.",
+              "shows": "Cross-border adds data the label call needs and the catalog must hold.",
+              "source": "European Commission customs and OSS pages; Council ST-15179-2026; DHL Parcel DE"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Options that change the label inside the EU.",
+            "introduces": "What changes the label when a parcel leaves the customs union.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "Shipping is a cost lever as well as a logistics fact, and the architecture offers three levers (rate shopping, right-sized boxes, steering to pickup points) only if checkout can price options differently and the shipping service can choose per parcel.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "D2C average order €92, free shipping above €75; €4.50 to €6.00 per domestic parcel (assumption).",
+              "shows": "Most parcels carry a cost the margin absorbs, so the per-parcel choice matters.",
+              "source": "Kestrel & Pine scenario ledger; cost labelled as an assumption"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "What changes the label and the promise.",
+            "introduces": "What shipping costs and how the architecture can lower it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "There are four ways to talk to carriers and four ways to make the promise; from the second carrier the normalizing layer is not optional, only whether to buy or build it, and the promise grows from a static rule to a transit table, a promise service and, at Group scale, a model.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "how": "Compares the options against the requirements and states the rule for the normalizing layer and the stages of the promise."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Who talks to the carriers first, because the promise service reads data the shipping layer produces; within each question, the options from most to least carrier-specific (or from least to most data), each followed by its table and the author's rule."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "What the shipping layer and the promise must do at each moment.",
+        "introduces": "The ways a merchant can arrange both.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p28",
+          "controlling_idea": "Direct integration per carrier gives the best access to carrier features and rates but costs one integration and one migration calendar per carrier, which fits a merchant with volume contracts and an owner for each integration.",
+          "function": "comparison"
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A multi-carrier platform gives one interface across carriers and absorbs their changes, at the cost of services it may not expose and one more dependency; its marketing counts describe different units and should not be compared.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Sendcloud: over 30,000 businesses and 170 carriers (6 November 2026), 160 on its developer site; nShift: over 1,000 carrier services and 450 platforms (n.d.).",
+              "shows": "Marketing counts measure different things; check the services you need instead.",
+              "source": "Sendcloud; nShift"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Direct integration and its per-carrier cost.",
+            "introduces": "A service that takes that cost over.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "Carrier integration bundled in the WMS or the 3PL means the merchant integrates nothing and sees only tracking numbers, which fits Starting and Growing merchants and limits one that wants checkout options or its own scan history.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Picqer sends 'carrier labels and tracking codes' back to the store in one step.",
+              "shows": "A WMS can own carrier integration entirely.",
+              "source": "Picqer, n.d."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A separate multi-carrier service.",
+            "introduces": "Carrier integration inside the warehouse's own software.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The shop platform's own labels are simplest for a single-country merchant and stop fitting when a warehouse system owns the packing station.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Who-talks-to-carriers table: four choices by fits when, limits when, who absorbs carrier change.",
+              "shows": "Who absorbs carrier change is the deciding column."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Integration inside the WMS.",
+            "introduces": "Integration inside the shop platform.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Kestrel & Pine's combination of own carrier contracts and a multi-carrier service inside the WMS flow is common at the Omnichannel stage, and the author's rule is that the normalizing layer is not optional from the second carrier onward; only buying or building it is.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "A multi-carrier shipping service integrated in the WMS flow; own contracts with PostNL and DHL.",
+              "shows": "Direct contracts for price and a layer for labels and tracking coexist.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four choices and their table.",
+            "introduces": "Kestrel & Pine's combination and the author's rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "A static rule costs nothing and needs no data, and is right only as often as the warehouse and carrier happen to agree with it, which fits a Starting merchant with one carrier and one cut-off.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who talks to the carriers.",
+            "introduces": "The second choice: how the promise is made, starting with the static rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "A transit table of lead days per lane plus the warehouse's cut-off is honest on an ordinary day but blind to backlog and to the carrier's bad week, which fits a Growing merchant.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The static rule with no data.",
+            "introduces": "The first approach with data.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "A promise service reads cut-off, backlog, stock location, lane table and a performance margin and answers checkout, marketplaces and agents, which is what W8 means; it fits the Omnichannel stage and is worthless if nobody feeds and measures it.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The transit table, blind to backlog.",
+            "introduces": "A component that also reads the backlog and the lane's performance.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "A predictive model learned from scan history suits a Group-stage operator with the data and the analysts, and is too much for everyone else.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "How-the-promise-is-made table: four approaches by inputs, honest when, blind to.",
+              "shows": "Each step adds inputs and removes a blind spot."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The promise service.",
+            "introduces": "The model that replaces its lane table with forecasts.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "A Growing merchant should buy the normalizing layer early, because carrier change is external and frequent, but keep the promise a transit table agreed with the warehouse until it has the data to feed a service, and then build or buy one with an API.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5"
+        ],
+        "how": "Places the layer and each promise approach at the stage where it fits."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The options and the stages named beside them.",
+        "introduces": "The options set stage by stage, with the warning signs of outgrowing each.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "controlling_idea": "Shipping is the one area where a Growing merchant should buy the normalizing layer early, while the promise should stay a transit table agreed with the warehouse until the cut-off, backlog and lane data exist, and then become a component with an API.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Stage table: typical setup, what becomes necessary and warning signs, Starting to Group.",
+              "shows": "The layer becomes necessary at Growing, the promise service at Omnichannel, one promise API at Group."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "heading": "In Practice",
+      "controlling_idea": "Public evidence confirms carrier drift, the thinness of public on-time data and the promise as a measured model, and Eva's parcel shows the layer working while the static promise failed.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Tests the chapter's recommendations against documented cases and against Eva's parcel."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Public evidence first (carrier drift, then on-time data), then Kestrel & Pine's parcel in time order, then the promise that failed and the plan that answers it. The parcel's steps out of time order would hide that the shipped message waits for the scan; the plan before the failure would answer a question not yet asked."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The recommendations by stage.",
+        "introduces": "The public evidence behind them and one parcel that tests them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "controlling_idea": "The carriers' own developer pages show the drift on four calendars at once, each change a Pulled Rug for a merchant that integrated directly without watching the changelog.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The carrier changes cited in the labels subsection, plus DHL's Kleinpaket rename 'with automatic correction of old requests' and bpost's bpack manual at version 3.3.35 (26 May 2026).",
+              "shows": "Drift is continuous and documented, so it can be watched.",
+              "source": "Carrier developer portals"
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Public on-time measures for parcels are thin and self-reported, so the only on-time rate a merchant can trust is the one it computes from its own scan history stored per lane.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "PostNL: 97% 'delivery quality parcels in NL' in 2023 and 2024, 371 million parcels in 2024 (own KPI); ACM letter figures (86% within 24 hours in 2024; a fine of nearly €7 million for 2023).",
+              "shows": "No independent parcel on-time measure exists for the three countries.",
+              "source": "PostNL Annual Report 2024; DutchNews 2025, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What carriers document about their interfaces.",
+            "introduces": "What is published about their delivery performance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Eva's parcel is one of those the shipping service handles (336,000 in 2026): at 08:40 on 14 April it books her PostNL parcel with the fulfillment order reference as the idempotency key, so a retry cannot book a second shipment.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Shipment created 08:40 on 14 April 2027; 1.1 kg; standard home delivery to Nijmegen. 336,000 parcels shipped in 2026.",
+              "shows": "One booking per parcel under the merchant's reference.",
+              "source": "Kestrel & Pine scenario ledger, shipping-and-delivery line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The public evidence on carrier interfaces and on-time performance.",
+            "introduces": "Eva's parcel as a worked case.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "The tracking number reaches the order within a minute of the label, and at 18:30 the parcel goes on the day's manifest of 1,100 PostNL parcels for the 22:30 collection.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Tracking number to the order within a minute; manifested 18:30 with 1,100 PostNL parcels (illustrative); collection 22:30.",
+              "shows": "The label becomes a booking only when the day is manifested.",
+              "source": "Kestrel & Pine scenario ledger (shipping-and-delivery and warehouse-and-fulfillment lines); batch size illustrative"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The booking at 08:40.",
+            "introduces": "The label's tracking number and the evening's manifest.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "PostNL's scans follow from 23:40 to delivery at 11:20 on 15 April; the first of them, not the label, sends Eva's 'shipped' e-mail, and each scan is translated into one status and stored with its route.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Depot scan 23:40; out for delivery 07:50 and delivered 11:20 on 15 April (illustrative times).",
+              "shows": "The status and the shipped message come from the carrier's events, not from the label.",
+              "source": "Kestrel & Pine scenario ledger, shipping-and-delivery line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "time",
+            "carries_over": "The manifest and the collection.",
+            "introduces": "The carrier's scans and what they drive.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "What failed was the promise on Tuesday evening (Wednesday shown, Thursday delivered), and its cost is a WISMO ticket and a disappointed customer for every weekday order between 21:00 and 22:00, which nobody has measured.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "21:14, 'ordered before 22:00, delivered tomorrow': Wednesday shown, Thursday delivered (computed in p19).",
+              "shows": "The parcel was handled well; the promise was the fault, and its cost is unmeasured.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The parcel handled correctly from booking to delivery.",
+            "introduces": "The part that did not work: the promise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "Noor's first version, specified in May 2027 ahead of the W8 promise API in 2028, is the transit table plus the WMS's cut-off and backlog, measured weekly as promised-versus-delivered per lane.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Transit table plus cut-off and backlog, measured weekly per lane (illustrative plan, May 2027); W8 promise API by 2028.",
+              "shows": "The computed promise starts small and measured, not as a model.",
+              "source": "Kestrel & Pine scenario ledger, shipping-and-delivery line"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: Eva's promise written versus computed.",
+              "shows": "The sentence said Wednesday; the computation said Thursday, the day the parcel arrived."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The unmeasured cost of the wrong promise.",
+            "introduces": "The first computed promise Noor specifies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Each failure of shipping is one of the chapter's mechanisms breaking (a retired version, a duplicate booking, a missed manifest, a lost scan, a lost tracking number, a static promise at peak, a lost parcel, a marketplace parcel without tracking), and each has a detection and a recovery.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "how": "Shows what happens when the layer, the booking key, the manifest, the event vocabulary or the computed promise is missing."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "The failures in the order a parcel meets them: the carrier interface, the booking, the tracking number reaching the order at label print, the manifest at the end of the day, the scans after collection, the promise at peak, then the parcel itself and, last, parcels the merchant does not ship. Out of that order the reader would meet a failure before the step it breaks."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Eva's parcel handled correctly by the layer.",
+        "introduces": "What happens when each mechanism fails.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "A retired API version stops the first label of the morning; it is detected by watching changelogs and testing in the sandbox and recovered by switching to the backup carrier.",
+          "function": "cause_effect"
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "A timeout and a retry create two labels for one parcel; the second shipment is cancelled before the manifest and the call is made idempotent by reference.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The carrier interface failing.",
+            "introduces": "The booking failing.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "A tracking number that never reached the order leaves the customer with no status, detected by comparing shipments with orders and recovered by replay.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The booking.",
+            "introduces": "The tracking number on its way to the order at label print.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "A missed manifest leaves parcels the carrier does not know, detected as parcels stuck in pre-transit and prevented by a scheduled close-out with an alert.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The label and its tracking number.",
+            "introduces": "The day's close-out.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "A lost or duplicated scan is caught by keying events and polling quiet parcels, and recovered by idempotent handling and a status derived from the full history.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The manifest and the collection.",
+            "introduces": "The scans after collection.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "A static promise stays on the page while the order feed backs up; the age of the oldest unprocessed order and promised-versus-delivered detect it, and a promise that reads the backlog recovers it.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Failures of the carrier side, ending with the scans.",
+            "introduces": "The promise failing at peak.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Undeliverable, lost or damaged parcels are detected from the normalized events and the lane's expected time and handled by a service workflow, with the loss the merchant's until delivery.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The promise.",
+            "introduces": "The parcel itself going wrong.",
+            "form": "word",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Directive 2011/83/EU, Article 20: risk passes when the consumer has 'acquired the physical possession of the goods'.",
+              "shows": "Until the scan says delivered, a lost parcel is the merchant's loss, so the merchant needs the delivered event.",
+              "source": "Directive 2011/83/EU, 2011"
+            }
+          ]
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "Parcels shipped by a marketplace's own fulfillment program carry tracking the merchant never sees unless the connector imports it as events.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "About 40% of Kestrel & Pine's German marketplace units fulfilled by the marketplace's program.",
+              "shows": "A large share of parcels has no tracking in the order record without an import.",
+              "source": "Kestrel & Pine scenario ledger"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Parcels Kestrel & Pine ships.",
+            "introduces": "Parcels someone else ships.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The two halves of the chapter depend on each other: the normalizing layer's events are the only record of how long each lane takes, and a computed promise needs exactly that record plus the warehouse's cut-off and backlog. Without the layer there is no lane data to compute from; with a static sentence the data is never used. The promise at checkout becomes true only when the shipping layer feeds it and its dates are compared with what the carriers report.",
+    "so_what": "A merchant can start without a model: make the storefront's date agree with the warehouse's last wave, store every scan with its lane from the first day, and count how often parcels arrive on the date shown; Kestrel & Pine's first version does exactly this.",
+    "callback": {
+      "to": "The hook's shopper who sees 'delivered tomorrow' after the warehouse's last dispatch has left.",
+      "how": "The reader can now say which inputs would have changed that date (the cut-off, the backlog, the lane's transit and margin) and where they come from (the warehouse system and the scans the layer stores)."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Buy or build the normalizing layer from the second carrier, book each parcel once under your reference and close the manifest on a schedule, derive the status from one event vocabulary, and compute the promise from the warehouse's cut-off and backlog and the lane's measured transit, starting with a transit table measured promised-versus-delivered per lane."
+    },
+    "hand_off": {
+      "to": "stores-and-omnichannel",
+      "relationship": "contrast",
+      "carries_over": "The parcel delivered to Eva's door from Duiven, promised from the warehouse's cut-off and the carrier's lane.",
+      "introduces": "Orders and stock that live in a store: collection at the counter, dispatch from a store shelf, returns at the till and orders for stock that is not in the building."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and their detections.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p54",
+        "controlling_idea": "The shopper who saw 'delivered tomorrow' after the last dispatch shows that the two halves depend on each other: the layer's events are the only record of each lane's transit, the promise needs that record and the warehouse's cut-off and backlog, and the date becomes true only when the layer feeds the promise and the promise is measured.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The hook's 'delivered tomorrow' set against the chapter's two halves.",
+            "shows": "The reader can now name the inputs that would have changed that date and where they come from."
+          }
+        ]
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Established: carriers version and retire their APIs and status codes on their own calendars; a tracking number must reach the order for any status to exist and a small vocabulary covers every carrier; consumer law bounds the promise; and published research treats the promise as a distribution.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The chapter's answer in one paragraph.",
+          "introduces": "The points it rests on, starting with what the sources establish.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "form": "list",
+        "controlling_idea": "Depends on context: when to buy a multi-carrier platform, when to move from a transit table to a service, whether customs data matters, and where pickup points are worth offering.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p57",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: a promise that cannot be computed cannot be measured, so the first step is to make the storefront's sentence agree with the last wave and count how often it holds, and every scan should be stored with its lane from the first day.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is established and what depends on context.",
+          "introduces": "The author's own judgement, labelled as such.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p58",
+        "form": "list",
+        "controlling_idea": "Ten questions let the reader check, in their own company, what the promise is computed from, who talks to the carriers, how bookings, manifests and the shipped message are protected, which vocabulary the status uses, and which carrier is the backup.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions that apply them to the reader's own company.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p59",
+        "controlling_idea": "Eva's parcel is delivered to her door, but Kestrel & Pine's six stores, its click-and-collect pilot and its nightly store stock raise what changes when the order is collected at a counter, shipped from a store shelf, returned at the till or placed for stock that is not in the building.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The parcel delivered to Eva's door from Duiven, promised from the warehouse's cut-off and the carrier's lane.",
+          "introduces": "Orders and stock that live in a store.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Warehouse steps, the fulfillment order, waves, capacity and the wave schedule as such; this chapter reads cut-off and backlog as inputs only.",
+      "covered_in": [
+        "warehouse-and-fulfillment"
+      ]
+    },
+    {
+      "topic": "Checkout orchestration and how delivery options are rendered and priced in the cart.",
+      "covered_in": [
+        "cart-and-checkout"
+      ]
+    },
+    {
+      "topic": "Transactional notifications, the order status page and WISMO handling; this chapter only supplies the derived status they read.",
+      "covered_in": [
+        "customer-service-and-notifications"
+      ]
+    },
+    {
+      "topic": "Returns labels, return carriers and reverse logistics.",
+      "covered_in": [
+        "returns-and-exchanges"
+      ]
+    },
+    {
+      "topic": "VAT, the One Stop Shop and invoicing for cross-border sales; customs appears here only as data the label call needs.",
+      "covered_in": [
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "Marketplace order import and marketplace-fulfilled tracking.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "Click-and-collect, ship-from-store and store delivery.",
+      "covered_in": [
+        "stores-and-omnichannel"
+      ]
+    },
+    {
+      "topic": "Peak planning and backpressure in general.",
+      "covered_in": [
+        "peak-load-and-reliability",
+        "journey-peak-day"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (rule 12): this chapter now has Eva's 'shipped' e-mail sent by PostNL's first scan (23:40, 14 April 2027), as the orchestrating brief asked; chapter 19's Kestrel & Pine table describes the April 2027 'shipped' e-mail as sent 'when the iPaaS flow marks the order fulfilled, sometimes before the parcel leaves' (with the first-scan trigger as the target), and journey-consumer-order sends the shipping confirmation 'when the WMS reports the label (Wednesday afternoon)'. The fact needed: whether in April 2027 Kestrel & Pine already triggered 'shipped' on the carrier scan (then chapters 19 and 37 change) or only later (then this chapter should present the first-scan trigger as the rule Noor adopts, not as what happened to Eva)."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 15 passed, 23 failed; 8 major, all at fault in the draft; 15 single-reader minor), the cheap, plainly right fixes were made without another round: p36 says what the promise-approach table shows and glosses the Giant's Boots; p10 opens 'Both failures matter beyond the Dutch storefront'; p18 no longer says 'the inputs are the chapter's argument'; p39 says the ACM figures are the only official ones and concern letters, not parcels; p44 'could be counted but nobody has counted'; p46's opener names the grouping (carrier side, promise, parcel, others' parcels) instead of claiming parcel order; Figure 1's caption glosses the lane table; p25 names Directive 2011/83/EU instead of 'the same directive'.",
+      "rejected": [
+        "A fourth round.",
+        "Moving the options, cross-border and cost subsection after The Choices or the research papers after the newcomer's point (single-reader spec notes; the current order stands under rule 10)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 1) Eva's scan times and the 18:30 manifest are canonical in the ledger's shipping-and-delivery line and confirmed by the Parts IX–XI editor-review line, so the open question is closed and the chapter keeps them as labelled illustrative; (rule 1) Noor's May 2027 first promise service is recorded in the same ledger line as an illustrative plan, which is all the chapter states, so no Waypoint sub-decision is added; (rule 2) the unverified 2026 Council proposal to delete the €150 IOSS threshold stays as the published page states it, with its cited source and the 'check its status' hedge.",
+      "rejected": [
+        "Leaving these in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12 (rule 3 and rule 8): flow-rubric notes not taken (the stage paragraph repeating rules of The Choices, the dense thesis paragraph) are closed: the house section shape stands and no reader in rounds 1 or 2 asked for the same move.",
+      "rejected": [
+        "Folding Across Scale Stages into The Choices."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after round 2 (escalate: 20 passed, 16 failed; 7 blocking, two at fault in the spec), (rule 3, the move both round-2 flow readers asked for) Article 18 moves from the conversion paragraph p23 to p22 as the legal bound of the promise's tail; (rule 3) Eva's Thursday is computed once, in p19, and p44 now states only the cost of the wrong promise; draft fixes for the other blocking points: The Choices opens by naming 'the requirements table of the three moments'; 'My rule' becomes 'The author's rule'; When It Goes Wrong no longer claims a strict parcel order and says the last entry is outside the merchant's own parcels; the options subsection opens by saying three things change the label and the promise. Cheap minors: 336,000 parcels as 2026's figure, not Eva's year; webhooks glossed at first use (p15); 'by contrast' for DPD; 'collected without a close-out'.",
+      "rejected": [
+        "A third revision round: the brief allows two, then one confirming round.",
+        "Splitting the When It Goes Wrong opener into its own paragraph: it would add a unit the spec does not have; the opener stays in p46."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "After round 1 (escalate: two spec faults, both corroborated by two flow readers), pre-approved spec changes: Article 20 (risk of loss until possession) moves from the promise paragraph p23 to the lost-parcel failure p52, which already cited it; DHL's tracking limit that rules out polling moves from the evidence paragraph p38 to the tracking paragraph p15, and p38 no longer repeats the version-drift facts of p14 (keeping its two new facts). Draft fixes for the other blocking points: the web agency named; the shipped rule no longer used in the requirements table before it is explained; the event table introduced as the merchant's adaptation of EasyPost's list; Kestrel & Pine's multi-carrier service stated in p02; 336,000 parcels moved to open p41; the roadmap no longer promises Eva's promise 'worked through' twice; transitions written into p18, p23, p28, the stage paragraph (now before its table) and p46; glosses for cartonization, Picqer (a cloud WMS) and basis points. Cheap single-reader minors also fixed: 'already requires' for W8; 'a shared vocabulary'; 'DHL's rule in the vocabulary table'; the Queue That Waited as an instance of the First Snowfall; 'integration platform (the iPaaS)'.",
+      "rejected": [
+        "Moving Eva's computed promise wholly to In Practice: the promise subsection needs a worked example; In Practice refers back to it instead."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun (sound with notes); notes taken without review at the author's request: the lost tracking number (p50) moves before the missed manifest (p48), since the number reaches the order at label print and the manifest closes at 18:30; p40 (a restatement of the promise research and Shopify's states already given in p16 and p20 to p22) is cut, the move both rubric runs asked for; p44 no longer re-derives Eva's Thursday and refers back to p19.",
+      "rejected": [
+        "Merging p20 to p22 into one paragraph: each carries one source and the third states the lesson; kept separate.",
+        "Folding the stage section into The Choices (house shape).",
+        "Adding push-versus-polling to the tracking subsection: p38 and p49 state what they need."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (sound with notes), notes taken without review at the author's request: the pieces section's pattern relabelled prerequisite_order and p12 now names the moments in the section's order; p24 merged into p25 (both said the chosen option must be stored on the order), network first; the 'shipped on the first scan' rule moved into p17 beside the derived status, with p43 only applying it; in When It Goes Wrong the lost tracking number (p50) now precedes the lost scan (p49), the order a parcel meets them; the section rationales for pieces and wrong say what breaks if reordered.",
+      "rejected": [
+        "Moving Eva's computed promise (p19) after the tail (p22): p18 and p19 already state the margin, and moving the example would separate it from the inputs it applies.",
+        "Folding the stage section into The Choices: the stage section is the book's fixed shape.",
+        "Cutting p40 and trimming p44 further: kept as the house In Practice summary; recorded in open_questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json. Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role copied unchanged from the journal spec. The post's supporting claims S1 to S5 are written here. The spec is reconstructed one paragraph per unit of the published chapter, with three units the contract asks for and the published chapter did not have: a thesis paragraph (p04), a roadmap (p05) and a conclusion paragraph that answers the opening (p54); the Kestrel & Pine paragraph that held both the wrong promise and Noor's plan is split into p44 and p45 so each has one controlling idea.",
+      "rejected": [
+        "Carrying the old Success criteria over: seven of eight were inventories (callouts in order, tables, diagrams, worked-example figures, sources per claim, failure list, take-away tiers). They are dropped; the outcome they served is covered by AC-1 to AC-5.",
+        "Rewriting 'a reader new to the field can define every term from the chapter alone' as an added known_before_new criterion: the standard known_before_new check runs on every draft, so it is dropped rather than added as an agent criterion."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Word limit kept at the old spec's 6,500 words; the published chapter measured 5,606 words by check_draft's count, so the added units fit.",
+      "rejected": [
+        "Raising the limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The 'shipped' e-mail is sent on the carrier's first scan (in_transit), not at label print: chapter 19 treats a 'shipped' message from a printed label as a fault (The Message in a Bottle), and this chapter's own sources say a label is not a booking until the parcel is manifested (DHL). The requirements table, Eva's parcel (p42, p43) and question 7 say so; the normalized-event table already sent 'shipped' on in_transit. For Eva the first scan is PostNL's depot scan at 23:40 (ledger, shipping-and-delivery line).",
+      "rejected": [
+        "Keeping 'Eva receives a shipped e-mail' at label print, which contradicts chapter 19 and the chapter's own event table.",
+        "Inventing a collection scan at 22:30: the ledger lists no scan before the depot scan at 23:40."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Book-wide vocabulary: the fourth integration choice, 'Through the commerce platform', is renamed 'Through the shop platform' (and 'Commerce platform's labels' in its table), because it means the hosted product, which the book calls the shop platform.",
+      "rejected": [
+        "Keeping 'commerce platform', which the book reserves for the whole set of systems and the market category."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Built the chapter around the gap in the ledger between Eva's promised Wednesday and delivered Thursday, treating it as the motivating example for a computed promise, rather than around carrier features; the ledger's static-promise note made this the natural spine."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Adopted EasyPost's ten statuses as the normalized event vocabulary because it is public, small and documented; vendor-neutral wording was kept by presenting it as a reasonable model, not a standard."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept cross-border to one paragraph since Kestrel & Pine ships only within the EU; IOSS and customs are defined so a reader can recognize them, and the VAT side is left to chapter 14."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Presented the vendor conversion case studies and PostNL's 97% KPI with explicit caveats (vendor-reported; self-reported) rather than omitting them, so the reader learns to read such numbers."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md (ruling 15)",
+      "contributed": "Carriers, the static promise, Eva's dates and parcel times (shipping-and-delivery line), the Black Friday four-hour queue, the €75 free-shipping threshold and €92 average order, 336,000 parcels in 2026, the 40% marketplace-fulfilled German units, Waypoint W8, Duiven's 21:00 last wave and 22:30 PostNL collection."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (shipping-and-delivery; part-4; stores-and-omnichannel transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to the stores chapter."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md contract 16 and the neighbouring contracts 11, 15, 17, 18, 19 and 20",
+      "contributed": "The chapter's original contract."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md (Parts 4 and 6)",
+      "contributed": "Carrier APIs, multi-carrier platforms, delivery promise, cross-border, carrier performance, status page states."
+    },
+    {
+      "kind": "internal",
+      "ref": "warehouse-and-fulfillment; customer-service-and-notifications; meet-kestrel-and-pine",
+      "contributed": "The 21:00 last wave and 22:30 collection; the rule that 'shipped' is sent on the carrier's scan."
+    },
+    {
+      "kind": "external",
+      "ref": "PostNL developer portal and API overview (n.d., accessed 2026-11); PostNL Annual Report 2024 (2025)",
+      "contributed": "V4 API families and phased rollout; parcel KPI and volume."
+    },
+    {
+      "kind": "external",
+      "ref": "DHL Parcel DE Shipping API v2 (updated 2026-11-03); DHL Shipment Tracking Unified API (changelog through 2026-09); DHL developer portal",
+      "contributed": "Manifest rule and close-out, Kleinpaket, customs documents, certificate change, tracking codes and rate limit."
+    },
+    {
+      "kind": "external",
+      "ref": "bpost Shipping Manager API support page (2026); DPD Belgium Predict documentation (n.d.)",
+      "contributed": "bpost's v3 to v5 move; DPD's depot notifications."
+    },
+    {
+      "kind": "external",
+      "ref": "Sendcloud (2026-11-06), nShift (n.d.), EasyPost trackers (n.d.), Shopify order status pages (n.d.), Picqer (n.d.)",
+      "contributed": "Multi-carrier counts, the ten statuses, the five customer states and the tracking rule, labels from the WMS."
+    },
+    {
+      "kind": "external",
+      "ref": "Sarkar and Mandayam Comar, SPEEDY (Amazon Science, 2025); Ye, Hijazi and Van Hentenryck, arXiv 2505.17340 (2025)",
+      "contributed": "The promise as a measured model and as a distribution."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU; European Commission customs and One Stop Shop pages; Council document ST-15179-2026",
+      "contributed": "Consumer-law bounds on delivery; customs and IOSS."
+    },
+    {
+      "kind": "external",
+      "ref": "DutchNews reports on ACM figures (2025, 2026); Wonderment and Hive case studies (vendor-reported)",
+      "contributed": "Letter-delivery figures as contrast; vendor conversion claims."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3 (escalate: 15 passed, 23 failed, 8 major all draft faults, 15 minor). Post-round fixes: table explained and Giant's Boots glossed (p36); W8 transition (p10); p18, p39, p44, p46 openers and wording; lane table glossed in Figure 1; Directive named in p25. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 20 passed, 16 failed, 7 major incl. 2 spec faults, 9 minor). Resolved under the standing instruction: Article 18 moved p23 -> p22; Eva's Thursday computed once (p19), p44 states only the cost; opener fixes in The Choices, the options subsection and When It Goes Wrong; minors fixed. Then one confirming round (round 3)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 19 passed, 28 failed, 17 major incl. 2 spec faults, 11 minor). Spec: Article 20 moved p23 -> p52; tracking limit moved p38 -> p15; p38 trimmed; p02, p16, p41 ideas updated. Draft revised for round 2."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted spec.md to spec.json (outcome-spec pass): reconstructed from the published chapter; thesis paragraph, roadmap and synthesis paragraph added; Kestrel & Pine promise paragraph split into the wrong promise and Noor's plan; 'shipped' e-mail moved from label print to the carrier's first scan; 'shop platform' for the hosted product. Flow rubric notes applied: p24 merged into p25, shipped rule in p17, p49/p50 swapped. Rubric rerun: p40 cut, p44 trimmed, p50 before p48."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document reference rephrased."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences, wave-release wording and Black Friday slip hedged, ACM expanded, timetoread corrected."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

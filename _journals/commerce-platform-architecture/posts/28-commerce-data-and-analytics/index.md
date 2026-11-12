@@ -15,28 +15,30 @@ logo: "assets/images/28-commerce-data-and-analytics/logo.jpeg"
 >
 > * **Three order counts have three honest causes: definition, collection and time.** Each system counts what it exists to handle (orders placed, orders invoiced, parcels shipped), each loses or gains records in the copying, and each uses its own clock. None is wrong; none is the company's number until someone defines it.
 > * **Keep operational and analytical data apart, and copy everything into one place.** Operational stores answer "where is this order" for one order; analytical stores answer "how many orders by channel" over all of them. A warehouse or lakehouse fed by extract-and-load jobs and event streams is where the counts can be compared.
-> * **Define each metric once, with an owner, and publish the bridge.** A metrics layer holds "order", "net sales" and "return" as code so every dashboard computes them the same way. Waypoint decision W7 gives Kestrel & Pine's definitions to the Data Lead and puts the reconciliation between the platform's count and the warehouse's count next to the reported number.
+> * **Define each metric once, with an owner, and publish the bridge.** A metrics layer holds "order", "net sales" and "return" as code so every dashboard computes them the same way. Waypoint decision W7 gives Kestrel & Pine's definitions to the Data Lead and puts the reconciliation between the platform's count and the data warehouse's count next to the reported number.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
 > * **Schrödinger's Order** — when the operational systems disagree about an order, every report built on them disagrees too, and the dashboard becomes a fourth opinion.
-> * **The Message in a Bottle** — an order edit or refund that one connector missed is a permanent difference between the warehouse and the platform until a reconciliation finds it.
+> * **The Message in a Bottle** — an order edit or refund that one connector missed is a permanent difference between the data warehouse and the platform until a reconciliation finds it.
 > * **The Familiar Stranger** — "customers" cannot be counted while four systems each count their own, so the customer metrics inherit the identity problem of the previous chapter.
 
 <br>
 Finance and operations can bring different order totals to the same meeting and both have counted correctly. Finance may be counting invoices while operations counts shipments; merchandising may be looking at products sold. Calling each figure 'orders' hides those differences. Leadership can then mistake a change in definition for a change in performance and make the wrong staffing or purchasing decision.
 
-The source systems serve different jobs. The storefront records orders placed, the enterprise resource planning system (ERP) records invoices, and the warehouse records parcels. Their totals should sometimes differ. The analytical system must explain which differences follow from definitions and which reveal missing or incorrect data.
+Linking records to one master, as the previous chapter did, does not settle the count: the source systems serve different jobs. The storefront records orders placed, the enterprise resource planning system (ERP) records invoices, and the warehouse system records parcels. Their totals should sometimes differ. The analytical system must explain which differences follow from definitions and which reveal missing or incorrect data.
 
-At Kestrel & Pine, the fictional outdoor brand, decision W7 of the Waypoint improvement program gives the Data Lead ownership of common order, revenue and return definitions. I would settle those definitions before adding dashboards: they let people distinguish a real business change from a reporting difference and investigate missing records against an agreed expectation.
+At Kestrel & Pine, the fictional outdoor brand, decision W7 of the Waypoint improvement program gives the Data Lead ownership of common order, revenue and return definitions. I would settle those definitions before adding dashboards: they let people distinguish a real business change from a reporting difference and investigate missing records against an agreed expectation. The chapter's answer has three parts: copy every system's data into one analytical store, define each metric once with an owner, and publish the company's number with its bridge, the reconciliation to each system's count.
 
-**Where we are in the order's journey.** Eva's €235 purchase on 13 April 2027 becomes order #1072455, invoice lines and a parcel dispatched on 14 April. Her exchange adds a credit note and a second parcel on 22 April. The reporting question is what each event counts toward, rather than which system's total is inherently right.
+**Where we are in the order's journey.** Eva's €235 purchase on 13 April 2027 becomes order #1072455, invoice lines and a parcel dispatched on 14 April. Her exchange adds a credit note and a second parcel on 22 April. The reporting question is what each event counts toward, rather than which system's total is inherently right. In Practice returns to it.
+
+The chapter starts from Kestrel & Pine's three February counts. It then covers operational and analytical data; the three ways data reaches the analytical store (scheduled copies, event streams, platform exports); metric definitions, compared with Shopify's, Zalando's and Google Analytics' published ones; what the data is for and when live dashboards mislead; four designs by cost and stage; W7 in practice; and what goes wrong.
 
 ## Setting the Scene: Three Answers to One Question
 
-At the March 2027 leadership meeting, CEO Mara Lindqvist asks how many orders arrived in February. Ecommerce Manager Milan Petrov reports **21,050**, Finance Director Sanne de Wit **22,710**, and Operations Head Daniel Okafor **24,140**. Daniel's report comes from a **business intelligence (BI)** tool reading the **warehouse management system (WMS)**. These fictional figures take forty minutes to reconcile.
+At the March 2027 leadership meeting, CEO Mara Lindqvist asks how many orders arrived in February. Ecommerce Manager Milan Petrov reports **21,050**, Finance Director Sanne de Wit **22,710**, and Operations Head Daniel Okafor **24,140**. Milan's count is the shop platform's, Sanne's the ERP's; Daniel's comes from a **business intelligence (BI)** tool reading the **warehouse management system (WMS)**. Kestrel & Pine has run a data warehouse since 2024, but nobody owns its definitions. The meeting spends forty minutes on these fictional figures without reconciling them.
 
-Hanna Berg, the Data Lead, had the explanation by Wednesday, and it is worth reading slowly because every merchant has a version of it.
+Hanna Berg, the Data Lead, had the explanation by the Wednesday after the meeting, and it is worth reading slowly because every merchant has a version of it.
 
 | What each count includes | Platform: 21,050 | ERP: 22,710 | Warehouse report: 24,140 |
 | --- | --- | --- | --- |
@@ -48,7 +50,7 @@ Hanna Berg, the Data Lead, had the explanation by Wednesday, and it is worth rea
 | Exchange orders from the returns portal | 1,540, created through the platform's API | None; an exchange is a credit note and a replacement line | 1,540 exchange parcels |
 | Store transactions | Not here | A nightly sales total, not orders | Not here |
 
-Three differences explain the totals. **Definition:** do canceled orders, exchanges, parcels and store receipts count? **Coverage:** marketplaces reach the ERP as weekly summaries and do not reach the platform. **Timing:** an order placed late on 28 February becomes a March invoice and shipment. A useful report makes those choices visible.
+Three differences explain the totals. **Definition:** do canceled orders, exchanges, parcels and store receipts count? **Collection:** marketplaces reach the ERP as weekly summaries and do not reach the platform. **Time:** an order placed late on 28 February becomes a March invoice and shipment. A useful report makes those choices visible.
 
 ![Illustration: three people at three windows each hold a different February order count, explained by definition, collection and time.](assets/images/28-commerce-data-and-analytics/28-three-honest-counts.jpeg)
 **Figure 1:** *The platform's 21,050, the ERP's 22,710 and the warehouse report's 24,140 are honest counts that differ by definition, collection and time; none is the company's number until someone owns the definition.*
@@ -57,15 +59,15 @@ Mara's reaction was the right one. She did not ask which number was correct. She
 
 ## Operational Data and Analytical Data
 
-The first idea a newcomer needs is that the same facts are used in two different ways, and that the two ways want different stores.
+The three counts can only be compared where all of them land. The first idea a newcomer needs is that the same facts are used in two different ways, and that the two ways want different stores.
 
 **Operational data** is the live state of the business: this order's status, this SKU's stock at Duiven, this customer's address. Operational systems (the platform, the OMS, the WMS, the ERP, the POS) read and write it one record at a time, thousands of times a minute, and must answer fast. **Analytical data** is the history of the business laid out for questions across all records: orders by channel by week, return rate by product by size, stock cover by category. Analytical questions read millions of rows at once and can tolerate hours of lag.
 
 The two must be kept apart for a practical reason. A report that scans every order of the year, run against the platform's own database on a Friday evening in November, competes with the checkout for the same machine. The rule is simple: **never run an analytical question against an operational store, and never trust an analytical store for an operational answer.** "The dashboard says it shipped" is not a shipment ([[peak-load-and-reliability]] has the Black Friday version).
 
-The analytical store has had two names. A **data warehouse** is a database built for large analytical queries, into which copies of every system's data are loaded and modeled into tables analysts can use. Snowflake describes its architecture as separating storage from compute so that one team's queries do not slow another's; Google's BigQuery calls itself "a fully managed serverless data warehouse" with the same separation (both from current documentation, accessed November 2026).
+The analytical store comes in two forms. A **data warehouse** is a database built for large analytical queries, into which copies of every system's data are loaded and modeled into tables analysts can use. Snowflake describes its architecture as separating storage from compute so that one team's queries do not slow another's; Google's BigQuery calls itself "a fully managed serverless data warehouse" with the same separation (both from current documentation, accessed November 2026).
 
-A **lakehouse** keeps the raw copies in open file formats in cloud storage and runs warehouse-style queries over them; the term comes from a 2021 paper by Databricks' founders (Armbrust, Ghodsi, Xin and Zaharia, CIDR 2021) that argued the two-tier design of a data lake feeding a separate warehouse suffered from staleness, duplication and cost.
+A **lakehouse** keeps the raw copies in open file formats in cloud storage and runs warehouse-style queries over them; the term comes from a 2021 paper by Databricks' founders (Armbrust, Ghodsi, Xin and Zaharia, CIDR 2021) that argued the two-tier design of a data lake (raw files kept in cheap storage) feeding a separate warehouse suffered from staleness, duplication and cost.
 
 For a merchant of Kestrel & Pine's size the difference is a vendor choice, not an architecture choice; what matters is that one analytical store exists and that every system lands in it.
 
@@ -82,25 +84,13 @@ The connectors do what the previous chapters taught: Airbyte's Shopify source (v
 
 Read that list as a reconciliation sweep ([[events-consistency-and-reconciliation]]) applied to analytics: an order edited after the connector's last run is picked up by the lookback window or not at all, and a missed edit becomes a permanent difference between the warehouse and the platform.
 
-**Event streams** carry each change as it happens. A system publishes an event (order placed, stock changed), a durable log keeps it, and the warehouse reads the log at its own pace alongside the OMS and the WMS. The best-known public account is from a Walmart engineer on Confluent's blog (May 2020; six years old), describing more than ten event sources normalized into one inventory event feed, with each item and store pair always handled by one consumer so that no two updates to the same stock figure race. [[integration-styles]] owns the style; for analytics the point is that an event stream gives the warehouse the same facts the operational systems act on, at the same moment, with no second extraction.
+**Event streams** carry each change as it happens. A system publishes an event (order placed, stock changed), a durable log keeps it, and each reader of the log (the data warehouse, the OMS, the WMS) reads it at its own pace. The best-known public account is from a Walmart engineer on Confluent's blog (May 2020; six years old), describing more than ten event sources normalized into one inventory event feed, with each item and store pair always handled by one consumer so that no two updates to the same stock figure race. [[integration-styles]] owns the style; for analytics the point is that an event stream gives the data warehouse the same facts the operational systems act on, at the same moment, with no second extraction.
 
 **Platform exports** deliver many records in a file, avoiding thousands of individual API reads. Shopify's bulk operations run a query asynchronously and deliver a file; Stripe recommends its Data Pipeline "for a complete export of API data" rather than read-heavy integrations (both from documentation accessed November 2026). A merchant that pulls a year of orders through the same API its checkout uses, one page at a time, is spending the rate budget [[api-contracts-and-versioning]] described on a report.
 
-The requirements differ by what the data is for; the targets below are illustrative.
-
-| Data flow | How fresh | How complete | Who may disagree with it | Typical mechanism |
-| --- | --- | --- | --- | --- |
-| Orders and shipments into the warehouse | Minutes to an hour | Every order, including edits and cancellations after the fact | The platform's own count, within a published tolerance | Events from the OMS; ELT with a lookback window |
-| Stock snapshots for planning | Hourly, or a daily snapshot | Every SKU and location, including the marketplace program's stock | The WMS, which is the system of record | Stock events; a nightly snapshot |
-| Finance figures | Daily | To the cent; reconciled with the ERP and the payouts of the PSP (payment service provider) | Nothing; the ERP wins | Daily batch from the ERP; PSP settlement reports |
-| Operational dashboards (orders per minute, checkout errors, queue depth) | Seconds | Approximate is fine | Nobody; they are rates for action, not records | Direct from the operational systems' monitoring |
-| Board and management reports | Monthly, revised | Defined and reconciled | The ERP for revenue | The metrics layer |
-
-The last two rows are the ones that get confused. An orders-per-minute dashboard and a monthly order count are different objects: one is a rate used to act now, the other a record that will be revised and reconciled. Showing both on one screen with one label is how a dashboard becomes the fourth opinion.
-
 ## One Definition: Metrics and the Metrics Layer
 
-A **metric definition** is the written rule for computing a business number: what is counted, which records are included or excluded, which date decides the period, which currency and tax treatment apply, and what happens when the underlying record changes later. The public definitions of large companies show how many decisions hide in a word like "order".
+Once every system lands in one store, someone must say how to count. A **metric definition** is the written rule for computing a business number: what is counted, which records are included or excluded, which date decides the period, which currency and tax treatment apply, and what happens when the underlying record changes later. The public definitions of large companies show how many decisions hide in a word like "order".
 
 | Source | What it defines | What it says, in short |
 | --- | --- | --- |
@@ -109,7 +99,9 @@ A **metric definition** is the written rule for computing a business number: wha
 | Zalando's 2025 annual report (March 2026) | GMV, average basket | GMV after cancellations and returns, including VAT (value-added tax); the average basket of €62.8 is GMV per order on that basis |
 | Google Analytics 4 e-commerce reference (accessed November 2026) | the `purchase` event | Requires a `transaction_id` to "avoid getting duplicate events for a purchase"; `value` is the sum of price times quantity, excluding shipping and tax; a `refund` is a separate event |
 
-Four sources, four units: an order net of reversals as later rows, an order value net of refunds, an order value after cancellations and returns including tax, and a browser event with its own value rule. Each is internally consistent; none is interchangeable with another. This is why analytics vendors who reconcile a platform's sales against web analytics publish lists of the usual gaps (orders created by apps or subscriptions that never fire a browser event, point-of-sale and draft orders, ad blockers and refused consent, refunds netted by one side and not the other, currency and tax inclusion, attribution windows); those lists are widely reported in vendor help pages rather than in a neutral source, and the direction of each gap depends on the merchant.
+Four sources, four units: an order net of reversals as later rows, an order value net of refunds, an order value after cancellations and returns including tax, and a browser event with its own value rule. Each is internally consistent; none is interchangeable with another. This is why analytics vendors who reconcile a platform's sales against web analytics publish lists of the usual gaps. They include orders created by apps or subscriptions that never fire a browser event, point-of-sale and draft orders, ad blockers and refused consent, refunds netted by one side and not the other, currency and tax inclusion, and attribution windows. Those lists are widely reported in vendor help pages rather than in a neutral source, and the direction of each gap depends on the merchant.
+
+A definition must settle the same hard rows every time: what to do with cancellations, returns, exchanges, test orders and split shipments; which date; which currency and tax basis; and how a late change (an order edited in March) is reported against February. Hanna's table for W7, in the In Practice section, is a worked example.
 
 The architectural answer to definitional drift is the **metrics layer**: one place where each metric is defined as code, from which every dashboard, report and tool computes it. Benn Stancil's 2021 essay named the gap: "there's no central repository for defining a metric", so metric logic lives in individual dashboards, is re-derived by each analyst, and drifts.
 
@@ -117,11 +109,13 @@ The products that followed implement the idea in different ways: dbt's Semantic 
 
 The tool matters less than two properties: **the definition lives outside any one dashboard, and it has an owner.**
 
-What a definition should contain, in plain words, is a table like the one Hanna wrote for W7 (the In Practice section below). The hard rows are always the same: what to do with cancellations, returns, exchanges, test orders and split shipments; which date; which currency and tax basis; and how a late change (an order edited in March) is reported against February.
+**Who the owner is** follows the business domains. Zhamak Dehghani's 2019 data mesh article argued that domains should "host and serve their own datasets" and treat them as products, with a shared self-serve platform and global standards so that cross-domain data fits together. The commerce reading is modest: the order domain (the OMS team after W2) owns the order dataset and its definitions; the inventory domain owns stock snapshots; finance owns revenue recognition; the data team owns the platform, the keys, the time zones and the currency rules that make the domains' data joinable. A central data team that owns every definition becomes a bottleneck; domain teams with no shared standards produce four incompatible "orders" again, inside the warehouse this time. Below about five data people, the Data Lead under W7 holds them.
+
+A definition needs a **bridge** beside it: the published reconciliation from the company's count to each system's count.
 
 ## What the Data Is For
 
-The same warehouse serves four audiences with different tolerances, and a design should name them.
+Every use of the data inherits those definitions and their bridge. The same data warehouse serves four internal audiences with different tolerances, and partners from the Omnichannel stage; a design should name them.
 
 **Reporting** is the monthly and weekly record: orders, net sales, margin, return rate, by channel, country and category. It must be defined, reconciled and revised with a stated policy.
 
@@ -133,11 +127,21 @@ The same warehouse serves four audiences with different tolerances, and a design
 
 **Data products for partners** appear at the Omnichannel stage: sell-through of a third-party brand's products to that brand, listing performance to a marketplace team, a stock feed to a wholesale customer such as Bergzicht. A **data product** is a dataset with an owner, a definition, a contract and a consumer, and the warehouses now make delivery cheap: Snowflake's Secure Data Sharing lets a consumer query a provider's data in place with "no actual data ... copied or transferred between accounts", and Databricks documents an open sharing protocol that works "regardless of the computing platforms" the other organization uses (both accessed November 2026; Databricks' product naming for this was changing at the time of writing). Cheap delivery moves the cost to definitions and consent: a sell-through feed to a brand is also a disclosure of the merchant's sales, and a customer-level feed is personal data ([[privacy-and-customer-data]]).
 
-**Ownership** follows from the audiences. Zhamak Dehghani's 2019 data mesh article argued that domains should "host and serve their own datasets" and treat them as products, with a shared self-serve platform and global standards so that cross-domain data fits together. The commerce reading is modest: the order domain (the OMS team after W2) owns the order dataset and its definitions; the inventory domain owns stock snapshots; finance owns revenue recognition; the data team owns the platform, the keys, the time zones and the currency rules that make the domains' data joinable. A central data team that owns every definition becomes a bottleneck; domain teams with no shared standards produce four incompatible "orders" again, inside the warehouse this time.
-
 ## Real-Time Dashboards and When They Mislead
 
-A real-time dashboard counts while orders, refunds and payment records are still arriving, so its figures may be revised. Google Analytics' export documentation says its intraday data is best-effort and may have gaps and that some attribution lags "by up to 24 hours"; Stripe's reconciliation documentation says a payout "might arrive before its reconciliation data is ready"; Shopify's sales schema records a refund as a later row against an earlier order. These delays explain why a live view and a closed-period report can disagree without either calculation being wrong.
+Those uses work on settled data; live operations do not. Each flow of data needs its own freshness and completeness, depending on what it is for; the targets below are illustrative.
+
+| Data flow | How fresh | How complete | Who may disagree with it | Typical mechanism |
+| --- | --- | --- | --- | --- |
+| Orders and shipments into the data warehouse | Minutes to an hour | Every order, including edits and cancellations after the fact | The platform's own count, within a published tolerance | Events from the OMS; ELT with a lookback window |
+| Stock snapshots for planning | Hourly, or a daily snapshot | Every SKU and location, including the marketplace program's stock | The WMS, which is the system of record | Stock events; a nightly snapshot |
+| Finance figures | Daily | To the cent; reconciled with the ERP and the payouts of the PSP (payment service provider) | Nothing; the ERP wins | Daily batch from the ERP; PSP settlement reports |
+| Operational dashboards (orders per minute, checkout errors, queue depth) | Seconds | Approximate is fine | Nobody; they are rates for action, not records | Direct from the operational systems' monitoring |
+| Board and management reports | Monthly, revised | Defined and reconciled | The ERP for revenue | The metrics layer |
+
+The last two rows are the ones that get confused: an orders-per-minute dashboard and a monthly order count shown on one screen with one label is how a dashboard becomes the fourth opinion.
+
+A real-time dashboard counts while orders, refunds and payment records are still arriving, so its figures may be revised. Google Analytics' export documentation says its intraday data is best-effort and may have gaps and that some attribution lags "by up to 24 hours"; Stripe's reconciliation documentation says a payout "might arrive before its reconciliation data is ready". These delays explain why a live view and a closed-period report can disagree without either calculation being wrong.
 
 The rule I use separates two kinds of number by what they are for. **Operational signals** (orders per minute, checkout error rate, queue depth, the integration lag from order placed to order in the WMS) are rates used to act in the next ten minutes; show them live, approximately, from the operational systems' monitoring ([[peak-load-and-reliability]]). **Business metrics** (revenue, conversion, return rate, margin) are records; show them on a lag, with a definition, a revision policy and the reconciliation beside them. A screen that mixes the two with one label invites the question "why does the live dashboard say 2,300 orders and the report say 2,210", to which the answer is always "because 90 of them were canceled, refunded, edited or duplicated after the dashboard counted them".
 
@@ -146,71 +150,75 @@ The rule I use separates two kinds of number by what they are for. **Operational
 
 ## The Choices and Their Trade-offs
 
-Four realistic designs exist for a merchant's analytics, and the right one is mostly a function of stage.
+The store, the feeds, the definitions, the uses and the live rule combine into four realistic designs, and the right one is mostly a function of stage.
 
-**The platform's reports plus web analytics.** The commerce platform's own sales reports and a web analytics tool such as GA4. No warehouse, no engineering. Two definitions of "order" from day one, and no way to count marketplaces, wholesale or stores alongside.
+**The platform's reports plus web analytics.** The commerce platform's own sales reports and a web analytics tool such as GA4. No data warehouse, no engineering. Two definitions of "order" from day one, and no way to count marketplaces, wholesale or stores alongside.
 
-**A BI tool on operational copies.** A business intelligence tool pointed at exports or read replicas of the ERP, the WMS and the platform. Cheap and quick; much of Kestrel & Pine's reporting in early 2027 still worked this way, beside a warehouse with no owned definitions. Every report embeds its own definition, and a report that is wrong is wrong invisibly.
+**A BI tool on operational copies.** A business intelligence tool pointed at exports or read replicas of the ERP, the WMS and the platform. Cheap and quick; much of Kestrel & Pine's reporting in early 2027 still worked this way, beside a data warehouse with no owned definitions. Every report embeds its own definition, and a report that is wrong is wrong invisibly.
 
 **A warehouse with extract-and-load, a modeling tool and a metrics layer.** Every system copied into one store on a schedule, modeled into shared tables, with metrics defined once and reconciled against the source systems. The standard Omnichannel design; it needs one or two data engineers and a named owner per domain.
 
-**An event stream feeding a lakehouse and the operational systems.** Order and stock events carried once, to the OMS, the WMS, the ERP connector and the warehouse alike, with the lakehouse keeping full history for data science and partner products. The Group-stage design, and Walmart's 2020 account is its large-scale version.
+**An event stream feeding a lakehouse and the operational systems.** Order and stock events carried once, to the OMS, the WMS, the ERP connector and the data warehouse alike, with the lakehouse keeping full history for data science and partner products. The Group-stage design, and Walmart's 2020 account is its large-scale version.
 
 | Design | Cost and skills | Definitions | Freshness | Right when |
 | --- | --- | --- | --- | --- |
 | Platform reports plus web analytics | None beyond subscriptions | Two, both the vendors' | Live, unreconciled | One channel; Starting stage |
 | BI on operational copies | A BI tool; an analyst | One per report; drift is the norm | Hours; risks loading operational systems | A stopgap; never for a multi-channel merchant |
-| Warehouse, ELT, metrics layer | ELT fees by volume; one or two data engineers; domain owners | One per metric, owned, reconciled | 15 minutes to a day by flow | Two or more channels; Omnichannel stage; Kestrel & Pine from 2027 |
+| Warehouse, ELT, metrics layer | ELT fees by volume; one or two data engineers; domain owners | One per metric, owned, reconciled | 15 minutes to a day by flow | Two or more channels; Growing and Omnichannel stages; Kestrel & Pine from 2027 |
 | Event stream and lakehouse | Streaming platform; a data platform team | As above, plus schemas on events | Seconds for events; history for models | Several brands or units; data science and partner products at scale |
 
-My recommendation for a merchant at Kestrel & Pine's stage is the third design, with one addition the vendors do not sell: a **reconciliation published with the number**. Each monthly report shows the platform's count, the OMS's count and the warehouse's count and the bridge between them. A number with its bridge is believed; a number alone is argued with.
+My recommendation for a merchant at Kestrel & Pine's stage is the third design, with one addition the vendors do not sell: a **reconciliation published with the number**. Each monthly report shows the platform's count, the ERP's count and the warehouse report's count and the bridge between them. A number with its bridge is believed; a number alone is argued with.
 
 ## Across Scale Stages: When It Fits and When It Limits
+
+The subject changes shape with scale more than most. At Starting there is nothing to build and one thing to know. At Growing, the data warehouse is worth building before the second channel, not after, because the second channel is what creates the second count. At Omnichannel the problem is ownership, not technology: Kestrel & Pine had a data warehouse for three years before it had a definition. At Group the problem becomes federation across units that each solved it their own way.
 
 | Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |
 | --- | --- | --- | --- |
 | **1 — Starting** | The platform's reports and web analytics; the founder knows the numbers by heart | Knowing that the two tools define "order" differently and which one the accountant uses | Marketing's conversion rate and the platform's order count stop agreeing and nobody can say why |
-| **2 — Growing** | A BI tool on exports; spreadsheets for the season; a first ERP report | A warehouse fed by an ELT connector, three or four agreed metric definitions, and a monthly check of warehouse orders against platform orders | Three order counts in the leadership meeting; a buying decision made on a report nobody can reproduce |
-| **3 — Omnichannel** (Kestrel & Pine) | Many systems, several channels, a warehouse that exists but has no owned definitions | An event stream or OMS feed into the warehouse, a metrics layer, domain ownership of definitions, data products for key partners, operational dashboards separated from business metrics | Reports revised after the board saw them; partners asking for feeds built by hand; the warehouse used as a system of record for stock |
+| **2 — Growing** | A BI tool on exports; spreadsheets for the season; a first ERP report | A data warehouse fed by an ELT connector, three or four agreed metric definitions, and a monthly check of warehouse orders against platform orders | Three order counts in the leadership meeting; a buying decision made on a report nobody can reproduce |
+| **3 — Omnichannel** (Kestrel & Pine) | Many systems, several channels, a warehouse that exists but has no owned definitions | An event stream or OMS feed into the data warehouse, a metrics layer, domain ownership of definitions, data products for key partners, operational dashboards separated from business metrics | Reports revised after the board saw them; partners asking for feeds built by hand; the data warehouse used as a system of record for stock |
 | **4 — Group** | Several brands or units, each with its own warehouse or definitions | A shared data platform with federated ownership, warehouse-native sharing with partners, a governance function that also serves privacy | Two brands reporting "net sales" on different bases to one board; group-level forecasts that cannot be reconciled to any unit's books |
-
-The subject changes shape with scale more than most. At Starting there is nothing to build and one thing to know. At Growing, the warehouse is worth building before the second channel, not after, because the second channel is what creates the second count. At Omnichannel the problem is ownership, not technology: Kestrel & Pine had a warehouse for three years before it had a definition. At Group the problem becomes federation across units that each solved it their own way.
 
 ## In Practice: Waypoint W7 at Kestrel & Pine
 
-Under W7, Hanna Berg published Kestrel & Pine's metric definitions in June 2027 and the warehouse's monthly report adopted them from the July close. The definitions and the bridge below are fictional and illustrative.
+Under W7, Hanna Berg published Kestrel & Pine's metric definitions in June 2027 and the data warehouse's monthly report adopted them from the July close. The definitions and the bridge below are fictional and illustrative.
 
 | Metric | Definition | Decisions it settles |
 | --- | --- | --- |
 | **Order** | A confirmed customer purchase with one order number, in any sales channel: D2C storefronts, the B2B portal, manual and EDI wholesale, and marketplaces including orders fulfilled by the marketplace's program. Counted at the moment of confirmation in Amsterdam time. Test and draft orders are excluded. Canceled orders are counted as orders and reported with a cancellation status; "orders net of cancellations" is a second, named metric. An exchange order created by the returns portal is a return outcome, not an order. An order split into two parcels is one order. | Exchanges, cancellations, test orders, split shipments, the marketplace program, the period |
 | **Store transaction** | A POS receipt. Reported beside orders, never added to them, until the POS joins the OMS (evaluated in 2028 under W4). | Whether a €51 receipt is an order |
-| **Net sales** | Merchandise value excluding VAT, after discounts, minus the value of returns and cancellations in the month they are refunded; shipping charges and payment fees excluded. Recognized when control passes to the customer under IFRS 15 (the international accounting standard for revenue): at delivery for D2C and marketplace orders, and at delivery to the customer's distribution center for wholesale; "shipped" is the operational milestone, not the accounting one. This is the ERP's basis, so the warehouse's net sales reconcile to the ERP to the cent each month. | Tax, shipping, returns timing, recognition |
+| **Net sales** | Merchandise value excluding VAT, after discounts, minus the value of returns and cancellations in the month they are refunded; shipping charges and payment fees excluded. Recognized when control passes to the customer under IFRS 15 (the international accounting standard for revenue): at delivery for D2C and marketplace orders, and at delivery to the customer's distribution center for wholesale; "shipped" is the operational milestone, not the accounting one. This is the ERP's basis, so the data warehouse's net sales reconcile to the ERP to the cent each month. | Tax, shipping, returns timing, recognition |
 | **Return** | A returned item received and accepted at Duiven. Item return rate is returned items over shipped items (24% in 2026); order return rate is orders with at least one return over orders (19%). Exchanges are returns with an exchange outcome (28% of returns). | What a return is, and which rate is meant |
 | **Customer** | Deferred to the identity work of [[identity-and-master-data]]; until then, customer counts are reported per channel and labeled as such. | Whether Eva is one customer |
 
-With the definitions, the February numbers became one number and a bridge. Hanna's report for February 2027, recomputed in July, reads: **orders 23,150** (18,860 D2C after excluding the 40 test orders and keeping the 290 canceled, 3,310 marketplace, 980 wholesale), **22,860 net of cancellations**, and 9,200 store transactions reported beside them.
+With the definitions, the February numbers became one number and a bridge. Hanna's report for February 2027, recomputed in July, reads: **orders 23,150** (18,860 D2C after excluding the 40 test orders and keeping the 290 canceled, 3,310 marketplace, 980 wholesale), **22,860 net of cancellations**, and 9,200 store transactions reported beside them. Under these rules Eva's order #1072455 counts once, at confirmation on 13 April, and her exchange is a return outcome.
 
 ![Diagram: The bridge from the platform's February count to the W7 definition, and from there to the ERP's and the warehouse's counts](assets/images/28-commerce-data-and-analytics/fig02-bridge-platform-s-february-count-w7.jpeg)
-**Figure 4:** *The bridge from the platform's February count to the W7 definition, and from there to the ERP's and the warehouse's counts: each count is right about what it counts, and the bridge is what makes the company's number believable.*
+**Figure 4:** *The bridge from the platform's February count to the W7 definition, and from there to the ERP's and the warehouse report's counts: each count is right about what it counts, and the bridge is what makes the company's number believable.*
 
-The bridge, not the number, is what changed the meeting. From the July close, the monthly report shows the W7 order count, the platform's own count, the ERP's invoiced count and the warehouse's shipment count on one page, with the bridge between them; a difference that the bridge does not explain is an exception for Hanna's team, which is how a missed order edit or a connector gap is found. The first such exception, in August 2027, was 23 marketplace orders the connector's weekly summary had dropped during a vendor outage *(illustrative)*.
+The bridge, not the number, is what changed the meeting. From the July close, the monthly report shows the W7 order count, the platform's own count, the ERP's invoiced count and the WMS's shipment count on one page, with the bridge between them; a difference that the bridge does not explain is an exception for Hanna's team, which is how a missed order edit or a connector gap is found. The first such exception, in August 2027, was 23 marketplace orders the connector's weekly summary had dropped during a vendor outage *(illustrative)*.
 
-Two things made W7 cheap. The definitions took Hanna three weeks of conversations, not three months of engineering; the warehouse and the BI tool already existed. And the OMS, from Q4 2027, makes the order count's collection problem smaller, because every channel's order is created in one place with one number family (W2); W7 is still needed, because one record does not settle whether an exchange is an order.
+Two things made W7 cheap. The definitions took Hanna three weeks of conversations, not three months of engineering; the data warehouse and the BI tool already existed. And the OMS, from Q4 2027, makes the order count's collection problem smaller, because every channel's order is created in one place with one number family (W2); W7 is still needed, because one record does not settle whether an exchange is an order.
 
 ## When It Goes Wrong
 
+Each failure below comes from a missing part of this design, each with a recognizable sign.
+
 | Failure | How you notice | What to do |
 | --- | --- | --- |
-| **A late edit or cancellation is missed** by the extract (the Message in a Bottle, in the warehouse) | The bridge shows an unexplained difference; a refund in the PSP has no match | A lookback window on incremental loads; a monthly full compare of order ids and amounts against the source |
-| **Two clocks** (store time versus UTC; order date versus invoice or settlement date) | Month-end orders move between months; the ERP and the warehouse disagree by a day's volume | One period rule per metric, written in the definition; store the source timestamp and the time zone |
-| **Refunds netted on one side only** | Net sales in the warehouse exceed the ERP's by the month's refunds | Define the refund month in the metric; reconcile net sales to the ERP every close |
-| **A report built straight on an operational database** | The platform or ERP slows during reporting; worst on peak days | Route every analytical query to the warehouse; revoke reporting access to operational stores |
+| **A late edit or cancellation is missed** by the extract (the Message in a Bottle, in the data warehouse) | The bridge shows an unexplained difference; a refund in the PSP has no match | A lookback window on incremental loads; a monthly full compare of order ids and amounts against the source |
+| **Two clocks** (store time versus UTC; order date versus invoice or settlement date) | Month-end orders move between months; the ERP and the data warehouse disagree by a day's volume | One period rule per metric, written in the definition; store the source timestamp and the time zone |
+| **Refunds netted on one side only** | Net sales in the data warehouse exceed the ERP's by the month's refunds | Define the refund month in the metric; reconcile net sales to the ERP every close |
+| **A report built straight on an operational database** | The platform or ERP slows during reporting; worst on peak days | Route every analytical query to the data warehouse; revoke reporting access to operational stores |
 | **Browser analytics as the order count** | Marketing's count is lower by the ad-blocked and consent-refused share, and misses app-created orders | Treat web analytics as a behavior source, never as the order record; reconcile it against the platform monthly |
 | **A metric redefined in one dashboard** | Two dashboards with the same title show different figures | Definitions only in the metrics layer; dashboards consume, never compute |
-| **The warehouse used as a system of record** | Someone adjusts stock or an order "because the dashboard said" | The warehouse is a copy; corrections go to the owning system and flow back |
+| **The warehouse used as a system of record** | Someone adjusts stock or an order "because the dashboard said" | The data warehouse is a copy; corrections go to the owning system and flow back |
 | **A partner feed without a contract** | A brand or wholesale customer disputes its sell-through figure | A data product with an owner, a definition, a schedule and a version, like any API ([[api-contracts-and-versioning]]) |
 
 ## What to Take Away
+
+The chapter began with finance and operations with correct but different totals. One analytical store that receives every system makes them comparable; one owned definition makes one of them the company's number; and the bridge sorts every remaining difference into an explained definition or a missing record.
 
 **Established.**
 
@@ -220,14 +228,14 @@ Two things made W7 cheap. The definitions took Hanna three weeks of conversation
 
 **Depends on context.**
 
-* Whether to feed the warehouse by scheduled extract-and-load or by an event stream depends on whether the operational systems already emit events: once an OMS and an availability service publish order and stock events (W1, W2), the warehouse should read the same stream; before that, ELT with a lookback window is enough.
+* Whether to feed the warehouse by scheduled extract-and-load or by an event stream depends on whether the operational systems already emit events: once an OMS and an availability service publish order and stock events (W1, W2), the data warehouse should read the same stream; before that, ELT with a lookback window is enough.
 * Whether definitions are owned centrally or by domains depends on team size: under about five data people, one owner (the Data Lead) with domain reviewers; beyond that, domain ownership with central standards for keys, time and currency.
 * A metrics layer product is worth its cost when more than one tool consumes the metrics; a merchant with one BI tool can keep the definitions as versioned models in the modeling layer and add the product later.
 
 **The author's synthesis.**
 
-* The number that gets believed is the number published with its bridge: show the platform's, the ERP's and the warehouse's counts beside the defined one every month, and treat an unexplained difference as an incident, not a footnote.
-* Define before you build. Kestrel & Pine's warehouse was three years old when W7 was decided; the definitions took three weeks and did more for trust than the warehouse had.
+* The number that gets believed is the number published with its bridge: show the platform's, the ERP's and the WMS's counts beside the defined one every month, and treat an unexplained difference as an incident, not a footnote.
+* Define before you build. Kestrel & Pine's data warehouse was three years old when W7 was decided; the definitions took three weeks and did more for trust than the warehouse had.
 
 ## Questions to Ask
 
@@ -240,7 +248,11 @@ Two things made W7 cheap. The definitions took Hanna three weeks of conversation
 7. Which numbers on the live dashboard are rates for action, and which are records that will be revised, and are they labeled?
 8. Which partners receive data from us, under what definition, on what schedule, and who signed off on what it discloses?
 
-Part VI has been about making separate systems behave like one: how they talk, how they recover, what they promise, who they mean, and what they count. The next part turns from the joins to the platforms themselves, and asks how commerce platforms are built, why their vendors made the choices they made, and what a merchant should copy and what it should not. Continue with [[part-7]].
+This chapter closes Part VI. The part opened with an order that reaches the warehouse system twice, a stock update that arrives after the last unit has sold, and an invoice whose customer finance cannot identify. Each chapter worked through one case: the Black Friday stock chain, the Double Refund, the Deprecated Endpoint, Eva's four customer records and February's three order counts. They look like five problems in five technologies. They are one problem. In each case both systems worked, and something about the join between them had not been decided: who owns it, which key makes a repeat harmless, what compares the two ends, which version expires when, which record is the master, or which definition counts.
+
+Each chapter's remedy is a written record with an owner, not a new system. At Kestrel & Pine, W5 (integration standards) gives every flow an owner, a contract and a reconciliation job. Eva's four records became one master with three links in July 2027, and February 2027 was restated as 23,150 orders with a bridge. For your own landscape, start an integration inventory: one row per flow with its owner, key, check and version; then a master per shared entity and an owner per metric. Begin with unowned rows and flows that move stock, orders or money with nothing comparing their two ends.
+
+Part VI dealt with the joins inside the merchant's own landscape; Part VII moves inside the platforms the merchant buys and asks how the way they are built limits what a merchant can promise, and what is left for the merchant to decide. Continue with [[part-7]].
 
 ## Sources and Evidence
 

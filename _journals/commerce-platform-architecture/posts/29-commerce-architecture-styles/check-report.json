@@ -1,0 +1,657 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/29-commerce-architecture-styles/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/29-commerce-architecture-styles/index.md",
+  "spec_sha": "787ef67711943ab2",
+  "draft_sha": "9f87d8426fd35900",
+  "run_at": "2026-11-12T23:49:35+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Whether splitting programs for independent releases is worth the extra work depends on the team, not on a big company's example",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Definitions of architecture style, deployment unit and distribution cost",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Eva's order crosses vendor and merchant deployment units; the chapter asks which separations earn their cost",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Check a famous company's context and your ownership before copying a split; split only for a real release or capacity need",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the chapter from the board's question to the memo and takeaways",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "\"Are We Behind?\" at Kestrel & Pine ¶1",
+      "summary": "Two proposals, including a €3.2M composable rebuild, both declined by Noor",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "\"Are We Behind?\" at Kestrel & Pine ¶2",
+      "summary": "Stay and surround chosen as Waypoint decision W4 with a €1.1M budget",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "\"Are We Behind?\" at Kestrel & Pine ¶3",
+      "summary": "The CEO asks whether the choice was right after an article about a much larger retailer",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "\"Are We Behind?\" at Kestrel & Pine ¶4",
+      "summary": "Small team; Black Friday failed in the connectors, not the platform, so the rebuild targeted the wrong part; memo comes later",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶1",
+      "summary": "Deployment unit, data ownership and boundary as the axes comparing the four styles, including MACH",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶2",
+      "summary": "A monolith is not an insult: one program, one database, cheapest consistency",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶3",
+      "summary": "Composable is a buying style where the merchant writes the joins and inherits the distribution costs",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶4",
+      "summary": "On a hosted platform the vendor owns the core's costs; the merchant's costs sit in its integrations",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶5",
+      "summary": "A vendor's claimed internal style is unverifiable and less relevant than uptime, cadence and API contract",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Four Styles in Plain Words ¶6",
+      "summary": "Recap of system of record, and of eventual consistency with idempotent handling",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶1",
+      "summary": "Read the accounts as dated evidence, not as descriptions of today",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶2",
+      "summary": "Amazon's 2001 scaling wall led to hundreds of services, with you-build-it-you-run-it and two-pizza teams",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶3",
+      "summary": "What Amazon's case does and does not show",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶4",
+      "summary": "Zalando's history and its 2015 split, triggered by too many teams in one codebase",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶5",
+      "summary": "Zalando's scale by 2020 and the costs of technology sprawl and lingering monoliths",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶6",
+      "summary": "Zalando's later standardization steps, including replacing an event pipeline with a read API",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶7",
+      "summary": "What Zalando's case does and does not show",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶8",
+      "summary": "Shopify rejected microservices and modularized its monolith into components measured by Wedge",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶9",
+      "summary": "Shopify's 2020 component tangle and Packwerk's gate on new violations, plus its shape today",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶10",
+      "summary": "Shopify carved out the Storefront Renderer for latency, behind a verifier",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶11",
+      "summary": "Packwerk retrospective: dropped checks, blind spots, slow fixes, kept for the base layer",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶12",
+      "summary": "Shopify's domain boundaries did not match runtime behavior; lessons quoted",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶13",
+      "summary": "What Shopify's case shows: learning which modularity was worth paying for",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶14",
+      "summary": "Segment consolidated 140 services into one, with stated trade-offs",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶15",
+      "summary": "Prime Video replaced a serverless pipeline with one process and cut cost 90%",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶16",
+      "summary": "Both consolidations right-sized one over-split subsystem rather than reversing the architecture",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶17",
+      "summary": "Netflix's seven-year migration and Uber's networked-monolith costs and domain remedy",
+      "matched_spec_paragraph": "p30a"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶18",
+      "summary": "MACH's definition kept moving while the merchant's integration work stayed",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶19",
+      "summary": "Timeline of the MACH Alliance's shifting acronym and principles",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶20",
+      "summary": "MACH's own survey names integration complexity as a top concern",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶21",
+      "summary": "commercetools' layoffs and incremental product show composable now sold piecemeal",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶22",
+      "summary": "commercetools' API Extension failure rule delivers distribution cost to the merchant",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "What the Famous Examples Actually Show ¶23",
+      "summary": "None of the accounts describes a company as small as Kestrel & Pine",
+      "matched_spec_paragraph": "p35a"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶1",
+      "summary": "Splitting buys independent deployment at the price of network failures and cross-system coordination",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶2",
+      "summary": "Fowler's trade-offs and his monolith-first advice",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶3",
+      "summary": "Table of how three order steps change inside one unit versus across several",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶4",
+      "summary": "External system boundaries exist anyway; the style decides how many more you add",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶5",
+      "summary": "The people cost rebuild proposals omit, from Netflix, Uber and Segment",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "What Each Style Costs ¶6",
+      "summary": "Comparison table of styles by team count, consistency and typical failure",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶1",
+      "summary": "Modularity sizing is about how many boundaries the merchant's team can operate",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶2",
+      "summary": "Conway's law and Team Topologies' cognitive-load limit explain the accounts",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶3",
+      "summary": "Rule: one deployment unit per team that must release independently",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶4",
+      "summary": "Introduces three disciplines for keeping a single unit healthy",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶5",
+      "summary": "Decide fact ownership (systems of record) before splitting",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶6",
+      "summary": "Enforce boundaries cheaply by blocking new violations",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Modularity Sized to the Team ¶7",
+      "summary": "Split a hot path only on measured evidence, behind a verifier",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "How many deployment units and which composable reading fit each scale stage",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "In Practice: Noor's Memo ¶1",
+      "summary": "Introduces Noor's May 2027 memo to the board",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "In Practice: Noor's Memo ¶2",
+      "summary": "Team structure implies one storefront codebase and one integration service, not a dozen services",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice: Noor's Memo ¶3",
+      "summary": "Past incidents were ownership and join failures that a rebuild would not fix",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "In Practice: Noor's Memo ¶4",
+      "summary": "The integration-service rule written into the handbook, and the answer that Kestrel & Pine is not behind",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Introduces five failure modes and maps them to the named patterns",
+      "matched_spec_paragraph": "p55b"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "The distributed monolith: detection and recovery",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "Defines the half-finished migration",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "Zalando example, detection and strangler recovery for the half-finished migration",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "Defines the boundary in the wrong place",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "Zalando and Prime Video examples, detection and recovery for misplaced boundaries",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶7",
+      "summary": "Defines the over-decomposed integration layer",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶8",
+      "summary": "Segment-shaped risk for Kestrel & Pine's 34 integrations, detection and recovery",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶9",
+      "summary": "Defines composable without a platform team",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶10",
+      "summary": "Survey evidence, detection and recovery for unowned composable joins",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Split only when teams must release apart; Kestrel & Pine needed two units and was not behind",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings on split costs, triggers, Conway and composable",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent guidance on unit count, composable scope and hot-path splits",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's synthesis: units equal independently releasing teams; read famous accounts with three questions",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Eight questions to test a proposed split or rebuild",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the next chapter on multi-tenancy and isolation",
+      "matched_spec_paragraph": "p70"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 72 outline summaries state the controlling idea of the aligned spec paragraph, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "finding": "\"Are We Behind?\" at Kestrel & Pine ¶4 was marked two_ideas, but the spec's controlling idea for p09 holds both parts as one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "finding": "Four Styles in Plain Words ¶6 was marked two_ideas, but the spec's controlling idea for p13 holds both parts as one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "finding": "In Practice: Noor's Memo ¶4 was marked two_ideas, but the spec's controlling idea for p55 holds both parts as one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "finding": "What to Take Away ¶4 was marked two_ideas, but the spec's controlling idea for p68 holds both parts as one idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to S1-S5 through its section's advances_thesis.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "In Practice: Noor's Memo ¶3",
+      "quote": "She then matched the rebuild against the incidents.",
+      "finding": "The memo's comparison table (rebuild about EUR 3.2M over 18 months against stay and surround about EUR 1.33M) is neither introduced nor read by a sentence; the paragraph omits the spec's 'at well under half the cost' and 'addresses no incident until phase two', and flowB (item m) had to check whether the cost row compared like with like.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Before copying a separation from a famous company, read that company's account for its date, scale, problem and limits, and check that the part to be split is yours to split.",
+      "finding": "Declared cause_effect carrying over 'which separations in Eva's order earn their cost'; the paragraph opens on famous companies with no sentence linking back to Eva's order or to the question p04 ends on.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5/transition_in",
+      "draft_locus": "Four Styles in Plain Words ¶6",
+      "quote": "Two terms from earlier chapters recur.",
+      "finding": "Declared sequence carrying over 'the four styles and the line between what the merchant owns and rents'; the opening sentence carries nothing over from the vendor/merchant line or the Manhattan example, so the paragraph reads as detached.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "crosses deployment units of both kinds: the vendor's platform code and the merchant's own integrations.",
+      "finding": "Both readers stopped at 'both kinds': p03 defines one kind of deployment unit and never sets up a vendor/merchant distinction, which is only drawn in Four Styles (p49). The order is fine; the phrase presumes a distinction not yet made.",
+      "fault": "draft",
+      "corroborated_by": "flowB item a",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Before copying a separation from a famous company",
+      "finding": "Both readers found the introduction has five framing paragraphs and that the advice paragraph gives the conclusion (how to read an account) before any account or scene; the roadmap then says the chapter 'starts from' the board's question. This placement is the spec's declared intro order (p01, p03, p04, p02, p05).",
+      "fault": "spec",
+      "corroborated_by": "flowA item b",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "Four Styles in Plain Words ¶4",
+      "quote": "For a merchant on a hosted platform, that difference draws a line between what it owns and what it rents.",
+      "finding": "Both readers had to re-read: 'that difference' (composable as buying) jumps to hosted-platform merchants in general without saying how the buying/building difference applies to a merchant that has not chosen composable.",
+      "fault": "draft",
+      "corroborated_by": "flowB item c",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "Four Styles in Plain Words ¶6",
+      "quote": "Two terms from earlier chapters recur.",
+      "finding": "Both readers found the system-of-record / eventual-consistency paragraph an afterthought at the end of Four Styles, after the vendor table and the Manhattan aside, and suggested moving it next to the three ideas or to the start of the costs. The position is the spec's ('the two recurring terms close the section').",
+      "fault": "spec",
+      "corroborated_by": "flowA item e",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "What the Famous Examples Actually Show ¶9",
+      "quote": "Shopify's FY2025 annual report (filed February 2026) confirms the broad shape today",
+      "finding": "Both readers were jolted by the Shopify time line: the 2020 paragraph ends with a 2026 filing, the next paragraph goes back to the 2019 renderer, then forward to 2024, and 'seven years to 2024' does not match 'around 2016' or the 2019-2024 framing. The spec places the FY2025 evidence in p22 and orders p22, p26, p23.",
+      "fault": "spec",
+      "corroborated_by": "flowB item e",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/16",
+      "draft_locus": "What the Famous Examples Actually Show ¶17",
+      "quote": "Two accounts record what running many services costs in people and time.",
+      "finding": "Both readers found the Netflix/Uber account out of place: not announced in the roadmap, the only account without a 'What this shows', and restated almost word for word in the costs section (p40). Both p30a and p40 are declared in the spec.",
+      "fault": "spec",
+      "corroborated_by": "flowB item f",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/5",
+      "draft_locus": "What Each Style Costs ¶6",
+      "quote": "Set side by side, each style serves a different number of teams",
+      "finding": "Both readers noted the comparison table's 'Teams it serves well' / 'Right when' rows give the team-sizing answer before Modularity Sized to the Team derives it (flowA also saw tension between 'one, up to roughly ten engineers' and Kestrel & Pine's nine engineers with two codebases). The spec asks the table to show 'when each is right'.",
+      "fault": "spec",
+      "corroborated_by": "flowB item g",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "Modularity Sized to the Team ¶2",
+      "quote": "Two observations support that limit.",
+      "finding": "Both readers paused: 'that limit' refers to a limit p42 only implies through a question ('how many boundaries can its team understand and operate?'), so the reference has to be reconstructed.",
+      "fault": "draft",
+      "corroborated_by": "flowB item h",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "In Practice: Noor's Memo ¶4",
+      "quote": "The one thing Noor took from the rebuild option was its language of modules and boundaries",
+      "finding": "Both readers found this does not follow: the rebuild was described as about a dozen services, not as modules, so taking its 'language of modules' reads as a contradiction.",
+      "fault": "draft",
+      "corroborated_by": "flowB item n",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "Where the memo applied the rule well, five failures show how the choice goes wrong.",
+      "finding": "Both readers found the bridge into When It Goes Wrong awkward; the contrast is stated but the sentence does not read naturally.",
+      "fault": "draft",
+      "corroborated_by": "flowB item o",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "In Practice: Noor's Memo ¶2",
+      "quote": "one storefront codebase for the Buy team, which already releases on its own through the theme and its apps, and one integration service",
+      "finding": "flowA lost the main factual thread on whether Kestrel & Pine's own code is one deployment unit or two: the memo names a storefront codebase and an integration service, Figure 4's caption says one deployment unit, the takeaway says both. Reported by flowA only.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "\"Are We Behind?\" at Kestrel & Pine ¶3",
+      "quote": "abandoned its monolith",
+      "finding": "'Monolith' is on audience.does_not_know and is used in the scene before Four Styles defines it (p10/p11); the draft does define it later and no flow reader reported it.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (the checkout team), not a placeholder or restated question.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "p65 answers the opening and draws the vendor/merchant line; the lists sort findings by how settled they are; p70 hands off.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p65 synthesizes accounts, costs and rule; p68-p69 give the so-what (count teams, name incidents prevented, ask size/trigger/cost).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "p65 opens on 'The checkout team at the start of this chapter and the board's question'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted the board's question, the four styles, dated accounts, costs in Eva's order, sizing to teams and stage, the memo, failures and takeaways, with dated accounts and Kestrel & Pine as evidence.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Answers no, from team size (14 vs ~3,000), triggers (traffic, team count), costs, the incidents a rebuild would not prevent, and the one-storefront/one-integration-service rule with a build check and measured latency as the only reason to split.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Names distribution, eventual consistency, operational complexity and the people cost (Netflix, Uber, Segment), places them on price, last unit and warehouse handoff, and names WMS, PSP and carriers as boundaries in every style.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Matches: ~1,000 developers on one unit with components and ownership; Packwerk outpaced by violations and domains not matching runtime, kept for the base layer; the Storefront Renderer split for latency behind a verifier.",
+      "severity": "minor"
+    }
+  ]
+}

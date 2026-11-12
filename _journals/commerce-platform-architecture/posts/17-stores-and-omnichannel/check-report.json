@@ -1,0 +1,630 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/17-stores-and-omnichannel/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/17-stores-and-omnichannel/index.md",
+  "spec_sha": "70b0f050751e06be",
+  "draft_sha": "51ba4cad3ebf76b2",
+  "run_at": "2026-11-12T22:12:49+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "an in-store exchange of a web order needs systems to cooperate",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "cross-channel services make one channel depend on another's timely data",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Eva's jacket and the store routes it could have taken",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "what a store brings plus its offline and fiscal constraints + shared needs of all store services: stock events with buffer, OMS routing, staff confirmation",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "roadmap of the chapter and related chapters",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision ¶1",
+      "summary": "size and tooling of the six-store estate",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision ¶2",
+      "summary": "nightly stock copy to ERP, no POS-to-web link",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision ¶3",
+      "summary": "manual, email-driven click-and-collect pilot in Utrecht",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision ¶4",
+      "summary": "December's 37 already-sold promises from stale stock",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The Utrecht Pilot and a Deferred Decision ¶5",
+      "summary": "Waypoint program fixes data flows first and postpones the till choice",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶1",
+      "summary": "lead-in: four additions and two constraints",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶2",
+      "summary": "offline and fiscal constraints set a POS apart from a web platform",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶3",
+      "summary": "questions an offline till raises for the merchant",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶4",
+      "summary": "vendor documentation of offline POS limits and risk",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶5",
+      "summary": "an offline store becomes its own system of record, making online promises guesses",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶6",
+      "summary": "definition of fiscalization and its country variation",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "What a Store Adds to the Architecture ¶7",
+      "summary": "what fiscal rules mean for Kestrel & Pine and new-country openings",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "current landscape: POS, ERP hub, nightly copy to web",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "target shape with event-fed availability and one order hub, called the joins",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "lead-in to omnichannel vocabulary",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "all four services reduce to availability, sourcing and staff tools",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶5",
+      "summary": "click-and-collect flow separates buffered promise from staff commitment",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶6",
+      "summary": "research showing most store stock records are wrong",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶7",
+      "summary": "RFID study contrasting barcode and RFID accuracy",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶8",
+      "summary": "four escalating ways to make store-stock promises reliable",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶9",
+      "summary": "Utrecht's interim threshold-and-confirmation fix",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "four ways to connect stores, introduced",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "option one: platform-native POS removes integrations",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "drawbacks of the platform POS",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "option two: specialist POS linked by events via the OMS",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "option three: nightly batch via ERP and its failure",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "option four: ERP till module and where it suits",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "choose by countries and store weight; why Kestrel & Pine defers",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices ¶8",
+      "summary": "vendors' differing meanings of unified commerce",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶9",
+      "summary": "unified commerce as a goal state reachable two ways",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "timing of store integration and POS replacement by scale, applied to Kestrel & Pine",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "deciding sale attribution, shown by old adoption surveys",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Zalando Connected Retail as ship-from-store at scale that is ending",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "shared order model keeping channel-specific identifiers",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Business Central example of store sales reaching the ERP with staff ids",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "routing picks the preparing location before committing work",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "vendor routing approaches forming a maturity ladder",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice ¶7",
+      "summary": "P2PE and semi-integrated terminals keep the POS out of PCI scope",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice ¶8",
+      "summary": "lead-in to the illustrative before/after numbers",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶9",
+      "summary": "zero-value till sale triples the order record + a weaker kept promise beats a broken stronger one",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "store-specific failure modes with detection and recovery",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "the exchange depends on joins, not the till",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "well-supported findings on offline POS, stock accuracy, fiscal rules and routing",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices on POS type, store promises and receipt import",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's view: fix data flows first and promise only confirmed stock",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "diagnostic questions about stores and their systems",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "hand-off to the returns chapter",
+      "matched_spec_paragraph": "p52"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 52 outline summaries match the controlling ideas of their aligned spec paragraphs, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Same as the reverse-outline result: same controlling ideas, same order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Introduction ¶4: the outliner's two ideas are the two halves of the thesis statement, which the spec (p04) places in one unit as one claim.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "In Practice ¶9: announced as 'Two details deserve a sentence', the paragraph's single job is to explain two details of the worked table, as spec p45 declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit supports one of S1-S5 or frames the chapter.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "Treat the percentages as history; keep the last finding.",
+      "finding": "The adoption percentages (27%, 47%, one in ten) are given but not tied to the ownership decision the paragraph opens with; the reader is told to 'keep the last finding' without being told what it shows about whose sale it is.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The other tables (store additions, fiscal rules, components, services, requirements, choices, stages, worked example), figures and quotations are each introduced or followed by prose that says what they show.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶2 -> ¶3",
+      "quote": "**Where we are in the order's journey.** Eva's jacket from Kestrel & Pine, the fictional outdoor brand, travels from the Duiven warehouse to her Nijmegen door",
+      "finding": "Declared contrast carrying over 'one channel acting on another channel's stock or order'; the paragraph opens with a signpost and a new case and never links back to that idea, so the boundary reads as a second opening rather than a contrast.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Across Scale Stages ¶1 -> In Practice ¶1",
+      "quote": "**Whose sale is it.** Before a store ships its first web order, the merchant must decide whose sale it is",
+      "finding": "Declared example relationship carrying over the stages and Kestrel & Pine's position into 'the joins in practice, starting with the ownership question'; the section opens on a bold lead with no sentence connecting it to the stages or presenting what follows as the joins in practice.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1/transition_in",
+      "draft_locus": "In Practice ¶1 -> ¶2",
+      "quote": "**Ship-from-store on someone else's marketplace: Zalando Connected Retail, 2021 to 2027.** One marketplace program shows ship-from-store at scale.",
+      "finding": "Declared as an example of the ownership question to settle before a store ships a web order; the Zalando paragraph is framed only as ship-from-store at scale and never refers to that question, so the declared relationship is not expressed (and may not fit the paragraph's content).",
+      "fault": "unclear",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/transition_in",
+      "draft_locus": "In Practice ¶9 -> When It Goes Wrong ¶1",
+      "quote": "Stores fail in ways online systems do not, because people and buildings are involved.",
+      "finding": "Declared contrast with the Utrecht pilot working with a buffer and a confirmation; the opening sentence contrasts stores with online systems instead and does not carry over the working pilot.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in relationships are expressed at their boundaries.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "Before a store ships its first web order, the merchant must decide whose sale it is, and the old adoption figures show how often that was left open.",
+      "finding": "Both flow readers report that the 'Whose sale is it' paragraph never says what the decision involves; its figures are mostly about adoption, so heading and content do not match and the 'keep the last finding' instruction is unclear.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 3 (\"Before a store ships its first web order... The paragraph never explains what the decision involves\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5",
+      "draft_locus": "In Practice",
+      "quote": "**Store orders in one order model.** A common order model can carry both store and web sales into finance",
+      "finding": "Both flow readers mark the order of the items inside In Practice as unclear: a set of loosely connected bold-lead topics (whose sale, Zalando, order model, routing, PCI, worked example) with nothing saying why they come in this order.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 2 (In Practice: \"Why these items come in this order is unclear\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "In Practice ¶6",
+      "quote": "That is the ladder: simple rules in the platform, then an explainable routing decision separate from the deduction of stock, which is the OMS's job",
+      "finding": "Both flow readers re-read this sentence: the 'ladder' arrives with no set-up and 'which' can refer to the routing decision or to the deduction of stock.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (\"That is the ladder... 'which' could refer to routing or to deduction\")",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/7",
+      "draft_locus": "In Practice ¶8 (worked example table)",
+      "quote": "| | December 2026 (the Mirage) | Interim fix, from April 2027 | Target, from Q4 2027 |",
+      "finding": "Both flow readers found the Utrecht interim fix returning three sections after it was described (How the Pieces Fit Together ¶9 and Figure 4), now with a date and new details, which read as repetition or going back in time; both suggest moving the worked example next to 'What store stock is actually worth as a promise'. The spec places it at the end of In Practice on purpose, so the difficulty lies partly in the declared order and partly in the draft not linking the two mentions.",
+      "fault": "unclear",
+      "corroborated_by": "flow reader B, item 3 (\"Interim fix, from April 2027... felt like going back in time\") and item 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "**Where we are in the order's journey.**",
+      "finding": "Flow reader A: two openings (the exchanging shopper, then Eva's jacket); the second frame starts before the first has done its work.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together, component table",
+      "quote": "Bought, Q4 2027; store receipts imported \"later\"",
+      "finding": "Flow reader A: the scare quotes around 'later' mean nothing until the 'Depends on context' bullet near the end.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together ¶3",
+      "quote": "The vocabulary first, because vendors use several names for each.",
+      "finding": "Flow reader A: 'first' is not true; the component table and the introduction have already used the four services.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "How the Pieces Fit Together, services table",
+      "quote": "| **Return-in-store** | Online | None | Return accepted at the till | The till can find an online order, accept the item, trigger one refund through one path, and restock to the store or send it back |",
+      "finding": "Flow reader A: 'Stock used: None' seemed to contradict the restock in the same row.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What a Store Adds, fiscal table",
+      "quote": "Not for shops; the \"white cash register\" (GKS) applies only to restaurant and catering services above €25,000 turnover",
+      "finding": "Flow reader A: the fiscal table is dense and the Belgian hospitality row reads as a detour until the following paragraph explains Antwerp.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Across Scale Stages ¶1",
+      "quote": "Kestrel & Pine has passed the first moment",
+      "finding": "Flow reader A had to re-read the previous sentences to map 'first' and 'second' moment.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "How the Pieces Fit Together ¶4",
+      "quote": "all four are the same three problems in a different order",
+      "finding": "Flow reader B: repeats the introduction's 'same three things' with different wording (stock events with a buffer, OMS routing, staff tools versus availability, sourcing, tooling).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "How the Pieces Fit Together, requirements table",
+      "quote": "| Store sale reduces online availability |",
+      "finding": "Flow reader B: the table is introduced as 'requirements differ by service' but its first row is not one of the four services.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/6",
+      "draft_locus": "What a Store Adds ¶7",
+      "quote": "The table is my compilation of the sources named in its last column.",
+      "finding": "Flow reader B: the first-person voice appears suddenly, and Antwerp as the Belgian store resolves only by subtraction from 'five Dutch stores'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "A web order is returned at the Nijmegen counter",
+      "finding": "Flow reader B could not tell whether this failure happened or is hypothetical, since the opening said Nijmegen 'could have offered' these routes.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "quote": "both can wait until an availability service exists, and both can run earlier with weaker promises",
+      "finding": "Flow reader B read this as contradictory until a second reading.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene ¶5",
+      "quote": "keep the shop platform and evaluate the shop platform's own POS in 2028",
+      "finding": "Flow reader B: W4 is hard to parse on first reading.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is glossed where it first appears (offline capture, terminal provider, fiscalization, TSE, GKS, telematic receipts, BOPIS and the four services, staff tooling, record accuracy, RFID, cycle counting, unified commerce, P2PE, semi-integrated, PCI DSS). Names the flow readers missed (One Size Fits None, The Long Fuse, The Double Refund, the Price Drift, W1-W8 including the absent W3) are on audience.already_knows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a puzzling scenario (the counter exchange); no placeholder, restated question or dictionary opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 sets the exchange, the Mirage and the deferred till against the joins; the synthesis bullets and questions give the course of action.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "\"Go back to the shopper who brought a web order to the store for an exchange.\"",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5 and KEY POINTS",
+      "quote": "The classic field study found about two-thirds of store inventory records wrong",
+      "finding": "The intro reader predicted the sections and their order correctly, but described the evidence as 'mostly a running fictional case' plus one field study; the expected vendor documentation and country fiscal rules as evidence are not predicted, because nothing in the introduction announces them. The spec's roadmap (p05) does not ask for the kinds of evidence either, so the criterion asks for something no introduction unit carries.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names the up-to-a-day-old copy, the promise treated as commitment, the two-unit threshold, the staff confirmation with 'we confirm within two hours', and later POS stock events; no new POS.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names the German fiscal check first (TSE, sequential numbers, registration) as able to rule a product out, then countries and store weight decide platform POS versus specialist POS by events through the order hub.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names 'one refund path per order, decided once', with the till's return closing the portal request before payment.",
+      "severity": "minor"
+    }
+  ]
+}

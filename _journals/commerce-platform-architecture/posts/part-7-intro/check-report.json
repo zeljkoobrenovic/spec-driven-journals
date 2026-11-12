@@ -1,0 +1,292 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/part-7-intro/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/part-7-intro/index.md",
+  "spec_sha": "b01ade2b74959f14",
+  "draft_sha": "4f862c2371a26aaa",
+  "run_at": "2026-11-12T23:34:39+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Three takeaways: keep own code simple, govern your share of the rented platform, cache pages but fetch price and stock live under peak",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Renting a platform shifts some work to the vendor, but the merchant's own extensions and integrations can still break order flow",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "This part looks inside the platforms, following Eva's order, separating vendor decisions from merchant choices",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Kestrel & Pine's costly rebuild proposals versus Black Friday evidence that the platform held and its surrounding joins failed",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "The vendor owns the platform's inside and exposes it as limits; the merchant's promises depend on what it owns around it",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the five chapters' questions and their joint purpose of judging rebuild proposals",
+      "matched_spec_paragraph": "p04a"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶1",
+      "summary": "Architecture-styles chapter: when splitting into services pays, sized to one deployment unit per independent team",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶2",
+      "summary": "Multi-tenancy chapter: shared API budgets consumed by apps can throttle order export",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶3",
+      "summary": "Extensibility chapter: giving each app an owner and permissions so no two writers change stock",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶4",
+      "summary": "Storefront chapter: app scripts, not the theme, cause slowness, weakening the headless rebuild case",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Chapters in this part ¶5",
+      "summary": "Peak-load chapter: preparing and testing the whole order path above forecast peak demand",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Where to Begin ¶1",
+      "summary": "Callback: answer rebuild proposals by measuring the merchant's own layer first; start with chapter one",
+      "matched_spec_paragraph": "p10"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Every outline summary, including the KEY POINTS callout (evidence of p04), matches the controlling idea of its aligned spec paragraph; no unit is unmatched.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "The outliner marked no unit as carrying two ideas.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Introduction units set up the thesis (problem, place, case, claim, roadmap); each chapter paragraph introduces the chapter of one supporting claim (P7-1 to P7-5); the conclusion restates the claim against the opening.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "The case numbers in p03 are interpreted (the platform held, the joins failed, the proposals left them for phase two); the peak-log, app-inventory, eleven-app-scripts and 60/80 plan evidence in p06 to p09 each says what it shows.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All declared transitions are expressed at their boundaries: place (p02), example (p03 'shows both sides'), cause_effect (p04 'because both lay in the merchant's own layer'), elaboration (p04a, the chapters section), contrast (p06 'does share'), elaboration (p07 'governs those apps'), place (p08 'lands on the storefront'), contrast (p09; caching was introduced in the KEY POINTS callout), conclusion_summary (p10).",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "quote": "this part looks inside the platforms those joins attach to, along the machinery behind Eva's jacket purchase, the order this book follows.",
+      "finding": "Both flow readers stumbled on this sentence: 'along' is awkward and Eva appears with no reminder of who she is and never again on the page.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (first point)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Both would replace the shop platform, which had held.",
+      "finding": "Both readers had to re-read: the €240,000 proposal is a separate storefront, which does not replace the whole platform. The draft follows the spec's controlling idea for p03 ('both would replace the shop platform'), which overstates the storefront proposal; AC-2's expected answer says 'the rented platform or storefront'.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3 (second point)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "Kestrel & Pine's peak logs show apps and connectors taking most of the budget, and why both ends of an integration, here the platform and the warehouse system, need capacity checks.",
+      "finding": "The sentence's grammar breaks at 'and why' ('show ... and why'); both readers had to re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3 (fourth point)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Noor directs attention to those measured failures, because both lay in the merchant's own layer, not in the platform.",
+      "finding": "Flow reader A could not tell at first whether 'both' meant the two failures or the two proposals.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "how its software is divided into programs",
+      "finding": "Flow reader A noted a subject shift: the roadmap's chapter one is about the platform's software ('its'), while the chapter paragraph sizes the merchant's own code.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Chapters in this part ¶2",
+      "quote": "What the merchant does share with the vendor is capacity.",
+      "finding": "Flow reader B: the merchant shares capacity with other merchants, not with the vendor, which jars against 'multi-tenant system shared by many merchants'. The wording comes from the spec's p06 controlling idea and transition.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Chapters in this part ¶1",
+      "quote": "so the chapter sizes a merchant's own code at one deployment unit per team that must release on its own.",
+      "finding": "Flow reader B needed a second pass to read 'sizes' as 'recommends a size for'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Chapters in this part ¶5",
+      "quote": "Cached product pages survive a peak; the chain behind them meets the spike alone.",
+      "finding": "Flow reader B: caching appears in the body for the first time here (only the KEY POINTS mention it) and 'meets the spike alone' is figurative; the reader suggests mentioning caching in the storefront paragraph (the spec's p08 'how' already names the cache rule).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Chapters in this part ¶5",
+      "quote": "The 2027 plan forecasts 60 orders per minute and tests every link at 80.",
+      "finding": "Flow reader B assumed but could not confirm that the 2027 plan is Kestrel & Pine's.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "Where to Begin ¶1",
+      "quote": "the connector fell behind because it is the merchant's own.",
+      "finding": "Flow reader B: owning the connector does not explain why it fell behind, only whose job it is to fix it, so the causal 'because' reads as a non-sequitur. The causal wording is the spec's synthesis.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4 (Figure 2 caption)",
+      "quote": "improves the existing theme (the templates the platform draws the pages from)",
+      "finding": "Figure 2's caption uses 'the theme' beside p04, but the term is only glossed later in the storefront chapter paragraph (flow reader A). 'Theme' is not on already_knows.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "its apps, its page scripts and its order chain.",
+      "finding": "'Order chain' is a new term, unglossed, packed into a long list (flow reader A); the audience knows the thirteen steps of an order but not this name for them.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on a concrete scenario, places the part, gives the case, states the claim and announces the roadmap; no weak pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion reads the opening scene along the part's line and gives a course of action; it does not merely repeat or add new material.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "It synthesizes (each chapter draws the vendor/merchant line for one layer) and answers so-what (a rebuild proposal is answered first by measuring the merchant's own layer).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'At the start of this page, a platform kept accepting orders while the warehouse connector fell behind' returns to p01 and places each half of the scene on one side of the line.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "From the introduction alone the reader named the five subjects in order: how software is divided into programs, how infrastructure is shared and budgets metered, who owns each extension, how pages are delivered (platform-rendered vs separate storefront), and how the order path survives a peak. Chapter-only details (41 apps, eleven apps' scripts, 60/80) are not in the introduction and were not expected of it.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader said order export ran at about seven a minute and stock lagged up to two hours, both in the merchant's own layer, while the platform held 2,300 orders in the peak hour, and that the proposals would replace what worked and left the weak joins for phase two; this matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

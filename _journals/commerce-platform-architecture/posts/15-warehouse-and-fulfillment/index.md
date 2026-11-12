@@ -20,21 +20,23 @@ logo: "assets/images/15-warehouse-and-fulfillment/logo.jpeg"
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
 > * **The First Snowfall** — the order feed into the warehouse is the integration most likely to meet real load for the first time on the busiest evening of the year.
-> * **Schrödinger's Order** — when the warehouse's shipment confirmation does not reach the order record, the platform, the warehouse and finance systems each tell a different story about the same parcel.
+> * **Schrödinger's Order** — when the warehouse's shipment confirmations are lost, or one of them marks a whole split order fulfilled, the shop platform, the warehouse and finance systems each tell a different story about the same order.
 > * **The Phantom Stock** — a warehouse that is not the single writer of on-hand stock, or that writes it hours late, lets every channel sell units that are no longer on the shelf.
 
 <br>
 A picker walks to the shelf for a paid order and finds no jacket. The storefront has already confirmed the sale, but the warehouse now needs to investigate, find a replacement unit or report a failed pick. Those steps take people and time, and may push the parcel past its dispatch cutoff. A stock error has become a delivery problem.
 
-A missed order edit can similarly put the wrong size in the box; an unrealistic delivery date can commit work the building cannot finish in time. This chapter explains the **warehouse management system (WMS)**, which directs picking and packing, and the **fulfillment order**, its instruction to ship specific items. Accurate instructions and timely results let the shop make promises the warehouse can keep.
+A missed order edit can similarly put the wrong size in the box; an unrealistic delivery date can commit work the building cannot finish in time. So the **warehouse management system (WMS)**, which directs picking and packing, must receive a **fulfillment order** it can accept or reject: an instruction to ship specific items, carrying only what to ship and a key that identifies the instruction, so that a retried request is recognized and creates no second pick list. As the only writer of on-hand stock, the WMS must report what it actually packed, every stock change, and its cut-off, capacity and backlog. Accurate instructions and timely results let the shop make promises the warehouse can keep.
 
 **Where we are in the order's journey.** Eva buys a jacket and socks from Kestrel & Pine, the fictional outdoor brand, at 21:14 on 13 April 2027 and pays through iDEAL, the Dutch bank-transfer method. On 14 April, Duiven's warehouse picks, packs and confirms the shipment, then prints a PostNL label. [[shipping-and-delivery]] follows the parcel onward.
+
+The chapter starts at Duiven with the Black Friday evening on which orders reached the warehouse four hours late. It then describes what a WMS does and sets out what the warehouse receives and reports (the fulfillment order, the stock count, the warehouse's working day and, for wholesale, the pallet label and despatch advice). It compares the four ways to get warehouse software run and how the setup changes as a merchant grows, shows where automation and robots fit beneath the WMS, works Eva's order and the Black Friday evening through the warehouse, and ends with the ways the interface fails. The evidence is Kestrel & Pine's Duiven warehouse and public vendor and standards documentation.
 
 ## Setting the Scene: Duiven's Day
 
 Kestrel & Pine opened its **8,500-square-meter Duiven warehouse** near Arnhem in 2023. Operations head Daniel Okafor runs it with 88 staff and a standalone cloud WMS. Before that, a **third-party logistics provider (3PL)** in Tiel stored and shipped online orders using its own warehouse software. Owning the building brought direct control and responsibility for its daily capacity.
 
-Head of Engineering Noor Visser visits Duiven in April 2027 to understand incidents involving its integrations. The warehouse's daily rhythm below is illustrative; company figures come from the fictional scenario introduced in [[meet-kestrel-and-pine]].
+Head of Engineering Noor Visser visits Duiven in April 2027 to understand incidents involving the warehouse's integrations. The warehouse releases work in pick waves, batches of orders picked together at set times. Its daily rhythm below is illustrative; company figures come from the fictional scenario introduced in [[meet-kestrel-and-pine]].
 
 | Duiven, a normal working day in April 2027 | Figure |
 | --- | --- |
@@ -48,9 +50,9 @@ Head of Engineering Noor Visser visits Duiven in April 2027 to understand incide
 
 Daniel walks Noor through receiving, putting goods away, picking, packing and daily stock counts. Purchase orders arrive from the **enterprise resource planning system (ERP)**, which handles finance, purchasing and item records. The WMS groups work so one picking route can serve several orders.
 
-Then Daniel shows the Black Friday chart. The platform stayed up and the warehouse had enough staff, but **orders took four hours to reach the WMS**. An order placed at 20:00 arrived after midnight and missed the 21:00 picking wave. The storefront kept promising next-day delivery for orders before 22:00.
+Then Daniel shows the Black Friday chart. The shop platform stayed up and the warehouse had enough staff, but **orders took four hours to reach the WMS**. An order placed at 20:00 arrived after midnight and missed the 21:00 picking wave. The storefront kept promising next-day delivery for orders before 22:00. The same evening, stock shown in the other channels lagged the warehouse by up to two hours, a separate fault the stock section returns to.
 
-Daniel calls the incident **the Queue That Waited**. The promise ignored the warehouse's actual work queue. Noor needs to establish what information the warehouse must receive and what it must report back.
+Daniel calls the incident **the Queue That Waited**. The promise ignored the warehouse's actual work queue. Why the feed fell behind is worked through in In Practice, once the warehouse's interfaces are clear. First, Noor needs to establish what information the warehouse must receive and what it must report back.
 
 ## What a Warehouse Management System Does
 
@@ -67,68 +69,29 @@ A WMS directs warehouse work and records its results. Each step changes what the
 | **Shipping confirmation** | Printing the carrier label, closing the pick list and reporting the shipment with its tracking number | The order is fulfilled; on-hand goes down |
 | **Cycle counting** | Counting a small part of the stock on a rolling schedule instead of one annual full count, correcting the record continuously | Record accuracy |
 
-Picking methods organize travel differently. **Cluster picking** collects several orders in one trip; **batch picking** collects their items together for separation at packing. Odoo documents both alongside waves. Picqer describes batch pick lists and planned routes, while Manhattan's Order Streaming coordinates wholesale, retail and direct orders (all n.d., accessed November 2026).
+Picking methods organize travel differently. **Cluster picking** collects several orders in one trip; **batch picking** collects their items together for separation at packing. Odoo documents both alongside waves, and Picqer describes batch pick lists and planned routes. Larger products also release different order types together: Manhattan's Order Streaming coordinates wholesale, retail and direct orders (all n.d., accessed November 2026).
 
 Products also serve different buildings. Infios, formerly Körber Supply Chain Software, describes complexity levels from basic location tracking to highly automated warehouses (n.d., accessed November 2026). Duiven uses locations, waves and scanning, with no automation.
 
-Three facts about warehouse work shape every integration decision in this chapter:
+Those steps, and the different buildings products serve, lead to three facts about warehouse work that shape every integration decision in this chapter:
 
 - **Work has a release policy.** Duiven groups orders into waves; other warehouses release work continuously as resources become available. Either way, an order needs enough processing time before the carrier collection.
 - **It has capacity.** People, equipment and packing stations can finish only so much work per hour. An order arriving after that capacity is spoken for ships later, whatever the storefront promised.
-- **Its facts are physical.** Pickers and counters check the WMS's on-hand number against shelves. That makes it Duiven's **system of record**: the authority when copies disagree, as [[inventory-and-availability]] and Waypoint decision W1 establish.
-
-## Warehouse Automation and Robotics
-
-When pickers spend much of their shift walking between storage and packing, moving goods automatically can free time for picking. Automation also adds coordination work: someone must decide which movement happens next, confirm that it happened and recover when equipment stops.
-
-The main uses differ. **Mobile transport** moves containers between work areas; an **autonomous mobile robot (AMR)** navigates the warehouse to carry them. **Goods-to-person** brings stock to a stationary picker, reducing walking while leaving the item selection to a person. **Robotic picking** uses a robot to grasp individual items. **Sortation** routes items or parcels to their next station or dispatch lane. Dematic documents [mobile transport and goods-to-person](https://www.dematic.com/en-us/solutions/amr/) separately from [robotic item picking](https://www.dematic.com/en-us/solutions/robotics/) (n.d., accessed November 2026).
-
-![Four panels: a mobile robot carrying a tote from storage to packing, a robot bringing a shelf to a stationary picker, a robot arm picking a single item, and a sorter routing parcels into three lanes.](assets/images/15-warehouse-and-fulfillment/four-kinds-of-automation.jpeg)
-**Figure 1:** *Four uses of warehouse automation: mobile transport moves containers, goods-to-person brings stock to a picker who still chooses the item, robotic picking grasps the item itself, and sortation routes items or parcels to their next lane.*
-
-Automated warehouses commonly divide the software responsibilities as follows. The names describe jobs; products can combine them, and a site may need only some of these interfaces.
-
-| Responsibility | What it does |
-| --- | --- |
-| **Warehouse management system (WMS)** | Owns stock records, locations and warehouse tasks; records confirmed results |
-| **Warehouse execution system (WES)** | Releases and sequences work against priorities, queues and available people or equipment |
-| **Warehouse control system (WCS)** | Translates work into commands for conveyors, sorters or storage equipment and reports their results |
-| **Robot fleet management** | Assigns tasks to individual robots, coordinates their routes and tracks progress |
-
-Dematic's [software overview](https://www.dematic.com/en-us/software/) describes WMS, WES and WCS responsibilities, including continuous work release (n.d., accessed November 2026). SAP's [2023 integration guide](https://help.sap.com/doc/5acdd0d4d7524247a0c9b15b24f0fe3b/LATEST/en-US/379d6d880e5d4007b3751618080da80f_2.pdf) provides a concrete example: warehouse orders become robot tasks sent to fleet management; notifications return to confirm warehouse work.
-
-![A stack of warehouse software: the commerce platform sends fulfillment orders to the WMS, which sits above the WES, which sits above the WCS and robot fleet management, which drive conveyors, sorters and robots; work flows down and confirmed results flow up to the WMS, the only layer that updates stock.](assets/images/15-warehouse-and-fulfillment/wms-wes-wcs-fleet-stack.jpeg)
-**Figure 2:** *The software stack in an automated warehouse: the commerce platform talks only to the WMS; work goes down through the WES to the WCS and fleet management, and confirmed results come back up to the WMS, the only layer that updates stock.*
-
-I would keep the commerce platform connected to the WMS through fulfillment orders. Inside the warehouse, require an explicit contract for each automated task:
-
-- **Identity and instruction.** Carry a stable task ID, container or item identity, source, destination and required quantity. Repeating the same request must retrieve or continue the same task, never create another movement.
-- **Confirmed outcome.** Distinguish accepted, in progress, completed, failed and canceled. Acceptance means the task was received; completion must establish what actually moved. The WMS updates stock records from confirmed outcomes. Moving a container changes its location, not the warehouse's total quantity.
-- **Recovery.** A timeout leaves the outcome unknown. Query the existing task; if its result remains uncertain, check what physically happened before retrying. Send failed picks, blocked paths or unavailable destinations to a queue for an operator to resolve. Before manual reassignment, confirm the original task has stopped or been canceled, then check the actual location and quantity. Otherwise a person and a robot may attempt the same work. SAP's guide documents exception queues and physical checks before closing stalled tasks.
-
-Duiven currently uses people, waves and scanners. **Suppose Daniel later adds robots** to carry picked containers to packing. A robot accepts a transfer, loses connectivity and delivers the container anyway. Noor's integration must recover that transfer's result, not issue a fresh transfer because its reply never arrived. The container reaching packing also does not prove that the customer's parcel has shipped.
-
-![A task card for task T-4711 with container, source, destination and quantity, its states from accepted to completed or failed or canceled, and a timeout story in which the robot still delivers: the WMS queries the same task instead of sending a new one, and unresolved cases go to an exception queue for a physical check.](assets/images/15-warehouse-and-fulfillment/automated-task-contract.jpeg)
-**Figure 3:** *One automated task, one identity: after a timeout the robot may still have delivered, so the integration queries the same task rather than sending a new movement, and anything still uncertain goes to an exception queue for a physical check.*
-
-Before buying automation, measure where work waits. Faster transport helps only while packing and dispatch can absorb it. Feed queue age, equipment availability and reduced processing capacity into the delivery promise. If a sorter stops, stock can still exist while today's dispatch capacity disappears. Test how work continues when equipment is unavailable.
-
-![A flow from pick to transport to pack to dispatch where faster robot transport only builds a pile of waiting totes at packing, and a stopped sorter leaves stock on the shelf while dispatch capacity falls, both feeding the delivery promise.](assets/images/15-warehouse-and-fulfillment/faster-transport-same-bottleneck.jpeg)
-**Figure 4:** *Measure where work waits before buying automation: faster transport only moves the queue to packing, and a stopped sorter removes today's dispatch capacity while the stock still exists, so both belong in the delivery promise.*
+- **Its facts are physical.** Pickers and counters check the WMS's on-hand number against shelves, and records drift without counting: DeHoratius and Raman found 65% of nearly 370,000 stock records inaccurate across 37 stores of one retailer (*Management Science*, 2008), an old study from before radio tags (RFID) were common, so a reminder to count rather than a rate to assume. That makes the WMS Duiven's **system of record**: the authority when copies disagree, as [[inventory-and-availability]] and Waypoint decision W1 (the WMS is the system of record for Duiven's physical stock) establish.
 
 ## How the Warehouse Connects to Everything Else
 
-Seen from outside, a warehouse has four interfaces: instructions in, confirmations out, stock events out, and inbound goods in. The instructions come from whichever system holds the orders: today Kestrel & Pine's platform, and from Q4 2027 the **OMS** (order management system: the one place that holds every channel's orders and steers each through fulfillment; [[order-management]]). The figure shows the interfaces around the physical steps.
+Seen from outside, a warehouse has four interfaces: instructions in, confirmations out, stock events out, and inbound goods in. The instructions come from whichever system holds the orders: today Kestrel & Pine's shop platform, and from Q4 2027 the **OMS** (order management system: the one place that holds every channel's orders and steers each through fulfillment; [[order-management]]). The figure shows the interfaces around the physical steps. The subsections below take the instruction and the shipment confirmation that answers it first, then the stock the warehouse reports, then its working day, which no interface carries yet, and last the wholesale pallet's label and despatch advice; inbound receipts appear only in the table.
 
 ![Diagram: The warehouse has four interfaces](assets/images/15-warehouse-and-fulfillment/fig01-warehouse-has-four-interfaces-instructions-fulfillment.jpeg)
-**Figure 5:** *The warehouse has four interfaces: instructions in as fulfillment orders, confirmations and short picks out to the order record, stock events out to the availability service, and inbound goods in against purchase orders and returns.*
+**Figure 1:** *The warehouse has four interfaces: instructions in as fulfillment orders, confirmations and short picks out to the order record, stock events out to the availability service, and inbound goods in against purchase orders and returns.*
 
-Each interface has different requirements for freshness, consistency, speed and availability. The table states them for a merchant of Kestrel & Pine's shape; the latencies are assumptions, not vendor facts.
+Each interface has different requirements for freshness, consistency, speed and availability. The table states them for a merchant of Kestrel & Pine's shape and splits the instruction interface into its two messages, the fulfillment order and the cancellation request. The latencies are assumptions, not vendor facts.
 
 | Flow | How fresh | How consistent | How fast | How available |
 | --- | --- | --- | --- | --- |
 | Fulfillment order into the WMS | Before the next wave release; at peak, within minutes *(assumption)* | Exactly once; a repeat must not create a second pick list | Must keep pace with the order rate at peak | If the WMS is down, orders queue; nothing is lost |
-| Shipment confirmation out | The moment the label prints | One per shipment, carrying the tracking number | Within a minute, so the "shipped" message and the invoice follow *(assumption)* | Queued if the OMS is down; replayed in order |
+| Shipment confirmation out | The moment the label prints | One per shipment, carrying the tracking number | Within a minute, so the "shipped" message and the invoice follow *(assumption)* | Queued if the order system is down; replayed in order |
 | Stock events out | Each change, not an hourly total | The WMS's count is the truth; consumers derive, never write back | Seconds *(assumption)* | A reconciliation job catches a lost event |
 | Cancellation request in | Before picking starts | A request with an answer, not a command | Minutes | If unanswered, the order is still in progress |
 | Inbound receipt | Same day as the truck | One receipt per purchase-order line | Hours | Can wait |
@@ -139,14 +102,14 @@ A **fulfillment order** instructs the warehouse to ship specific order lines fro
 
 Shopify documents this contract for third-party warehouses and 3PLs (n.d., accessed November 2026). Each fulfillment service maps to a location. Shopify sends `FULFILLMENT_REQUEST` or `CANCELLATION_REQUEST`; the service accepts or rejects and cannot create a fulfillment record before acceptance. Request states record the answer: `SUBMITTED`, `ACCEPTED` or `REJECTED`, followed when necessary by `CANCELLATION_REQUESTED`, `CANCELLATION_ACCEPTED` or `CANCELLATION_REJECTED`.
 
-After acceptance, picking or packing may already have started. Changing a storefront status cannot stop physical work; the warehouse must confirm cancellation before support promises the customer that nothing will ship.
+Kibo documents a similar acceptance step in its sequence: Accept Shipment, Validate Stock, Ready and Fulfilled, with transfer or reassignment between locations (n.d., accessed November 2026).
 
-Kibo documents a similar sequence: Accept Shipment, Validate Stock, Ready and Fulfilled, with transfer or reassignment between locations (n.d., accessed November 2026).
+Both models put acceptance before the work, for a physical reason: after acceptance, picking or packing may already have started. Changing a storefront status cannot stop physical work; the warehouse must confirm cancellation before support promises the customer that nothing will ship.
 
-The sequence shows the handshake as Waypoint designs it for late 2027, when the OMS sends fulfillment orders, using Eva's order as the example. It is carried by the iPaaS (integration platform as a service: the hosted tool that runs the flows between systems) with an idempotency key (a reference that lets the receiver recognize a repeated message), and with a cancellation request arriving too late.
+The sequence shows the handshake as Waypoint designs it for late 2027, when the OMS sends fulfillment orders, using Eva's order as the example. The messages travel through the iPaaS (integration platform as a service: the hosted tool that runs the flows between systems). Each carries an idempotency key, a reference that lets the receiver recognize a repeated message. The sequence ends with a cancellation request that arrives too late.
 
 ![Diagram: The fulfillment-order handshake](assets/images/15-warehouse-and-fulfillment/fig02-fulfillment-order-handshake-warehouse-accepts-before.jpeg)
-**Figure 6:** *The fulfillment-order handshake: the warehouse accepts before anyone may count on it, a cancellation after acceptance is a request the warehouse may refuse, and the shipment confirmation and the stock event travel back as separate messages the moment the label prints.*
+**Figure 2:** *The fulfillment-order handshake: the warehouse accepts before anyone may count on it, a cancellation after acceptance is a request the warehouse may refuse, and the shipment confirmation and the stock event travel back as separate messages the moment the label prints.*
 
 This contract prevents four practical problems:
 
@@ -155,47 +118,51 @@ This contract prevents four practical problems:
 - **Unconfirmed changes.** Acceptance marks when edits need the warehouse's agreement, giving support a reliable answer about cancellation.
 - **Duplicate shipments.** A timeout can cause the same request to arrive twice. **Idempotent** handling recognizes its identity and reuses the existing instruction, preventing a second pick list and jacket.
 
-The same contract can survive Waypoint decision W2: an OMS replaces the platform as the sender in Q4 2027 without changing the warehouse's responsibilities.
+What comes back is one **shipment confirmation** per parcel, built from what was actually packed and carrying its tracking number. When a short pick leaves a line behind, the confirmation reports a partial shipment; it must not mark the whole order fulfilled.
+
+This contract, the instruction and its confirmation, stays the same under Waypoint decision W2: an OMS replaces the shop platform as the sender in Q4 2027 without changing the warehouse's responsibilities.
 
 ### Stock: what the warehouse owns and what it reports
 
 Stock has three meanings here. **On hand** is physically in the building. **Committed** is stock claimed by placed orders. **Available** (available-to-promise, ATP) is what a channel may still sell: on hand minus committed and deliberate buffers. [[inventory-and-availability]] develops these concepts; this chapter focuses on the first number.
 
-The rule I give every merchant: **one writer per stock state**. The WMS writes on hand, because it is the only system that counts shelves. The order system writes committed, because it is the only system that knows which orders exist. The availability service derives available. Nobody else writes any of the three. Kestrel & Pine's "App That Wrote Stock" of March 2026, in which a pre-order app and the WMS feed both adjusted the platform's inventory, and the first reconciliation of May 2027, which found 2.3% of active variants with different quantities in the WMS and the platform, are what happens when the rule is broken.
+The rule I give every merchant: **one writer per stock state**. The WMS writes on hand, because it is the only system that counts shelves. The order system writes committed, because it is the only system that knows which orders exist. The availability service derives available. Nobody else writes any of the three. Kestrel & Pine's "App That Wrote Stock" of March 2026, in which a pre-order app and the WMS feed both adjusted the platform's inventory, and the first reconciliation, run in May 2027 after Noor's visit, which found 2.3% of active variants with different quantities in the WMS and the platform, are what happens when the rule is broken.
 
 ![Three stock ledgers, each with one writer: the warehouse writes on hand, the order system writes committed, and available is derived; a fourth hand is blocked.](assets/images/15-warehouse-and-fulfillment/15-one-writer-per-stock-state.jpeg)
-**Figure 7:** *One writer per stock state: the WMS writes on hand, the order system writes committed, the availability service derives available, and no other hand may write any of the three.*
+**Figure 3:** *One writer per stock state: the WMS writes on hand, the order system writes committed, the availability service derives available, and no other hand may write any of the three.*
 
 On hand changes inside the warehouse constantly: a receipt, a pick, a cycle-count correction, a damaged unit moved to quarantine, a return restocked. How the rest of the landscape learns is the architectural question, and two patterns exist.
 
-- **Periodic full sync.** The WMS exports every SKU's on hand on a schedule and consumers overwrite their copy. Shopify's documentation for fulfillment services (n.d., accessed November 2026) describes exactly this: Shopify polls the service's stock endpoint for on hand per SKU hourly. Kestrel & Pine's chain (WMS to ERP every 15 minutes, ERP to platform hourly, platform to the marketplace connector hourly) is three of these in series, which is how a sale took up to two hours to reduce the stock shown elsewhere on Black Friday evening.
+- **Periodic full sync.** The WMS exports every SKU's on hand on a schedule and consumers overwrite their copy. Shopify's documentation for fulfillment services (n.d., accessed November 2026) describes exactly this: Shopify polls the service's stock endpoint for on hand per SKU hourly. Kestrel & Pine's chain (WMS to ERP, ERP to the shop platform, platform to the marketplace connector) is three of these in series, which is how, on Black Friday evening, a sale took up to two hours to reduce the stock shown elsewhere: the stock lag Daniel's chart also showed, separate from the four-hour order backlog.
 - **Stock events.** The WMS emits a message for each change ("SKU X at location Y: minus 1, reason pick, timestamp"). Picqer's API (n.d., accessed November 2026) emits a `products.free_stock_changed` webhook "to support real-time stock updates in a store"; a **webhook** is a call the vendor's system makes to your URL when something happens. Waypoint decision W1 retires the sync chain in favor of this pattern by Q4 2027.
 
 Events are better once order volume makes lag visible, and they are harder: a lost event leaves a stale copy until a **reconciliation** (a job that compares the two systems and lists differences) catches it. [[events-consistency-and-reconciliation]] owns that discipline; the warehouse's part is to emit every change with a reason and to publish a daily full snapshot as the baseline.
 
 ### Capacity, cut-off times and work release
 
-The third thing the warehouse owns is its **day**. Every promise the platform makes about timing rests on three warehouse facts that rarely appear in any API:
+Besides its stock, the warehouse owns its **day**. Every promise the platform makes about timing rests on three warehouse facts that rarely appear in any API:
 
 - **The cut-off** is the latest arrival time that leaves enough processing time before carrier collection. At Duiven that means the 21:00 final wave before PostNL's 22:30 collection (illustrative times). The storefront's "ordered before 22:00" line dates from the Tiel 3PL, whose collection was later; nobody updated it in 2023.
 - **Capacity** is units or parcels per hour with the available staff and equipment. Queues or downtime can reduce how much more work the building can finish today.
 - **The release policy** decides which orders go first: by carrier collection, service level or channel. It may release waves or feed stations continuously; marketplace penalties still affect priority.
 
-These three belong in the data the delivery promise is computed from. Until they are, the promise is a sentence; [[shipping-and-delivery]] is about making it a computation. On Black Friday evening 2026 the warehouse's capacity was never the limit; the order feed was.
+These three belong in the data the delivery promise is computed from. Until they are, the promise is a sentence; [[shipping-and-delivery]] is about making it a computation.
 
 ### Wholesale fulfillment: pallets, SSCC labels and the despatch advice
 
-A parcel for Eva and a pallet for Bergzicht Outdoor leave the same building through different processes. Wholesale shipments are picked to cartons and pallets, and a large retail customer expects two things a consumer never sees: a label on each logistics unit and an electronic message announcing what is on it.
+A parcel for Eva and a pallet for Bergzicht Outdoor, the wholesale customer that orders by EDI, leave the same building through different processes. Wholesale shipments are picked to cartons and pallets, and a large retail customer expects two things a consumer never sees: a label on each logistics unit and an electronic message announcing what is on it.
 
 The **SSCC** (serial shipping container code) is, in the words of the GS1 General Specifications, Release 26.0 (January 2026), "the GS1 identifier for an individual logistics unit" and "the only GS1 key that SHALL be used as the identifier of a logistic unit": the 18-digit number on the pallet label. The **despatch advice** (DESADV in EDIFACT, the UN message standard most European EDI uses; also called an ASN, advance shipping notice) tells the receiver what is coming, pallet by pallet, so receipt can be scanned instead of counted. [[edi-and-e-invoicing]] owns the messages; this chapter owns where they are generated.
 
 Retailers enforce these rules. bol requires GS1 labels on logistics units since 31 December 2021 and the SSCC in DESADV messages from EDI-connected suppliers (n.d., accessed November 2026). Jumbo's mechanized-warehouse guidelines (2025) require a matching DESADV and SSCC label; deliveries without the message are refused. Its purchasing conditions of 9 April 2026 add €70 per message that fails GS1 standards.
 
+Jumbo's conditions also carry separate delivery-performance penalties: €250 per order below 90% delivered on time and in full on an order line. Both are chargebacks, deductions a retail customer makes from what it pays the supplier, and chargebacks come in two families: delivery performance, a logistics problem, and data and label compliance, an architecture problem.
+
 The architectural consequence is one sentence: **the DESADV must be generated from what the warehouse actually packed, never from the order.** The pallet's SSCC and its contents are known only at pack time, in the WMS. Kestrel & Pine's ASN Chargeback of Q3 2026 (€14,200 deducted by Bergzicht for despatch advices whose SSCC labels did not match what arrived) happened because the DESADV was built from the ERP's view of the order while the WMS packed something slightly different. Waypoint decision W6 moves SSCC generation to the WMS at pack time and sends the DESADV from the WMS confirmation. Bergzicht's spring reorder of April 2027 (240 units across 18 SKUs on three pallets, DESADV at pack confirmation, delivered to Zwolle on 9 April) is the first cycle under the new rule; [[journey-wholesale-order]] follows it end to end.
 
 ## The Choices: Who Runs the Warehouse Software
 
-A merchant has four realistic ways to get warehouse execution, and most use two at once.
+With the contract in place, someone must run the warehouse software. A merchant has four realistic ways to get it run, and most use two at once.
 
 **The ERP's warehouse module.** Mid-market ERPs include receiving, locations, picking and shipping; Odoo's module is the public example. It is one system, one integration and one vendor fewer. It fits one building, modest volume and simple routes; it strains when waves must be planned around carrier cut-offs, when labor needs managing or when the warehouse serves more than one company.
 
@@ -217,9 +184,11 @@ For the merchant, marketplace-held stock is a **location it can see but not coun
 | 3PL | No building of your own; seasonal or regional volume; a new country | Brand-specific packing, returns grading, cost at high volume | Same contract as a WMS; the 3PL's portal is not the record |
 | Marketplace fulfillment program | Marketplace share is large and its delivery promise sells | Stock you cannot count; fees per order and per day; returns graded by the marketplace | An external location with inbound shipments and stock reports |
 
-My recommendation follows the requirements, not the product. One location and one channel: use what the platform or the ERP gives you. One building, several channels and a carrier schedule to plan around: a dedicated WMS, behind the contract above. Several buildings, or a wholesale flow with SSCC and DESADV obligations: an enterprise WMS or a 3PL that can meet them, behind the same contract. At no stage let the warehouse system become a second order system that holds prices, customer data and status for support; that is how Kestrel & Pine arrived at three definitions of an order.
+The table sets the four side by side: in every row the integration is the same contract, except that marketplace-held stock cannot be counted. My recommendation follows the requirements, not the product. One location and one channel: use what the platform or the ERP gives you. One building, several channels and a carrier schedule to plan around: a dedicated WMS, behind the contract above. Several buildings, or a wholesale flow with SSCC and DESADV obligations: an enterprise WMS or a 3PL that can meet them, behind the same contract. At no stage let the warehouse system become a second order system that holds prices, customer data and status for support. Kestrel & Pine shows where that leads: once several systems held order status, each came to count orders its own way, and its shop platform, its ERP and its warehouse report now use three different definitions of an order.
 
 ## Across Scale Stages: When It Fits and When It Limits
+
+Which of these setups fits changes as a merchant grows. The table follows the typical setup, what becomes necessary and the warning signs through the four scale stages.
 
 | Stage | Typical setup | What becomes necessary | Warning signs of outgrowing it |
 | --- | --- | --- | --- |
@@ -230,19 +199,52 @@ My recommendation follows the requirements, not the product. One location and on
 
 Software can be bought, rented or outsourced; integration still needs to match operational complexity. Kestrel & Pine bought its WMS in 2023 but kept an early-stage connection: orders pushed one by one, status pulled by the ERP, stock copied hourly. Its warehouse served multiple channels while the integration still assumed a much simpler business.
 
+## Warehouse Automation and Robotics
+
+As a warehouse grows it may add automation, as the Group stage in the table shows, and the same contract then applies one level down, inside the building. When pickers spend much of their shift walking between storage and packing, moving goods automatically can free time for picking. Automation also adds coordination work: someone must decide which movement happens next, confirm that it happened and recover when equipment stops.
+
+The main uses differ. **Mobile transport** moves containers between work areas; an **autonomous mobile robot (AMR)** navigates the warehouse to carry them. **Goods-to-person** brings stock to a stationary picker, reducing walking while leaving the item selection to a person. **Robotic picking** uses a robot to grasp individual items. **Sortation** routes items or parcels to their next station or dispatch lane. Dematic documents [mobile transport and goods-to-person](https://www.dematic.com/en-us/solutions/amr/) separately from [robotic item picking](https://www.dematic.com/en-us/solutions/robotics/) (n.d., accessed November 2026).
+
+![Four panels: a mobile robot carrying a tote from storage to packing, a robot bringing a shelf to a stationary picker, a robot arm picking a single item, and a sorter routing parcels into three lanes.](assets/images/15-warehouse-and-fulfillment/four-kinds-of-automation.jpeg)
+**Figure 4:** *Four uses of warehouse automation: mobile transport moves containers, goods-to-person brings stock to a picker who still chooses the item, robotic picking grasps the item itself, and sortation routes items or parcels to their next lane.*
+
+Automated warehouses commonly divide the software responsibilities as follows. The names describe jobs; products can combine them, and a site may need only some of these interfaces.
+
+| Responsibility | What it does |
+| --- | --- |
+| **Warehouse management system (WMS)** | Owns stock records, locations and warehouse tasks; records confirmed results |
+| **Warehouse execution system (WES)** | Releases and sequences work against priorities, queues and available people or equipment |
+| **Warehouse control system (WCS)** | Translates work into commands for conveyors, sorters or storage equipment and reports their results |
+| **Robot fleet management** | Assigns tasks to individual robots, coordinates their routes and tracks progress |
+
+Dematic's [software overview](https://www.dematic.com/en-us/software/) describes WMS, WES and WCS responsibilities, including continuous work release (n.d., accessed November 2026). SAP's [2023 integration guide](https://help.sap.com/doc/5acdd0d4d7524247a0c9b15b24f0fe3b/LATEST/en-US/379d6d880e5d4007b3751618080da80f_2.pdf) provides a concrete example: warehouse orders become robot tasks sent to fleet management; notifications return to confirm warehouse work.
+
+![A stack of warehouse software: the commerce platform sends fulfillment orders to the WMS, which sits above the WES, which sits above the WCS and robot fleet management, which drive conveyors, sorters and robots; work flows down and confirmed results flow up to the WMS, the only layer that updates stock.](assets/images/15-warehouse-and-fulfillment/wms-wes-wcs-fleet-stack.jpeg)
+**Figure 5:** *The software stack in an automated warehouse: the order system talks only to the WMS; work goes down through the WES to the WCS and fleet management, and confirmed results come back up to the WMS, the only layer that updates stock.*
+
+Because work goes down and confirmations come back up, I would keep the order system connected to the WMS through fulfillment orders, the instruction to ship specified above. Inside the warehouse, require an explicit contract for each automated task:
+
+- **Identity and instruction.** Carry a stable task ID, container or item identity, source, destination and required quantity. Repeating the same request must retrieve or continue the same task, never create another movement.
+- **Confirmed outcome.** Distinguish accepted, in progress, completed, failed and canceled. Acceptance means the task was received; completion must establish what actually moved. The WMS updates stock records from confirmed outcomes. Moving a container changes its location, not the warehouse's total quantity.
+- **Recovery.** A timeout leaves the outcome unknown. Query the existing task; if its result remains uncertain, check what physically happened before retrying. Send failed picks, blocked paths or unavailable destinations to a queue for an operator to resolve. Before manual reassignment, confirm the original task has stopped or been canceled, then check the actual location and quantity. Otherwise a person and a robot may attempt the same work. SAP's guide documents exception queues and physical checks before closing stalled tasks.
+
+Duiven currently uses people, waves and scanners. **Suppose Daniel later adds robots** to carry picked containers to packing. A robot accepts a transfer, loses connectivity and delivers the container anyway. Noor's integration must recover that transfer's result, not issue a fresh transfer because its reply never arrived. The container reaching packing also does not prove that the customer's parcel has shipped.
+
+![A task card for task T-4711 with container, source, destination and quantity, its states from accepted to completed or failed or canceled, and a timeout story in which the robot still delivers: the WMS queries the same task instead of sending a new one, and unresolved cases go to an exception queue for a physical check.](assets/images/15-warehouse-and-fulfillment/automated-task-contract.jpeg)
+**Figure 6:** *One automated task, one identity: after a timeout the robot may still have delivered, so the integration queries the same task rather than sending a new movement, and anything still uncertain goes to an exception queue for a physical check.*
+
+Before buying automation, measure where work waits. Faster transport helps only while packing and dispatch can absorb it. Feed queue age, equipment availability and reduced processing capacity into the delivery promise. If a sorter stops, stock can still exist while today's dispatch capacity disappears. Test how work continues when equipment is unavailable.
+
+![A flow from pick to transport to pack to dispatch where faster robot transport only builds a pile of waiting totes at packing, and a stopped sorter leaves stock on the shelf while dispatch capacity falls, both feeding the delivery promise.](assets/images/15-warehouse-and-fulfillment/faster-transport-same-bottleneck.jpeg)
+**Figure 7:** *Measure where work waits before buying automation: faster transport only moves the queue to packing, and a stopped sorter removes today's dispatch capacity while the stock still exists, so both belong in the delivery promise.*
+
 ## In Practice
-
-### Public evidence
-
-A warehouse integration needs matching item codes, enough capacity to exchange requests and counts checked against the shelves. The public record gives concrete constraints for each. Shopify warns that SKU strings are case-sensitive; Picqer publishes an API limit of about 500 requests per minute (both documentation pages, n.d., accessed November 2026). DeHoratius and Raman found 65% of nearly 370,000 stock records inaccurate across 37 stores of one retailer (*Management Science*, 2008). That old, pre-RFID study is a reminder to count physical stock, not a current error rate to assume for every warehouse.
-
-Jumbo's conditions also carry delivery-performance penalties (€250 per order below 90% delivered on time and in full on an order line). Chargebacks thus come in two families: delivery performance, a logistics problem, and data and label compliance, an architecture problem.
 
 ### Kestrel & Pine: Eva's jacket at Duiven, and the Queue That Waited
 
-Eva's order #1072455 is placed on Tuesday 13 April 2027 at 21:14. In April 2027 the platform still sends it to the WMS through the iPaaS; the OMS of Waypoint decision W2 arrives in Q4. The flow creates the order in the WMS at 21:16 (illustrative). The last wave was released at 21:00. The order waits for the 06:30 wave on Wednesday 14 April, is picked with about 180 other orders on one route (illustrative), packed into one box of 1.1 kg with a PostNL label and confirmed at 08:40. The confirmation carries the tracking number; the stock event says jacket M moss minus one and socks minus two. PostNL collects it that evening and delivers on Thursday 15 April. The storefront had promised Wednesday. The warehouse did nothing wrong; the promise was not computed from the warehouse. [[shipping-and-delivery]] starts from that gap.
+Back at Duiven, which has no robots, Kestrel & Pine's own orders show its early-stage connection at work, first for one order. Eva's order #1072455 is placed on Tuesday 13 April 2027 at 21:14. In April 2027 the shop platform still sends it to the WMS through the iPaaS; the OMS of Waypoint decision W2 arrives in Q4. The flow creates the order in the WMS at 21:16 (illustrative). The last wave was released at 21:00. The order waits for the 06:30 wave on Wednesday 14 April, is picked with about 180 other orders on one route (illustrative), packed into one box of 1.1 kg with a PostNL label and confirmed at 08:40. The confirmation carries the tracking number; the stock event says jacket M moss minus one and socks minus two. PostNL collects it that evening and delivers on Thursday 15 April. The storefront had promised Wednesday. The warehouse did nothing wrong; the promise was not computed from the warehouse. [[shipping-and-delivery]] starts from that gap.
 
-Black Friday evening, Friday 27 November 2026, is the same gap at scale. In the peak hour, 20:00 to 21:00, the storefront took 2,300 orders, 38 a minute. The iPaaS flow that creates orders in the WMS made several calls per order and was throttled by the WMS vendor's rate limit (illustrative mechanism); it fell behind, and by 21:00 the backlog was four hours long. Orders placed at 20:00 reached the WMS after midnight; the 21:00 wave contained the orders of the early afternoon. Roughly 8,000 orders placed between 17:00 and midnight (assumption) missed next-day delivery while the storefront promised it. The warehouse's staffing that night was never tested.
+Black Friday evening, Friday 27 November 2026, is the same gap at scale. In the peak hour, 20:00 to 21:00, the storefront took 2,300 orders, 38 a minute. The iPaaS flow that creates orders in the WMS created them one at a time, with several calls per order, and was throttled by the WMS vendor's rate limit (illustrative mechanism; WMS vendors publish such limits, Picqer's is about 500 requests per minute, n.d., accessed November 2026); it had been falling behind since the early afternoon, and by 21:00 the backlog was four hours long. Orders placed at 20:00 reached the WMS after midnight; the 21:00 wave contained the orders of the early afternoon. Roughly 8,000 orders placed between 17:00 and midnight (assumption) missed next-day delivery while the storefront promised it. The warehouse's staffing that night was never tested.
 
 What would have prevented it is not a faster warehouse. It is a queue between the platform and the WMS that is **allowed to grow** without failing checkout, a flow that creates orders in **batches** within the WMS's rate limit, a monitor on the age of the oldest unprocessed order, and a cut-off that **moves** when that age grows, so the promise on the page tells the truth. All four are on Waypoint's list under decisions W2 and W5; [[peak-load-and-reliability]] and [[journey-peak-day]] work the whole evening.
 
@@ -251,23 +253,25 @@ What would have prevented it is not a faster warehouse. It is a queue between th
 
 ## When It Goes Wrong
 
-The warehouse interface fails in a small number of recognizable ways. Each has a detection and a recovery.
+Beyond the Black Friday queue, the warehouse interface fails in a small number of other recognizable ways. Each has a detection and a recovery.
 
 **Duplicate fulfillment orders.** A retry after a timeout delivers the same instruction twice and the WMS creates two pick lists; the customer receives two jackets. Detection: a fulfillment-order identity on every message and a daily check for two WMS orders with the same identity. Recovery: idempotent creation in the WMS (same key, same order) and an alert rather than a second pick list.
 
-**The cancellation that arrived after the pick.** Support cancels the order in the platform; the parcel ships anyway because the WMS had already accepted it. Detection: the cancellation must be a request with an answer, and the platform must show the answer. Recovery: the order stays in progress, support tells the customer, and the item comes back through [[returns-and-exchanges]].
+**The cancellation that arrived after the pick.** Support cancels the order in the shop platform; the parcel ships anyway because the WMS had already accepted it. Detection: the cancellation must be a request with an answer, and the platform must show the answer. Recovery: the order stays in progress, support tells the customer, and the item comes back through [[returns-and-exchanges]].
 
-**The lost shipment confirmation.** The parcel left; the confirmation was lost; the platform says "unfulfilled" and the ERP never invoices. This is Kestrel & Pine's Three-Status Order (#1052877: *Delivered* in the platform, *In picking* in the WMS, *Not invoiced* in the ERP for six days) seen from the warehouse. Detection: a daily reconciliation of shipped-in-WMS against fulfilled-in-platform. Recovery: replay the confirmation from the WMS; never re-key it by hand.
+**The lost or collapsed shipment confirmation.** The parcel left but the confirmation was lost, so the shop platform still says "unfulfilled" and the ERP never invoices. The opposite fault is just as damaging. In Kestrel & Pine's Three-Status Order (#1052877, December 2026) the fleece shipped before the socks, and the iPaaS flow, which had no notion of a partial shipment, marked the whole order fulfilled on that first confirmation. The shop platform showed *Delivered*, the WMS *In picking* while the socks waited, and the ERP, which invoiced only on "order complete", *Not invoiced* for six days. Detection: a daily reconciliation of shipped-in-WMS against fulfilled-in-platform, per shipment. Recovery: replay the confirmation from the WMS, one per shipment; never re-key it by hand.
 
-**Stock events out of order or missing.** A pick event arrives before its receipt event, or not at all, and the available figure is wrong until the next snapshot. Detection: sequence numbers on events, and a weekly reconciliation such as Kestrel & Pine's May 2027 run (2.3% of active variants differing). Recovery: apply the daily snapshot as the baseline and replay events since.
+**The short pick.** A common cause of a partial shipment: the record said one; the shelf has none. Detection: the WMS records a short pick against the fulfillment order. Recovery: the WMS tries another location; if none, it reports a partial shipment or closes the fulfillment order as incomplete, and the order system decides (ship the rest, wait, or cancel the line and refund). A short-pick rate per SKU tells you where to cycle count.
 
-**The short pick.** The record said one; the shelf has none. Detection: the WMS records a short pick against the fulfillment order. Recovery: the WMS tries another location; if none, it reports a partial shipment or closes the fulfillment order as incomplete, and the order system decides (ship the rest, wait, or cancel the line and refund). A short-pick rate per SKU tells you where to cycle count.
+**Stock events out of order or missing.** A pick event arrives before its receipt event, or not at all, and the available figure is wrong until the next snapshot. Detection: sequence numbers on events, and a scheduled reconciliation such as Kestrel & Pine's May 2027 run (2.3% of active variants differing). Recovery: apply the daily snapshot as the baseline and replay events since.
 
-**SKU mismatch.** The platform's variant identifier and the WMS's differ by a suffix, a case or a leading zero; the fulfillment order is rejected or maps to the wrong product. Detection: rejects per SKU and a daily comparison of the two catalogs. Recovery: one identifier family owned by the product system ([[product-information]]), published to both.
+**SKU mismatch.** The shop platform's variant identifier and the WMS's differ by a suffix, a case or a leading zero (Shopify warns that SKU strings are case-sensitive, n.d., accessed November 2026); the fulfillment order is rejected or maps to the wrong product. Detection: rejects per SKU and a daily comparison of the two catalogs. Recovery: one identifier family owned by the product system ([[product-information]]), published to both.
 
-**The WMS outage.** The cloud WMS is unavailable for an hour on a peak evening. Detection: the age of the oldest queued order. Recovery: queue, do not fail checkout; when the WMS returns, release in batches within its rate limit; move the cut-off while the backlog is older than the time to the last wave.
+**The WMS outage.** The cloud WMS is unavailable for an hour on a peak evening. Detection: the age of the oldest queued order. Recovery: the Black Friday remedies above; queue, do not fail checkout; when the WMS returns, release in batches within its rate limit; move the cut-off while the backlog would make new orders miss the last wave.
 
 ## What to Take Away
+
+The picker who found no jacket, Eva's Wednesday promise and the Black Friday queue look like three different faults: a stock error, a sentence on the storefront and a slow integration. Each is a promise made from a copy or a sentence instead of from the warehouse's own facts. The same contract answers all three: a fulfillment order with a key and an answer, one writer of on-hand stock, confirmations built from what was packed, and a cut-off read from the queue. That is what a merchant should write down before it buys a WMS, a 3PL or robots; Kestrel & Pine's Black Friday remedy was a queue, batches, a monitor and a moving cut-off, not a faster warehouse.
 
 **Established.**
 
@@ -301,7 +305,7 @@ The warehouse interface fails in a small number of recognizable ways. Each has a
 9. For wholesale customers with EDI: which system generates the SSCC label and the DESADV, and from what?
 10. If the warehouse system is unavailable for an hour on the busiest evening, what do customers see?
 
-Once the parcel is ready, the carrier takes over. [[shipping-and-delivery]] follows carrier selection, labels and tracking, and connects warehouse capacity to the date shown at checkout.
+Once Eva's parcel is packed and confirmed at Duiven, the carrier takes over. [[shipping-and-delivery]] follows carrier selection, labels and tracking, and computes the date shown at checkout from the warehouse's cut-off, capacity and backlog that the storefront's sentence ignored.
 
 ## Sources and Evidence
 

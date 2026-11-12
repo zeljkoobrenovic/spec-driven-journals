@@ -15,7 +15,7 @@ logo: "assets/images/22-edi-and-e-invoicing/logo.jpeg"
 >
 > * **Electronic data interchange (EDI) is a channel into the order record, not a separate order system.** An EDI order should create the same order object as a web order, flagged by channel, so allocation, invoicing and the books see one shape.
 > * **Each document has its own system of truth.** The order comes from the buyer, the despatch advice must come from what the warehouse packed and labeled, and the invoice must come from what was shipped and priced. Generating any of them from the wrong system is how chargebacks happen.
-> * **E-invoicing is a legal calendar, not a feature.** Belgium has required structured e-invoices over Peppol for domestic business-to-business invoices since 1 January 2026, Germany's issuing obligation starts in 2027, and the Netherlands plans 2030. The invoice becomes a transmitted document with a delivery status the finance system must hold.
+> * **E-invoicing is a legal calendar, not a feature.** Belgium has required structured e-invoices over Peppol for domestic business-to-business invoices since 1 January 2026, Germany's issuing obligation starts in 2027, and the Netherlands plans 2030. The invoice becomes a transmitted document with a delivery status the ERP must hold.
 
 > **[FAILURE PATTERNS THIS CHAPTER ADDRESSES](where-commerce-platforms-go-wrong.html):**
 >
@@ -30,22 +30,26 @@ A retail chain sends a purchase order from its own purchasing system. It expects
 
 A second kind of document has joined it. Since 1 January 2026, a business in Belgium that invoices another Belgian business must send a **structured electronic invoice** over a public network called Peppol; a PDF by e-mail no longer counts. Germany, France, Italy and Poland have their own rules and dates, and the Netherlands has announced 2030. **The invoice is becoming a transmitted legal document with a delivery receipt**, and the system that issues invoices has to know whether each one arrived.
 
-**Where we are in the order's journey.** Kestrel & Pine, the fictional outdoor brand, supplies retail chain Bergzicht Outdoor. Bergzicht's 6 April 2027 reorder arrives electronically, while consumer Eva's jacket order starts online. Both use Duiven's stock and **warehouse management system (WMS)** for picking and packing, then reach the accounts. [[journey-wholesale-order]] follows Bergzicht's order end to end.
+**Where we are in the order's journey.** The previous chapter followed the portal, the self-service path of the wholesale channel, and named a fourth way in: the buyer's own system, which sends EDI orders or punches out (opens the supplier's catalog from inside its own purchasing software). This chapter takes that route. Kestrel & Pine, the fictional outdoor brand, supplies retail chain Bergzicht Outdoor, whose orders arrive electronically. The chapter starts from a 2026 incident with those orders and ends with Bergzicht's spring reorder of April 2027. Like a web order, an EDI order uses Duiven's stock and **warehouse management system (WMS)** for picking and packing, then reaches the same books. [[journey-wholesale-order]] follows Bergzicht's order end to end.
+
+Because every order ends in the same warehouse and the same books, this chapter's answer is that **each document between companies has one internal source**. The order enters the one order record like a web order; the despatch advice, the message that says what is on each pallet, comes from the warehouse's pack confirmation; the invoice comes from the ERP's confirmed shipment. Partners enforce their own message rules by deducting money from payments, and e-invoicing mandates with legal dates make the invoice a transmitted document whose delivery status the ERP must hold.
+
+The chapter starts from a deduction Bergzicht made from a payment. It then explains what EDI is and why it persists, its documents, the identifiers inside them, how they travel and how each partner's rules are enforced; states which system each document must come from, and where punchout fits; and treats the e-invoice and the calendar of mandates. It compares the ways to connect and how they change with scale, works Bergzicht's spring reorder and a Belgian invoice through, and ends with what goes wrong. The evidence is Kestrel & Pine's deduction, the GS1 and X12 standards, retailers' published supplier conditions and official mandate pages.
 
 ## Setting the Scene at Kestrel & Pine: A Deduction Instead of a Payment
 
-Bergzicht Outdoor is a fictional Dutch chain with 38 shops and a distribution center in Zwolle, worth €2.1 million annually to Kestrel & Pine. Since 2025 it has ordered through an **EDI provider**, a service that relays trading-partner documents, also called a value-added network (VAN). The three main messages are the order (**ORDERS**), despatch advice (**DESADV**) and invoice (**INVOIC**).
+Bergzicht Outdoor is a fictional Dutch chain with 38 shops and a distribution center in Zwolle, worth €2.1 million annually to Kestrel & Pine. Since 2025 it has ordered through Kestrel & Pine's **EDI provider**, a service that relays trading-partner documents, also called a value-added network (VAN). The three main messages are the order (**ORDERS**), the despatch advice (**DESADV**, also called the advance shipping notice or **ASN**) and the invoice (**INVOIC**).
 
-In October 2026, Wholesale Lead Lea Moreau receives a payment **€14,200 short**. Bergzicht has charged for nine third-quarter deliveries whose pallet labels did not match the despatch advice. Its terms allow a compliance fee plus manual counting costs.
+In October 2026, Head of Wholesale Lea Moreau receives a payment **€14,200 short**. Bergzicht has charged for nine third-quarter deliveries whose pallet labels did not match the despatch advice. Its terms allow a compliance fee plus manual counting costs.
 
-This is the **ASN Chargeback**: ASN means advance shipping notice, another name for the despatch advice. It is a supplier-compliance deduction, distinct from a card-payment dispute.
+This book calls the incident the **ASN Chargeback**, after the despatch advice's other name. It is a supplier-compliance deduction, distinct from a card-payment dispute.
 
-The mechanism took Lea and Ruben Alves, the integration engineer, two weeks to reconstruct, because the only person who knew the EDI mappings was an external consultant engaged in 2025. **The ERP** (enterprise resource planning system: the back-office system that keeps the books, purchasing and invoicing) generated the despatch advice the moment a wholesale order was released to the warehouse, before anyone had packed anything, with pallet numbers from an ERP number range and contents as the order lines suggested. At Duiven, the WMS printed its own pallet labels at pack time. When pickers merged two half-pallets or split a heavy one, the labels on the truck and the message in Bergzicht's system described different pallets, and Bergzicht's scanners rejected them.
+The mechanism took Lea and Ruben Alves, the lead integration engineer, two weeks to reconstruct, because the only person who knew the EDI mappings (the translations between Bergzicht's message fields and Kestrel & Pine's own systems) was an external consultant engaged in 2025. The ERP generated the despatch advice the moment a wholesale order was released to the warehouse, before anyone had packed anything, with pallet numbers from an ERP number range and contents as the order lines suggested. At Duiven, the WMS printed its own pallet labels at pack time. When pickers merged two half-pallets or split a heavy one, the labels on the truck and the message in Bergzicht's system described different pallets, and Bergzicht's scanners rejected them.
 
 ![Top: the ERP sends the despatch advice before packing, pallets are merged, and the receiving scanner rejects them. Bottom: the WMS sends it from the pack confirmation and the scan matches.](assets/images/22-edi-and-e-invoicing/22-asn-written-before-packing.jpeg)
 **Figure 1:** *The ASN Chargeback: the ERP announced pallets before anyone had packed them, the WMS labeled the pallets it actually built, and the mismatches on nine deliveries cost €14,200.*
 
-Noor Visser's question in the Waypoint proposal is the one this chapter answers: **which system knows the truth each document claims to carry?** The ERP knew the order. Only the WMS knew the pallets. Waypoint decision **W6** fixed it: pallet labels generated by the WMS at pack time, the despatch advice sent from the WMS pack confirmation, and one EDI partner card per trading partner so that no mapping lives in one person's head again.
+Noor Visser's question in the Waypoint proposal is the one this chapter answers: **which system knows the truth each document claims to carry?** The ERP knew the order. Only the WMS knew the pallets. Waypoint decision **W6** fixed it: pallet labels generated by the WMS at pack time, the despatch advice sent from the WMS pack confirmation, and one EDI partner card per trading partner, a record the company keeps of the partner's identifiers, message versions, mapping and internal owner, so that no mapping lives in one person's head again.
 
 ## What EDI Is and Why It Has Not Gone Away
 
@@ -53,28 +57,27 @@ In plain words, EDI is a set of agreed message formats plus a way of delivering 
 
 Two standards dominate. **UN/EDIFACT** is the United Nations standard, maintained by UN/CEFACT, whose syntax became ISO 9735 in 1987; European retail uses the **GS1 EANCOM** subset, which GS1's manual (2002 edition, last updated 2021) describes as the UN/EDIFACT messages and fields relevant to retail. **ANSI X12** is the North American standard. A European brand selling to a Dutch chain and a US chain needs both; the message pairs are functional equivalents, not field-for-field translations.
 
-GS1's 2021 implementation survey, the most recent public one, reported ORDERS, INVOIC and DESADV as the three most implemented EANCOM messages and AS2 as the most used transport. The survey is five years old; the standards it describes have barely changed since, which is the point.
+GS1's 2021 implementation survey, the most recent public one, reported ORDERS, INVOIC and DESADV as the three most implemented EANCOM messages and AS2, a secure point-to-point protocol explained below, as the most used transport. The survey is five years old; the standards it describes have barely changed since. That stability is part of why EDI persists.
 
-Why does a format from the 1980s still carry wholesale orders in 2027? Four reasons, stated as industry practice. **The buyer chooses**: Jumbo, the Dutch supermarket chain, writes in its purchasing conditions of 9 April 2026 that suppliers "undertake to conduct all communication concerning the flow of goods (being order, packing slip (DESADV) and invoice) via EDI", forfeit €70 per message otherwise, and may have deliveries without DESADV and SSCC (the pallet's serial number, defined below) refused.
+Why does a format from the 1980s still carry wholesale orders in 2027? Four reasons, stated as industry practice, of which the first is the strongest. **The buyer chooses**: Jumbo, the Dutch supermarket chain, writes in its purchasing conditions of 9 April 2026 that suppliers "undertake to conduct all communication concerning the flow of goods (being order, packing slip (DESADV) and invoice) via EDI", forfeit €70 per message otherwise, and may have deliveries without DESADV and SSCC (the pallet's serial number, defined below) refused.
 
-**The documents carry meaning**: an order is a purchase commitment, a despatch advice a receiving plan, an invoice a payment claim, and their stability is a feature. **Network effects**: once a chain has mapped hundreds of suppliers, changing format costs more than keeping it. **Regulators accommodate it**: Germany lets an EDI procedure that does not yet meet the e-invoice requirements run to the end of 2027 rather than banning it.
+The other three reasons are these. **The documents carry meaning**: an order is a purchase commitment, a despatch advice a receiving plan, an invoice a payment claim, and their stability is a feature. **Network effects**: once a chain has mapped hundreds of suppliers, changing format costs more than keeping it. **Regulators accommodate it**: Germany lets an EDI procedure that does not yet meet its e-invoice rules (explained later in this chapter) run to the end of 2027 rather than banning it.
 
 ## The Documents: Order, Despatch Advice, Invoice
+
+Five documents make up the exchange between a buyer and a seller: three carry the business (the order, the despatch advice and the invoice) and two answer them (the order response and the syntax acknowledgment). Each has an EDIFACT name and an X12 name, a sender, and one internal system that knows the truth it carries:
 
 | Document | EDIFACT | X12 | Sender | What it says | Internal system of truth |
 | --- | --- | --- | --- | --- | --- |
 | Order | ORDERS | 850 | Buyer | Items, quantities, delivery date and address | The buyer's purchasing system; it creates an order record on the seller's side |
-| Order response | ORDRSP | 855 | Seller | What will be delivered, line by line, including shortages | The seller's order record after allocation |
+| Order response | ORDRSP | 855 | Seller | What will be delivered, line by line, including shortages | The seller's order record after allocation (stock set aside for this order) |
 | Despatch advice (**ASN**) | DESADV | 856 | Seller | What is physically coming, pallet by pallet | The WMS pack confirmation |
 | Invoice | INVOIC | 810 | Seller | What is owed for what was shipped, at agreed prices, with VAT (value-added tax) | The ERP, from shipment and price, never from the order |
-| Syntax acknowledgment | CONTRL | 997 | Receiver | "I could parse your file", not "I accept it" | The EDI translator |
+| Syntax acknowledgment | CONTRL | 997 | Receiver | "I could parse your file", not "I accept it" | The receiver's EDI translator, the software that converts files to and from the standard |
 
-The **ASN** (advance shipping notice) deserves its own sentence. It is a message sent at despatch telling the receiver what is coming, pallet by pallet, so receipt can be scanned instead of counted. Jumbo's guidelines for its mechanized distribution center (October 2025) state the consequence: every delivery "must be preceded by a DESADV message", completed to pallet level, "a delivery without an accompanying DESADV message cannot be processed and is therefore refused", and "the SSCC label forms the link with the DESADV despatch message". The ASN is the receiving plan; the pallet label is the key into it.
+Of the five, the despatch advice, or ASN, deserves its own paragraph. It is a message sent at despatch telling the receiver what is coming, pallet by pallet, so receipt can be scanned instead of counted. Jumbo's guidelines for its mechanized distribution center (October 2025) state the consequence: every delivery "must be preceded by a DESADV message", completed to pallet level, "a delivery without an accompanying DESADV message cannot be processed and is therefore refused", and "the SSCC label forms the link with the DESADV despatch message". The ASN is the receiving plan; the pallet label is the key into it.
 
-A CONTRL or 997 says only that the file was syntactically readable, not that the order was accepted, the delivery received or the invoice will be paid; those answers come in ORDRSP, a receiving advice and, eventually, payment. **Treating a syntax acknowledgment as acceptance is a common and expensive mistake.**
-
-![Diagram: Bergzicht's spring reorder as a document cycle](assets/images/22-edi-and-e-invoicing/fig01-bergzicht-s-spring-reorder-document-cycle.jpeg)
-**Figure 2:** *Bergzicht's spring reorder as a document cycle: the order creates a normal order record, the despatch advice comes from the WMS once the pallets are labeled, and the invoice comes from the ERP once the shipment is confirmed. Three documents, three systems of truth.*
+A CONTRL or 997 says only that the file was syntactically readable, not that the order was accepted, the delivery received or the invoice will be paid; those answers come in ORDRSP, a receiving advice (a buyer's message confirming what arrived) and, eventually, payment. **Treating a syntax acknowledgment as acceptance is a common and expensive mistake.**
 
 ## Identifiers: What, Where and This Pallet
 
@@ -82,9 +85,9 @@ EDI works because both sides use the same numbers for things, places and shipmen
 
 - A **GTIN** (Global Trade Item Number) identifies *what*: a sellable product, the number in the barcode on a jacket's hang tag; [[product-information]] owns the term.
 - A **GLN** (Global Location Number) identifies *who and where*: a legal entity or a physical place, such as Bergzicht's Zwolle distribution center. Messages address parties by GLN; Jumbo requires that the supplier GLN in the DESADV equal the GLN the order was sent to.
-- An **SSCC** (Serial Shipping Container Code) identifies *this pallet*: an 18-digit serial number on a logistics unit's label. GS1 states that the SSCC "is the only GS1 key that SHALL be used as the identifier of a logistic unit" and "is used with EDI communications to enable identification and traceability". bol has required SSCC labels on every logistics unit since 31 December 2021 and requires EDI suppliers to include the SSCC in the DESADV.
+- An **SSCC** (Serial Shipping Container Code) identifies *this pallet*: an 18-digit serial number on a logistics unit's label. GS1 states that the SSCC "is the only GS1 key that SHALL be used as the identifier of a logistic unit" and "is used with EDI communications to enable identification and traceability". bol, the Dutch online marketplace, has required SSCC labels on every logistics unit since 31 December 2021 and requires EDI suppliers to include the SSCC in the DESADV.
 
-The ASN ties the three together: each SSCC lists the GTINs and quantities it holds, addressed from one GLN to another. Hence the rule Kestrel & Pine paid for: **the SSCC must be generated by the system that physically builds the pallet.** An ERP that invents pallet numbers before packing produces an ASN that is wrong whenever the warehouse deviates from the plan.
+The ASN ties the three together: each SSCC lists the GTINs and quantities it holds, addressed from one GLN to another. Hence the rule Kestrel & Pine paid for: **the SSCC must be generated by the system that physically builds the pallet.** An ERP that invents pallet numbers before packing produces an ASN that is wrong whenever the warehouse deviates from the plan. Once each document is right, it still has to travel.
 
 ## Transport: Point-to-Point or Network
 
@@ -97,50 +100,50 @@ The ASN ties the three together: each SSCC lists the GTINs and quantities it hol
 
 AS2 and SFTP are point-to-point: every partner is a relationship to manage. A VAN and Peppol are networks: connect once, reach many. Peppol alone has a public directory and mandates what the documents look like. OpenPeppol calls it the **four-corner model**: the sender hands the document to its access point, which delivers it to the receiver's access point, which delivers it to the receiver, with no bilateral agreement.
 
-![Diagram: Peppol's four-corner model](assets/images/22-edi-and-e-invoicing/fig02-peppol-s-four-corner-model-each.jpeg)
-**Figure 3:** *Peppol's four-corner model: each party connects once to an access point of its choice; the sender's access point finds the receiver in a public directory and delivers; the transmission status flows back to the system that issued the invoice, which must store it.*
-
 ## Mapping, Onboarding and the Chargeback Economy
 
-The standards are public; the cost is per partner. Every chain publishes its own **message implementation guideline**: which optional fields it requires, which codes it accepts, how deep the DESADV must go. **Mapping** is the translation between a partner's guideline and your own order, shipment and invoice records, done and maintained per partner. That is the business model of the EDI providers: SPS Commerce's annual report for 2025, filed in February 2026, describes a network that lets companies "connect once and immediately transact with thousands of trading partners without negotiating standards, building integrations, or maintaining" them, and reported $751.5 million of revenue, 96% of it recurring. Jumbo tells small suppliers that its WebEDI portal is "the simplest, and cheapest in the short term", while an integrated connection "requires translating EDI messages to and from your internal system, with effort from IT, a solution provider, and system users".
+The standards are public; the cost is per partner. Every chain publishes its own **message implementation guideline**: which optional fields it requires, which codes it accepts, how deep the DESADV must go. **Mapping**, the translation defined above, is therefore done and maintained per partner: from that partner's guideline to your own order, shipment and invoice records. That is the business model of the EDI providers: SPS Commerce's annual report for 2025, filed in February 2026, describes a network that lets companies "connect once and immediately transact with thousands of trading partners without negotiating standards, building integrations, or maintaining" them, and reported $751.5 million of revenue, 96% of it recurring. Jumbo tells small suppliers that its WebEDI portal is "the simplest, and cheapest in the short term", while an integrated connection "requires translating EDI messages to and from your internal system, with effort from IT, a solution provider, and system users".
 
 Chargebacks are how the buyer enforces the guideline. They come in two families. **Delivery performance**: Walmart's on-time-in-full program charged a 3% fee on orders not delivered in full or on time when it launched in 2017 (the thresholds have risen since; no official Walmart page states them), and Jumbo's 2026 conditions add €250 per order when less than 90% of an order line arrives as agreed. **Data and label compliance**: a missing ASN, an unscannable label, an ASN quantity that does not match receipt; Jumbo's €70 per message is this family. The first family is a logistics problem. **The second is an architecture problem**: the ASN is only as right as the system that generated it.
 
 ## How EDI Documents Reach the Order Record and the Ledger
 
-Here is the rule this chapter exists to state. **An EDI order is a channel into the order record, not a separate order system.** An ORDERS message should create the same order object a web order creates, flagged by channel, so that stock allocation, invoicing and the books see one shape. The common failure is the opposite: EDI orders sit in the ERP or the provider's portal, web orders in the platform, marketplace orders in the connector, and nobody has one list. That was Kestrel & Pine's January 2027 state, and [[order-management]] explains why Waypoint's OMS (order management system: the one place every channel's order is created, with one state model) takes EDI orders from the ERP in Q4 2027.
+Data and label chargebacks are prevented where documents are produced, and every document starts from the order record. **An EDI order is a channel into the order record, not a separate order system.** An ORDERS message should create the same order object a web order creates, flagged by channel, so that stock allocation, invoicing and the books see one shape. The common failure is the opposite: EDI orders sit in the ERP or the provider's portal, web orders in the platform, marketplace orders in the connector, and nobody has one list. That was Kestrel & Pine's January 2027 state, and [[order-management]] explains why Waypoint's OMS (order management system: the one place every channel's order is created, with one state model) takes EDI orders from the ERP in Q4 2027. Until then, the ERP's order is the order record for EDI orders, as in the spring reorder later in this chapter. The stage table below lists that setup as a warning sign at Kestrel & Pine's stage, which is why the OMS takes them over.
 
-Each document then has a different internal source:
+The Documents table named each document's system of truth. The rule adds what each must never be produced from, and why:
 
 | Document | Produced from | Never from | Why |
 | --- | --- | --- | --- |
 | Order record | The ORDERS message after mapping and validation: item codes resolved, prices checked against the contract price list, delivery date feasible | A retyped e-mail | The buyer's commitment enters the system of record once, unchanged |
-| Order response | The order record after allocation (stock set aside for this order; [[inventory-and-availability]]) | The ORDERS echoed back | A response that promises everything promises nothing |
+| Order response | The order record after allocation ([[inventory-and-availability]]) | The ORDERS echoed back | A response that promises everything promises nothing |
 | Despatch advice | The WMS pack confirmation: which SSCC holds which GTINs in which quantity | The order or an ERP number range | The receiver scans what is physically on the truck |
 | Invoice | The ERP, from the confirmed shipment and the contract price, with VAT, in the legal numbering sequence | The order (quantities may have changed) or the WMS (prices and VAT live elsewhere) | The invoice is a payment claim for what was delivered; [[tax-invoicing-and-ledger]] owns its legal shape |
 
-The flows have different requirements, which is the argument against forcing them through one system:
+The flows also differ in how fresh their data must be, how consistent with its source, how quickly they must be processed and what must happen when a system is down. One integration flow on one schedule cannot meet all of these at once:
 
 | Flow | How fresh | How consistent | How fast | How available |
 | --- | --- | --- | --- | --- |
-| ORDERS in → order record | Minutes; chains commonly expect a response within hours *(assumption)* | Exactly once: a duplicate ORDERS must not create two orders | Batch acceptable | A provider outage must queue, not lose |
+| ORDERS in → order record | Minutes; chains commonly expect a response within hours *(an assumption, not a published rule)* | Exactly once: a duplicate ORDERS must not create two orders | Batch acceptable | A provider outage must queue, not lose |
 | DESADV out | Must leave before the truck arrives | Must match the labels exactly | Minutes after pack confirmation | A late ASN is a refused delivery |
 | Invoice out | Same day as shipment, or per month-end rules | One invoice per shipment; immutable once numbered | Daily batch acceptable | Rejection must be a tracked state |
 | Transmission status back | Within hours | Per document | Not critical | Needed as dispute evidence |
 
 ## Punchout: When the Buyer's System Owns the Order
 
-Some corporate buyers send no ORDERS at all; they shop in your web shop from inside their own procurement system. This is **punchout**. The cXML User's Guide, the protocol behind SAP Ariba's punchout, describes it plainly: procurement applications "display a button instead of product or pricing details", the buyer's browser then shows "pages from the supplier's local website", and when the user is done, a button "returns the order information to the procurement application". SAP's OCI (Open Catalog Interface) is the equivalent for SAP procurement; a 2026 integrator's description notes that OCI posts cart lines back to a hook URL and lacks native purchase-order and invoice automation.
+Some corporate buyers reach the same order record by another route. They send no ORDERS at all; they shop in your web shop from inside their own procurement system. This is **punchout**. The cXML User's Guide, the protocol behind SAP Ariba's punchout, describes it plainly: procurement applications "display a button instead of product or pricing details", the buyer's browser then shows "pages from the supplier's local website", and when the user is done, a button "returns the order information to the procurement application". SAP's OCI (Open Catalog Interface) is the equivalent for SAP procurement; a 2026 integrator's description notes that OCI posts cart lines back to a hook URL and lacks native purchase-order and invoice automation.
 
 Punchout **inverts the usual flow**. The buyer's procurement system owns the requisition and the purchase order; the supplier's shop is only a catalog session. The real order arrives later as a cXML order request or an EDI ORDERS, so **the shop must never treat a punchout cart as an order**. [[b2b-commerce]] covers punchout as a feature; here it matters as another channel into the same order record.
 
 ## E-Invoicing: The Invoice Becomes a Transmitted Legal Document
 
-The European Commission defines an **electronic invoice** as one "issued, transmitted and received in a structured data format which allows for its automatic and electronic processing"; a PDF attached to an e-mail is not one. Three layers to keep apart:
+In EDI the buyer sets the invoice's format; under e-invoicing, the law does. The European Commission defines an **electronic invoice** as one "issued, transmitted and received in a structured data format which allows for its automatic and electronic processing"; a PDF attached to an e-mail is not one. Three layers to keep apart:
 
 1. **The semantic model.** **EN 16931** is the European standard listing what a core invoice contains: seller and buyer with VAT identifiers, a document type (380 for an invoice, 381 for a credit note), lines each with a VAT category, a VAT breakdown per category and rate, payment information.
 2. **The syntax.** **UBL** (Universal Business Language, an XML format) is the one most e-invoices use; national formats such as Germany's XRechnung are profiles of the same model.
 3. **The network and profile.** **Peppol BIS Billing 3.0** is a usage specification of EN 16931 for the Peppol network. Its current release, 3.0.21, was published on 20 May 2026 and became mandatory on 17 August 2026: even the invoice format has a version calendar.
+
+![Diagram: Peppol's four-corner model](assets/images/22-edi-and-e-invoicing/fig02-peppol-s-four-corner-model-each.jpeg)
+**Figure 2:** *Peppol's four-corner model: each party connects once to an access point of its choice; the sender's access point finds the receiver in a public directory and delivers; the transmission status flows back to the system that issued the invoice, which must store it.*
 
 An EDI INVOIC and a Peppol invoice carry the same claim and differ in almost everything else:
 
@@ -150,17 +153,19 @@ An EDI INVOIC and a Peppol invoice carry the same claim and differ in almost eve
 | Purpose | Supply-chain settlement: match to order and receipt | A tax-compliant legal invoice any receiver's accounts-payable system can read |
 | Addressing | GLNs agreed per partner | A Peppol participant identifier in the public directory |
 | Transport | AS2, VAN or SFTP, per partner | Any accredited access point |
-| Validation | Syntax acknowledgment and partner-side rejection | Validation rules at the access point; state clearance in Italy and Poland |
+| Validation | Syntax acknowledgment and partner-side rejection | Validation rules at the access point; in Italy and Poland, state clearance: the state platform must accept the invoice before it is valid |
 | Legal weight in 2026 | Tolerated in Germany through 2027; in Belgium only if it meets the structured-invoice requirement | The format the mandates require |
 
-Three things change for the architecture. First, **the system that numbers and issues invoices, usually the ERP, must also hold the transmission status, rejections and archive**. Second, in **clearance** countries (Italy's SdI, Poland's KSeF) the state platform sits in the invoice path and the invoice is valid only once accepted, so rejection becomes a first-class state. Third, **commerce platforms do not issue tax invoices in these regimes**; they produce orders and confirmations, and the storefront's "invoice" PDF is a courtesy copy. [[tax-invoicing-and-ledger]] explains the invoice as a legal document; [[erp-and-back-office-integration]] explains why its home is the ERP.
+Three things change for the architecture. First, **the system that numbers and issues invoices, usually the ERP, must also hold the transmission status, rejections and archive**. Second, in **clearance** countries (Italy's SdI, the Sistema di Interscambio, and Poland's KSeF, its national e-invoicing system) the state platform sits in the invoice path and the invoice is valid only once accepted, so rejection becomes a first-class state. Third, **commerce platforms do not issue tax invoices in these regimes**; they produce orders and confirmations, and the storefront's "invoice" PDF is a courtesy copy. [[tax-invoicing-and-ledger]] explains the invoice as a legal document; [[erp-and-back-office-integration]] explains why its home is the ERP.
 
 ![Left: a PDF e-mailed into an inbox with no return. Right: a structured invoice sent through a network from the ERP, with a delivered status returned and stored.](assets/images/22-edi-and-e-invoicing/22-invoice-with-a-delivery-state.jpeg)
-**Figure 4:** *An e-invoice is not a PDF in an e-mail but a structured, transmitted document with a delivery state, and the system that issues invoices must hold that state.*
+**Figure 3:** *An e-invoice is not a PDF in an e-mail but a structured, transmitted document with a delivery state, and the system that issues invoices must hold that state.*
 
 ## The Mandate Calendar
 
-The dates below are the official ones as of November 2026, from national tax administrations and the Commission. They are the most volatile facts in this chapter: check the source before relying on any of them, and read [[commerce-regulation]] for how to keep a regulatory calendar.
+Belgium's mandate shows what this means in practice. The Belgian government's e-invoicing site announced on 18 September 2024 that from 1 January 2026 "all Belgian enterprises liable to VAT will have to use structured electronic invoices" for transactions with each other, that "sending a PDF invoice by e-mail or via a platform will no longer be enough", and that invoices travel "via a decentralised network called Peppol". On 18 December 2025 it confirmed a three-month tolerance on penalties for businesses that could show timely steps and refused any general postponement.
+
+Belgium is one row in a longer calendar. The dates below are the official ones as of November 2026, from national tax administrations and the Commission. They are the most volatile facts in this chapter: check the source before relying on any of them, and read [[commerce-regulation]] for how to keep a regulatory calendar.
 
 | Jurisdiction | What is mandatory | Since or from | Format and channel | Touches Kestrel & Pine? |
 | --- | --- | --- | --- | --- |
@@ -172,11 +177,11 @@ The dates below are the official ones as of November 2026, from national tax adm
 | **Netherlands** | None for business-to-business today; e-invoices to central government required | Cabinet plan of 11 September 2026: invoicing from **1 July 2030**, reporting from **1 July 2031**; bill before summer 2027 | EN 16931; network not yet decided | Yes, from 2030: 640 Dutch accounts |
 | **EU (ViDA, "VAT in the Digital Age")** | Digital reporting based on e-invoicing for cross-border business-to-business supplies | Adopted 11 March 2025; in force 14 April 2025; reporting from **1 July 2030**; national systems aligned by 1 January 2035 | EN 16931 | Yes, from 2030: every Belgian and German wholesale invoice |
 
-Two readings for a newcomer. The mandates are **domestic** in scope: Belgium's FAQ states that VAT-registered persons not established in Belgium and without a permanent establishment there are not subject to the obligation (the FAQ adds that the law is still being amended on this point), and Germany's covers transactions between domestic companies. A Dutch brand invoicing a Belgian shop is not automatically obliged, but the Belgian customer's bookkeeping expects a Peppol invoice, and many customers ask for one; whether a foreign supplier with a Belgian store counts as established is a question for a tax adviser. The second reading: **the cross-border case arrives in 2030 with ViDA**, so a brand selling into several EU countries will soon send every business invoice as structured data. Building the capability once, for the first country that requires it, is cheaper than building it per deadline.
+Two readings of the calendar for a newcomer. The mandates are **domestic** in scope: Belgium's FAQ states that VAT-registered persons not established in Belgium and without a permanent establishment there are not subject to the obligation (the FAQ adds that the law is still being amended on this point), and Germany's covers transactions between domestic companies. A Dutch brand invoicing a Belgian shop is not automatically obliged, but the Belgian customer's bookkeeping expects a Peppol invoice, and many customers ask for one; whether a foreign supplier with a Belgian store counts as established is a question for a tax adviser. The second reading: **the cross-border case arrives in 2030 with ViDA**, so a brand selling into several EU countries will soon send every business invoice as structured data. Building the capability once, for the first country that requires it, is cheaper than building it per deadline, and it keeps a mandate from becoming the Long Fuse.
 
 ## The Choices
 
-**A provider's web portal.** You log in to the provider's site, read the chain's order, key the shipment and the invoice. No integration. Jumbo recommends it for small suppliers. It is also retyping, which EDI was meant to remove, and it does not scale past a few orders a day.
+There are four ways to meet the EDI and e-invoicing requirements. **A provider's web portal.** You log in to the provider's site, read the chain's order, key the shipment and the invoice. No integration. Jumbo recommends it for small suppliers. It is also retyping, which EDI was meant to remove, and it does not scale past a few orders a day.
 
 **A provider integrated with your systems.** The provider's translator maps the chain's guideline to your order record, WMS and ERP, over the provider's network, often through an iPaaS (integration platform as a service: a hosted tool for building and running the flows between systems). The provider owns the mappings and the partner connections; you own the contract for what each document means inside your company. This is the common choice at Kestrel & Pine's size.
 
@@ -192,7 +197,7 @@ Two readings for a newcomer. The mandates are **domestic** in scope: Belgium's F
 | Chargeback exposure | High: retyping; ASN rarely from the WMS | Low if the ASN comes from the WMS | Low if staffed | Lowest |
 | Right when | A handful of orders a week, one partner | One to a dozen partners; a WMS exists | EDI is core to the business | Several countries, many partners, e-invoicing in more than one regime |
 
-My recommendation for a brand at the Omnichannel stage is the integrated provider, with two conditions that are not optional: the ASN is generated from the WMS pack confirmation, and the company holds a **partner card** per trading partner in its own repository, listing the partner's GLNs, transport, message versions, guideline version, mapping version, contacts, compliance rules and open disputes. The provider may hold the mapping; the company must hold the knowledge. That is W6's third clause.
+The author's recommendation for a brand at the Omnichannel stage is the integrated provider, with two conditions that are not optional: the ASN is generated from the WMS pack confirmation, and the company holds the **partner card** introduced with W6 for each trading partner in its own repository, listing in full the partner's GLNs, transport, message versions, guideline version, mapping version, contacts, compliance rules and open disputes. The provider may hold the mapping; the company must hold the knowledge. That is the third clause of W6, the partner card. Which route fits also depends on the stage a company has reached.
 
 ## Across Scale Stages: When It Fits and When It Limits
 
@@ -203,21 +208,22 @@ My recommendation for a brand at the Omnichannel stage is the integrated provide
 | **3 — Omnichannel** | Integrated EDI through the provider into the OMS via the iPaaS; SSCC labels from the WMS; Peppol invoices from the ERP to customers in mandate countries | A partner card per partner; a compliance scorecard (ASN match rate, on-time-in-full); disputes backed by pack and label evidence; a regulatory calendar | Mappings one person understands; EDI orders in the ERP while web orders live in the platform; a deduction nobody can explain |
 | **4 — Group** | An e-document gateway shared across brands and countries; mappings under version control; clearance integrations where required | One invoicing service behind which country entities handle different clearance systems; mandate monitoring as a standing task | Each brand with its own provider contract; the same chain onboarded three times |
 
-Kestrel & Pine sits at stage 3 with a stage 2 setup: one chain, one provider, mappings built by one consultant, the ASN from the wrong system. The deduction was the warning sign.
+At the time of the deduction, Kestrel & Pine sat at stage 3 with a stage 2 setup: one chain, one provider, mappings built by one consultant, the ASN from the wrong system. The deduction was the warning sign.
 
 ## In Practice
 
-**Belgium as the first mandate the reader will meet.** The Belgian government's e-invoicing site announced on 18 September 2024 that from 1 January 2026 "all Belgian enterprises liable to VAT will have to use structured electronic invoices" for transactions with each other, that "sending a PDF invoice by e-mail or via a platform will no longer be enough", and that invoices travel "via a decentralised network called Peppol". On 18 December 2025 it confirmed a three-month tolerance on penalties for businesses that could show timely steps and refused any general postponement.
+**Bergzicht's spring reorder under the corrected flow.** On 6 April 2027, the EDI provider delivers an ORDERS message for **240 units across 18 SKUs**, totaling **€19,860 excluding VAT**. The ERP resolves Bergzicht's item codes through GTINs, checks contract prices and creates the order. The planned OMS does not go live until Q4.
 
-**Bergzicht's spring reorder under the corrected flow.** On 6 April 2027, the EDI provider delivers an ORDERS message for **240 units across 18 SKUs**, totaling **€19,860 excluding VAT**. A SKU identifies one sellable variant. The ERP resolves Bergzicht's item codes through shared product identifiers (GTINs), checks contract prices and creates the order. The planned OMS does not go live until Q4.
+The order record allocates the units and an ORDRSP order response confirms the lines. At packing, the WMS prints one **SSCC** label for each of three pallets and records their contents. The DESADV comes from that same packing confirmation and reaches Zwolle before delivery on 9 April.
 
-The warehouse reserves the units and an ORDRSP order response confirms the lines. At packing, the WMS prints one **Serial Shipping Container Code (SSCC)** label for each of three pallets and records their contents. The DESADV comes from that same packing confirmation and reaches Zwolle before delivery on 9 April.
+On 9 April the ERP issues INVOIC for the shipped quantities at contract prices, due 9 May. This is Waypoint decision W6 in practice: **the labels and shipment notice describe the same packed pallets**. In Q3 2026 they came from different systems.
 
-The ERP issues INVOIC for the shipped quantities at contract prices, due 9 May. This is Waypoint decision W6 in practice: **the labels and shipment notice describe the same packed pallets**. In Q3 2026 they came from different systems.
+![Diagram: Bergzicht's spring reorder as a document cycle](assets/images/22-edi-and-e-invoicing/fig01-bergzicht-s-spring-reorder-document-cycle.jpeg)
+**Figure 4:** *Bergzicht's spring reorder as a document cycle: the order creates a normal order record, the despatch advice comes from the WMS once the pallets are labeled, and the invoice comes from the ERP once the shipment is confirmed. Three documents, three systems of truth.*
 
 **The Belgian variant.** Ardennes Trail Co., a fictional outdoor shop in Namur and one of the 210 Belgian accounts, orders 40 Ridgewalker jackets at €95, **€3,800** excluding VAT, through the platform's business-customer (B2B) portal on Wednesday 21 April 2027.
 
-The jackets leave Duiven by bpost, and at dispatch on 23 April the ERP issues the invoice in the same numbering sequence: an intra-EU supply at 0% VAT with the reverse-charge mention, payment due 23 May, rendered as a UBL (Universal Business Language, the XML invoice format Peppol carries) document under Peppol BIS Billing 3.0 and sent through the EDI provider, which is also Kestrel & Pine's Peppol access point; the ERP stores the transmission status.
+The jackets leave Duiven by bpost, and at dispatch on 23 April the ERP issues the invoice in its one invoice numbering sequence: an intra-EU supply at 0% VAT with the reverse-charge mention (the note that the buyer, not the seller, accounts for the VAT), payment due 23 May, rendered as a UBL document under Peppol BIS Billing 3.0 and sent through the EDI provider, which is also Kestrel & Pine's Peppol access point; the ERP stores the transmission status.
 
 Kestrel & Pine has sent Peppol invoices to all Belgian business customers since January 2026 by choice, not because the mandate is known to bind a Dutch supplier (see above): its larger Belgian customers' bookkeeping expects Peppol, and one rule was cheaper than exceptions.
 
@@ -227,13 +233,15 @@ Kestrel & Pine has sent Peppol invoices to all Belgian business customers since 
 
 **A changed guideline.** The chain moves to a new DESADV level or SSCC rule and notifies the address on file, which is the consultant's. The first the merchant hears is a refused truck: the Pulled Rug. Detection: the partner card names an internal owner who receives partner notices; the scorecard shows the match rate dropping. Recovery: version the mapping, test against the chain's test environment, keep the old version until the switch date.
 
-**The ASN from the wrong system.** The Kestrel & Pine case. Detection: compare every DESADV against the WMS pack confirmation before sending and alert on any difference; a match rate below 100% is a defect, not a statistic. Recovery: re-send a corrected DESADV before arrival where the chain allows it; otherwise dispute the deduction with the pack record and the label print log as evidence, which is why both must be kept.
+**The ASN from the wrong system.** The Kestrel & Pine case, the ASN Chargeback. Detection: compare every DESADV against the WMS pack confirmation before sending and alert on any difference; a match rate below 100% is a defect, not a statistic. Recovery: re-send a corrected DESADV before arrival where the chain allows it; otherwise dispute the deduction with the pack record and the label print log as evidence, which is why both must be kept.
 
 **A rejected e-invoice.** The receiver's access point rejects a UBL file because a VAT category code is missing on one line, or because Peppol's validation rules changed with a release. The invoice is numbered in the ERP but was never received. Detection: the transmission status is a field on the invoice, and an "issued but not delivered" report runs daily. Recovery: correct and re-send, or a credit note and a new invoice; which one depends on the country and belongs in the ERP's configuration, not in someone's memory.
 
-**A provider outage, or the consultant leaves.** The VAN is down for a morning: nothing is lost if every document is persisted before sending and carries a reference the provider can deduplicate, and a heartbeat per partner turns silence from a chain that orders daily into an alert. The consultant leaves: the mappings are in the provider's portal and the test cases in an inbox, which is why the partner card and a mapping export belong in the company's own repository.
+**A provider outage, or the consultant leaves.** The VAN is down for a morning: nothing is lost if every document is persisted before sending and carries a reference the provider can deduplicate, and a heartbeat per partner turns silence from a chain that orders daily into an alert. The consultant leaves, the Lynchpin: the mappings are in the provider's portal and the test cases in an inbox, which is why the partner card and a mapping export belong in the company's own repository.
 
 ## What to Take Away
+
+The retail chain at the start of this chapter wanted three documents: a purchase order, a shipment notice per pallet and an invoice its software could read. The three documents the chain asked for have three different sources. Bergzicht's €14,200 deduction came from a despatch advice the ERP wrote before anyone had packed, so **the penalty is explained by the system that wrote the document, not by the pickers**, and the remedy is an ownership rule, not a new provider. The e-invoice adds a delivery state to the third document.
 
 **Established.**
 
@@ -245,11 +253,11 @@ Kestrel & Pine has sent Peppol invoices to all Belgian business customers since 
 
 - A provider's portal fits a handful of orders a week with one partner; an integrated provider fits from the first chain with a WMS onward; in-house EDI fits only where EDI is the business; a shared e-document gateway is a Group-stage answer.
 - Whether a foreign supplier is obliged under a domestic mandate depends on establishment rules; the decision to send structured invoices anyway depends on what customers can receive and on the cost of exceptions.
-- EDI orders belong in the OMS where one exists; at the Growing stage, before an OMS, the ERP is an acceptable home, provided the ASN still comes from the system that packs.
+- EDI orders belong in the OMS where one exists; before an OMS exists, the ERP is an acceptable interim home, provided the ASN still comes from the system that packs.
 
 **The author's synthesis.**
 
-- Each document has exactly one honest source, and the architecture should make it impossible to generate it anywhere else: the order from the buyer's message, the ASN from the pack confirmation, the invoice from the ERP's confirmed shipment. Every compliance chargeback in the public rule sets above is a document that came from the wrong place.
+- Each document has exactly one honest source, and the architecture should make it impossible to generate it anywhere else: the order from the buyer's message, the ASN from the pack confirmation, the invoice from the ERP's confirmed shipment. Every data and label chargeback in the public rule sets above is a document that came from the wrong place.
 - The e-invoice turns the invoice into a message with a delivery state, so the ERP needs the discipline the order channel needs: persistence before sending, idempotent re-sends, a status per document and a daily report of what was issued but not received.
 
 ## Questions to Ask

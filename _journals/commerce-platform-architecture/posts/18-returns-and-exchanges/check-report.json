@@ -1,0 +1,648 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/18-returns-and-exchanges/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/18-returns-and-exchanges/index.md",
+  "spec_sha": "8310d0990d0e0d5d",
+  "draft_sha": "11f6e8d0cf35874f",
+  "run_at": "2026-11-12T22:26:06+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "an exchange spans portal, warehouse and finance, and closing it in one system does not finish the others",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "at a one-in-four return rate, uncoordinated steps cause double refunds and premature resale",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "thesis: two records joined by the warehouse disposition, which releases refund, stock and credit note",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's jacket exchange introduced as the running example after the store-return chapter",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "roadmap of the chapter's sections, evidence and related chapters",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶1",
+      "summary": "Kestrel & Pine's return volumes and why item and order return rates differ",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶2",
+      "summary": "share of exchanges and resale, plus daily and peak bench staffing",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶3",
+      "summary": "a return rate forecasts follow-up work, so state which measure it counts",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶4",
+      "summary": "industry survey figures on return value, fraud and apparel return rates",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶5",
+      "summary": "hidden costs of each return, and policy levers that need return data",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶6",
+      "summary": "what the hosted returns portal does and costs",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶7",
+      "summary": "how manual support refunds plus portal refunds caused the Double Refund",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: One Item in Four ¶8",
+      "summary": "Noor's question: which event and system move money, stock and books",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What a Return Is, Step by Step ¶1",
+      "summary": "a return has nine named steps, each with record, owner and failure",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What a Return Is, Step by Step ¶2",
+      "summary": "definitions of RMA, disposition, exchange and reverse logistics",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "a return loops through six systems, with the order record changing after Waypoint",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "separating the return request from reverse fulfillment keeps intent apart from received goods",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "Shopify's return object and its states",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "Shopify's reverse fulfillment order and its disposition values",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶5",
+      "summary": "commercetools models the same split as shipment and payment states per item",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶6",
+      "summary": "the pattern: intent and money on the order side, work and stock in the warehouse, meeting at disposition",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶7",
+      "summary": "per-flow requirements: refund and restock wait on disposition, money messages keyed on the return",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Law: Fourteen Days, Three Times Over ¶1",
+      "summary": "the EU Consumer Rights Directive articles on withdrawal, refund, return and exemptions",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Law: Fourteen Days, Three Times Over ¶2",
+      "summary": "the directive as data requirements, and its basis for refund on inspection",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Law: Fourteen Days, Three Times Over ¶3",
+      "summary": "Kestrel & Pine's free 14-day returns policy on top of the law",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "four decisions shape a returns architecture",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "decision 1 options: manual handling or the platform's own returns",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "decision 1 option: specialist returns portal vendors",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "decision 1 option: OMS returns modules, and a comparison of the four answers",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "decision 2: which event releases the refund",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "decision 3: a single refund writer, and refunding the discounted line price",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "decision 4: exchange models — held order, instant exchange, exchange with balance",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices ¶8",
+      "summary": "author's rule: fix refund trigger and writer before choosing a product; inspection as trigger",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Returns From Marketplaces and Stores ¶1",
+      "summary": "marketplaces can authorize returns and refunds outside the merchant's portal",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Returns From Marketplaces and Stores ¶2",
+      "summary": "Amazon's return windows, response deadlines and automatic refunds",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Returns From Marketplaces and Stores ¶3",
+      "summary": "marketplace-fulfilled returns are graded by the marketplace for a fee",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Returns From Marketplaces and Stores ¶4",
+      "summary": "the return record must import external RMAs and refunds and surface marketplace deadlines",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Returns From Marketplaces and Stores ¶5",
+      "summary": "store returns of web orders and the interim manual one-refund-path rule",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "return shape stays constant with scale; channels and actors grow, so fix trigger and writer at stage 2",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "transition from public models to Kestrel & Pine's single return",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Eva's exchange timeline with each system acting once on the disposition",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "the refund variant of Eva's case, and how the post-February rules prevent a double refund",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "transition: seven ways the return path fails when a rule is missing",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "double refund failure: detection, recovery, prevention",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "refund paid for a return that never arrives or is wrong",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "phantom restock before grading, prevented by restocking only on disposition",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "parcels arriving without an RMA and how to match and prevent them",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "exchange shipped before the return is confirmed",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶7",
+      "summary": "refund past the legal deadline due to a peak backlog",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶8",
+      "summary": "conflicting statuses across three systems, fixed by one shared status",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "synthesis: disposition releases money and stock, one writer with a key, keep the legal dates",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings: two records, EU clocks, high return rates, marketplace ownership",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices of refund trigger, returns product and exchange model",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's synthesis: decide trigger, writer and restock rule first; treat clocks as data",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "nine questions to probe a returns design",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "customer messages must read the same events, handing off to customer service chapter",
+      "matched_spec_paragraph": "p56"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 56 outline summaries match the controlling idea of the aligned spec paragraph, in spec order (p01-p56).",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: One Item in Four ¶2",
+      "finding": "Exchange share, resale share and bench staffing are one idea: what happens to returned items and who handles them (spec p07).",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: One Item in Four ¶5",
+      "finding": "Hidden cost motivates reducing the rate; policy levers and the data they need are the support of one line of reasoning, as spec p10 declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "The Law: Fourteen Days, Three Times Over ¶2",
+      "finding": "Article 13(3) as basis for refund on inspection is one more item of 'the directive read as requirements'; one controlling idea.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "The Choices ¶6",
+      "finding": "Decision 3 is titled 'Who issues the refund, and for how much'; the amount is a property of what the single writer issues. One decision; the detour is recorded under flow_is_followable.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "In Practice ¶3",
+      "finding": "The refund variant run under the post-February rules; the counterfactual double refund supports it. One idea (spec p42).",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to S1-S5 or to the introduction/conclusion apparatus; no orphan units.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Statistics (p06, p07, p09), the step table, flow-requirements table, portal comparison table, stages table, Eva's dated table, the Shopify/commercetools quotations, the marketplace sources and Figures 1-4 are each tied to the point they support, except the two failures below.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/4",
+      "draft_locus": "The Choices ¶5",
+      "quote": "**2. Which event releases the refund.** This is the decision that caused the Double Refund, and it is a policy choice with a legal floor.",
+      "finding": "The refund-trigger table follows a paragraph that never names the four triggers (request, carrier scan, receipt, inspection) nor says what the table compares (wait, risk, legal position) or what it shows (inspection is Kestrel & Pine's choice); the spec's controlling idea asks for those.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Law: Fourteen Days, Three Times Over ¶2",
+      "quote": "the three 14-day clocks run from the first three",
+      "finding": "Misreads the quoted articles: Article 9 runs from possession, Articles 13(1) and 14(1) both run from the withdrawal notice; no clock runs from the goods-sent date (that date only ends the Article 13(3) right to withhold). Flow reader B re-read here.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: One Item in Four ¶3",
+      "quote": "The return rate estimates how much of the original selling and shipping work will be followed by inspection, replacement or refund work.",
+      "finding": "Declared contrast (Kestrel & Pine's own figures vs what a rate measures, so they can be compared) is not expressed: the paragraph starts a definition with no link back to the 24%/19% figures, and both flow readers felt the subsection break into the scene here.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/transition_in",
+      "draft_locus": "Returns From Marketplaces and Stores ¶1",
+      "quote": "A marketplace can authorize a return or issue a refund outside the merchant's own portal, and such a return still has to reconcile with the merchant's records.",
+      "finding": "Declared contrast with the merchant's own decisions about trigger and writer is not stated; the section opens without reference to The Choices, and flow reader B marked the section's position UNCLEAR ('no linking sentence').",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions (intro p02-p05, section openings, p07-p56) are expressed at their boundaries.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "quote": "Money, stock and books agree when that disposition releases the refund, or, in an exchange, the replacement order held until the disposition arrives; one system issues the refund with the return id as its key;",
+      "finding": "Both readers re-read the thesis sentence: A 'too much for one sentence; re-read'; B 'nested clause and semicolons; read twice'. The claim is the spec's; the sentence can be split.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.1 (thesis sentence read twice)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/flow",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: One Item in Four ¶3",
+      "quote": "The return rate estimates how much of the original selling and shipping work will be followed by inspection, replacement or refund work.",
+      "finding": "Both readers say the 'What return rates measure and cost' subsection interrupts the scene between Kestrel & Pine's figures and the portal incident (A: 'interrupts the scene'; B: 'US industry statistics break into the K&P scene') and both propose moving it after the nine steps. The spec's scene flow places rates, industry comparison and cost there by design, so the order itself is the difficulty.",
+      "fault": "spec",
+      "corroborated_by": "flow reader B, item 3.2 (industry statistics break into the scene)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "It then names the nine steps of a return and what returns cost",
+      "finding": "Flow reader A: 'Roadmap says the chapter names the nine steps of a return and what returns cost, but the cost material sits inside Setting the Scene ... roadmap and order disagree.' The roadmap wording is taken from spec p05 while the spec's promise is kept in both 'steps' and 'scene'.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: One Item in Four ¶4",
+      "quote": "estimated $890 billion in US retail returns for 2024 (December 2024) and projected $849.9 billion for 2025, with 19.3% of online sales value returned and 9% of returns judged fraudulent (October 2025). ... neither measure directly matches Kestrel & Pine's separately reported shares of items and orders.",
+      "finding": "Both readers stumbled in this paragraph: A 'NRF dates (December 2024)... (October 2025) hard to parse'; B 'neither measure directly matches Kestrel & Pine's separately reported shares made me go back'. The publication dates and the closing comparison need plainer wording.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.2 (same paragraph: 'neither measure directly matches' made me go back)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "quote": "in April 2027 the shop platform still plays that role, and the portal asks it for each refund.",
+      "finding": "Both readers could not settle who issues the refund: Figure 2 says 'the order record is the only system that may ask for a refund' while The Choices ¶6 and In Practice ¶3 say 'The portal is the only refund writer' (A: 'had to work out target vs April 2027 design'; B: 'Could not settle the single writer in April 2027'). The draft must say once that in April 2027 the portal decides and the shop platform calls the PSP.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.4 (who issues the refund is inconsistent)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "How the Pieces Fit Together ¶7",
+      "quote": "inside the legal 14 days",
+      "finding": "The requirements table uses the legal 14 days before the Law section explains them (A: 'small forward reference'; B: 'the flow table already uses inside the legal 14 days'). The spec's order (law after flows) is defended; the table can point forward or drop the phrase.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 2 (Law section note: flow table already uses 'inside the legal 14 days')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/5",
+      "draft_locus": "The Choices ¶6",
+      "quote": "which the order export has carried since Waypoint's W5, the integration standards; in November 2026, before that, 190 returned jackets were refunded at €159.20 instead of €143.28",
+      "finding": "Both readers read the amount clause as a detour from who issues the refund (A: 'detour from who issues the refund'; B: 'side point; before that leaves W5's timing unclear'). Mark it as the 'how much' half of the decision and date W5 plainly.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.6 (decision 3 side point, W5 timing unclear)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/7",
+      "draft_locus": "The Choices ¶8",
+      "quote": "Taken together, the four decisions give my rule:",
+      "finding": "Both readers were jolted by the first first-person voice (A: 'first I, abrupt'; B: 'first person sudden').",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.7 (first person sudden)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "quote": "Before February 2027, support could have seen \"delivered to Duiven\" on the tracking on 21 April and refunded in the PSP console, repeating the Double Refund.",
+      "finding": "Both readers tripped on the counterfactual: Eva's return is in April 2027, after the fix, and the 21 April scan is not in the timeline table (A: 're-read'; B: 'counterfactual timeline tripped me').",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 3.9 (counterfactual timeline tripped me)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "Duiven receives and inspects it on 22 April, then dispatches L.",
+      "finding": "Flow reader A: the 'Where we are' preview already gives the whole outcome, 'so In Practice tells nothing new'. The spec's p04 asks for the full dated outcome, so the draft follows the spec.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "The Law: Fourteen Days, Three Times Over ¶3",
+      "quote": "Kestrel & Pine's own commercial policy sits on top of these rules: free returns within 14 days of delivery in all three countries.",
+      "finding": "Flow reader A: 'one-sentence paragraph dangling at the end of the law section'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Law: Fourteen Days, Three Times Over ¶2",
+      "quote": "the three 14-day clocks run from the first three",
+      "finding": "Flow reader B: 'the articles start two clocks from the notice and none from the goods-sent date; re-read' (see evidence_is_explained).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5",
+      "draft_locus": "Returns From Marketplaces and Stores ¶1",
+      "quote": "A marketplace can authorize a return or issue a refund outside the merchant's own portal, and such a return still has to reconcile with the merchant's records.",
+      "finding": "Flow reader B marked this section UNCLEAR: 'no linking sentence; the Choices table has already rated Marketplace and store returns'. Reader A found it 'clear enough'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Returns From Marketplaces and Stores ¶3",
+      "quote": "Zalando's logistics arm ZEOS described \"around 20 returns centres\" in its November 2024 announcement.",
+      "finding": "Flow reader B: 'Amazon's US rules and the one-line ZEOS fact did not clearly connect to a Dutch merchant; ZEOS reads as a stray fact.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "quote": "The item is back on the shelf, the money is back in Eva's account or a size L is on its way, and the books agree.",
+      "finding": "Flow reader B: the hand-off paragraph after the Questions list 'felt detached'.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term is given at first use: bracketing and the three rate measures (Scene ¶1, ¶3), RMA and reverse fulfillment (Intro ¶3), disposition and its four values (Steps ¶2, Pieces ¶4), reverse logistics, the directive, returns portals, instant exchange and exchange with a balance, marketplace clocks; new glosses (iDEAL, merchant-initiated transaction, A-to-z, ZEOS, OMS) are given. No flow reader reported an unexplained term.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens with the declared puzzling scenario (the jacket sent back for the next size), then stakes, thesis, case and roadmap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Conclusion synthesizes the failures into one broken sequence and one rule set; no bare restatement or new topic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 states the one rule set and what it means for a merchant (no double refund, no worn item sold, no missed deadline) and that the February 2027 fix was a rule, not a product.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The jacket at the start of this chapter, sent back for the next size, needs the portal, the warehouse, the payment provider and the ERP to act once each and in the right order.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted all nine sections in order, the two records and disposition, Eva's 15-22 April exchange with the €199 iDEAL variant, and the evidence (company figures and incidents, Shopify/commercetools models, EU directive, marketplace rules, surveys).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names the missing trigger and single-writer decisions, the absent return id key, the disposition as release event, one writer keyed on the return id, the read-only console and the daily comparison; only the agent's view of the pending refund in the portal is not mentioned, which is minor.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader says stock rises only on a RESTOCKED disposition from the WMS as single writer, and the exchange is a held order created at request time, reserving the unit and released by a resellable disposition, with the risks of each wrong trigger.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader gives send-back by 3 May, refund by 3 May by the same means, and the right to withhold until goods or proof of sending, whichever first.",
+      "severity": "minor"
+    }
+  ]
+}

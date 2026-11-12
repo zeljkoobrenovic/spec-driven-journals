@@ -1,0 +1,1895 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "marketplaces-and-channel-integration",
+  "journal": "commerce-platform-architecture",
+  "part": "part-5",
+  "title": "Selling on Someone Else's Platform: Marketplaces and Channel Integration",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/20-marketplaces-and-channel-integration/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a roadmap paragraph and a conclusion paragraph that answers the opening); these are listed under decision_log.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "What a marketplace offer, the buy box and commission are, and the two fulfillment models (seller-fulfilled and marketplace-fulfilled) with what each means for the order record and for stock.",
+        "The metrics marketplaces grade sellers on (order defect, cancellation, late shipment, valid tracking, on-time delivery; bol's strikes) and the five flows through a channel connector (listings, stock, prices, orders, status back-flow) with the freshness each needs.",
+        "The channel allocation policies (shared pool, fixed quantity, buffer, percentage split, computed available-to-promise per channel) and the four ways to connect (seller tools, the platform's channel app, a channel integration platform, direct integration)."
+      ],
+      "believe": [
+        "The channel connector translates and owns nothing: not the product content, not the stock figure, not the order.",
+        "The stock number sent to a marketplace is a promise it will sell without asking again, and the marketplace's scorecard is a service level on the merchant's own integrations.",
+        "A marketplace's or connector's API deprecation schedule is a contract clause with a date that someone at the merchant must own."
+      ],
+      "can_do": [
+        "For their own marketplace channels, say which system computes the number each marketplace is told, where marketplace orders are created and under which key, which monitor would show stale stock, and who owns each API retirement date.",
+        "Choose among the four ways to connect to marketplaces by scale stage and the number of order sources."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture who have joined a merchant that sells on marketplaces or a vendor that connects to them; most of all the engineer or integration lead who inherits a channel connector and must decide what it may hold (Noor Visser at Kestrel & Pine). The ecommerce manager who owns the seller accounts (Milan Petrov) is the second reader, because the chapter turns the scorecard into integration requirements.",
+      "already_knows": [
+        "What buying something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its 2026 and early 2027 incidents in outline and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, business models and the four scale stages (Starting, Growing, Omnichannel, Group), the capability map, bounded context, system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Parts II and III: product, variant, SKU and GTIN with one owner per attribute; prices selected once at order placement and frozen; available-to-promise (on hand minus committed minus allocations) with one writer each for on hand and committed and per-channel buffers; checkout creating the order once; one order record with three status lines and an OMS once two of four conditions hold; invoices, credit notes and the monthly match.",
+        "From Part IV: the warehouse system as the only writer of on-hand stock, accepting or rejecting keyed fulfillment instructions; a normalizing carrier layer and a computed delivery promise; stores as order source and stock location; returns as request plus disposition with one refund writer; notifications and service screens as read models over one order record.",
+        "From the Part V introduction: orders that arrive from outside the shop, through an intermediary, from a party that scores or charges back; the two Amazon.de orders of 13 April 2027."
+      ],
+      "does_not_know": [
+        "Marketplace vocabulary: offer, buy box, commission, seller-fulfilled and marketplace-fulfilled, strike, order defect rate.",
+        "Channel integration platform, the five flows, channel allocation and its policies, external location.",
+        "Rate limit, feed, notification, restricted data, deprecation and API lifecycle.",
+        "Price parity, repricing, channel price and floor, shopping feed, retail media."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a peak-evening oversell and a stale feed after an API retirement, the reader names the scorecard cost and the prevention for each, not a faster connector.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A brand sends each marketplace the platform's stock figure through a channel connector every hour. On a peak evening its warehouse sells out of a jacket and the marketplaces keep selling it for two hours; months later a script still calling a retired connector API version leaves one marketplace selling from two-day-old figures. Using only this chapter: what does each failure cost on the marketplace's scorecard, and what would have prevented each?",
+        "expected": "Every oversold unit the merchant cancels counts as a seller cancellation against the marketplace's cancellation threshold (on bol, a strike for the week). Prevention: one available-to-promise figure per channel, computed from the system of record for physical stock and published by events, with a per-channel buffer as the interim fix while the sync is hourly; an age monitor per channel on the last accepted stock update, which would have caught the stale feed within the hour; a deprecation calendar in the integration inventory with an owner for each date. Not a faster connector or a different marketplace."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given one seller-fulfilled and one marketplace-fulfilled order, the reader says where each is recorded, which metrics apply, and where the second order's stock figure comes from.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "On the same day one Amazon.de order for a jacket ships from the merchant's own warehouse, and another ships from stock the merchant sent to Amazon's warehouse in advance. Using only this chapter: where should each order be recorded, which scorecard metrics apply to each, and where does the stock figure for the second come from?",
+        "expected": "Both are created once in the merchant's one order record (the OMS), keyed on the Amazon order id. The first carries its ship-by date, gets a fulfillment order and a ship confirmation by event from the warehouse system, and is graded on cancellation, late shipment, valid tracking and on-time delivery; the second gets no fulfillment order, is recorded for finance and analytics, and is graded only on order defect rate. Its stock is an external location whose quantity comes from the marketplace's inventory feed and is reconciled against the marketplace's report, never a copy of the merchant's warehouse figure."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can say what stops one marketplace order from becoming two shipments.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: a marketplace order is delivered once by a notification and again by a periodic poll. What keeps it from becoming two orders and two parcels?",
+        "expected": "Uniqueness on the marketplace order id when the order is created makes the import idempotent, so the second delivery reuses the existing record; the order is acknowledged with the binding between the marketplace's id and the merchant's order number; a daily count of marketplace orders by id against internal orders catches any that slipped through."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "How a merchant lists, sells and ships on a marketplace; the marketplace's scorecard (cancellations, late dispatch, valid tracking) and why the data the integrations send decides it; what a channel connector does and what it must not own; how much stock each channel is told and how marketplace-held stock is treated; where marketplace orders are recorded; who owns the marketplaces' API retirement dates; two Amazon.de orders of 13 April 2027, one shipped from Duiven and one from the marketplace's stock. Evidence: marketplace thresholds and documentation, and Kestrel & Pine's marketplace incidents."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What does it take to list, sell and fulfil on marketplaces, and how do marketplace orders fit into the order record?",
+    "claim": "To sell on a marketplace a merchant sends listings, a stock number, prices and shipment confirmations that the marketplace acts on and grades against published thresholds. A connector translates them and owns nothing: each marketplace's stock number comes from one available-to-promise calculation per channel, marketplace-held stock is an external location, and every marketplace order, seller- or marketplace-fulfilled, is created once in the merchant's order record under the marketplace's order id.",
+    "disputed_by": "The view that marketplace selling is the job of a channel app or connector: it holds the listings, its own stock copy and allocation rules, and the marketplace orders; the platform's stock figure is sent to every channel; and the marketplace's scorecard is the ecommerce manager's concern rather than a requirement on the integrations.",
+    "so_what": "On 27 November 2026 the stock chain from the WMS through the ERP and the platform to the connector let the marketplaces sell sold-out Ridgewalker jackets for up to two hours: about 160 of the 1,120 canceled or delayed orders were marketplace orders, 140 of them seller cancellations, and bol issued a strike. In February 2027 an agency script still calling a retired connector API version left bol selling from two-day-old figures. A merchant that accepts the claim names the system that computes each channel's stock number, creates marketplace orders in its order record, monitors the age of the last accepted stock update per channel and gives each API retirement date an owner before it adds a marketplace.",
+    "how_why": "A marketplace sells the quantity it was last sent without asking again, and counts every oversold unit the merchant cancels as a seller cancellation and every confirmation that arrives late as a late shipment, so latency in the merchant's flows becomes a score. A connector that holds its own stock copy and rules, or the only copy of marketplace orders, becomes another system of record: its copy lags, its failures are silent, and its orders are invisible to support, the warehouse and finance. Marketplace APIs are rate-limited and asynchronous and retire versions on published dates, so stock and orders must move by events, imports must be idempotent on the marketplace order id, and each date needs an owner. Stock in a marketplace's warehouse is counted and sold by the marketplace, so the merchant learns its quantity from the marketplace's feed.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A marketplace grades the seller against published thresholds (cancellations, late shipment, valid tracking, on-time delivery, defects; bol's strikes) computed from what the merchant's integrations send, so each threshold is a freshness requirement on one of the merchant's flows."
+      },
+      {
+        "id": "S2",
+        "claim": "The channel connector translates the five flows (listings, stock, prices, orders, status back-flow) and owns nothing: listings come from the product system of record and prices from the pricing source, bounded by a floor; a connector that keeps its own copies becomes another system of record."
+      },
+      {
+        "id": "S3",
+        "claim": "The stock number sent to a marketplace is a promise it sells without asking again, so it comes from one available-to-promise calculation per channel, with a buffer only as the interim fix, and marketplace-held stock is an external location whose quantity the merchant learns from the marketplace's feed."
+      },
+      {
+        "id": "S4",
+        "claim": "Every marketplace order, seller- or marketplace-fulfilled, is created once in the merchant's order record under the marketplace's order id: imported idempotently, acknowledged with the binding between the two numbers, and confirmed back with tracking before the marketplace's deadline."
+      },
+      {
+        "id": "S5",
+        "claim": "Marketplace and connector APIs are rate-limited and asynchronous and retire versions on published dates, so stock and orders move by events, every feed result is read, and each retirement date and the age of the last accepted update have an owner and a monitor."
+      },
+      {
+        "id": "S6",
+        "claim": "The way to connect (seller tools, the platform's channel app, a channel integration platform, direct integration) follows the scale stage and the number of order sources, and a rented connector is safe only when the merchant's order record and availability calculation stay the owners."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Gives the part its first outside party and intermediary: the marketplace's scorecard as freshness requirements on the merchant's flows, the connector that translates and owns nothing, one available-to-promise figure per channel, the API retirement calendar as an owned contract, and marketplace orders created in the order record under the marketplace's id.",
+    "supports": [
+      "P5-1",
+      "P5-2",
+      "P5-3",
+      "P5-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene, then the rest: the two incidents and Noor's three questions, then the sections that answer them"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages"
+      }
+    ],
+    "rationale": "The two incidents come first so that every later term arrives as part of the answer to Noor's three questions. The marketplace and its two fulfillment models come next because the scorecard, the flows and the allocation rules all differ by model. The scorecard precedes the connector's flows because each flow's freshness requirement is derived from a metric; the flows, order import and API constraints precede channel allocation because allocation is the stock flow's policy and relies on events and external locations; the two Amazon.de orders follow allocation directly, since they use it and not prices (both round-3 readers); prices follow the example as their own section because they apply the same rule to a different value (both round-2 readers found them hidden under a stock heading). The two Amazon.de orders are worked there, while the two models, the flows and the external location are fresh, and before the choices, which they help judge (readers in round 1 found the promise of the two orders carried too long when the example sat at the end of In Practice). The choices come after the mechanisms they choose between, the stages after the choices because they say which choice fits when, and In Practice after both because its developments test the rules already stated. The failures come last because the table reads each against the rule that prevents it, all of which are stated by then. Moving allocation before the scorecard would present buffers without the cancellation threshold that justifies them; moving the choices first would compare options before the reader knows what the connector must not own."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Listing a jacket on Amazon, bol or Zalando puts it in front of shoppers who never visit the merchant's own site, but the merchant pays a commission and must follow rules for prices, fulfillment and service that its own storefront does not control, and the marketplace grades it on every cancellation and late shipment."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has bought from a marketplace has seen several sellers offer the same product and one of them win the 'add to basket' button.",
+      "to_topic": "For the seller that position depends on cancellations, late dispatch and tracking, which are computed from the data its integrations send, so the question becomes which system sends each value and where the marketplace's orders are recorded."
+    },
+    "thesis_statement": {
+      "text": "A channel connector translates listings, stock, prices, orders and status between the merchant's systems and the marketplaces and owns none of them: each value it sends comes from the system that owns it, each marketplace's stock number from one available-to-promise calculation per channel, marketplace-held stock is a location the merchant does not control, and every marketplace order is created once in the merchant's order record under the marketplace's order id.",
+      "placement": "KEY POINTS callout and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "Paragraph p05",
+      "promises": [
+        {
+          "promise": "Start from Kestrel & Pine's two marketplace incidents and Noor Visser's three questions.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Explain what a marketplace is and the two ways to sell on one.",
+          "kept_in": [
+            "marketplace"
+          ]
+        },
+        {
+          "promise": "Show what the marketplace measures the seller on.",
+          "kept_in": [
+            "scorecard"
+          ]
+        },
+        {
+          "promise": "Follow the connector's five flows, the import of an order and what the marketplace APIs impose, including their retirement dates.",
+          "kept_in": [
+            "connector"
+          ]
+        },
+        {
+          "promise": "Decide how much stock each channel is told and how marketplace-held stock is treated.",
+          "kept_in": [
+            "allocation"
+          ]
+        },
+        {
+          "promise": "Work the two Amazon.de orders of 13 April 2027 through Kestrel & Pine's systems, then say how prices are bounded.",
+          "kept_in": [
+            "example",
+            "prices"
+          ]
+        },
+        {
+          "promise": "Compare the four ways to connect and how they change with scale.",
+          "kept_in": [
+            "choices",
+            "stages"
+          ]
+        },
+        {
+          "promise": "Look at current practice and at what goes wrong.",
+          "kept_in": [
+            "in-practice",
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Listing a jacket on a marketplace buys reach to shoppers who never visit the merchant's site, in exchange for a commission and the marketplace's rules for prices, fulfillment and service, which the merchant's own storefront does not control.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Listing a jacket on Amazon, bol or Zalando; the commission as a share of the sale.",
+            "shows": "The bargain the chapter is about: reach in exchange for obligations set by someone else."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "The marketplace grades the seller's cancellations, late dispatch and tracking, and those measures depend on the data the merchant's integrations send, so an old stock figure can become a canceled order and a late message a late shipment.",
+        "function": "cause_effect",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The marketplace's rules.",
+          "introduces": "The grading of performance and its dependence on the merchant's data.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter's answer is that a channel connector translates listings, stock, prices, orders and status between the merchant's systems and the marketplaces and owns none of them: each value comes from the system that owns it, the stock number from one available-to-promise calculation per channel, marketplace-held stock is a location the merchant does not control, and every marketplace order is created once in the order record under the marketplace's order id.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "The data the integrations send decides the score.",
+          "introduces": "The connector and what it may own, which is the thesis.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "In the book's running example Eva buys from the storefront on 13 April 2027 while two illustrative Amazon.de orders on the same day take the two marketplace routes, one shipped from Duiven and one from stock the marketplace holds, and both must reach the merchant's records.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "Two Amazon.de orders of 13 April 2027, seller-fulfilled from Duiven and marketplace-fulfilled.",
+            "source": "Kestrel & Pine scenario ledger (the marketplace variant)",
+            "shows": "Places the chapter in the order's journey and introduces the case it works through later."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Marketplace orders created in the order record; marketplace-held stock.",
+          "introduces": "The two Amazon.de orders that show both routes.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter starts from Kestrel & Pine's two marketplace incidents, then explains the marketplace and its two fulfillment models, the scorecard, the connector's five flows with order import and API limits, channel allocation, works the two Amazon.de orders through, channel prices, compares the four ways to connect and how they change with scale, and ends with current practice and what goes wrong.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The thesis and the two Amazon.de orders.",
+          "introduces": "The order of the sections.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock",
+      "controlling_idea": "Kestrel & Pine's marketplace line runs through a rented connector fed by an hourly stock chain, and two incidents, the Black Friday Oversell and the Deprecated Endpoint, lead Noor Visser to ask which stock number each marketplace should be told, where a marketplace order lives and who owns a vendor's API calendar.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Gives the case the chapter answers: a copied stock figure that became seller cancellations and a strike, a retired API version that left bol selling from old figures, and the three questions the thesis answers."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "The line and its owner first, then the two incidents in date order, then the questions they raise: the questions only make sense once the reader has seen what went wrong."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap's first item, Kestrel & Pine's two marketplace incidents.",
+        "introduces": "The marketplace line, its connector and the incidents.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Kestrel & Pine sells on bol, Amazon.de and Zalando through a connector rented for €900 a month; in 2026 those channels brought 43,000 orders and €3.0 million at €70 an order, and marketplace programs shipped about 40% of its German marketplace units.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€900 a month; 43,000 orders; €3.0 million; €70 against €92 on the storefronts; about 40% of German marketplace units fulfilled by marketplace programs.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The size of the line and that both fulfillment models are in use."
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "Milan Petrov owns the connector and in March 2027 walks Noor Visser through two incidents.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The connector.",
+            "introduces": "Its owner and the two incidents.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "In the Black Friday Oversell the Ridgewalker sold out at Duiven at 19:40 on 27 November 2026, and because the stock figure passed from the WMS through the ERP and the platform to the connector, the marketplaces kept selling it for up to two hours.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Sold out at 19:40; chain WMS, ERP, platform, connector; up to two hours. Figure 1: a relay of stock notes reaching a marketplace still selling.",
+              "source": "Kestrel & Pine scenario ledger, incident 1",
+              "shows": "The figure each marketplace received was a copy of a copy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Two incidents.",
+            "introduces": "The first.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "About 160 of the 1,120 canceled or delayed orders were marketplace orders, Kestrel & Pine canceled 140 of them as seller cancellations, and bol issued a strike for the week, part of the incident's €96,000 cost.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "160 of 1,120; 140 seller cancellations; one bol strike; €96,000 total cost (illustrative).",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The marketplace share of the oversell became a score, not just a refund."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Marketplaces selling stock that was gone.",
+            "introduces": "The cancellations and the strike.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "In the Deprecated Endpoint of February 2027 the connector retired an API version on a date it had published months earlier, the agency script that pushed stock into the connector still used it, and for two days the connector kept sending bol the last figures it had.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Version retired on a published date; script not updated; two days of stale figures to bol.",
+              "source": "Kestrel & Pine scenario ledger, incident 10",
+              "shows": "An unowned dependency on a vendor's calendar fails quietly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Stale stock on the marketplaces.",
+            "introduces": "The second incident, caused by a retired API version.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Noor's questions are the chapter's: which stock number each marketplace should be told and who computes it, where a marketplace order lives so support, the warehouse and finance see the same record, and who owns the API calendar of a vendor the business depends on for €3.0 million.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two incidents.",
+            "introduces": "The three questions they raise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "marketplace",
+      "heading": "What a Marketplace Is, and the Two Ways to Sell on One",
+      "controlling_idea": "Selling on a marketplace means publishing offers against its products under one of two fulfillment models, and the two models put the order and the stock in different places for the merchant's systems.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Defines the offer and the two models whose difference decides where the order is recorded and where the stock figure comes from."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "comparison",
+            "applies_to": "p13 to p15"
+          }
+        ],
+        "rationale": "The offer and the buy box first, then the two models side by side, their sources, and their architectural difference, which the rest of the chapter uses."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Noor's questions, which start from what a marketplace is told.",
+        "introduces": "What a marketplace is and the two ways to sell on one.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "controlling_idea": "Selling on a marketplace means publishing an offer (price, stock and delivery promise) against a product the marketplace knows by its GTIN, and the buy box shows one of the sellers offering it, chosen by performance and price.",
+          "function": "definition"
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Every large marketplace offers the same two logistics models, seller-fulfilled and marketplace-fulfilled, under its own names.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Table of the two models: who holds stock, ships and handles returns, with Amazon's, bol's and Zalando's names.",
+              "shows": "The same split exists at all three marketplaces Kestrel & Pine uses."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The offer's delivery promise.",
+            "introduces": "Who fulfills it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "The names come from the vendors' own pages, and bol's description of Logistics via bol shows what the marketplace-fulfilled model takes over: storage, shipping and returns, with stock counted daily and charged for.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "bol partner platform and Zalando partner university pages (accessed November 2026); Amazon's order performance policy (2026); bol's 40% surcharge on stock costs in November and December.",
+              "source": "Vendor pages, accessed November 2026",
+              "shows": "The table's terms are the vendors' own, and the fulfillment model has a cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The table's names.",
+            "introduces": "Their sources and bol's description.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "The architectural difference is larger than the operational one: a seller-fulfilled order, like the first of the two Amazon.de orders, must enter the merchant's order record and warehouse flow with the marketplace's deadline, while marketplace-fulfilled stock, which ships the second, sits in a location the merchant does not control and learns about from the marketplace's reports, as W1 (stock ownership) says.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The operational split of the two models.",
+            "introduces": "What each means for the merchant's records.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scorecard",
+      "heading": "What the Marketplace Measures You On",
+      "controlling_idea": "Marketplaces grade sellers on published thresholds with consequences, and each threshold depends on how fresh the merchant's data is, so the scorecard is an integration specification.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Supplies the thresholds and turns them into freshness requirements on the flows."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The two marketplaces' published standards first, then the reading of them as an integration specification, which needs both tables in view."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Seller-fulfilled orders carry the marketplace's deadline.",
+        "introduces": "The metrics that grade how those deadlines are kept.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p18",
+          "controlling_idea": "Amazon's published order performance policy grades sellers on order defects, cancellations, late shipments, valid tracking and on-time delivery, each with a threshold and a window.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Order Defect Rate under 1% (60 days); cancellation rate under 2.5% (7 days); late shipment under 4%; valid tracking above 95%; on-time delivery 90% expected on Amazon.de.",
+              "source": "Amazon order performance policy (May 2026) and seller blog (October 2024)",
+              "shows": "The thresholds are public and four of five apply only to seller-fulfilled orders."
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "bol sets service standards (90% items on time, at most 2% cancellations a week) enforced by a strike process that can close the shop, and it auto-cancels unconfirmed orders against the seller.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Strikes count over 22 weeks; five close the shop pending an improvement plan; seven close the account for at least a year; auto-cancellation on the third day after the promised delivery date.",
+              "source": "bol partner pages, accessed November 2026",
+              "shows": "The consequences of missing a threshold are commercial."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Amazon's thresholds.",
+            "introduces": "bol's standards and strikes.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "Read as an integration specification, the table says an oversell becomes a seller cancellation and a confirmation that arrives a day late is a late shipment, so each row maps to a flow and a freshness requirement on it.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The thresholds of both marketplaces.",
+            "introduces": "What they require of the integrations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "connector",
+      "heading": "How the Pieces Fit Together",
+      "controlling_idea": "A channel integration platform translates five flows between the merchant and the marketplaces, each with its own freshness; the order flow keeps two order records in step by acknowledgement, idempotent import and timely confirmation; and the marketplace APIs impose rate limits, asynchronous results and dated retirements.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows what the connector carries and must not own, how an order enters the order record, and why flows move by events with an owned calendar."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "chronological",
+            "applies_to": "p24 to p28: the order lifecycle"
+          }
+        ],
+        "rationale": "The connector and its five flows first, then the order flow in the order its steps happen, then the API constraints that every flow must respect, ending on the deprecation calendar that the Deprecated Endpoint ignored."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Each row of the scorecard maps to a flow.",
+        "introduces": "The connector and its flows.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p21",
+          "controlling_idea": "A channel integration platform sits between the merchant's systems and many marketplaces and translates listings, orders, stock and prices, plus the status that flows back, as vendors themselves describe it.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "ChannelEngine: 'One platform for listings, orders, inventory, and pricing across 1,300+ channels'; Shopify's Marketplace Connect.",
+              "source": "Vendor pages, accessed November 2026",
+              "shows": "The connector's functions are the same across vendors."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: the connector translates five flows between the systems of record and the marketplaces and owns none of the data.",
+              "shows": "Places the connector between owners and marketplaces."
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each of the five flows (listings, stock, prices, orders, status back-flow) has its own direction, freshness, consistency rule and failure when late.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five flows by direction, freshness, consistency and what goes wrong when late.",
+              "shows": "Stock and orders need minutes; listings hours to a day; each late flow maps to a scorecard cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The four kinds of data and the status back-flow.",
+            "introduces": "The five flows and what each needs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "The two fast flows, stock and orders, are why W5 moves them by events rather than periodic copies.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The freshness column.",
+            "introduces": "Events for the fast flows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "The marketplace order lifecycle has the same shape everywhere, and the connector's job is to keep two order records, the marketplace's and the merchant's, in step at three points that carry the chapter.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: a seller-fulfilled marketplace order created once, acknowledged with the binding between two numbers, and confirmed with tracking before the deadline.",
+              "source": "Author's synthesis of Amazon's, bol's and ChannelEngine's documented interfaces",
+              "shows": "The steps the following three paragraphs explain."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The order flow, one of the two fast flows.",
+            "introduces": "Its lifecycle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Acknowledging an imported order links the marketplace's order id to the merchant's order number, so later shipment, cancellation, return and payout messages find the same purchase.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "ChannelEngine calls acknowledgement the critical binding step; bol auto-cancels unacknowledged orders on day three after the promised delivery date.",
+              "source": "ChannelEngine support; bol partner pages",
+              "shows": "An order imported but not acknowledged is at risk."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The three points of the lifecycle.",
+            "introduces": "The first: acknowledgement.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "A retry or a poll can deliver an order already imported, so uniqueness on the marketplace order id makes repeated deliveries idempotent and stops a second shipment.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The binding of the two numbers.",
+            "introduces": "The second point: repeated deliveries of the same order.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "The ship confirmation is a deadline, because the late shipment rate is computed from its timestamp, so the path from the warehouse to the marketplace must complete on the day of shipment.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "On Black Friday 2026 Kestrel & Pine's WMS connector queue backed up for four hours.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "Every delayed confirmation was a late shipment on a scorecard."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The import.",
+            "introduces": "The third point: the confirmation back.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The marketplaces' documentation rules out a tight loop of calls: Amazon's Selling Partner API limits each operation by a token bucket and asks sellers to respond to events rather than poll.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "MWS retired 1 April 2024; HTTP 429 on throttling; getOrders at 0.0167 requests a second with a burst of 20; 'Respond to events rather than polling on a loop'.",
+              "source": "SP-API documentation, accessed November 2026",
+              "shows": "Polling cannot keep stock and orders fresh; events can."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the merchant must send and when.",
+            "introduces": "The limits the marketplace APIs place on how it is sent, starting with Amazon's.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "Listings, prices and stock go up as asynchronous feeds whose acceptance does not confirm the change, so the connector must check each outcome.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Amazon's API.",
+            "introduces": "Feeds and their results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Customer names and addresses are restricted data behind a separate token, so the order record keeps only the personal data fulfillment needs.",
+          "function": "process",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Feeds.",
+            "introduces": "Restricted personal data.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "bol's Retailer API is asynchronous, publishes its rate limits, asks for changes and events rather than large batches, and removes a deprecated major version twelve months after the next one is released.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "'most calls are asynchronous; confirm the result afterwards'; 'only changes that need synchronizing'; 'scheduled for removal in 12 months'; Offers API v10 stops 1 February 2027 (partner news, 3 November 2026).",
+              "source": "bol Retailer API documentation and partner news",
+              "shows": "A second marketplace imposes the same constraints and publishes its retirement dates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Amazon's constraints.",
+            "introduces": "bol's, including its lifecycle policy.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "A deprecation schedule is a contract clause with a date, and someone at the merchant must own the calendar even when the connector vendor does most of the work.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "bol's published retirement date.",
+            "introduces": "The owned deprecation calendar, the Deprecated Endpoint in public form.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "allocation",
+      "heading": "Channel Allocation: The Number You Send Is a Promise",
+      "controlling_idea": "The stock figure sent to a marketplace is the quantity it may sell, so how much each channel is told is a policy computed once from the system of record for physical stock, and marketplace-held stock is an external location.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Argues for one available-to-promise calculation per channel and the external location."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "additional_patterns": [
+          {
+            "pattern": "problem_solution",
+            "applies_to": "p39 to p41: Kestrel & Pine's buffer, then the target"
+          }
+        ],
+        "rationale": "The rule and the policies first, then Kestrel & Pine's interim fix and target as the rule applied."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The stock flow and its freshness requirement.",
+        "introduces": "What number the stock flow should carry.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "controlling_idea": "The stock figure a connector sends is not a report but the quantity the marketplace is now entitled to sell without asking again.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Amazon's LISTINGS_ITEM_MFN_QUANTITY_CHANGE notification shows what Amazon believes the quantity is.",
+              "source": "SP-API notification type values",
+              "shows": "The marketplace keeps and acts on its own copy of the figure."
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "Channel allocation decides how much of the available stock each channel may promise, and the five policies (shared pool, fixed quantity, buffer, percentage split, computed available-to-promise per channel) fit different stages and break in different ways.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Five policies: how each works, where it fits, when it breaks.",
+              "shows": "Only computed available-to-promise per channel holds when several channels and locations compete."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: one stock jar guarded by an available-to-promise counter that hands each channel a ticket.",
+              "shows": "One calculation decides each channel's share."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The figure is a promise.",
+            "introduces": "The policies that decide it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "Available-to-promise is computed once from the system of record for physical stock and published to every channel, and a connector that keeps its own stock copy and rules is a fourth system of record, as Kestrel & Pine's is in January 2027.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "In January 2027 the connector keeps a copy of product data for listings and a stock copy up to two hours old.",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "The fourth copy exists at Kestrel & Pine."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The last row of the policy table.",
+            "introduces": "The principle behind it and its violation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Units in a marketplace's warehouse are an external location with its own feed, never a copy of the merchant's warehouse figure.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Amazon's FBA_INVENTORY_AVAILABILITY_CHANGES notification.",
+              "source": "SP-API notification type values",
+              "shows": "The marketplace publishes the location's quantity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "One calculation from the system of record.",
+            "introduces": "The second rule, for marketplace-held stock.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "Kestrel & Pine's interim fix since December 2026 is a buffer of ten units per variant, which helps most variants but costs the last few units of each and would have held the Ridgewalker for only minutes on Black Friday.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "Platform figure minus ten per variant, zero below ten; about 17,000 active variants (illustrative).",
+              "source": "Kestrel & Pine scenario ledger",
+              "shows": "A buffer reduces oversells at the price of unsold units."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The buffer policy and the hourly chain.",
+            "introduces": "Kestrel & Pine's buffer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The target under W1 makes the WMS the system of record for Duiven stock and the marketplace's German stock a tracked external location, with the availability service publishing available-to-promise per channel by events and the hourly chain retired by Q4 2027.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "W1; Q4 2027; changes forwarded within minutes as bol's rate-limit guidance asks.",
+              "source": "Kestrel & Pine scenario ledger (W1)",
+              "shows": "The rule applied to Kestrel & Pine."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The buffer's cost.",
+            "introduces": "The target that shrinks it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Once the availability service owns the figure, a channel rule can hold the last units for the storefront, which is impossible when the connector only knows what the platform said an hour ago.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "'Hold the last 20 units of each variant for the storefront' (assumption).",
+              "shows": "Channel rules need the figure's owner."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The target.",
+            "introduces": "What it makes possible.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "example",
+      "heading": "Kestrel & Pine: The Marketplace Variant, 13 April 2027",
+      "controlling_idea": "The two Amazon.de orders of 13 April 2027 show the two fulfillment models running through Kestrel & Pine's systems, and the marketplace-fulfilled one is the order most merchants leave out of the order record.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Works both models through the order record, the stock flows and the scorecard, before and after W1 and W2."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The flows, the scorecard, channel allocation and the external location.",
+        "introduces": "The two orders the introduction promised, worked step by step.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p63",
+          "controlling_idea": "Kestrel & Pine's two Amazon.de orders of 13 April 2027 take different paths before W1 (stock ownership) and W2 (one order record) land, and both end in the OMS afterwards, the seller-fulfilled one with a fulfillment order and the marketplace-fulfilled one recorded for finance and analytics.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Step by step for both orders: where the order appears, stock effect, shipment, scorecard, return, after W1 and W2.",
+              "source": "Kestrel & Pine scenario ledger (the marketplace variant)",
+              "shows": "The two models work through the merchant's systems differently."
+            }
+          ]
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "Most merchants get the marketplace-fulfilled order wrong: because the marketplace does all the work, the order never enters the order record and its revenue, returns and stock are reconstructed from statements at month-end.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The table's second column.",
+            "introduces": "Why it is the common mistake.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "prices",
+      "heading": "Prices Across Channels",
+      "controlling_idea": "Prices follow the same discipline as stock: the price sent to each marketplace is a channel price derived from the pricing source, moved by repricing only within a floor computed from cost and dated fees.",
+      "function": "claim",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Applies the owns-nothing rule to prices: derived from the pricing source, bounded by a floor."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Why price matters on a marketplace, then the rule for repricing, then the fees the floor needs, a worked floor, and what happens without it."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The owner and the single calculation behind the stock number, shown at work in the two orders.",
+        "introduces": "The same discipline for prices.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "controlling_idea": "Prices follow the same discipline: price parity clauses are gone from Amazon in the EU since 2013, but marketplaces still compare prices to decide visibility.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Bundeskartellamt, 26 November 2013; Amazon's PRICING_HEALTH notification ('ineligible for the Featured Offer (Buy Box) because its price is uncompetitive'); bol on the buy box.",
+              "source": "Bundeskartellamt; SP-API; bol partner pages",
+              "shows": "Price still affects visibility, so the channel price matters."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "Repricing acts on a channel price derived from the merchant's pricing source, never on the base price list, and is bounded by a floor computed from cost and fees.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "ChannelEngine: 'dynamic pricing, margin guardrails, and cost-based insights to adjust prices per channel'.",
+              "source": "ChannelEngine, accessed November 2026",
+              "shows": "Connectors offer repricing, so the rule about its bounds is needed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Marketplaces comparing prices to decide visibility.",
+            "introduces": "Repricing, the merchant's own price rule, and its bounds.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The floor needs the fees, which differ by marketplace, category, price band and fulfillment model and change on published dates, so they are dated reference data from which margin per channel and the floor are computed.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Amazon US: $39.99 a month plus referral fees of mostly 8-15% (clothing 5%, 10%, 17% by price band); bol: no subscription, fixed amount plus a percentage by category; Zalando publishes no figures (November 2026).",
+              "source": "Amazon pricing page; bol commission page; accessed November 2026",
+              "shows": "Fees vary and change, so they must be stored with effective dates."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The floor computed from cost and fees.",
+            "introduces": "What the fees are and how to hold them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "For the Ridgewalker at €199, an assumed 15% commission and €6 shipping leave about €128 against a €58 landed cost, so the floor sits well above cost.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "€199 incl. 21% VAT; 15% commission (Amazon's most common US referral rate); €6 shipping; about €128; landed cost €58 (assumptions).",
+              "source": "Kestrel & Pine scenario ledger; Amazon US pricing page",
+              "shows": "A worked floor."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The floor and the dated fees.",
+            "introduces": "A worked floor for the Ridgewalker.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "A connector rule allowed below the floor can undercut the brand's own storefront, which is one way a Price Drift happens, so the channel price is a derived price with a source, an effective date and a floor.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Price Drift of October 2026: €179 in Germany for nine days and a parity warning from a marketplace.",
+              "source": "Kestrel & Pine scenario ledger, incident 4",
+              "shows": "Prices from the wrong owner cost margin and a warning."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The floor above cost.",
+            "introduces": "What happens without it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "A merchant has four realistic ways to connect to marketplaces, and across all four the deciding question is whether the marketplace order is created in the merchant's order record or lives in the tool.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S6"
+        ],
+        "how": "Compares the ways to connect and states the two conditions under which renting a connector is safe."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four options in order of growing capability, then the question that cuts across them, then the recommendation, which needs both."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The two worked orders and the channel price, which show what the connector must carry and must not keep.",
+        "introduces": "The ways to connect.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "controlling_idea": "There are four realistic ways to connect to marketplaces, and the order-record decision cuts across all four.",
+          "function": "transition"
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "The marketplace's own seller tools are right at a few orders a day on one marketplace and wrong when a second marketplace arrives or the late-shipment clock bites.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Four ways.",
+            "introduces": "The first.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The platform's native channel app is cheap and adequate at the Growing stage, but it treats the platform as the system of record for stock and orders, which stops being true at the Omnichannel stage.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Marketplace Connect's listing: 4.1 rating, 15% one-star reviews citing sync and pricing errors (accessed November 2026).",
+              "source": "Shopify app listing",
+              "shows": "Users report the app's sync limits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Seller tools.",
+            "introduces": "The platform's app.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "A channel integration platform, Kestrel & Pine's choice and the common one for Omnichannel merchants in Europe, makes tracking marketplace rules the vendor's business, at the risk that it holds the merchant's stock, prices and products.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The platform's app.",
+            "introduces": "A specialist connector.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "Direct integration fits Group-stage merchants with the volume to keep engineers on marketplace APIs; below that the merchant inherits every deprecation, feed quirk and rate limit.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The connector.",
+            "introduces": "Building it yourself.",
+            "form": "word",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "Across all four the question is where the marketplace order lives: created in the order record with status mirrored back, or held in the connector, which is cheaper at the Growing stage and produces the Three-Status Order once other order sources arrive; W2 chooses the first.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The four options by marketplaces covered, who tracks API changes, stock allocation, order record, cost and fit.",
+              "shows": "The options side by side on the same criteria."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four options.",
+            "introduces": "The question that cuts across them.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "The author recommends the channel integration platform at the Omnichannel stage under two written conditions: it creates orders in the order record and does not keep them, and the stock it publishes comes from the merchant's availability calculation.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison and W2.",
+            "introduces": "The recommendation and its conditions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The marketplace integration scales with the number of order sources, not with order volume.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Says which choice fits which stage and when the platform's order list stops being the order record."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The four options and the stages named in them.",
+        "introduces": "The options stage by stage.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p53",
+          "controlling_idea": "The mechanism scales with the number of order sources, not order volume: once a store, a wholesale portal or a second marketplace also creates orders, the platform's order list is no longer the order record and the marketplace integration must be re-pointed, a line Kestrel & Pine crossed in 2023 and noticed in December 2026.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Stages 1 to 4: what is typical, what becomes necessary, warning signs.",
+              "shows": "The pressure grows with each new order source."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Four current developments test the chapter's rules: programs and interfaces retire on their own calendars, marketplaces become logistics providers, social channels switch between feed and order source, and some merchants go on to operate a marketplace, which is a different job.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5",
+          "S6"
+        ],
+        "how": "Applies the rules to current cases: retirement dates, a third kind of stock location, channels that become order sources, and the operator's side reached at the Group stage."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "The developments grouped by what they change: dates (p54), stock locations (p55, p56), order sources (p57 to p60), the operator's side (p61, p62). The section's first sentence names the four so the reader knows why they sit together."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The ways to connect and how they change with scale.",
+        "introduces": "Four current developments that test the rules.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p54",
+          "controlling_idea": "Four current developments test the chapter's rules, the first being that marketplaces and their programs retire interfaces on their own calendars, as bol's v10 does, so a merchant whose store stock is a location in its own availability service changes a connector when a program ends, while one built on the program's tool rebuilds.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "MWS unavailable from 1 April 2024; bol Offers API v10 stops 1 February 2027; Zalando's Connected Retail ends by the end of June 2027 (TextilWirtschaft, 24 April 2026).",
+              "source": "SP-API changelog; bol partner news; TextilWirtschaft",
+              "shows": "Retirement dates apply to programs as well as APIs."
+            }
+          ]
+        },
+        {
+          "id": "p55",
+          "controlling_idea": "A marketplace can store a merchant's stock and fulfill orders from other channels, including the merchant's own shop, which makes its warehouse network part of the merchant's fulfillment architecture.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Programs changing.",
+            "introduces": "The marketplace as logistics provider.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Zalando's ZEOS shows it: marketplace-held but multi-channel stock, a third kind of location, and a dependency on the marketplace's APIs for the merchant's own storefront orders.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "ZEOS announced 17 October 2023 as 'one stock pool, one carrier integration and one user interface'; by December 2025 in 24 markets and 18 sales channels.",
+              "source": "Zalando corporate releases, 2023 and 2025",
+              "shows": "The trend is real and dated."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The marketplace as logistics provider.",
+            "introduces": "ZEOS.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "A social channel either sends shoppers to the merchant's checkout, needing only product information, or takes orders itself, also needing an order import and a fulfillment report.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Channels that change what they are.",
+            "introduces": "Social channels.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Meta moved Facebook and Instagram Shops to website checkout in 2025, so for most merchants it is again a shopping feed destination.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Move to website checkout (trade press, June 2025).",
+              "source": "PPC Land, 2025",
+              "shows": "A channel can become a feed again."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The first route.",
+            "introduces": "Meta.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "controlling_idea": "TikTok Shop went the other way, opening in-app checkout in several European countries in 2025 and 2026.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Germany, France and Italy from 31 March 2025; the Netherlands, Belgium, Austria and Poland from 15 June 2026.",
+              "source": "TikTok newsroom, 28 May 2026",
+              "shows": "A channel can become an order source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Meta's move to a feed.",
+            "introduces": "TikTok's move to orders.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Either way the catalog comes from its system of record and incoming orders go through the marketplace import, while retail media adds a cost and a reporting stream but no order flow.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Both routes.",
+            "introduces": "The rule for both, and retail media.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Operating a marketplace means onboarding sellers, managing their offers, splitting orders and paying each seller, which needs records and controls beyond what a merchant needs to sell its own goods.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Selling through channels.",
+            "introduces": "Operating one.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "At the Group stage a merchant may operate a marketplace; the stage table names its seller-identity obligations, which this passage explains and hands to LISTED."
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Mirakl sells the operator side, and the Digital Services Act's Article 30 requires platforms to verify traders' identity before they sell, which is why every marketplace onboarding asks the merchant for identity documents and bank details; the operator's architecture is the subject of LISTED, the companion book on marketplace architecture.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Mirakl serves over 450 companies; DSA Article 30 applies from 17 February 2024.",
+              "source": "Mirakl; Wikipedia; Regulation (EU) 2022/2065",
+              "shows": "The operator's side is a distinct product and legal duty, covered in LISTED."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The operator's responsibilities.",
+            "introduces": "A vendor and the legal core.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          },
+          "advances_thesis": {
+            "supports": [
+              "S6"
+            ],
+            "how": "At the Group stage a merchant may operate a marketplace; the stage table names its seller-identity obligations, which this passage explains and hands to LISTED."
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Six failures each break a rule of the chapter, and the table pairs each with its detection and recovery; the age monitor and early cancellation are the cheapest controls.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S4",
+          "S5"
+        ],
+        "how": "Pairs each failure with its detection and recovery, read against the rules above."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The rules the developments test.",
+        "introduces": "What goes wrong when a rule is broken.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p65",
+          "controlling_idea": "Each failure in the table breaks one of the chapter's rules, and two controls are cheapest: the age monitor, the time since each channel last accepted a stock update, which would have caught the Deprecated Endpoint within the hour, and early cancellation of a certain oversell, which costs less than waiting.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six failures with how each shows, detection and recovery.",
+              "shows": "Each failure is read against the rule that prevents it: idempotent import, one available-to-promise figure, confirmation by event, the external location, one refund path, the owned deprecation calendar."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "Noor's three questions have one answer: the connector translates and owns nothing. The stock number comes from one available-to-promise calculation per channel, every marketplace order is created once in the order record under the marketplace's id, and the merchant owns the dates and the monitors; the oversell, the two stale days and the order the warehouse report cannot find are each a copy the connector was allowed to own.",
+    "so_what": "The scorecard is a service level the merchant did not negotiate, so the freshness of each flow and the owner of each retirement date decide whether marketplace reach pays; a reader can name, for their own channels, the system behind each value, the key of each order, the monitor and the owner before adding a marketplace.",
+    "callback": {
+      "to": "The introduction's bargain of reach for rules and a scorecard, and Noor's three questions in the scene.",
+      "how": "Paragraph p66 answers the three questions and shows that the scorecard is kept by the merchant's own flows."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "For each marketplace channel, name the system that computes the stock number it is told, where its orders are created and under which key, the age monitor that would show stale stock and the owner of each API retirement date; start with the age monitor."
+    },
+    "hand_off": {
+      "to": "b2b-commerce",
+      "relationship": "contrast",
+      "carries_over": "Orders from outside the shop that arrive through a marketplace, whose buyer is a consumer and whose rules the marketplace sets.",
+      "introduces": "Orders from Kestrel & Pine's 1,100 wholesale accounts, whose buyers are companies with contract prices, payment terms and credit limits that a consumer checkout cannot express."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and their cheapest controls.",
+      "introduces": "The answer to Noor's questions, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p66",
+        "controlling_idea": "Noor's three questions have one answer, that the connector translates and owns nothing, so every value it carries and every date it depends on has an owner at the merchant; each incident in the chapter was a copy the connector was allowed to own, and the scorecard the marketplace keeps is kept by the merchant's own flows.",
+        "function": "synthesis"
+      },
+      {
+        "id": "p67",
+        "form": "list",
+        "controlling_idea": "Established: marketplaces grade sellers on published thresholds with consequences; their APIs are rate-limited, asynchronous and retire versions on dates; and the two fulfillment models differ architecturally.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The answer.",
+          "introduces": "What is documented.",
+          "form": "word",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p68",
+        "form": "list",
+        "controlling_idea": "Depends on context: the platform's channel app suffices while the platform is the only order source; a buffer suits hourly sync and computed available-to-promise suits events; direct integration needs volume.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is settled.",
+          "introduces": "What depends on the merchant.",
+          "form": "word",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p69",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: the connector translates and owns nothing, and the scorecard is an integration service level from which each flow's freshness requirement and the age monitor follow.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's judgement.",
+          "form": "word",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p70",
+        "form": "list",
+        "controlling_idea": "Eight questions let the reader find, at their own company, the system behind each marketplace value, where marketplace orders are created, who owns the scorecard and the deprecation calendar, and what is at risk if an account closes.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The take-aways.",
+          "introduces": "Questions to apply them.",
+          "form": "phrase",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p71",
+        "controlling_idea": "Marketplace orders come from consumers under rules the marketplace sets; the next chapter turns to the other kind of outside order, from 1,100 wholesale accounts whose buyers are companies with contract prices, payment terms and credit limits a consumer checkout cannot express.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The questions about marketplace channels.",
+          "introduces": "Wholesale orders.",
+          "form": "paragraph",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "The availability calculation itself, reservations and safety stock; this chapter uses available-to-promise per channel as an input.",
+      "covered_in": [
+        "inventory-and-availability"
+      ]
+    },
+    {
+      "topic": "The order record's state model and the OMS; this chapter only decides where marketplace orders are created.",
+      "covered_in": [
+        "order-management"
+      ]
+    },
+    {
+      "topic": "API versioning discipline in general; the chapter gives the marketplace case.",
+      "covered_in": [
+        "api-contracts-and-versioning"
+      ]
+    },
+    {
+      "topic": "Store stock and ship-from-store programs.",
+      "covered_in": [
+        "stores-and-omnichannel"
+      ]
+    },
+    {
+      "topic": "Returns handling and refund reconciliation; the chapter only notes marketplace returns as an order-record event.",
+      "covered_in": [
+        "returns-and-exchanges"
+      ]
+    },
+    {
+      "topic": "Operating a marketplace (seller onboarding, payouts, ranking): LISTED's territory; the chapter defines the terms and points onward.",
+      "covered_in": [
+        "marketplace-regulation",
+        "liquidity-and-network-effects"
+      ]
+    },
+    {
+      "topic": "Fee economics and margin reporting per channel.",
+      "covered_in": [
+        "commerce-data-and-analytics",
+        "commerce-business-models"
+      ]
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Needs the author (rule 12): round-3 points left open. The stage section opens on its table with no lead sentence (a lead would add a unit); the four-hour queue sentence in the scene (p08), asked for by both round-2 readers, reads to the round-3 outliner as a second idea (rule 10 keeps it); retail media at the end of p60 reads as an aside; the opening callout's failure-pattern names (The Phantom Stock, The Pulled Rug) are not repeated in the body; the failure table lists a retired API version both as a cause of stale stock and as its own row. The fact needed: whether the author wants these touched in the next sharpen pass."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: after the confirming round 3 (escalate: 17 passed, 18 failed; all four cold-reader criteria, the reverse outline, evidence, thesis trace, known_before_new and the introduction and conclusion checks pass), the cheap, plainly right fixes were made without another round: (rule 3, both round-3 readers) the prices section moves after the worked example, which uses allocation but not prices, with the roadmap, the example's and the choices' transitions rewritten; the fifth flow is named in p21 before Figure 2 and p22 is back to the author's 'The five flows and what each needs:'; p32 opens 'The APIs also restrict personal data'; p37 says the availability service under W1 is bought as a module of the OMS that W2 introduces; the unexplained '410' is dropped from p41; the Price Drift's parity warning is explained in p45; the floor arithmetic is shown (€164.46 before VAT, €29.85 commission, €6 shipping); In Practice's first sentence names its four developments; the 'show both sides' forward reference says the orders come later; 'unacknowledged (unconfirmed)' ties p26 to p19. To stay within 6,600 words, this pass's own additions (the answering paragraph, the openers of the example, prices and choices) were shortened; 6,600 words.",
+      "rejected": [
+        "Starting a fourth round.",
+        "Moving the restricted-data paragraph into the order-import subsection (it describes an API rule; a lead sentence ties it to the API limits instead)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) p16, 'The marketplace is also a competitor', is cut: readers in both rounds found it out of place, first in the marketplace section and then in the prices subsection, and the round-2 judge found it supports none of S1-S6. The Bundeskartellamt release stays cited in the prices section.",
+      "rejected": [
+        "Keeping it as a one-sentence aside (nothing later needs it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 3) prices become their own section, 'Prices Across Channels' (p42, p43, p17, p44, p45), after Channel Allocation: both round-2 readers asked for it (the allocation heading promises stock only). The roadmap, flow rationale and the example's transition are updated.",
+      "rejected": [
+        "Renaming the allocation heading to cover prices (house heading kept)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: round-2 draft failures fixed without changing the spec's ideas: p04 no longer refers to 'the two routes' before naming them; p21 says the connector translates four kinds of data 'between them' and p22 adds the fifth; the four-hour queue backlog is now set up in the scene (p08) and called back in p28; p34 says bol's dated retirement is the public form of what hit Kestrel & Pine; p53 says what 2023 was (the Omnichannel stage); section openers added for the marketplace, scorecard and choices sections; in 'When It Goes Wrong' the age-monitor paragraph now precedes the table and introduces it. Single-reader minors fixed as cheap and plainly right: W1's module of the OMS, 'at the start of 2027', the 410 figure, Schrödinger's Order named, p60's turn to the rule.",
+      "rejected": [
+        "Leaving the minors for the author."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 8) the stage section is not folded into The Choices, though both flow-rubric runs suggested it: the house heading stays and no draft reader asked for it.",
+      "rejected": [
+        "Merging the stage table into The Choices."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) the three take-away tiers are kept; the rubric's suggestion to merge 'The author's synthesis' into p66 is not taken, since the tiers are the book's established shape."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 10) the operator passage (p61, p62) stays, tied to S6 through the Group stage's seller-identity obligations (the 2026-11-07 decision keeps it as one short passage pointing to LISTED).",
+      "rejected": [
+        "Cutting it on one judge's finding."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: (rule 12 does not apply) the three research open questions are closed: the chapter states no Zalando commission or share ('Zalando publishes no figures'), states 'within minutes' only as the target, and states no buyer-data retention period, so the page claims nothing those questions would correct."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: single-reader minors left as they are: the restricted-data paragraph stays among the API limits (it describes an API rule, the Restricted Data Token), and question 8 (a closed account) stays as the author's question."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "length.max_words raised from 6,500 to 6,600 (within the author's allowance of 10%): the round-1 fixes the readers asked for (the illustrative label and cause sentence of the scorecard cost, the fifth flow, the second Black Friday problem, the three systems before the fourth copy, the worked floor, In Practice's lead, the worked example's opener, the LISTED gloss) need about 140 words. The roadmap and the answering conclusion paragraph, this pass's own additions, were shortened first.",
+      "rejected": [
+        "Cutting author sentences to stay at 6,500."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 escalated on three spec faults that both flow readers reported, changed under the pre-approval for order, paragraph ideas and transitions (intent, thesis, role and criteria untouched): the worked marketplace variant (p63, p64) becomes its own section, 'Kestrel & Pine: The Marketplace Variant, 13 April 2027', right after Channel Allocation (both readers asked for it to move up); 'The marketplace is also a competitor' (p16) moves into the prices subsection after p42, where the same 2013 release is cited (both readers); In Practice opens by naming its four developments (both readers found it unclear). The judge's spec fault on p62 (no supporting claim) is met by tying p61 and p62 to S6 through the Group stage's seller-identity obligations, and LISTED is glossed. Roadmap, flow rationale and the transitions of p16, p43, choices, in-practice and wrong rewritten.",
+      "rejected": [
+        "Cutting p61 and p62 (the stage table names the operator's obligations; one judge's finding).",
+        "Moving the retirement paragraph p54 into the API section (one reader only); its link to bol's v10 is made explicit instead."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun after the move (verdict: sound with notes): p66 now says the merchant owns every value and date the connector depends on, so the 'one answer' also answers the third question (who owns the API calendar).",
+      "rejected": [
+        "Merging the stage section into The Choices (house heading kept; recorded in open_questions)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Took the flow rubric's notes without review, as the author asked for this pass (verdict: sound with notes): fees (p17) moved from the marketplace section to the prices subsection, just before the worked floor that uses them; the signposting units p25 and p29 merged into p24 and p30; W1, W2 and W5 glossed at first use; p15 ties the two Amazon.de orders to the two models; the 'When It Goes Wrong' idea narrowed to what the section does (the table reads each failure against its rule). Transitions of p26, p30, p44 and p17 rewritten for their new neighbours.",
+      "rejected": [
+        "Folding the stage section into The Choices (house heading).",
+        "Merging the author's-synthesis tier into p66 (house take-away tiers).",
+        "Cutting the operator paragraph (earlier decision keeps it short)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json from the published chapter, one spec paragraph per unit. Copied intent.outcome, the five acceptance criteria, the thesis and role unchanged from the journal spec. Added two units the contract asks for and the published chapter lacked: a roadmap paragraph (p05) and a conclusion paragraph (p66) that answers Noor's three questions and returns to the introduction's bargain. Paragraph p03 now states the thesis rather than only the connector's permissions.",
+      "rejected": [
+        "Leaving the roadmap to the KEY POINTS callout, which does not announce the sections."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The old spec's success criteria were inventories and are not carried over as criteria: the term list is covered by the standard known_before_new check against audience.does_not_know; 'business problem first', the five-flow table, the policy table, the stage table and the take-away tiers are what the text contains, not reader outcomes; the ledger and sourcing rules are editorial constraints kept in this log; the 4,000-6,500 word range becomes length.max_words 6,500. No acceptance criteria were added beyond the journal spec's.",
+      "rejected": [
+        "Rewriting each inventory criterion as a custom cold-reader probe, which would duplicate AC-1 to AC-4."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Ledger agreement (rule 1 of the standing instruction): the marketplace-variant table said both marketplace orders reach the ERP 'only in the daily finance batch'; the ledger (erp-and-back-office-integration; commerce-data-and-analytics) says marketplace orders reach the ERP as the connector's weekly summary in 2027, so the table now says so. The stock chain is stated as 'up to two hours' without hop intervals (scene p08 and the variant table), because the ledger's hop intervals sum to more than two hours. The Deprecated Endpoint keeps its ledger facts: February 2027, a version retired on a date published months earlier, the agency script, two days of last figures sent to bol.",
+      "rejected": [
+        "Keeping the 15-minute and hourly hops, which add to more than the ledger's two hours."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Organized the chapter around the connector-owns-nothing rule rather than around a vendor-by-vendor tour, because the reader needs one portable principle and the vendor facts change yearly; vendors appear as dated evidence for the principle."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used the marketplace scorecard as the way into integration requirements (metrics to freshness per flow) instead of starting from APIs, so the business consequence precedes the technical detail, as the style guide requires."
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Kept marketplace-operator architecture to one paragraph and pointed to LISTED, rejecting a longer Mirakl section; the book's reader is a merchant or vendor, not an operator.",
+      "rejected": [
+        "A longer Mirakl section."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Added two illustrative Kestrel & Pine facts (the Oversell's marketplace share and strike; the ten-unit buffer) to the ledger so chapters 10, 26 and Journey 4 can reuse them."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (marketplaces-and-channel-integration; part-5; b2b-commerce transition_in)",
+      "contributed": "Intent, thesis, role, acceptance criteria and the hand-off to chapter 21."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md and _research/consistency-issues.md",
+      "contributed": "The marketplace line, the connector, the Oversell and its marketplace share, the ten-unit buffer, the Deprecated Endpoint, W1, W2, W5, the marketplace variant and the weekly summary to the ERP."
+    },
+    {
+      "kind": "internal",
+      "ref": "meet-kestrel-and-pine",
+      "contributed": "The marketplace line, the connector, the Oversell and the Deprecated Endpoint."
+    },
+    {
+      "kind": "internal",
+      "ref": "inventory-and-availability",
+      "contributed": "Available-to-promise and external locations."
+    },
+    {
+      "kind": "internal",
+      "ref": "order-management",
+      "contributed": "The one order record (W2)."
+    },
+    {
+      "kind": "internal",
+      "ref": "api-contracts-and-versioning",
+      "contributed": "Deprecation discipline."
+    },
+    {
+      "kind": "internal",
+      "ref": "pricing-architecture",
+      "contributed": "Channel price as a derived price."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-marketplaces-channels-pos.md",
+      "contributed": "The verified facts on Amazon, bol, Zalando, connectors, social channels and the DSA."
+    },
+    {
+      "kind": "external",
+      "ref": "Amazon SP-API documentation (rate limits, Orders, Feeds, Notifications, Tokens), accessed 2026-11",
+      "contributed": "API constraints and the events-over-polling guidance."
+    },
+    {
+      "kind": "external",
+      "ref": "Amazon Order Performance Program policy (2026) and seller blog (2024)",
+      "contributed": "Performance thresholds."
+    },
+    {
+      "kind": "external",
+      "ref": "bol Retailer API lifecycle, rate limits and partner platform standards, accessed 2026-11; partner news of 2026-11-03",
+      "contributed": "Deprecation policy, strikes, the v10 retirement date."
+    },
+    {
+      "kind": "external",
+      "ref": "Zalando corporate releases (2022, 2023, 2025), partner university page, TextilWirtschaft (2026)",
+      "contributed": "ZFS, ZEOS, Connected Retail's end."
+    },
+    {
+      "kind": "external",
+      "ref": "Bundeskartellamt press release (2013)",
+      "contributed": "Price parity and the marketplace as competitor."
+    },
+    {
+      "kind": "external",
+      "ref": "Regulation (EU) 2022/2065",
+      "contributed": "Article 30 trader traceability."
+    },
+    {
+      "kind": "external",
+      "ref": "TikTok newsroom (2026), PPC Land (2025)",
+      "contributed": "Social channels switching between feed and checkout."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Confirming round 3 (escalate: 17 passed, 18 failed, 8 corroborated flow points). Closing fixes without another round: prices after the worked example; fifth flow named before Figure 2; restricted-data lead; W1/W2 module wording; 410 dropped; parity warning explained; floor arithmetic shown; In Practice lead names its four developments; forward reference to the orders marked. The check report is stale against these edits."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 2 (escalate: 17 passed, 20 failed). Escalations auto-resolved under the author's standing instruction: p16 cut, prices made a section, round-2 draft failures and cheap minors fixed, open questions closed. Then the confirming round 3."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Round 1 (escalate: 3 spec faults, corroborated). Worked example made a section after allocation; competitor paragraph moved to prices; In Practice given a lead; p61/p62 tied to S6; draft fixes for the round-1 failures."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Flow rubric (sound with notes) taken: p17 moved into prices, p25 into p24, p29 into p30, W glosses, narrower 'When It Goes Wrong'."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "spec.md converted to spec.json from the published chapter; roadmap (p05) and answering conclusion paragraph (p66) added; ledger agreement for the ERP weekly summary and the two-hour stock chain."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator). (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: dropped 'recorded in the ledger' from an illustrative label. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: WHY IT MATTERS cut to two sentences, acronyms expanded on first use, Amazon 15% labeled as the US rate (item 7), unverified bol API version dropped, timetoread corrected. (AI-mediated session)"
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article. (AI-mediated session)"
+    }
+  ],
+  "length": {
+    "max_words": 6600
+  }
+}

@@ -28,9 +28,11 @@ A customer sends back a jacket that does not fit and asks for the next size. The
 
 Kestrel & Pine, the fictional outdoor brand used here, receives almost one in four online items back. At that volume, disconnected decisions become a routine source of errors: two systems can refund the same return, or stock can be offered for sale before inspection. A coordinated return process records each step and authorizes the next, including whether the outcome is a replacement or a refund.
 
-The chapter separates the return authorization (**RMA**, return merchandise authorization), the item's **disposition** or inspection outcome, the replacement order and the refund. [[commerce-payments]] explains money movement, [[warehouse-and-fulfillment]] the physical work and [[tax-invoicing-and-ledger]] the credit note. Store and marketplace variants appear in [[stores-and-omnichannel]] and [[marketplaces-and-channel-integration]]; [[journey-return-and-exchange]] traces a complete example.
+This chapter's answer is that a return travels as two records. The **return request**, or **RMA** (return merchandise authorization), sits on the order side; the **reverse fulfillment** sits in the warehouse. They are joined by the **disposition**, the warehouse's verdict on each item after inspection. Money, stock and books agree when four rules hold. The disposition releases the refund, or in an exchange the held replacement order. One system issues the refund, with the return id as its key. Stock rises only on a "restocked" disposition. The credit note follows the refund.
 
-**Where we are in the order's journey.** Eva receives her Ridgewalker jacket on 15 April 2027 and requests an M-to-L exchange on 19 April. Duiven receives and inspects it on 22 April, then dispatches L. A separate refund alternative returns €199 through iDEAL, the Dutch bank-transfer method. Keeping those alternatives distinct matters: an exchange is not automatically a cash refund.
+**Where we are in the order's journey.** The previous chapter ended with a web order brought back to a store counter, where one refund path per order is the rule. Eva's jacket comes back by post instead. Eva, who lives in Nijmegen, receives her Ridgewalker jacket on 15 April 2027 and requests an M-to-L exchange on 19 April. Duiven receives and inspects it on 22 April, then dispatches L. Had she asked for a refund instead, €199 would have gone back to her through iDEAL, the Dutch bank-transfer method. Keeping those alternatives distinct matters: an exchange is not automatically a cash refund.
+
+The chapter first sets the scene at Kestrel & Pine, with what returns cost, and the Double Refund that led Noor to ask which event moves the money, the stock and the books. It then names the nine steps of a return, shows how the systems and the two records fit together, and reads the EU withdrawal law as data. Next come the four decisions of a returns design, returns that start on marketplaces and at store counters, and how all of this changes across the four scale stages. It ends by following Eva's exchange day by day and listing how returns go wrong. The evidence is Kestrel & Pine's own figures and incidents, the public data models of Shopify and commercetools, the EU directive, marketplace rules and industry return-rate surveys. [[commerce-payments]] covers money movement, [[warehouse-and-fulfillment]] the physical work, [[tax-invoicing-and-ledger]] the credit note and [[journey-return-and-exchange]] a complete example.
 
 ## Setting the Scene at Kestrel & Pine: One Item in Four
 
@@ -38,9 +40,17 @@ Kestrel & Pine received **72,000 return parcels** after shipping 336,000 parcels
 
 **28%** of returns were exchanges and **61%** of returned items were resold as new. In the illustrative daily workload, two people process about **280 parcels**; after Black Friday, five staff the bench for three weeks.
 
-Since 2025, a hosted returns portal has checked eligibility, collected reasons, offered exchange or refund, and issued carrier labels. After warehouse inspection, it can request a refund through the platform's API. It costs €650 monthly plus €0.95 per return.
+### What return rates measure and cost
 
-Kestrel & Pine's commercial policy offers free returns within 14 days of delivery in all three countries. The statutory withdrawal rules are explained below.
+Those are Kestrel & Pine's own figures; published rates often measure something else. The return rate estimates how much of the original selling and shipping work will be followed by inspection, replacement or refund work. State what the rate counts: returned items, affected orders and refunded sales value are different measures.
+
+The US National Retail Federation (NRF) with Happy Returns estimated $890 billion in US retail returns for 2024 (December 2024) and projected $849.9 billion for 2025, with 19.3% of online sales value returned and 9% of returns judged fraudulent (October 2025). Its 2024 survey also found free returns influenced where 76% of respondents shopped. Coresight's smaller April 2023 survey of 100 US apparel decision-makers estimated returns on 24.4% of online apparel orders, with size or fit cited in 53% of cases. That apparel survey is three years old; neither measure directly matches Kestrel & Pine's separately reported shares of items and orders.
+
+Rates this high matter because each return costs money, and most of that cost is invisible in the order system: the label, the handling at the bench, the grading, the repackaging, the markdown on the 39% not resold as new, and the capital tied up in a jacket that spends ten days in transit and inspection. Policy is the lever that moves the rate: better size guidance and photos, charging for returns on some items, and steering toward exchanges. All three need data the return record must capture: the reason, the size ordered against the size kept, the disposition.
+
+### The returns portal and the Double Refund
+
+Since 2025, a hosted returns portal has checked eligibility, collected reasons, offered exchange or refund, and issued carrier labels. After warehouse inspection, it can request a refund through the shop platform's API. It costs €650 monthly plus €0.95 per return.
 
 The portal was bought to fix a returns process run by e-mail. It did, and it created the Double Refund. In January 2027 **212 returns** were refunded twice, **€19,400** in total, most of it recovered. [[commerce-payments]] told the story from the money side; here is the returns side. Customers could see on PostNL's tracking that their parcel had reached Duiven. Some wrote to support the same day asking for their refund. The agent could see the original payment in the console of the PSP (payment service provider: the company that takes the shopper's money and settles it to the merchant) and no refund, because the portal refunds on inspection, which took two to five days. The agent refunded by hand. Two to five days later the portal refunded again. Nothing in either request named the return, so the PSP accepted both.
 
@@ -51,7 +61,7 @@ When Noor Visser, Head of Engineering since January, reviewed the incident in Fe
 
 ## What a Return Is, Step by Step
 
-A return passes through nine steps, and each step has a record, an owner and a way to go wrong. The vocabulary is small and worth learning once.
+To answer Noor's question, the steps of a return need names first. A return passes through nine steps, and each step has a record, an owner and a way to go wrong. The vocabulary is small and worth learning once.
 
 | Step | What happens, in plain words | Record | Who acts | What can go wrong |
 | --- | --- | --- | --- | --- |
@@ -65,19 +75,11 @@ A return passes through nine steps, and each step has a record, an owner and a w
 | **Settlement** | Refund, exchange or store credit, and the credit note | A refund with the return id; an exchange order; a credit note | One system for money; the ERP (enterprise resource planning system, the books) | Two writers; a refund before receipt; the wrong amount after a promotion |
 | **Stock** | The resellable unit becomes available again | A stock event from the WMS (warehouse management system) | The WMS to the availability service | An increment on request instead of on disposition |
 
-Three terms carry the chapter. The **RMA** is the merchant's side of the promise "you may send this back". The **disposition** is the warehouse's verdict, and it is the most important event in the whole flow, because it is the first moment the merchant knows what it actually got back. An **exchange** is a return paired with a new order for a different size, color or item, with any price difference settled as a balance. **Reverse logistics** is the trade's name for the whole backward operation: labels, carriers, receiving, grading, resale, recycling.
-
-### Return rates as an economic fact
-
-The return rate estimates how much of the original selling and shipping work will be followed by inspection, replacement or refund work. State what the rate counts: returned items, affected orders and refunded sales value are different measures.
-
-The US National Retail Federation (NRF) with Happy Returns estimated $890 billion in US retail returns for 2024 (December 2024) and projected $849.9 billion for 2025, with 19.3% of online sales value returned and 9% of returns judged fraudulent (October 2025). Its 2024 survey also found free returns influenced where 76% of respondents shopped. Coresight's smaller April 2023 survey of 100 US apparel decision-makers estimated returns on 24.4% of online apparel orders, with size or fit cited in 53% of cases. That apparel survey is three years old; neither measure directly matches Kestrel & Pine's separately reported shares of items and orders.
-
-What a return costs is mostly invisible in the order system: the label, the handling at the bench, the grading, the repackaging, the markdown on the 39% not resold as new, and the capital tied up in a jacket that spends ten days in transit and inspection. Policy is the lever that moves the rate: better size guidance and photos, charging for returns on some items, and steering toward exchanges. All three need data the return record must capture: the reason, the size ordered against the size kept, the disposition.
+Four terms carry the chapter. The **RMA** is the merchant's side of the promise "you may send this back". The **disposition** is the warehouse's verdict, and it is the most important event in the whole flow, because it is the first moment the merchant knows what it actually got back. An **exchange** is a return paired with a new order for a different size, color or item, with any price difference settled as a balance. **Reverse logistics** is the trade's name for the whole backward operation: labels, carriers, receiving, grading, resale, recycling.
 
 ## How the Pieces Fit Together
 
-Seen from outside, a return is a loop through six systems. The figure shows the target design at Kestrel & Pine after Waypoint, with the OMS (order management system, the one record of every channel's orders that Waypoint introduces in Q4 2027) as the order record; in April 2027 the platform still plays that role.
+Seen from outside, a return is a loop through six systems: the returns portal, the carrier, the WMS, the order record, the PSP and the ERP. The figure shows the target design at Kestrel & Pine after Waypoint, with the OMS (order management system, the one record of every channel's orders that Waypoint introduces in Q4 2027) as the order record; in April 2027 the shop platform still plays that role, and the portal, the single refund writer, asks it for each refund, which it passes to the PSP.
 
 ![Diagram: A return loops through six systems](assets/images/18-returns-and-exchanges/fig01-return-loops-through-six-systems-warehouse.jpeg)
 **Figure 2:** *A return loops through six systems; the warehouse's disposition is the one event that releases the refund, the restock and the credit note, and the order record is the only system that may ask for a refund.*
@@ -99,6 +101,8 @@ The split is the pattern to teach. The first record is about intent and money an
 
 ### Requirements per flow
 
+Each flow between these systems has its own requirements, set out in the table; the legal 14 days it mentions are explained in the next section. In the design this chapter argues for, the refund and the restock wait for the warehouse's disposition, the credit note waits for the refund, and the messages that carry money are keyed on the return, so a repeated message pays nothing twice. Only the eligibility check reads the order as it stands, because the customer is waiting.
+
 | Flow | How fresh | How consistent | How fast | If the other side is down |
 | --- | --- | --- | --- | --- |
 | Eligibility check (portal reads the order) | The order as it is now, including earlier returns on the same line | Must see the delivery date and the delivery option chosen | Seconds, the customer is waiting | Refuse politely and retry; never guess |
@@ -110,39 +114,28 @@ The split is the pattern to teach. The first record is about intent and money an
 
 ## The Law: Fourteen Days, Three Times Over
 
-For a consumer buying at a distance in the EU, the right to return is not the merchant's policy; it is law, and the architecture has to compute its clocks. The **Consumer Rights Directive**, Directive 2011/83/EU of 25 October 2011, published in the Official Journal on 22 November 2011, applies to contracts concluded from **13 June 2014**. Its text, as consolidated by the Publications Office, says:
+The flows above make the refund wait for the disposition; the law decides how long it may wait. For a consumer buying at a distance in the EU, the right to return is not the merchant's policy; it is law, and the architecture has to compute its clocks. The **Consumer Rights Directive**, Directive 2011/83/EU of 25 October 2011, published in the Official Journal on 22 November 2011, applies to contracts concluded after **13 June 2014**. Its text, as consolidated by the Publications Office, says:
 
-- **Article 9(1):** the consumer "shall have a period of 14 days to withdraw from a distance or off-premises contract, without giving any reason, and without incurring any costs other than those provided for in Article 13(2) and Article 14". For goods the period runs from the day the consumer "acquires physical possession of the goods", and for several goods delivered separately, from possession "of the last good" (Article 9(2)(b)).
+- **Article 9(1):** the consumer "shall have a period of 14 days to withdraw from a distance or off-premises contract, without giving any reason, and without incurring any costs other than those provided for in Article 13(2) and Article 14". For goods the period runs from the day the consumer "acquires physical possession of the goods", and for several goods delivered separately, from possession "of the last good" (Article 9(2)(b)(i)).
 - **Article 10:** if the trader did not inform the consumer of the right, the period extends to twelve months.
 - **Article 13(1):** the trader "shall reimburse all payments received from the consumer, including, if applicable, the costs of delivery without undue delay and in any event not later than 14 days from the day on which he is informed of the consumer's decision to withdraw", "using the same means of payment as the consumer used". **Article 13(2):** the trader need not refund extra costs "if the consumer has expressly opted for a type of delivery other than the least expensive type of standard delivery". **Article 13(3):** the trader "may withhold the reimbursement until he has received the goods back, or until the consumer has supplied evidence of having sent back the goods, whichever is the earliest".
 - **Article 14(1):** the consumer must send the goods back "not later than 14 days from the day on which he has communicated his decision to withdraw" and "shall only bear the direct cost of returning the goods unless the trader has agreed to bear them or the trader failed to inform the consumer that the consumer has to bear them". **Article 14(2):** the consumer is liable only for diminished value "resulting from the handling of the goods other than what is necessary to establish the nature, characteristics and functioning of the goods".
 - **Article 6(1)(h) and (i):** before the purchase, the trader must state the conditions and model form for withdrawal and that the consumer bears the return cost where that applies.
 - **Article 16:** no withdrawal right for, among others, goods "made to the consumer's specifications or clearly personalised", goods "liable to deteriorate or expire rapidly", and "sealed goods which are not suitable for return due to health protection or hygiene reasons and were unsealed after delivery".
 
-Read as requirements, the directive asks for four dates per order line: the delivery date (possession), the withdrawal notice date, the goods-sent evidence date and the refund date; the three 14-day clocks run from the first three. It asks the order to keep the delivery option chosen at checkout and its standard-rate equivalent, because the refund amount depends on them. It asks for product attributes (personalized, perishable, sealed hygiene) that eligibility rules can read, which is product-information work ([[product-information]]). And it makes Article 13(3) the legal basis for Kestrel & Pine's "refund on inspection" policy: the trader may wait for the goods, and then has the balance of its 14 days from the notice to pay. The wider regulatory calendar, including the price-reduction rules that decide what a refunded promotion is worth, is in [[commerce-regulation]].
+Read as requirements, the directive asks for four dates per order line: the delivery date (possession), the withdrawal notice date, the goods-sent evidence date and the refund date; the withdrawal period runs from the delivery date, the refund and sending-back periods run from the notice, and the goods-sent evidence ends the trader's right to withhold the refund. It asks the order to keep the delivery option chosen at checkout and its standard-rate equivalent, because the refund amount depends on them. It asks for product attributes (personalized, perishable, sealed hygiene) that eligibility rules can read, which is product-information work ([[product-information]]). And it makes Article 13(3) the legal basis for Kestrel & Pine's "refund on inspection" policy: the trader may wait for the goods, and then has the balance of its 14 days from the notice to pay. The wider regulatory calendar, including the price-reduction rules that decide what a refunded promotion is worth, is in [[commerce-regulation]].
+
+Kestrel & Pine's own commercial policy sits on top of these rules: free returns within 14 days of delivery in all three countries.
 
 ## The Choices
 
-Four decisions shape a returns architecture; each has a few realistic answers.
+Within the law's clocks, four decisions shape a returns architecture; each has a few realistic answers.
 
 **1. Who runs the customer's side.** *Manual*: an e-mail address and a refund button in the platform's admin; the Starting-stage answer. *The platform's own returns*: the platform models the return and the reverse fulfillment, as Shopify does, and may issue labels.
 
 *A returns portal*: a specialist SaaS product. Loop (n.d., accessed November 2026) was "Originally built for Shopify", steers shoppers "toward exchanges or store credit instead of refunds" and claims "5,000+ brands"; Narvar sells returns beside tracking and delivery-date promises and claims "1,500+ global brands"; Returnista, from Amsterdam, offers labels, exchanges "for the right size", store credit, rules-based automation and an API with webhooks for "1,000+ brands in Europe"; Happy Returns, "a UPS company", runs "10,000 Return Bar locations" for box-free drop-off and consolidates returns before they reach the merchant. Multi-carrier shipping platforms bundle the same portal with their labels.
 
-*The OMS*: order management products such as Manhattan and Fluent list returns orchestration and cross-channel returns as modules ([[order-management]]). The vendor claims are undated and will change.
-
-**2. Which event releases the refund.** This is the decision that caused the Double Refund, and it is a policy choice with a legal floor.
-
-| Trigger | Customer waits | Merchant's risk | Legal position (Directive 2011/83/EU) | Fits |
-| --- | --- | --- | --- | --- |
-| **On request** | Not at all | Pays for items that never come back or come back worn | Allowed; the merchant gives up Article 13(3) | Low-value goods; trusted repeat customers |
-| **On carrier scan** (first scan or "delivered to warehouse") | A day or two | Empty boxes, wrong items, worn goods; the 9% fraud share | Allowed; "evidence of having sent back" | Fast-fashion scale with fraud scoring |
-| **On receipt** | Transit plus a day | Wrong or damaged items refunded before anyone looks | Allowed; goods received | Standardized goods with little grading |
-| **On inspection** | Transit plus grading, two to five days at Duiven | Lowest; the refund matches the disposition | Allowed; the merchant then has the balance of 14 days from the notice to pay | Apparel and equipment, Kestrel & Pine's choice |
-
-**3. Who issues the refund.** The portal through the platform's API (Kestrel & Pine today), the OMS through the same platform refund API once it holds the return records (after Waypoint, Q4 2027), or the ERP as part of the credit note. Any of the three works; **two of them at once is the Boomerang**. [[commerce-payments]] gave the money-side rules: one writer, the return id as idempotency key, and a daily comparison of the PSP's refunds with the platform's.
-
-**4. How exchanges work.** *Exchange as a held order*: a new order for the replacement is created at request time, reserving stock, and ships when the return's disposition is resellable; Kestrel & Pine's model, and the right one where the method cannot hold money, as iDEAL cannot. *Instant exchange*: the replacement ships immediately and the merchant holds the customer's card for the original price until the return arrives, which needs a card, an authorization that survives the transit window and a merchant-initiated transaction if it does not ([[commerce-payments]]). *Exchange with a balance*: a different item at a different price, settled as a partial refund or an extra charge. Shopify's model lets the merchant "Release the exchange and collect a balance". Loop's and Returnista's pitch, steering to exchanges and store credit, reflects the economics: an exchange keeps the revenue and costs one more parcel.
+*The OMS*: order management products such as Manhattan and Fluent list returns orchestration and cross-channel returns as modules ([[order-management]]). The vendor claims are undated and will change. The table below compares these four answers; its rows also show what each answer means for eligibility, exchanges and who may refund.
 
 | Choice | Manual | Platform's own returns | Returns portal | OMS returns module |
 | --- | --- | --- | --- | --- |
@@ -153,21 +146,36 @@ Four decisions shape a returns architecture; each has a few realistic answers.
 | Marketplace and store returns | By hand | Mostly outside | Some connectors | Designed for it |
 | Fits | Starting | Starting to Growing on one platform | Growing to Omnichannel | Omnichannel to Group |
 
-My rule: **choose the refund trigger and the refund writer before choosing the product**, write both into the integration contract, and let the warehouse's disposition be the trigger unless the goods are cheap enough that fraud costs less than waiting. At Kestrel & Pine's rate and prices, inspection is the only defensible trigger, and the €199 jacket that comes back worn is the reason.
+**2. Which event releases the refund.** This is the decision that caused the Double Refund, and it is a policy choice with a legal floor. The table compares the four possible triggers (request, carrier scan, receipt, inspection) by how long the customer waits, what the merchant risks and the legal position; inspection, Kestrel & Pine's choice, carries the least risk.
+
+| Trigger | Customer waits | Merchant's risk | Legal position (Directive 2011/83/EU) | Fits |
+| --- | --- | --- | --- | --- |
+| **On request** | Not at all | Pays for items that never come back or come back worn | Allowed; the merchant gives up Article 13(3) | Low-value goods; trusted repeat customers |
+| **On carrier scan** (first scan or "delivered to warehouse") | A day or two | Empty boxes, wrong items, worn goods; the 9% fraud share | Allowed; "evidence of having sent back" | Fast-fashion scale with fraud scoring |
+| **On receipt** | Transit plus a day | Wrong or damaged items refunded before anyone looks | Allowed; goods received | Standardized goods with little grading |
+| **On inspection** | Transit plus grading, two to five days at Duiven | Lowest; the refund matches the disposition | Allowed; the merchant then has the balance of 14 days from the notice to pay | Apparel and equipment, Kestrel & Pine's choice |
+
+**3. Who issues the refund, and for how much.** The portal through the shop platform's API (Kestrel & Pine in April 2027), the OMS through the same platform refund API once it holds the return records (after Waypoint, Q4 2027), or the ERP as part of the credit note. Any of the three works; **two of them at once produces the Boomerang**, the failure pattern in which refunds and credit notes are settled by hand and sometimes twice; the Double Refund was one case of it. [[commerce-payments]] gave the money-side rules: one writer, the return id as idempotency key, and a daily comparison of the PSP's refunds with the platform's. Whichever system issues it refunds the line price after its allocated discounts, which the order export has carried since Waypoint's W5, the integration standards; in November 2026, before W5, 190 returned jackets were refunded at €159.20 instead of €143.28 ([[commerce-promotions]]).
+
+**4. How exchanges work.** *Exchange as a held order*: a new order for the replacement is created at request time, reserving stock, and ships when the return's disposition is resellable; Kestrel & Pine's model, and the right one where the method cannot hold money, as iDEAL cannot. *Instant exchange*: the replacement ships immediately and the merchant holds the customer's card for the original price until the return arrives, which needs a card, an authorization that survives the transit window and a merchant-initiated transaction (a charge the merchant starts on the stored card) if it does not ([[commerce-payments]]). *Exchange with a balance*: a different item at a different price, settled as a partial refund or an extra charge. Shopify's model lets the merchant "Release the exchange and collect a balance". Loop's and Returnista's pitch, steering to exchanges and store credit, reflects the economics: an exchange keeps the revenue and costs one more parcel.
+
+Taken together, the four decisions give my rule: **choose the refund trigger and the refund writer before choosing the product**, write both into the integration contract, and let the warehouse's disposition be the trigger unless the goods are cheap enough that fraud costs less than waiting. At Kestrel & Pine's rate and prices, inspection is the only defensible trigger, and the €199 jacket that comes back worn is the reason.
 
 ## Returns From Marketplaces and Stores
 
-A marketplace can authorize a return or issue a refund outside the merchant's own portal. The merchant must import those actions into its return and payment records, or staff can repeat work the marketplace has already completed.
+The merchant chooses its own trigger and writer; a marketplace does not ask. A marketplace can authorize a return or issue a refund outside the merchant's own portal, and such a return still has to reconcile with the merchant's records.
 
-A return the merchant did not start still has to reconcile. On Amazon, for seller-fulfilled orders, Amazon's seller guidance (April 2025) says most items "can be returned within 30 days of the order's 'estimated delivery date'"; US return requests covered by Amazon's policy are authorized automatically and prepaid labels are issued through Amazon's shipping; sellers should "respond to requests within 24 hours" when their authorization is needed and issue refunds "within two days of receiving returns, or Amazon may issue an automatic refund"; a claim under the A-to-z Guarantee can be charged to the seller.
+On Amazon, for seller-fulfilled orders, Amazon's seller guidance (April 2025) says most items "can be returned within 30 days of the order's 'estimated delivery date'"; US return requests covered by Amazon's policy are authorized automatically and prepaid labels are issued through Amazon's shipping; sellers should "respond to requests within 24 hours" when their authorization is needed and issue refunds "within two days of receiving returns, or Amazon may issue an automatic refund"; a claim under the A-to-z Guarantee, Amazon's buyer protection, can be charged to the seller.
 
 For orders fulfilled by the marketplace's own program, the marketplace receives and grades the return and charges the seller a returns-processing fee; Zalando's logistics arm ZEOS described "around 20 returns centres" in its November 2024 announcement.
 
 The merchant's return record must therefore accept RMAs it did not create and refunds it did not issue, keyed by the marketplace's return id. Otherwise support can issue a second refund or finance can miss the first one. The 24-hour and two-day clocks also become deadlines the integration must expose, so staff can act before the marketplace acts for them ([[marketplaces-and-channel-integration]]).
 
-Store returns are the mirror case. A web order brought to the Nijmegen counter is returned at the till: the till must find the online order, accept the item, record the return and restock to the store or send it to Duiven, and the portal's request, if one exists, must be closed before anything is paid. [[stores-and-omnichannel]] sets that rule; until the POS (the stores' point-of-sale system) and the platform are linked, Kestrel & Pine's stores refund web orders only after the portal request is closed by a support agent, by hand *(illustrative)*.
+Store returns are the mirror case. A web order brought to the Nijmegen counter is returned at the till: the till must find the online order, accept the item, record the return and restock to the store or send it to Duiven, and the portal's request, if one exists, must be closed before anything is paid. [[stores-and-omnichannel]] sets the rule of one refund path per order; until the POS (the stores' point-of-sale system) and the platform are linked, Kestrel & Pine's stores refund web orders only after the portal request is closed by a support agent, by hand *(illustrative)*.
 
 ## Across Scale Stages: When It Fits and When It Limits
+
+Marketplaces and stores multiply the places a return can start, and growth multiplies them further. The judgement: the return's *shape* (request, transit, inspection, disposition, settlement) does not change with scale, and neither does the law. What changes is the number of channels a return can come from and the number of systems that could act on it. Stage 2 is where the refund trigger and writer must be fixed, because it is the stage at which a portal, a warehouse and an ERP first all hold a copy of the return.
 
 | Stage | What is typical | What becomes necessary | Signs the stage is ending |
 | --- | --- | --- | --- |
@@ -176,39 +184,37 @@ Store returns are the mirror case. A web order brought to the Nijmegen counter i
 | **3 — Omnichannel** (about €20M–€200M) | Returns from storefronts, marketplaces and stores into one record; dispositions feeding availability; returns analytics by reason, size and product; a returns bench that scales for peak | An order hub that accepts external RMAs and external refunds; one refund path per channel; a daily refund reconciliation; returns in the Black Friday plan | Support checks three systems for one return; marketplace refunds counted twice in the books; the bench backed up for weeks in December |
 | **4 — Group** (over about €200M, or several brands) | Shared reverse logistics (returns centers, consolidation, resale channels) with dispositions per brand; return policy as a per-brand setting on shared infrastructure; return fraud scoring | A returns service with per-brand rules; cross-brand customer return history ([[identity-and-master-data]]); negotiated carrier return networks | Each brand running its own portal and carrier contracts; dispositions defined differently per warehouse |
 
-The judgement: the return's *shape* (request, transit, inspection, disposition, settlement) does not change with scale, and neither does the law. What changes is the number of channels a return can come from and the number of systems that could act on it. Stage 2 is where the refund trigger and writer must be fixed, because it is the stage at which a portal, a warehouse and an ERP first all hold a copy of the return.
-
 ## In Practice
 
-**Public examples.** Shopify's return and reverse-fulfillment model, with its four dispositions, is the most complete public description of the two-record pattern (n.d., accessed November 2026). commercetools' per-item shipment and payment states show the same separation in a headless platform. Amazon's seller rules (April 2025) show a marketplace owning the policy, the authorization and sometimes the refund. NRF's 2024 and 2025 reports put numbers on why it matters: free returns as a deciding factor for 76% of consumers, and 9% of returns fraudulent.
+The public models cited above show the pattern in general; Kestrel & Pine's own case shows it on one return.
 
-**Kestrel & Pine: Eva's exchange, 19 to 22 April 2027.** The table says what each system knew and did; the days are canonical, the hours are illustrations.
+**Kestrel & Pine: Eva's exchange, 19 to 22 April 2027.** Each system acts once, on the right event: the bench grades the jacket "restocked" at 10:15 on 22 April, the return closes and the held size L is released, it ships in the 13:00 wave, and that night the ERP's credit note and new invoice net to zero. The table says what each system knew and did; the days are fixed facts of the case, the hours are illustrations.
 
 | When | Event | System | Record |
 | --- | --- | --- | --- |
 | Mon 19 Apr, 20:40 | Eva opens the portal from her order e-mail, selects the jacket, reason "too small", exchange for size L | The returns portal | Return R-20270419-1, status requested, 4 days after delivery, inside the 14-day window |
-| Mon 19 Apr, 20:41 | The portal checks eligibility against order #1072455 (delivered 15 April, standard delivery, apparel, no earlier return on the line) and issues a prepaid PostNL label | The portal, the platform | Return open; a return shipment with a tracking number |
-| Mon 19 Apr, 20:41 | The portal asks the platform to create the exchange order for size L, held until the return is graded | The platform | Order #1072455-X1 for one jacket, women's L, moss, €0 balance; one unit of L committed |
+| Mon 19 Apr, 20:41 | The portal checks eligibility against order #1072455 (delivered 15 April, standard delivery, apparel, no earlier return on the line) and issues a prepaid PostNL label | The portal, the shop platform | Return open; a return shipment with a tracking number |
+| Mon 19 Apr, 20:41 | The portal asks the shop platform to create the exchange order for size L, held until the return is graded | The shop platform | Order #1072455-X1 for one jacket, women's L, moss, €0 balance; one unit of L committed |
 | Tue 20 Apr | Eva drops the parcel at a PostNL point; first scan | PostNL, the shipping service | Return in transit |
 | Thu 22 Apr, 10:15 | The bench scans the RMA, opens the parcel, inspects the jacket | The WMS | Reverse fulfillment received; inspected; disposition restocked |
-| Thu 22 Apr, 10:16 | The WMS reports the disposition; the platform closes the return and releases the held order | The WMS, the integration platform, the platform | Return closed; exchange order released; stock of M moss plus one in the WMS |
+| Thu 22 Apr, 10:16 | The WMS reports the disposition; the shop platform closes the return and releases the held order | The WMS, the integration platform, the shop platform | Return closed; exchange order released; stock of M moss plus one in the WMS |
 | Thu 22 Apr, 13:00 wave | Size L is picked, packed and labeled | The WMS | Exchange shipped; Eva's shipping confirmation |
 | Night of 22 Apr | The ERP receives the return, the credit note for the size M invoice line and the new invoice for size L, netting to zero | The ERP | Books agree ([[tax-invoicing-and-ledger]]) |
 
-**The refund variant.** Had Eva chosen a refund, step three would not exist. On the disposition at 10:16 on 22 April the portal would have asked the platform to refund €199 with return id R-20270419-1 as the idempotency key; the platform would have instructed the PSP; the PSP would have sent a new iDEAL transfer to Eva's account and reported it by webhook; the ERP would have booked a €199 credit note. Eva's notice was 19 April, so the legal deadline was 3 May; the refund went out on day three. Had support, on 21 April, seen "delivered to Duiven" on the tracking and refunded in the PSP console, that would have been the Double Refund; since February 2027 the console is read-only for support and an agent opens the return in the portal instead, where the pending refund and its trigger are visible.
-
-**The amount.** A refund is the price the customer paid for that line, after the discounts that applied to it. The promotions chapter records what happens otherwise: in November 2026, 190 returned jackets were refunded at €159.20 instead of €143.28 because the order-level discount had not been allocated to lines in the export. Since Waypoint's W5 the order export to the returns portal, the WMS and the ERP carries the allocated net price per line ([[commerce-promotions]]).
+**The refund variant.** Had Eva chosen a refund, the third row of the table, the held exchange order, would not exist. On the disposition at 10:16 on 22 April the portal would have asked the shop platform to refund €199 with return id R-20270419-1 as the idempotency key; the shop platform would have instructed the PSP; the PSP would have sent a new iDEAL transfer to Eva's account and reported it by webhook; the ERP would have booked a €199 credit note. Eva's notice was 19 April, so the legal deadline was 3 May; the refund went out on day three. Under the setup before February 2027, an agent who saw "delivered to Duiven" on the tracking on 21 April could have refunded in the PSP console and repeated the Double Refund. Since February 2027 that cannot happen. The portal is the only refund writer, with the return id as its key, and a daily comparison of refunds goes to finance. The console is read-only for support, so an agent opens the return in the portal instead, where the pending refund and its trigger are visible.
 
 ## When It Goes Wrong
 
-**The double refund.** Two writers, no key. Detection: the daily comparison of the PSP's refunds with the platform's by order and amount; two for one return is a hit. Recovery: ask for the money back; block the second writer. Prevention: one writer, the return id as key, read-only console access, and a portal the agent can see.
+Eva's return worked because each system acted once, on the right event. Where one of those rules is missing, the same path fails in seven ways.
+
+**The double refund (the Boomerang).** Two writers, no key. Detection: the daily comparison of the PSP's refunds with the platform's by order and amount; two for one return is a hit. Recovery: ask for the money back; block the second writer. Prevention: one writer, the return id as key, read-only console access, and a portal the agent can see.
 
 ![Before and after: two hands refund one return twice without a key; one hand refunds once with the return id as key.](assets/images/18-returns-and-exchanges/18-two-writers-one-key.jpeg)
 **Figure 4:** *The Double Refund in one picture: two writers and no key let the payment provider accept two refunds for one return; one writer using the return id as its key lets it accept exactly one.*
 
 **The refund without a return.** Refund on request or on scan, and the parcel never arrives or holds a different item. Detection: refunds older than N days with no "received" event; dispositions of `MISSING` or `NOT_RESTOCKED` against refunded returns. Recovery: a customer conversation and, at scale, a fraud score per customer. Prevention: refund on inspection where the goods are worth it.
 
-**The phantom restock.** Stock is incremented on the request, or on the carrier scan, or on receipt before grading, and a worn jacket is sold again. Detection: the weekly WMS-to-availability reconciliation; complaints about "new" items. Prevention: stock moves only on a `RESTOCKED` disposition from the WMS, which is the single writer of on-hand stock ([[inventory-and-availability]], Waypoint W1).
+**The phantom restock (the Phantom Stock).** Stock is incremented on the request, or on the carrier scan, or on receipt before grading, and a worn jacket is sold again. Detection: the weekly WMS-to-availability reconciliation; complaints about "new" items. Prevention: stock moves only on a `RESTOCKED` disposition from the WMS, which is the single writer of on-hand stock ([[inventory-and-availability]]; Waypoint's W1, which made the WMS the system of record for physical stock).
 
 **The return with no record.** A parcel arrives at Duiven with no RMA: a marketplace-authorized return the connector did not import, or a customer who used an old label. Detection: a "no RMA" queue at the bench with a daily count. Recovery: match by tracking number or order number, create the RMA after the fact, settle under the channel's rules. Prevention: every marketplace return event acknowledged into the order record with the marketplace's return id ([[marketplaces-and-channel-integration]]).
 
@@ -216,9 +222,11 @@ The judgement: the return's *shape* (request, transit, inspection, disposition, 
 
 **The missed deadline.** The refund is issued on day sixteen because the bench was three weeks behind in December. Detection: a return-aging report against the Article 13 clock, by notice date. Recovery: refund now, apologize, and staff the bench for peak. Prevention: returns in the Black Friday plan ([[journey-peak-day]]).
 
-**The three-system status.** The customer asks "where is my refund?"; the portal says open, the WMS says received, the PSP says nothing. Detection and recovery: one status, built from the same events, shown to the customer and the agent alike ([[customer-service-and-notifications]]).
+**The three-system status (Schrödinger's Order).** The customer asks "where is my refund?"; the portal says open, the WMS says received, the PSP says nothing. Kestrel & Pine's Three-Status Order, #1052877 in December 2026, was the same failure for a two-parcel order and drew eleven tickets from one customer. Detection and recovery: one status, built from the same events, shown to the customer and the agent alike ([[customer-service-and-notifications]]).
 
 ## What to Take Away
+
+The jacket at the start of this chapter, sent back for the next size, needs the portal, the warehouse, the payment provider and the ERP to act once each and in the right order. The Double Refund, the phantom restock and the missed deadline are that order broken: money or stock moved before the warehouse's disposition, more than one system moved it, or the clock ran out while nobody watched it. One set of rules repairs all three: the disposition releases money and stock, each action has one writer and a key, and the dates that drive the law's clocks are kept. For a merchant that means no refund paid twice, no worn item sold as new and no refund past the legal deadline. Kestrel & Pine's February 2027 fix for the Double Refund applied the first two rules to refunds (one refund writer, the return id as key, a read-only console and a daily comparison); it was not a new returns product.
 
 **Established.**
 
@@ -250,7 +258,7 @@ The judgement: the return's *shape* (request, transit, inspection, disposition, 
 8. What is the refund amount on a line that carried an order-level discount?
 9. How many returns are older than ten days without a refund, and who sees that list?
 
-The item is back on the shelf, the money is back in Eva's account or a size L is on its way, and the books agree. What Eva saw of all this was a few messages: your return is registered, your parcel is on its way, we have received it, your exchange has shipped. Those messages, the status page behind them and the agent who answers when they are not enough are the subject of [[customer-service-and-notifications]].
+The item is back on the shelf, the money is back in Eva's account or a size L is on its way, and the books agree. What Eva saw of all this was a few messages: your return is registered, your parcel is on its way, we have received it, your exchange has shipped. Those messages are right only if they, the status page behind them and the agent who answers when they are not enough all read the same events. When they read different systems, one customer can write eleven tickets about one order, as the Three-Status Order showed. Building them from one record is the subject of [[customer-service-and-notifications]].
 
 ## Sources and Evidence
 
@@ -264,7 +272,7 @@ The item is back on the shelf, the money is back in Eva's account or a size L is
 
 *Standards, regulation and official documentation*
 
-- [Directive 2011/83/EU on consumer rights](http://publications.europa.eu/resource/celex/32011L0083), Official Journal, 2011-11-22 — the right of withdrawal (Article 9), the information duty (Article 6), the twelve-month extension (Article 10), reimbursement (Article 13), the consumer's obligations (Article 14) and the exceptions (Article 16); applicable to contracts concluded from 13 June 2014.
+- [Directive 2011/83/EU on consumer rights](http://publications.europa.eu/resource/celex/32011L0083), Official Journal, 2011-11-22 — the right of withdrawal (Article 9), the information duty (Article 6), the twelve-month extension (Article 10), reimbursement (Article 13), the consumer's obligations (Article 14) and the exceptions (Article 16); applicable to contracts concluded after 13 June 2014.
 
 *Research and practitioner sources*
 

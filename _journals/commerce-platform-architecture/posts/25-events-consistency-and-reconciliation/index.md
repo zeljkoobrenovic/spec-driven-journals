@@ -24,19 +24,23 @@ logo: "assets/images/25-events-consistency-and-reconciliation/logo.jpeg"
 > * **The Phantom Stock** — a stock copy that drifts from the warehouse's truth, with nothing comparing the two, sells units that are gone.
 
 <br>
-A warehouse accepts an order, but its reply is lost. The sending system cannot tell whether the work started, so it tries again. Unless the warehouse recognizes the repeated instruction, one purchase can become two shipments. Separate systems need a way to recover from uncertainty without repeating the business action. [[integration-styles]] compares exchange methods; this chapter explains that recovery.
+A warehouse accepts an order, but its reply is lost. The sending system cannot tell whether the work started, so it tries again. Unless the warehouse recognizes the repeated instruction, one purchase can become two shipments. [[integration-styles]] chose an exchange style for each flow, and every asynchronous style brings the same risks: a time in which two systems disagree, messages that arrive twice or out of order, and failures that leave one side updated and the other not. This chapter explains how separate systems recover from that uncertainty without repeating or losing the business action.
 
 A database transaction can keep changes together inside one system. It cannot cover a hosted storefront, another vendor's warehouse software, a finance system and an external payment provider as one shared operation. Each completes its own work and can fail independently. The merchant must discover which steps succeeded, then finish the rest or undo commitments that can no longer be kept.
 
-Five mechanisms do that work: recognize repeated messages; save an outgoing event with the fact it describes; retry without overwhelming the receiver; reverse completed actions when necessary; and compare records to find gaps. We explain **idempotency**, **outbox**, **backoff**, **compensation** and **reconciliation** through those jobs.
+Five mechanisms do that work: recognize repeated messages; save an outgoing event with the fact it describes; retry without overwhelming the receiver; reverse completed actions when necessary; and compare records to find gaps. Their names are **idempotency**, the **outbox**, **retries with backoff**, **compensation** and **reconciliation**.
 
-**Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027. Order, payment and warehouse updates arrive at different times. Her later exchange adds return and stock messages; choosing a refund instead would add a payment reversal. Each message may repeat or fail to arrive. What must the next system do?
+**Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027. Order, payment and warehouse updates arrive at different times. She later exchanges it, which adds return and stock messages. Each message may repeat or fail to arrive. What must the next system do?
+
+This chapter's answer is to assume that every message may arrive late, twice or out of order, and to build all five mechanisms in. Two rules carry most of the weight. The **idempotency key** names the business action, not the attempt, so a repeat does nothing. The differences a **reconciliation job** finds are fixed from the system of record, and the first question about any difference is who else writes the fact.
+
+The chapter starts from two Kestrel & Pine cases: its first stock reconciliation, in May 2027, and the Double Refund of January 2027. It then explains eventual consistency and why every delivery arrives "at least once", and takes the five mechanisms in turn, ending with the card that specifies each reconciliation job. After that it says which mechanisms each flow needs, compares the ways to keep systems in agreement and how they change with scale, follows a refund of Eva's jacket through the fixed design, says how a flow is monitored, and lists what goes wrong and what detects it. The evidence is the vendors' own documentation (Stripe, Shopify, Mollie, Kafka, AWS, Microsoft) and the original papers.
 
 ## Setting the Scene at Kestrel & Pine: The First Reconciliation
 
-Kestrel & Pine had never compared warehouse and storefront stock. The **warehouse management system (WMS)** sent counts to the **enterprise resource planning system (ERP)** every fifteen minutes, and the ERP copied them to the platform hourly. People assumed the chain kept the figures aligned.
+Kestrel & Pine had never compared warehouse and storefront stock. The **warehouse management system (WMS)** sent counts to the **enterprise resource planning system (ERP)** every fifteen minutes, and the ERP copied them to the shop platform hourly. People assumed the chain kept the figures aligned.
 
-In **May 2027**, as part of Waypoint's integration standards (decision W5: every integration gets an owner, a contract, idempotent handling and a reconciliation job), Ruben Alves ran the first weekly **reconciliation**: a job that reads the WMS's on-hand quantity and the platform's available quantity for every active variant and lists the ones that differ. Of about 17,000 active variants, **2.3%**, about **390**, had a different figure in the two systems *(illustrative)*. The breakdown, over the following week:
+In **May 2027**, as part of Waypoint's integration standards (decision W5: every integration gets an owner, a contract, idempotent handling and a reconciliation job), Ruben Alves ran the first weekly **reconciliation**: a job that reads the WMS's on-hand quantity and the shop platform's available quantity for every active variant and lists the ones that differ. Of about 17,000 active variants, **2.3%**, about **390**, had a different figure in the two systems *(illustrative)*. The breakdown, over the following week:
 
 | Cause of the difference (May 2027, illustrative) | Variants (about) | What it was |
 | --- | --- | --- |
@@ -47,11 +51,11 @@ In **May 2027**, as part of Waypoint's integration standards (decision W5: every
 
 Head of Engineering Noor Visser drew two conclusions. First, nobody had known about the differences. Second, many came from systems writing stock they did not own. Faster messaging would not fix competing writers.
 
-Waypoint decision W1 gives the WMS authority over physical stock and introduces an availability service in Q4 2027. The three apps lose stock-writing permission; the pre-order app receives an explicit allocation instead. The comparison job remains as a check, weekly and daily through November.
+Waypoint decision W1 gives the WMS authority over physical stock and introduces an availability service in Q4 2027. The three apps lose stock-writing permission; the pre-order app receives an explicit allocation instead. The comparison job remains as a check: weekly, and daily throughout November.
 
-**I would run it daily all year.** Leaving about 390 unexplained differences for a week leaves room for more overselling. Noor put more effort into the event feed. That is the tradeoff: faster propagation reduces drift; frequent comparison reveals what still escaped.
+Waypoint chose a weekly cadence. **I would run it daily all year.** A week is long enough for differences like those 390 to cause more overselling. Noor chose to put the effort into the event feed instead: the stock events from the WMS that W1's availability service will consume. That is the tradeoff: faster propagation reduces drift; frequent comparison reveals what still escaped.
 
-The second scene is older. In **January 2027**, over three weeks, **212 returns** were refunded twice: once by the returns portal through the platform's API (application programming interface: the operations a system lets other software perform), which instructed the PSP, and once by support agents in the PSP's own console, who refunded by hand when customers whose parcels had reached Duiven asked where their money was. **€19,400** went out twice, most of it recovered. Two writers, no shared key, no job comparing refunds issued with refunds due. The rest of this chapter is the toolkit that stops both scenes from recurring.
+Money had shown the same shape four months earlier. In **January 2027**, over three weeks, **212 returns** were refunded twice: once by the returns portal through the shop platform's API (application programming interface: the operations a system lets other software perform), which instructed the PSP, and once by support agents in the PSP's own console. The agents refunded by hand when customers asked where their money was, because their parcels had already reached Duiven, Kestrel & Pine's warehouse. **€19,400** went out twice, most of it recovered. Two writers, no shared key, no job comparing refunds issued with refunds due. The rest of this chapter is the toolkit that stops both scenes from recurring.
 
 ![One returned parcel at the warehouse triggers two refunds, one from the returns portal and one from a support agent's console, both reaching the same payment provider](assets/images/25-events-consistency-and-reconciliation/25-two-writers-one-refund.jpeg)
 **Figure 1:** *Two writers and no shared key: 212 returns were refunded twice, once by the returns portal and once by hand in the payment provider's console, and €19,400 went out twice.*
@@ -60,28 +64,28 @@ The second scene is older. In **January 2027**, over three weeks, **212 returns*
 
 A **copy** of a fact is consistent with its **system of record** (the system whose value counts when they disagree; see [[boundaries-and-systems-of-record]]) when both show the same value. Across separate systems joined by messages, they cannot always show the same value, because the message takes time. **Eventual consistency** is the promise that is possible: if updates stop, all copies will eventually show the last value. Werner Vogels, then Amazon's CTO, defined it that way in a December 2008 article (old, but the definition has not changed), together with the smaller promises a designer can add on top, such as "a reader always sees its own writes."
 
-Gregor Hohpe's 2004 essay "Starbucks Does Not Use Two-Phase Commit" made the point most practitioners still quote: the cashier takes the order and the money while baristas make drinks asynchronously; drinks finish out of order, so the name on the cup matches drink to customer; and when something goes wrong the shop does not freeze the queue; it writes off the drink, remakes it or refunds the money. Starbucks, he wrote, "is primarily interested in maximizing throughput of orders." So is a commerce platform at 38 orders a minute. The three recoveries he named, **write-off, retry and compensating action**, are still the whole menu.
-
-![Diagram: The same order event delivered twice](assets/images/25-events-consistency-and-reconciliation/fig01-same-order-event-delivered-twice-queue.jpeg)
-**Figure 2:** *The same order event delivered twice. The queue is doing its job (it would rather repeat than lose); the WMS is safe only because it remembers the order number it has already processed.*
+Gregor Hohpe's 2004 essay "Starbucks Does Not Use Two-Phase Commit" (two-phase commit is a protocol that makes several systems commit a change together or not at all) made the point most practitioners still quote: the cashier takes the order and the money while baristas make drinks asynchronously; drinks finish out of order, so the name on the cup matches drink to customer; and when something goes wrong the shop does not freeze the queue; it writes off the drink, remakes it or refunds the money. Starbucks, he wrote, "is primarily interested in maximizing throughput of orders." So is Kestrel & Pine at its Black Friday 2026 peak of 38 orders a minute. The three recoveries he named, **write-off, retry and compensating action**, still cover what a business can do about a failed step; the five mechanisms of this chapter are how separate systems carry them out.
 
 The window of disagreement is normal; a window that never closes, or that nobody can see, is not.
 
 ## At Least Once: Why Duplicates Are the Default
 
-Every delivery mechanism a merchant meets prefers repeating a message to losing it. Apache Kafka's design documentation (version 4.4, accessed November 2026) states that Kafka "guarantees at-least-once delivery by default"; exactly-once is available inside Kafka's own processing and with transactions, but destinations outside Kafka "need cooperation from those systems." Shopify's webhook documentation (n.d., accessed November 2026) says it "minimizes duplicate deliveries, but your app might receive the same webhook more than once." Stripe's (n.d., accessed November 2026) says endpoints "might occasionally receive the same event more than once." Mollie, a Dutch PSP, calls a webhook up to ten times over 26 hours until it gets a success response (documentation accessed November 2026).
+Every delivery mechanism a merchant meets prefers repeating a message to losing it. The design documentation of Apache Kafka, an open-source platform for streams of events (version 4.4, accessed November 2026), states that Kafka "guarantees at-least-once delivery by default"; exactly-once is available inside Kafka's own processing and with transactions, but destinations outside Kafka "need cooperation from those systems." Shopify's webhook documentation (n.d., accessed November 2026) says it "minimizes duplicate deliveries, but your app might receive the same webhook more than once." Stripe's (n.d., accessed November 2026) says endpoints "might occasionally receive the same event more than once." Mollie, a Dutch PSP, calls a webhook up to ten times over 26 hours until it gets a success response (documentation accessed November 2026).
 
 **At-least-once delivery** means exactly what it says: the message will arrive one or more times. The alternative, at-most-once, means it may not arrive at all, which for an order or a refund is worse. "Exactly once" is not a property you receive from a queue or a vendor; it is a property the receiver builds by recognizing repeats. The CloudEvents specification (a standard of the Cloud Native Computing Foundation, CNCF, for the envelope around an event; graduated January 2024) builds this in: every event carries a `source` and an `id`, a re-sent duplicate keeps the same `id`, and consumers may treat events with the same `source` and `id` as duplicates.
 
-Ordering is the second thing not to expect. Shopify "doesn't guarantee ordering within a topic," so a product update can arrive before the product's creation; Stripe "doesn't guarantee the delivery of events in the order that they're generated" and warns against using the event's timestamp to decide order, because distinct events can share one. Kafka orders messages only within a partition, one slice of a stream. A design that assumes "shipped" arrives after "allocated" will one day process them the other way round.
+Ordering is the second thing not to expect. Shopify "doesn't guarantee ordering within a topic" (one kind of event), so a product update can arrive before the product's creation; Stripe "doesn't guarantee the delivery of events in the order that they're generated" and warns against using the event's timestamp to decide order, because distinct events can share one. Kafka orders messages only within a partition, one slice of a stream. A design that assumes "shipped" arrives after "allocated" will one day process them the other way round.
 
 ## Idempotency: Making a Repeat Harmless
 
 An operation is **idempotent** when doing it twice has the same effect as doing it once. Reading a stock level is; "create an order", "refund €199" and "subtract one from stock" are not, unless you make them so. The way to make them so is an **idempotency key**: a unique token for the business action, sent with the request and remembered by the receiver, so that a second request with the same key is recognized and answered without doing the work again.
 
-The PSPs document it best, because money is where duplicates hurt most. Stripe's API (documentation accessed November 2026) accepts an `Idempotency-Key` header on every request that creates or changes something; it "saves the status code and body of the first request made with a given idempotency key" and returns the saved response to retries, errors if the retry's parameters differ from the original's, suggests random unique identifiers (UUIDs) as keys, and may prune keys after 24 hours. Shopify's GraphQL Admin API (accessed November 2026) takes an `idempotencyKey` on mutations that are not naturally idempotent, so that "repeated requests with the same parameters are executed only once, no matter how many times the request is retried." On the receiving side, Shopify gives each webhook delivery an `X-Shopify-Webhook-Id` and Stripe each event an `id`, and both tell you to store the ids you have processed and skip repeats.
+![Diagram: The same order event delivered twice](assets/images/25-events-consistency-and-reconciliation/fig01-same-order-event-delivered-twice-queue.jpeg)
+**Figure 2:** *The same order event delivered twice. The queue is doing its job (it would rather repeat than lose); the WMS is safe only because it remembers the order number it has already processed.*
 
-The rule I use for choosing the key is that **it must name the business action, not the attempt.** A timestamp or a random number per attempt defeats the purpose, because the retry gets a new one. The table gives the keys for the actions every merchant performs:
+The PSPs document it best, because money is where duplicates hurt most. Stripe's API (documentation accessed November 2026) accepts an `Idempotency-Key` header on every request that creates or changes something; it "saves the status code and body of the first request made with a given idempotency key" and returns the saved response to retries, errors if the retry's parameters differ from the original's, suggests random unique identifiers (UUIDs) as keys, and may prune keys after 24 hours. Shopify's GraphQL Admin API (accessed November 2026) takes an `idempotencyKey` on mutations (requests that change data) that are not naturally idempotent, so that "repeated requests with the same parameters are executed only once, no matter how many times the request is retried." On the receiving side, Shopify gives each webhook delivery an `X-Shopify-Webhook-Id` and Stripe each event an `id`, and both tell you to store the ids you have processed and skip repeats.
+
+The rule I use for choosing the key is that **it must name the business action, not the attempt.** A timestamp or a random number per attempt defeats the purpose, because the retry gets a new one. A random identifier such as Stripe's suggested UUID works only if it is created once for the business action and reused on every retry. The table gives the keys for the actions every merchant performs:
 
 | Action | Idempotency key | Why that key |
 | --- | --- | --- |
@@ -92,9 +96,9 @@ The rule I use for choosing the key is that **it must name the business action, 
 | Send a shipping confirmation e-mail | (order, shipment id) | The customer should get one |
 | Create a customer | E-mail or external id, with care ([[identity-and-master-data]]) | Matching is harder than deduplication |
 
-The Double Refund fails this test twice over. The returns portal and the support console were two writers with no shared key; the PSP would have declined the second refund had the second request carried the return id the first one used. Waypoint's fix was two rules: **one writer per money action** (refunds go through the returns portal and the platform; support no longer refunds in the PSP console) and the return id as the key on every refund request. A receiver that cannot say what its key is cannot be made safe; that is the first question to ask of any integration that creates, moves or pays.
+The Double Refund fails this test twice over. The returns portal and the support console were two writers with no shared key, and the PSP accepted both refunds because neither request named the return. Had the second request carried the return id the first one used, the PSP would have recognized the second refund as a repeat and not paid it again. Waypoint's fix was two rules: **one writer per money action** (refunds go through the returns portal and the shop platform; support's access to the PSP console is now read-only) and the return id as the key on every refund request. A receiver that cannot say what its key is cannot be made safe; that is the first question to ask of any integration that creates, moves or pays.
 
-Out-of-order events need a second defense, because a stale update is not a duplicate. Three responses, in rising cost: make the handler tolerant (a "shipped" event that arrives before "allocated" is stored and re-evaluated when the missing state arrives); carry a version or `updated_at` per entity and drop updates older than what is stored; or route all events for one entity through one consumer, as Walmart's inventory design described on Confluent's blog in May 2020 does, one partition per item and store so that "only one consumer processes it." Stripe's own advice is the simplest of all: when an event arrives early, fetch the current object from the API rather than trusting the payload.
+Out-of-order events need a second defense, because a stale update is not a duplicate. Three responses, in rising cost: make the handler tolerant (a "shipped" event that arrives before "allocated" is stored and re-evaluated when the missing state arrives); carry a version or `updated_at` per entity and drop updates older than what is stored; or route all events for one entity through one consumer, as Walmart's inventory design described on Confluent's blog in May 2020 does, one partition per item and store so that "only one consumer processes it" (six years old and at a scale no merchant in this book needs, but the idea is the same at any size). Stripe's own advice is the simplest of all: when an event arrives early, fetch the current object from the API rather than trusting the payload. Mollie (accessed November 2026) builds that advice into its design: the webhook carries only an `id`, never the status, so "fake calls to your webhook will never result in orders being processed without being actually paid," and the receiver must fetch the current status.
 
 ## The Outbox: Never Losing the Event Between the Database and the Queue
 
@@ -109,24 +113,35 @@ A merchant on a SaaS platform cannot build or inspect the platform's outbox. Wha
 
 ## Retries, Backoff and the Dead-Letter Queue
 
-When a call or a delivery fails, the obvious response is to try again. Done naively, retries make an outage worse: a thousand integrations all retrying at the same second hit the recovering system together. **Exponential backoff** waits longer after each failure (one second, two, four, eight). Marc Brooker of AWS showed by simulation in March 2015 that backoff alone is not enough, because clients still cluster: "The solution isn't to remove backoff. It's to add jitter," meaning randomness in the wait, which in his simulation with 100 contending clients cut total calls by more than half. Stripe's rate-limit guidance (accessed November 2026) says the same for its `429` responses: back off exponentially and "add randomness to the backoff schedule to avoid a thundering herd effect." Shopify's recommended backoff after a throttle is one second.
+When a call or a delivery fails, the obvious response is to try again. Done naively, retries make an outage worse: a thousand integrations all retrying at the same second hit the recovering system together. **Exponential backoff** waits longer after each failure (one second, two, four, eight). Marc Brooker of AWS showed by simulation in March 2015 that backoff alone is not enough, because clients still cluster: "The solution isn't to remove backoff. It's to add jitter," meaning randomness in the wait, which in his simulation with 100 contending clients cut total calls by more than half. Stripe's rate-limit guidance (accessed November 2026) says the same for its `429` ("too many requests") responses: back off exponentially and "add randomness to the backoff schedule to avoid a thundering herd effect." Shopify's recommended backoff after a throttle is one second.
 
 Retries must end somewhere. A **dead-letter queue** (DLQ) is where a message goes after it has failed more than a set number of times, so that it is neither lost nor retried forever. The documentation of Amazon SQS (Simple Queue Service; accessed November 2026) describes the `maxReceiveCount` after which a message moves, advises setting it "high enough to allow for sufficient retries," and recommends giving the dead-letter queue a longer retention than the source, because a moved message keeps its original timestamp. Messages can be moved back ("redrive") once the cause is fixed.
 
-A dead-letter queue with nobody watching it is a silent order-loss mechanism. The operational rule: **every DLQ has an alarm, an owner and a written replay procedure**, and the number of messages sitting in dead-letter queues is a health metric beside orders per minute ([[peak-load-and-reliability]]). On Black Friday 2026 no order was lost, but an order that had exhausted the integration platform's (the iPaaS's) three retries would have gone nowhere a person would look: the inventory of [[integration-styles]] found that no flow had a DLQ at all.
+A dead-letter queue with nobody watching it is a silent order-loss mechanism. The operational rule: **every DLQ has an alarm, an owner and a written replay procedure**, and the number of messages sitting in dead-letter queues is a health metric beside orders per minute ([[peak-load-and-reliability]]). On Black Friday 2026 no order was lost. But the inventory of [[integration-styles]] found that no flow had a DLQ at all, so an order that had used up the iPaaS's three retries would have gone nowhere a person would look.
 
 ## Sagas and Compensation: Undoing What Cannot Be Rolled Back
 
-Placing an order touches several systems: reserve the stock, authorize the payment, create the order, confirm to the shopper. Inside one database you would wrap those in a **transaction**, a unit of work that either completes entirely or leaves no trace. Across the availability service, the PSP and the OMS there is no such thing. If the payment is declined after the stock was reserved, the reservation must be released by a second, deliberate action.
+So far each failure concerned one message. A process of several steps can fail halfway. Placing an order touches several systems: reserve the stock, authorize the payment, create the order, confirm to the shopper. Inside one database you would wrap those in a **transaction**, a unit of work that either completes entirely or leaves no trace. Across the availability service, the PSP and the OMS there is no such thing. If the payment is declined after the stock was reserved, the reservation must be released by a second, deliberate action.
 
 The name for this is a **saga**. Hector Garcia-Molina and Kenneth Salem introduced it in a 1987 paper (old, but it is still the definition in use): a long-lived transaction written as a sequence of smaller transactions, where the system guarantees "that either all the transactions in a saga are successfully completed or compensating transactions are run to amend a partial execution." A **compensating action** is the business undo: release the reservation, void the authorization, cancel the pick. Richardson's catalog adds the two ways to coordinate one: **choreography**, where each step publishes an event that triggers the next (no central brain, hard to see the whole flow), and **orchestration**, where one component tells each participant what to do and tracks where the saga is.
 
 ![Diagram: The place-order saga](assets/images/25-events-consistency-and-reconciliation/fig03-place-order-saga-each-step-that.jpeg)
 **Figure 4:** *The place-order saga: each step that fails triggers the compensations for the steps before it; nothing is rolled back, everything is undone on purpose.*
 
-The commerce sagas worth naming are three. **Place order**: reserve, authorize, create, confirm, with the compensations in the figure. **Cancel after shipment**: there is no undo for a parcel already with PostNL; the compensation is a return and a refund on receipt, which is a business process with a parcel, a warehouse grade and a credit note, not a database operation ([[returns-and-exchanges]]). **Split shipment**: each location's allocation is its own step with its own release. The drawback Richardson names, "lack of isolation," is real: between steps, another order can see stock that is reserved-but-not-yet-paid, which is exactly why an availability service counts reservations, not just physical units ([[inventory-and-availability]]).
+The commerce sagas worth naming are three. **Place order**: reserve, authorize, create, confirm, with the compensations in the figure. **Cancel after shipment**: there is no undo for a parcel already with PostNL; the compensation is a return and a refund on receipt, which is a business process with a parcel, a warehouse inspection grade and a credit note, not a database operation ([[returns-and-exchanges]]). **Split shipment**: each location's allocation is its own step with its own release. The drawback Richardson names, "lack of isolation," is real: between steps, another order can see stock that is reserved-but-not-yet-paid, which is exactly why an availability service counts reservations, not just physical units ([[inventory-and-availability]]).
 
 In practice the saga orchestrator for a merchant's order is the **OMS**, the one place that holds every order and steers it through payment, fulfillment, delivery and return ([[order-management]]). That is a large part of what Waypoint's decision W2 buys: a component whose job is to know which step of which order has happened, and what to do when the next one fails.
+
+The table compares orchestration with choreography, the other way to run a saga:
+
+| | Choreography | Orchestration |
+| --- | --- | --- |
+| **Who decides the next step** | Each participant, by reacting to events | One orchestrator, usually the OMS |
+| **Visibility** | The whole flow is in nobody's code | One place shows where every order is |
+| **Coupling** | Lowest | The orchestrator knows every participant |
+| **Fits** | Two or three steps, few participants | The order lifecycle at the Omnichannel stage, where support must answer "where is my order" |
+
+My judgement: for a merchant, orchestration by the OMS wins once there are more than three systems in the order's path, because the question support asks ("where is this order and what happens next?") has to be answerable from one screen. Choreography is right for the edges: notifications, analytics, anything that listens and never has to be undone.
 
 ## Reconciliation as a First-Class Component
 
@@ -135,7 +150,7 @@ Everything above reduces the chance of disagreement. None of it proves there is 
 ![Two open ledgers side by side, the warehouse ledger and the storefront ledger, with lines joined by green ticks and a few mismatched lines flagged in orange onto an exception list](assets/images/25-events-consistency-and-reconciliation/25-two-ledgers-matched.jpeg)
 **Figure 5:** *Reconciliation is two ledgers matched line by line: in the first stock run, about 390 of some 17,000 variants differed between the WMS and the platform, and each difference went on an exception list to a named owner.*
 
-The vendors give it precise shape. Stripe's payout reconciliation report (accessed November 2026) helps "match the payouts you receive in your bank account with the batches of payments and other transactions that they relate to," itemizing "every payment, refund, dispute, fee, and other balance transaction included in the payout" with an id per line and an `order_id` for matching, and it warns that "a payout might arrive before its reconciliation data is ready." Shopify tells apps to run periodic sweeps with `updated_at` filters so they stay consistent with Shopify's data. Microsoft's Business Central Shopify connector (documentation of October 2026) reconciles stock continuously: it compares "Shopify Stock" with "Last Calculated Stock" per variant and location and sends an update only when they differ, keeping "Last Synced On" and "Last Calculated On" timestamps for troubleshooting. That compare-and-send loop is a reconciliation job built into a product.
+The vendors give it precise shape. Stripe's payout reconciliation report (accessed November 2026) helps "match the payouts you receive in your bank account with the batches of payments and other transactions that they relate to," itemizing "every payment, refund, dispute, fee, and other balance transaction included in the payout" with an id per line and an `order_id` for matching, and it warns that "a payout might arrive before its reconciliation data is ready." Shopify tells apps to run periodic sweeps with `updated_at` filters so they stay consistent with Shopify's data. The Shopify connector of Microsoft's Business Central, an ERP product (documentation of October 2026), reconciles stock continuously: it compares "Shopify Stock" with "Last Calculated Stock" per variant and location and sends an update only when they differ, keeping "Last Synced On" and "Last Calculated On" timestamps for troubleshooting. That compare-and-send loop is a reconciliation job built into a product.
 
 Every reconciliation job can be written on one card, and I would require the card before the job goes live:
 
@@ -145,10 +160,10 @@ Every reconciliation job can be written on one card, and I would require the car
 | **Matching key** | SKU and location | Order number and amount | Order number | Balance transaction id or order id |
 | **Tolerance** | Zero per variant | Zero | Zero | Zero to the cent |
 | **Cadence** | Weekly, Sunday 03:00; daily in November; the availability service closes the gap by events in between | Daily | Nightly | Per payout, and monthly close |
-| **Who gets the exceptions** | Ruben's team and Milan | Sanne's team | Ruben's team | Finance |
+| **Who gets the exceptions** | Ruben Alves's integration team and Milan Petrov (e-commerce) | Sanne de Wit's finance team | Ruben's team | Finance |
 | **The fix** | Overwrite the platform from the WMS (W1), find and remove the writer | Reverse the duplicate, block the writer | Replay the missing event | Book the difference, open a dispute |
 
-Two design points matter. **The system of record decides the direction of the fix.** Because W1 names the WMS for physical stock, the platform's figure is overwritten and the platform-side writer is hunted, never the reverse. And **a zero tolerance is a choice, not a default**: for stock it is zero because one wrong variant at peak is one Phantom Stock incident; for a copy of product descriptions it could be a count threshold. No public source gives a typical disagreement rate between a WMS and a shop; the 2.3% is Kestrel & Pine's illustration and has no benchmark behind it.
+Two design points matter. **The system of record decides the direction of the fix.** Because W1 names the WMS for physical stock, the shop platform's figure is overwritten and the platform-side writer is hunted, never the reverse. And **a zero tolerance is a choice, not a default**: for stock it is zero because one wrong variant at peak is one Phantom Stock incident; for a copy of product descriptions it could be a count threshold. No public source gives a typical disagreement rate between a WMS and a shop; the 2.3% is Kestrel & Pine's illustration and has no benchmark behind it.
 
 ![Diagram: A reconciliation job is a loop with a recipient](assets/images/25-events-consistency-and-reconciliation/fig04-reconciliation-job-loop-recipient-copy-corrected.jpeg)
 **Figure 6:** *A reconciliation job is a loop with a recipient: the copy is corrected from the system of record, and the exception list leads to the writer that should not have been writing.*
@@ -157,7 +172,7 @@ Two design points matter. **The system of record decides the direction of the fi
 
 ## What Each Flow Needs
 
-The mechanisms are chosen per flow, like the styles. The table states, for the flows this chapter touches, how long disagreement is tolerable and which mechanism closes the gap.
+The mechanisms are chosen per flow, like the styles. The table states, for the flows this chapter touches, how long disagreement is tolerable and which mechanism closes the gap. Freshness is how current a copy must be when someone reads it; consistency on arrival is what must hold when the message lands; availability is what the flow does while the other side is down. The rows are the author's recommendation; the Kestrel & Pine cadences are illustrative.
 
 | Flow | Tolerable window of disagreement | Freshness needed | Consistency on arrival | Availability | Mechanisms that earn their place |
 | --- | --- | --- | --- | --- | --- |
@@ -165,14 +180,12 @@ The mechanisms are chosen per flow, like the styles. The table states, for the f
 | **Order placed** (platform to OMS, WMS, ERP) | Minutes for the warehouse; an hour for finance | Seconds | Never lost, never doubled | Queue; the warehouse works from what it has | Order number as key; outbox or webhook plus sweep; nightly order reconciliation; DLQ with owner |
 | **Refunds** (returns portal, platform, PSP) | Hours | Minutes | Exactly once, to the cent | Can queue; a late refund is a complaint, a double one is a loss | One writer; return id as key; daily refund reconciliation |
 | **Shipment confirmed** (WMS to platform, OMS, notifications) | Minutes | Minutes | One confirmation per shipment | Can queue | (order, shipment) as key; tolerant handler for early arrival |
-| **Prices and promotions** | Minutes; a promotion start to the minute | Minutes | Latest version wins | Fail loudly | Version per price list; alert on a missed run ([[pricing-architecture]]) |
-| **Payment status** (PSP to platform) | Minutes; method expiry windows for the long tail | Seconds to minutes | Terminal state must be reached | Webhook retried by the PSP for a day or three | Event id as key; fetch the status from the PSP when it matters; daily sweep of orders not in a terminal state |
-
-*(The author's recommendation; the Kestrel & Pine cadences are illustrative.)*
+| **Prices and promotions** | Minutes; a promotion start to the minute | Minutes | Latest version wins | Fail loudly (alert at once) | Version per price list; alert on a missed run ([[pricing-architecture]]) |
+| **Payment status** (PSP to platform) | Minutes; for slow payment methods, until the method's payment window expires | Seconds to minutes | A final state (paid, failed or expired) must be reached | Webhook retried by the PSP for one to three days, depending on the provider | Event id as key; fetch the status from the PSP when it matters; daily sweep of orders not in a final state |
 
 ## The Choices and Their Trade-Offs
 
-There are four ways to keep two systems in agreement, and a merchant will use more than one.
+The per-flow table assumed events with idempotent consumers. That is one of four ways to keep two systems in agreement, and a merchant will use more than one.
 
 | | Distributed transaction (two-phase commit) | Events with idempotent consumers and reconciliation | Scheduled compare-and-send | Manual correction |
 | --- | --- | --- | --- | --- |
@@ -181,47 +194,30 @@ There are four ways to keep two systems in agreement, and a merchant will use mo
 | **Coupling and availability** | Both must be up; one locks the other | Each works alone; the queue holds the rest | Each works alone | None |
 | **Cost to build** | High; needs both vendors' cooperation, which SaaS vendors do not give | Medium: keys, outbox or sweep, DLQ, card per job | Low | None, then everything |
 | **Fits** | One database, one vendor | Stock, orders, refunds, shipments across vendors | Products, prices, finance, and as the safety net under events | Never as the design; always as the last resort |
-| **Limits** | Hohpe's warning: it "can also hurt the free flow of messages"; unavailable across SaaS | Needs the discipline of this chapter | Stale by design; the Price Drift was a compare-and-send that stopped | The Double Refund was manual correction without a key |
-
-And between the two ways to run a saga:
-
-| | Choreography | Orchestration |
-| --- | --- | --- |
-| **Who decides the next step** | Each participant, by reacting to events | One orchestrator, usually the OMS |
-| **Visibility** | The whole flow is in nobody's code | One place shows where every order is |
-| **Coupling** | Lowest | The orchestrator knows every participant |
-| **Fits** | Two or three steps, few participants | The order lifecycle at Omnichannel scale, where support must answer "where is my order" |
-
-My judgement: for a merchant, orchestration by the OMS wins once there are more than three systems in the order's path, because the question support asks ("where is this order and what happens next?") has to be answerable from one screen. Choreography is right for the edges: notifications, analytics, anything that listens and never has to be undone.
+| **Limits** | Hohpe's warning: it "can also hurt the free flow of messages"; unavailable across SaaS | Needs the discipline of this chapter | Stale by design; the Price Drift (nine days of a wrong German price) was a compare-and-send that stopped | The Double Refund was manual correction without a key |
 
 ## Across Scale Stages: When It Fits and When It Limits
 
-The four stages are the book's (see [[commerce-scaling-stages]]).
+Which of these choices a merchant must make itself depends on its stage. The four stages are the book's (see [[commerce-scaling-stages]]).
 
 | Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |
 | --- | --- | --- | --- |
 | **1 — Starting** | The platform and its apps handle retries and duplicates; the merchant never sees a queue | Check the apps' failure logs weekly; reconcile PSP payouts to the books monthly | A refund issued twice "by accident"; an order the 3PL (the third-party warehouse) never received, found by the customer |
 | **2 — Growing** | The first custom integration (ERP connector, returns portal, marketplace sync) built by an agency or a partner, usually without keys or a DLQ | Idempotent writes on every create, refund and stock change; retry with backoff; a daily reconciliation for orders and for stock | An oversell in the first busy week; a connector that "sometimes" doubles orders; nobody can say what a flow's key is |
-| **3 — Omnichannel** | A dozen systems, 20–40 flows; a double-refund or a stock-drift incident has already happened | Written standards: a key per entity, an event envelope with id, source and type, a DLQ with an owner per flow, a reconciliation card per flow, four signals per flow; an OMS orchestrating the order saga | Reconciliation findings that nobody owns; a DLQ nobody has opened; sagas that live in three people's heads |
-| **4 — Group** | A shared event bus and schema registry across brands; a platform team owns the standards | Reconciliation as a data-platform job across brands ([[commerce-data-and-analytics]]); replay tooling; service levels for the bus | One brand's bad event schema stalling another's consumers; exceptions routed to a central team that does not know the business |
+| **3 — Omnichannel** | A dozen systems, 20–40 flows; a double-refund or a stock-drift incident has already happened | Written standards: a key per entity, an event envelope with id, source and type, a DLQ with an owner per flow, a reconciliation card per flow, monitoring of each flow; an OMS orchestrating the order saga | Reconciliation findings that nobody owns; a DLQ nobody has opened; sagas that live in three people's heads |
+| **4 — Group** | A shared event bus (one messaging backbone) and a registry of event formats across brands; a platform team owns the standards | Reconciliation as a data-platform job across brands ([[commerce-data-and-analytics]]); replay tooling; service levels for the bus | One brand's bad event schema stalling another's consumers; exceptions routed to a central team that does not know the business |
 
 The judgement: idempotency and reconciliation do not change with scale; a Starting-stage merchant needs them from its PSP and its 3PL, a Group needs them from its own bus. What changes is who builds them. Below the Omnichannel stage they are bought inside products (the PSP's idempotency keys, the connector's compare-and-send); from the Omnichannel stage the merchant has enough flows of its own that the discipline must be written down and owned, which is what W5 is.
 
 ## In Practice
 
-**Dated public evidence.** Stripe's idempotent-requests documentation (accessed November 2026) is the clearest public model of a key-based design: one key per request, the first response saved and replayed, a mismatch in parameters rejected. Mollie's webhook design (accessed November 2026) shows a different defense against lies and duplicates: the webhook carries only an `id`, never the status, so "fake calls to your webhook will never result in orders being processed without being actually paid," and the receiver must fetch the current status.
-
-Microsoft's Business Central connector (October 2026) ships a compare-and-send reconciliation for stock. Stripe's payout reconciliation report (accessed November 2026) is the finance-side template for the reconciliation card.
-
-Walmart's 2020 inventory design, described on Confluent's blog (six years old; it may describe a replaced system), shows one consumer per item and location at a scale no merchant in this book needs; the idea is the same at any size. Google's Site Reliability Engineering book (2017) names the four golden signals, latency, traffic, errors and saturation, that the monitoring section below applies to flows.
-
 **The refund path after the fix.** Suppose Eva chooses a refund rather than a replacement jacket. In the illustrative design introduced in February 2027, inspection on 22 April triggers the portal's refund request. The return id identifies the request all the way to the payment provider, so a retry cannot send another €199.
 
-The provider's success notification is stored once, and finance receives the credit note in its nightly batch. Support can inspect the refund in the platform but can no longer issue a second one in the provider's console.
+The provider's success notification is stored once, and finance receives the credit note in its nightly batch. Support can inspect the refund in the shop platform; its access to the provider's console is read-only, so it cannot issue a second one.
 
 Each morning, a job compares provider and platform refunds by order and amount and sends unmatched entries to finance. January's 212 duplicate refunds would have appeared the next morning.
 
-**Monitoring the flow.** The SRE book's four signals become, per integration: end-to-end lag (order placed to order in the WMS), events per minute against the expected rate, failed deliveries and DLQ depth, and rate-limit headroom. The reconciliation job's variance is the black-box check, "what's broken"; the connector's own log is the white-box check, "why." The alert most teams forget is traffic at zero while the shop is busy: a deleted webhook subscription produces no errors at all.
+**Monitoring the flow.** The morning job checks a flow's results after the fact; monitoring watches the flow while it runs. Google's Site Reliability Engineering book (2017) names four golden signals for watching a system: latency, traffic, errors and saturation. Per integration they become end-to-end lag (order placed to order in the WMS), events per minute against the expected rate, failed deliveries and DLQ depth, and rate-limit headroom. The reconciliation job's variance is the black-box check, "what's broken"; the connector's own log is the white-box check, "why." The alert most teams forget is traffic at zero while the shop is busy: a deleted webhook subscription produces no errors at all.
 
 ## When It Goes Wrong
 
@@ -229,15 +225,17 @@ Each morning, a job compares provider and platform refunds by order and amount a
 
 **Gaps.** A webhook retried for hours and then dropped; a subscription deleted after repeated failures; an event stuck in a DLQ nobody opens. Detection is the polling sweep and the DLQ alarm; recovery is replay. Stripe allows manual resend of events for 15 days from its dashboard, 30 by its command-line tool (documentation accessed November 2026); replay is safe only because of idempotency.
 
-**Stale copies.** The 390 variants of May 2027, and the Price Drift of October 2026. Detection is the reconciliation job and the alert on a missed run; recovery is overwriting from the system of record and finding the writer. A stale copy with no job is found by a customer.
-
 **Retry storms.** A recovering ERP hit by every connector at once. Backoff with jitter on every caller, and a circuit breaker (stop calling after repeated failures, try again later) on the ones that matter at peak ([[peak-load-and-reliability]]).
 
 **Partial failures.** The order exists in the WMS and not in the ERP, or the reservation exists and the payment was declined. The saga's compensations handle the second; the nightly order reconciliation finds the first. A partial failure nobody designed for becomes the Three-Status Order ([[order-management]]).
 
+**Stale copies.** The 390 variants of May 2027, and the Price Drift of October 2026, when a price sync failed silently and the German storefront sold at €179 for nine days. Detection is the reconciliation job and the alert on a missed run; recovery is overwriting from the system of record and finding the writer. A stale copy with no job is found by a customer.
+
 **Vendor outages.** When the PSP paused Kestrel & Pine's account for 40 minutes in August 2026, webhooks stopped too. Webhooks resume with retries, but only within the vendor's window (26 hours at Mollie, three days at Stripe); a daily sweep of orders whose payment has not reached a terminal state, querying the PSP directly, is the net under the net.
 
 ## What to Take Away
+
+The warehouse in the opening, whose reply was lost, can now take the repeated instruction safely: it recognizes the order number as the key and does nothing the second time. The instruction was certain to be sent because it was saved with the order in an outbox, or picked up by the sweep, and the nightly order reconciliation shows the next morning whether warehouse and shop agree. Four of the five mechanisms reduce disagreement; only the comparison shows what remains, which is why it belongs to the integration from the first day.
 
 **Established.**
 
@@ -249,7 +247,7 @@ Each morning, a job compares provider and platform refunds by order and amount a
 
 - Below the Omnichannel stage the merchant buys these mechanisms inside products (the PSP's keys, a connector's compare-and-send) and needs only to check payouts monthly and failure logs weekly; from the Omnichannel stage, with its own flows, it must write the standards down and own them.
 - Orchestration by an OMS is right when more than three systems sit in the order's path and support must answer "where is it" from one screen; choreography is right for listeners that never have to be undone.
-- Reconciliation cadence follows the cost of a wrong copy: daily for refunds, nightly for orders, per payout for money, weekly for content; for stock, weekly is tolerable only while an event feed closes the gap in between, and daily in the peak months.
+- Reconciliation cadence follows the cost of a wrong copy: daily for refunds, nightly for orders, per payout for money; for stock, weekly is tolerable only while an event feed closes the gap in between, and daily in the peak months.
 
 **The author's synthesis.**
 
@@ -257,6 +255,8 @@ Each morning, a job compares provider and platform refunds by order and amount a
 - Most drift has a writer that should not have been writing; when a reconciliation finds differences, the first question is "who else writes this?", not "which queue dropped it."
 
 ## Questions to Ask
+
+To apply these take-aways at your own company, ask:
 
 1. For each integration that creates, refunds, captures or adjusts stock: what is its idempotency key, and where are processed keys stored?
 2. What happens when the same order event arrives twice, and when "shipped" arrives before "allocated"?

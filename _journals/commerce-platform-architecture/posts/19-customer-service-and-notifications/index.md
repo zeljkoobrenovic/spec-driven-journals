@@ -26,19 +26,19 @@ logo: "assets/images/19-customer-service-and-notifications/logo.jpeg"
 <br>
 A customer receives a shipping email, checks a page that says 'Delivered' and then hears from support that the order is still being picked. The customer has three answers and still does not know when to expect the parcel. Conflicting messages create extra contacts and weaken confidence in promises that may otherwise have been kept.
 
-The disagreement starts with facts held in different places. The platform knows the order and payment; the warehouse knows the shipment; the carrier knows delivery; the returns process knows what came back. Notifications, the status page and support need a shared interpretation of those facts, including partial shipments, so they can give the same useful answer.
+The disagreement starts with facts held in different places. The platform knows the order and payment; the warehouse knows the shipment; the carrier knows delivery; the returns process knows what came back. Notifications, the status page and the agent's screen should therefore read one order record built from those events. That record keeps the goods state of each line or parcel, the money state and any return state. The record matters because every disagreement between the views reaches the service desk as a customer contact.
 
-This chapter connects three views: **transactional notifications**, messages about an actual order; the customer's **order status page**; and the agent's **service view**. They draw on [[order-management]], [[shipping-and-delivery]] and [[returns-and-exchanges]]. [[identity-and-master-data]] explains how to recognize the same customer across channels.
+This chapter connects three views: **transactional notifications**, messages about an actual order; the customer's **order status page**; and the agent's **service view**. They draw on [[order-management]], [[shipping-and-delivery]] and [[returns-and-exchanges]]. [[identity-and-master-data]] explains how to recognize the same customer across channels. The chapter starts with the eleven support tickets of one Kestrel & Pine order. It names the system that must send each message and treats the status page and "where is my order" contacts as a measurement. Next it shows the separate states an order record keeps and how one such record joins the three views. It compares four ways to build this service layer and how the answer changes with scale. It then applies them to marketplace orders, Eva's messages and service measures, and ends with what goes wrong, including the agent who cannot find the customer (the Familiar Stranger). The evidence is Kestrel & Pine's tickets, the documentation of platforms, helpdesks and carriers (Shopify, commercetools, Zendesk and others) and vendor data on service contacts.
 
-**Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictional outdoor brand. We follow the messages from order #1072455's confirmation on 13 April 2027 to her replacement jacket's dispatch on 22 April, the page she checks between messages and the record support needs if she contacts them.
+**Where we are in the order's journey.** Eva bought a jacket from Kestrel & Pine, the fictional outdoor brand, on 13 April 2027. She exchanged it for a larger size, and the previous chapter closed that return on the warehouse's inspection: her size L jacket shipped on 22 April. She saw only a few messages of all that work. This chapter follows those messages from order #1072455's confirmation on 13 April to her replacement jacket's dispatch on 22 April, the page she checks between messages and the record support needs if she contacts them.
 
 ## Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order
 
-Kestrel & Pine's **Three-Status Order**, #1052877, produced **11 support tickets over six days** in December 2026. The platform said *Delivered*, the warehouse management system (WMS) said *In picking*, and the enterprise resource planning system (ERP) said *Not invoiced*. [[order-management]] explains the shared-record problem. Here we examine its cost to the customer and support team.
+The opening's three conflicting answers happened at Kestrel & Pine. Its **Three-Status Order**, #1052877, produced **11 support tickets over six days** in December 2026. The shop platform said *Delivered*, the warehouse management system (WMS) said *In picking*, and the enterprise resource planning system (ERP) said *Not invoiced*. [[order-management]] explains the shared-record problem. Here we examine its cost to the customer and support team.
 
-The €137 order contained a €119 fleece and €18 socks. The fleece shipped on 7 December; the socks awaited replenishment. The integration treated the first shipment as fulfillment of the whole order. When PostNL delivered the fleece on 8 December, the page and email said *Delivered*.
+In the book's fictional reconstruction, the €137 order contained a €119 fleece and €18 socks. The fleece shipped on 7 December; the socks awaited replenishment. The iPaaS integration flow treated the first shipment as fulfillment of the whole order. When PostNL delivered the fleece on 8 December, the page and email said *Delivered*.
 
-The WMS kept the order *In picking* while the socks waited. The ERP could not invoice until the WMS sent "order complete". **Nobody told the customer to expect two parcels.** These details are the fictional reconstruction used throughout the book.
+The WMS kept the order *In picking* while the socks waited. The ERP could not invoice until the WMS sent "order complete". **Nobody told the customer to expect two parcels.** The table shows each of the eleven tickets: what she asked, and what the agent could see.
 
 | Day | Channel | What the customer asked | What the agent could see | What the agent did |
 | --- | --- | --- | --- | --- |
@@ -52,9 +52,9 @@ The WMS kept the order *In picking* while the socks waited. The ERP could not in
 | Sat 12 Dec | E-mail | Asked whether she had been charged for both | Platform: paid €137; ERP not visible to support | Asked finance by e-mail on Monday |
 | Sun 13 Dec | E-mail | Asked again | Nothing new | No reply until Monday |
 | Mon 14 Dec | Phone | "Just tell me one thing that is true." | Socks shipped that morning; new tracking number | Gave the second tracking number by phone |
-| Mon 14 Dec | E-mail | Asked for the tracking number in writing | Same | Sent it, with a €10 voucher *(local detail)* |
+| Mon 14 Dec | E-mail | Asked for the tracking number in writing | Same | Sent it, with a €10 voucher *(illustrative)* |
 
-The useful answer was simple: **the order ships in two parcels, and the second leaves on the 14th**. No system held that answer. Agents checked five tabs: platform, warehouse, carrier tracking, payment provider and returns portal. Finance alone could see the ERP.
+The useful answer was simple: **the order ships in two parcels, and the second leaves on the 14th**. No system held that answer. Agents checked five tabs: the shop platform, the warehouse, carrier tracking, payment provider and returns portal. Finance alone could see the ERP.
 
 Waypoint, Kestrel & Pine's improvement program, addresses this with a purchased **order management system (OMS)** by Q4 2027 under decision W2, and order status through an API under W8. The goal is one explainable record for customers and agents.
 
@@ -63,12 +63,12 @@ Waypoint, Kestrel & Pine's improvement program, addresses this with a purchased 
 
 ## What the Customer Needs to Know, and Which System Knows It
 
-A **transactional notification** is a message triggered by an event on the customer's own order, as opposed to marketing: confirmed, shipped, delivered, refunded. The list of notifications a merchant sends is, read the other way, a list of events some system must emit. Shopify's help page on customer notifications (n.d., accessed November 2026) is a usable inventory: order confirmation (which cannot be deactivated), shipping confirmation at fulfillment, shipping update "when tracking information is updated", out for delivery and delivered, each triggered "when a carrier or fulfillment app reports" the event, order refund and order canceled.
+No system held the answer "two parcels", so start from the answers a customer needs and the system that knows each. A **transactional notification** is a message triggered by an event on the customer's own order, as opposed to marketing: confirmed, shipped, delivered, refunded. Every notification a merchant sends therefore needs an event that some system must emit. Shopify's help page on customer notifications (n.d., accessed November 2026) is a usable inventory. It lists the order confirmation, which cannot be deactivated, and the shipping confirmation at fulfillment. It lists a shipping update "when tracking information is updated", and out-for-delivery and delivered messages, each triggered "when a carrier or fulfillment app reports" the event. It ends with the order refund and the order canceled messages.
 
 | Customer-facing message | Event behind it | Which system emits it | Typical lag the customer tolerates |
 | --- | --- | --- | --- |
-| Order confirmed | Order placed and payment authorized | The platform, after the PSP answers | Seconds |
-| Payment problem | Authorization failed or pending (bank transfer, buy-now-pay-later) | The platform, from the PSP's webhook (a message the PSP pushes when a payment changes state) | Minutes |
+| Order confirmed | Order created with payment pending; the PSP's signed message marks it paid | The platform, after that signed message ([[cart-and-checkout]]) | Seconds |
+| Payment problem | Payment failed, or still pending (bank transfer, buy-now-pay-later) | The platform, from the PSP's webhook (a message the PSP pushes when a payment changes state) | Minutes |
 | Shipped, with tracking | Parcel handed to the carrier, label scanned | The WMS or the 3PL (third-party logistics provider), via the shipping service | Minutes to an hour |
 | Ships in two parcels | A fulfillment order split, or one line delayed | The OMS; nothing emits it in a landscape without one | Before the first parcel arrives |
 | Out for delivery; delivered; attempted | Carrier scan events | The carrier, normalized by the shipping service | Minutes |
@@ -81,13 +81,13 @@ The middle row is the one a newcomer should stare at. "Ships in two parcels" is 
 
 The **order status page** is the self-service page where the customer sees where the order is. It is the cheapest answer to "where is my order" the merchant will ever give, and it is a **read model**: a view assembled from the order record and the tracking stream for the purpose of being read, not the place where either is written.
 
-Shopify's documentation of its page (n.d., accessed November 2026) shows the design choices in miniature: five customer-facing states, "Confirmed, On its way, Out for delivery, Delivered, and Attempted delivery", updated only for supported carriers; "If you fulfill an order without a tracking number, then no shipping updates are received"; and an access rule under which a visitor who is not logged in sees items, total and status but not the address, the payment method or the tracking number, with link access lasting three weeks in the same browser.
+Shopify's documentation of its page (n.d., accessed November 2026) shows the design choices in miniature. The page has five customer-facing states, "Confirmed, On its way, Out for delivery, Delivered, and Attempted delivery", updated only for supported carriers. "If you fulfill an order without a tracking number, then no shipping updates are received." A visitor who is not logged in sees the items, the total and the status, but not the address, the payment method or the tracking number. The link keeps working for three weeks in the same browser.
 
 Three rules follow. The page must be fed by the **same** status the notifications and the agent use. It must receive tracking numbers the moment the parcel is handed over, or it goes silent. And it is a privacy boundary: a link in an e-mail is a credential, and the page should show a stranger holding it as little as possible ([[privacy-and-customer-data]]).
 
 ### "Where is my order" as a measurement
 
-**WISMO** ("where is my order") is the service contact that asks for delivery status. Gorgias, a helpdesk vendor, reported from its own customer base in 2023 that WISMO requests "account for 18% of incoming requests on average" (an article updated in November 2023, now approaching three years old, drawn mostly from small Shopify merchants). Other vendor figures range from 10% to 50% and rise at peak; a 2026 critical reading on the Branvas blog points out that these are shares of *tickets*, not of *shipped orders*, and are not comparable across vendors. No independent study was found for this book.
+When the page goes silent or disagrees with the messages, the customer writes in. **WISMO** ("where is my order") is the service contact that asks for delivery status. Gorgias, a helpdesk vendor, reported from its own customer base in 2023 that WISMO requests "account for 18% of incoming requests on average" (an article updated in November 2023, now approaching three years old, drawn mostly from small Shopify merchants). Other vendor figures range from 10% to 50% and rise at peak; a 2026 critical reading on the Branvas blog points out that these are shares of *tickets*, not of *shipped orders*, and are not comparable across vendors. No independent study was found for this book.
 
 The safe statement: WISMO is consistently reported as the largest single contact category in online retail service, roughly a fifth of tickets in the one dataset that states its basis. The useful statement is architectural: **WISMO per shipped order is a direct measure of the notification and tracking layer.** It rises when tracking numbers arrive late, the promise slips, shipments split without a message, or the status page reads a system that is behind. Measured that way, it is a dashboard for the integrations, not a staffing problem.
 
@@ -96,17 +96,28 @@ The safe statement: WISMO is consistently reported as the largest single contact
 
 ## How the Pieces Fit Together
 
-The target shape has one order record (the OMS, from Q4 2027 at Kestrel & Pine) emitting events; a notification service that turns events into messages per channel and country; a status page and a service tool that read the same record; and self-service actions that write back through the order record's own rules.
+### The state machines behind "status"
+
+Joining the views starts from one fact about the record they read: one record does not mean one status. The Three-Status Order was not a bug in one system; it was three systems each telling the truth about a different thing. Platforms model this openly. Shopify's help page on order status (n.d., accessed November 2026) keeps three status families on one order: an order status (open, archived, canceled), a payment status (eight values from authorized to refunded) and a fulfillment status (six values including partially fulfilled), with seven more statuses on the fulfillment order below it. commercetools' orders API (n.d., accessed November 2026) keeps an order state, a shipment state (with *Partial* for "items in the Order are shipped in more than one shipment" and *Backorder*) and a payment state, plus return item states. In both, "fulfilled" does not mean "delivered" unless carrier events are fed back.
+
+The lesson for the service layer: the agent's screen and the status page should show the **goods** state per line (the socks are on backorder), the **money** state for the order (paid €137, nothing refunded) and the **return** state when there is one. A single word is a subject line for the customer's inbox, not what the agent or the page should read.
+
+![Diagram: The Three-Status Order](assets/images/19-customer-service-and-notifications/fig02-three-status-order-shipment-confirmation-first.jpeg)
+**Figure 3:** *The Three-Status Order: a shipment confirmation for the first parcel turned the whole order "fulfilled", the carrier's delivery scan turned it "Delivered", and the socks stayed "In picking" and the invoice "Not invoiced" until the second parcel shipped six days later; the one message the customer needed, "two parcels", had no system to come from.*
+
+### The target shape
+
+With those states in one place, the target shape follows. It has one order record (the OMS, from Q4 2027 at Kestrel & Pine) that keeps a separate **state machine**, the set of states one part of the order moves through, for money, goods and returns, and emits an event on every change. Around the record sit a notification service that turns events into messages per channel and country; a status page and a service tool that read the same record; and self-service actions that write back through the order record's own rules.
 
 ![Diagram: One order record, fed by the platform, the warehouse, the carrier and the returns portal, drives the notifications, the status page and the agent's view alike](assets/images/19-customer-service-and-notifications/fig01-one-order-record-fed-platform-warehouse.jpeg)
-**Figure 3:** *One order record, fed by the platform, the warehouse, the carrier and the returns portal, drives the notifications, the status page and the agent's view alike; self-service actions go back through the same record and its rules, so the customer and the agent can never read two different orders.*
+**Figure 4:** *One order record, fed by the platform, the warehouse, the carrier and the returns portal, drives the notifications, the status page and the agent's view alike; self-service actions go back through the same record and its rules, so the customer and the agent can never read two different orders.*
 
 | Component | Responsibility | What it must never do | At Kestrel & Pine, 2027 |
 | --- | --- | --- | --- |
 | **Order record** (OMS) | Hold every channel's order with separate state machines for money, goods and returns; emit an event on every change | Collapse the state machines into one string | Bought; order hub by Q4 2027 (W2) |
-| **Notification service** | Subscribe to order events; choose channel and language per customer and country; render templates; send through providers; record what was sent | Send from a label printed rather than a parcel handed over; send twice for one event | The platform's built-in e-mails today; a subscriber to the OMS later |
-| **Order status page** | A read model of the order record plus the tracking stream, with a privacy boundary | Read a different system than the agent's tool | The platform's page today, fed by the iPaaS; W8 adds status by API |
-| **Service view** | Show the agent one order across systems; offer actions (refund, cancel, change address, reship) gated on the order's state | Issue a refund through a second path | Five tabs and a helpdesk that reads the platform; a helpdesk over the OMS later |
+| **Notification service** | Subscribe to order events; choose channel and language per customer and country; render templates; send through providers; record what was sent | Send from a label printed rather than a parcel handed over; send twice for one event | The shop platform's built-in e-mails today; a subscriber to the OMS later |
+| **Order status page** | A read model of the order record plus the tracking stream, with a privacy boundary | Read a different system than the agent's tool | The shop platform's page today, fed by the iPaaS; W8 adds status by API |
+| **Service view** | Show the agent one order across systems; offer actions (refund, cancel, change address, reship) gated on the order's state | Issue a refund through a second path | Five tabs and a helpdesk that reads the shop platform; a helpdesk over the OMS later |
 | **Self-service** | Let the customer cancel before picking, change the address before the label, and start a return, each gated on the fulfillment state | Allow an edit the warehouse has already acted on | A returns portal; no cancel or address change |
 | **Customer record** | Tell the agent who this is: online account, store customer, wholesale contact, consent | Guess a match | Four unlinked lists; [[identity-and-master-data]] |
 
@@ -114,22 +125,20 @@ The target shape has one order record (the OMS, from Q4 2027 at Kestrel & Pine) 
 
 | Flow | How fresh | How consistent | How fast | How available |
 | --- | --- | --- | --- | --- |
-| Order confirmation | Seconds after payment | Must match the order the customer sees in their account | Under a minute | Queued if the mail provider is down; never lost |
+| Order confirmation | Seconds after the PSP's signed message marks the order paid | Must match the order the customer sees in their account | Under a minute | Queued if the mail provider is down; never lost |
 | Shipped notification | Minutes after the carrier scan | Tracking number must already resolve at the carrier | Within the hour | Degrades to "shipped, tracking to follow" |
 | Status page | Minutes behind the record | Identical to the agent's view | Under two seconds to load | Serve the last known status with its timestamp when the record is unreachable |
 | Service view | Seconds | Identical to the status page; actions gated on state | Under two seconds per lookup | Read-only fallback when the OMS is down; refunds queued, not re-keyed |
-| Self-service cancel | Immediate check against the fulfillment state | Exactly once; reversed stock commitment | Seconds | Refuse rather than guess when the state is unknown |
+| Self-service cancel | Immediate check against the fulfillment state | Exactly once; the stock commitment released | Seconds | Refuse rather than guess when the state is unknown |
 
 The consistency column is the point. Freshness can be minutes; two views of one order can never differ, because the difference is what the customer writes in about.
 
-### The state machines behind "status"
+### Self-service, gated on state
 
-The Three-Status Order was not a bug in one system; it was three systems each telling the truth about a different thing. Platforms model this openly. Shopify's help page on order status (n.d., accessed November 2026) keeps three status families on one order: an order status (open, archived, canceled), a payment status (eight values from authorized to refunded) and a fulfillment status (six values including partially fulfilled), with seven more statuses on the fulfillment order below it. commercetools' orders API (n.d., accessed November 2026) keeps an order state, a shipment state (with *Partial* for "items in the Order are shipped in more than one shipment" and *Backorder*) and a payment state, plus return item states. In both, "fulfilled" does not mean "delivered" unless carrier events are fed back.
+Self-service writes back through the same record, so it must read the goods state first. The contacts that need no judgement (cancel before picking, change the address before the label, start a return) should not reach a person. Each is an edit to a placed order, and each must check the fulfillment state first. Shopify's order editing documentation (n.d., accessed November 2026) states the constraint plainly: "You can edit only unfulfilled line items", and its fulfillment order has a request status (unsubmitted, submitted, accepted) after which "the merchant can no longer cancel it directly and must submit a cancellation request". In plain words: once the warehouse has accepted the work, a cancellation is a request to the warehouse, not a change to a record. A self-service cancel button that does not know this will cancel orders that are already in a box.
 
-The lesson for the service layer: the agent's screen and the status page should show the **goods** state per line (the socks are on backorder), the **money** state for the order (paid €137, nothing refunded) and the **return** state when there is one. A single word is a subject line for the customer's inbox, not what the agent or the page should read.
-
-![Diagram: The Three-Status Order](assets/images/19-customer-service-and-notifications/fig02-three-status-order-shipment-confirmation-first.jpeg)
-**Figure 4:** *The Three-Status Order: a shipment confirmation for the first parcel turned the whole order "fulfilled", the carrier's delivery scan turned it "Delivered", and the socks stayed "In picking" and the invoice "Not invoiced" until the second parcel shipped six days later; the one message the customer needed, "two parcels", had no system to come from.*
+![Diagram: Which self-service actions are safe depends on the goods state](assets/images/19-customer-service-and-notifications/fig03-which-self-service-actions-are-safe.jpeg)
+**Figure 5:** *Which self-service actions are safe depends on the goods state: before the warehouse accepts, the customer may cancel or change the address; afterwards a cancel is a request; once the carrier has the parcel, only a return remains.*
 
 ## The Choices
 
@@ -141,7 +150,7 @@ A merchant has four realistic ways to build the service layer, and they line up 
 
 **3. A notification service and a service view over the order management system.** Once an OMS is the order record, the notification service subscribes to its events, the status page reads it, and the helpdesk's order sidebar is backed by it. OMS vendors sell this view: Fluent Commerce says agents "see the same order data the platform used to make its decisions"; Kibo lets representatives edit, credit and refund "without leaving the order screen" (both n.d., accessed November 2026). This is where Waypoint takes Kestrel & Pine.
 
-**4. A built notification and service layer.** A merchant with engineers and unusual needs (many countries, brands and channels) builds the event subscriber, the template engine and the service screens itself. Right at Group stage; the Giant's Boots for anyone smaller ([[commerce-architecture-styles]]).
+**4. A built notification and service layer.** A merchant with engineers and unusual needs (many countries, brands and channels) builds the event subscriber, the template engine and the service screens itself. It is right at Group stage; for anyone smaller it is the Giant's Boots, an architecture copied from a far larger company ([[commerce-architecture-styles]]).
 
 | | Platform notifications and helpdesk | Tracking vendor | Notification service and service view over the OMS | Built layer |
 | --- | --- | --- | --- | --- |
@@ -153,22 +162,7 @@ A merchant has four realistic ways to build the service layer, and they line up 
 | Risk of two refund paths | Helpdesk and returns portal both refund through the platform | None | Low if the OMS owns the refund command | As built |
 | Fits best | Starting, Growing | Growing, as a complement | Omnichannel | Group |
 
-My rule: **the service view must read the system that owns the goods state.** While the platform owns it, choice 1 is right and cheap. The moment an OMS or a WMS owns it, every view that still reads the platform is a Schrödinger's Order waiting to happen, and the helpdesk must be re-pointed at the OMS even if nothing else changes. The notification channels are a second-order question; the source of truth is the first.
-
-### Self-service, gated on state
-
-The contacts that need no judgement (cancel before picking, change the address before the label, start a return) should not reach a person. Each is an edit to a placed order, and each must check the fulfillment state first. Shopify's order editing documentation (n.d., accessed November 2026) states the constraint plainly: "You can edit only unfulfilled line items", and its fulfillment order has a request status (unsubmitted, submitted, accepted) after which "the merchant can no longer cancel it directly and must submit a cancellation request". In plain words: once the warehouse has accepted the work, a cancellation is a request to the warehouse, not a change to a record. A self-service cancel button that does not know this will cancel orders that are already in a box.
-
-![Diagram: Which self-service actions are safe depends on the goods state](assets/images/19-customer-service-and-notifications/fig03-which-self-service-actions-are-safe.jpeg)
-**Figure 5:** *Which self-service actions are safe depends on the goods state: before the warehouse accepts, the customer may cancel or change the address; afterwards a cancel is a request; once the carrier has the parcel, only a return remains.*
-
-### Service for marketplace orders
-
-On a marketplace, the customer conversation belongs to the marketplace, and the merchant answers under its rules and clocks. bol's partner standards (n.d., accessed November 2026) include a per-seller "dynamic standard" for customer questions as a share of orders, a response-time standard and a strike process in which weeks below standard accumulate toward closure; Amazon's order performance policy (European policy document, May 2026) sets the Order Defect Rate, the share of orders with negative feedback, a guarantee claim or a chargeback, at "under 1%" over 60 days.
-
-Import marketplace messages with their deadlines into the helpdesk, and let the service view find an order by the marketplace's id as well as its own. That connects the customer's question to the right purchase and makes the response deadline visible. Leaving messages in a separate portal makes both easy to miss.
-
-Personal data is the other difference: Amazon's SP-API (Selling Partner API) returns a buyer's name and address only through a restricted data token, so the service view holds only what fulfillment needed ([[marketplaces-and-channel-integration]], [[privacy-and-customer-data]]).
+The table's second row decides between them: only the options built over the order record know splits, backorders and returns. The rule that follows: **the service view must read the system that owns the goods state.** While the platform owns it, choice 1 is right and cheap. The moment an OMS or a WMS owns it, every view that still reads the platform is a Schrödinger's Order waiting to happen, and the helpdesk must be re-pointed at the OMS even if nothing else changes. The notification channels are a second-order question; the source of truth is the first.
 
 ## Across Scale Stages: When It Fits and When It Limits
 
@@ -183,25 +177,31 @@ The judgement: the layer changes shape exactly once, when the goods state leaves
 
 ## In Practice
 
-**Events, not polling, is also the rule for the messages customers receive.** A carrier event reports a change in a parcel's state. Using it to trigger the customer's message avoids waiting for the notification service's next scheduled check and keeps the message tied to an observed shipment event.
+In practice the design comes down to four rules (carrier events, channel costs that change, one status endpoint, one refund command), the service rules of marketplaces, one worked order and a set of measures. **First, carrier events, not polling, trigger the messages customers receive.** A carrier event reports a change in a parcel's state. Using it to trigger the customer's message avoids waiting for the notification service's next scheduled check and keeps the message tied to an observed shipment event.
 
-DPD's Predict notifications in Belgium (n.d., accessed November 2026) are sent by the carrier itself when the parcel "arrives at the depot, and when it leaves the depot for the receiver". EasyPost's tracker object (n.d., accessed November 2026) reduces every carrier's codes to ten statuses, from pre-transit to delivered, with webhooks on update. A notification service needs five of the ten for the customer and all ten for the agent, pushed, not polled ([[integration-styles]]).
+DPD's Predict notifications in Belgium (n.d., accessed November 2026) are sent by the carrier itself when the parcel "arrives at the depot, and when it leaves the depot for the receiver". EasyPost's tracker object (n.d., accessed November 2026) reduces every carrier's codes to ten statuses, from pre-transit to delivered, with webhooks on update. A notification service needs five of the ten for the customer, enough for the five states of Shopify's status page described earlier, and all ten for the agent, pushed, not polled ([[integration-styles]]).
 
-**Channels change their economics on published dates.** Customer updates can incur a charge per message. Their cost depends on the channel's categories and allowances as well as volume, so a pricing change can alter the cost of the same notification flow.
+**Second, channels change their economics on published dates.** Customer updates can incur a charge per message. Their cost depends on the channel's categories and allowances as well as volume, so a pricing change can alter the cost of the same notification flow. Meta's WhatsApp Business Platform pricing page (accessed November 2026) sorts templates into marketing, utility ("template messages for transactional or informational objectives") and authentication. Per-message pricing arrived on 1 July 2025, when utility messages sent inside the 24-hour customer service window (the 24 hours after the customer's last message to the business) became free. From 1 October 2026 those utility messages are charged as regular messages again. A free tier of 1,000 messages a month remains, and it applies only to service messages, the business's own replies inside that window, not to utility templates. A notification service that chooses the channel per message, with cost as an input, survives such changes; one that hard-codes "WhatsApp for shipped" does not.
 
-Meta's WhatsApp Business Platform pricing page (accessed November 2026) classifies templates as marketing, utility ("template messages for transactional or informational objectives") and authentication, states that per-message pricing arrived on 1 July 2025, when utility messages sent inside the 24-hour customer service window became free, and that from 1 October 2026 those utility messages are charged as regular messages again, with a free tier of 1,000 a month that applies to service messages only. A notification service that chooses the channel per message, with cost as an input, survives such changes; one that hard-codes "WhatsApp for shipped" does not.
+**Third, order status by API is a prerequisite, not a feature.** W8, Waypoint's decision to prepare for AI shopping agents, lists order status by API among what such an agent needs before acting for a customer ([[ai-and-agentic-commerce]]). The same endpoint feeds the status page, the helpdesk and the carrier vendor's tracking page: one read model, every consumer.
 
-**Order status by API is a prerequisite, not a feature.** Waypoint's W8 lists order status by API among what an AI shopping agent would need before acting for a customer ([[ai-and-agentic-commerce]]). The same endpoint feeds the status page, the helpdesk and the carrier vendor's tracking page: one read model, every consumer.
+**Fourth, the service tool's refund button is another refund path.** Zendesk's Shopify integration lets an agent refund from the ticket in any fulfillment state; Kestrel & Pine's returns portal refunds through the shop platform's API; its PSP console allows a refund by hand. In January 2027 the returns portal and the PSP console produced the Double Refund (**212 returns**, **€19,400** refunded twice, most recovered); the helpdesk's button is a third. The rule: the order record owns one refund command and every tool invokes it, with the order and return ids as the **idempotency key** (a key that makes a repeated request have the same effect as one) ([[commerce-payments]], [[events-consistency-and-reconciliation]]).
 
-**The service tool's refund button is another refund path.** Zendesk's Shopify integration lets an agent refund from the ticket in any fulfillment state; Kestrel & Pine's returns portal refunds through the platform's API; its PSP console allows a refund by hand. In January 2027 the last two produced the Double Refund (**212 returns**, **€19,400** refunded twice, most recovered); the helpdesk's button is a third. The rule: the order record owns one refund command and every tool invokes it, with the order and return ids as the **idempotency key** (a key that makes a repeated request have the same effect as one) ([[commerce-payments]], [[events-consistency-and-reconciliation]]).
+### Service for marketplace orders
+
+So far the merchant has owned the conversation with the customer. On a marketplace, the customer conversation belongs to the marketplace, and the merchant answers under its rules and clocks. bol's partner standards (n.d., accessed November 2026) include a per-seller "dynamic standard" for customer questions as a share of orders, a response-time standard and a strike process in which weeks below standard accumulate toward closure; Amazon's order performance policy (European policy document, May 2026) sets the Order Defect Rate, the share of orders with negative feedback, a guarantee claim or a chargeback, at "under 1%" over 60 days.
+
+Import marketplace messages with their deadlines into the helpdesk, and let the service view find an order by the marketplace's id as well as its own. That connects the customer's question to the right purchase and makes the response deadline visible. Leaving messages in a separate portal makes both easy to miss.
+
+Personal data is the other difference: Amazon's SP-API (Selling Partner API) returns a buyer's name and address only through a restricted data token, a short-lived key issued for each call that returns personal data, so the service view holds only what fulfillment needed ([[marketplaces-and-channel-integration]], [[privacy-and-customer-data]]).
 
 ### Kestrel & Pine, worked: Eva's jacket from the customer's side
 
-The dates are Kestrel & Pine's records; the message times and channels are illustrative details. The "2026 landscape" column is what Eva would have received had she ordered in December 2026; the "target" column is the Q4 2027 design.
+Eva's order, run through these rules, shows the difference message by message. The dates are Kestrel & Pine's records; the message times and channels are illustrative details. The "2026 landscape" column is what the systems Kestrel & Pine ran in 2026, still in place in April 2027, send her; the "target" column is the Q4 2027 design.
 
 | When | What happened | 2026 landscape: what Eva receives | Target: what Eva receives |
 | --- | --- | --- | --- |
-| Tue 13 Apr 2027, 21:14 | Order #1072455 placed, €235 by iDEAL | Confirmation e-mail from the platform within a minute | Same, with "delivery expected Thursday" computed, not static ([[shipping-and-delivery]]) |
+| Tue 13 Apr 2027, 21:14 | Order #1072455 placed, €235 by iDEAL | Confirmation e-mail from the shop platform within a minute | Same, with "delivery expected Thursday" computed, not static ([[shipping-and-delivery]]) |
 | Wed 14 Apr, 08:40; collected 22:30 | Picked, packed, PostNL label; collected that evening | "Shipped" e-mail when the iPaaS flow marks the order fulfilled, sometimes before the parcel leaves | "Shipped" when the carrier scan arrives, with a tracking link that already works |
 | Thu 15 Apr, morning | Out for delivery | A PostNL message, if Eva opted in with PostNL | A message from Kestrel & Pine, same event, her chosen channel |
 | Thu 15 Apr, 11:20 | Delivered | Status page: Delivered | Status page: Delivered, per parcel |
@@ -213,7 +213,7 @@ Nothing in the target column needs a new channel. It needs one record emitting t
 
 ### Measuring service as an architecture signal
 
-A small set of measures turns the service desk into the platform's most honest monitor. Targets are illustrative.
+Whether the messages pre-empt the tickets can be measured. WISMO per shipped order, from earlier in this chapter, is one of a small set of measures that turn the service desk into the platform's most honest monitor. Targets are illustrative.
 
 | Measure | Definition | Why it is an architecture signal | Kestrel & Pine, 2026 *(assumption)* | Illustrative target |
 | --- | --- | --- | --- | --- |
@@ -224,20 +224,24 @@ A small set of measures turns the service desk into the platform's most honest m
 | Tickets per order (max) | The worst order of the month | The long tail that becomes a social-media story | 11 | Under 4 |
 | First reply with a true answer | Share of WISMO tickets answered with the correct goods state on first reply | Whether the agent can see the order | Unknown | Over 95% |
 
-Hanna Berg's data team can produce most of these from the helpdesk and the order record once there is one; the first and the last are the ones to put on Noor's monthly page ([[commerce-data-and-analytics]]).
+Hanna Berg's data team can produce most of these from the helpdesk and the order record once there is one; contacts per 100 orders and first replies with a true answer are the ones to put on Noor Visser's monthly page ([[commerce-data-and-analytics]]).
 
 ## When It Goes Wrong
 
+**When one of these rules is broken, the customer notices first.**
+
 - **The notification is sent twice.** Events are delivered at least once; a retried "delivered" event sends a second e-mail, and the customer wonders whether there were two parcels. *Detection*: sent-message log keyed by order and event. *Recovery*: the notification service is idempotent on the event id; it records what it sent before it sends.
-- **The notification precedes the event.** "Shipped" goes out when the label prints, and the parcel waits a day for the carrier (Kestrel & Pine's Black Friday queue backed up for four hours); "delivered" goes out when the carrier's scan says so, and the parcel is with a neighbor. *Detection*: WISMO tickets that quote the notification. *Recovery*: trigger "shipped" on the handover scan, and say "delivered to a neighbor" when the carrier says so; the carrier's vocabulary has that state, and the message should too.
+- **The notification precedes the event (the Message in a Bottle).** "Shipped" goes out when the label prints, and the parcel waits a day for the carrier (Kestrel & Pine's Black Friday queue backed up for four hours); "delivered" goes out when the carrier's scan says so, and the parcel is with a neighbor. *Detection*: WISMO tickets that quote the notification. *Recovery*: trigger "shipped" on the handover scan, and say "delivered to a neighbor" when the carrier says so; the carrier's vocabulary has that state, and the message should too.
 - **No tracking number, no updates.** A fulfillment confirmed without a tracking number leaves the status page frozen at "confirmed". *Detection*: shipments without tracking, counted daily. *Recovery*: the WMS integration contract requires the number; the notification service sends "shipped, tracking to follow" and then the number.
 - **The split that nobody announced.** The Three-Status Order. *Detection*: contacts per split shipment. *Recovery*: an order record that holds goods state per line, a "ships in two parcels" message, and an agent view that shows both parcels.
 - **The carrier is down.** No scans for a day; every parcel looks stuck. *Detection*: a monitor on the carrier stream's freshness. *Recovery*: a banner on the status page ("carrier updates delayed") and a hold on "attempted delivery" messages until the stream resumes ([[peak-load-and-reliability]]).
 - **The agent and the page disagree.** The helpdesk reads the platform; the page reads the OMS. *Detection*: the weekly status-disagreement sample. *Recovery*: re-point the helpdesk; never run two sources.
-- **The template is wrong for the country.** A Belgian customer in French receives a Dutch "shipped" with a Dutch legal footer. *Recovery*: templates selected by storefront, language and country, with the legal text owned by whoever owns the regulatory calendar ([[commerce-regulation]]).
-- **The agent cannot find the person.** Eva writes from the e-mail on her store loyalty account, which differs from her online account's; the agent finds no order (the *Familiar Stranger* pattern). *Recovery*: search by order number first, by any known identifier second, with a matching rule of declared confidence ([[identity-and-master-data]]).
+- **The template is wrong for the country.** A Belgian customer who shops in French receives a "shipped" message in Dutch, with a Dutch legal footer. *Detection*: a test send of every template per storefront, language and country. *Recovery*: templates selected by storefront, language and country, with the legal text owned by whoever owns the regulatory calendar ([[commerce-regulation]]).
+- **The agent cannot find the person.** Eva writes from the e-mail on her store loyalty account, which differs from her online account's; the agent finds no order (the *Familiar Stranger* pattern). *Detection*: tickets where the agent finds no order. *Recovery*: search by order number first, by any known identifier second, with a matching rule of declared confidence ([[identity-and-master-data]]).
 
 ## What to Take Away
+
+The customer of the opening had three answers because each view read a different system. The e-mail and the page read the shop platform, support asked the warehouse, and the answer she needed, two parcels with the second leaving on the 14th, lived in none of them. One order record that keeps the goods state per line, the money state and the return state, read alike by the e-mail, the page and the agent, gives one answer. Contacts per shipped order show whether it does.
 
 **Established.**
 
@@ -269,7 +273,11 @@ Hanna Berg's data team can produce most of these from the helpdesk and the order
 8. How do marketplace messages reach the agent, with which deadline, and under which order id?
 9. What happens when the customer writes from an e-mail the platform has never seen?
 
-Part IV ends here, with the order delivered, returned if it must be, and explained to the customer. The next part leaves the merchant's own channels: [[part-5]] begins with selling on someone else's platform, in [[marketplaces-and-channel-integration]], where the customer conversation, the deadlines and the order id all belong to the marketplace.
+This chapter closes Part IV. The part opened with an order that checkout confirms in seconds and whose goods someone still has to pick and pack before the carrier's collection. Its five chapters each started from a Kestrel & Pine case: the Queue That Waited, when about 8,000 Black Friday orders missed next-day delivery while the page promised it; Eva's Wednesday promise, kept on Thursday; the Store Stock Mirage, 37 collection items already sold; the Double Refund; and the eleven tickets. They look like five problems in five places: the warehouse feed, the storefront's text, store stock, refunds and support. They are one problem. Each promise or status was taken from a copy, or from a fixed sentence, instead of from the system on the spot that saw the physical fact first (the warehouse system, the carrier's scan, the store's till, the returns bench), or two systems could take the same action.
+
+Each chapter's remedy therefore has the same parts: name the system on the spot, compute the promise from its events, let its confirmation (a store's staff, the warehouse's inspection) commit it, give each money or stock action one writer and a key, and build one status from the same events. That is why Kestrel & Pine's remedies are contracts and rules more than buildings, tills or more agents. The warehouse feed got a queue allowed to grow and a cut-off that moves with it. The delivery promise got a transit table plus the warehouse's cut-off and backlog, measured per lane. Store collection got a threshold of two units per store and a staff confirmation. Refunds got one writer, keyed on the return id and released by the warehouse's disposition. The helpdesk is pointed at the order hub. The same parts give you a list for your own shop: for each promise it makes after checkout (delivery date, collection, refund, order status), name the system on the spot that knows the fact it depends on, the event that carries that fact and the measure that shows when the promise broke. Start with two measures: promised-versus-delivered per lane, from the shipping chapter, and contacts per split shipment, from this one.
+
+Parts II to IV have followed one shop's order from the catalog to the return, on the merchant's own channels. Part V adds orders that someone else's system creates under someone else's rules. [[part-5]] begins with [[marketplaces-and-channel-integration]], where the customer conversation, the deadlines and the order id all belong to the marketplace.
 
 ## Sources and Evidence
 

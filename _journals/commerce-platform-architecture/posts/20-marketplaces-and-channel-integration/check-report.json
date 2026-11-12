@@ -1,0 +1,682 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/20-marketplaces-and-channel-integration/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/20-marketplaces-and-channel-integration/index.md",
+  "spec_sha": "b035b5b4dbe5dbfe",
+  "draft_sha": "9d74cfb8e72bf590",
+  "run_at": "2026-11-12T22:43:13+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Marketplace reach costs commission and imposes rules the merchant does not control",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "The marketplace grades sellers on metrics that depend on the data integrations send",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "The connector should carry every flow but own none, each value coming from its owning system",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Two Amazon.de orders beside Eva's illustrate the two marketplace fulfillment routes",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Roadmap of the chapter's sections and its evidence base",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶1",
+      "summary": "Marketplaces are a sizable, lower-value channel for Kestrel & Pine via a rented connector",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶2",
+      "summary": "Milan owns the connector and briefs Noor on two incidents",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶3",
+      "summary": "A chain of scheduled stock copies let marketplaces oversell for two hours / the order queue to the WMS also backed up",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶4",
+      "summary": "The oversell's marketplace cancellations hurt seller standards and earned a bol strike",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶5",
+      "summary": "An unnoticed API retirement left bol selling from stale stock for two days",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶6",
+      "summary": "The incidents raise three questions: stock source, order home, API calendar ownership",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What a Marketplace Is, and the Two Ways to Sell on One ¶1",
+      "summary": "Selling means publishing a GTIN-keyed offer that competes for the buy box",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What a Marketplace Is, and the Two Ways to Sell on One ¶2",
+      "summary": "All large marketplaces offer the same two logistics models",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What a Marketplace Is, and the Two Ways to Sell on One ¶3",
+      "summary": "Vendor sources for the model names and bol's storage terms and seasonal surcharge",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What a Marketplace Is, and the Two Ways to Sell on One ¶4",
+      "summary": "Seller-fulfilled orders must flow in with deadlines; marketplace-held stock is an uncontrolled external location",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What the Marketplace Measures You On ¶1",
+      "summary": "Amazon publishes the performance thresholds it grades sellers against",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "What the Marketplace Measures You On ¶2",
+      "summary": "bol's standards escalate through a strike process up to account closure",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "What the Marketplace Measures You On ¶3",
+      "summary": "Each metric is really an integration freshness requirement: oversells and late confirmations become penalties",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "A channel integration platform translates listings, orders, stock and prices across many marketplaces",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "Adding status back-flow makes five flows with distinct needs",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "The fast stock and order flows must move by events, not periodic copies",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "The connector keeps two order records in step through a common lifecycle with three key points",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶5",
+      "summary": "Acknowledgement binds the marketplace order id to the merchant's order or the order is lost",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶6",
+      "summary": "Uniqueness on the marketplace order id makes repeated notifications idempotent",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶7",
+      "summary": "Ship confirmations must reach the marketplace the same day or count as late",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶8",
+      "summary": "Amazon's tight rate limits force event-driven rather than polling integrations",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶9",
+      "summary": "Feed uploads are asynchronous, so the connector must verify their outcome",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶10",
+      "summary": "Keep only the restricted customer data fulfillment needs",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶11",
+      "summary": "bol's API is asynchronous and asks for incremental events / its old versions retire on a published 12-month schedule",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶12",
+      "summary": "Someone at the merchant must own the deprecation calendar even with a vendor connector",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶1",
+      "summary": "The stock figure sent is an entitlement to sell, not a report",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶2",
+      "summary": "Allocation policy choice follows the merchant's stage",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶3",
+      "summary": "Compute available-to-promise once from the stock system of record, else the connector becomes a fourth system of record",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶4",
+      "summary": "Marketplace-held stock is tracked as an external location with its own feed",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶5",
+      "summary": "A ten-unit buffer was a stopgap that withholds the last units of every variant",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶6",
+      "summary": "Target: event-driven per-channel ATP from the WMS replaces copies and shrinks the buffer",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Channel Allocation: The Number You Send Is a Promise ¶7",
+      "summary": "Only a computed ATP enables channel rules like reserving units for the storefront",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Prices Across Channels ¶1",
+      "summary": "Parity clauses are gone but price still decides marketplace visibility",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Prices Across Channels ¶2",
+      "summary": "Repricing must act on a derived channel price bounded by a floor",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Prices Across Channels ¶3",
+      "summary": "Fees vary and change, so they are dated reference data feeding the floor",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Prices Across Channels ¶4",
+      "summary": "Worked Ridgewalker margin shows how much repricing can give away before the floor",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "Prices Across Channels ¶5",
+      "summary": "Repricing below the floor caused the Price Drift; pricing owns the channel price",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "Kestrel & Pine: The Marketplace Variant, 13 April 2027 ¶1",
+      "summary": "The two Amazon.de orders traced before and after W1 and W2",
+      "matched_spec_paragraph": "p63"
+    },
+    {
+      "draft_locator": "Kestrel & Pine: The Marketplace Variant, 13 April 2027 ¶2",
+      "summary": "Marketplace-fulfilled orders skip the order record and get rebuilt at month-end",
+      "matched_spec_paragraph": "p64"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Four ways to connect, with the order-record decision cutting across them",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Manual seller tools fit only a few orders on one marketplace",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "Native platform apps suit the Growing stage but assume the platform is the system of record",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "A channel integration platform suits Omnichannel merchants but risks becoming a fourth copy",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Direct integration only pays off at Group-stage volume",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "Orders should be created in the merchant's order record, not live in the connector",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "Recommend a connector on condition it neither keeps orders nor computes stock",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "The integration breaks with more order sources, not more volume",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Marketplaces retire APIs and programs on their own calendar, so own the stock location",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Marketplace warehouses are becoming part of the merchant's fulfillment infrastructure",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "ZEOS creates multi-channel marketplace-held stock and a dependency for own-shop orders",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "Social channels are either feeds or order sources with different integration needs",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "Meta's shops reverted to being a shopping feed destination",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "TikTok Shop became an in-app order source across European markets",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "In Practice ¶7",
+      "summary": "Either way, catalog from its source and orders through the import; retail media adds cost not orders",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "In Practice ¶8",
+      "summary": "Operating a marketplace needs records and controls beyond selling on one",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "In Practice ¶9",
+      "summary": "Operator platforms like Mirakl serve that side / the DSA requires operators to verify traders",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "A per-channel age monitor catches stalled feeds / canceling early beats waiting on an oversell",
+      "matched_spec_paragraph": "p65"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "The connector owns nothing; every value and date it touches has a merchant owner",
+      "matched_spec_paragraph": "p66"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Settled facts: published scorecards, constrained retiring APIs, two distinct fulfillment models",
+      "matched_spec_paragraph": "p67"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices: native app, buffer vs ATP, direct integration",
+      "matched_spec_paragraph": "p68"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's view: connector owns nothing and the scorecard is an un-negotiated SLA",
+      "matched_spec_paragraph": "p69"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Diagnostic questions on stock source, order home, scorecard, deprecations and pricing",
+      "matched_spec_paragraph": "p70"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off from consumer marketplaces to B2B wholesale orders",
+      "matched_spec_paragraph": "p71"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 68 outline summaries match the controlling idea of the aligned spec paragraph, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: Two Days of Stale Stock ¶3",
+      "quote": "The same evening, the queue that passes orders to the WMS backed up for four hours.",
+      "finding": "p08's controlling idea is the stock chain that let marketplaces oversell; the WMS order-queue backlog is a second, unrelated failure (late confirmations) that p08 does not join. It is restated where it is used (p28, 'When the queue to Kestrel & Pine's WMS backed up for four hours on the Oversell evening'), so the sentence here can go or be tied to the oversell.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "How the Pieces Fit Together ¶11: bol's asynchronous API and its 12-month retirement policy are joined as one idea by spec p33.",
+      "draft_locus": "How the Pieces Fit Together ¶11",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "In Practice ¶9: Mirakl and DSA Article 30 are joined by spec p62 as the operator side and its legal core.",
+      "draft_locus": "In Practice ¶9",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "When It Goes Wrong ¶1: the age monitor and early cancellation are joined by spec p65 as 'two controls are cheapest'.",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit advances one of S1-S6 through its section's (or its own) advances_thesis; the operator-side paragraphs (In Practice ¶8-9) trace to S6 via their paragraph-level declaration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Each table, figure, quotation and figure-bearing fact is followed (or framed) by what it shows: e.g. the scorecard table by 'Read the table as an integration specification', the flows table by the events rule, the policy table by 'The last row is...', the stage table by 'The judgement', the variant table by 'The second column is the one most merchants get wrong', ZEOS by 'For a merchant that means a third kind of stock location'.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "How the Pieces Fit Together ¶10",
+      "quote": "Customer names and addresses are **restricted data** that need a separate token.",
+      "finding": "Declared additional_support (another constraint the marketplace APIs impose, after feeds). The paragraph opens with no link to the API constraints around it, so it reads as a privacy aside; a clause such as 'The API also gates personal data' would express the relationship.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/8",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "quote": "| Stage | What is typical | What becomes necessary | Warning signs of outgrowing it |",
+      "finding": "Declared an elaboration sentence at the start of the section (the four options, now stage by stage). The section opens directly on the table with no sentence, so the link to The Choices is left to the heading.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in boundaries (introduction, scene, marketplace, scorecard, connector, allocation, prices, example, choices, in-practice, wrong, conclusion) express the declared relationship, and the hand-off ('Marketplaces are one kind of order that arrives from outside the shop ... The next chapter turns to the other kind') expresses the declared contrast with b2b-commerce.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "quote": "translates four kinds of data between them",
+      "finding": "Both readers stopped at 'four kinds of data' followed at once by Figure 2's 'five flows'; the fifth (status back-flow) is only added after the figure. The order is fine; state four plus the back-flow before the figure.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 2; reader B item 3 bullet 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/9",
+      "draft_locus": "How the Pieces Fit Together ¶10",
+      "quote": "Customer names and addresses are **restricted data** that need a separate token.",
+      "finding": "Both readers found the restricted-data paragraph out of place among rate limits, feeds and versions. The spec places it as an API constraint, which is defensible, but the prose never frames it as one.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 4; reader B item 3 bullet 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "Channel Allocation: The Number You Send Is a Promise ¶3",
+      "quote": "what Waypoint's W1 buys as a module of the OMS (order management system, the hub that holds every channel's orders) that W2 introduces",
+      "finding": "Both readers had to untangle which decision does what: W1 was glossed as 'stock ownership' and here 'buys a module' of a system another decision introduces.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 6; reader B item 3 bullet 5",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/6",
+      "draft_locus": "Channel Allocation: The Number You Send Is a Promise ¶7",
+      "quote": "None of that is possible when the connector only knows the platform's last figure for a variant, say 410, from up to two hours ago.",
+      "finding": "Both readers looked back for '410', which appears from nowhere.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 7; reader B item 3 bullet 6",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Prices Across Channels ¶1",
+      "quote": "**Price parity** clauses, which required a seller's marketplace price to be no higher than its price elsewhere, were dropped by Amazon in the EU in 2013",
+      "finding": "Both readers could not reconcile parity clauses being 'dropped' with the later 'parity warning from a marketplace' (flows table, Prices ¶5).",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 8; reader B item 3 bullet 7",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "Prices Across Channels ¶4",
+      "quote": "with an assumed 15% commission (the most common referral rate on Amazon's US pricing page; European rates differ) and €6 of shipping, about €128 remains against a landed cost of €58",
+      "finding": "Both readers stumbled on the worked floor: A on a US dollar fee schedule applied to a euro price in an Amazon.de chapter, B because the arithmetic (VAT, commission on the gross price, shipping) is not shown and could not be reconstructed.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 3 bullet 9; reader B item 3 bullet 8",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5",
+      "draft_locus": "Prices Across Channels ¶1",
+      "quote": "The same discipline applies to prices.",
+      "finding": "Both readers questioned Prices sitting between Channel Allocation and the worked example, which does not use prices; B: 'I could tell why it is here but not why it comes before the worked example.' The spec's own rationale wants the example 'right after allocation, while the two models, the flows and the external location are fresh', which the Prices section interrupts.",
+      "fault": "spec",
+      "corroborated_by": "reader A item 4 bullet 1; reader B item 2 (Prices) and item 4 bullet 1",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "Four current developments test these rules. **Marketplaces retire interfaces on their own calendar.**",
+      "finding": "Both readers saw no logic to In Practice's contents (A: 'its internal order ... has no visible logic'; B: 'its contents are mixed'). The spec's flow says the first sentence names the four developments so the reader knows why they sit together; the draft's first sentence does not name them.",
+      "fault": "draft",
+      "corroborated_by": "reader A item 2 (In Practice); reader B item 2 (In Practice)",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/6",
+      "draft_locus": "In Practice ¶7",
+      "quote": "**Retail media**, sponsored marketplace listings, adds a per-channel cost and a reporting stream; it does not create a separate order flow.",
+      "finding": "Both readers read retail media as a dangling aside at the end of the social-channels point. The spec's p60 controlling idea itself joins retail media to the social-channel rule.",
+      "fault": "spec",
+      "corroborated_by": "reader A item 3 bullet 12; reader B item 3 bullet 12",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/3",
+      "draft_locus": "What a Marketplace Is, and the Two Ways to Sell on One ¶4",
+      "quote": "The architectural difference is larger than the operational one, and the two Amazon.de orders of 13 April 2027 show both sides.",
+      "finding": "Reader B: the orders are named here but not shown until four sections later, so the promise is carried too long. Cutting the forward reference is the cheap fix.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "How the Pieces Fit Together ¶5",
+      "quote": "bol auto-cancels unacknowledged orders on day three after the promised delivery date.",
+      "finding": "Reader B re-read to see whether acknowledgement here and the scorecard's 'unconfirmed order' are the same thing, and found acknowledging after the delivery date odd.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/11",
+      "draft_locus": "How the Pieces Fit Together ¶12",
+      "quote": "bol's dated retirement is the public form of what hit Kestrel & Pine in the Deprecated Endpoint, where the connector's own API version retired.",
+      "finding": "Reader A had to re-read to see that the incident was the connector's API, not bol's.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction (KEY POINTS)",
+      "quote": "A connector that keeps its own copies becomes a fourth system of record, which is what Kestrel & Pine has today.",
+      "finding": "Reader A: 'Fourth after which three?' The three (WMS, ERP, platform) are named only in the allocation section.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction (failure patterns callout)",
+      "quote": "**The Pulled Rug** — marketplaces and connectors retire API versions on published dates; an unowned script finds out two days later.",
+      "finding": "Reader B had to work out which failure pattern matches which incident: the body names the Deprecated Endpoint but never The Pulled Rug or The Phantom Stock.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "**A retired API version**",
+      "finding": "Reader A: a retired API version is its own row but also a cause in the 'Stale stock' row, so it was unclear whether they are different failures.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Every does_not_know term the draft uses is given at first use (offer, buy box, commission, the two models, strike, order defect rate, channel integration platform, five flows, channel allocation and its policies, external location, rate limit, feed, restricted data, deprecation, price parity, repricing, channel price, floor, shopping feed, retail media); already_knows items (W1-W8, Hanna Berg, failure-pattern names, iPaaS, stages) need no gloss.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Opens on a concrete scenario (listing a jacket on Amazon, bol or Zalando) and states the thesis as the chapter's answer; no generic or throat-clearing opener.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers Noor's three questions and sorts take-aways by how settled they are; no restating summary or generic call to action.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "'Noor's three questions have one answer' names the system, the order key, the monitor and the date owner, ties each incident to a copy the connector owned, and the author's synthesis gives the so-what (scorecard as un-negotiated SLA; monitor the age of the last accepted update first).",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Calls back to Noor's three questions and to the introduction's bargain: 'The reach a marketplace sells comes with a scorecard, and that scorecard is kept by the merchant's own flows.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro reader predicted every section in order (incidents, marketplace and two models, scorecard, five flows with order import and retirement dates, allocation, prices, two Amazon.de orders, four ways to connect and scale, practice, failures) and the evidence (published thresholds and documentation, Kestrel & Pine's incidents).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names seller cancellations against the cancellation threshold and a bol strike; prevention: per-channel available-to-promise from the warehouse figure published by events with a buffer as the interim fix; an owned deprecation calendar and a per-channel age monitor catching the stale feed within the hour. No faster connector.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader places both orders in the OMS under the Amazon id (seller-fulfilled with ship-by date and event confirmation; marketplace-fulfilled for finance and analytics, no fulfillment order), assigns cancellation/late shipment/valid tracking/on-time delivery to the first and only ODR to the second, and sources the second's stock from the external location's marketplace feed, reconciled against Amazon's report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "Reader names uniqueness on the marketplace order id making the import idempotent, the acknowledgement binding the two numbers, and the daily count of marketplace orders by id.",
+      "severity": "minor"
+    }
+  ]
+}

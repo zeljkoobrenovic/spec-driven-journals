@@ -1,0 +1,692 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/21-b2b-commerce/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/21-b2b-commerce/index.md",
+  "spec_sha": "d2f477c62995040a",
+  "draft_sha": "14ebd07ac9c0150e",
+  "run_at": "2026-11-12T22:45:41+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Chapter goals: business buyers, shared records, ownership, channel options",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Key points: structured business customer, layered prices with quotes, credit owned by ERP",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "Failure patterns: unexplained prices, scattered orders, per-buyer connectors",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Business purchases carry negotiated agreements that checkout must represent",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "Elements of a wholesale agreement checkout must verify",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Unclear ownership causes drift; portal must read owning system and use one order record",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Positioning the chapter within the brand's wholesale order routes",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "Chapter roadmap and evidence base",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The 38% ¶1",
+      "summary": "Size and shape of the brand's wholesale business",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The 38% ¶2",
+      "summary": "The existing portal handles most wholesale orders",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The 38% ¶3",
+      "summary": "Remaining orders keyed into the ERP that holds finance facts",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The 38% ¶4",
+      "summary": "Three portal gaps keeping manual orders: account prices, credit, split records",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The 38% ¶5",
+      "summary": "Diagnosis of platform-versus-ERP ownership split + Waypoint plan to create all wholesale orders in the OMS",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What Is Different When the Buyer Is a Company ¶1",
+      "summary": "Introducing consumer-versus-business contrasts",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What Is Different When the Buyer Is a Company ¶2",
+      "summary": "Contested facts: company account, price, credit limit",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What Is Different When the Buyer Is a Company ¶3",
+      "summary": "Vendors' object models converge; comparison table caveat",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What Is Different When the Buyer Is a Company ¶4",
+      "summary": "Vendor definitions showing the organization-places-people-permissions shape",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Who Owns What ¶1",
+      "summary": "Platform and ERP both claim the company account",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "Who Owns What ¶2",
+      "summary": "Connector vendors advise naming one system of record per field",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "Who Owns What ¶3",
+      "summary": "Platforms leave ownership undecided + their B2B features are still shifting",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Who Owns What ¶4",
+      "summary": "Lead-in to the author's ownership table",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "Who Owns What ¶5",
+      "summary": "ERP owns money facts, platform owns session facts, prices published as events",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Who Owns What ¶6",
+      "summary": "VAT number as owned master data driving tax treatment",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶1",
+      "summary": "The four layers of B2B pricing",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶2",
+      "summary": "Precedence rule between layers, implemented once",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶3",
+      "summary": "Accepted quotes lock in price against later changes",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶4",
+      "summary": "commercetools and Adobe evidence for binding quotes",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶5",
+      "summary": "Shopify's draft-order route for quotes",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "How a Price Becomes a Promise ¶6",
+      "summary": "Store a stated price as an object the order derives from",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "Credit, Terms and the Buyer's Own Controls ¶1",
+      "summary": "Payment terms as structured data split between ERP and platform",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Credit, Terms and the Buyer's Own Controls ¶2",
+      "summary": "Order-time credit check and why stale copies fail",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Credit, Terms and the Buyer's Own Controls ¶3",
+      "summary": "Buyer-side approval workflows and when they matter",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "What the Flows Need ¶1",
+      "summary": "Flow requirements to checkout, credit check decisive",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "What the Flows Need ¶2",
+      "summary": "Stock flow follows same ownership via wholesale allocation",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "Four channel options chosen by buyers and checkout speed",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "Option one: consumer platform's added B2B features",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "Vendor specifics of built-in B2B features",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "Why the brand chose option one and where it limits",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Option two: dedicated B2B platform and its fit",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "Option three: ERP-driven storefront and its limits",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "Option four: buyer's procurement system via EDI or punchout",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "The Choices ¶8",
+      "summary": "Punchout standards cXML and OCI",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "The Choices ¶9",
+      "summary": "Punchout cart is not an order, must join same record + build punchout only when buyers require it",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "The Choices ¶10",
+      "summary": "Sales-rep orders as same order object + B2B2C as two distinct flows",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "Lead-in to stage-by-stage fit table",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "Outgrowing signal is facts leaving the platform, needing integration",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶3",
+      "summary": "Recommendation: keep platform, close three integration gaps, with assumptions",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Worked example setup: one shop's pre-season order",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "Assumptions to test behind the improved flow",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "Lead-in to six recurring B2B failures",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "Which failures fit the case; prevention beats repair",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "Callback: channel success hinges on reading owned facts and one order record",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "Established findings on shared model, quotes, finance ownership",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "Context-dependent choices on channel, credit check, punchout",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "Author's view: manual-order share as metric; decide ownership first",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "Diagnostic questions for a B2B architecture",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Hand-off to the EDI and e-invoicing chapter",
+      "matched_spec_paragraph": "p52"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 54 aligned outline summaries state the controlling idea of their spec paragraph, in spec order; the three callouts have no spec paragraph and match the KEY POINTS / roadmap placements.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Scene ¶5, Choices ¶9 and Choices ¶10 were flagged two_ideas, but both ideas sit inside the controlling ideas of p10, p38 and p40.",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p42",
+      "draft_locus": "Who Owns What ¶3",
+      "quote": "The consumer platforms' B2B features are also still changing: BigCommerce deprecated its older B2B authentication token on 30 September 2025.",
+      "finding": "The outliner flagged a second idea (platforms' B2B features are still shifting). It is not part of p42's controlling idea (no platform resolves ownership); it comes from the spec's evidence item, whose 'shows' (features are recent and changing) does not support that idea. Drop the evidence from the spec or restate what it shows for ownership.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit traces to S1-S6 through its section's advances_thesis; the VAT (p26) and stock (p55) paragraphs trace to S2's ownership of money facts.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Figures 1-4 carry captions that say what they show; the contrast, vocabulary, ownership, flows, options, stage, worked-example and failure tables are each introduced or followed by a sentence saying what they show; the Microsoft, Shopify, commercetools, Adobe and cXML quotations are each tied to the point they support.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/p32/evidence/0",
+      "draft_locus": "The Choices ¶3",
+      "quote": "BigCommerce's B2B Edition serves its APIs from a separate domain, the trace of a partner-built origin.",
+      "finding": "The spec says this evidence shows the option exists on the main consumer platforms 'with limits'. The draft lists plan names, a catalog cap and a separate API domain but no sentence says what they show for choosing option one; the separate-domain fact in particular is left without its consequence.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/credit/transition_in",
+      "draft_locus": "Credit, Terms and the Buyer's Own Controls ¶1",
+      "quote": "**Payment terms** specify when the buyer must pay, such as thirty days after invoicing or on a fixed date.",
+      "finding": "Declared sequence carrying over 'the price an order carries' into how and when the buyer pays. The opening sentence is a fresh definition with no reference to the price the previous section settled; the step from price to payment is left to the heading.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/wrong/transition_in",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "Six failures recur in B2B channels.",
+      "finding": "Declared contrast carrying over 'De Kaap's order as it should run' into the ways B2B orders go wrong. The opening sentence neither refers back to the worked order nor marks the turn from the order as it should run to how orders fail.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other transition_in relationships are expressed at their boundaries.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p42/evidence/0",
+      "draft_locus": "Who Owns What ¶3",
+      "quote": "BigCommerce deprecated its older B2B authentication token on 30 September 2025.",
+      "finding": "Both readers stopped on this sentence as a non sequitur in the ownership argument. flowA: 'This is a tangent at the end of an ownership argument. I re-read it to find the link to ownership and found none.' The spec's evidence item asks for it but its 'shows' is not the paragraph's idea.",
+      "fault": "spec",
+      "corroborated_by": "flowB, item 3 (Line 86: 'This is a non sequitur in a paragraph about ownership.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p26",
+      "draft_locus": "Who Owns What ¶6",
+      "quote": "**VAT follows the buyer.** One fact in the ownership table's first row, the VAT number, decides the tax treatment of every invoice.",
+      "finding": "Both readers read the VAT paragraph as a detour between the ownership pattern and pricing. flowA: 'It is a detour between the ownership pattern and the pricing section ... it slows the hand-off into pricing.' The pricing section's transition carries over the ERP-published prices of p18, so p26 sits between the carried-over idea and its pickup: the order is the cause.",
+      "fault": "spec",
+      "corroborated_by": "flowB, item 3 (Line 104: 'the VAT paragraph is a detour between ownership and pricing ... it reads as an aside.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/p32",
+      "draft_locus": "The Choices ¶3",
+      "quote": "the trace of a partner-built origin",
+      "finding": "Both readers found this clause obscure and irrelevant to choosing an option. flowA: 'This is cryptic and adds nothing to choosing between the options.'",
+      "fault": "draft",
+      "corroborated_by": "flowB, item 3 (Line 158: 'The second is obscure and does nothing for the argument.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/p40",
+      "draft_locus": "The Choices ¶10 (Sales reps and B2B2C)",
+      "quote": "Whichever of the four options a merchant chooses, two variations must fit the same model: orders placed by sales reps, and B2B2C.",
+      "finding": "Both readers found the subsection misfiled: it says it applies to every option, so it is not a choice, and it splits the comparison table from the scale section that refers back to 'the four options'. flowA: 'These are filed under The Choices, but the section opens by saying they apply \"whichever of the four options\" is chosen, so they are not a choice.' Both propose moving it to Who Owns What or after the scale section. The draft's 'the company-account model of the second section' also made flowA count headings.",
+      "fault": "spec",
+      "corroborated_by": "flowB, item 3 (Line 183: 'this subsection splits The Choices from the scale section') and item 4",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/stages/paragraphs/p39",
+      "draft_locus": "Across Scale Stages ¶3",
+      "quote": "My recommendation for a brand like Kestrel & Pine is therefore to stay with the platform's B2B features",
+      "finding": "Both readers found the chapter's main recommendation buried at the end of the scale section and proposed giving it its own short section or lead-in before In Practice. flowB: 'the chapter's main recommendation sits at the end of the scale section, where it is easy to miss. Its fallback (\"the ERP-driven store is the better answer\") differs from line 244 (\"an ERP-driven store or a dedicated B2B platform\").' The placement is the spec's; the fallback mismatch is the draft's.",
+      "fault": "spec",
+      "corroborated_by": "flowA, item 4 ('Move the recommendation (line 198) to a short closing paragraph after the scale section, or flag it as the chapter's answer.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/wrong/paragraphs/p46",
+      "draft_locus": "When It Goes Wrong ¶2",
+      "quote": "The first two rows are the Kestrel & Pine story.",
+      "finding": "Both readers saw that the failure table does not close the loop the opening callout opened: its names differ from The Price Nobody Can Explain / Schrödinger's Order, The Spaghetti Junction never returns, and the duplicate-orders row (Kestrel & Pine's 'two records' cause) is excluded from 'the Kestrel & Pine story'. flowA: '\"The first two rows are the Kestrel & Pine story\" also leaves out the third cause from the opening, two order records, even though that cause matches the duplicate-orders row.' The spec's p46 controlling idea fixes 'the first two failures'.",
+      "fault": "spec",
+      "corroborated_by": "flowB, item 3 (Line 230: 'Duplicate orders (row 3) are also K&P's third cause (two records), so this sentence undercuts it. The Spaghetti Junction pattern named at the top never comes back.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/2",
+      "draft_locus": "Introduction callout (failure patterns)",
+      "quote": "a punchout session",
+      "finding": "Both readers carried 'punchout' unexplained from the opening callout and the ownership table's forward pointer to The Choices. flowA: 'It is explained only at line 166, so I carried an unknown term through half the chapter.' A one-clause gloss at first use fixes it.",
+      "fault": "draft",
+      "corroborated_by": "flowB, item 3 (Line 92: 'The orders row explains punchout only by pointing ahead ... it is still a term used before it is explained.')",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/different/transition_in",
+      "draft_locus": "What Is Different When the Buyer Is a Company ¶1",
+      "quote": "The three reasons behind the 38% (pre-season terms, credit, two records) are facts that every business purchase carries and a consumer purchase does not.",
+      "finding": "flowB: '\"Two records\" is a fault in the systems, not a fact every purchase carries. Then line 60 names a different three ... I had to re-read to see that these are two separate triples.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/different/paragraphs/p13/evidence/0",
+      "draft_locus": "What Is Different When the Buyer Is a Company ¶3 (vocabulary table)",
+      "quote": "Cost centers and budgets (the buyer's internal spending accounts and limits)",
+      "finding": "flowB: 'SAP's \"Cost centers and budgets\" appears in the \"Customer-specific prices and assortment\" row. That is the wrong row (it is spending control), and it made me stop.' The cell belongs in the Spending control row.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p15",
+      "draft_locus": "Who Owns What ¶1",
+      "quote": "Both can hold all of it; neither should.",
+      "finding": "flowB: 'I had to re-read this to understand it as \"neither should hold all of it\".'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p16",
+      "draft_locus": "Who Owns What ¶2",
+      "quote": "Microsoft's documentation for its Business Central to Shopify connector",
+      "finding": "flowA: 'The quote never says this is Microsoft's ERP. A newcomer has to work that out from context.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/ownership/paragraphs/p18",
+      "draft_locus": "Who Owns What ¶5",
+      "quote": "For wholesale and contract prices that source is the ERP",
+      "finding": "flowA: the ownership table gives the price source as 'ERP price lists or a pricing engine', but the prose 'says flatly' it is the ERP; 'I had to stop and reconcile the two.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/credit/paragraphs/p29",
+      "draft_locus": "Credit, Terms and the Buyer's Own Controls ¶3",
+      "quote": "(Spartacus documentation, which describes an unmaintained storefront version)",
+      "finding": "flowA: 'this caveat adds noise without telling me what follows from it.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/credit/paragraphs/p29/evidence/1",
+      "draft_locus": "Credit, Terms and the Buyer's Own Controls, Figure 4 caption",
+      "quote": "where the approval and the release are states, not e-mails",
+      "finding": "flowA: '\"Release\" in this sense has not been introduced yet. It becomes clear only in the worked example.' The credit paragraph speaks of holding an order, never of releasing the hold.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/p33",
+      "draft_locus": "The Choices ¶4",
+      "quote": "one tenant, one catalog, one checkout",
+      "finding": "flowA: '\"Tenant\" is not defined here.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/choices/paragraphs/p38",
+      "draft_locus": "The Choices ¶9",
+      "quote": "The table compares the four options by where each keeps the prices, the credit check and the order record, and where each stops fitting.",
+      "finding": "flowB: the table's lead-in is 'the last sentence of the punchout paragraph. The comparison table seems at first to be about punchout only.' The spec's p38 controlling idea puts the table lead-in inside the punchout paragraph.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/stages/paragraphs/p53",
+      "draft_locus": "Across Scale Stages ¶1",
+      "quote": "The four options do not fit equally at every stage.",
+      "finding": "flowB: 'The scale table then describes the B2B channel at each stage, not the four options. The promise and the table do not match.' The sentence is the spec's p53 controlling idea; the table rows are per stage, not per option.",
+      "fault": "spec",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/stages/paragraphs/p39",
+      "draft_locus": "Across Scale Stages ¶3",
+      "quote": "otherwise accept-and-hold with an event-driven release",
+      "finding": "flowA: 'This is the first time the idea gets a name. Line 132 described it without the name, so I had to map the two.'",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/in-practice/paragraphs/p44/evidence/0",
+      "draft_locus": "In Practice ¶1 (worked-example table)",
+      "quote": "at the price keyed in; if it differs from the e-mail, a credit note follows",
+      "finding": "flowB: 'it is unclear which price the team keyed (list or pre-season). Line 213 then depends on \"the price keyed in\".' The €4,100 approval reasoning also needed a second read.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/2",
+      "draft_locus": "Introduction callout (failure patterns)",
+      "quote": "a punchout session",
+      "finding": "'Punchout' is on does_not_know and is first used unexplained in the opening callout; the ownership table glosses it only with a forward pointer and the definition comes in The Choices.",
+      "fault": "draft",
+      "corroborated_by": "flowA, item 3 (Line 13, 'a punchout session') and flowB, item 3 (Line 92)",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "The Choices ¶4",
+      "quote": "one tenant, one catalog, one checkout",
+      "finding": "'Tenant' is on neither audience list and is never explained (also used in the options table: 'share the tenant').",
+      "fault": "draft",
+      "corroborated_by": "flowA, item 3 (Line 160, 'one tenant')",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "Who Owns What ¶2",
+      "quote": "Microsoft's documentation for its Business Central to Shopify connector",
+      "finding": "'Business Central' is never identified as Microsoft's ERP; the newcomer must infer it.",
+      "fault": "draft",
+      "corroborated_by": "flowA, item 3 (Line 84, 'Business Central')",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with the consumer-versus-shop contrast and bridges from the previous chapter; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion opens with a callback, synthesises, sorts claims by how settled they are and hands off; no weak pattern.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 joins the opening shop, the 38% and the ownership claim and states the so-what: integration work on the platform in place, not a richer B2B platform.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'Go back to the outdoor shop from the opening that orders sixty jackets at a negotiated price, on thirty-day terms, within a credit limit.'",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The cold reader predicted the sections in order, Kestrel & Pine's figures and the platforms' B2B documentation as evidence, and Bergzicht's EDI orders left to other chapters.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named the invisible facts (per-account pre-season prices in the ERP, credit, two records) and the three integrations (ERP price events with effective dates, credit check at placement sync or accept-and-hold with event release, one order record), and said integration, not a new platform.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named the broken rule (quote recomputed instead of frozen), the quote as a stored object with validity date from which the order is created, the invoice from what shipped at the order's price, and the most-specific-wins rule implemented once.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader said the cart is a requisition, not an order; the order arrives as cXML OrderRequest or EDI ORDERS and is created in the same order record, keyed on the buyer's purchase order number.",
+      "severity": "minor"
+    }
+  ]
+}

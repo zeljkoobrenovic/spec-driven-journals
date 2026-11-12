@@ -1,0 +1,2456 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/25-events-consistency-and-reconciliation/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/25-events-consistency-and-reconciliation/index.md",
+  "spec_sha": "ae0aee94b5665d19",
+  "draft_sha": "377e92a90c7657f4",
+  "run_at": "2026-11-12T23:22:58+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "chapter promise: why copies disagree and five mechanisms that make it safe",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "key points: at-least-once delivery and idempotency keys + outbox and compensation + reconciliation as a component",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "failure patterns addressed: Message in a Bottle, Boomerang, Phantom Stock",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "lost warehouse reply leads to a retry and possible double shipment; async styles bring disagreement",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "no transaction spans separate systems, so the merchant must finish or undo steps",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "naming the five mechanisms and what each does",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Eva's jacket order and its messages that may repeat or go missing",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "thesis: assume late, duplicate, unordered messages; key names the action, reconciliation fixes from the record",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "roadmap of the chapter and its sources",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶1",
+      "summary": "stock copied WMS to ERP to shop without ever being compared",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶2",
+      "summary": "first weekly stock reconciliation finds 2.3% of variants differ",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶3",
+      "summary": "Noor's conclusions: differences were invisible and caused by non-owning writers",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶4",
+      "summary": "decision W1: WMS owns stock, apps lose write access, comparison stays",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶5",
+      "summary": "author would run the comparison daily; tradeoff of faster events versus frequent checks",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "summary": "the January Double Refund: 212 returns refunded twice by two writers",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "Eventual Consistency in Plain Words ¶1",
+      "summary": "definition of eventual consistency relative to the system of record (Vogels)",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "Eventual Consistency in Plain Words ¶2",
+      "summary": "Hohpe's Starbucks example and its three recoveries: write-off, retry, compensate",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "Eventual Consistency in Plain Words ¶3",
+      "summary": "a disagreement window is normal; an unclosed or invisible one is not",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "At Least Once: Why Duplicates Are the Default ¶1",
+      "summary": "Kafka, Shopify, Stripe and Mollie all deliver at least once",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "At Least Once: Why Duplicates Are the Default ¶2",
+      "summary": "at-least-once versus at-most-once; exactly-once is built by the receiver, CloudEvents ids",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "At Least Once: Why Duplicates Are the Default ¶3",
+      "summary": "message ordering is not guaranteed by vendors or Kafka",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "Idempotency: Making a Repeat Harmless ¶1",
+      "summary": "definition of idempotency and the idempotency key",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "Idempotency: Making a Repeat Harmless ¶2",
+      "summary": "how Stripe and Shopify implement idempotency keys and webhook ids",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "Idempotency: Making a Repeat Harmless ¶3",
+      "summary": "the key must name the business action, not the attempt; table of keys",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "Idempotency: Making a Repeat Harmless ¶4",
+      "summary": "Double Refund diagnosed and fixed with one writer and the return id as key",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "Idempotency: Making a Repeat Harmless ¶5",
+      "summary": "three defenses against out-of-order events, plus fetching current state",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Outbox: Never Losing the Event Between the Database and the Queue ¶1",
+      "summary": "the dual-write problem of saving and publishing separately",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Outbox: Never Losing the Event Between the Database and the Queue ¶2",
+      "summary": "transactional outbox writes change and event together; relay needs idempotent consumers",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Outbox: Never Losing the Event Between the Database and the Queue ¶3",
+      "summary": "on SaaS, webhook plus polling sweep substitutes for an outbox",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "Retries, Backoff and the Dead-Letter Queue ¶1",
+      "summary": "exponential backoff with jitter to avoid retry stampedes",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Retries, Backoff and the Dead-Letter Queue ¶2",
+      "summary": "dead-letter queues end retries without losing messages (SQS)",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "Retries, Backoff and the Dead-Letter Queue ¶3",
+      "summary": "every DLQ needs alarm, owner, replay; Kestrel & Pine had none",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶1",
+      "summary": "multi-step order processes can fail halfway with no cross-system transaction",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶2",
+      "summary": "sagas and compensating actions, coordinated by choreography or orchestration",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶3",
+      "summary": "three commerce sagas and the lack-of-isolation drawback",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶4",
+      "summary": "the OMS as the merchant's saga orchestrator (W2)",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "summary": "table comparing orchestration and choreography",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶6",
+      "summary": "author's verdict: OMS orchestration beyond three systems, choreography at the edges",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "Reconciliation as a First-Class Component ¶1",
+      "summary": "reconciliation is the only proof the other mechanisms worked",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "Reconciliation as a First-Class Component ¶2",
+      "summary": "vendor examples of reconciliation: Stripe payouts, Shopify sweeps, Business Central stock sync",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "Reconciliation as a First-Class Component ¶3",
+      "summary": "the reconciliation card required before a job goes live",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Reconciliation as a First-Class Component ¶4",
+      "summary": "system of record sets fix direction + tolerance is a deliberate choice",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "Reconciliation as a First-Class Component ¶5",
+      "summary": "pointers to finance and payment reconciliation chapters",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "What Each Flow Needs ¶1",
+      "summary": "per-flow table of tolerable disagreement and closing mechanism",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "The Choices and Their Trade-Offs ¶1",
+      "summary": "four ways to keep systems in agreement compared",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "table of choices across the four scale stages",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "summary": "the mechanisms are constant across scale; who builds them changes",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "Eva's refund keyed by return id cannot be sent twice",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "notification stored once, finance batch, support read-only",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "daily refund reconciliation would catch duplicates next morning",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "monitoring integrations with the four golden signals and a zero-traffic alert",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "duplicates: detection and recovery",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "gaps: detection by sweep and DLQ alarm, recovery by replay",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "retry storms: jitter and circuit breakers",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "partial failures: compensations and order reconciliation",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "stale copies: stock drift and Price Drift caught by reconciliation",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "vendor outages: webhook retry windows and a daily PSP sweep",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "callback to the lost warehouse reply, now handled by key, outbox and reconciliation",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established findings: at-least-once delivery, action keys, outbox, sagas, jitter",
+      "matched_spec_paragraph": "p59"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices: stage, orchestration threshold, reconciliation cadence",
+      "matched_spec_paragraph": "p60"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "reconciliation card mandatory + drift usually means a rogue writer",
+      "matched_spec_paragraph": "p61"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "eight review questions on keys, DLQs, writers, reconciliation and sagas",
+      "matched_spec_paragraph": "p62"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "hand-off to API contracts and versioning",
+      "matched_spec_paragraph": "p63"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Outline 'lost warehouse reply leads to a retry and possible double shipment; async styles bring disagreement' matches p01's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Outline 'no transaction spans separate systems, so the merchant must finish or undo steps' matches p02's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Outline 'naming the five mechanisms and what each does' matches p03's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Outline 'Eva's jacket order and its messages that may repeat or go missing' matches p04's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Outline 'thesis: assume late, duplicate, unordered messages; key names the action, reconciliation fixes from the record' matches p05's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Outline 'roadmap of the chapter and its sources' matches p06's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶1",
+      "finding": "Outline 'stock copied WMS to ERP to shop without ever being compared' matches p07's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶2",
+      "finding": "Outline 'first weekly stock reconciliation finds 2.3% of variants differ' matches p08's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶3",
+      "finding": "Outline 'Noor's conclusions: differences were invisible and caused by non-owning writers' matches p09's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶4",
+      "finding": "Outline 'decision W1: WMS owns stock, apps lose write access, comparison stays' matches p10's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶5",
+      "finding": "Outline 'author would run the comparison daily; tradeoff of faster events versus frequent checks' matches p11's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "finding": "Outline 'the January Double Refund: 212 returns refunded twice by two writers' matches p12's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Eventual Consistency in Plain Words ¶1",
+      "finding": "Outline 'definition of eventual consistency relative to the system of record (Vogels)' matches p13's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Eventual Consistency in Plain Words ¶2",
+      "finding": "Outline 'Hohpe's Starbucks example and its three recoveries: write-off, retry, compensate' matches p14's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Eventual Consistency in Plain Words ¶3",
+      "finding": "Outline 'a disagreement window is normal; an unclosed or invisible one is not' matches p15's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶1",
+      "finding": "Outline 'Kafka, Shopify, Stripe and Mollie all deliver at least once' matches p16's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶2",
+      "finding": "Outline 'at-least-once versus at-most-once; exactly-once is built by the receiver, CloudEvents ids' matches p17's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶3",
+      "finding": "Outline 'message ordering is not guaranteed by vendors or Kafka' matches p18's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶1",
+      "finding": "Outline 'definition of idempotency and the idempotency key' matches p19's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶2",
+      "finding": "Outline 'how Stripe and Shopify implement idempotency keys and webhook ids' matches p20's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶3",
+      "finding": "Outline 'the key must name the business action, not the attempt; table of keys' matches p21's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶4",
+      "finding": "Outline 'Double Refund diagnosed and fixed with one writer and the return id as key' matches p22's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "finding": "Outline 'three defenses against out-of-order events, plus fetching current state' matches p23's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶1",
+      "finding": "Outline 'the dual-write problem of saving and publishing separately' matches p24's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶2",
+      "finding": "Outline 'transactional outbox writes change and event together; relay needs idempotent consumers' matches p25's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶3",
+      "finding": "Outline 'on SaaS, webhook plus polling sweep substitutes for an outbox' matches p26's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶1",
+      "finding": "Outline 'exponential backoff with jitter to avoid retry stampedes' matches p27's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶2",
+      "finding": "Outline 'dead-letter queues end retries without losing messages (SQS)' matches p28's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶3",
+      "finding": "Outline 'every DLQ needs alarm, owner, replay; Kestrel & Pine had none' matches p29's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶1",
+      "finding": "Outline 'multi-step order processes can fail halfway with no cross-system transaction' matches p30's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶2",
+      "finding": "Outline 'sagas and compensating actions, coordinated by choreography or orchestration' matches p31's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶3",
+      "finding": "Outline 'three commerce sagas and the lack-of-isolation drawback' matches p32's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶4",
+      "finding": "Outline 'the OMS as the merchant's saga orchestrator (W2)' matches p33's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "finding": "Outline 'table comparing orchestration and choreography' matches p41's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶6",
+      "finding": "Outline 'author's verdict: OMS orchestration beyond three systems, choreography at the edges' matches p42's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Reconciliation as a First-Class Component ¶1",
+      "finding": "Outline 'reconciliation is the only proof the other mechanisms worked' matches p34's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Reconciliation as a First-Class Component ¶2",
+      "finding": "Outline 'vendor examples of reconciliation: Stripe payouts, Shopify sweeps, Business Central stock sync' matches p35's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Reconciliation as a First-Class Component ¶3",
+      "finding": "Outline 'the reconciliation card required before a job goes live' matches p36's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Reconciliation as a First-Class Component ¶4",
+      "finding": "Outline 'system of record sets fix direction + tolerance is a deliberate choice' matches p37's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Reconciliation as a First-Class Component ¶5",
+      "finding": "Outline 'pointers to finance and payment reconciliation chapters' matches p38's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "What Each Flow Needs ¶1",
+      "finding": "Outline 'per-flow table of tolerable disagreement and closing mechanism' matches p39's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Choices and Their Trade-Offs ¶1",
+      "finding": "Outline 'four ways to keep systems in agreement compared' matches p40's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Outline 'table of choices across the four scale stages' matches p43's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Outline 'the mechanisms are constant across scale; who builds them changes' matches p44's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "finding": "Outline 'Eva's refund keyed by return id cannot be sent twice' matches p48's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Outline 'notification stored once, finance batch, support read-only' matches p49's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Outline 'daily refund reconciliation would catch duplicates next morning' matches p50's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Outline 'monitoring integrations with the four golden signals and a zero-traffic alert' matches p51's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Outline 'duplicates: detection and recovery' matches p52's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/1",
+      "draft_locus": "When It Goes Wrong ¶2",
+      "finding": "Outline 'gaps: detection by sweep and DLQ alarm, recovery by replay' matches p53's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/2",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "finding": "Outline 'retry storms: jitter and circuit breakers' matches p55's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/3",
+      "draft_locus": "When It Goes Wrong ¶4",
+      "finding": "Outline 'partial failures: compensations and order reconciliation' matches p56's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/4",
+      "draft_locus": "When It Goes Wrong ¶5",
+      "finding": "Outline 'stale copies: stock drift and Price Drift caught by reconciliation' matches p54's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/5",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "finding": "Outline 'vendor outages: webhook retry windows and a daily PSP sweep' matches p57's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Outline 'callback to the lost warehouse reply, now handled by key, outbox and reconciliation' matches p58's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Outline 'established findings: at-least-once delivery, action keys, outbox, sagas, jitter' matches p59's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Outline 'context-dependent choices: stage, orchestration threshold, reconciliation cadence' matches p60's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Outline 'reconciliation card mandatory + drift usually means a rogue writer' matches p61's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/4",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Outline 'eight review questions on keys, DLQs, writers, reconciliation and sagas' matches p62's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Outline 'hand-off to API contracts and versioning' matches p63's controlling idea, in spec order.",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "draft_locus": "Introduction callout (KEY POINTS)",
+      "finding": "KEY POINTS callout holds three bullets by house rule (problem, mechanism, resolution); a callout, not a body paragraph.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Reconciliation as a First-Class Component ¶4",
+      "finding": "Opens 'Two design points matter.' and both points (direction of fix, tolerance as a choice) are the card's design rules the spec's p37 prescribes; one umbrella idea, announced.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "List unit labelled 'The author's synthesis'; its two bullets are the two parts of the one synthesis the spec's p61 names.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/0",
+      "draft_locus": "Introduction ¶1",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Supports thesis (introduction).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/0",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶1",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶2",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶3",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶4",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶5",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "finding": "Supports S2 and S5 (the problem the mechanisms answer).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Eventual Consistency in Plain Words ¶1",
+      "finding": "Supports S1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Eventual Consistency in Plain Words ¶2",
+      "finding": "Supports S1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2",
+      "draft_locus": "Eventual Consistency in Plain Words ¶3",
+      "finding": "Supports S1.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶1",
+      "finding": "Supports S1, S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶2",
+      "finding": "Supports S1, S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶3",
+      "finding": "Supports S1, S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶1",
+      "finding": "Supports S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶2",
+      "finding": "Supports S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶3",
+      "finding": "Supports S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶4",
+      "finding": "Supports S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "finding": "Supports S2.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶1",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶2",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶3",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶1",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶2",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶3",
+      "finding": "Supports S3.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶1",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶2",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶3",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶4",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/5",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶6",
+      "finding": "Supports S4.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Reconciliation as a First-Class Component ¶1",
+      "finding": "Supports S5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Reconciliation as a First-Class Component ¶2",
+      "finding": "Supports S5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Reconciliation as a First-Class Component ¶3",
+      "finding": "Supports S5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Reconciliation as a First-Class Component ¶4",
+      "finding": "Supports S5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Reconciliation as a First-Class Component ¶5",
+      "finding": "Supports S5.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "What Each Flow Needs ¶1",
+      "finding": "Supports S1-S5 (per-flow application).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Choices and Their Trade-Offs ¶1",
+      "finding": "Supports S1-S5 (comparison).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Supports S2, S5 (who builds them).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Supports S2, S5 (who builds them).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "finding": "Supports S2, S5 (and S3 monitoring).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Supports S2, S5 (and S3 monitoring).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/2",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Supports S2, S5 (and S3 monitoring).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Supports S2, S5 (and S3 monitoring).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/1",
+      "draft_locus": "When It Goes Wrong ¶2",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/2",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/3",
+      "draft_locus": "When It Goes Wrong ¶4",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/4",
+      "draft_locus": "When It Goes Wrong ¶5",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/5",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "finding": "Supports S2-S5 (each failure against the mechanism that detects it).",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/0",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/4",
+      "draft_locus": "Questions to Ask ¶1",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Supports thesis and so-what.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶2",
+      "finding": "Breakdown table (cause, variants, what it was) is read by p09's two conclusions.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "finding": "Figure 1 (two writers, one provider) follows text that states 'Two writers, no shared key, no job comparing'.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/0",
+      "draft_locus": "Eventual Consistency in Plain Words ¶1",
+      "finding": "Vogels' definition is restated in plain words before it is cited.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Eventual Consistency in Plain Words ¶2",
+      "finding": "Hohpe's quote is tied to Kestrel & Pine's peak and to the three recoveries.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/0",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶1",
+      "finding": "Vendor quotes are framed by the opening claim that every mechanism prefers repeating to losing.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶2",
+      "finding": "CloudEvents source + id is explained as the duplicate key.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶3",
+      "finding": "Shopify and Stripe ordering quotes lead to the 'shipped before allocated' consequence.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/0",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶1",
+      "finding": "Figure 2 illustrates the defined key (order number remembered by the WMS).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶2",
+      "finding": "Stripe and Shopify quotes are explained as save-and-replay and store-and-skip.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶3",
+      "finding": "Key table introduced by the rule it applies and carries a 'why that key' column.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "finding": "Walmart, Stripe and Mollie evidence each tied to a named defense against stale updates.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶2",
+      "finding": "Richardson quote turned into 'the outbox and idempotency are two halves of one design'; Figure 3 shows it.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶1",
+      "finding": "Brooker quote and result explained (jitter cut total calls by more than half); Stripe's guidance shown as agreeing.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶2",
+      "finding": "SQS parameters explained (maxReceiveCount, retention, redrive).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶3",
+      "finding": "Black Friday 2026 fact explained: an order past three retries would have gone nowhere a person would look.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶2",
+      "finding": "Garcia-Molina and Salem quote defined in the next sentence; Figure 4 shows the place-order saga.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶3",
+      "finding": "Richardson's 'lack of isolation' explained as why availability counts reservations.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/0",
+      "draft_locus": "Reconciliation as a First-Class Component ¶1",
+      "finding": "Figure 5 follows the definition of reconciliation it illustrates.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Reconciliation as a First-Class Component ¶2",
+      "finding": "Stripe, Shopify and Business Central evidence summed up as 'a reconciliation job built into a product'.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Reconciliation as a First-Class Component ¶3",
+      "finding": "Card table explained by p37's design rules (direction of fix, tolerance).",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3",
+      "draft_locus": "Reconciliation as a First-Class Component ¶4",
+      "finding": "Figure 6 and the 2.3% figure are explained, including that it has no benchmark.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "What Each Flow Needs ¶1",
+      "finding": "Per-flow table's columns are defined before it and its status (author's recommendation, illustrative cadences) stated.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Choices and Their Trade-Offs ¶1",
+      "finding": "Four-ways table introduced as alternatives to the per-flow table's assumption; 'a merchant will use more than one'.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "finding": "Choreography/orchestration table read by p42's judgement.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/0",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "finding": "Stage table read by p44's judgement.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Golden signals mapped one by one to integration measures.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/5",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "finding": "The 40-minute PSP pause explained as webhooks stopping too.",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/1/transition_in",
+      "draft_locus": "Introduction ¶2",
+      "finding": "Opening of the unit expresses cause_effect: A database transaction can keep changes together inside one system. It cannot cover a host...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/2/transition_in",
+      "draft_locus": "Introduction ¶3",
+      "finding": "Opening of the unit expresses problem_solution: Five mechanisms do that work: recognize repeated messages; save an outgoing event with the...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/3/transition_in",
+      "draft_locus": "Introduction ¶4",
+      "finding": "Opening of the unit expresses example: **Where we are in the order's journey.** Eva buys a jacket from Kestrel & Pine, the fictio...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/4/transition_in",
+      "draft_locus": "Introduction ¶5",
+      "finding": "Opening of the unit expresses problem_solution: This chapter's answer is to assume that every message may arrive late, twice or out of ord...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/introduction/paragraphs/5/transition_in",
+      "draft_locus": "Introduction ¶6",
+      "finding": "Opening of the unit expresses sequence: The chapter starts from two Kestrel & Pine cases: its first stock reconciliation, in May 2...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/1/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶2",
+      "finding": "Opening of the unit expresses contrast: In **May 2027**, as part of Waypoint's integration standards (decision W5: every integrati...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/2/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶3",
+      "finding": "Opening of the unit expresses cause_effect: Head of Engineering Noor Visser drew two conclusions. First, nobody had known about the di...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/3/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶4",
+      "finding": "Opening of the unit expresses problem_solution: Waypoint decision W1 gives the WMS authority over physical stock and introduces an availab...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/4/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶5",
+      "finding": "Opening of the unit expresses contrast: Waypoint's cadence is weekly, and **I would run it daily all year.** A week is long enough...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/0/paragraphs/5/transition_in",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "finding": "Opening of the unit expresses similarity: Money had shown the same shape four months earlier. In **January 2027**, over three weeks,...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/1/transition_in",
+      "draft_locus": "Eventual Consistency in Plain Words ¶2",
+      "finding": "Opening of the unit expresses example: Gregor Hohpe's 2004 essay \"Starbucks Does Not Use Two-Phase Commit\" (two-phase commit is a...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "Eventual Consistency in Plain Words ¶3",
+      "finding": "Opening of the unit expresses conclusion_summary: The window of disagreement is normal; a window that never closes, or that nobody can see, ...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/1/transition_in",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶2",
+      "finding": "Opening of the unit expresses elaboration: **At-least-once delivery** means exactly what it says: the message will arrive one or more...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/2/paragraphs/2/transition_in",
+      "draft_locus": "At Least Once: Why Duplicates Are the Default ¶3",
+      "finding": "Opening of the unit expresses additional_support: Ordering is the second thing not to expect. Shopify \"doesn't guarantee ordering within a t...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/1/transition_in",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶2",
+      "finding": "Opening of the unit expresses example: The PSPs document it best, because money is where duplicates hurt most. Stripe's API (docu...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/2/transition_in",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶3",
+      "finding": "Opening of the unit expresses elaboration: The rule I use for choosing the key is that **it must name the business action, not the at...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/3/transition_in",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶4",
+      "finding": "Opening of the unit expresses example: The Double Refund fails this test twice over. The returns portal and the support console w...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/3/paragraphs/4/transition_in",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "finding": "Opening of the unit expresses contrast: Out-of-order events need a second defense, because a stale update is not a duplicate. Thre...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/1/transition_in",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶2",
+      "finding": "Opening of the unit expresses problem_solution: The **transactional outbox**, as cataloged by Chris Richardson (microservices.io, accessed...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/4/paragraphs/2/transition_in",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶3",
+      "finding": "Opening of the unit expresses contrast: A merchant on a SaaS platform cannot build or inspect the platform's outbox. What plays th...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/1/transition_in",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶2",
+      "finding": "Opening of the unit expresses sequence: Retries must end somewhere. A **dead-letter queue** (DLQ) is where a message goes after it...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/5/paragraphs/2/transition_in",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶3",
+      "finding": "Opening of the unit expresses contrast: A dead-letter queue with nobody watching it is a silent order-loss mechanism. The operatio...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/1/transition_in",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶2",
+      "finding": "Opening of the unit expresses elaboration: The name for this is a **saga**. Hector Garcia-Molina and Kenneth Salem introduced it in a...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/2/transition_in",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶3",
+      "finding": "Opening of the unit expresses example: The commerce sagas worth naming are three. **Place order**: reserve, authorize, create, co...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/3/transition_in",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶4",
+      "finding": "Opening of the unit expresses conclusion_summary: In practice the saga orchestrator for a merchant's order is the **OMS**, the one place tha...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/4/transition_in",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "finding": "Opening of the unit expresses contrast: The OMS is the orchestrator; the alternative is choreography. The two ways to run a saga c...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/6/paragraphs/5/transition_in",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶6",
+      "finding": "Opening of the unit expresses conclusion_summary: My judgement: for a merchant, orchestration by the OMS wins once there are more than three...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/1/transition_in",
+      "draft_locus": "Reconciliation as a First-Class Component ¶2",
+      "finding": "Opening of the unit expresses example: The vendors give it precise shape. Stripe's payout reconciliation report (accessed Novembe...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/2/transition_in",
+      "draft_locus": "Reconciliation as a First-Class Component ¶3",
+      "finding": "Opening of the unit expresses elaboration: Every reconciliation job can be written on one card, and I would require the card before t...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/3/transition_in",
+      "draft_locus": "Reconciliation as a First-Class Component ¶4",
+      "finding": "Opening of the unit expresses elaboration: Two design points matter. **The system of record decides the direction of the fix.** Becau...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/7/paragraphs/4/transition_in",
+      "draft_locus": "Reconciliation as a First-Class Component ¶5",
+      "finding": "Opening of the unit expresses place: [[traceability-and-reconciliation]] in the sibling book RECONCILED covers the finance vers...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/10/paragraphs/1/transition_in",
+      "draft_locus": "Across Scale Stages: When It Fits and When It Limits ¶2",
+      "finding": "Opening of the unit expresses conclusion_summary: The judgement: idempotency and reconciliation do not change with scale; a Starting-stage m...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/1/transition_in",
+      "draft_locus": "In Practice ¶2",
+      "finding": "Opening of the unit expresses sequence: The provider's success notification is stored once, and finance receives the credit note i...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/2/transition_in",
+      "draft_locus": "In Practice ¶3",
+      "finding": "Opening of the unit expresses sequence: Each morning, a job compares provider and platform refunds by order and amount and sends u...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/11/paragraphs/3/transition_in",
+      "draft_locus": "In Practice ¶4",
+      "finding": "Opening of the unit expresses contrast: **Monitoring the flow.** The morning job checks a flow's results after the fact; monitorin...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/1/transition_in",
+      "draft_locus": "When It Goes Wrong ¶2",
+      "finding": "Opening of the unit expresses contrast: **Gaps.** A webhook retried for hours and then dropped; a subscription deleted after repea...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/2/transition_in",
+      "draft_locus": "When It Goes Wrong ¶3",
+      "finding": "Opening of the unit expresses sequence: **Retry storms.** A recovering ERP hit by every connector at once. Backoff with jitter on ...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/3/transition_in",
+      "draft_locus": "When It Goes Wrong ¶4",
+      "finding": "Opening of the unit expresses sequence: **Partial failures.** The order exists in the WMS and not in the ERP, or the reservation e...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/4/transition_in",
+      "draft_locus": "When It Goes Wrong ¶5",
+      "finding": "Opening of the unit expresses sequence: **Stale copies.** The 390 variants of May 2027, and the Price Drift of October 2026, when ...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/sections/12/paragraphs/5/transition_in",
+      "draft_locus": "When It Goes Wrong ¶6",
+      "finding": "Opening of the unit expresses sequence: **Vendor outages.** When the PSP paused Kestrel & Pine's account for 40 minutes in August ...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/1/transition_in",
+      "draft_locus": "What to Take Away ¶2",
+      "finding": "Opening of the unit expresses elaboration: **Established.** - Delivery across systems is at least once and unordered: Kafka's design ...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/2/transition_in",
+      "draft_locus": "What to Take Away ¶3",
+      "finding": "Opening of the unit expresses contrast: **Depends on context.** - Below the Omnichannel stage the merchant buys these mechanisms i...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/3/transition_in",
+      "draft_locus": "What to Take Away ¶4",
+      "finding": "Opening of the unit expresses contrast: **The author's synthesis.** - Treat the reconciliation card as part of the integration, no...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/4/transition_in",
+      "draft_locus": "Questions to Ask ¶1",
+      "quote": "1. For each integration that creates, refunds, captures or adjusts stock:",
+      "finding": "The spec declares a cause_effect phrase at the start (the take-aways, so these questions apply them to the reader's company); the unit opens straight into question 1 under the 'Questions to Ask' heading with no phrase linking it to the take-aways.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/paragraphs/5/transition_in",
+      "draft_locus": "Questions to Ask ¶2",
+      "finding": "Opening of the unit expresses contrast: The mechanisms in this chapter protect a flow against the messages it receives. They do no...",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/transition_in",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "'The warehouse in the opening ... can now take the repeated instruction safely' turns from the failures to the chapter's answer set against its opening (conclusion_summary).",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "spec_locus": "/flow",
+      "draft_locus": "whole chapter",
+      "finding": "Both readers describe problem -> condition -> five mechanisms in dependency order -> application -> worked case and failures, matching problem_solution with prerequisite_order; both found the roadmap matches the sections.",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "She later exchanges it, which adds return and stock messages. Had she asked for a refund instead",
+      "finding": "Both readers could not tell whether the chapter follows Eva's exchange or a refund; the switch from what happened to a hypothetical is prescribed by p04's controlling idea (the exchange plus a refund followed later).",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB, item 15)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/4",
+      "draft_locus": "Introduction ¶5",
+      "quote": "they lead to the writer that should not have written",
+      "finding": "The rule about 'the writer that should not have written' is stated before reconciliation or an unauthorized writer has been introduced; a short gloss in the intro would carry it.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB, item 16)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/5",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶6",
+      "quote": "Money had shown the same shape four months earlier.",
+      "finding": "The section titled 'The First Reconciliation' tells May 2027 first and then goes back to January for the Double Refund; both readers found it an afterthought in reverse chronology. The order and heading are the spec's.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB, item 18 (flowA item 18))",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4",
+      "draft_locus": "Setting the Scene at Kestrel & Pine: The First Reconciliation ¶5",
+      "quote": "Waypoint's cadence is weekly, and I would run it daily all year.",
+      "finding": "The author's first-person dissent arrives abruptly inside the company narrative and the following 'Noor chose to put the effort into the event feed instead' forced a re-read.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB, item 17)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/1",
+      "draft_locus": "Eventual Consistency in Plain Words ¶2",
+      "quote": "the mechanisms below are how separate systems carry them out",
+      "finding": "Three recoveries (write-off, retry, compensating action) are said to be carried out by five mechanisms without a mapping; both readers stopped trying to match them (write-off placed nowhere).",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB, item 19)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "quote": "Out-of-order events need a second defense, because a stale update is not a duplicate.",
+      "finding": "The ordering defenses sit at the end of 'Idempotency: Making a Repeat Harmless', after the Double Refund wrap-up, though ordering is not about repeats; the placement is the spec's (p23 in the idempotency section).",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB, item 20)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/4",
+      "draft_locus": "Sagas and Compensation: Undoing What Cannot Be Rolled Back ¶5",
+      "quote": "The OMS is the orchestrator; the alternative is choreography.",
+      "finding": "The section states the OMS-as-orchestrator conclusion (p33), then restates it before the comparison table and the judgement that argues for it, so it circles back; this order and wording are the spec's p33/p41.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB, item 29)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/2",
+      "draft_locus": "Reconciliation as a First-Class Component ¶3",
+      "quote": "WMS on-hand minus reservations",
+      "finding": "The stock card compares 'WMS on-hand minus reservations' while the scene described the same job as comparing the WMS's on-hand quantity; both readers stopped to check whether it was the same job.",
+      "fault": "draft",
+      "corroborated_by": "second flow reader (flowB, item 23)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/11/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "quote": "Monitoring the flow.",
+      "finding": "Monitoring (golden signals, black-box/white-box) arrives inside 'In Practice' right after Eva's refund, a new topic both readers found misplaced; p51's place in the practice section is the spec's.",
+      "fault": "spec",
+      "corroborated_by": "second flow reader (flowB, item 25)",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/3",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶4",
+      "quote": "Had the second request carried the return id the first one used, the PSP would have declined",
+      "finding": "Flow reader A: 'fails this test twice over' does not fit (two writers is a different failure), and 'declined' conflicts with Stripe returning the saved response to a retry. (reported by one reader only, item A21).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/2",
+      "draft_locus": "The Outbox: Never Losing the Event Between the Database and the Queue ¶3",
+      "quote": "the pair the previous chapter described: the platform's webhook plus a polling sweep",
+      "finding": "Flow reader A could not tell which chapter 'the previous chapter' is; elsewhere [[integration-styles]] is named. (reported by one reader only, item A23).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/4",
+      "draft_locus": "Reconciliation as a First-Class Component ¶5",
+      "quote": "in the sibling book RECONCILED covers the finance version for ledgers",
+      "finding": "Flow reader A: a one-line pointer paragraph ends the reconciliation section abruptly. (reported by one reader only, item A28).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/8/paragraphs/0",
+      "draft_locus": "What Each Flow Needs ¶1",
+      "quote": "Webhook retried by the PSP for up to three days",
+      "finding": "Flow reader A briefly read the payment-status row's three days as contradicting Mollie's 26 hours given earlier. (reported by one reader only, item A27).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/4",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶5",
+      "quote": "as Walmart's inventory design described on Confluent's blog in May 2020 does",
+      "finding": "Flow reader B re-read the Walmart sentence twice because of its stacked parentheticals. (reported by one reader only, item B21).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/7/paragraphs/1",
+      "draft_locus": "Reconciliation as a First-Class Component ¶2",
+      "quote": "Microsoft's Business Central, an ERP product, (documentation of October 2026)",
+      "finding": "Flow reader B: the punctuation makes the sentence hard to parse. (reported by one reader only, item B26).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/9/paragraphs/0",
+      "draft_locus": "The Choices and Their Trade-Offs ¶1",
+      "quote": "The per-flow table assumed events with idempotent consumers.",
+      "finding": "Flow reader B found the choices compared only after the per-flow table had applied one; reader A found this position clear. The order is the spec's. (reported by one reader only, item B27).",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "What to Take Away ¶3",
+      "quote": "for stock, weekly is tolerable only while an event feed closes the gap",
+      "finding": "Flow reader B saw mild tension with the author's earlier 'daily all year'. (reported by one reader only, item B28).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know/0",
+      "draft_locus": "body",
+      "finding": "Given: system of record glossed and copy consistency defined (Consistency ¶1); eventual consistency (Vogels); at-least-once, at-most-once, exactly once (At Least Once ¶2); partition glossed as 'one slice of a stream' (¶3).",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know/1",
+      "draft_locus": "body",
+      "finding": "Given: 'An operation is idempotent when doing it twice has the same effect' and the idempotency key defined (Idempotency ¶1); version or updated_at per entity (¶5).",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know/2",
+      "draft_locus": "body",
+      "finding": "Given: dual-write problem named and explained (Outbox ¶1); transactional outbox, outbox table and the relay (Outbox ¶2).",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know/3",
+      "draft_locus": "body",
+      "finding": "Given: exponential backoff and jitter defined (Retries ¶1); dead-letter queue and redrive defined (Retries ¶2).",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "pass",
+      "spec_locus": "/intent/audience/does_not_know/4",
+      "draft_locus": "body",
+      "finding": "Given: transaction glossed in Introduction ¶2 ('keep changes together inside one system') and defined in Sagas ¶1; saga, compensating action, choreography and orchestration defined in Sagas ¶2.",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience/does_not_know/5",
+      "draft_locus": "Across Scale Stages ¶1 (stage table, Omnichannel row)",
+      "quote": "monitoring of each flow's lag, traffic, errors and saturation",
+      "finding": "Reconciliation, its card and tolerance are given, but the four golden signals are used in the stage table before In Practice ¶4 introduces and maps them.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, item 24 (golden signals used before they are explained)",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "Idempotency: Making a Repeat Harmless ¶2",
+      "quote": "Shopify's GraphQL Admin API ... takes an idempotencyKey on mutations",
+      "finding": "'Mutations' (and GraphQL) is never glossed; a reader who knows roughly what an API is would not know it means a request that changes data.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/intent/audience",
+      "draft_locus": "Retries, Backoff and the Dead-Letter Queue ¶1",
+      "quote": "says the same for its 429 responses ... backoff after a throttle is one second",
+      "finding": "The 429 status and 'throttle' are not glossed; a newcomer needs 'the provider's answer when you call too often'.",
+      "fault": "draft",
+      "criterion": "known_before_new",
+      "severity": "minor"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "spec_locus": "/introduction",
+      "draft_locus": "Introduction",
+      "finding": "Opens on a puzzling scenario (the lost warehouse reply), not a placeholder, dictionary or dawn-of-man opening.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "What to Take Away",
+      "finding": "Opens on the callback and the synthesis, sorts what holds by how settled it is and ends with questions and a hand-off; no new idea, no bare restatement.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "spec_locus": "/conclusion",
+      "draft_locus": "What to Take Away ¶1-¶4",
+      "finding": "¶1 sorts four mechanisms that reduce disagreement against the one that measures it; ¶4 states the so-what: no flow that creates, moves or pays goes live without a card, and ask 'who else writes this?'.",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "spec_locus": "/conclusion/callback",
+      "draft_locus": "What to Take Away ¶1",
+      "finding": "'The warehouse in the opening, whose reply was lost' now recognizes the order number as key, the outbox or sweep ensures sending, and the nightly reconciliation shows agreement.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "spec_locus": "/introduction/roadmap",
+      "draft_locus": "Introduction",
+      "finding": "Intro reader gives the five mechanisms by name, no shared transaction, Eva's order and refund, the two Kestrel & Pine cases, the section order of the roadmap and the evidence (scenario, vendor documentation, original papers).",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/0",
+      "draft_locus": "whole chapter",
+      "finding": "Reader names two writers and no request naming the return, one writer with console read-only, the return id as key, and a daily match by order number and amount sent to finance that would show duplicates next morning.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/1",
+      "draft_locus": "whole chapter",
+      "finding": "Reader overwrites the platform from the WMS, looks first for who else writes stock (apps, manual edits, in-flight returns), and gives the card's sets, key (SKU and location), zero tolerance, weekly and daily in November, recipient and fix.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "spec_locus": "/intent/acceptance_criteria/2",
+      "draft_locus": "whole chapter",
+      "finding": "Reader says no rollback; the compensation is a return and a refund on receipt, a business process; the OMS orchestrates the order saga.",
+      "severity": "minor"
+    }
+  ]
+}

@@ -1,0 +1,1583 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "returns-and-exchanges",
+  "journal": "commerce-platform-architecture",
+  "part": "part-4",
+  "title": "The Way Back: Returns, Exchanges, Refunds and Reverse Logistics",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published chapter (posts/18-returns-and-exchanges/index.md) and its former spec.md, whose Non-goals, Modalities, Open questions, Decision log, Sources and Changelog are carried over. One spec paragraph per unit of the chapter, plus the units the contract asks for and the published chapter did not have (a thesis paragraph p03, a roadmap p05, a paragraph introducing the requirements table p23 and a conclusion synthesis p51); these are listed in decision_log. It is a contract, not a description.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The nine steps of a return (request, eligibility, label, transit, receiving, inspection, disposition, settlement, stock) with their records and owners, and the dispositions (restocked, processing required, not restocked, missing).",
+        "The two records of a return (the return, which owns intent and money; the reverse fulfillment, which owns work and stock) and the disposition that joins them.",
+        "The EU right of withdrawal read as data: four dates per order line and the three 14-day clocks, and the trader's right to wait for the goods or proof of sending."
+      ],
+      "believe": [
+        "For goods like apparel and equipment, the warehouse's disposition, not the request or the carrier scan, should release the refund and the restock.",
+        "The refund trigger and the single refund writer are decided before a returns product is chosen."
+      ],
+      "can_do": [
+        "Write the returns integration contract: the trigger, the writer, the key, the restock rule and the four dates per line.",
+        "Say how an exchange is modeled and what releases the replacement, and how marketplace and store returns enter the return record."
+      ]
+    },
+    "audience": {
+      "who": "Readers new to commerce architecture; most of all the engineer or product manager who must connect a returns portal, a warehouse and a payment provider, and next the operations and finance leaders who need to see why 'refund on request' and 'refund on inspection' are architecture decisions (Noor Visser and Sanne de Wit at Kestrel & Pine).",
+      "already_knows": [
+        "What buying and returning something online is like from the shopper's side; roughly what an API, a database and a queue are.",
+        "Kestrel & Pine, its people, its warehouse at Duiven and stores, its incidents in outline (the Double Refund among them) and the names of the sixteen failure patterns.",
+        "From Part I: the thirteen steps of an order, promise and handoff, the three status lines (money, goods, returns), 'system', 'the shop platform' for the hosted product and 'commerce platform' for the whole set of systems, the four scale stages (Starting, Growing, Omnichannel, Group), system of record, single writer, events, idempotency and reconciliation, the Waypoint decisions W1 to W8.",
+        "Glosses already given: PSP, WMS, ERP, iPaaS, EDI, webhook, API call, SKU, channel, marketplace connector, 3PL, order hub and order management system, availability service, D2C, B2B, PIM, POS.",
+        "From Part II: available-to-promise, one writer each for on hand and committed, promotions with discounts allocated to lines.",
+        "From Part III: refunds as new payments with one writer and a key; one order record with three status lines; one invoice per shipment and credit notes as the only correction.",
+        "From the earlier chapters of Part IV: the warehouse system as the only writer of on-hand stock and the fulfillment order it accepts or rejects; one normalizing carrier layer and scans mapped to one vocabulary; the store as an order source, stock location and payment path, with store stock committed only when staff confirm and one refund path per order at the counter."
+      ],
+      "does_not_know": [
+        "Return rate measures (items, orders, value) and bracketing.",
+        "RMA, reverse fulfillment, disposition and its four values, reverse logistics.",
+        "The EU right of withdrawal and its articles.",
+        "Returns portals as a product category; instant exchange and exchange with a balance.",
+        "Marketplace-run returns and their clocks."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "Given a return refunded by support on a carrier scan and again by the portal on inspection, the reader names the missing decisions and the event that should release the refund.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A customer sees on the carrier's tracking that her return was delivered to the warehouse and asks support for her refund; the agent sees the payment and no refund in the payment provider's console and refunds by hand; days later the returns portal refunds again after inspection. Using only this chapter: which decisions were missing, and which event should release the refund?",
+        "expected": "Nobody had decided the refund trigger and the one system allowed to refund: two systems could refund, and neither request carried the return id as its key, so the provider paid both. The warehouse's disposition (refund on inspection) releases the refund; one system issues it with the return id as idempotency key; support's console access is read-only and agents see the pending refund in the portal; a daily comparison of the provider's refunds with the platform's catches a second one."
+      },
+      {
+        "id": "AC-2",
+        "statement": "Given a restock on request and an exchange released by a carrier scan, the reader says what is wrong and what should trigger each.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A returned jacket is put back into sellable stock as soon as the return is requested, and the exchange replacement ships when the carrier scans the return parcel at the warehouse. Using only this chapter: what is wrong with each, and what should trigger them?",
+        "expected": "Stock should rise only on a 'restocked' disposition from the warehouse system, the single writer of on-hand stock, not on the request, the scan or receipt before grading; otherwise a worn or missing item is sold again. The exchange is a new order created at request time and held (committing the replacement unit) and released by a resellable disposition, not by a scan; otherwise a replacement can ship for a return that never arrives."
+      },
+      {
+        "id": "AC-3",
+        "statement": "The reader can compute the withdrawal deadlines for one return and say whether the trader may wait for the goods.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "minor",
+        "probe": "Using only this chapter: a customer received her goods on 15 April and told the shop on 19 April that she was withdrawing. By when must she send the goods back, by when must the shop refund, and may the shop wait for the goods?",
+        "expected": "She withdrew inside the 14 days that run from receipt; she must send the goods within 14 days of her notice, by 3 May; the shop must refund within 14 days of the notice, by 3 May, by the same means of payment, and may withhold the refund until it has the goods back or proof that she sent them, whichever comes first."
+      },
+      {
+        "id": "AC-4",
+        "statement": "A reader of the introduction alone (the callouts and the paragraphs before the first section heading) can predict the chapter's sections and the kind of evidence it uses.",
+        "check": "intro_predicts_content",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "After reading only the introduction: what will this chapter discuss, in what order, and with what kind of evidence?",
+        "expected": "The steps a return passes through and the records it creates; the return request, the warehouse's inspection and disposition, the replacement order and the refund as separate decisions with owners; the EU withdrawal clocks; returns that start on marketplaces and in stores; Eva's exchange from M to L between 19 and 22 April and its €199 refund variant. Evidence: Kestrel & Pine's return figures and the Double Refund, platform data models, EU law and return-rate surveys."
+      },
+      {
+        "id": "AC-5",
+        "statement": "A reverse outline of the draft, written without the spec, lists the same controlling ideas in the same order as sections[].paragraphs[].",
+        "check": "reverse_outline_matches_spec",
+        "method": "reverse_outline",
+        "severity": "blocker"
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How does a return travel back through the systems, and how do you make sure the money, the stock and the books all agree?",
+    "claim": "A return travels as two records: the return request on the order side and the reverse fulfillment in the warehouse, joined by the warehouse's disposition, its verdict on each item. Money, stock and books agree when that disposition releases the refund, or the replacement order held until then, one system issues the refund with the return id as its key, stock rises only on a 'restocked' disposition, and the credit note follows the refund.",
+    "disputed_by": "The view that a return is a refund button: the refund goes out when the customer asks or when the carrier scan shows the parcel at the warehouse, whichever system an agent has open may issue it, the unit goes back into stock on arrival, and finance corrects the books at month-end.",
+    "so_what": "In January 2027 Kestrel & Pine refunded 212 returns twice, €19,400: customers saw 'delivered to Duiven' on the tracking, support refunded in the payment provider's console, and the portal refunded again on inspection, and neither request named the return. At 72,000 return parcels a year and a 24% item return rate, the way back is a main road. A merchant that accepts the claim decides the refund trigger, the single refund writer and the restock rule before it chooses a returns product, and keeps four dates per order line (delivery, withdrawal notice, goods sent, refund) so the 14-day clocks can be computed.",
+    "how_why": "The request says what the customer intends to send, not what arrives; only the inspection at the bench shows what came back and whether it can be sold again, so a refund or restock on request or on scan pays for empty boxes and resells worn jackets. EU law lets the trader withhold the refund until the goods or proof of sending arrive and then requires it within 14 days of the notice, so refund on inspection is lawful if the clock is tracked. A payment provider executes every valid refund request, so two systems that can refund without a shared key both pay. Marketplaces and stores start returns the merchant did not, so the return record must accept their authorizations and refunds under their own ids. An exchange is a held new order released by the disposition, because a method such as iDEAL cannot hold money. The credit note records money that has actually moved back, so it follows the confirmed refund and the books match the provider's records.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A return travels as two records: the return request on the order side, which owns intent and money, and the reverse fulfillment in the warehouse, which owns work and stock, joined by the disposition, the warehouse's verdict on each item."
+      },
+      {
+        "id": "S2",
+        "claim": "For goods like apparel and equipment the disposition, not the request, the carrier scan or receipt, releases the refund and the restock; this is lawful because the trader may wait for the goods and must then refund within 14 days of the notice, so the four dates per line are kept."
+      },
+      {
+        "id": "S3",
+        "claim": "One system issues the refund with the return id as its key, stock rises only on a 'restocked' disposition from the warehouse system, and the credit note follows the confirmed refund at the allocated line price; these are decided before a returns product is chosen."
+      },
+      {
+        "id": "S4",
+        "claim": "Returns started on marketplaces and at store counters enter the same return record under their own ids, with the marketplace's clocks exposed and the portal request closed before a store pays."
+      },
+      {
+        "id": "S5",
+        "claim": "An exchange is a new order created at request time that holds the replacement unit and is released by a resellable disposition, because a method such as iDEAL cannot hold money."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Carries the part's rules onto the way back: the warehouse's disposition as the event that releases money and stock, one refund writer keyed on the return id, and returns started by stores and marketplaces entering the same record.",
+    "supports": [
+      "P4-1",
+      "P4-4"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "scene to the body: the Double Refund and Noor's question first, then the steps, records, law and decisions that answer it"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "choices and stages: the four decisions and their options, then the options by scale stage"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "in-practice: Eva's exchange from 19 to 22 April 2027"
+      }
+    ],
+    "rationale": "The Kestrel & Pine scene comes first so that every later term arrives as part of the answer to Noor's question after the Double Refund. The nine steps come next because every later section names a step, a record or the disposition. How the pieces fit follows: the two records and the flows between them need the steps. The law comes after the flows because it sets how long the refund flow may wait for the disposition, and before the choices because the refund-trigger table states each trigger's legal position. The four decisions then use the records, the flows and the law. Marketplace and store returns follow the decisions because they are returns whose trigger and writer the merchant does not control. The stages place the decisions and the external returns by scale. Eva's exchange comes after the rules so that each row of her table can be read against them, and the failures come last because each is read against the rule that prevents it. Moving the choices before the law would leave the trigger table's legal column unexplained; moving Eva's exchange before the two records would show a disposition before the reader knows what it joins."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "A customer sends back a jacket that does not fit and asks for the next size. The returns portal knows the request, the warehouse must inspect the original and find a replacement, and finance must record any adjustment. Marking the return complete in one system does not complete the others' work."
+    },
+    "bridge": {
+      "from_reader_world": "Anyone who has returned an online purchase has waited for a refund or a replacement without knowing which system was holding it up; the previous chapter has just ended with a web order brought back to a store counter.",
+      "to_topic": "At one item in four, the return is a main flow, so the question is on which event, and by which system, money, stock and books move."
+    },
+    "thesis_statement": {
+      "text": "A return travels as two records, the return request on the order side and the reverse fulfillment in the warehouse, joined by the warehouse's disposition; money, stock and books agree when that disposition releases the refund or the held replacement order, one system issues the refund with the return id as its key, stock rises only on a 'restocked' disposition, and the credit note follows the refund.",
+      "placement": "KEY POINTS callout (bullets 1 and 2) and paragraph p03"
+    },
+    "roadmap": {
+      "placement": "IN THIS CHAPTER callout and paragraph p05",
+      "promises": [
+        {
+          "promise": "Set the scene at Kestrel & Pine, where one item in four comes back, with what returns cost, and the Double Refund that led to Noor's question.",
+          "kept_in": [
+            "scene"
+          ]
+        },
+        {
+          "promise": "Name the nine steps of a return.",
+          "kept_in": [
+            "steps"
+          ]
+        },
+        {
+          "promise": "Show how the systems and the two records fit together.",
+          "kept_in": [
+            "pieces"
+          ]
+        },
+        {
+          "promise": "Read the EU withdrawal law as data.",
+          "kept_in": [
+            "law"
+          ]
+        },
+        {
+          "promise": "Set out the four decisions of a returns design.",
+          "kept_in": [
+            "choices"
+          ]
+        },
+        {
+          "promise": "Bring in returns started on marketplaces and at store counters.",
+          "kept_in": [
+            "channels"
+          ]
+        },
+        {
+          "promise": "Place the design across the four scale stages.",
+          "kept_in": [
+            "stages"
+          ]
+        },
+        {
+          "promise": "Follow Eva's exchange day by day.",
+          "kept_in": [
+            "in-practice"
+          ]
+        },
+        {
+          "promise": "List how returns go wrong.",
+          "kept_in": [
+            "wrong"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "A customer who sends back a jacket that does not fit and asks for the next size needs the returns portal, the warehouse and finance each to do its own work; marking the return complete in one system does not complete the others, so the customer can be left waiting while the jacket or the money is counted wrongly.",
+        "function": "context",
+        "organization": "illustration",
+        "evidence": [
+          {
+            "kind": "scenario",
+            "what": "A jacket sent back for the next size, with the portal holding the request, the warehouse the inspection and replacement, and finance the adjustment.",
+            "shows": "The chapter's problem in one case: one return, several systems, each with its own part of the work."
+          }
+        ]
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "At Kestrel & Pine's volume, almost one online item in four comes back, so disconnected decisions become a routine source of errors (two systems refunding the same return, stock offered before inspection), and a return process must record each step and authorize the next.",
+        "function": "explanation",
+        "evidence": [
+          {
+            "kind": "statistic",
+            "what": "Almost one in four online items returned.",
+            "shows": "At that volume the errors are routine, not rare.",
+            "source": "_research/scenario-ledger.md"
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "One return that needs several systems to act.",
+          "introduces": "What happens when that is multiplied by one item in four.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "The chapter's answer: a return travels as two records, the return request (RMA) on the order side and the reverse fulfillment in the warehouse, joined by the warehouse's disposition, its verdict on each item; money, stock and books agree when that disposition releases the refund or the held replacement order, one system issues the refund with the return id as its key, stock rises only on a 'restocked' disposition, and the credit note follows the refund.",
+        "function": "claim",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Disconnected decisions that refund twice or restock before inspection.",
+          "introduces": "The chapter's answer: two records joined by the disposition, and one event and one writer for each of money, stock and books.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Where we are: after the previous chapter's web order brought back to a store counter, Eva's jacket comes back by post; delivered on 15 April 2027, she requests size L on 19 April, Duiven receives and inspects the jacket on 22 April and dispatches the L, and a €199 iDEAL refund is the separate alternative she did not choose.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "case",
+            "what": "Eva's Ridgewalker jacket: delivered 15 April 2027, exchange M to L requested 19 April, received and inspected at Duiven 22 April, L dispatched the same day; refund variant €199 by iDEAL.",
+            "shows": "Places the chapter on the recurring order and keeps the exchange and the refund distinct.",
+            "source": "_research/scenario-ledger.md, Eva's jacket and returns-and-exchanges lines"
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The answer stated in general, and the previous chapter's return at a store counter.",
+          "introduces": "Eva's jacket, which comes back by post, as the case the chapter follows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "The chapter first sets the scene at Kestrel & Pine, with what returns cost and Noor's question, then names the nine steps of a return, shows how the systems and the two records fit, reads the EU withdrawal law as data, sets out the four decisions of a returns design, brings in returns started on marketplaces and at store counters, places them across the four scale stages, follows Eva's exchange day by day and lists how returns go wrong, using Kestrel & Pine's figures, public platform data models, the EU directive, marketplace rules and industry surveys as evidence; neighbouring chapters own the money, the warehouse work, the credit note and the full journey.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Eva's exchange as the case to follow.",
+          "introduces": "The order in which the chapter answers how her return keeps money, stock and books in agreement.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "scene",
+      "heading": "Setting the Scene at Kestrel & Pine: One Item in Four",
+      "controlling_idea": "At Kestrel & Pine, as across the industry, the return path is a main road (72,000 parcels a year, a quarter of items), and the returns portal bought to tame it created the Double Refund because nobody had decided on which event, and by which system, money, stock and books move.",
+      "function": "context",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Gives the case the thesis answers: a main flow, two systems that could refund, and no agreed event for the refund."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Kestrel & Pine's volumes first, then what a return rate measures, how the industry's rates compare and what returns cost, then the portal that handles them, then the January 2027 incident the portal caused, then Noor's February question; the question needs the incident, and the incident needs the portal. The industry rates sit beside Kestrel & Pine's own, which they are compared with (moved here after both flow readers of round 1 found them out of place among the steps)."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap's first stop: Kestrel & Pine and Noor's question.",
+        "introduces": "Kestrel & Pine's returns as they stood in 2026.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p06",
+          "controlling_idea": "Kestrel & Pine took back 72,000 parcels in 2026 against 336,000 shipped, with a 24% item return rate and a 19% order return rate; partial returns and bracketing explain why the two measures differ.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "72,000 return parcels; 336,000 parcels shipped; 24% of items; 19% of orders; bracketing (ordering two sizes to keep one).",
+              "shows": "The return path carries a quarter of the items sold, so it is a main flow.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "controlling_idea": "28% of returns are exchanges and 61% of returned items are resold as new, and the returns bench at Duiven handles about 280 parcels a day with two people, five for three weeks after Black Friday.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "28% exchanges; 61% resold as new; about 280 parcels a day, two people, five for three weeks after Black Friday (illustrative).",
+              "shows": "Exchanges and grading are routine work, not exceptions.",
+              "source": "_research/scenario-ledger.md, returns-and-exchanges line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "How many items come back.",
+            "introduces": "What happens to them and who handles them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "controlling_idea": "The return rate estimates how much selling and shipping work will be followed by return work, and any figure must say whether it counts items, orders or sales value.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Kestrel & Pine's own return figures and what happens to the items.",
+            "introduces": "What a return rate measures, so those figures can be compared with others.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Industry surveys put US online returns at about a fifth of sales value, with free returns influencing where most shoppers buy and a measurable share judged fraudulent, and apparel near a quarter of orders, mostly for size or fit; none of these measures matches Kestrel & Pine's directly.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "NRF with Happy Returns: $890 billion US returns 2024; $849.9 billion projected 2025; 19.3% of online sales value; 9% judged fraudulent; free returns influencing 76%. Coresight 2023: 24.4% of online apparel orders, size or fit in 53%.",
+              "shows": "Return rates are large across the industry, fraud is measurable, and the figures use different bases.",
+              "source": "NRF 2024-12-05 and 2025-10-15; Coresight 2023-04-04"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "What a return rate counts.",
+            "introduces": "Published industry rates, each with its base.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "Most of a return's cost is invisible in the order system, and policy is the lever that moves the rate, which needs the return record to capture the reason, the size ordered against the size kept and the disposition.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "How large return rates are.",
+            "introduces": "What returns cost and which data lets a merchant reduce them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "Since 2025 a hosted returns portal checks eligibility, collects reasons, offers exchange or refund, issues labels and, after inspection, asks the shop platform's API for the refund, at €650 a month plus €0.95 per return.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Returns portal since 2025; €650/month plus €0.95 per return; refunds through the shop platform's API.",
+              "shows": "Names the system that holds the request and that can issue refunds.",
+              "source": "_research/scenario-ledger.md"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "What returns cost and the data that lets a merchant reduce them.",
+            "introduces": "The software Kestrel & Pine uses to handle the customer's side of its returns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "The portal fixed the e-mail returns process and created the Double Refund: in January 2027, 212 returns (€19,400) were refunded twice because support refunded by hand in the PSP console when tracking showed the parcel at Duiven, the portal refunded again after inspection two to five days later, and neither request named the return.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The Double Refund: 212 returns, €19,400, January 2027, most recovered; agents refunding in the PSP console on the 'delivered to Duiven' scan; the portal refunding on inspection; no return id on either request.",
+              "shows": "Two writers and no agreed trigger or key let the payment provider pay twice.",
+              "source": "_research/scenario-ledger.md, incident 3 and commerce-payments line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The portal bought to fix returns.",
+            "introduces": "The incident the portal caused.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "Reviewing the incident in February, Noor Visser asked for money, stock and books which event moves each and which system moves it, and nobody could answer for all three; that is the chapter's question.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1: three whiteboard columns (money, stock, books), each fed by one arrow from a single disposition.",
+              "shows": "Pictures the question and the answer the chapter will reach."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The Double Refund.",
+            "introduces": "The question it made Noor ask.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "heading": "What a Return Is, Step by Step",
+      "controlling_idea": "A return passes through nine steps, each with a record, an owner and a typical failure, and four terms drawn from them carry the rest of the chapter.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Defines the records and the disposition the thesis joins."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The nine steps first, then the four terms drawn from them; the terms name records and events in the table, so they cannot come first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Noor's question about money, stock and books.",
+        "introduces": "The steps a return passes through, which the answer has to name.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p14",
+          "controlling_idea": "A return passes through nine steps (request, eligibility, label, transit, receiving, inspection, disposition, settlement, stock), each with a record, an owner and a way to go wrong.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Nine steps with what happens, the record, who acts and what can go wrong.",
+              "shows": "Each step has one owner and a typical failure; the disposition and settlement steps are where money and stock move."
+            }
+          ]
+        },
+        {
+          "id": "p15",
+          "controlling_idea": "Four terms carry the chapter: the RMA is the merchant's 'you may send this back', the disposition is the warehouse's verdict and the most important event because it is the first moment the merchant knows what came back, an exchange is a return paired with a new order, and reverse logistics is the whole backward operation.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The nine steps.",
+            "introduces": "The four terms the rest of the chapter relies on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "pieces",
+      "heading": "How the Pieces Fit Together",
+      "controlling_idea": "A return loops through six systems as two records, the return on the order side and the reverse fulfillment in the warehouse, which meet at the disposition; each flow between them has its own freshness, key and fallback.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S3"
+        ],
+        "how": "Establishes the two records and the disposition that joins them, and the key and trigger each flow carries."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "The six-system loop first, then the two records within it, then the public data models that document the split, then the flows between the systems; the requirements per flow use both records."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The nine steps and their owners.",
+        "introduces": "How the systems that own them connect.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p16",
+          "controlling_idea": "Seen from outside, a return is a loop through six systems; in the target design after Waypoint the OMS is the order record, while in April 2027 the shop platform still plays that role.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: the return loop through six systems, with the disposition releasing refund, restock and credit note and the order record as the only system that may ask for a refund.",
+              "shows": "Shows where each record lives and which event releases the money."
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "The return request records what the customer wants to send and the merchant accepts, and reverse fulfillment records the physical work of receiving and inspecting it; keeping them apart stops a request being mistaken for goods back on the shelf.",
+          "function": "claim",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The loop through six systems.",
+            "introduces": "The two records the loop carries.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "Shopify's documentation models the return as the buyer's intent to send items back, with statuses from requested to closed once every item has a restock decision.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "A return 'represents the intent of a buyer to ship one or more items from an order back to a merchant'; statuses REQUESTED, OPEN, DECLINED, CLOSED, CANCELED.",
+              "shows": "A major platform documents the first record separately.",
+              "source": "Shopify developer documentation, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The two records in principle.",
+            "introduces": "The clearest public model of the first one.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "Shopify models the second record as a reverse fulfillment order, the work of processing the return, with four dispositions: restocked, processing required, not restocked and missing.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Reverse fulfillment order 'represents the work that's required to process a return'; reverse delivery; dispositions RESTOCKED, PROCESSING_REQUIRED, NOT_RESTOCKED, MISSING.",
+              "shows": "The second record and its dispositions are documented as a separate object.",
+              "source": "Shopify developer documentation, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Shopify's return record.",
+            "introduces": "Its separate record for the warehouse work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "controlling_idea": "commercetools keeps the same two concerns as two states per return item, a shipment state and a payment state.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shipment state Advised or Returned, then BackInStock or Unusable; payment state NonRefundable or Initial, then Refunded or NotRefunded.",
+              "shows": "A headless platform separates goods and money per item too.",
+              "source": "commercetools API documentation, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Shopify's two records.",
+            "introduces": "The same split in a different platform.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "The split is the pattern: the first record is about intent and money and belongs to the order side, the second about work and stock and belongs to the warehouse, and they meet at the disposition.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: the return's lifecycle, customer's side, warehouse's side, settlement waiting for a disposition.",
+              "shows": "Shows the meeting point of the two records."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Two platforms that separate the records.",
+            "introduces": "The pattern the chapter takes from them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "Each flow between the systems has its own requirements; in the design this chapter argues for, the refund and the restock wait for the disposition, the credit note waits for the refund, and the messages that carry money are keyed on the return, while only the eligibility check reads the order as it stands because the customer is waiting.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six flows (eligibility, received and disposition, refund, restock, credit note, status) by freshness, consistency, speed and behaviour when the other side is down; speeds marked as assumptions.",
+              "shows": "Every flow that moves money or stock has a trigger event and a key or a reconciliation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two records meeting at the disposition.",
+            "introduces": "What each flow between the systems must guarantee.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "law",
+      "heading": "The Law: Fourteen Days, Three Times Over",
+      "controlling_idea": "In the EU the right to return is law, and its articles become data requirements: four dates per order line, the delivery option kept, product exemption attributes, and the trader's right to wait for the goods that makes refund on inspection lawful.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Shows that refund on inspection is lawful if the clock from the notice is tracked, and where the merchant's own policy sits above the law."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The flows that move money only on the disposition.",
+        "introduces": "The law that sets how long the merchant may wait.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "form": "list",
+          "controlling_idea": "The flows make the refund wait for the disposition and the law decides how long it may wait: Directive 2011/83/EU gives a distance buyer 14 days from possession to withdraw, obliges the trader to refund within 14 days of the notice by the same means while letting it wait for the goods or proof of sending, gives the consumer 14 days to send the goods back, and lists the information duty, the twelve-month extension and the exceptions.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Articles 9(1), 9(2)(b), 10, 13(1)-(3), 14(1)-(2), 6(1)(h)-(i) and 16, quoted; adopted 25 October 2011, Official Journal 22 November 2011, applicable from 13 June 2014.",
+              "shows": "The three 14-day clocks and the right to wait are the law's own words.",
+              "source": "Directive 2011/83/EU, consolidated text"
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "controlling_idea": "Read as requirements, the directive asks for four dates per order line, the delivery option and its standard-rate equivalent, and product exemption attributes, and Article 13(3) is the legal basis for refund on inspection.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The articles as the law states them.",
+            "introduces": "What the systems must store to obey them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "Kestrel & Pine's own commercial policy sits on top of the statutory rules: free returns within 14 days of delivery in all three countries.",
+          "function": "context",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "What the law requires of every trader.",
+            "introduces": "What Kestrel & Pine's own policy adds on top.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "choices",
+      "heading": "The Choices",
+      "controlling_idea": "Four decisions shape a returns architecture (who runs the customer's side, which event releases the refund, which one system issues it, how exchanges work), and the refund trigger and writer come before the product.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Sets out the trigger, writer and exchange decisions and argues for inspection, one writer and held exchanges."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The four decisions in the order a merchant meets them: the product that runs the customer's side, with the table of the four answers across all decisions directly after it, then the trigger, the writer and the amount it refunds, and the exchange model, then the author's rule; the rule needs all four decisions."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "The law's clocks and the right to wait.",
+        "introduces": "The decisions a merchant takes within them.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p26",
+          "controlling_idea": "Four decisions shape a returns architecture, each with a few realistic answers.",
+          "function": "claim"
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The customer's side can be run by hand at the Starting stage or by the platform's own returns, which model the return and the reverse fulfillment.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four decisions.",
+            "introduces": "The first: who runs the customer's side, starting with the simplest answers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "A specialist returns portal adds labels, exchanges, store credit and drop-off networks, as the claims of Loop, Narvar, Returnista and Happy Returns show.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Loop ('Originally built for Shopify', steers to exchanges or store credit, '5,000+ brands'); Narvar ('1,500+ global brands'); Returnista (Amsterdam, '1,000+ brands in Europe'); Happy Returns ('a UPS company', '10,000 Return Bar locations').",
+              "shows": "The portal category exists and sells exchanges and drop-off; claims are the vendors' own.",
+              "source": "vendor sites, n.d., accessed November 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The manual and platform answers.",
+            "introduces": "The specialist portal.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "Order management products list returns orchestration and cross-channel returns as modules, and a table sets the four answers side by side, differing mainly in which system computes eligibility and which may refund.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Manual, platform's own returns, returns portal, OMS module compared on eligibility, labels, exchanges, refund writer, marketplace and store returns, and stage fit.",
+              "shows": "Each option places the refund writer and the eligibility source differently."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The returns portal.",
+            "introduces": "The fourth answer: the OMS.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "controlling_idea": "The second decision, which event releases the refund, caused the Double Refund and is a policy choice with a legal floor: request, carrier scan, receipt or inspection, each with its wait, risk and legal position.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Four triggers by customer wait, merchant's risk, legal position under Directive 2011/83/EU, and fit; inspection is Kestrel & Pine's choice.",
+              "shows": "Every trigger is lawful; they differ in who carries the risk, and inspection carries the least."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who runs the customer's side, and the four answers compared.",
+            "introduces": "The decision that caused the Double Refund.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "The refund can be issued by the portal, the OMS or the ERP, and any one works but two at once produces the Boomerang (the Double Refund was one case); the money-side rules are one writer, the return id as key and a daily comparison, and the amount, stated in one sentence, is the line price after allocated discounts, which W5's export carries.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "190 returned jackets refunded at €159.20 instead of €143.28 (November 2026) because the order-level discount was not allocated to lines; W5's integration contract adds the allocated net price per line.",
+              "shows": "The refund amount depends on discount allocation.",
+              "source": "_research/scenario-ledger.md, commerce-promotions lines"
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Which event releases the refund.",
+            "introduces": "Which one system issues it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "Exchanges can be held orders released on a resellable disposition (Kestrel & Pine's model, needed where the method cannot hold money, as with iDEAL), instant exchanges secured on a card, or exchanges with a balance, and steering to exchanges keeps the revenue for one more parcel.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Shopify: 'Release the exchange and collect a balance'; Loop and Returnista steering to exchanges and store credit.",
+              "shows": "Platforms and portals support exchange with a balance and push exchanges for their economics."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Who issues the refund and for how much.",
+            "introduces": "How the replacement in an exchange is released.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The author's rule: choose the refund trigger and writer before the product, write both into the integration contract, and let the disposition be the trigger unless the goods are cheap enough that fraud costs less than waiting; at Kestrel & Pine's prices inspection is the only defensible trigger.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The four decisions and the options compared.",
+            "introduces": "The order in which to take them and the author's answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "channels",
+      "heading": "Returns From Marketplaces and Stores",
+      "controlling_idea": "Marketplaces and store counters start returns and refunds the merchant did not, so the return record must accept them under their own ids and expose their clocks, or support refunds twice and finance misses the first refund.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Extends the single record and single writer to returns the merchant did not start."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The claim first, then Amazon's and Zalando's rules as evidence, then what the record must do, then the store counter as the mirror case. Stating what the record must accept before the evidence would ask the reader to take it on trust; putting the store counter first would separate the marketplace evidence from its conclusion."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The merchant's own decisions about trigger and writer.",
+        "introduces": "Returns whose trigger and writer the merchant does not control.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "controlling_idea": "A marketplace can authorize a return or refund it outside the merchant's portal, and such a return still has to reconcile with the merchant's records.",
+          "function": "claim"
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Amazon's seller rules set the window, authorize most returns automatically, issue labels, give the seller 24 hours to respond and two days to refund after receipt before Amazon may refund automatically, and can charge an A-to-z claim to the seller.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Amazon seller guidance, April 2025: 30 days from estimated delivery; automatic authorization and prepaid labels in the US; 'respond to requests within 24 hours'; refunds 'within two days of receiving returns, or Amazon may issue an automatic refund'; A-to-z claims.",
+              "shows": "A marketplace owns the policy, the authorization and sometimes the refund.",
+              "source": "Amazon, 2025-04-15"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Marketplaces acting outside the merchant's portal.",
+            "introduces": "Amazon's rules for seller-fulfilled orders.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "For orders the marketplace fulfils itself, it receives and grades the return and charges a fee, as Zalando's ZEOS network of about 20 returns centres shows.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "ZEOS: 'around 20 returns centres', November 2024.",
+              "shows": "The marketplace can also own the disposition.",
+              "source": "Zalando, 2024-11-21"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Seller-fulfilled marketplace returns.",
+            "introduces": "Returns of orders the marketplace fulfils.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "The return record must therefore accept RMAs and refunds it did not create, keyed by the marketplace's return id, and expose the marketplace's clocks as deadlines, or a second refund or a missed first one follows.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Marketplaces that authorize, grade and refund.",
+            "introduces": "What the merchant's record must accept.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "A web order returned at a store counter is the mirror case: the till must find the order, record the return and restock, and the portal request must be closed before anything is paid, which Kestrel & Pine does by hand until the POS and the shop platform are linked.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "A web order returned at the Nijmegen counter; stores refund web orders only after support closes the portal request (illustrative).",
+              "shows": "One refund path per order holds at the counter too.",
+              "source": "_research/scenario-ledger.md, returns-and-exchanges line"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Returns started by a marketplace.",
+            "introduces": "Returns started at the merchant's own store counter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stages",
+      "heading": "Across Scale Stages: When It Fits and When It Limits",
+      "controlling_idea": "The shape of a return and the law do not change with scale; the number of channels a return comes from and systems that could act on it do, and the Growing stage is where the refund trigger and writer must be fixed.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Places the trigger and writer decision at the stage where a portal, a warehouse and an ERP first all hold the return."
+      },
+      "transition_in": {
+        "relationship": "sequence",
+        "carries_over": "Returns from the merchant's own channels, marketplaces and stores.",
+        "introduces": "How the arrangement changes as a merchant grows.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "controlling_idea": "Marketplaces and stores multiply where a return can start and growth multiplies it further; across the four stages the return's shape and the law stay fixed while channels and systems multiply, so Stage 2, when a portal, a warehouse and an ERP first all hold a copy of the return, is where the trigger and writer must be fixed.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Starting, Growing, Omnichannel and Group: what is typical, what becomes necessary, and the signs the stage is ending.",
+              "shows": "The Double Refund is a Growing-stage sign; external returns and one refund path per channel arrive at Omnichannel."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "in-practice",
+      "heading": "In Practice",
+      "controlling_idea": "Eva's exchange from 19 to 22 April 2027 shows each system acting once on the disposition, and the refund variant shows what the trigger, the one writer and the key prevent.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2",
+          "S3",
+          "S5"
+        ],
+        "how": "Shows the two records, the disposition as trigger, one keyed refund and the held exchange on one return."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "A one-sentence bridge from the public models, then Eva's return in time order, then the refund that did not happen on the same dates; the variant refers back to the dated table."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The stages and what each makes necessary.",
+        "introduces": "The pattern in public examples and in Eva's return.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "controlling_idea": "The public models already cited show the pattern in general; Kestrel & Pine's own case shows it on one return.",
+          "function": "transition"
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "Eva's exchange from 19 to 22 April 2027 runs as the design says: the portal opens return R-20270419-1 and a held order for size L, the bench grades the jacket restocked at 10:15 on 22 April, the shop platform closes the return and releases the held order, L ships in the 13:00 wave, and the ERP's credit note and new invoice net to zero.",
+          "function": "example",
+          "organization": "narration",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Dated table: return R-20270419-1, order #1072455, exchange order #1072455-X1 (€0 balance), PostNL first scan 20 April, disposition restocked 22 April 10:15, 13:00 wave, credit note and new invoice that night; days canonical, hours illustrative.",
+              "shows": "Each system acts once, on the disposition.",
+              "source": "_research/scenario-ledger.md, Eva's jacket, returns-and-exchanges and journey-return-and-exchange lines"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Public models of the pattern.",
+            "introduces": "The pattern applied to Eva's return.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Had Eva chosen a refund, the disposition would have triggered one €199 refund keyed on R-20270419-1, well inside the 3 May deadline, and a refund in the PSP console on the carrier scan would have been the Double Refund, which the February 2027 fix (the portal as the only refund writer with the return id as key, a read-only console, a daily comparison) prevents.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Refund variant: €199 by iDEAL, keyed on the return id, credit note; legal deadline 3 May (14 days from the 19 April notice); refund on day three; support console read-only since February 2027.",
+              "shows": "The trigger, the key and one writer prevent the January incident.",
+              "source": "_research/scenario-ledger.md, returns-and-exchanges and commerce-payments lines"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The exchange Eva chose.",
+            "introduces": "The refund she could have chosen.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wrong",
+      "heading": "When It Goes Wrong",
+      "controlling_idea": "Returns fail in seven recurring ways, and each is detected by a report or a reconciliation and prevented by the trigger, the single writer, the key or the one record.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Shows each rule of the thesis by the failure it prevents."
+      },
+      "flow": {
+        "pattern": "order_of_importance",
+        "rationale": "Money failures first because they cost the most and opened the chapter (the double refund, the refund without a return), then stock, then the two failures that come from records the merchant did not create or released too early (external returns, exchanges), then the clock and the customer's view; the customer's view comes last because it hands on to the next chapter."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Eva's return working as designed.",
+        "introduces": "The ways the same path fails.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p43",
+          "controlling_idea": "Eva's return worked because each system acted once on the right event; where one of those rules is missing, the same path fails in seven ways.",
+          "function": "transition"
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "The double refund (the Boomerang) comes from two writers and no key; it is detected by the daily refund comparison and prevented by one writer, the return id as key and a read-only console.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: two writers without a key paid twice, one writer with the return id paid once.",
+              "shows": "Pictures the remedy."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Seven ways the path fails.",
+            "introduces": "The first: the double refund.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "controlling_idea": "A refund on request or on scan pays for parcels that never arrive or hold a different item; it is detected by refunds with no 'received' event and prevented by refunding on inspection.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "A phantom restock (the Phantom Stock) puts a worn item back on sale when stock rises before grading; it is detected by the weekly reconciliation and prevented by letting stock move only on a restocked disposition from the WMS, the single writer of on-hand stock under W1.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "A parcel with no RMA, from an unimported marketplace return or an old label, lands in a 'no RMA' queue, is matched after the fact, and is prevented by importing every marketplace return under its own id.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "An exchange released by a scan or shipped instantly can go out for a return that never comes; it is detected by shipped exchanges with open returns and prevented by release on disposition or a held card.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "A refund issued after the 14-day deadline because the bench fell behind is detected by a return-aging report against the Article 13 clock and prevented by putting returns in the Black Friday plan.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "controlling_idea": "A three-system status (Schrödinger's Order), where portal, warehouse and provider disagree about a refund, as the Three-Status Order's eleven tickets showed for a two-parcel order, is resolved by one status built from the same events for customer and agent.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The previous failure and its remedy.",
+            "introduces": "Another way the return path fails.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "What to Take Away",
+    "synthesis": "The jacket sent back for the next size, the Double Refund and the failures look like separate problems in the portal, the console, the bench and the calendar. They are one sequence broken in different places: money or stock moved before the warehouse's disposition, by more than one system, or after the clock ran out. One rule set repairs them all: the disposition releases money and stock, each action has one writer and a key, and the dates that drive the law's clocks are kept.",
+    "so_what": "A merchant can write the returns integration contract (trigger, writer, key, restock rule, four dates per line) before choosing a returns product; Kestrel & Pine's February 2027 fix was a rule, a key, a read-only console and a daily comparison, not a new product.",
+    "callback": {
+      "to": "The opening's jacket sent back for the next size, which needed the portal, the warehouse and finance each to finish their part.",
+      "how": "The first paragraph of the conclusion says which event each of those systems acts on and why acting once on the disposition keeps them in agreement."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Decide the refund trigger, the single refund writer and its key, and the restock rule before buying a returns product; keep four dates per line with an aging report someone reads weekly; and take the nine questions to your own company."
+    },
+    "hand_off": {
+      "to": "customer-service-and-notifications",
+      "relationship": "cause_effect",
+      "carries_over": "The return closed on the disposition, the refund or the exchange sent, and the few messages Eva saw of all this.",
+      "introduces": "Why the customer's messages, the status page and the agent's view must be built from the events of the whole part in one record, and what the eleven tickets of the Three-Status Order cost without it."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The failures and how each is prevented.",
+      "introduces": "The chapter's answer set against its opening, then what holds, sorted by how settled it is.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p51",
+        "controlling_idea": "The opening's jacket needs the portal, the warehouse, the payment provider and the ERP to act once each and in order; the Double Refund, the phantom restock and the missed deadline are that order broken, and one set of rules (the disposition releases money and stock, one writer and a key per action, the dates kept) repairs all three, so that no refund is paid twice, no worn item is sold as new and no refund misses the legal deadline; Kestrel & Pine's February 2027 fix applied the first two rules to refunds.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The opening's jacket set against the failures and the February 2027 fix (read-only console, one writer, return id as key, daily comparison).",
+            "shows": "The reader can now say which event each system acts on."
+          }
+        ]
+      },
+      {
+        "id": "p52",
+        "form": "list",
+        "controlling_idea": "Established: a return is two records joined by the disposition; EU consumers may withdraw within 14 days and the trader must refund within 14 days of the notice but may wait for the goods; return rates near a quarter and measurable fraud make returns a first-class flow; marketplaces own their returns' policy and clocks.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The chapter's answer in one rule set.",
+          "introduces": "What is settled by public sources.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p53",
+        "form": "list",
+        "controlling_idea": "Depends on context: the refund trigger by the goods' value and fraud, the portal or OMS module by stage and channels, and held or instant exchanges by payment method and goods' price.",
+        "function": "synthesis",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "What is settled.",
+          "introduces": "What depends on the merchant's situation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p54",
+        "form": "list",
+        "controlling_idea": "The author's synthesis: decide the trigger, the single writer and the restock rule before buying a returns product, and treat the 14-day clocks as data requirements with a weekly aging report.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "What depends on context.",
+          "introduces": "The author's own rules.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p55",
+        "form": "list",
+        "controlling_idea": "Nine questions test a returns design: the refund trigger, the single writer and its key, what the warehouse reports, the four dates, eligibility inputs, external returns, the exchange model, the refund amount and aged returns.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The author's rules.",
+          "introduces": "The questions that test them at the reader's own company.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p56",
+        "controlling_idea": "With the item back on the shelf, the money back or the L on its way and the books agreeing, Eva saw only a few messages, which are right only if they, the status page and the agent read the same events; when they read different systems one customer writes eleven tickets about one order, as in the Three-Status Order, the subject of the next chapter.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The questions about the return path.",
+          "introduces": "What the customer saw of it, and why that view must come from the same events.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Refund mechanics at the PSP (asynchronous refunds, failed refunds, chargebacks, idempotency keys in depth); this chapter fixes only the trigger, the writer and the key.",
+      "covered_in": [
+        "commerce-payments"
+      ]
+    },
+    {
+      "topic": "The credit note, VAT on returns and what the ERP posts.",
+      "covered_in": [
+        "tax-invoicing-and-ledger"
+      ]
+    },
+    {
+      "topic": "Warehouse receiving, put-away and the fulfillment-order handshake; this chapter uses the disposition as the warehouse's output.",
+      "covered_in": [
+        "warehouse-and-fulfillment"
+      ]
+    },
+    {
+      "topic": "Return-in-store mechanics and the POS.",
+      "covered_in": [
+        "stores-and-omnichannel"
+      ]
+    },
+    {
+      "topic": "Marketplace return feeds and fees.",
+      "covered_in": [
+        "marketplaces-and-channel-integration"
+      ]
+    },
+    {
+      "topic": "The full consumer-law calendar (Omnibus price rules, accessibility, GPSR); only the withdrawal right is treated here.",
+      "covered_in": [
+        "commerce-regulation"
+      ]
+    },
+    {
+      "topic": "Notifications and the status page for returns.",
+      "covered_in": [
+        "customer-service-and-notifications"
+      ]
+    },
+    {
+      "topic": "The step-by-step journey of Eva's return.",
+      "covered_in": [
+        "journey-return-and-exchange"
+      ]
+    },
+    {
+      "topic": "Return fraud scoring in depth (fraud-prevention in the LISTED journal)."
+    }
+  ],
+  "modalities": [],
+  "open_questions": [
+    "Check report after round 3 (the confirming round) is ESCALATE (19 pass, 19 fail) and stale after the closing fixes of 2026-11-12. Remaining open-ended points from one round only: the NRF dates in the scene's survey paragraph are hard to parse; the first-person 'my rule' arrives abruptly (house style keeps the author's labelled judgement); one reader found the Eva preview in the introduction gives away the outcome (the spec's p04 asks for it); the ZEOS sentence reads as a stray fact to one reader; the hand-off paragraph after the Questions list felt detached to one reader.",
+    "Needs the author: whether any chapter should state a cost per disposition. The ledger's returns-and-exchanges line holds an illustrative disposition split beyond the 61% resold as new (27% resold after processing, 9% recycled or donated, 3% missing or wrong item); this chapter states only the 39% not resold as new, and no ledger line gives a cost per disposition."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-07",
+      "decision": "Made the two-record model and the refund-trigger decision the spine, rather than a tour of returns portals, because the newcomer's costly mistake (the Double Refund) comes from an unchosen trigger and writer, not from the wrong vendor; Shopify's and commercetools' public models were chosen as evidence because they document the split explicitly.",
+      "rejected": [
+        "A tour of returns portals."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Told the Double Refund from the returns side (what the agent saw, why the portal was late) and left the PSP-side mechanics to chapter 12, which carries the sequence diagram, to avoid duplicating the scene.",
+      "rejected": [
+        "Repeating the PSP-side sequence."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Quoted the directive's articles directly rather than paraphrasing, and added the adoption, publication and application dates, because the clocks become data requirements only when the exact triggers are known.",
+      "rejected": [
+        "Paraphrasing the articles."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "Used a dated event table rather than a third diagram for Eva's exchange, keeping the state diagram and the system loop as the two structural figures and the table as the worked example.",
+      "rejected": [
+        "A fourth diagram repeating chapter 12's refund sequence."
+      ]
+    },
+    {
+      "date": "2026-11-07",
+      "decision": "(carried from spec.md's open questions) Whether the Amazon prepaid-return mandate for all US seller-fulfilled returns took effect in February or December 2026 is unresolved in the research brief, so the chapter deliberately does not state it. The policy facts the old spec asked to append to the ledger (free returns within 14 days, refund on inspection, held exchanges, R-20270419-1) are in the ledger's returns-and-exchanges line, so that question is closed.",
+      "rejected": [
+        "Stating either date."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Converted spec.md to spec.json, reconstructed from the published chapter one paragraph per unit. Intent outcome, acceptance criteria AC-1 to AC-5, thesis and role copied unchanged from the journal spec; audience and supporting claims S1 to S5 written for this post. Of the old spec.md's ten success criteria: the second (every term defined from the chapter alone) is left to the standard known_before_new check; the fifth (the directive read as four dates per line) and the eighth (the failures with detection and recovery) are carried by AC-3, AC-1 and AC-2; the others were inventories of callouts, tables, diagrams, ledger numbers, sourcing and sections, or the word budget (now length.max_words), and are dropped. No criteria were added beyond the journal spec's.",
+      "rejected": [
+        "Keeping the inventory criteria.",
+        "Adding a known_before_new criterion (the standard check runs on every draft)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Kept the 6,500-word limit of spec.md as length.max_words; the published text counted 5,666 words.",
+      "rejected": [
+        "Raising the limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Added units the contract asks for and the published chapter lacked: p03 states the thesis (the old third paragraph's glosses of RMA and disposition move into it, its cross-references into p05); p05 is a roadmap announcing every section; p23 introduces the requirements table and says what it shows; p51 opens the conclusion with a synthesis and a callback to the opening's jacket. p04 now picks up the journal spec's transition_in (the web order brought back to a store counter) and p56 now does the hand-off's cause-and-effect (messages right only if they read the same events; the Three-Status Order's eleven tickets).",
+      "rejected": [
+        "Putting the roadmap into the KEY POINTS callout (callouts are not units).",
+        "Leaving the conclusion as the three tiers alone ('Grab Bag')."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Vocabulary and glosses: where the text means Kestrel & Pine's hosted product it says 'the shop platform'; 'the platform's own returns' and 'a refund button in the platform's admin' stay generic. W1 and W5 are glossed at first use. 'Three terms carry the chapter' becomes 'Four terms', since the paragraph defines four.",
+      "rejected": [
+        "Replacing every 'the platform' (generic uses are correct)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric (fresh agent, verdict sound with notes); the author asked for the rubric notes to be taken without review. Taken: the refund-amount paragraph (allocated line price, the 190 jackets, W5) moves from In Practice into The Choices after 'who issues the refund', so the rule comes before it is tested; In Practice's 'Public examples' paragraph, which repeated sections 2, 3 and 6, is cut to a one-sentence bridge (p41) so the section runs as Eva's timeline; p23 is framed as the design the chapter argues for, so it does not assume decision 2; 'the Boomerang' is glossed at p31; p43 names the whole February 2027 fix, so the conclusion's synthesis rests on the body; section 2's declared reason now names the published rates. Paragraphs renumbered p32-p43.",
+      "rejected": [
+        "Merging p22 into p18 (p18 states the split, the evidence follows, p22 draws the pattern from it: assertion-evidence-reasoning).",
+        "Folding the single-paragraph stages section into The Choices (house heading and place kept).",
+        "Glossing the Starting stage, Duiven, iDEAL's first use and Waypoint again (established in earlier chapters; iDEAL is glossed at p04)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Flow rubric rerun (fresh agent, verdict sound with notes). Taken: p51 no longer says the February 2027 fix repairs all three failures (it applied the first two rules to refunds) and now says plainly what the rules buy (no double refund, no worn item sold as new, no missed deadline); sections 6 and 9 now say why their order holds.",
+      "rejected": [
+        "Shortening p43's account of the February 2027 fix (the first rubric asked for the fix to be named in the body; the current position stands).",
+        "Making p23 neutral about the trigger (the first rubric asked for it to be framed as the design argued for, which it now is).",
+        "Trimming p22 and merging p19 with p20 (assertion-evidence-reasoning; one Shopify object per paragraph).",
+        "Replacing 'resellable disposition' with 'restocked' (the ledger's wording for the exchange release).",
+        "Rewriting p41's bridge from the stages section (the stage of Kestrel & Pine is not needed here)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 of the draft check (REVISE, 18 pass, 24 fail). Spec changes at fault 'unclear' or needed by the corroborated flow findings, pre-approved by the brief: the three return-rate paragraphs move from 'What a Return Is, Step by Step' into the scene after Kestrel & Pine's own figures (both flow readers asked; RESOLVE rule 3), under the subheading 'What a return rate measures'; the refund amount is merged into decision 3 ('Who issues the refund, and for how much'), since both readers read the unnumbered paragraph as a fifth decision; the comparison table of the four ways to run returns moves to decision 1, which it compares, with a sentence saying what it shows. Prose fixes: the six systems named; the refund alternative in the conditional; 'step three' replaced; the W5 sentence and the refund variant's last sentence split; the Three-Status Order tied to Schrödinger's Order; the law section opens on the cause-and-effect link to the flows; the failures section opens with the contrast to Eva's working return; the roadmap names the kinds of evidence; minor glosses (merchant-initiated transaction, A-to-z Guarantee, Eva lives in Nijmegen, 'today' dated, which rule the stores chapter sets). Paragraphs renumbered p01-p55; earlier log entries use the numbering of their time.",
+      "rejected": [
+        "Moving the law before 'How the Pieces Fit Together' (one reader only; the other found its place clear).",
+        "Cutting the thesis's restatements in the callouts and roadmap (one reader only; house opener format)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 of the draft check (REVISE, 20 pass, 23 fail; no spec fault). Fixes, with the spec moves pre-approved by the brief and RESOLVE rule 3 (both flow readers asked): the free-returns policy sentence moves from the scene into the law section after the four dates (it broke the portal-to-Double-Refund story); the failures section opens with its own transition paragraph so the list's start is visible, and each failure that matches an opening pattern names it (the Boomerang, the Phantom Stock, Schrödinger's Order, with the Three-Status Order introduced there, not in the hand-off); the refund amount is reduced to one sentence in decision 3 (both readers found it a detour; RESOLVE rule 3); the table sentence now says it compares the answers to decision 1; the marketplace section states its claim once; the stages section opens with a transition before its table; the In Practice table is preceded by a sentence stating what it shows; transitions added at the scene's cost paragraph, the steps section, the choices section and the author's rule; 'canonical' replaced; the 21 April counterfactual dated. Paragraphs renumbered p01-p56.",
+      "rejected": [
+        "Moving the law before 'How the Pieces Fit Together' (one reader in each of two rounds; the law section now opens on its link to the flows).",
+        "Moving marketplaces before the choices (one reader only).",
+        "Reordering the quoted articles (they follow the clocks the chapter computes; one reader only)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto-resolved by the author's standing instruction of 2026-11-12: the spec.md open question on the directive's wording is closed. The quoted passages of Articles 9(1), 9(2)(b), 13(1)-(3), 14(1)-(2) and 16 were checked word for word against the EUR-Lex text of Directive 2011/83/EU (all match); by RESOLVE rule 2 (a date follows its cited source) 'applies to contracts concluded from 13 June 2014' becomes 'after 13 June 2014' (Article 28(2)) in the body and the Sources line, and 'of the last good' is cited to Article 9(2)(b)(i). Also auto-resolved (rule 3 and cheap fixes after round 2): 'the replacement order held until then' now says until the disposition arrives; p17 says the portal asks the shop platform for each refund, reconciling Figure 2's caption with decision 3.",
+      "rejected": [
+        "Leaving the wording check open.",
+        "Changing 'applicable since 13 June 2014' in the take-away (Article 28(1) supports it)."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Confirming round 3 (ESCALATE, 19 pass, 19 fail). Auto-resolved by the author's standing instruction of 2026-11-12 and applied without another round: the four-dates sentence now states the clocks as the quoted articles give them (withdrawal from delivery; refund and sending back from the notice; goods-sent evidence ends the right to withhold), correcting a misreading the judge found (RESOLVE rule 2); the refund-trigger table is introduced with what it compares and shows; the marketplace section opens on the contrast with the merchant's own decisions; the rates subsection opens on its contrast with Kestrel & Pine's figures; the thesis sentence is split into four rules; p17 says the portal is the single refund writer in April 2027 and the shop platform passes each refund to the PSP; the requirements paragraph points to the next section for the legal 14 days; 'before that' becomes 'before W5'; the 21 April counterfactual is reworded; the roadmap places what returns cost in the scene. Not taken (RESOLVE rule 10): moving the return-rate subsection back after the nine steps, which round 3's readers asked for and round 1's readers asked the opposite of; the current position stands.",
+      "rejected": [
+        "A fourth round.",
+        "Moving the return-rate subsection again.",
+        "Shortening the Eva preview in the introduction (the spec's p04 and the journal spec's transition ask for it)."
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_research/scenario-ledger.md",
+      "contributed": "Returns volumes and rates, the returns portal, the Double Refund (incident 3 and the commerce-payments line), Eva's jacket and exchange (returns-and-exchanges and journey-return-and-exchange lines), Waypoint W1 and W5, the promotions line on refund amounts."
+    },
+    {
+      "kind": "internal",
+      "ref": "journal-spec.json (returns-and-exchanges entry; customer-service-and-notifications transition_in)",
+      "contributed": "Intent, thesis, role and acceptance criteria; the opening's link from the store counter and the hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "PLAN.md contract 18 and the neighbouring contracts 12, 13, 14, 15, 17, 19, 20, 36, 38",
+      "contributed": "The chapter's question and scope (carried from spec.md)."
+    },
+    {
+      "kind": "internal",
+      "ref": "_research/brief-inventory-fulfillment-returns.md, _research/brief-security-privacy-regulation.md, _research/brief-checkout-payments-tax.md",
+      "contributed": "Return rates, portals, the return data model, the 14-day right and its application date, refund semantics (carried from spec.md)."
+    },
+    {
+      "kind": "external",
+      "ref": "Shopify developer documentation (returns apps; ReverseFulfillmentOrderDispositionType), n.d., accessed 2026-11",
+      "contributed": "The two-record model, statuses and dispositions, exchanges with a balance."
+    },
+    {
+      "kind": "external",
+      "ref": "commercetools Orders API, n.d., accessed 2026-11",
+      "contributed": "Return item shipment and payment states."
+    },
+    {
+      "kind": "external",
+      "ref": "Directive 2011/83/EU, Official Journal 2011-11-22",
+      "contributed": "The right of withdrawal, reimbursement, the consumer's obligations, the information duty, the extension and the exceptions."
+    },
+    {
+      "kind": "external",
+      "ref": "NRF with Appriss Retail (2023-12-22) and Happy Returns (2024-12-05, 2025-10-15); Coresight (2023-04-04)",
+      "contributed": "Return rates and economics."
+    },
+    {
+      "kind": "external",
+      "ref": "Amazon seller guidance (2025-04-15); Zalando ZEOS announcement (2024-11-21)",
+      "contributed": "Marketplace returns."
+    },
+    {
+      "kind": "external",
+      "ref": "Loop, Narvar, Returnista, Happy Returns vendor sites, n.d., accessed 2026-11",
+      "contributed": "The returns-portal category."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Closing fixes after the confirming round 3 (ESCALATE): clocks sentence corrected to the quoted articles, trigger table introduced, transitions at the rates subsection and the marketplace section, thesis sentence split, refund writer in April 2027 stated, roadmap aligned. Check report stale."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Resolved after round 2 by the author's standing instruction: directive quotes verified, application date wording follows Article 28(2), one open question left for the author (cost per disposition)."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 2: policy sentence moved to the law section, failures transition paragraph added, refund amount cut to one sentence, failure names mapped to the opening patterns, transitions added; paragraphs renumbered p01-p56."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After draft-check round 1: return-rate paragraphs moved into the scene, refund amount merged into decision 3, comparison table moved to decision 1, transitions and roadmap updated, paragraphs renumbered p01-p55."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted from spec.md to an outcome spec: intent, thesis, role and acceptance criteria copied from the journal spec; supporting claims, sections, paragraphs, transitions, introduction and conclusion reconstructed from the published chapter; record-keeping sections carried over; thesis paragraph (p03), roadmap (p05), requirements paragraph (p23) and conclusion synthesis (p51) added; p04 and p56 aligned with the journal spec's transitions. Flow rubric (sound with notes): refund amount moved into The Choices (p32), In Practice's public-examples paragraph cut to a bridge (p41), paragraphs renumbered. Status draft."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Visual layer: redrew 2 mermaid diagrams as illustrations and added 2 conceptual figures (article-illustrator)."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Final consistency pass: ledger-as-document reference rephrased."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Editorial review pass: post-Waypoint refund writer aligned with the journey ledger (OMS through the platform refund API), NRF 2025 figures marked as projections, iDEAL defined."
+    },
+    {
+      "date": "2026-11-07",
+      "change": "Initial spec and article."
+    }
+  ],
+  "length": {
+    "max_words": 6500
+  }
+}

@@ -1,0 +1,662 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/16-shipping-and-delivery/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/16-shipping-and-delivery/index.md",
+  "spec_sha": "01e8a672fdc4b297",
+  "draft_sha": "0c91c07e7cb3a9b6",
+  "run_at": "2026-11-12T22:13:56+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a checkout delivery date must reflect warehouse and carrier conditions, which a fixed sentence cannot",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "multiple carriers with different rules need one shared shipping interface; question is who runs it",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Eva's parcel moves from warehouse to carrier; chapter follows label, tracking and promise",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "a normalizing carrier layer from the second carrier / a promise computed from cut-off, stock, lane transit and margin",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "roadmap of the chapter and its evidence",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene: A Sentence in the Theme ¶1",
+      "summary": "request to add delivery dates to German and Belgian storefronts",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene: A Sentence in the Theme ¶2",
+      "summary": "operations notes differing collection and transit times the promise ignores",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene: A Sentence in the Theme ¶3",
+      "summary": "the promise is uncomputed theme text of unknown accuracy",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene: A Sentence in the Theme ¶4",
+      "summary": "the static promise failed for Eva and at Black Friday",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "Setting the Scene: A Sentence in the Theme ¶5",
+      "summary": "Waypoint W8 requires the delivery date via API for all channels",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "The Vocabulary of Getting It There ¶1",
+      "summary": "introduction to the shipping glossary table",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "shipping touches three moments: label, tracking, promise",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "requirements differ per moment; latencies are assumptions",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "label creation needs idempotency, manifesting and handling carrier API version drift",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "map differing carrier tracking codes to a shared vocabulary, received via webhooks rather than polling",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶5",
+      "summary": "EasyPost and Shopify as models for a small normalized status list",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶6",
+      "summary": "order status derived from events, shipped sent on first scan / store every event with its lane",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶7",
+      "summary": "a computed promise is an estimate with inputs, unlike a static rule",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶8",
+      "summary": "worked computation of Eva's promise yields Thursday, the true date",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶9",
+      "summary": "Amazon research shows sharper promises bring a small measured gain",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶10",
+      "summary": "research forecasting fulfillment time as a distribution beats rules",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶11",
+      "summary": "the promise has a tail covered by a margin, bounded by EU 30-day law",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶12",
+      "summary": "vendor claims of conversion lift from showing dates, to be measured not trusted",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶13",
+      "summary": "pickup points and lockers as checkout options stored on the order",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶14",
+      "summary": "shipping outside the EU adds customs declarations, IOSS and per-SKU customs data",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶15",
+      "summary": "shipping cost levers: rate shopping, right-sized boxes, pickup points",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "direct integration with each carrier and its trade-offs",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "multi-carrier platforms and their trade-offs; check services not totals",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "carrier integration through the WMS or 3PL",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "carrier integration through the shop platform",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "Kestrel & Pine's hybrid setup; normalizing layer mandatory from second carrier",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "static-rule promise option",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "transit-table promise option",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "The Choices ¶8",
+      "summary": "promise-service option serving all channels",
+      "matched_spec_paragraph": "p35"
+    },
+    {
+      "draft_locator": "The Choices ¶9",
+      "summary": "predictive-model promise option for large operators",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "buy the carrier layer early, keep the promise simple until data exists",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "carrier changelogs show concurrent API drift",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "public on-time data is thin; trust only your own per-lane scan history",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "Eva's shipment created with an idempotency key",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "tracking number reaches the order; parcel manifested for evening collection",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "scans flow in, first scan triggers the shipped e-mail",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "the wrong promise's cost in unmeasured complaints",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "In Practice ¶7",
+      "summary": "Noor's plan: transit table plus cut-off and backlog, measured weekly",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "a retired carrier API version breaks labels",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶2",
+      "summary": "retry creates two labels for one parcel",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶3",
+      "summary": "tracking number lost before reaching the order",
+      "matched_spec_paragraph": "p50"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶4",
+      "summary": "missed manifest close-out",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶5",
+      "summary": "lost or duplicated tracking webhook",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶6",
+      "summary": "static promise stays up during peak backlog",
+      "matched_spec_paragraph": "p51"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶7",
+      "summary": "undeliverable, lost or damaged parcels and merchant's legal risk",
+      "matched_spec_paragraph": "p52"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶8",
+      "summary": "marketplace-fulfilled parcels with tracking the merchant never sees",
+      "matched_spec_paragraph": "p53"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "carrier-layer lane data feeds a measured promise, starting with a simple table",
+      "matched_spec_paragraph": "p54"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established facts on carrier drift, tracking, law and promise tails",
+      "matched_spec_paragraph": "p55"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent advice on platforms, promise, customs and pickup points",
+      "matched_spec_paragraph": "p56"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's synthesis: measure the promise and store scans per lane",
+      "matched_spec_paragraph": "p57"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to audit shipping and promise practice",
+      "matched_spec_paragraph": "p58"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "handoff to stores and omnichannel orders",
+      "matched_spec_paragraph": "p59"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "All 57 outline summaries, written without the spec, match the controlling idea of the aligned spec paragraph, in the spec's order; no unit is unmatched.",
+      "criterion": "AC-5",
+      "severity": "blocker"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Introduction ¶4 was marked as two ideas (normalizing layer / computed promise), but the spec paragraph p04 itself joins both halves of the chapter's two-part answer; the unit holds one idea, the claim.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "How the Pieces Fit Together ¶6 was marked as two ideas (derived status / events stored per lane), but spec paragraph p17 itself declares 'two rules follow' from the vocabulary; the unit holds the spec's single joined idea.",
+      "criterion": "one_controlling_idea_per_paragraph",
+      "severity": "major"
+    },
+    {
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim (S1 layer and choices, S2 booking and manifest, S3 event vocabulary and derived status, S4 computed promise, S5 measurement and staging) or is declared context, definition or transition in the spec; nothing needs to be cut or moved.",
+      "criterion": "paragraph_traces_to_thesis",
+      "severity": "major"
+    },
+    {
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/8/evidence/0",
+      "draft_locus": "The Choices ¶9",
+      "quote": "| Promise service | Cut-off, backlog, stock location, lane table, performance margin | Most days including peak, if fed and measured | Events it has no data for yet |",
+      "finding": "The how-the-promise-is-made table is followed directly by the next section heading; no sentence says what it shows (the spec: each step adds inputs and removes a blind spot). Every other table, figure and quotation is followed or framed by a sentence stating its point.",
+      "fault": "draft",
+      "criterion": "evidence_is_explained",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/4/transition_in",
+      "draft_locus": "Setting the Scene: A Sentence in the Theme ¶5",
+      "quote": "Waypoint, the company's improvement program, already requires availability and delivery dates through APIs in decision W8.",
+      "finding": "The spec declares cause_effect carrying over the sentence's two failures (Eva, Black Friday) and introducing W8 as the decision that requires a computed answer instead. The paragraph opens on W8 with no reference to those failures, so the boundary does not say that the failures are why a computed answer is needed.",
+      "fault": "draft",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other declared transitions are expressed at their boundaries, by an opening sentence or phrase (e.g. 'Two rules follow.', 'That scan history is half of what a computed promise needs.', 'The point for a newcomer is not the models.', 'What did not work was the promise', 'Noor's answer starts small.') or, for the comparison and failure lists, by bold labels and subheadings that carry the declared sequence or contrast; the hand-off links [[stores-and-omnichannel]].",
+      "criterion": "transition_expresses_declared_relationship",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Both flow readers describe the declared organising principle (problem, vocabulary, then the parcel's own order: label, tracking, then the promise that reads both, then choices, stages, evidence, failures) and mark every section's position clear or mostly clear.",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/6",
+      "draft_locus": "How the Pieces Fit Together ¶7",
+      "quote": "A computed one is an estimate with inputs, and the inputs are the chapter's argument.",
+      "finding": "Both readers stalled on this sentence: it names no input, so the reader must wait for Figure 3 to learn what the inputs are. The order is fine; the sentence should list the inputs (order time, cut-off, backlog, stock location, lane transit, margin) as the spec's controlling idea does.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 7 ('This phrasing is odd and I had to re-read it')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/8",
+      "draft_locus": "The Choices ¶9",
+      "quote": "Right for a Group-stage operator with the data volume to train and the analysts to watch it; a Giant's Boots for everyone else.",
+      "finding": "Both readers met the failure-pattern name used as a figure of speech with no gloss and could not tell what it meant here. A short clause saying what it means (a solution sized for a larger organisation) would keep the point.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 9 ('a Giant's Boots for everyone else ... without a reminder')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/1",
+      "draft_locus": "In Practice ¶2",
+      "quote": "The figures of the Dutch regulator ACM (Authority for Consumers and Markets) concern letters (86% within 24 hours in 2024 against a 95% legal requirement",
+      "finding": "Both readers wondered why letter figures appear in a paragraph about parcel on-time measures; the point (no independent parcel measure exists, only letters are regulated) lands only at the end. Saying why the letter figures are cited before giving them would remove the stall.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 10 ('It took a moment to see why letters are there')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/5",
+      "draft_locus": "In Practice ¶6",
+      "quote": "a measurable share of the year's complaints that nobody has measured",
+      "finding": "Both readers read 'measurable ... nobody has measured' as a contradiction and re-read it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 11 (\"The 'measurable ... nobody has measured' wording made me re-read it\")",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "Each failure below is one of those steps breaking, most of them in the order a parcel meets them; the last one concerns parcels the merchant does not ship itself.",
+      "finding": "Both readers were told to expect the parcel's order and then found 'The promise at peak' sixth, after the scan failures; the hedge 'most of them' did not help. The spec's own grouping (carrier-side failures from interface to scans, then the promise at peak, then the parcel itself, then parcels others ship; p51's transition) is followable, but this framing sentence does not announce it.",
+      "fault": "draft",
+      "corroborated_by": "flow reader B, section 3 item 13 ('\"The promise at peak\" also sits mid-list ... the order still felt loose')",
+      "criterion": "flow_is_followable",
+      "severity": "major"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/8",
+      "draft_locus": "How the Pieces Fit Together ¶9",
+      "quote": "The public evidence shows that even the best-resourced operators treat the promise as a model with a measured effect.",
+      "finding": "Flow reader A worked through the SPEEDY and Ye results (basis points, accuracy percentages) before being told 'the point for a newcomer is not the models'; it suggests stating the tail first. The order is the spec's (p20, p21, then p22).",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/10",
+      "draft_locus": "How the Pieces Fit Together ¶11",
+      "quote": "However wide the tail, consumer law sets the outer bound: Directive 2011/83/EU (2011), Article 18",
+      "finding": "Flow reader A felt the 30-day legal bound arrive as a jump in the middle of a discussion of a one-day margin.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/13",
+      "draft_locus": "How the Pieces Fit Together ¶14",
+      "quote": "The moment a merchant ships outside the customs union, three things appear: an import declaration",
+      "finding": "Flow reader A had to re-read the one long sentence that carries the import declaration, IOSS with its parenthetical and a pending proposal, and SKU customs data to find the three things it promised.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/12",
+      "draft_locus": "How the Pieces Fit Together ¶13",
+      "quote": "Three things change the label and the promise just described: the delivery option, a border, and cost.",
+      "finding": "Flow reader B found the options/cross-border/cost subsection a collection of extras that interrupts the link between the promise mechanics and the promise choices; it suggests moving cross-border and cost later. The placement is the spec's.",
+      "fault": "spec",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/1",
+      "draft_locus": "The Choices ¶2",
+      "quote": "Sendcloud claimed over 30,000 European businesses and 170 carriers on 6 November 2026, while its developer site said 160",
+      "finding": "Flow reader A found the 170-versus-160 discrepancy a distraction from the comparison of choices.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4",
+      "draft_locus": "In Practice ¶5",
+      "quote": "These timings and batch size are illustrative.",
+      "finding": "Flow reader A: the disclaimer interrupts the timeline of Eva's parcel mid-story.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/6",
+      "draft_locus": "In Practice ¶7",
+      "quote": "Eva's promise written versus computed: the theme's sentence said Wednesday",
+      "finding": "Flow reader A: Figure 4 lands after Noor's plan and the journey cross-links, when the story has moved on from the written-versus-computed contrast.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "the last one concerns parcels the merchant does not ship itself. **The retired API version.**",
+      "finding": "Flow reader A: the first failure runs straight on from the section's framing sentences in the same paragraph instead of starting its own, unlike the other failures.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "When It Goes Wrong ¶1",
+      "quote": "Eva's parcel passed every step.",
+      "finding": "Flow reader B read this as clashing with the statement two paragraphs earlier that her promise failed.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3",
+      "draft_locus": "Introduction ¶4",
+      "quote": "From the second carrier onward, a merchant connects through one normalizing layer, bought or built",
+      "finding": "Flow reader B found the answer paragraph hard going: it packs the layer, manifest, events, lane, cut-off, backlog and margin together before the vocabulary table (manifest and lane are glossed inline).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene: A Sentence in the Theme ¶2",
+      "quote": "Those timings are illustrative, as described in [[warehouse-and-fulfillment]].",
+      "finding": "Flow reader B: the disclaimer breaks into Daniel's point in the middle of the scene.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2",
+      "draft_locus": "Setting the Scene: A Sentence in the Theme ¶3",
+      "quote": "It is text written when an outside logistics provider in Tiel handled fulfillment.",
+      "finding": "Flow reader B met the provider in Tiel with no context (returning readers may remember it).",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/3",
+      "draft_locus": "How the Pieces Fit Together ¶4",
+      "quote": "DPD Belgium, by contrast, describes its tracking as notifications when parcels reach and leave the depot",
+      "finding": "Flow reader B could not see what DPD contrasts with, and needed a re-read to see that 'Nor can the merchant simply ask' means polling.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/4",
+      "draft_locus": "How the Pieces Fit Together ¶5",
+      "quote": "it keeps the parcel states, treats an attempted delivery as a `failure`, and adds `exception`",
+      "finding": "Flow reader B compared the two lists to work out that 'keeps the parcel states' silently drops unknown, cancelled and error.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/12",
+      "draft_locus": "How the Pieces Fit Together ¶13",
+      "quote": "under Article 13(2) of the same directive, the refund",
+      "finding": "Flow reader B had to look back a subsection to find which directive 'the same directive' is.",
+      "fault": "draft",
+      "criterion": "flow_is_followable",
+      "severity": "minor"
+    },
+    {
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/0/evidence/0",
+      "draft_locus": "How the Pieces Fit Together ¶1",
+      "quote": "the promise reads the warehouse's cut-off and the lane table before checkout",
+      "finding": "'Lane table' is used in the Figure 1 caption and again for the promise service, but is never defined: the vocabulary defines 'lane' and the Choices define a 'transit table', and a reader cannot tell whether the two are the same. 'Lane' is on the spec's does_not_know list; the compound term is never given.",
+      "fault": "draft",
+      "corroborated_by": "flow reader A, section 3 item 1 and flow reader B, section 3 item 4 (both report 'lane table' as undefined)",
+      "criterion": "known_before_new",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens on the declared puzzling scenario (a shopper shown 'delivered tomorrow' after the last dispatch), then the carriers, Eva's parcel, the two-part answer and a roadmap; none of the weak patterns.",
+      "criterion": "no_weak_introduction_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion opens by returning to the hook, sorts what holds into established, context-dependent and the author's synthesis, ends with questions and a hand-off; it does not open with 'in conclusion', add a new subtopic or end on a rephrased thesis alone.",
+      "criterion": "no_weak_conclusion_pattern",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "What to Take Away ¶1 states what no single section states (the layer's events are the only lane record and the promise needs exactly that record, so the date is true only when the layer feeds a measured promise) and the so-what (start without a model: a transit table, cut-off and backlog, a weekly count per lane).",
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "severity": "major"
+    },
+    {
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'Go back to the shopper who saw \"delivered tomorrow\" after the warehouse's last dispatch had left' returns to the hook named in callback.to and names the inputs and their sources.",
+      "criterion": "conclusion_calls_back_to_introduction",
+      "severity": "major"
+    },
+    {
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The intro-only reader predicted the scene and request, the vocabulary, the three moments with options, cross-border and cost, the two four-way comparisons and scale, then public evidence, Eva's parcel and what goes wrong, and named the evidence (Kestrel & Pine's carriers and storefront text, carrier and vendor documentation, research on promises) and a plain practical tone; this matches the roadmap and the expected answer.",
+      "criterion": "AC-4",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader gives Thursday, not Wednesday, because the order missed the 21:00 last wave so ships Wednesday plus one day transit; and names a computed promise from stock location, cut-off, backlog, lane transit and margin, measured promised-versus-delivered per lane, not reworded text. Matches the expected answer.",
+      "criterion": "AC-1",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader names both faults and preventions: the retry booked a second shipment (two barcodes) for lack of the merchant's reference, prevented by an idempotent call by that reference with look-up before create; the batch was never manifested (a label is not a booking), prevented by a scheduled close-out with an alert and watching pre_transit. Matches the expected answer.",
+      "criterion": "AC-2",
+      "severity": "major"
+    },
+    {
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader derives the status from every carrier's scans mapped onto one small normalized vocabulary (lists the eight events), keeping the original event, never set by hand, read by page, notifications and agent alike, with each event stored with its lane. Matches the expected answer.",
+      "criterion": "AC-3",
+      "severity": "minor"
+    }
+  ]
+}

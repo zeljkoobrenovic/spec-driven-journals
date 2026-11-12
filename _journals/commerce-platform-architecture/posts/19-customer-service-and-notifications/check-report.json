@@ -1,0 +1,682 @@
+{
+  "spec": "_journals/commerce-platform-architecture/posts/19-customer-service-and-notifications/spec.json",
+  "draft": "_journals/commerce-platform-architecture/posts/19-customer-service-and-notifications/index.md",
+  "spec_sha": "8b29f1df3a4fd32f",
+  "draft_sha": "6fc5929cac8fdad6",
+  "run_at": "2026-11-12T22:24:39+01:00",
+  "round": 3,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "a customer gets three conflicting answers about one order, causing extra contacts",
+      "matched_spec_paragraph": "p01"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "facts live in different systems, so all views should read one order record",
+      "matched_spec_paragraph": "p02"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "defines the three views and gives the chapter roadmap and evidence",
+      "matched_spec_paragraph": "p03"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "where Eva's jacket order stands and which messages this chapter follows",
+      "matched_spec_paragraph": "p04"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order ¶1",
+      "summary": "the Three-Status Order: eleven tickets, three systems with three statuses",
+      "matched_spec_paragraph": "p05"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order ¶2",
+      "summary": "the split fleece-and-socks order marked Delivered after the first parcel",
+      "matched_spec_paragraph": "p06"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order ¶3",
+      "summary": "warehouse and ERP stuck while no one announced two parcels",
+      "matched_spec_paragraph": "p07"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order ¶4",
+      "summary": "the simple answer existed in no system; agents juggled five tabs",
+      "matched_spec_paragraph": "p08"
+    },
+    {
+      "draft_locator": "Setting the Scene at Kestrel & Pine: Eleven Tickets, Six Days, One Order ¶5",
+      "summary": "Waypoint's planned OMS and status API as the fix",
+      "matched_spec_paragraph": "p09"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶1",
+      "summary": "transactional notifications defined, each needing an emitting event, with Shopify's list",
+      "matched_spec_paragraph": "p10"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶2",
+      "summary": "the missing 'ships in two parcels' message has no emitter without an OMS",
+      "matched_spec_paragraph": "p11"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶3",
+      "summary": "the order status page as a cheap self-service read model",
+      "matched_spec_paragraph": "p12"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶4",
+      "summary": "Shopify's status page design: states, tracking dependence, privacy limits",
+      "matched_spec_paragraph": "p13"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶5",
+      "summary": "three rules for the status page: shared status, prompt tracking, privacy",
+      "matched_spec_paragraph": "p14"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶6",
+      "summary": "WISMO defined and the weak vendor data on its share",
+      "matched_spec_paragraph": "p15"
+    },
+    {
+      "draft_locator": "What the Customer Needs to Know, and Which System Knows It ¶7",
+      "summary": "WISMO per shipped order as a measure of the notification layer",
+      "matched_spec_paragraph": "p16"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶1",
+      "summary": "an order has several status machines, as Shopify and commercetools model",
+      "matched_spec_paragraph": "p19"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶2",
+      "summary": "views should show goods, money and return states, not one word",
+      "matched_spec_paragraph": "p20"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶3",
+      "summary": "target shape: one order record with state machines and views around it",
+      "matched_spec_paragraph": "p17"
+    },
+    {
+      "draft_locator": "How the Pieces Fit Together ¶4",
+      "summary": "views may lag but must never disagree",
+      "matched_spec_paragraph": "p18"
+    },
+    {
+      "draft_locator": "The Choices ¶1",
+      "summary": "four ways to build the service layer, tied to scale",
+      "matched_spec_paragraph": "p21"
+    },
+    {
+      "draft_locator": "The Choices ¶2",
+      "summary": "option 1: platform notifications plus a helpdesk reading the platform",
+      "matched_spec_paragraph": "p22"
+    },
+    {
+      "draft_locator": "The Choices ¶3",
+      "summary": "option 2: carrier tracking vendors that miss the order half",
+      "matched_spec_paragraph": "p23"
+    },
+    {
+      "draft_locator": "The Choices ¶4",
+      "summary": "option 3: notifications and service view over the OMS",
+      "matched_spec_paragraph": "p24"
+    },
+    {
+      "draft_locator": "The Choices ¶5",
+      "summary": "option 4: a self-built layer, right only at Group scale",
+      "matched_spec_paragraph": "p25"
+    },
+    {
+      "draft_locator": "The Choices ¶6",
+      "summary": "rule: the service view must read the owner of the goods state",
+      "matched_spec_paragraph": "p26"
+    },
+    {
+      "draft_locator": "The Choices ¶7",
+      "summary": "self-service edits must be gated on fulfillment state",
+      "matched_spec_paragraph": "p27"
+    },
+    {
+      "draft_locator": "Across Scale Stages: When It Fits and When It Limits ¶1",
+      "summary": "the layer changes shape once, when goods state leaves the platform",
+      "matched_spec_paragraph": "p31"
+    },
+    {
+      "draft_locator": "In Practice ¶1",
+      "summary": "preview of the practical rules + carrier events, not polling, trigger messages",
+      "matched_spec_paragraph": "p32"
+    },
+    {
+      "draft_locator": "In Practice ¶2",
+      "summary": "carrier examples (DPD, EasyPost) of pushed tracking statuses",
+      "matched_spec_paragraph": "p33"
+    },
+    {
+      "draft_locator": "In Practice ¶3",
+      "summary": "channel pricing changes (WhatsApp) call for per-message channel choice",
+      "matched_spec_paragraph": "p34"
+    },
+    {
+      "draft_locator": "In Practice ¶4",
+      "summary": "one order-status API feeding every consumer, including AI agents",
+      "matched_spec_paragraph": "p36"
+    },
+    {
+      "draft_locator": "In Practice ¶5",
+      "summary": "helpdesk refund buttons as extra refund paths; one idempotent refund command",
+      "matched_spec_paragraph": "p37"
+    },
+    {
+      "draft_locator": "In Practice ¶6",
+      "summary": "marketplaces own the conversation and set service standards",
+      "matched_spec_paragraph": "p28"
+    },
+    {
+      "draft_locator": "In Practice ¶7",
+      "summary": "import marketplace messages with deadlines and marketplace order ids",
+      "matched_spec_paragraph": "p29"
+    },
+    {
+      "draft_locator": "In Practice ¶8",
+      "summary": "marketplace limits on buyer personal data in the service view",
+      "matched_spec_paragraph": "p30"
+    },
+    {
+      "draft_locator": "In Practice ¶9",
+      "summary": "introduces Eva's order messages, 2026 landscape versus target",
+      "matched_spec_paragraph": "p38"
+    },
+    {
+      "draft_locator": "In Practice ¶10",
+      "summary": "the target needs one record and read model, not new channels",
+      "matched_spec_paragraph": "p39"
+    },
+    {
+      "draft_locator": "In Practice ¶11",
+      "summary": "service measures that turn the desk into a platform monitor",
+      "matched_spec_paragraph": "p40"
+    },
+    {
+      "draft_locator": "In Practice ¶12",
+      "summary": "who produces the measures and which go on the monthly page",
+      "matched_spec_paragraph": "p41"
+    },
+    {
+      "draft_locator": "When It Goes Wrong ¶1",
+      "summary": "failure modes of notifications and service views with detection and recovery",
+      "matched_spec_paragraph": "p42"
+    },
+    {
+      "draft_locator": "What to Take Away ¶1",
+      "summary": "recap: one order record read by all views gives one answer",
+      "matched_spec_paragraph": "p43"
+    },
+    {
+      "draft_locator": "What to Take Away ¶2",
+      "summary": "established facts about statuses, emitters, edits and WISMO",
+      "matched_spec_paragraph": "p44"
+    },
+    {
+      "draft_locator": "What to Take Away ¶3",
+      "summary": "context-dependent choices: goods-state ownership, tracking vendors, channels",
+      "matched_spec_paragraph": "p45"
+    },
+    {
+      "draft_locator": "What to Take Away ¶4",
+      "summary": "author's synthesis: three read models over one record, WISMO as integration monitor",
+      "matched_spec_paragraph": "p46"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶1",
+      "summary": "questions to audit one's own service and notification setup",
+      "matched_spec_paragraph": "p47"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶2",
+      "summary": "Part IV's five cases are one problem of promises read from copies",
+      "matched_spec_paragraph": "p48"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶3",
+      "summary": "the shared remedy pattern across Part IV + a checklist to apply it to your own shop",
+      "matched_spec_paragraph": "p49"
+    },
+    {
+      "draft_locator": "Questions to Ask ¶4",
+      "summary": "hand-off to Part V and marketplace orders",
+      "matched_spec_paragraph": "p50"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "AC-5",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Each of the 49 reverse-outline summaries matches the controlling idea of the spec paragraph it is aligned to, in the spec's order (intro p01-p04, scene p05-p09, needs p10-p16, pieces p19/p20/p17/p18, choices p21-p27, stages p31, practice p32-p41, wrong p42, conclusion p43-p50).",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Each of the 49 reverse-outline summaries matches the controlling idea of the spec paragraph it is aligned to, in the spec's order (intro p01-p04, scene p05-p09, needs p10-p16, pieces p19/p20/p17/p18, choices p21-p27, stages p31, practice p32-p41, wrong p42, conclusion p43-p50).",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0",
+      "draft_locus": "In Practice ¶1",
+      "quote": "In practice the design comes down to four rules (carrier events, channel costs that change, one status endpoint, one refund command), the service rules of marketplaces, one worked order and a set of measures.",
+      "finding": "The reverse outliner needed two summaries: a preview of the whole section and the first practice rule (carrier events, not polling). The spec's p32 controlling idea itself joins the section preview and the first rule in one paragraph, so the draft follows the spec; splitting needs a spec change (a separate lead-in unit or a shorter preview).",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/6",
+      "draft_locus": "Questions to Ask ¶3",
+      "quote": "The same parts give you a list for your own shop: for each promise it makes after checkout (delivery date, collection, refund, order status), name the system on the spot that knows the fact it depends on, the event that carries that fact and the measure that shows when the promise broke.",
+      "finding": "The outliner needed two summaries: the common remedy pattern across Part IV (with five remedies recounted) and a forward checklist for the reader's own shop. The spec's p49 controlling idea assigns both the part's so-what and its take-away to this one paragraph; the draft follows it.",
+      "fault": "spec",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Every unit ties to a supporting claim: scene and message map to S1/S2, status page and views to S3, state machines to S2, choices and stage rule to S3, self-service and refund command to S4, WISMO and the measures to S5, channel pricing and carrier events to S1, marketplace and AI-agent endpoint to S3; the part close performs the role the journal spec assigns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2 (evidence: components table)",
+      "draft_locus": "How the Pieces Fit Together, the components table after Figure 4",
+      "quote": "Collapse the state machines into one string",
+      "finding": "The component table (responsibility, what each must never do, Kestrel & Pine in 2027) is followed directly by the '### Requirements for the flows' heading and the next table; no sentence says what it shows. The spec says it shows 'each component's job and its forbidden shortcut', and the 'must never do' column (send from a label, a second refund path, read a different system than the agent, guess a match) is the chapter's failure list in miniature, but the draft never says so. Add one sentence after the table naming what the forbidden-shortcut column shows.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/2/transition_in",
+      "draft_locus": "What the Customer Needs ... ¶2 -> ¶3 (subheading 'The order status page')",
+      "quote": "is the self-service page where the customer sees where the order is.",
+      "finding": "Declared: sequence, phrase at the start, carrying over 'the messages pushed to the customer' and introducing 'the page the customer pulls between messages'. The paragraph opens with a bare definition; only the subheading marks the step, and nothing links the page to the messages just mapped. A phrase such as 'Between those messages, the customer checks...' would express it.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/transition_in",
+      "draft_locus": "The Choices ¶7 -> Across Scale Stages (section opening)",
+      "quote": "The judgement: the layer changes shape exactly once, when the goods state leaves the platform.",
+      "finding": "Declared: elaboration, a phrase carrying over 'the four choices and the rule' and introducing 'which choice fits at which stage'. The section opens directly with the stage table and its first prose is the judgement; no phrase ties the stages back to the four choices or to the rule just stated (the self-service paragraph sits in between, so the link is needed).",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2/transition_in",
+      "draft_locus": "In Practice ¶2 -> ¶3",
+      "quote": "Channels change their economics on published dates.",
+      "finding": "Declared: additional_support, a phrase carrying over 'what triggers a message' and introducing 'what sending it costs, per channel'. The paragraph opens with a bold rule that does not refer to the triggering event or mark itself as the second of the four rules the section opened with; both flow readers had to match the bold lead-ins to the list by hand.",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'In practice the design comes down to four rules (...)': only the first signposted 'First'; the other three bold lead-ins do not match the names in the list",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3/transition_in",
+      "draft_locus": "In Practice ¶3 -> ¶4",
+      "quote": "Order status by API is a prerequisite, not a feature.",
+      "finding": "Declared: additional_support, carrying over 'messages pushed to the customer' and introducing 'the status that other systems pull'. The opening gives neither the contrast of push and pull nor a 'third' signpost, so the rule arrives unconnected to the channel paragraph before it.",
+      "fault": "draft",
+      "corroborated_by": "flowA: only the first marked 'First'; other three bold headings worded differently; matched by hand",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/4/transition_in",
+      "draft_locus": "In Practice ¶4 -> ¶5",
+      "quote": "The service tool's refund button is another refund path.",
+      "finding": "Declared: additional_support, carrying over 'one read model for every consumer' and introducing 'one write path for refunds'. The opening does not pick up the read model just named, so the read-versus-write pairing the spec intends (one endpoint to read, one command to write) is lost.",
+      "fault": "draft",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "All other boundaries express their declared relationship and pick up the declared known information (e.g. 'The disagreement starts with...', 'No system held the answer \"two parcels\", so...', 'The middle row is the one...', 'With those states in one place...', 'The table's second row decides...', 'The same rule governs...', 'So far the merchant has owned the conversation...', 'Whether the messages pre-empt the tickets can be measured.', 'This chapter closes Part IV.').",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/3 and /sections/5/paragraphs/8 (flow: Eva's example in In Practice)",
+      "draft_locus": "Introduction ¶4 ('Where we are') and Setting the Scene ¶1",
+      "quote": "This chapter follows those messages from order #1072455's confirmation on 13 April to her replacement jacket's dispatch on 22 April",
+      "finding": "Both readers lost which story the chapter follows: 'Where we are' sets up Eva's messages, the chapter then switches to order #1052877, and Eva returns only three quarters through. Both proposed moving Eva's walk-through closer to 'Where we are' or dropping 'Where we are'; the spec fixes p04 in the introduction and the worked example in In Practice, so the difficulty comes from the declared order (the draft could soften it by saying in p04 that Eva's messages are worked through after the design).",
+      "fault": "spec",
+      "corroborated_by": "flowB: \"Where we are\" logical, but Eva disappears until the worked example; reorder: bring Eva's worked order closer to \"Where we are\" or drop it",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2",
+      "draft_locus": "Introduction ¶3 (roadmap)",
+      "quote": "Next it shows the separate states an order record keeps and how one such record joins the three views, compares four ways to build this service layer and how the answer changes with scale, applies them to marketplace orders, to Eva's messages and to service measures, and ends with what goes wrong, including the agent who cannot find the customer, the Familiar Stranger.",
+      "finding": "Both readers re-read the roadmap: one sentence carries about ten stops. Split it into short sentences, one per section group.",
+      "fault": "draft",
+      "corroborated_by": "flowB: Roadmap sentence ('It then names the system ... the Familiar Stranger') lists about ten stops; hard to hold",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2 (evidence: ticket table)",
+      "draft_locus": "Setting the Scene, ticket table, last row",
+      "quote": "Sent it, with a €10 voucher *(local detail)*",
+      "finding": "Both readers stopped at '(local detail)', which is never explained. The spec marks the voucher as an invented local detail; the draft should say so in words (or drop the marker).",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'Sent it, with a €10 voucher *(local detail)*': unclear",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/2 (evidence: requirements table)",
+      "draft_locus": "How the Pieces Fit Together, '### Requirements for the flows'",
+      "quote": "Requirements for the flows",
+      "finding": "Both readers noted that the subsection goes straight into a table with no sentence saying what the table is for; the explanation comes only after it ('The consistency column is the point').",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'Requirements for the flows' goes straight into a table",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/0-4",
+      "draft_locus": "In Practice ¶1-¶5",
+      "quote": "In practice the design comes down to four rules (carrier events, channel costs that change, one status endpoint, one refund command), the service rules of marketplaces, one worked order and a set of measures.",
+      "finding": "Both readers had to match the four rules to their bold lead-ins by hand: only the first is signposted 'First', and the other lead-ins ('Channels change their economics...', 'Order status by API is a prerequisite...', 'The service tool's refund button...') are worded differently from the names in the list.",
+      "fault": "draft",
+      "corroborated_by": "flowB: only the first signposted 'First'; the other three bold lead-ins do not match the names in the list; matching took effort",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/2",
+      "draft_locus": "In Practice ¶3 (WhatsApp)",
+      "quote": "Per-message pricing arrived on 1 July 2025, when utility messages sent inside the 24-hour customer service window (the 24 hours after the customer's last message to the business) became free.",
+      "finding": "Both readers re-read the WhatsApp paragraph to separate utility templates from service messages and to follow the dates; the date detail outweighs the point (choose the channel per message with cost as an input).",
+      "fault": "draft",
+      "corroborated_by": "flowB: The WhatsApp paragraph: re-read to separate utility templates from service messages and follow the dates",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/3",
+      "draft_locus": "In Practice ¶4",
+      "quote": "Waypoint's W8 lists order status by API among what an AI shopping agent would need before acting for a customer",
+      "finding": "Both readers found the AI shopping agent arriving from nowhere; nothing before it in the chapter prepares a non-human consumer of order status.",
+      "fault": "draft",
+      "corroborated_by": "flowB: 'Waypoint's W8 lists order status by API among what an AI shopping agent would need...': arrives abruptly",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5 (flow: grouping) and /sections/5/paragraphs/5-7",
+      "draft_locus": "In Practice, '### Service for marketplace orders'",
+      "quote": "So far the merchant has owned the conversation with the customer.",
+      "finding": "Both readers called In Practice a grab-bag and marked the marketplace subsection out of place (a preview of Part V, which the hand-off then introduces). Both proposed moving it out (a pointer in the hand-off, or after the worked example and measures). The spec's flow places marketplace service in In Practice after the refund rule, so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flowB: In Practice a grab-bag; marketplaces unclear here; 'So far the merchant has owned the conversation...': out of place; previews Part V",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/3/paragraphs/6 (flow: choices)",
+      "draft_locus": "The Choices, '### Self-service, gated on state'",
+      "quote": "The same rule governs what the customer can do herself.",
+      "finding": "Both readers found self-service weakly placed under The Choices (it is not a choice; it is a component of the target shape) and both proposed moving it into How the Pieces Fit after the target-shape table. The spec's choices flow puts it after the rule on purpose, so the difficulty comes from the declared order.",
+      "fault": "spec",
+      "corroborated_by": "flowB: the self-service subsection unclear (not a choice; fits with the target shape); reorder: move 'Self-service' into How the Pieces Fit",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/6/paragraphs/0",
+      "draft_locus": "When It Goes Wrong, last item",
+      "quote": "The agent cannot find the person.",
+      "finding": "Both readers noticed the Familiar Stranger item has no Detection line, unlike the other seven, and stopped to look for it.",
+      "fault": "draft",
+      "corroborated_by": "flowB: The Familiar Stranger item has no Detection",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/5-6",
+      "draft_locus": "Questions to Ask ¶2-¶3 (Part IV close)",
+      "quote": "instead of from the system on the spot that saw the physical fact first",
+      "finding": "Both readers found the part-closing paragraphs dense (five cases and five remedies, compressed phrases such as 'Eva's Wednesday promise, kept on Thursday' and 'give each money or stock action one writer and a key') and the coined phrase 'the system on the spot' new and leaned on heavily; both followed only on a second pass.",
+      "fault": "draft",
+      "corroborated_by": "flowB: Part close very compressed; 'the system on the spot' new phrase, leaned on heavily; followed on a second pass",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/0/transition_in",
+      "draft_locus": "Setting the Scene ¶1",
+      "quote": "The opening's three conflicting answers happened at Kestrel & Pine.",
+      "finding": "Reader A could not map the opening's three answers (e-mail, page, support) onto the case's three systems (platform, WMS, ERP); the ERP's 'Not invoiced' was never a customer answer. Say which statuses the customer actually met.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/3",
+      "draft_locus": "Setting the Scene ¶4",
+      "quote": "Agents checked five tabs: the shop platform, the warehouse, carrier tracking, payment provider and returns portal.",
+      "finding": "Reader A asked why the returns portal was checked for an order with no return.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/1",
+      "draft_locus": "Setting the Scene ¶2",
+      "quote": "In the book's fictional reconstruction, the €137 order contained a €119 fleece and €18 socks.",
+      "finding": "Reader B wondered whether this case has a different status from the rest of the book's scenario.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/2/paragraphs/1",
+      "draft_locus": "How the Pieces Fit Together ¶2",
+      "quote": "A single word is a subject line for the customer's inbox, not what the agent or the page should read.",
+      "finding": "Reader B re-read the subject-line metaphor.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/4/paragraphs/0",
+      "draft_locus": "Across Scale Stages ¶1",
+      "quote": "Kestrel & Pine is at that point now, and the eleven tickets are what the delay cost.",
+      "finding": "Reader B asked which 'now' (the chapter mixes December 2026, April 2027 and Q4 2027).",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/8 (evidence: Eva table)",
+      "draft_locus": "In Practice ¶9",
+      "quote": "The \"2026 landscape\" column is what the systems Kestrel & Pine ran in 2026, still in place in April 2027, send her",
+      "finding": "Reader A found the '2026 landscape' label on April 2027 events jarring despite the explanation.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/sections/5/paragraphs/9",
+      "draft_locus": "In Practice ¶10",
+      "quote": "The messages that matter most are the ones that pre-empt the ticket: \"two parcels\", \"received\", \"ships today\".",
+      "finding": "Reader B noted that Eva's order shipped in one parcel, so 'two parcels' does not come from the table the sentence sums up.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/0/paragraphs/2 (evidence: ticket table)",
+      "draft_locus": "Setting the Scene, ticket table, last row",
+      "quote": "Sent it, with a €10 voucher *(local detail)*",
+      "finding": "The marker '(local detail)' is used without any explanation of what it means; both flow readers reported it as unexplained.",
+      "fault": "draft",
+      "corroborated_by": "flowA: '*(local detail)*' never explained",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/sections/1/paragraphs/5",
+      "draft_locus": "What the Customer Needs ... ¶6",
+      "quote": "a 2026 critical reading on the Branvas blog",
+      "finding": "Branvas is named without saying what it is (reader A asked); Gorgias in the same paragraph gets a gloss ('a helpdesk vendor').",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "fail",
+      "spec_locus": "/introduction/paragraphs/2; audience.does_not_know 'Helpdesk'",
+      "draft_locus": "Introduction ¶3, then What the Customer Needs ¶6 and the component table",
+      "quote": "the documentation of platforms, helpdesks and carriers (Shopify, commercetools, Zendesk and others)",
+      "finding": "'Helpdesk' is on the does_not_know list. It is used in the introduction, in the WISMO paragraph and in the component table before any gloss; the first explanation by example ('a helpdesk such as Zendesk or Gorgias shows the platform's order next to the ticket') comes only in The Choices. No flow reader reported it, and the draft does gloss it eventually, so it is recorded uncorroborated.",
+      "fault": "draft",
+      "severity": "minor"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "The introduction opens with a puzzling scenario (three answers about one order), bridges to the systems that hold the facts and states the thesis; none of the weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "The conclusion answers the opening, sorts what is established from what depends on context and the author's synthesis, poses questions, closes the part as the journal spec assigns and hands off; it does not open with 'in conclusion', end on a rephrased thesis or add a new subtopic.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "p43 joins the opening's three answers and the eleven tickets into one cause no section states alone; p48 sets the part's five cases as one problem; the so-what (three read models, WISMO beside the integration monitors, remedies as contracts and rules, a per-promise list for the reader's shop) is stated in p46 and p49.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "'The customer of the opening had three answers because each view read a different system' returns to the introduction's customer; p48 returns to the Part IV opening's order confirmed in seconds, as callback.to declares.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-4",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "The introduction reader predicted the three views and the systems feeding them, the separate states, WISMO as a measurement, the four options and scale, practice with marketplaces, Eva's messages 13-22 April and measures, the failure patterns, and the evidence (Kestrel & Pine's tickets, platform/helpdesk/carrier documentation, vendor contact data) and tone, matching the expected answer and the roadmap.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named 'ships in two parcels' with the second's date, an OMS as the only possible emitter (none in the platform-only landscape), and that the page, notifications and agent read one record showing goods per line or parcel, money and return state rather than one word; matches the expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader named Schrödinger's Order (agent and page disagree because the helpdesk reads the platform) and the Message in a Bottle ('shipped' at label print), with the rules: the service view reads the owner of the goods state, re-point the helpdesk at the OMS, trigger 'shipped' on the carrier's handover scan with a working tracking link; matches the expected answer.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The reader said cancel only before the warehouse accepts the work (afterwards a request; refuse when unknown) and to count WISMO per shipped order (per 100, incl. peak), not as a share of tickets, as a signal of the integrations; matches the expected answer.",
+      "severity": "minor"
+    }
+  ]
+}

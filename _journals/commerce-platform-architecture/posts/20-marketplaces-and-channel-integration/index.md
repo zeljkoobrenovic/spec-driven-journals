@@ -28,9 +28,11 @@ Listing a jacket on Amazon, bol or Zalando can put it in front of shoppers who n
 
 The marketplace also grades performance: cancellations, late dispatch and valid tracking can affect visibility or the right to sell. Those measures depend on the data your integrations send. An old stock figure can become a canceled order; a late shipment message can damage the seller's score even when the parcel left on time.
 
-This chapter follows product **listings**, marketplace orders and status updates through a **channel connector**, the service translating between merchant and marketplace systems. Its permissions matter because a connector that changes prices or stock independently can make a different promise from the web shop. Give it authoritative values to distribute and define which incoming marketplace changes it may accept.
+This chapter's answer is that a **channel connector**, the service translating between merchant and marketplace systems, carries product **listings**, stock, prices, marketplace orders and status updates and owns none of them. Each value it sends comes from the system that owns it; each marketplace's stock number comes from one available-to-promise calculation per channel; stock the marketplace holds is a location the merchant does not control; and every marketplace order is created once in the merchant's order record under the marketplace's order id. A connector that changes prices or stock on its own makes a different promise from the web shop.
 
-**Where we are in the order's journey.** At Kestrel & Pine, the fictional outdoor brand, Eva buys from the merchant's own storefront. Two illustrative Amazon.de orders on the same day, 13 April 2027, show different routes. One ships from Kestrel & Pine's Duiven warehouse; the other from stock already held by the marketplace. Both must reach the merchant's records. [[journey-of-an-order]] provides the wider journey.
+**Where we are in the order's journey.** The book's running example shows marketplace orders beside Eva's. At Kestrel & Pine, the fictional outdoor brand, Eva buys from the merchant's own storefront on 13 April 2027; two illustrative Amazon.de orders on the same day take the two marketplace routes. One ships from Kestrel & Pine's Duiven warehouse; the other from stock already held by the marketplace. Both must reach the merchant's records. [[journey-of-an-order]] provides the wider journey.
+
+The chapter starts from Kestrel & Pine's two marketplace incidents. It then covers what a marketplace is and the two ways to sell on one, what the marketplace measures, the connector's five flows with order import and API retirement dates, channel allocation, the two Amazon.de orders worked through, channel prices, the four ways to connect and how they change with scale, current practice, and what goes wrong. The evidence is the marketplaces' published thresholds and documentation, and Kestrel & Pine's own incidents.
 
 ## Setting the Scene at Kestrel & Pine: Two Days of Stale Stock
 
@@ -38,20 +40,20 @@ Kestrel & Pine sells through bol, Amazon.de and Zalando using a rented marketpla
 
 Ecommerce and Marketplaces Manager Milan Petrov owns the connector. In March 2027, he walks Head of Engineering Noor Visser through two incidents.
 
-The **Black Friday Oversell** began when Duiven ran out of Ridgewalker jackets at 19:40 on 27 November 2026. Stock traveled from the warehouse management system (WMS) to the enterprise resource planning system (ERP) every 15 minutes, then hourly to the platform and hourly to the connector. Marketplaces kept selling for up to two hours.
-
-In this illustration, about **160** of the 1,120 canceled or delayed orders were marketplace orders, and Kestrel & Pine canceled **140**. Those cancellations counted against seller standards. Bol issued a formal warning, or **strike**, for the week. Marketplace penalties form part of the incident's €96,000 cost.
-
-The second is the **Deprecated Endpoint**. In February 2027 the connector retired an older version of its API on a date it had published months earlier. The agency script that pushed the platform's stock figures into the connector still used that version. Nobody had read the notice. For **two days** the connector kept sending bol the last figures it had, and bol sold from them.
+The **Black Friday Oversell** began when Duiven ran out of Ridgewalker jackets at 19:40 on 27 November 2026. The stock figure traveled by scheduled copies from the warehouse management system (WMS) to the enterprise resource planning system (ERP), then to the shop platform and then to the connector, so the marketplaces kept selling the jacket for up to two hours. The same evening, the queue that passes orders to the WMS backed up for four hours.
 
 ![A relay of stock notes from an empty warehouse shelf through three systems to a marketplace still selling.](assets/images/20-marketplaces-and-channel-integration/20-copy-of-a-copy.jpeg)
 **Figure 1:** *The Black Friday Oversell: the stock figure reached the marketplaces as a copy of a copy, so the Ridgewalker jacket sold out at Duiven at 19:40 and the marketplaces kept selling it for up to two hours.*
+
+The oversell also cost Kestrel & Pine on the scorecards. Of the 1,120 orders the incident canceled or delayed, about **160** were marketplace orders, and Kestrel & Pine canceled **140** of them *(illustrative figures)*. Those cancellations counted against seller standards. Bol issued a formal warning, or **strike**, for the week. Marketplace penalties form part of the incident's €96,000 cost.
+
+The second is the **Deprecated Endpoint**. In February 2027 the connector retired an older version of its API on a date it had published months earlier. The agency script that pushed the platform's stock figures into the connector still used that version. Nobody had read the notice. For **two days** the connector kept sending bol the last figures it had, and bol sold from them.
 
 Noor's questions are the chapter's questions. Which stock number should each marketplace be told, and who computes it? Where does a marketplace order live, so that support, the warehouse and finance see the same record? And who owns the API calendar of a vendor Kestrel & Pine pays €900 a month and depends on for €3.0 million?
 
 ## What a Marketplace Is, and the Two Ways to Sell on One
 
-Selling on a marketplace means publishing an **offer** against a product the marketplace knows: your price, your stock and your delivery promise for an item identified by its **GTIN** (Global Trade Item Number, the number behind the barcode; [[product-information]] owns it). Several sellers can offer the same product, and the marketplace shows one of them in the **buy box**, the single "add to basket" button on the product page; performance and price decide who wins it.
+Noor's questions start from what a marketplace is told. Selling on a marketplace means publishing an **offer** against a product the marketplace knows: your price, your stock and your delivery promise for an item identified by its **GTIN** (Global Trade Item Number, the number behind the barcode; [[product-information]] owns it). Several sellers can offer the same product, and the marketplace shows one of them in the **buy box**, the single "add to basket" button on the product page; performance (the subject of the next section) and price decide who wins it.
 
 Every large marketplace offers the same two logistics models under its own names.
 
@@ -62,17 +64,11 @@ Every large marketplace offers the same two logistics models under its own names
 
 The names are from the vendors' own pages (bol partner platform and Zalando partner university, n.d., accessed November 2026; Amazon's order performance policy, 2026). bol describes Logistics via bol as "We handle storage, shipping, and returns", counts stock daily and charges for it, with a 40% surcharge on stock costs in November and December, as of November 2026.
 
-The architectural difference is larger than the operational one. In the seller-fulfilled model, a marketplace order must enter your order record and your warehouse flow with the marketplace's deadline attached, and your ship confirmation must travel back in time to count. In the marketplace-fulfilled model, your stock sits in **a location you do not control**: you learn its quantity from the marketplace's reports, its sales from the marketplace's notifications, and its returns after the marketplace has processed them. [[inventory-and-availability]] treats such stock as an external location with its own feed, and Kestrel & Pine's Waypoint decision W1 says the same.
-
-**The marketplace is also a competitor.** The German competition authority's 2013 press release on Amazon's price-parity clauses states it plainly: Amazon, "as the largest online retailer, competes directly with" the sellers on its marketplace (Bundeskartellamt, 26 November 2013). Everything you send a marketplace is also market intelligence, and the design question is which attributes and which stock granularity leave the building.
-
-### What it costs
-
-Fees differ by marketplace, category, price band and fulfillment model, and change on published dates. As of November 2026, Amazon's US schedule charges $39.99 a month for a professional account plus a referral fee of mostly 8–15% of the price (clothing 5% up to $15, 10% to $20, 17% above); bol charges no subscription but a fixed amount per item plus a percentage of the price including VAT, by category; Zalando publishes no figures. The lesson is not the numbers but their shape: **fees are dated reference data**, not constants. Margin per channel belongs in the analytics layer ([[commerce-data-and-analytics]]) with the fee schedule versioned by effective date, and the channel price floor (below) is computed from it.
+The architectural difference is larger than the operational one, and the two Amazon.de orders of 13 April 2027, worked through later in the chapter, show both sides. In the seller-fulfilled model, a marketplace order must enter your order record and your warehouse flow with the marketplace's deadline attached, and your ship confirmation must travel back in time to count. In the marketplace-fulfilled model, your stock sits in **a location you do not control**: you learn its quantity from the marketplace's reports, its sales from the marketplace's notifications, and its returns after the marketplace has processed them. [[inventory-and-availability]] treats such stock as an external location with its own feed, and Kestrel & Pine's Waypoint decision W1 (stock ownership) says the same.
 
 ## What the Marketplace Measures You On
 
-Marketplaces publish the metrics they grade sellers on. Amazon's European order performance policy (PDF dated May 2026) and its seller blog (October 2024) give these thresholds:
+Seller-fulfilled orders carry the marketplace's deadline, and marketplaces publish how they grade it. Amazon's European order performance policy (PDF dated May 2026) and its seller blog (October 2024) give these thresholds:
 
 | Metric | What it counts | Threshold | Window | Applies to |
 | --- | --- | --- | --- | --- |
@@ -88,7 +84,7 @@ Read the table as an integration specification. **An oversell becomes a seller c
 
 ## How the Pieces Fit Together
 
-A **channel integration platform** (connector, integrator, "marketplace middleware") sits between the merchant's systems and many marketplaces and translates four kinds of data both ways. Vendors describe the same four functions: ChannelEngine calls itself "One platform for listings, orders, inventory, and pricing across 1,300+ channels" (n.d., accessed November 2026); Shopify's own Marketplace Connect app does the same for Amazon, Walmart, Target Plus and eBay from inside the platform (Shopify Help Center, accessed November 2026).
+A **channel integration platform** (connector, integrator, "marketplace middleware") sits between the merchant's systems and many marketplaces and translates four kinds of data between them, plus the shipment and return status that flows back. Vendors describe the four functions: ChannelEngine calls itself "One platform for listings, orders, inventory, and pricing across 1,300+ channels" (n.d., accessed November 2026); Shopify's own Marketplace Connect app does the same for Amazon, Walmart, Target Plus and eBay from inside the platform (Shopify Help Center, accessed November 2026).
 
 ![Diagram: The connector translates five flows between the merchant's systems of record and the marketplaces](assets/images/20-marketplaces-and-channel-integration/fig01-connector-translates-five-flows-between-merchant.jpeg)
 **Figure 2:** *The connector translates five flows between the merchant's systems of record and the marketplaces; it owns none of the data it carries.*
@@ -103,36 +99,32 @@ The five flows and what each needs:
 | **Orders** (import, acknowledge, cancel) | Marketplace to merchant | Minutes; before the ship deadline | One order record, keyed on the marketplace order id, idempotent | Auto-cancellation, a duplicate shipment |
 | **Status back-flow** (ship confirmation, tracking, returns) | Merchant to marketplace | Within the day of shipment | Carrier and tracking from the shipping service, once | Late shipment rate, invalid tracking rate |
 
-The two fast rows, stock and orders, are why Waypoint's W5 moves them by **events** (a message sent the moment something changes) rather than by periodic copies; [[integration-styles]] picks a style per flow from requirements like these.
+The two fast rows, stock and orders, are why Waypoint's W5 (the integration standards) moves them by **events** (a message sent the moment something changes) rather than by periodic copies; [[integration-styles]] picks a style per flow from requirements like these.
 
 ### Order import, acknowledgement and back-flow
 
-The marketplace order lifecycle has the same shape everywhere, and the connector's job is to keep two order records in step. The steps below are my synthesis of Amazon's, bol's and ChannelEngine's documented interfaces; marketplace state names differ.
+The marketplace order lifecycle has the same shape everywhere, and the connector's job is to keep two order records in step. The diagram's steps are my synthesis of Amazon's, bol's and ChannelEngine's documented interfaces; marketplace state names differ. Three points on this lifecycle carry the chapter.
 
 ![Diagram: A seller-fulfilled marketplace order](assets/images/20-marketplaces-and-channel-integration/fig02-seller-fulfilled-marketplace-order-order-created.jpeg)
 **Figure 3:** *A seller-fulfilled marketplace order: the order is created once in the merchant's record, acknowledged back with the binding between the two order numbers, and its shipment confirmed with tracking before the marketplace's deadline.*
 
-Three points on this diagram carry the chapter.
-
-**Acknowledging an imported order.** The merchant confirms receipt and links the marketplace's order identifier to its own order number. That pair lets later shipment, cancellation, return and payout messages find the same purchase. ChannelEngine calls this the critical binding step in its documentation; bol auto-cancels unacknowledged orders on day three after the promised delivery date. Importing the data without confirming that link leaves the marketplace unable to tell whether the merchant accepted the work.
+**Acknowledging an imported order.** The merchant confirms receipt and links the marketplace's order identifier to its own order number. That pair lets later shipment, cancellation, return and payout messages find the same purchase. ChannelEngine calls this the critical binding step in its documentation; bol auto-cancels unacknowledged (unconfirmed) orders on day three after the promised delivery date. Importing the data without confirming that link leaves the marketplace unable to tell whether the merchant accepted the work.
 
 **Repeated order notifications.** A retry or a periodic check can deliver an order the merchant has already imported. The receiver must recognize that purchase and reuse its record instead of creating another shipment. Amazon supports both queue notifications and polling, while connectors also retry. Enforcing uniqueness on the marketplace order id makes those repeated deliveries **idempotent**: they have the same effect as one ([[events-consistency-and-reconciliation]]).
 
-**Ship confirmation is a deadline, not a courtesy.** The late shipment rate is computed from the confirmation's timestamp, so the path WMS → order record → connector → marketplace must complete on the day of shipment. When Kestrel & Pine's WMS connector queue backed up for four hours on Black Friday 2026, every delayed confirmation was also a late shipment on a scorecard.
+**Ship confirmation is a deadline, not a courtesy.** The late shipment rate is computed from the confirmation's timestamp, so the path WMS → order record → connector → marketplace must complete on the day of shipment. When the queue to Kestrel & Pine's WMS backed up for four hours on the Oversell evening, every confirmation it delayed was also a late shipment on a scorecard.
 
 ### What the marketplace APIs actually impose
 
-The marketplaces' own documentation shows that an integration cannot be designed as a tight loop of calls.
-
-**Amazon's Selling Partner API** (SP-API), the only programmatic route since the older MWS (Marketplace Web Service) was retired on 1 April 2024, uses a token-bucket **rate limit** per operation: each call draws a token, tokens refill at a published rate, and a throttled request returns HTTP 429 and must be retried later. The Orders API's `getOrders` has a rate of 0.0167 requests a second, one call a minute, with a burst of 20 (SP-API documentation, accessed November 2026). Amazon's guidance is explicit: "Don't hardcode timers" and "Respond to events rather than polling on a loop, for example, update prices on price notifications".
+The marketplaces' own documentation shows that an integration cannot be designed as a tight loop of calls. **Amazon's Selling Partner API** (SP-API), the only programmatic route since the older MWS (Marketplace Web Service) was retired on 1 April 2024, uses a token-bucket **rate limit** per operation: each call draws a token, tokens refill at a published rate, and a throttled request returns HTTP 429 and must be retried later. The Orders API's `getOrders` has a rate of 0.0167 requests a second, one call a minute, with a burst of 20 (SP-API documentation, accessed November 2026). Amazon's guidance is explicit: "Don't hardcode timers" and "Respond to events rather than polling on a loop, for example, update prices on price notifications".
 
 Listings, prices and stock go up as **feeds**, asynchronous bulk uploads whose result you fetch later. Acceptance of the upload does not confirm that the listing changed. The connector must check the outcome so a rejected update does not leave the marketplace selling at an old price or from an old stock count.
 
-Customer names and addresses are **restricted data** that need a separate token. Keep only the personal data fulfillment needs in the order record: every extra copy adds another place to secure and another record to find when handling a customer request ([[privacy-and-customer-data]]).
+The APIs also restrict personal data. Customer names and addresses are **restricted data** that need a separate token. Keep only the personal data fulfillment needs in the order record: every extra copy adds another place to secure and another record to find when handling a customer request ([[privacy-and-customer-data]]).
 
 **bol's Retailer API** (as of November 2026) warns that "most calls are asynchronous; confirm the result afterwards", publishes its rate limits, and advises sending "only changes that need synchronizing" and "events as they happen instead of large batches". Its lifecycle policy: when a new major version is released, the previous one is deprecated and "scheduled for removal in 12 months". On 3 November 2026 bol's partner news announced that Offers API v10 stops on 1 February 2027.
 
-That last sentence is the Deprecated Endpoint in public form. **A deprecation schedule is a contract clause with a date**, and someone at the merchant must own the calendar even when the connector vendor does most of the work; [[api-contracts-and-versioning]] owns the general discipline.
+bol's dated retirement is the public form of what hit Kestrel & Pine in the Deprecated Endpoint, where the connector's own API version retired. **A deprecation schedule is a contract clause with a date**, and someone at the merchant must own the calendar even when the connector vendor does most of the work; [[api-contracts-and-versioning]] owns the general discipline.
 
 ## Channel Allocation: The Number You Send Is a Promise
 
@@ -151,7 +143,7 @@ The stock figure a connector sends to a marketplace is not a report. It is **the
 ![One stock jar guarded by an available-to-promise counter that hands each channel a ticket.](assets/images/20-marketplaces-and-channel-integration/20-one-jar-many-hands.jpeg)
 **Figure 4:** *The number you send is a promise: several channels draw on one stock, so one availability calculation decides how much each channel may still sell, instead of each channel reaching into the jar.*
 
-The last row is what [[inventory-and-availability]] builds and what Waypoint's W1 buys as a module of the OMS (order management system, the hub that holds every channel's orders). The principle behind it is simple: **compute available-to-promise once, from the system of record for physical stock, and publish it to every channel from that one computation.** A connector that holds its own stock copy and applies its own rules is a fourth system of record, which is what Kestrel & Pine has in January 2027: the connector keeps a copy of product data for listings and a copy of stock that is up to two hours old.
+The last row is what [[inventory-and-availability]] builds and what the availability service under Waypoint's W1 provides; Kestrel & Pine buys it as a module of the OMS (order management system, the hub that holds every channel's orders) that W2 introduces. The principle behind it is simple: **compute available-to-promise once, from the system of record for physical stock, and publish it to every channel from that one computation.** A connector that holds its own stock copy and applies its own rules is a fourth system of record beside the WMS, the ERP and the platform, which is what Kestrel & Pine had at the start of 2027: the connector keeps a copy of product data for listings and a copy of stock that is up to two hours old.
 
 Marketplace-fulfilled stock adds a second rule. Units in a marketplace's warehouse are **an external location** with its own feed (Amazon's `FBA_INVENTORY_AVAILABILITY_CHANGES` notification exists for exactly this), never a copy of your warehouse figure; the availability service tracks the location, and the marketplace promises from it.
 
@@ -159,23 +151,41 @@ Marketplace-fulfilled stock adds a second rule. Units in a marketplace's warehou
 
 Milan Petrov's first fix, set in December 2026, was a buffer. The connector now publishes the platform's figure **minus ten units per variant** to each marketplace, and zero below ten *(illustrative)*. With a two-hour sync lag, ten units is enough for most variants; for the Ridgewalker on a Black Friday evening it would have held for minutes. The buffer has a cost: across roughly 17,000 active variants, the last few units of each are never offered on marketplaces at all.
 
-The target, under W1, is this: the WMS is the system of record for stock at Duiven; the marketplace's fulfillment stock in Germany is a tracked external location; the availability service computes available-to-promise per channel from stock events and publishes changes to the connector as they happen; the connector forwards them to each marketplace within minutes, as bol's rate-limit guidance asks. The hourly chain is retired by Q4 2027, and the buffer shrinks to what the event latency justifies.
+The target, under W1, is this: the WMS is the system of record for stock at Duiven; the marketplace's fulfillment stock in Germany is a tracked external location; the availability service computes available-to-promise per channel from stock events and publishes changes to the connector as they happen; the connector forwards them to each marketplace within minutes, as bol's rate-limit guidance asks. The chain of scheduled copies is retired by Q4 2027, and the buffer shrinks to what the event latency justifies.
 
-A channel rule can then say, for example, "hold the last 20 units of each variant for the storefront, where the margin is highest" *(assumption)*: the connector sends the marketplaces zero while the storefront keeps selling. None of that is possible when the connector only knows "the platform said 410 an hour ago".
+A channel rule can then say, for example, "hold the last 20 units of each variant for the storefront, where the margin is highest" *(assumption)*: the connector sends the marketplaces zero while the storefront keeps selling. None of that is possible when the connector only knows a figure the platform sent up to two hours ago.
 
-### Prices across channels
+## Kestrel & Pine: The Marketplace Variant, 13 April 2027
 
-The same discipline applies to prices. **Price parity** clauses, which required a seller's marketplace price to be no higher than its price elsewhere, were dropped by Amazon in the EU in 2013 after the German competition authority's proceedings (Bundeskartellamt, 26 November 2013; an old source, but the origin of today's rules). Marketplaces still compare prices to decide visibility: Amazon's `PRICING_HEALTH` notification tells a seller that an offer is "ineligible for the Featured Offer (Buy Box) because its price is uncompetitive", and bol's pages say good performance "improves your chance of appearing in the buy box".
+The two Amazon.de orders from the introduction can now be worked through. Two Amazon.de customers order a Ridgewalker jacket on the day of Eva's order. Here is each order's path in April 2027, before W1 (stock ownership) and W2 (one order record) land, and what changes after.
+
+| Step | Seller-fulfilled order (shipped from Duiven) | Marketplace-fulfilled order (shipped by Amazon) |
+| --- | --- | --- |
+| Where the order appears | The connector pulls it from Amazon and creates a connector order; the iPaaS (integration platform as a service, which runs Kestrel & Pine's data flows) passes it to the WMS; it reaches the ERP only in the connector's weekly summary | The connector sees it in Amazon's reports; no warehouse work; it reaches the ERP only in the connector's weekly summary |
+| Stock effect | Duiven stock falls when the WMS picks; the change reaches the ERP, the platform and then the connector up to two hours later | The German external-location quantity falls by one; Kestrel & Pine learns it from the marketplace's inventory feed |
+| Shipment | Picked and packed 14 April, DHL label from the shipping service; tracking flows WMS → iPaaS → connector → Amazon the same day | Amazon ships and sends tracking to the customer; Kestrel & Pine is told after the fact |
+| Scorecard | Cancellation, late shipment, valid tracking and on-time delivery all apply | Only the order defect rate applies |
+| Return | Announced by Amazon, acknowledged by the connector, received at Duiven | Handled by Amazon from the external location |
+| After W1 and W2 | Created in the OMS by the connector with the Amazon order id and ship-by date; available-to-promise reduced by event; ship confirmation by event from the WMS | Created in the OMS as a marketplace-fulfilled order for finance and analytics; the external location adjusted by event; no fulfillment order |
+
+The second column is the one most merchants get wrong: because the marketplace does all the work, the order never enters the order record, and revenue, returns and the external location's stock are reconstructed from the marketplace's statements at month-end: Schrödinger's Order. Hanna Berg's three definitions of "order" (W7) are partly this.
+
+
+## Prices Across Channels
+
+Prices follow the same discipline as stock. **Price parity** clauses, which required a seller's marketplace price to be no higher than its price elsewhere, were dropped by Amazon in the EU in 2013 after the German competition authority's proceedings (Bundeskartellamt, 26 November 2013; an old source, but the origin of today's rules). Marketplaces still compare prices to decide visibility: Amazon's `PRICING_HEALTH` notification tells a seller that an offer is "ineligible for the Featured Offer (Buy Box) because its price is uncompetitive", and bol's pages say good performance "improves your chance of appearing in the buy box".
 
 **Repricing** is an automated rule that moves a listing's price within bounds in reaction to competitors; ChannelEngine sells it as "dynamic pricing, margin guardrails, and cost-based insights to adjust prices per channel" (n.d., accessed November 2026). The architectural rule: repricing acts on a **channel price** derived from the merchant's pricing source, never on the base price list, and it is bounded by a **floor** computed from cost and fees.
 
-For the Ridgewalker at €199 including 21% VAT, with an assumed 15% commission (the most common referral rate on Amazon's US pricing page; European rates differ) and €6 of shipping, about €128 remains against a landed cost of €58 *(assumptions)*, so the floor sits well above cost.
+The floor needs the fees, and fees differ by marketplace, category, price band and fulfillment model, and change on published dates. As of November 2026, Amazon's US schedule charges $39.99 a month for a professional account plus a referral fee of mostly 8–15% of the price (clothing 5% up to $15, 10% to $20, 17% above); bol charges no subscription but a fixed amount per item plus a percentage of the price including VAT, by category; Zalando publishes no figures. The lesson is not the numbers but their shape: **fees are dated reference data**, not constants. Margin per channel belongs in the analytics layer ([[commerce-data-and-analytics]]) with the fee schedule versioned by effective date, and the channel price floor is computed from it.
 
-A connector rule allowed below the floor can undercut the brand's own storefront, which is one way the Price Drift of October 2026 (€179 in Germany for nine days, and a parity warning from a marketplace) happens. [[pricing-architecture]] owns the channel price as a derived price with a source, an effective date and a floor.
+For example, the Ridgewalker at €199 including 21% VAT is €164.46 before VAT. An assumed 15% commission on the full price (€29.85; the most common referral rate on Amazon's US pricing page; European rates differ) and €6 of shipping leave about €128 against a landed cost of €58 *(assumptions)*: €70 of margin at full price. A repricing rule may give some of that away to win the buy box; the floor is the price below which what remains would no longer cover the cost and the margin the brand requires.
+
+A connector rule allowed below the floor can undercut the brand's own storefront, which is one way the Price Drift of October 2026 (€179 in Germany for nine days, and a warning from a marketplace that the price was higher there than elsewhere) happens. [[pricing-architecture]] owns the channel price as a derived price with a source, an effective date and a floor.
 
 ## The Choices
 
-A merchant has four realistic ways to connect to marketplaces, and the order-record decision cuts across all four.
+The choice of how to connect turns on what the connector must carry and must not keep. A merchant has four realistic ways to connect to marketplaces, and the order-record decision cuts across all four.
 
 **1. The marketplace's own seller tools.** Upload listings by spreadsheet, read orders in the seller portal, key them in, confirm shipments by hand. Right at a few orders a day on one marketplace; wrong when a second marketplace arrives or the late-shipment clock starts biting.
 
@@ -185,7 +195,7 @@ A merchant has four realistic ways to connect to marketplaces, and the order-rec
 
 **4. Direct integration.** Build against the marketplaces' APIs yourself. Right for Group-stage merchants with the volume to justify engineers on marketplace APIs, or where no connector expresses a rule the business needs. Below that, you inherit every deprecation, feed quirk and rate limit, per marketplace.
 
-Across all four runs the question **where the marketplace order lives**: either the connector (or app) creates the order in your order record and mirrors status back, or the order lives in the connector and your systems read it there. The first gives one order record with one state model; the second is cheaper at the Growing stage and produces the Three-Status Order the moment stores and EDI arrive. Kestrel & Pine's W2 chooses the first.
+Across all four runs the question **where the marketplace order lives**: either the connector (or app) creates the order in your order record and mirrors status back, or the order lives in the connector and your systems read it there. The first gives one order record with one state model; the second is cheaper at the Growing stage and produces the Three-Status Order the moment stores and EDI arrive. Kestrel & Pine's W2 chooses the first, with an order management system by Q4 2027.
 
 | | Marketplace tools by hand | Platform channel app | Channel integration platform | Direct integration |
 | --- | --- | --- | --- | --- |
@@ -207,11 +217,11 @@ My recommendation for a merchant at the Omnichannel stage is the third option wi
 | **3 — Omnichannel** | A channel integration platform over several marketplaces and countries; both fulfillment models; marketplace-held stock | Available-to-promise per channel from an availability service; marketplace orders created in the OMS; channel prices with floors; ship confirmation by event from the WMS; reconciliation of connector stock against the system of record | Oversells at peak; the connector holds the only copy of marketplace orders; nobody can say what a marketplace believes the stock is |
 | **4 — Group** | Many marketplaces per brand and country; direct integrations where volume justifies; a marketplace as logistics provider for the brand's own shop; perhaps operating a marketplace | A channel syndication service over the PIM (product information management system) with reduced, channel-specific views; fee schedules and performance data in the data platform; seller-identity obligations if operating a marketplace | Each brand runs its own connector with its own rules; margin per channel unknown; a marketplace program change forces a re-architecture |
 
-The judgement: the mechanism scales with the number of *order sources*, not with order volume. One marketplace feeding the platform's order list works at stage 2 at any volume the platform handles. The moment a store, a wholesale portal or a second marketplace also creates orders, the platform's order list is no longer the order record, and the marketplace integration must be re-pointed at whatever is. Kestrel & Pine crossed that line in 2023 and noticed in December 2026.
+The judgement: the mechanism scales with the number of *order sources*, not with order volume. One marketplace feeding the platform's order list works at stage 2 at any volume the platform handles. The moment a store, a wholesale portal or a second marketplace also creates orders, the platform's order list is no longer the order record, and the marketplace integration must be re-pointed at whatever is. Kestrel & Pine crossed that line in 2023, when it entered the Omnichannel stage, and noticed in December 2026.
 
 ## In Practice
 
-**Marketplaces retire interfaces on their own calendar.** Amazon's older MWS interface was no longer available from 1 April 2024, after a migration schedule that had already moved once (SP-API changelog, 2023–2024); bol's Offers API v10 stops on 1 February 2027. Programs retire too: Zalando announced in April 2026 that Connected Retail, under which "stationary retailers sold branch stock directly through the platform and shipped orders from their stores", ends by the end of June 2027 (TextilWirtschaft, 24 April 2026). A merchant whose store-stock exposure was built on Connected Retail's tool rebuilds it; one whose store stock is a location in its own availability service changes a connector ([[stores-and-omnichannel]]).
+Four current developments test these rules: retirements, marketplaces as logistics providers, social channels changing role, and operating a marketplace. **Marketplaces retire interfaces on their own calendar.** Amazon's older MWS interface was no longer available from 1 April 2024, after a migration schedule that had already moved once (SP-API changelog, 2023–2024), and bol's Offers API v10 stops on 1 February 2027, as described above. Programs retire too: Zalando announced in April 2026 that Connected Retail, under which "stationary retailers sold branch stock directly through the platform and shipped orders from their stores", ends by the end of June 2027 (TextilWirtschaft, 24 April 2026). A merchant whose store-stock exposure was built on Connected Retail's tool rebuilds it; one whose store stock is a location in its own availability service changes a connector ([[stores-and-omnichannel]]).
 
 **The marketplace is becoming infrastructure.** A marketplace can store a merchant's stock and fulfill purchases made through other channels, including the merchant's own shop. That makes its warehouse network part of the merchant's wider fulfillment architecture.
 
@@ -223,28 +233,15 @@ Meta moved Facebook and Instagram Shops from in-app checkout to website checkout
 
 TikTok Shop went the other way, opening in-app checkout in Germany, France and Italy on 31 March 2025 (widely reported) and in the Netherlands, Belgium, Austria and Poland from 15 June 2026 (TikTok newsroom, 28 May 2026).
 
-Supply the catalog from its system of record and route any incoming orders through the marketplace import, so those purchases join the same stock and fulfillment controls. **Retail media**, sponsored marketplace listings, adds a per-channel cost and a reporting stream; it does not create a separate order flow.
+Either way, the rule is the same: supply the catalog from its system of record and route any incoming orders through the marketplace import, so those purchases join the same stock and fulfillment controls. **Retail media**, sponsored marketplace listings, adds a per-channel cost and a reporting stream; it does not create a separate order flow.
 
 **Operating a marketplace is a different book.** Operating the marketplace means onboarding sellers, managing their offers, splitting orders and paying each seller. These responsibilities require records and controls beyond those a merchant needs to sell its own goods.
 
-Mirakl sells the operator side (seller onboarding, per-seller offers, order splitting, payouts) to over 450 companies (Mirakl and Wikipedia, accessed November 2026). The Digital Services Act adds the legal core: since 17 February 2024, Article 30 requires platforms that let consumers buy from traders to obtain and verify the trader's identity, payment account and register details before they can sell, and to suspend traders who do not supply them (Regulation (EU) 2022/2065); that is why every marketplace onboarding asks a merchant for identity documents and bank details. The operator's architecture is the subject of LISTED; start with [[marketplace-regulation]] and [[liquidity-and-network-effects]].
-
-### Kestrel & Pine: the marketplace variant, 13 April 2027
-
-Two Amazon.de customers order a Ridgewalker jacket on the day of Eva's order. Here is each order's path in April 2027, before W1 and W2 land, and what changes after.
-
-| Step | Seller-fulfilled order (shipped from Duiven) | Marketplace-fulfilled order (shipped by Amazon) |
-| --- | --- | --- |
-| Where the order appears | The connector pulls it from Amazon and creates a connector order; the iPaaS (integration platform as a service, which runs Kestrel & Pine's data flows) passes it to the WMS; it reaches the ERP only in the daily finance batch | The connector sees it in Amazon's reports; no warehouse work; it reaches the ERP only in the finance batch |
-| Stock effect | Duiven stock falls when the WMS picks; the ERP learns within 15 minutes, the platform within an hour, the connector within two | The German external-location quantity falls by one; Kestrel & Pine learns it from the marketplace's inventory feed |
-| Shipment | Picked and packed 14 April, DHL label from the shipping service; tracking flows WMS → iPaaS → connector → Amazon the same day | Amazon ships and sends tracking to the customer; Kestrel & Pine is told after the fact |
-| Scorecard | Cancellation, late shipment, valid tracking and on-time delivery all apply | Only the order defect rate applies |
-| Return | Announced by Amazon, acknowledged by the connector, received at Duiven | Handled by Amazon from the external location |
-| After W1 and W2 | Created in the OMS by the connector with the Amazon order id and ship-by date; available-to-promise reduced by event; ship confirmation by event from the WMS | Created in the OMS as a marketplace-fulfilled order for finance and analytics; the external location adjusted by event; no fulfillment order |
-
-The second column is the one most merchants get wrong: because the marketplace does all the work, the order never enters the order record, and revenue, returns and the external location's stock are reconstructed from the marketplace's statements at month-end. Hanna Berg's three definitions of "order" (W7) are partly this.
+Mirakl sells the operator side (seller onboarding, per-seller offers, order splitting, payouts) to over 450 companies (Mirakl and Wikipedia, accessed November 2026). The Digital Services Act adds the legal core: since 17 February 2024, Article 30 requires platforms that let consumers buy from traders to obtain and verify the trader's identity, payment account and register details before they can sell, and to suspend traders who do not supply them (Regulation (EU) 2022/2065); that is why every marketplace onboarding asks a merchant for identity documents and bank details. The operator's architecture is the subject of LISTED, the companion book on marketplace architecture; start with [[marketplace-regulation]] and [[liquidity-and-network-effects]].
 
 ## When It Goes Wrong
+
+Each failure below breaks one of the chapter's rules, and two controls are the cheapest. The **age monitor** is one: for each channel, the time since the marketplace last accepted a stock update. It would have caught the Deprecated Endpoint within the hour instead of after two days. **Early cancellation**, the other, runs against instinct: once an oversell is certain, canceling at once costs a cancellation-rate point, while waiting for the stock to "turn up" costs a late shipment and often a defect as well.
 
 | Failure | How it shows | Detection | Recovery |
 | --- | --- | --- | --- |
@@ -255,9 +252,10 @@ The second column is the one most merchants get wrong: because the marketplace d
 | **Return announced by the marketplace, unknown to the returns portal** | The unit arrives at Duiven with no record; the marketplace refunds while a second refund is prepared internally | Every marketplace return acknowledged into the order record with the marketplace return id | One refund path per channel; [[returns-and-exchanges]] |
 | **A retired API version** | Everything stops, quietly, on a published date | The deprecation calendar in the integration inventory with an owner per entry; the age monitor above | Upgrade; meanwhile a manual stock snapshot through the seller portal |
 
-The **age monitor** is the cheapest control in the chapter: for each channel, the time since the marketplace last accepted a stock update. It would have caught the Deprecated Endpoint within the hour instead of after two days. **Early cancellation** runs against instinct: once an oversell is certain, canceling at once costs a cancellation-rate point, while waiting for the stock to "turn up" costs a late shipment and often a defect as well.
 
 ## What to Take Away
+
+Noor's three questions have one answer: the connector translates and owns nothing, so every value it carries and every date it depends on has an owner at the merchant. Each marketplace is told a stock number computed once per channel from the warehouse's figure; each marketplace order, whoever ships it, is created once in the order record under the marketplace's id; and the merchant owns each retirement date and the age monitor. The Oversell, the two stale days at bol and the marketplace order that finance rebuilds at month-end were each a copy the connector was allowed to own. The reach a marketplace sells comes with a scorecard, and that scorecard is kept by the merchant's own flows.
 
 **Established.**
 
@@ -287,7 +285,7 @@ The **age monitor** is the cheapest control in the chapter: for each channel, th
 7. Is the price sent to each marketplace derived from the pricing source with a floor, and can a repricing rule go below it?
 8. If a marketplace closed our account tomorrow, what revenue and which stock would be stranded?
 
-Marketplaces are one kind of order that arrives from outside the shop. The next chapter turns to the other kind Kestrel & Pine lives on: the 1,100 wholesale accounts whose buyers are companies, with contract prices, payment terms and credit limits that no consumer checkout knows how to express. Continue with [[b2b-commerce]].
+Marketplaces are one kind of order that arrives from outside the shop: the buyer is a consumer and the marketplace sets the rules. The next chapter turns to the other kind Kestrel & Pine lives on: the 1,100 wholesale accounts whose buyers are companies, with contract prices, payment terms and credit limits that no consumer checkout knows how to express. Continue with [[b2b-commerce]].
 
 ## Sources and Evidence
 
