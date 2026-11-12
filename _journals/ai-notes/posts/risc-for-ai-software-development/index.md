@@ -21,25 +21,29 @@ Software engineering is learning the wrong lesson from AI if the only question i
 
 The harder question is: **How much of the generated system can we trust?**
 
-Trust does not come from confidence in the model's tone. It comes from inspectability, tests, observability, understandable abstractions, limited blast radius, and the ability of experienced engineers to reason about what the system is doing. As AI tools produce larger changes faster, trust becomes the adoption bottleneck. Teams will not let AI agents modify important systems freely if the resulting code is too large, too indirect, too dependent on unknown packages, or too hard to debug.
+Trust does not come from confidence in the model's tone. It comes from inspectability, tests, observability (runtime visibility through logs, metrics, and traces), understandable abstractions, limited blast radius (the scope of a failure), and the ability of experienced engineers to reason about what the system is doing. As AI tools produce larger changes faster, trust becomes the adoption bottleneck. Teams will not let AI agents modify important systems freely if the resulting code is too large, too indirect, too dependent on unknown packages, or too hard to debug.
 
-This is why the old RISC argument feels newly relevant. RISC stands for **Reduced Instruction Set Computer**: a family of computer-architecture ideas built around simpler, more regular instructions rather than ever more complex ones.
+Stable domain boundaries, API contracts, and data models let people reason locally and share ownership. That is the argument of [[breaking-vibe-monolith]]. Within those boundaries, the platform still has to make behavior visible enough for people and AI agents to inspect together.
+
+The need for an inspectable platform is why the old RISC argument feels newly relevant. RISC stands for **Reduced Instruction Set Computer**: a family of computer-architecture ideas built around simpler, more regular instructions rather than ever more complex ones.
 
 In their classic paper, David Patterson and David Ditzel argued that increasing architectural complexity was not automatically cost-effective. Computer architects had been adding more complex instructions, partly because earlier economics made that attractive. But the assumptions changed. Compilers often used only a small part of the available instruction set. Complex instructions were harder to implement, debug, and optimize. Simpler, more regular architectures could be faster, more feasible, and easier to support.
 
-The analogy is not perfect, but it is useful. In AI-assisted software development, the "instruction set" is no longer CPU opcodes. It is the platform surface we ask AI to use.
+The analogy is not perfect, but it is useful. In AI-assisted software development, the "instruction set" is no longer CPU opcodes — the hardware instructions a processor executes. It is the platform surface we ask AI to use.
 
-Frameworks. Libraries. SaaS APIs. Message brokers. Build tools. Generated clients. State-management patterns. Dependency-injection conventions. ORM behavior. Cloud services. Npm packages. CI plugins. Security middleware. Observability agents. Feature-flag systems. Testing frameworks. Deployment templates.
+Frameworks. Libraries. SaaS (software-as-a-service) APIs (application programming interfaces). Message brokers. Build tools. Generated clients. State-management patterns. Dependency-injection conventions. ORM (object-relational mapping) behavior. Cloud services. Npm packages. CI (continuous integration) plugins. Security middleware. Observability agents. Feature-flag systems. Testing frameworks. Deployment templates.
 
 This is the instruction set an AI coding agent has to understand. It is also the instruction set **you** have to understand when you review, operate, debug, and maintain what the agent produces.
 
 And unlike a classic CPU instruction set, this one is fluid. It changes as frameworks release new versions, dependencies shift, SaaS APIs evolve, platform teams add conventions, security tools introduce new rules, and AI-generated code changes the local codebase. The agent is not reasoning over a stable machine. Neither are you. You are both working against a moving platform surface.
 
-The more complex and fluid that instruction set becomes, the harder it is for humans to trust the generated result.
+The more complex and fluid that instruction set becomes, the harder it is for humans to trust the generated result. Reducing the surface can make the generated system easier to trust when it exposes behavior for human and agent review. Keep mature abstractions when their expertise and safeguards outweigh their complexity.
+
+With the trust problem and RISC analogy established, the next sections put them to work: first as questions a reviewer must answer, then as a test of which platform complexity earns its place. The instruction-set comparison and examples from Claude Code and Codex make that test concrete. Next come dependency risks, criteria for reusing or generating code, and the distinction between simple and primitive, tested through frontend and messaging examples. Those cases lead to the economics of abstraction and the evaluation needed to decide which complexity still belongs. I finish with a platform strategy, the human role in maintaining it, the risks of excessive reduction, and questions for reviewing your team's choices.
 
 ## The Trust Bottleneck
 
-AI can already generate a lot of software-shaped text. That does not mean teams can responsibly adopt all of it.
+Make that trust requirement concrete: before adopting a generated change, a reviewer must be able to explain what the team will own, beyond showing that it runs.
 
 An experienced engineer reviewing AI-generated code needs to answer several questions:
 
@@ -67,7 +71,7 @@ Every hidden behavior increases the trust cost.
 
 ## What RISC Contributes as an Analogy
 
-RISC did not mean "do less computing." It meant designing a smaller, more regular instruction set that could be implemented efficiently, understood clearly, and supported well by compilers.
+That trust cost is where the RISC analogy helps. RISC did not mean "do less computing." It meant designing a smaller, more regular instruction set that could be implemented efficiently, understood clearly, and supported well by compilers.
 
 The AI-era analogy is not "use primitive tools forever." It is:
 
@@ -81,7 +85,7 @@ In modern software, complexity often enters through good intentions:
 * A library handles edge cases.
 * A SaaS platform avoids building infrastructure.
 * A dependency provides a mature implementation.
-* An abstraction keeps code DRY.
+* An abstraction keeps code DRY — avoiding repeated code.
 * A plugin integrates with the ecosystem.
 
 All of that can be true. But AI changes the tradeoff.
@@ -98,7 +102,7 @@ The agent has to know which patterns are allowed, which are idiomatic, which ver
 
 That is a lot of instruction decoding.
 
-A reduced platform gives the agent fewer legal moves. That sounds limiting, but it can improve trust.
+A reduced platform gives the agent fewer legal moves. That sounds limiting, but it can improve trust. In the examples below, DOM is the browser's document object model. Outbox and inbox records track messages to send or already received; idempotency keys identify an operation so a repeat need not repeat its effect. Contract tests check whether an integration meets its agreed behavior.
 
 | Platform surface | Large instruction set | Reduced instruction set |
 | --- | --- | --- |
@@ -157,7 +161,7 @@ The same lesson applies beyond coding agents. If you want AI to help with archit
 
 ## Fewer Dependencies, Fewer Hidden Risks
 
-Dependencies are not bad. Good dependencies concentrate expertise. They encode hard-won knowledge. They handle security, accessibility, protocol details, browser quirks, cloud integration, performance, and compatibility. Avoiding all dependencies is a path to amateur infrastructure.
+An inspectable source file can still rely on behavior imported from elsewhere. Dependencies are not bad. Good dependencies concentrate expertise. They encode hard-won knowledge. They handle security, accessibility, protocol details, browser quirks, cloud integration, performance, and compatibility. Avoiding all dependencies is a path to amateur infrastructure.
 
 But dependencies also carry hidden risk:
 
@@ -211,7 +215,7 @@ Before accepting AI-generated custom code, ask:
 * Is the behavior small enough to understand in one sitting?
 * Are the edge cases known and testable?
 * Is failure local and recoverable?
-* Can we write property, regression, or golden tests?
+* Can we write property, regression, or golden tests — checks of general rules, previously working behavior, or known expected examples?
 * Is the code more understandable than the dependency it replaces?
 * Will future engineers know they own it?
 * Is there a clear reason not to use a mature library?
@@ -223,9 +227,7 @@ If the answer is no, reuse. If the answer is yes, generating the wheel may be re
 
 ## Simple Does Not Mean Primitive
 
-A reduced platform is not a primitive platform. RISC machines were not less serious computers. They moved complexity to places where it could be managed effectively: compilers, pipelines, registers, caches, and implementation discipline.
-
-The software analogy should be equally disciplined.
+A reduced platform is not a primitive platform. RISC machines were not less serious computers. They moved complexity to places where it could be managed effectively: compilers, pipelines, registers, caches, and implementation discipline. The software analogy should be equally disciplined.
 
 Simple foundations can still be powerful:
 
@@ -278,15 +280,11 @@ The right decision depends on context.
 
 The RISC-style question is: **What is the smallest platform that lets us build this reliably and review it confidently?**
 
-Not: "What is the smallest platform possible?"
-
-Not: "What is the trendiest stack?"
-
-Not: "What can AI generate most quickly?"
+Not: "What is the smallest platform possible?" Not: "What is the trendiest stack?" Not: "What can AI generate most quickly?"
 
 ## Example: Messaging Without a Giant Abstraction
 
-Messaging frameworks often grow because distributed systems are full of edge cases: retries, ordering, poison messages, idempotency, dead letters, schema evolution, observability, replay, backpressure, exactly-once illusions, and operational recovery.
+The same platform choice arises in messaging, where reliability depends on visible failure handling. Messaging frameworks often grow because distributed systems are full of edge cases: retries, ordering, poison messages, idempotency, dead letters, schema evolution, observability, replay, backpressure, exactly-once illusions, and operational recovery. Here, poison messages repeatedly fail processing, and dead letters hold messages that cannot be processed. Backpressure slows intake when processing falls behind. "Exactly-once illusions" means assuming an effect cannot repeat despite failures and retries.
 
 Those concerns are real. A mature framework may be worth it.
 
@@ -318,7 +316,7 @@ Again, the point is not to rebuild Kafka, SQS, RabbitMQ, or a workflow engine. T
 
 ## AI Changes the Economics of Abstraction
 
-Frameworks and reuse became dominant for good reasons. They save human time, encode expertise, standardize patterns, and reduce duplicated work.
+The frontend and messaging examples expose the same tradeoff. Frameworks and reuse became dominant for good reasons. They save human time, encode expertise, standardize patterns, and reduce duplicated work.
 
 But abstraction has always had costs:
 
@@ -328,10 +326,10 @@ But abstraction has always had costs:
 * dependency risk
 * mismatch with local needs
 * hidden performance behavior
-* loss of mechanical sympathy
+* loss of mechanical sympathy — understanding how code uses the underlying system
 * difficulty removing the abstraction later
 
-When human implementation is expensive, teams tolerate these costs because the alternative is writing too much code by hand. When AI lowers the cost of generating fit-for-purpose code, the balance changes.
+The two examples apply that cost comparison. In the frontend case, local code is useful when it removes more hidden behavior than it introduces. In messaging, the comparison must also account for the reliability guarantees a mature abstraction provides. Cheaper implementation changes those choices; it does not erase the work of understanding and owning the result.
 
 The new tradeoff is not "reuse versus build." It is:
 
@@ -349,7 +347,7 @@ AI does not make architecture irrelevant. It makes architectural judgment more i
 
 ## Reduced Platforms Need Stronger Evaluation
 
-A reduced platform is not a substitute for evaluation.
+That architectural judgment needs evidence. A reduced platform is not a substitute for evaluation.
 
 Smaller code can still be wrong. Custom code can still miss edge cases. AI can still hallucinate APIs, mishandle concurrency, forget security checks, or produce plausible tests that do not prove much.
 
@@ -357,7 +355,7 @@ The benefit of reduction is that evaluation becomes more tractable.
 
 If the generated system has fewer layers, fewer dependencies, and fewer hidden behaviors, reviewers can test more of the actual behavior directly. They can write golden tests. They can exercise state transitions. They can inspect logs. They can reason about failure paths. They can ask AI to explain the whole mechanism without traversing a deep dependency graph.
 
-For AI-assisted development, the evaluation suite should become part of the platform contract:
+For AI-assisted development, the evaluation suite should become part of the platform contract. The layers below include mutation or fault tests, which deliberately break behavior or inject failures to check whether the tests respond.
 
 | Evaluation layer | What it provides |
 | --- | --- |
@@ -376,7 +374,7 @@ All three are needed.
 
 ## Where Complexity Still Belongs
 
-Reduced platforms are dangerous when they become ideology.
+Evaluation can show that a smaller implementation drops safeguards the team needs. Reduced platforms are dangerous when they become ideology.
 
 Some complexity belongs in shared platforms. Some libraries should be reused precisely because they are complex and battle-tested. Some frameworks are the simplest reliable choice because the organization already knows them, has tooling around them, and has learned their failure modes.
 
@@ -404,11 +402,11 @@ The rule is not "less code." The rule is "less unearned complexity."
 
 ## A RISC-Like Platform Strategy for AI Teams
 
-If an engineering organization wants AI-assisted development to become trustworthy, it can deliberately design a reduced platform surface.
+Those reuse and reduction criteria can become shared rules. If an engineering organization wants AI-assisted development to become trustworthy, it can deliberately design a reduced platform surface.
 
 That might mean:
 
-1. **Define blessed primitives.** Name the small set of platform capabilities AI agents should prefer: HTTP handlers, SQL queries, queues, DOM updates, typed config, explicit state machines, test harnesses, logging, metrics.
+1. **Define blessed primitives.** These are the team's approved basic building blocks. Name the small set of platform capabilities AI agents should prefer: HTTP handlers, SQL queries, queues, DOM updates, typed config, explicit state machines, test harnesses, logging, metrics.
 2. **Keep source text-first where possible.** Prefer files, schemas, specs, tests, and configuration that can be searched, patched, diffed, and reviewed.
 3. **Publish small examples.** Give AI agents canonical examples that are short, current, and easy to imitate.
 4. **Limit dependency introduction.** Require explicit review for new packages, SaaS SDKs, framework plugins, or build tools.
@@ -426,7 +424,7 @@ That is a reduced instruction set for AI software development.
 
 ## The Human Role
 
-RISC did not remove compiler writers or computer architects. It changed where their judgment mattered.
+Those rules still need people to choose and maintain them. RISC did not remove compiler writers or computer architects. It changed where their judgment mattered.
 
 A reduced platform for AI does not remove software engineers. It changes what they should focus on.
 
@@ -448,7 +446,7 @@ That is leadership work. It requires the agency, judgment, and persuasion descri
 
 ## The Risks of RISC Thinking
 
-Every analogy becomes dangerous when it starts making decisions for you. RISC is no exception.
+That human judgment must also challenge the analogy itself. Every analogy becomes dangerous when it starts making decisions for you. RISC is no exception.
 
 A reduced platform can lower the trust burden, but it can also create new failure modes if teams treat "smaller" as automatically better. RISC was not a slogan for minimalism. It was a disciplined design response to a changing cost model. The same has to be true for AI-assisted software development.
 
@@ -476,28 +474,6 @@ Sometimes the answer will be no. In those cases, the mature framework, library, 
 
 This is why RISC thinking has to be paired with platform stewardship. A reduced instruction set should be deliberately designed, documented, tested, and revisited. It should not be improvised separately in every AI prompt.
 
-## Final Thought
-
-The RISC lesson is not that simple always beats complex. It is that complexity must be justified under current economics.
-
-In the AI era, the economics are changing. The cost of producing code is falling. The cost of trusting code is not falling at the same rate. That changes the value of frameworks, dependencies, and abstractions.
-
-The next generation of AI-assisted software development may not be won by teams with the largest instruction set. It may be won by teams that deliberately reduce the platform surface until humans and AI can reason about the system together.
-
-RISC-inspired platforms can make AI less risky when they make generated systems smaller, more regular, more inspectable, and easier to evaluate.
-
-Not primitive. Not anti-framework. Not nostalgic.
-
-Just simpler where simplicity increases trust.
-
-## To Probe Further
-
-* [The Case for the Reduced Instruction Set Computer](https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p25-patterson.pdf), by David A. Patterson and David R. Ditzel
-* [[leadership-ladder]]
-* [[spec-driven-authoring]]
-* [[fashion-driven-software-development]]
-* [[prepare-for-ai-future]]
-
 ## Questions to Consider
 
 Use these questions when deciding how much platform surface to expose to AI-assisted development.
@@ -509,3 +485,29 @@ Use these questions when deciding how much platform surface to expose to AI-assi
 * What platform primitives should AI agents prefer by default?
 * Which dependencies require human approval before an AI agent can introduce them?
 * What tests or observability would make AI-generated code trustworthy enough to merge?
+
+## Final Thought
+
+The RISC lesson is not that simple always beats complex. It is that complexity must be justified under current economics.
+
+In the AI era, the economics are changing. The cost of producing code is falling. The cost of trusting code is not falling at the same rate. That changes the value of frameworks, dependencies, and abstractions.
+
+Specifying behavior and exposing changes help only while people can still test, review, and maintain the growing system. Stable boundaries and an inspectable platform let people carry those responsibilities together, connecting generated structure to behavior users can rely on.
+
+The next generation of AI-assisted software development may not be won by teams with the largest instruction set. It may be won by teams that deliberately reduce the platform surface until humans and AI can reason about the system together.
+
+RISC-inspired platforms can make AI less risky when they make generated systems smaller, more regular, more inspectable, and easier to evaluate.
+
+Not primitive. Not anti-framework. Not nostalgic.
+
+Just simpler where simplicity increases trust. Choose the smallest reliable platform for the intended behavior, retain the abstractions that carry needed expertise, and verify what is generated. That is how cheaper generation can become work your team understands and maintains, rather than a growing review burden.
+
+These platform choices concern using AI to build software whose intended behavior the team can specify and check. When a generative model is part of the customer product, the behavior and product assumptions themselves can change between model releases. [[fashion-driven-software-development]] takes up that different problem: how to preserve customer value while reevaluating what the product should do.
+
+## To Probe Further
+
+* [The Case for the Reduced Instruction Set Computer](https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p25-patterson.pdf), by David A. Patterson and David R. Ditzel
+* [[leadership-ladder]]
+* [[spec-driven-authoring]]
+* [[fashion-driven-software-development]]
+* [[prepare-for-ai-future]]

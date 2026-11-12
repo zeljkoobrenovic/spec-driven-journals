@@ -1,0 +1,3185 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "fashion-driven-software-development",
+  "journal": "ai-notes",
+  "part": "ai-product-development",
+  "title": "Software Has Seasons Now: Fashion-Driven Development for Generative AI Products",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published index.md and accepted legacy spec.md (revised 2026-06-11), with the final ai-notes journal-spec.json as the outcome contract. Baseline parse: 124 argumentative units, a preserved three-bullet opening callout, tables and figures attached as evidence, and reference apparatus. The new spec retains all existing units, moves Questions to Consider before The Real Shift, and specifies an opening bridge/hook, complete roadmap, clarified existing synthesis/action, and final leadership hand-off before any prose revision. At reconstruction the baseline lacked these elements; the spec recorded them before prose changes rather than describing them as already present.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between using AI to develop software and building a product whose value depends on models.",
+        "Why model changes can require seasonal product reinterpretation and can regress local fit despite higher general capability."
+      ],
+      "believe": [
+        "Outcome-focused product management needs explicit model assumptions, repeated evaluation, and a stable customer promise.",
+        "Model novelty and benchmarks do not establish customer or business value."
+      ],
+      "can_do": [
+        "Frame a model-driven change as a testable bet with a value hypothesis, preserved promise, regression checks, and a ship, delay, retire, or revert decision."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader distinguishes AI-assisted delivery from model-powered products and explains what seasonal change adds to outcome-focused product management.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Why does a new model create a different problem for an AI-powered product than for a team using AI to write code?",
+        "expected": "The model changes the product's material, possible workflows, customer expectations, and failure modes; discovery and planning must revisit model assumptions and product fit while retaining the existing focus on outcomes."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader explains why a stronger model is not automatically an upgrade for a particular product.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A new model scores higher on general benchmarks. What could still make switching to it wrong for this product?",
+        "expected": "It may regress representative user jobs, expert control, tone or consistency, safety boundaries, latency, costs, or the product promise; customer behavior and fit cannot be inferred from benchmark rank."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader describes an evaluation-led seasonal decision that preserves the customer promise and separates exploration from commitment.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "How should a team decide what to preserve, rebuild, retire, or test after a model changes?",
+        "expected": "Scout the change, state a customer-value hypothesis and stable promise, compare old and new on representative scenarios and customer/business evidence, use stop conditions, and archive the decision; release selectively rather than chase every model."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should product teams plan when generative models are part of the product and keep changing?",
+    "claim": "Model-powered product teams should plan recurring, evaluation-led reinterpretations of workflows around changing models while preserving a stable customer promise, because a new model can enable previously infeasible workflows while breaking behavior that an existing customer job depends on.",
+    "disputed_by": "The view that model releases are chiefly component upgrades within a stable feature roadmap, so benchmark improvements justify adoption without reconsidering workflows and customer fit.",
+    "so_what": "Roadmaps, discovery, briefs, and release decisions need explicit model assumptions and customer evidence so that repeated rebuilds protect value rather than follow novelty.",
+    "how_why": "A model change can remove workflow constraints and introduce new failure modes at once; only comparison on real user jobs, controls, trust boundaries, cost, and business outcomes shows which changes deserve commitment.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A model used in the customer product changes product possibilities and assumptions in a way that a development assistant does not."
+      },
+      {
+        "id": "S2",
+        "claim": "Externally changing models can regress local fit, so seasonal planning extends outcome-focused management rather than assuming monotonic upgrades."
+      },
+      {
+        "id": "S3",
+        "claim": "Comparative evaluation and direct customer evidence determine whether a model-driven change creates product and business value."
+      },
+      {
+        "id": "S4",
+        "claim": "A stable customer promise and trust boundary let teams reinterpret model-dependent workflows without losing product identity."
+      },
+      {
+        "id": "S5",
+        "claim": "A repeatable scouting, specification, evaluation, and selective-release loop separates exploration from commitment and retains learning."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Extends the journal's outcome and evaluation discipline to products whose own behavior changes with the model material.",
+    "supports": [
+      "P1",
+      "P2"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "two-conversations through product-management establish the problem and vocabulary."
+      },
+      {
+        "pattern": "large_to_small",
+        "applies_to": "operating-model through stable-core move from the loop to the decisions and evidence that govern it."
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "team-work through questions translate the model into routines, rules, failure patterns, and a self-check."
+      }
+    ],
+    "rationale": "First distinguish the product problem from faster delivery, then explain the fashion analogy, external model change, short seasons, and the addition to modern product management. Only then introduce the operating loop and its fad-driven failure, followed by evaluation infrastructure, customer evidence, and stable commitments. Team routines, principles, anti-patterns, and self-questions apply those criteria before the final synthesis and leadership hand-off. Putting the loop before the model-material distinction would resemble generic speed advice; putting the practical rules before evaluation and the stable promise would leave their decision criteria unexplained. Moving the questions before the close lets the essay finish by joining stable purpose to evaluated change."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "When a new model arrives, does it merely help the team build, or does it change what the product should be?"
+    },
+    "bridge": {
+      "from_reader_world": "Engineering leaders know that faster code generation still requires inspectable platforms, tests, and review; [[risc-for-ai-software-development]] develops that point.",
+      "to_topic": "If the model itself supplies customer-facing capability, its release can change the product assumptions that implementation is supposed to serve. Introduce this contrast explicitly, then define both uses of AI within the essay."
+    },
+    "thesis_statement": {
+      "text": "Model-powered products may need frequent reinterpretation around new materials. The aim is to preserve the customer promise while evaluating which workflow changes create value, because a stronger model can also break existing jobs.",
+      "placement": "Original KEY POINTS bullets 1–3 and introduction p02–p03; p02 keeps the existing thesis-led opening and makes preservation/evaluation explicit."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Separate faster delivery from model-powered product change, then explain the fashion analogy and what changing material does to planning and modern product management.",
+          "kept_in": [
+            "two-conversations",
+            "fashion-metaphor",
+            "model-material",
+            "short-seasons",
+            "product-management"
+          ]
+        },
+        {
+          "promise": "Turn the diagnosis into a seasonal operating rhythm and distinguish it from fad chasing.",
+          "kept_in": [
+            "operating-model",
+            "fad-driven"
+          ]
+        },
+        {
+          "promise": "Use evaluation, customer evidence, and a stable product promise to decide which changes deserve commitment.",
+          "kept_in": [
+            "evaluation-fitting-room",
+            "evaluation-suite",
+            "customer-value",
+            "stable-core"
+          ]
+        },
+        {
+          "promise": "Translate those criteria into team routines, practical principles, anti-patterns, and questions to apply to the reader's own product.",
+          "kept_in": [
+            "team-work",
+            "practical-principles",
+            "anti-patterns",
+            "questions"
+          ]
+        }
+      ],
+      "placement": "New final introduction paragraph p10; announce the article's own route in reading order, with comparative tables, conditional examples, and practical guidance rather than a researched company case study."
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "form": "prose",
+        "controlling_idea": "Inspectable AI-assisted building does not settle what a model-powered customer product should become after its model changes.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Link [[risc-for-ai-software-development]] to its established question of inspectable building, then ask: When a new model arrives, does it merely help the team build, or does it change what the product should be?",
+            "shows": "The contrast carries engineering review forward while introducing changing customer-product assumptions."
+          },
+          {
+            "kind": "reasoning",
+            "what": "Preserve the original KEY POINTS callout verbatim, including exactly three bullets, its bold emphasis, and the following <br>.",
+            "shows": "The callout supplies the thesis, bounded fashion metaphor, and continuity with modern product management before the narrative opens."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Locates the product question after the software-engineering question without making the earlier article required reading."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The software part establishes inspectable platforms, intended behavior, and evaluation for AI-assisted building.",
+          "introduces": "When the model is in the customer product, the behavior and product assumptions themselves can change between model releases.",
+          "form": "paragraph",
+          "placement": "both"
+        }
+      },
+      {
+        "id": "p02",
+        "form": "prose",
+        "controlling_idea": "Model-powered products need recurring reinterpretation around new materials while protecting customer value through evaluation.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The published opening contrasts using AI as a development tool with depending on it for workflow, interface, quality, unit economics, promise, and positioning.",
+            "shows": "A change in product material calls for evaluation-led reinterpretation, not merely faster delivery.",
+            "source": "Published index.md, Introduction ¶1; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Inspectable AI-assisted building does not settle what a model-powered customer product should become after its model changes.",
+          "introduces": "Model-powered products need recurring reinterpretation around new materials while protecting customer value through evaluation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p03",
+        "form": "prose",
+        "controlling_idea": "General model improvement does not guarantee improvement for a specific product.",
+        "function": "counterargument",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Benchmarks can improve while workflow, tone, latency, safety, expert control, or unit economics worsen.",
+            "shows": "An overall capability score cannot decide local product fitness.",
+            "source": "Published index.md, Introduction ¶2; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Model-powered products need recurring reinterpretation around new materials while protecting customer value through evaluation.",
+          "introduces": "General model improvement does not guarantee improvement for a specific product.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p04",
+        "form": "prose",
+        "controlling_idea": "Samuel Beek's account of generative-model change at VEED inspired the fashion metaphor.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Preserve the published account of Samuel Beek, founder and CEO of Schematik and formerly CPO at VEED, speaking at an Engineering Excellence meetup in Amsterdam; his description of VEED prompted the fashion comparison.",
+            "shows": "The anecdote explains the origin of the metaphor; it is inspiration, not an independent proof or event transcript.",
+            "source": "Published index.md, Introduction ¶3; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "General model improvement does not guarantee improvement for a specific product.",
+          "introduces": "Samuel Beek's account of generative-model change at VEED inspired the fashion metaphor.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p05",
+        "form": "prose",
+        "controlling_idea": "The talk raises a distinction that applies beyond its originating company.",
+        "function": "transition",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Samuel Beek's account of generative-model change at VEED inspired the fashion metaphor.",
+          "introduces": "The talk raises a distinction that applies beyond its originating company.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p06",
+        "form": "prose",
+        "controlling_idea": "AI-assisted development changes how the team produces software.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The existing examples are code writing, pull-request review, tests, incident summaries, and documentation.",
+            "shows": "The model assists the production process in this category.",
+            "source": "Published index.md, Introduction ¶5; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The talk raises a distinction that applies beyond its originating company.",
+          "introduces": "AI-assisted development changes how the team produces software.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p07",
+        "form": "prose",
+        "controlling_idea": "AI-powered product development changes the capabilities from which customer value is made.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Customer value depends directly on the model capabilities.",
+            "shows": "Model change reaches the customer product itself in this category.",
+            "source": "Published index.md, Introduction ¶6; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "AI-assisted development changes how the team produces software.",
+          "introduces": "AI-powered product development changes the capabilities from which customer value is made.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p08",
+        "form": "prose",
+        "controlling_idea": "The two uses of AI require different operating models.",
+        "function": "claim",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "AI-powered product development changes the capabilities from which customer value is made.",
+          "introduces": "The two uses of AI require different operating models.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p09",
+        "form": "prose",
+        "controlling_idea": "The product-material question calls for a different planning discipline from faster software delivery.",
+        "function": "analysis",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The two uses of AI require different operating models.",
+          "introduces": "The product-material question calls for a different planning discipline from faster software delivery.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "Introduces the distinction and model-instability argument that the body develops."
+        }
+      },
+      {
+        "id": "p10",
+        "form": "prose",
+        "controlling_idea": "The article moves from the AI distinction and changing-material problem to a seasonal operating model, evaluated product value, stable commitments, and practical decisions.",
+        "function": "transition",
+        "evidence": [],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Makes the complete route through the argument explicit before the detailed sections."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The product-material question calls for a different planning discipline from faster software delivery.",
+          "introduces": "The article moves from the AI distinction and changing-material problem to a seasonal operating model, evaluated product value, stable commitments, and practical decisions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-conversations",
+      "heading": "Two Very Different AI Conversations",
+      "controlling_idea": "AI-assisted delivery and model-powered product development require different decisions.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "AI-assisted delivery and model-powered product development require different decisions."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The comparison establishes the two uses of AI before drawing out the product-shape question; reversing it would leave the planning distinction undefined."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The article moves from the AI distinction and changing-material problem to a seasonal operating model, evaluated product value, stable commitments, and practical decisions.",
+        "introduces": "AI-assisted delivery and model-powered product development require different decisions.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "The two uses of AI differ in their location, expected benefits, risks, and governing disciplines.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Question | AI-assisted development | AI-powered product development |\n| --- | --- | --- |\n| Where is AI used? | Inside the delivery process. | Inside the customer experience. |\n| What improves first? | Developer throughput, review speed, documentation, test scaffolding. | Product capability, creative range, personalization, automation, user outcomes. |\n| What changes when a new model appears? | The team may code, test, or analyze faster. | The product may need to be redesigned around new capabilities and new regressions. |\n| Primary risk | Low-quality generated work entering the codebase. | A product experience becoming obsolete, generic, unsafe, regressed, or misaligned with customer value. |\n| Core discipline | Engineering review, tests, architecture, security, developer workflow. | Product judgment, model evaluation, customer evidence, quality control, business-value validation. |",
+              "shows": "Location, benefits, change, risk, and core discipline make the two AI conversations operationally distinct.",
+              "source": "Published index.md, Two Very Different AI Conversations ¶1"
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "Faster delivery can conceal a product falling behind new model possibilities.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A team can ship more artifacts while new model possibilities make the existing product less appropriate.",
+              "shows": "Delivery throughput does not establish continued product relevance.",
+              "source": "Published index.md, Two Very Different AI Conversations ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two uses of AI differ in their location, expected benefits, risks, and governing disciplines.",
+            "introduces": "Faster delivery can conceal a product falling behind new model possibilities.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "A model-powered team must ask whether the existing product shape still serves its purpose after a model changes.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Faster delivery can conceal a product falling behind new model possibilities.",
+            "introduces": "A model-powered team must ask whether the existing product shape still serves its purpose after a model changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "Reconsidering product shape calls for the kind of judgment captured by the fashion analogy.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Preserve assets/images/fashion-driven-software-development/two-ai-conversations.jpeg and its original caption: Figure 1: AI-assisted development changes delivery speed; AI-powered products can change shape when the model material changes.",
+              "shows": "The diagram reinforces the difference between production speed and changed product behavior."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A model-powered team must ask whether the existing product shape still serves its purpose after a model changes.",
+            "introduces": "Reconsidering product shape calls for the kind of judgment captured by the fashion analogy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fashion-metaphor",
+      "heading": "Why Fashion Is Not a Superficial Metaphor",
+      "controlling_idea": "Fashion offers a discipline for changing material and uncertain demand while preserving identity.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Fashion offers a discipline for changing material and uncertain demand while preserving identity."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Reject the fad reading, explain the useful industry pattern, then transfer the material analogy to AI; the analogy needs these limits before its product implications."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "AI-assisted delivery and model-powered product development require different decisions.",
+        "introduces": "Fashion offers a discipline for changing material and uncertain demand while preserving identity.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "Fashion here means more than a shallow or irrational fad.",
+          "function": "definition",
+          "evidence": []
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "Fashion turns changing materials and demand into products with a recognizable identity.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Changing materials, culture, taste, production constraints, and demand must become a recognizable designed product.",
+              "shows": "The metaphor includes coherent identity and selection, not merely novelty.",
+              "source": "Published index.md, Why Fashion Is Not a Superficial Metaphor ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Fashion here means more than a shallow or irrational fad.",
+            "introduces": "Fashion turns changing materials and demand into products with a recognizable identity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "prose",
+          "controlling_idea": "Fashion cannot predict customer taste solely from technical and commercial analysis.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Materials, cost, past sales, and segments do not determine timing, social proof, identity, surprise, fatigue, or context.",
+              "shows": "Analysis narrows uncertainty without predicting taste mechanically.",
+              "source": "Published index.md, Why Fashion Is Not a Superficial Metaphor ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Fashion turns changing materials and demand into products with a recognizable identity.",
+            "introduces": "Fashion cannot predict customer taste solely from technical and commercial analysis.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "That combination of changing materials and limited predictability also describes AI product work.",
+          "function": "transition",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Fashion cannot predict customer taste solely from technical and commercial analysis.",
+            "introduces": "That combination of changing materials and limited predictability also describes AI product work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "Generative AI extends the design-material framing by making the material itself change between seasons.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Lars Holmquist's Intelligence on tap frames AI as a design material; the article extends that framing to changes in quality, cost, latency, modalities, controllability, and expectations.",
+              "shows": "Design literacy needs repeated judgment when the material itself changes.",
+              "source": "Published index.md, Why Fashion Is Not a Superficial Metaphor ¶5; existing claim preserved, not independently reverified in this pass."
+            },
+            {
+              "kind": "table",
+              "what": "| Fashion concept | AI product parallel |\n| --- | --- |\n| Fabric and materials | Foundation models, APIs, model costs, latency, context windows, modalities, tool use. |\n| Season | Model release cycles, platform shifts, user expectation changes, new creative patterns. |\n| Collection | A coherent product release built around what the new model makes possible. |\n| Silhouette | The dominant product shape: workflow, interface, interaction model, output form. |\n| Fit | Whether the product actually works for the user's job, context, and taste. |\n| Craft | Prompting, data flows, UX, editing controls, guardrails, retrieval, orchestration, evaluation. |\n| Brand identity | The durable promise customers trust, even as features and models change. |\n| Runway | Prototype, demo, launch video, internal model showcase. |\n| Retail performance | Adoption, retention, willingness to pay, expansion, production usage. |\n| Archive | What the team learns from past releases, failures, prompts, examples, and evaluations. |",
+              "shows": "Each fashion term has a specific product counterpart, with fit and durable promise constraining novelty.",
+              "source": "Published index.md, Why Fashion Is Not a Superficial Metaphor ¶5"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "That combination of changing materials and limited predictability also describes AI product work.",
+            "introduces": "Generative AI extends the design-material framing by making the material itself change between seasons.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "AI products move because their underlying model capabilities move.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Generative AI extends the design-material framing by making the material itself change between seasons.",
+            "introduces": "AI products move because their underlying model capabilities move.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "An AI product team must respond to changes in model capability and customer expectations.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The published comparison places fabric and manufacturing changes beside model quality, multimodality, reasoning, speed, cost, and expectations.",
+              "shows": "Both settings require responding to changed conditions rather than assuming stable inputs.",
+              "source": "Published index.md, Why Fashion Is Not a Superficial Metaphor ¶7; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "AI products move because their underlying model capabilities move.",
+            "introduces": "An AI product team must respond to changes in model capability and customer expectations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "The useful lesson from fashion is disciplined change.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Preserve assets/images/fashion-driven-software-development/model-as-changing-material.jpeg and its original caption: Figure 2: When the model is part of the product material, each major model release can force a reinterpretation of the product.",
+              "shows": "The material analogy explains repeated redesign without implying automatic adoption."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "An AI product team must respond to changes in model capability and customer expectations.",
+            "introduces": "The useful lesson from fashion is disciplined change.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "model-material",
+      "heading": "What Changes When the Model Is the Core Material",
+      "controlling_idea": "Externally changing model behavior can force product reinterpretation while introducing regressions.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "Externally changing model behavior can force product reinterpretation while introducing regressions."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Start from stable-material planning, show simultaneous model effects, then derive the product decisions and upgrade risk; recommendations would be unmotivated before the changes are concrete."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Fashion offers a discipline for changing material and uncertain demand while preserving identity.",
+        "introduces": "Externally changing model behavior can force product reinterpretation while introducing regressions.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "Traditional software planning often assumes that the team can control core product behavior while its tools evolve.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Languages, databases, cloud platforms, and UI frameworks evolve while teams usually control core product behavior.",
+              "shows": "The comparison is about control of behavior, not a claim that conventional software never changes.",
+              "source": "Published index.md, What Changes When the Model Is the Core Material ¶1; existing claim preserved, not independently reverified in this pass."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "Model-powered products expose core behavior to material changes originating outside the team.",
+          "function": "comparison",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Traditional software planning often assumes that the team can control core product behavior while its tools evolve.",
+            "introduces": "Model-powered products expose core behavior to material changes originating outside the team.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "list",
+          "controlling_idea": "A model release can simultaneously remove workflow constraints and create product regressions.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the ten existing possibilities, including five steps becoming one call, unnecessary prompt chains, changed interfaces, new outputs, obsolete workarounds, new failures, and a failing golden workflow.",
+              "shows": "The same release can remove constraints and break behavior; gloss a golden workflow as a representative job that must keep working.",
+              "source": "Published index.md, What Changes When the Model Is the Core Material ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Model-powered products expose core behavior to material changes originating outside the team.",
+            "introduces": "A model release can simultaneously remove workflow constraints and create product regressions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "Those simultaneous changes require product decisions about what to preserve, rebuild, retire, or explore.",
+          "function": "cause_effect",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A model release can simultaneously remove workflow constraints and create product regressions.",
+            "introduces": "Those simultaneous changes require product decisions about what to preserve, rebuild, retire, or explore.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "prose",
+          "controlling_idea": "A changed generation model can require a different video or image workflow.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Keep the conditional video/image examples: less need for an old editing flow, intent replacing manual layers, or new controls for less predictable output.",
+              "shows": "These are possible workflow consequences, not newly asserted company cases.",
+              "source": "Published index.md, What Changes When the Model Is the Core Material ¶5; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Those simultaneous changes require product decisions about what to preserve, rebuild, retire, or explore.",
+            "introduces": "A changed generation model can require a different video or image workflow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "prose",
+          "controlling_idea": "Model upgrades can invalidate assumptions already embedded in customer behavior and product safeguards.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Customers, prompts, and guardrails may depend on the previous model's quirks.",
+              "shows": "Removing a limitation may also remove behavior the product relied on.",
+              "source": "Published index.md, What Changes When the Model Is the Core Material ¶6; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A changed generation model can require a different video or image workflow.",
+            "introduces": "Model upgrades can invalidate assumptions already embedded in customer behavior and product safeguards.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "prose",
+          "controlling_idea": "Repeated reinterpretation gives product development a rhythm resembling collections.",
+          "function": "transition",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Model upgrades can invalidate assumptions already embedded in customer behavior and product safeguards.",
+            "introduces": "Repeated reinterpretation gives product development a rhythm resembling collections.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "short-seasons",
+      "heading": "Short Seasons and Unstable Materials",
+      "controlling_idea": "Short model cycles require a stable promise rather than certainty about implementation or customer response.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S4"
+        ],
+        "how": "Short model cycles require a stable promise rather than certainty about implementation or customer response."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Contrast long planning assumptions with short model cycles before separating stable and changeable layers; the planning question follows from that separation."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Externally changing model behavior can force product reinterpretation while introducing regressions.",
+        "introduces": "Short model cycles require a stable promise rather than certainty about implementation or customer response.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "form": "prose",
+          "controlling_idea": "Long planning horizons rely on the product's underlying material remaining stable enough for investment to pay back.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the three-year platform bet, twelve-month roadmap, and multi-quarter architecture-plan examples.",
+              "shows": "The investment logic assumes sufficient material stability over the payback horizon. Open with the planning consequence of the model instability already established, so the paragraph advances to investment horizons rather than reintroducing stable materials.",
+              "source": "Published index.md, Short Seasons and Unstable Materials ¶1; existing claim preserved, not independently reverified in this pass."
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "form": "prose",
+          "controlling_idea": "Model-powered products weaken that stability assumption.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Long planning horizons rely on the product's underlying material remaining stable enough for investment to pay back.",
+            "introduces": "Model-powered products weaken that stability assumption.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "form": "prose",
+          "controlling_idea": "Model capabilities and the expectations they enable can shift on shorter, uneven cycles.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the article's existing weeks-scale changes in capability, competitors, and user expectations.",
+              "shows": "A fixed annual plan can outlast some model assumptions.",
+              "source": "Published index.md, Short Seasons and Unstable Materials ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Model-powered products weaken that stability assumption.",
+            "introduces": "Model capabilities and the expectations they enable can shift on shorter, uneven cycles.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "form": "prose",
+          "controlling_idea": "Teams can respond to instability by separating a stable promise from changeable product choices.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The stable examples are promise, trust boundary, evaluation, identity, and architecture for swapping material; unstable examples include models, workflows, controls, and pricing assumptions.",
+              "shows": "Stability can reside in product commitments even when implementation changes.",
+              "source": "Published index.md, Short Seasons and Unstable Materials ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Model capabilities and the expectations they enable can shift on shorter, uneven cycles.",
+            "introduces": "Teams can respond to instability by separating a stable promise from changeable product choices.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "form": "prose",
+          "controlling_idea": "Capability becomes commercially relevant through customer fit and timing rather than technical improvement alone.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Teams can respond to instability by separating a stable promise from changeable product choices.",
+            "introduces": "Capability becomes commercially relevant through customer fit and timing rather than technical improvement alone.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "prose",
+          "controlling_idea": "Model-powered planning must allow for uncertainty in both capability and customer response.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Planning assumption | What changes in model-powered products |\n| --- | --- |\n| Capability improvements can be mapped directly to product value. | Better models create possibilities, but customer value depends on workflow fit, trust, control, timing, and willingness to change behavior. |\n| New model versions are straightforward upgrades. | They can improve general capability while regressing your golden scenarios, expert workflows, safety assumptions, latency, or cost profile. |\n| A product interface can stay stable while the underlying engine improves. | Sometimes the new model makes the old interface feel wrong, over-specified, or unnecessarily constrained. |\n| Benchmarks tell us which model should win. | Benchmarks help, but they do not predict taste, brand fit, expert workflows, or production adoption. |\n| Long-term roadmap certainty is a sign of maturity. | For model-powered products, maturity may mean short-cycle sensing, fast evaluation, and stable principles rather than fixed feature plans. |\n| Rebuilds are exceptional events. | Reinterpretation may become seasonal: expected, budgeted, evaluated, and archived. |",
+              "shows": "Familiar planning assumptions fail for different reasons, so better capability cannot yield a certain roadmap.",
+              "source": "Published index.md, Short Seasons and Unstable Materials ¶6"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Capability becomes commercially relevant through customer fit and timing rather than technical improvement alone.",
+            "introduces": "Model-powered planning must allow for uncertainty in both capability and customer response.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "prose",
+          "controlling_idea": "The planning task is to decide what must stay stable and what should be easy to reinterpret.",
+          "function": "transition",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Model-powered planning must allow for uncertainty in both capability and customer response.",
+            "introduces": "The planning task is to decide what must stay stable and what should be easy to reinterpret.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "product-management",
+      "heading": "What This Adds to Modern Product Management",
+      "controlling_idea": "Seasonal model work extends outcome-focused product management by making solution-material assumptions explicit.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5"
+        ],
+        "how": "Seasonal model work extends outcome-focused product management by making solution-material assumptions explicit."
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Establish existing outcome discipline before adding model instability, then derive the editor role and product brief; reversing this would imply that good product management is a feature factory."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Short model cycles require a stable promise rather than certainty about implementation or customer response.",
+        "introduces": "Seasonal model work extends outcome-focused product management by making solution-material assumptions explicit.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "form": "prose",
+          "controlling_idea": "Good product management already rejects feature-factory behavior.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p38",
+          "form": "prose",
+          "controlling_idea": "Outcome-focused product management measures customer and business value rather than feature output.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The build-trap critique rejects feature output as success and emphasizes customer problems, business outcomes, discovery, and tested assumptions.",
+              "shows": "The article extends established outcome thinking instead of attacking a caricature of product management.",
+              "source": "Published index.md, What This Adds to Modern Product Management ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Good product management already rejects feature-factory behavior.",
+            "introduces": "Outcome-focused product management measures customer and business value rather than feature output.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "form": "prose",
+          "controlling_idea": "Seasonal product work depends on that outcome discipline.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Outcome-focused product management measures customer and business value rather than feature output.",
+            "introduces": "Seasonal product work depends on that outcome discipline.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "form": "prose",
+          "controlling_idea": "Model-powered products add instability in the solution material to uncertainty about customer problems.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Both customer problems and the model material used to solve them can move.",
+              "shows": "Explicit model assumptions add a second source of uncertainty to product decisions.",
+              "source": "Published index.md, What This Adds to Modern Product Management ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Seasonal product work depends on that outcome discipline.",
+            "introduces": "Model-powered products add instability in the solution material to uncertainty about customer problems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "prose",
+          "controlling_idea": "Product managers must manage the fit between changing capability and a coherent product promise.",
+          "function": "cause_effect",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Model-powered products add instability in the solution material to uncertainty about customer problems.",
+            "introduces": "Product managers must manage the fit between changing capability and a coherent product promise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "form": "prose",
+          "controlling_idea": "Existing product-management practices need explicit model assumptions and repeated evaluation.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Modern product-management practice | Fashion-driven extension |\n| --- | --- |\n| Outcome orientation | Keep outcomes central, but make model assumptions explicit. A desired outcome may become easier, harder, cheaper, riskier, or obsolete when the model changes. |\n| Continuous discovery | Continue customer discovery, but add material discovery: model scouting, capability probes, cost/latency checks, failure-mode exploration, and competitor pattern watching. |\n| Product strategy | Preserve the product promise, but treat some workflows, interfaces, and value propositions as seasonal interpretations of that promise. |\n| Roadmapping | Use the roadmap as a portfolio of stable commitments, seasonal bets, learning goals, and assumptions that may expire when the model changes. |\n| Product briefs and specs | Describe value hypotheses, evaluation criteria, stop conditions, customer evidence, model assumptions, and what must be preserved, rebuilt, retired, or explored. |\n| Prioritization | Go beyond impact and effort. Ask what the new material makes obsolete, what creates customer value now, what should be delayed until the material stabilizes, and what must be tested before commitment. |\n| Launch and measurement | Treat launch as one fitting session in a longer seasonal cycle. Evaluate before, during, and after release: model quality, customer value, business value, trust, safety, and brand fit. |",
+              "shows": "The existing practices retain outcomes while adding explicit model-material assumptions and evaluation.",
+              "source": "Published index.md, What This Adds to Modern Product Management ¶6"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Product managers must manage the fit between changing capability and a coherent product promise.",
+            "introduces": "Existing product-management practices need explicit model assumptions and repeated evaluation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "prose",
+          "controlling_idea": "The product manager becomes an editor of both outcomes and changing material.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Existing product-management practices need explicit model assumptions and repeated evaluation.",
+            "introduces": "The product manager becomes an editor of both outcomes and changing material.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "form": "prose",
+          "controlling_idea": "Editing means selecting coherent capability changes rather than shipping every possibility.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing questions select among promise, confusing capability, obsolete workflow, expert control, weak commercial demos, and newly possible outcomes.",
+              "shows": "Editing is coherent selection against the product promise.",
+              "source": "Published index.md, What This Adds to Modern Product Management ¶8; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The product manager becomes an editor of both outcomes and changing material.",
+            "introduces": "Editing means selecting coherent capability changes rather than shipping every possibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p45",
+          "form": "list",
+          "controlling_idea": "A seasonal product brief makes a model-driven change a testable customer-value bet.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the eight brief elements: material change, customer behavior, obsolete assumption, preserved promise, evaluation set, stopping failures, business metric, and preserve/rebuild/retire/explore decision.",
+              "shows": "The brief makes the bet testable before implementation consumes effort.",
+              "source": "Published index.md, What This Adds to Modern Product Management ¶9; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Editing means selecting coherent capability changes rather than shipping every possibility.",
+            "introduces": "A seasonal product brief makes a model-driven change a testable customer-value bet.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p46",
+          "form": "prose",
+          "controlling_idea": "A spec connects outcome-focused management with disciplined rebuilding.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A seasonal product brief makes a model-driven change a testable customer-value bet.",
+            "introduces": "A spec connects outcome-focused management with disciplined rebuilding.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "operating-model",
+      "heading": "What Fashion-Driven Software Development Means",
+      "controlling_idea": "A repeated scouting, evaluation, and selective-release loop allows model reinterpretation without surrendering product identity.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "A repeated scouting, evaluation, and selective-release loop allows model reinterpretation without surrendering product identity."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Define the operating model and its limits before giving its concrete loop; the sequence would otherwise look like an instruction to chase releases."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Seasonal model work extends outcome-focused product management by making solution-material assumptions explicit.",
+        "introduces": "A repeated scouting, evaluation, and selective-release loop allows model reinterpretation without surrendering product identity.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p47",
+          "form": "prose",
+          "controlling_idea": "Fashion-driven development is an operating model for products built on fast-moving AI capability.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Carry the preceding product-management extensions and seasonal product brief into a repeatable operating rhythm, retaining the operating-model claim.",
+              "shows": "The section collects the proposed practices into action rather than restarting the definition after their detailed application."
+            }
+          ]
+        },
+        {
+          "id": "p48",
+          "form": "prose",
+          "controlling_idea": "The operating model does not require chasing every trend.",
+          "function": "refutation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Fashion-driven development is an operating model for products built on fast-moving AI capability.",
+            "introduces": "The operating model does not require chasing every trend.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p49",
+          "form": "prose",
+          "controlling_idea": "The operating model does not justify rebuilding out of boredom.",
+          "function": "refutation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The operating model does not require chasing every trend.",
+            "introduces": "The operating model does not justify rebuilding out of boredom.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p50",
+          "form": "prose",
+          "controlling_idea": "The operating model retains reliability, architecture, and customer trust.",
+          "function": "refutation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The operating model does not justify rebuilding out of boredom.",
+            "introduces": "The operating model retains reliability, architecture, and customer trust.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p51",
+          "form": "prose",
+          "controlling_idea": "Frequent reinterpretation must preserve a durable product identity.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Workflows, interfaces, evaluations, and value propositions may be redesigned around model changes while identity endures.",
+              "shows": "Reinterpretation has a stable purpose against which choices can be assessed.",
+              "source": "Published index.md, What Fashion-Driven Software Development Means ¶5; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The operating model retains reliability, architecture, and customer trust.",
+            "introduces": "Frequent reinterpretation must preserve a durable product identity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p52",
+          "form": "prose",
+          "controlling_idea": "Seasonal timing follows unstable material rather than a borrowed fashion calendar.",
+          "function": "explanation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Frequent reinterpretation must preserve a durable product identity.",
+            "introduces": "Seasonal timing follows unstable material rather than a borrowed fashion calendar.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "form": "list",
+          "controlling_idea": "The seasonal loop moves from scouting through customer evaluation to selective release and archived learning.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve all eight ordered steps: Scout the material; Read the culture; Design a collection; Prototype the silhouette; Fit on real users; Evaluate quality and value; Release selectively; Archive the learning.",
+              "shows": "Discovery is separated from commitment through customer fit and evaluation.",
+              "source": "Published index.md, What Fashion-Driven Software Development Means ¶7; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Seasonal timing follows unstable material rather than a borrowed fashion calendar.",
+            "introduces": "The seasonal loop moves from scouting through customer evaluation to selective release and archived learning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p54",
+          "form": "prose",
+          "controlling_idea": "The loop turns unstable capability into a repeatable discipline for product reinterpretation.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Preserve assets/images/fashion-driven-software-development/fashion-driven-operating-loop.jpeg and its original caption: Figure 3: Fashion-driven software development is a repeatable loop for reinterpreting product value around changing model materials.",
+              "shows": "The picture makes evaluation and archived learning part of a repeated operating process."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The seasonal loop moves from scouting through customer evaluation to selective release and archived learning.",
+            "introduces": "The loop turns unstable capability into a repeatable discipline for product reinterpretation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "fad-driven",
+      "heading": "The Dangerous Version: Fad-Driven Development",
+      "controlling_idea": "Novelty becomes useful product change only when judgment imposes customer and identity constraints.",
+      "function": "refutation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Novelty becomes useful product change only when judgment imposes customer and identity constraints."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Show the mistaken model, explain the constraint-based alternative, then compare their decisions; the labels alone would not let the reader distinguish them."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "A repeated scouting, evaluation, and selective-release loop allows model reinterpretation without surrendering product identity.",
+        "introduces": "Novelty becomes useful product change only when judgment imposes customer and identity constraints.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "form": "prose",
+          "controlling_idea": "Confusing seasonal change with novelty produces an unhealthy operating model.",
+          "function": "counterargument",
+          "evidence": []
+        },
+        {
+          "id": "p56",
+          "form": "list",
+          "controlling_idea": "Novelty-driven teams commit to new models before establishing fit.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Keep the five quoted fad-driven rationalizations about immediate adoption, competitors, impressive demos, assumed user understanding, and evaluation after launch.",
+              "shows": "The failure is committing before evidence establishes fit.",
+              "source": "Published index.md, The Dangerous Version: Fad-Driven Development ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Confusing seasonal change with novelty produces an unhealthy operating model.",
+            "introduces": "Novelty-driven teams commit to new models before establishing fit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "form": "prose",
+          "controlling_idea": "Those commitments amount to hype chasing.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Novelty-driven teams commit to new models before establishing fit.",
+            "introduces": "Those commitments amount to hype chasing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p58",
+          "form": "prose",
+          "controlling_idea": "Disciplined fashion selects within customer, identity, and production constraints.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A fashion house edits within customer, brand, fit, and production constraints.",
+              "shows": "Coherence requires rejecting some attractive possibilities.",
+              "source": "Published index.md, The Dangerous Version: Fad-Driven Development ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Those commitments amount to hype chasing.",
+            "introduces": "Disciplined fashion selects within customer, identity, and production constraints.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p59",
+          "form": "prose",
+          "controlling_idea": "AI teams can distinguish seasonal product judgment from fad chasing through the decisions they make.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Fad-driven AI product work | Fashion-driven AI product work |\n| --- | --- |\n| Integrates every new model because it is new. | Studies whether the model changes the product's material possibilities. |\n| Ships demos as product. | Uses demos to discover possible new silhouettes, then tests fit. |\n| Optimizes for announcement value. | Optimizes for customer value and business value. |\n| Rebuilds without preserving product identity. | Changes the garment while preserving the promise customers trust. |\n| Treats evaluation as cleanup. | Treats evaluation as design infrastructure. |\n| Measures \"AI usage\". | Measures whether users achieve better outcomes. |",
+              "shows": "The contrast turns novelty versus judgment into decisions teams can recognize in their own work.",
+              "source": "Published index.md, The Dangerous Version: Fad-Driven Development ¶5"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Disciplined fashion selects within customer, identity, and production constraints.",
+            "introduces": "AI teams can distinguish seasonal product judgment from fad chasing through the decisions they make.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p60",
+          "form": "prose",
+          "controlling_idea": "Judgment separates the two operating models.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "AI teams can distinguish seasonal product judgment from fad chasing through the decisions they make.",
+            "introduces": "Judgment separates the two operating models.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation-fitting-room",
+      "heading": "Evaluation Is the Fitting Room",
+      "controlling_idea": "Evaluation must establish contextual customer and business value as well as correct model behavior.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Evaluation must establish contextual customer and business value as well as correct model behavior."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Expand the testing question before explaining why evaluation gains importance and naming its layers; a layer inventory without the product question would read as technical cleanup."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Novelty becomes useful product change only when judgment imposes customer and identity constraints.",
+        "introduces": "Evaluation must establish contextual customer and business value as well as correct model behavior.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p61",
+          "form": "prose",
+          "controlling_idea": "Traditional tests often check whether the system satisfies its specification.",
+          "function": "context",
+          "evidence": []
+        },
+        {
+          "id": "p62",
+          "form": "list",
+          "controlling_idea": "AI product evaluation must also establish contextual quality, regressions, trust, and value.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the eleven evaluation questions, including old workflow breakage, control, consistency, safety, promise, and business value.",
+              "shows": "Passing a functional check alone does not establish the worth of a rebuilt experience.",
+              "source": "Published index.md, Evaluation Is the Fitting Room ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Traditional tests often check whether the system satisfies its specification.",
+            "introduces": "AI product evaluation must also establish contextual quality, regressions, trust, and value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "form": "prose",
+          "controlling_idea": "Faster rebuilding makes deciding whether the new experience deserves to exist more important.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Cheaper implementation and faster model change increase the number of possible rebuilds.",
+              "shows": "Evaluation must decide which possibilities deserve to become product behavior.",
+              "source": "Published index.md, Evaluation Is the Fitting Room ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "AI product evaluation must also establish contextual quality, regressions, trust, and value.",
+            "introduces": "Faster rebuilding makes deciding whether the new experience deserves to exist more important.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "form": "prose",
+          "controlling_idea": "Fashion's fitting and commercial feedback illustrate why an impressive demonstration is insufficient.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Fitting room, quality control, buyer feedback, sales, returns, and brand review all test the garment beyond its runway appearance.",
+              "shows": "The metaphor makes visible the independent kinds of product evidence required.",
+              "source": "Published index.md, Evaluation Is the Fitting Room ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Faster rebuilding makes deciding whether the new experience deserves to exist more important.",
+            "introduces": "Fashion's fitting and commercial feedback illustrate why an impressive demonstration is insufficient.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "form": "prose",
+          "controlling_idea": "AI products need complementary technical, customer, commercial, and trust evaluations.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Evaluation layer | What it checks |\n| --- | --- |\n| Technical correctness | Does the workflow run, return outputs, preserve data, handle errors, and meet latency/cost constraints? |\n| Model quality | Are generated outputs accurate, coherent, useful, controllable, and consistent enough? |\n| Regression | Did the new model break important old use cases? |\n| Comparative quality | Is the new model or workflow materially better than the current one? |\n| Customer value | Does it help users complete a real job faster, better, cheaper, or with more creative range? |\n| Business value | Does it improve conversion, retention, expansion, margin, differentiation, or strategic positioning? |\n| Trust and safety | Does it create unacceptable risk, ambiguity, surprise, or misuse? |\n| Brand fit | Does the experience still feel like the product customers chose? |",
+              "shows": "Technical correctness, model quality, regression, comparison, value, trust, and identity are distinct tests of the same proposed rebuild.",
+              "source": "Published index.md, Evaluation Is the Fitting Room ¶5"
+            },
+            {
+              "kind": "figure",
+              "what": "Preserve assets/images/fashion-driven-software-development/evaluation-fitting-room.jpeg and its original caption: Figure 4: Evaluation is the fitting room where model novelty is tested against customer value, business value, trust, and brand fit.",
+              "shows": "The checkpoints distinguish an impressive demo from a customer-ready experience."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Fashion's fitting and commercial feedback illustrate why an impressive demonstration is insufficient.",
+            "introduces": "AI products need complementary technical, customer, commercial, and trust evaluations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p66",
+          "form": "prose",
+          "controlling_idea": "A rebuild should have explicit conditions under which it is worth making.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "AI products need complementary technical, customer, commercial, and trust evaluations.",
+            "introduces": "A rebuild should have explicit conditions under which it is worth making.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation-suite",
+      "heading": "The Evaluation Suite Becomes a Strategic Asset",
+      "controlling_idea": "A shared evaluation suite preserves the evidence needed to govern repeated model changes.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "A shared evaluation suite preserves the evidence needed to govern repeated model changes."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Move from evaluation as infrastructure to ownership, artifacts, and the spec that fixes a decision; the artifact list needs the shared product purpose first."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Evaluation must establish contextual customer and business value as well as correct model behavior.",
+        "introduces": "A shared evaluation suite preserves the evidence needed to govern repeated model changes.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p67",
+          "form": "prose",
+          "controlling_idea": "Evaluation suites become enduring product infrastructure when the implementation changes repeatedly.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p68",
+          "form": "prose",
+          "controlling_idea": "The evidence needed for evaluation requires ownership beyond engineering alone.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Product, design, engineering, data, support, and sometimes legal or trust teams contribute metrics, review, customer evidence, and business signals.",
+              "shows": "No single discipline holds all the evidence needed for a release decision.",
+              "source": "Published index.md, The Evaluation Suite Becomes a Strategic Asset ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Evaluation suites become enduring product infrastructure when the implementation changes repeatedly.",
+            "introduces": "The evidence needed for evaluation requires ownership beyond engineering alone.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "form": "list",
+          "controlling_idea": "An evaluation suite preserves representative jobs, known failures, comparisons, and decision evidence.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all nine evaluation artifacts and their definitions, especially golden scenarios as representative user jobs and comparisons between old and new models/workflows.",
+              "shows": "The suite protects existing jobs while evaluating the value and risks of change.",
+              "source": "Published index.md, The Evaluation Suite Becomes a Strategic Asset ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The evidence needed for evaluation requires ownership beyond engineering alone.",
+            "introduces": "An evaluation suite preserves representative jobs, known failures, comparisons, and decision evidence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "form": "prose",
+          "controlling_idea": "A spec states the value and stop conditions before a rebuild begins.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The spec fixes intent, expected customer value, non-goals, evaluation criteria, and stop conditions before rebuilding.",
+              "shows": "A rebuild can be evaluated against a stated bet rather than retrospective enthusiasm.",
+              "source": "Published index.md, The Evaluation Suite Becomes a Strategic Asset ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "An evaluation suite preserves representative jobs, known failures, comparisons, and decision evidence.",
+            "introduces": "A spec states the value and stop conditions before a rebuild begins.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "form": "prose",
+          "controlling_idea": "Evaluation distinguishes disciplined reinterpretation from mood-driven development.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A spec states the value and stop conditions before a rebuild begins.",
+            "introduces": "Evaluation distinguishes disciplined reinterpretation from mood-driven development.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-value",
+      "heading": "Customer Value Beats Model Novelty",
+      "controlling_idea": "Customer observation determines whether apparent model gains improve this product.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Customer observation determines whether apparent model gains improve this product."
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Question the unqualified word better, show concrete regressions, replace model questions with product questions, then prescribe observation; the corrective action needs the demonstrated gap."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "A shared evaluation suite preserves the evidence needed to govern repeated model changes.",
+        "introduces": "Customer observation determines whether apparent model gains improve this product.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p72",
+          "form": "prose",
+          "controlling_idea": "Calling a model better is an incomplete product judgment.",
+          "function": "counterargument",
+          "evidence": []
+        },
+        {
+          "id": "p73",
+          "form": "prose",
+          "controlling_idea": "Product judgment must identify whose experience should improve.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Calling a model better is an incomplete product judgment.",
+            "introduces": "Product judgment must identify whose experience should improve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "form": "prose",
+          "controlling_idea": "Product judgment must identify the task that should improve.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Product judgment must identify whose experience should improve.",
+            "introduces": "Product judgment must identify the task that should improve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "form": "prose",
+          "controlling_idea": "An improvement must be large enough to justify changing the product.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Product judgment must identify the task that should improve.",
+            "introduces": "An improvement must be large enough to justify changing the product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "form": "prose",
+          "controlling_idea": "Product judgment must include cost, latency, safety, and control.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "An improvement must be large enough to justify changing the product.",
+            "introduces": "Product judgment must include cost, latency, safety, and control.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "form": "prose",
+          "controlling_idea": "The improvement must matter enough for customers to notice and pay for it.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Product judgment must include cost, latency, safety, and control.",
+            "introduces": "The improvement must matter enough for customers to notice and pay for it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p78",
+          "form": "prose",
+          "controlling_idea": "General capability gains can conceal local losses in control, consistency, speed, or learned workflows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Retain the four contrasts: quality/control, creativity/consistency, capability/speed, and new-user magic/expert muscle memory.",
+              "shows": "A general gain can be a local regression for the product's customers.",
+              "source": "Published index.md, Customer Value Beats Model Novelty ¶7; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The improvement must matter enough for customers to notice and pay for it.",
+            "introduces": "General capability gains can conceal local losses in control, consistency, speed, or learned workflows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p79",
+          "form": "prose",
+          "controlling_idea": "An excellent model can be unsuitable for a particular product just as a fabric can be wrong for a garment.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Beautiful fabric can be wrong for the garment.",
+              "shows": "Material quality and suitability for the intended product are different judgments.",
+              "source": "Published index.md, Customer Value Beats Model Novelty ¶8; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "General capability gains can conceal local losses in control, consistency, speed, or learned workflows.",
+            "introduces": "An excellent model can be unsuitable for a particular product just as a fabric can be wrong for a garment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p80",
+          "form": "prose",
+          "controlling_idea": "Product-value questions test whether model gains improve a customer's actual work.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Model question | Product-value question |\n| --- | --- |\n| Is the model more capable? | Does it improve the user's job to be done? |\n| Is the output more impressive? | Does the user trust, control, and use it? |\n| Is the demo better? | Does production usage improve? |\n| Can we remove steps? | Did we remove useful control or only friction? |\n| Can we generate more? | Did we help the user decide, edit, publish, or sell better? |\n| Is the model cheaper? | Does the unit economics improvement create a better product or only better margin? |",
+              "shows": "Replacing capability questions with job, control, usage, choice, and economic questions changes the decision criterion to product value.",
+              "source": "Published index.md, Customer Value Beats Model Novelty ¶9"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "An excellent model can be unsuitable for a particular product just as a fabric can be wrong for a garment.",
+            "introduces": "Product-value questions test whether model gains improve a customer's actual work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p81",
+          "form": "prose",
+          "controlling_idea": "Fast model progress makes direct customer evidence necessary to correct internal fascination with capability.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Teams can admire model capabilities while losing contact with what customers need.",
+              "shows": "Rapid capability change increases the value of direct customer evidence.",
+              "source": "Published index.md, Customer Value Beats Model Novelty ¶10; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Product-value questions test whether model gains improve a customer's actual work.",
+            "introduces": "Fast model progress makes direct customer evidence necessary to correct internal fascination with capability.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p82",
+          "form": "prose",
+          "controlling_idea": "Observing customers complements analytics by exposing what users actually keep, reject, and use.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Observe what heavy users kept, edited, rejected, exported, paid for, shared, or abandoned; retain analytics as a complement.",
+              "shows": "Actual behavior tests internal assumptions about value and control.",
+              "source": "Published index.md, Customer Value Beats Model Novelty ¶11; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Fast model progress makes direct customer evidence necessary to correct internal fascination with capability.",
+            "introduces": "Observing customers complements analytics by exposing what users actually keep, reject, and use.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "stable-core",
+      "heading": "What Should Stay Stable",
+      "controlling_idea": "A stable customer promise lets a team reinterpret model-dependent workflows without losing product identity.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "A stable customer promise lets a team reinterpret model-dependent workflows without losing product identity."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Use the continuity analogy to identify invariants before explaining how leaders preserve them; the prescription depends on knowing what continuity means."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Customer observation determines whether apparent model gains improve this product.",
+        "introduces": "A stable customer promise lets a team reinterpret model-dependent workflows without losing product identity.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p83",
+          "form": "prose",
+          "controlling_idea": "Seasonal change does not require every part of a product to change.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p84",
+          "form": "prose",
+          "controlling_idea": "Recognizable continuity explains why customers trust products across changing collections.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Customers can value trust, aspiration, fit, taste, status, utility, and meaning despite changing collections.",
+              "shows": "Continuity is part of the value customers buy.",
+              "source": "Published index.md, What Should Stay Stable ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Seasonal change does not require every part of a product to change.",
+            "introduces": "Recognizable continuity explains why customers trust products across changing collections.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p85",
+          "form": "prose",
+          "controlling_idea": "AI products likewise need a stable core.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Recognizable continuity explains why customers trust products across changing collections.",
+            "introduces": "AI products likewise need a stable core.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p86",
+          "form": "list",
+          "controlling_idea": "The stable core includes the customer's job, product promise, quality, trust, commitments, economics, and retained learning.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve all nine stable-core commitments, from customer job and promise through privacy, safety, economics, and learning archive.",
+              "shows": "These invariants give model-driven change boundaries.",
+              "source": "Published index.md, What Should Stay Stable ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "AI products likewise need a stable core.",
+            "introduces": "The stable core includes the customer's job, product promise, quality, trust, commitments, economics, and retained learning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p87",
+          "form": "prose",
+          "controlling_idea": "A stable core makes rapid reinterpretation possible without losing product identity.",
+          "function": "cause_effect",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The stable core includes the customer's job, product promise, quality, trust, commitments, economics, and retained learning.",
+            "introduces": "A stable core makes rapid reinterpretation possible without losing product identity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p88",
+          "form": "prose",
+          "controlling_idea": "Agency, judgment, and persuasion help leaders explore change while preserving the product's purpose.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Keep [[prepare-for-ai-future]] and the existing explanation: agency explores, judgment selects, and persuasion aligns teams around valuable rebuilding.",
+              "shows": "The forward link is optional further reading; the paragraph itself explains how the capabilities apply.",
+              "source": "Published index.md, What Should Stay Stable ¶6; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A stable core makes rapid reinterpretation possible without losing product identity.",
+            "introduces": "Agency, judgment, and persuasion help leaders explore change while preserving the product's purpose.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "team-work",
+      "heading": "How Teams Should Work",
+      "controlling_idea": "Team routines must connect model scouting to evaluated, coherent product changes and retained learning.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Team routines must connect model scouting to evaluated, coherent product changes and retained learning."
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Follow the work from sensing to planning, specification, coordinated rebuilding, evaluation, and archived learning, then explain the judgment used throughout; reshuffling would obscure where evidence enters decisions."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "A stable customer promise lets a team reinterpret model-dependent workflows without losing product identity.",
+        "introduces": "Team routines must connect model scouting to evaluated, coherent product changes and retained learning.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p89",
+          "form": "prose",
+          "controlling_idea": "A seasonal operating model needs corresponding team routines.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p90",
+          "form": "prose",
+          "controlling_idea": "A capability radar supplies evidence about changing model material and customer behavior.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Model releases, competitor patterns, cost, tool ecosystems, user behavior, and creative workflows form the capability radar.",
+              "shows": "Scouting supplies the material evidence for later planning.",
+              "source": "Published index.md, How Teams Should Work ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A seasonal operating model needs corresponding team routines.",
+            "introduces": "A capability radar supplies evidence about changing model material and customer behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p91",
+          "form": "prose",
+          "controlling_idea": "Seasonal planning distinguishes enduring commitments from bets and expiring assumptions.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Roadmaps distinguish stable promises, exploration, expiring assumptions, and workflows due for reinterpretation.",
+              "shows": "Planning can preserve commitments without pretending all implementation assumptions endure.",
+              "source": "Published index.md, How Teams Should Work ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "A capability radar supplies evidence about changing model material and customer behavior.",
+            "introduces": "Seasonal planning distinguishes enduring commitments from bets and expiring assumptions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p92",
+          "form": "prose",
+          "controlling_idea": "Explicit specs make each rebuild's material assumption, value hypothesis, and evaluation inspectable.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The spec names material change, value hypothesis, customer evidence, evaluation plan, and stop condition.",
+              "shows": "Outcome-focused rebuilding becomes reviewable before work begins.",
+              "source": "Published index.md, How Teams Should Work ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Seasonal planning distinguishes enduring commitments from bets and expiring assumptions.",
+            "introduces": "Explicit specs make each rebuild's material assumption, value hypothesis, and evaluation inspectable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p93",
+          "form": "prose",
+          "controlling_idea": "Collection thinking coordinates related changes into a coherent customer experience.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Onboarding, creation flow, editing controls, pricing, evaluation, and marketing may need coordinated changes.",
+              "shows": "Isolated AI features can fragment the experience even when each looks attractive.",
+              "source": "Published index.md, How Teams Should Work ¶5; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Explicit specs make each rebuild's material assumption, value hypothesis, and evaluation inspectable.",
+            "introduces": "Collection thinking coordinates related changes into a coherent customer experience.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p94",
+          "form": "prose",
+          "controlling_idea": "Fast rebuild paths make controlled experiments and retirement feasible.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Architecture can support model swaps, workflow comparisons, experiments, and retiring obsolete chains.",
+              "shows": "Cheap reinterpretation depends on controlled ways to change and compare implementations.",
+              "source": "Published index.md, How Teams Should Work ¶6; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Collection thinking coordinates related changes into a coherent customer experience.",
+            "introduces": "Fast rebuild paths make controlled experiments and retirement feasible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p95",
+          "form": "prose",
+          "controlling_idea": "Evaluation before commitment disciplines enthusiasm for a new model.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Fast rebuild paths make controlled experiments and retirement feasible.",
+            "introduces": "Evaluation before commitment disciplines enthusiasm for a new model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p96",
+          "form": "prose",
+          "controlling_idea": "Archives preserve the learning needed for the next cycle.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Prompts, outputs, failures, feedback, decisions, and benchmarks remain in the archive.",
+              "shows": "Retained evidence prevents repeated mistakes and explains product shape to newcomers.",
+              "source": "Published index.md, How Teams Should Work ¶8; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Evaluation before commitment disciplines enthusiasm for a new model.",
+            "introduces": "Archives preserve the learning needed for the next cycle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p97",
+          "form": "prose",
+          "controlling_idea": "Taste helps teams decide what qualitative evidence to collect and which trade-offs matter.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Language, images, video, recommendations, workflows, and decisions have qualitative effects on users.",
+              "shows": "Taste guides evidence and trade-offs while remaining accountable to data.",
+              "source": "Published index.md, How Teams Should Work ¶9; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Archives preserve the learning needed for the next cycle.",
+            "introduces": "Taste helps teams decide what qualitative evidence to collect and which trade-offs matter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practical-principles",
+      "heading": "Practical Principles",
+      "controlling_idea": "Decision rules keep exploration, commitment, evaluation, and retirement aligned with customer value.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Decision rules keep exploration, commitment, evaluation, and retirement aligned with customer value."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Group exploration and planning rules before assurance and accountability, ending with retirement; these are reminders applied to the earlier routine, not another claimed chronological process."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Team routines must connect model scouting to evaluated, coherent product changes and retained learning.",
+        "introduces": "Decision rules keep exploration, commitment, evaluation, and retirement aligned with customer value.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p98",
+          "form": "prose",
+          "controlling_idea": "The team routines can be expressed as practical decision rules for AI-powered products.",
+          "function": "transition",
+          "evidence": []
+        },
+        {
+          "id": "p99",
+          "form": "prose",
+          "controlling_idea": "Scouting a model must remain separate from committing the product to it.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The team routines can be expressed as practical decision rules for AI-powered products.",
+            "introduces": "Scouting a model must remain separate from committing the product to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p100",
+          "form": "prose",
+          "controlling_idea": "The value hypothesis should precede implementation.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The original questions concern customer behavior, business metrics, removed pain, and new risk.",
+              "shows": "A value hypothesis gives the team something meaningful to test.",
+              "source": "Published index.md, Practical Principles ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "Scouting a model must remain separate from committing the product to it.",
+            "introduces": "The value hypothesis should precede implementation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p101",
+          "form": "prose",
+          "controlling_idea": "A seasonal bet contract fixes the outcome, preserved promise, evaluation, and release decision criteria.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The contract names material change, outcome, preserved promise, suite, and criteria to ship, delay, retire, or revert.",
+              "shows": "Exploration becomes a bounded decision rather than an automatic release.",
+              "source": "Published index.md, Practical Principles ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The value hypothesis should precede implementation.",
+            "introduces": "A seasonal bet contract fixes the outcome, preserved promise, evaluation, and release decision criteria.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p102",
+          "form": "prose",
+          "controlling_idea": "Planning should label stable assumptions and seasonal bets.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A seasonal bet contract fixes the outcome, preserved promise, evaluation, and release decision criteria.",
+            "introduces": "Planning should label stable assumptions and seasonal bets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p103",
+          "form": "prose",
+          "controlling_idea": "A stable product promise prevents repeated releases from becoming strategic drift.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Planning should label stable assumptions and seasonal bets.",
+            "introduces": "A stable product promise prevents repeated releases from becoming strategic drift.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p104",
+          "form": "prose",
+          "controlling_idea": "Evaluation artifacts should be deliberately versioned as product assets.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "A stable product promise prevents repeated releases from becoming strategic drift.",
+            "introduces": "Evaluation artifacts should be deliberately versioned as product assets.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p105",
+          "form": "prose",
+          "controlling_idea": "Old user jobs must be tested against new model behavior.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Evaluation artifacts should be deliberately versioned as product assets.",
+            "introduces": "Old user jobs must be tested against new model behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p106",
+          "form": "prose",
+          "controlling_idea": "Switching models should be treated as a migration with regression checks.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Golden scenarios, expert workflows, safety, latency, cost, and visible behavior are checked before switching.",
+              "shows": "Upgrade decisions must account for the behavior being migrated.",
+              "source": "Published index.md, Practical Principles ¶9; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Old user jobs must be tested against new model behavior.",
+            "introduces": "Switching models should be treated as a migration with regression checks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p107",
+          "form": "prose",
+          "controlling_idea": "Business and customer outcomes provide more meaningful measures than the amount of AI used.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Retain activation, retention, margin, trust, and customer outcomes as meaningful measures.",
+              "shows": "More AI usage alone does not show a better product.",
+              "source": "Published index.md, Practical Principles ¶10; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Switching models should be treated as a migration with regression checks.",
+            "introduces": "Business and customer outcomes provide more meaningful measures than the amount of AI used.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p108",
+          "form": "prose",
+          "controlling_idea": "People retain accountability for what the product stands for.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Business and customer outcomes provide more meaningful measures than the amount of AI used.",
+            "introduces": "People retain accountability for what the product stands for.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p109",
+          "form": "prose",
+          "controlling_idea": "Retiring a workflow requires care for customers and explicit communication about changed trade-offs.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "People retain accountability for what the product stands for.",
+            "introduces": "Retiring a workflow requires care for customers and explicit communication about changed trade-offs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "anti-patterns",
+      "heading": "Anti-Patterns",
+      "controlling_idea": "Recurring failure patterns reveal when seasonal work loses its value and evidence discipline.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Recurring failure patterns reveal when seasonal work loses its value and evidence discipline."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Contrast the preceding rules with demo, planning, validation, identity, and outcome failures; placing warnings before the positive model would force readers to infer the missing standard."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Decision rules keep exploration, commitment, evaluation, and retirement aligned with customer value.",
+        "introduces": "Recurring failure patterns reveal when seasonal work loses its value and evidence discipline.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p110",
+          "form": "prose",
+          "controlling_idea": "The practical rules have recognizable failure patterns teams can watch for.",
+          "function": "transition",
+          "evidence": []
+        },
+        {
+          "id": "p111",
+          "form": "prose",
+          "controlling_idea": "Optimizing for demonstrations leaves real users with unfinished or unsuitable workflows.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Demos and launch excitement can conceal incomplete, uncontrollable, or commercially weak production workflows.",
+              "shows": "Presentation quality does not replace evidence from use.",
+              "source": "Published index.md, Anti-Patterns ¶2; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The practical rules have recognizable failure patterns teams can watch for.",
+            "introduces": "Optimizing for demonstrations leaves real users with unfinished or unsuitable workflows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p112",
+          "form": "prose",
+          "controlling_idea": "Treating every model release as urgent erodes the roadmap and product identity.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Every model release triggers urgent rewrites and a reactive roadmap.",
+              "shows": "Unbounded responsiveness erodes coherent identity.",
+              "source": "Published index.md, Anti-Patterns ¶3; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Optimizing for demonstrations leaves real users with unfinished or unsuitable workflows.",
+            "introduces": "Treating every model release as urgent erodes the roadmap and product identity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p113",
+          "form": "prose",
+          "controlling_idea": "Feature-factory relapse substitutes more output for reconsidered customer outcomes.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "More roadmap items, tickets, and launches replace reconsideration of outcomes and promises.",
+              "shows": "The output trap can reappear under seasonal terminology.",
+              "source": "Published index.md, Anti-Patterns ¶4; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Treating every model release as urgent erodes the roadmap and product identity.",
+            "introduces": "Feature-factory relapse substitutes more output for reconsidered customer outcomes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p114",
+          "form": "prose",
+          "controlling_idea": "False stability makes the product depend on model assumptions that can expire.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the Six months later example of expired model-behavior, cost, workflow, or expectation assumptions.",
+              "shows": "An unexamined planning horizon can outlast its material assumptions.",
+              "source": "Published index.md, Anti-Patterns ¶5; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Feature-factory relapse substitutes more output for reconsidered customer outcomes.",
+            "introduces": "False stability makes the product depend on model assumptions that can expire.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p115",
+          "form": "prose",
+          "controlling_idea": "Benchmark blindness misses regressions in the specific product.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The upgraded model performs worse on important product prompts, customers, workflows, or economics.",
+              "shows": "Benchmark gains do not establish local fit.",
+              "source": "Published index.md, Anti-Patterns ¶6; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "False stability makes the product depend on model assumptions that can expire.",
+            "introduces": "Benchmark blindness misses regressions in the specific product.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p116",
+          "form": "prose",
+          "controlling_idea": "Evaluation theater selects flattering examples instead of testing failures and value.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A few flattering examples omit failures, edge cases, old workflows, and business impact.",
+              "shows": "A test set must be able to disconfirm the adoption case.",
+              "source": "Published index.md, Anti-Patterns ¶7; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Benchmark blindness misses regressions in the specific product.",
+            "introduces": "Evaluation theater selects flattering examples instead of testing failures and value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p117",
+          "form": "prose",
+          "controlling_idea": "Fashionable architecture cannot compensate for weak product value.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The latest model or agent framework makes the architecture look modern while product value remains weak.",
+              "shows": "Technical fashion is not evidence of value.",
+              "source": "Published index.md, Anti-Patterns ¶8; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Evaluation theater selects flattering examples instead of testing failures and value.",
+            "introduces": "Fashionable architecture cannot compensate for weak product value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p118",
+          "form": "prose",
+          "controlling_idea": "Customer amnesia discards useful controls that existing users value.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Useful controls are replaced with magical automation and the loss is presented as simplicity.",
+              "shows": "Customer habits and control can be destroyed by an apparently streamlined interface.",
+              "source": "Published index.md, Anti-Patterns ¶9; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Fashionable architecture cannot compensate for weak product value.",
+            "introduces": "Customer amnesia discards useful controls that existing users value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p119",
+          "form": "prose",
+          "controlling_idea": "Implementation pride mistakes rebuilding speed for meaningful impact.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The team celebrates rebuild speed without asking whether the rebuild mattered.",
+              "shows": "Implementation effort is an input; value is the criterion.",
+              "source": "Published index.md, Anti-Patterns ¶10; existing claim preserved, not independently reverified in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Customer amnesia discards useful controls that existing users value.",
+            "introduces": "Implementation pride mistakes rebuilding speed for meaningful impact.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "Readers can test whether their own model-driven decisions preserve customer value.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4",
+          "S5"
+        ],
+        "how": "Readers can test whether their own model-driven decisions preserve customer value."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Apply the preceding principles and failure patterns before the final synthesis; leaving the questions after references would break the close and hide their role in applying the argument."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Recurring failure patterns reveal when seasonal work loses its value and evidence discipline.",
+        "introduces": "Readers can test whether their own model-driven decisions preserve customer value.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p120",
+          "form": "list",
+          "controlling_idea": "Teams can use the questions to examine their own product's changing assumptions, evaluation, and stable promise.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the complete twelve-question list and its lead-in without changing its wording.",
+              "shows": "The reader can diagnose their own assumptions before receiving the final action and hand-off.",
+              "source": "Published index.md, Questions to Consider ¶1; existing claim preserved, not independently reverified in this pass."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "The Real Shift",
+    "synthesis": "A stable promise and a changing implementation can coexist when each model-driven change is evaluated as a customer-value bet.",
+    "so_what": "Fast rebuilding matters only when teams can tell whether the resulting product still serves its users.",
+    "callback": {
+      "to": "The opening question distinguishing a better development tool from changed product material.",
+      "how": "Return first to faster software production, then show how repeated evaluation allows the customer promise to survive changing workflows; the product change question now has a decision discipline."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Treat model upgrades as evaluated product changes, preserving user jobs and trust while testing which new workflows deserve release."
+    },
+    "hand_off": {
+      "to": "leadership-ladder",
+      "relationship": "cause_effect",
+      "carries_over": "Product change needs deliberate decisions about value, trust, and what should remain stable.",
+      "introduces": "The leadership language, delegation boundaries, and personal capabilities required to make and carry those decisions."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "Readers can test whether their own model-driven decisions preserve customer value.",
+      "introduces": "The self-check brings the essay back to the distinction between faster delivery and evaluated change to the customer product.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p121",
+        "form": "prose",
+        "controlling_idea": "Faster software production is only one consequence of generative AI.",
+        "function": "synthesis",
+        "evidence": [],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p122",
+        "form": "prose",
+        "controlling_idea": "Changing model material extends outcome-focused management across the product lifecycle.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The body combines model instability, outcome-focused planning, customer evidence, and a stable promise.",
+            "shows": "A stable promise and changing implementation can coexist when each change is evaluated as a customer-value bet.",
+            "source": "Published index.md, The Real Shift ¶2; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Faster software production is only one consequence of generative AI.",
+          "introduces": "Changing model material extends outcome-focused management across the product lifecycle.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p123",
+        "form": "prose",
+        "controlling_idea": "Fashion supplies a vocabulary for judging fit under unstable material and limited predictability.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Preserve the existing cadence of speed, novelty, stability, prediction, taste, fit, timing, quality, archive, and commercial response.",
+            "shows": "The metaphor widens attention beyond capability and implementation speed.",
+            "source": "Published index.md, The Real Shift ¶3; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Changing model material extends outcome-focused management across the product lifecycle.",
+          "introduces": "Fashion supplies a vocabulary for judging fit under unstable material and limited predictability.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p124",
+        "form": "prose",
+        "controlling_idea": "Evaluation connects a stable customer promise to changing implementation.",
+        "function": "synthesis",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "emphasis",
+          "carries_over": "Fashion supplies a vocabulary for judging fit under unstable material and limited predictability.",
+          "introduces": "Evaluation connects a stable customer promise to changing implementation.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p125",
+        "form": "prose",
+        "controlling_idea": "The scarce capability is deciding whether a rebuilt experience creates value for its users.",
+        "function": "analysis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Repeated rebuilding reduces implementation scarcity without answering whether users benefit.",
+            "shows": "Knowing which rebuilt product deserves release becomes the limiting capability.",
+            "source": "Published index.md, The Real Shift ¶5; existing claim preserved, not independently reverified in this pass."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Evaluation connects a stable customer promise to changing implementation.",
+          "introduces": "The scarce capability is deciding whether a rebuilt experience creates value for its users.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p126",
+        "form": "prose",
+        "controlling_idea": "Teams should treat model upgrades as evaluated product changes that preserve customer jobs and trust.",
+        "function": "recommendation",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The scarce capability is deciding whether a rebuilt experience creates value for its users.",
+          "introduces": "Teams should treat model upgrades as evaluated product changes that preserve customer jobs and trust.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "Joins changing material, stable purpose, and evaluated choice into the final recommendation."
+        }
+      },
+      {
+        "id": "p127",
+        "form": "prose",
+        "controlling_idea": "Deciding what to change and what to preserve requires explicit human intent, delegation boundaries, and accountable leadership.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Use [[leadership-ladder]] as the next step: making the intent, permitted action, review, and human responsibility behind these product decisions explicit.",
+            "shows": "Product-value judgments lead to the leadership language and boundaries needed to carry them into action."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S4",
+            "S5"
+          ],
+          "how": "Locates the human decisions required to preserve the promise while delegating implementation."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Teams should treat model upgrades as evaluated product changes that preserve customer jobs and trust.",
+          "introduces": "Deciding what to change and what to preserve requires explicit human intent, delegation boundaries, and accountable leadership.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A biographical article about Samuel Beek, VEED, or Schematik."
+    },
+    {
+      "topic": "A detailed recap of the Engineering Excellence meetup."
+    },
+    {
+      "topic": "A fashion-industry history lesson."
+    },
+    {
+      "topic": "A technical tutorial for model evaluation frameworks."
+    },
+    {
+      "topic": "A claim that every software team should rebuild continuously."
+    },
+    {
+      "topic": "A claim that fashion-driven development replaces durable architecture, testing, reliability, or product strategy."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 identified one corroborated restart at the operating-model opening and one minor repeated baseline at the seasons opening. Revise p47 to carry the product-management extensions into their repeatable rhythm, and p30 to foreground the planning consequence. Retain all 127 units, section headings and order, copied criteria, named sources, figures and planning durations."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Implemented the flow notes without changing order or controlling ideas. Added only brief inline explanations of unit economics, latency, modalities, capability substrate, and golden workflow; no real-company or product claims were introduced. Existing summary.md, dialog.md, and comics.md retain their substantive thesis but may need editorial alignment with the new roadmap, question placement, and journal bridges; companion edits are outside this pass."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Accepted the independent flow review: sound with notes; no moves, merges, or cuts required. Before prose revision, chose concise introduction definitions in p06–p09, a routine-oriented opening for How Teams Should Work, decision-rule language for Practical Principles, and observable-failure language for Anti-Patterns. The spec appears in the team routine before rebuilding; its seasonal bet contract is used to decide commitment. Retained the reviewed order and its approximate large-to-small secondary description, since the reader found the actual dependencies sound."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the paragraph contract from the published essay before editing prose. Copy intent, all three acceptance criteria, the five thesis fields, and role exactly from the final journal entry; add only supporting claims. Preserve the legacy audience: product and technology leaders, engineering leaders, and principal/staff engineers; explain the AI-assisted/product distinction within this essay for standalone reading.",
+      "rejected": [
+        "Invent new product or company evidence.",
+        "Treat the existing 20 min reading-time field as a numeric word limit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve all existing paragraphs and body headings; move the intact Questions to Consider section immediately before The Real Shift so the self-check precedes the final synthesis and references remain intact. Add one opening bridge/hook, one complete roadmap paragraph, and one final hand-off; revise the existing closing units for synthesis and action.",
+      "rejected": [
+        "Leave the questions after references, outside the checked argument.",
+        "Rewrite or compress the essay wholesale."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The opening contrast carries forward inspectable AI-assisted building from risc-for-ai-software-development; the closing cause-effect hand-off goes to leadership-ladder. Both remain understandable without reading either linked essay. Preserve the existing prepare-for-ai-future link and explain its three capabilities in place."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Translate the legacy success checklist into the copied journal outcomes: distinction, seasonality, modern product management, and the thesis map to AC-1; uncertainty and non-monotonic upgrade fit map to AC-2; bounded metaphor, evaluation, rebuilds, and operating principles map to AC-3. Preserve the talk-as-inspiration criterion as a sourcing constraint in introduction p04 instead of adding a content-inventory acceptance criterion. Add no acceptance criteria."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve the legacy record of no open author questions. Record workflow choices here instead of leaving reviewer or drafting placeholders in open_questions. Retain every old non-goal, modality, decision, source, and changelog entry."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Gloss unfamiliar product-material vocabulary where first encountered without adding claims: unit economics is the revenue/cost relationship for serving a customer or task; latency is response delay; a golden workflow is a representative job that must continue working. Use the existing definitions for silhouette, collection, golden scenarios, and the three leadership capabilities; make bridge referents explicit."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Auto mode authorizes drafting from this draft contract after the independent flow review. Keep status draft and run no more than two total draft-check rounds. No facts ledger exists; published factual claims, names, dates, numbers, front matter, links, illustrations, captions, and the three-bullet callout remain authoritative for this pass."
+    },
+    {
+      "date": "2026-05-30",
+      "decision": "Retitled the post to `Software Has Seasons Now: Fashion-Driven Development for Generative AI Products` to scope the argument to generative-model products without repeating \"product\" in the title."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Chose `Fashion-Driven Software Development` as the title because it is memorable, opinionated, and directly carries the metaphor."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Put the article in a new AI Notes section, `AI Product Development`, because the post is more about product operating model than general leadership."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Treated the Samuel Beek / VEED / Schematik talk as inspiration, not as a quoted source. The article generalizes the pattern instead of depending on a precise event transcript."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Made evaluation the center of the article because fast AI capability change makes product-value validation more important than raw implementation speed."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Connected the post to [[leadership-ladder]], [[prepare-for-ai-future]], and [[spec-driven-authoring]] so it fits the existing AI Notes thread on intent, accountability, and spec-driven work."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Emphasized short seasonal timelines, lack of long-term stability, and limited rational predictability because those qualities make the fashion metaphor stronger than a generic \"move faster\" argument."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Revised the product-management framing to avoid treating feature-factory work as good product management. The article now positions fashion-driven product work as an extension of outcome-focused product management under unstable model materials."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Added the non-monotonic model-upgrade point: newer models may be better overall while worse for a specific workflow, evaluation slice, or product promise."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "[[leadership-ladder]]",
+      "contributed": "intent, guardrails, and spec-driven work as the operating layer for AI-assisted execution."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[prepare-for-ai-future]]",
+      "contributed": "agency, judgment, and persuasion as durable leadership capabilities in the AI transition."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[spec-driven-authoring]]",
+      "contributed": "lightweight specs as contracts for AI-mediated work."
+    },
+    {
+      "kind": "external",
+      "ref": "[Samuel Beek](https://samuelbeek.com/)",
+      "contributed": "public profile; inspiration source for the article prompt."
+    },
+    {
+      "kind": "external",
+      "ref": "[Schematik, Lightspeed company profile](https://lsvp.com/company/schematik/)",
+      "contributed": "confirms Schematik and Sam Beek's founder/CEO role."
+    },
+    {
+      "kind": "external",
+      "ref": "[Whale event listing](https://www.whale-academy.com/)",
+      "contributed": "public event page listing Samuel Beek as founder of Schematik and ex-CPO VEED.IO."
+    },
+    {
+      "kind": "external",
+      "ref": "[Muck Rack podcast snippet with Samuel Beek](https://muckrack.com/podcast/marketer-of-the-month/episodes/1492294-snippet-veed-cpo-samuel-beek-explains-how-/)",
+      "contributed": "supporting source for VEED product-testing framing."
+    },
+    {
+      "kind": "external",
+      "ref": "[Lars Holmquist, *Intelligence on tap: AI as a new design material*](https://interactions.acm.org/archive/view/july-august-2017/intelligence-on-tap)",
+      "contributed": "background source for treating AI as a design material."
+    },
+    {
+      "kind": "external",
+      "ref": "[Britannica, Fashion Industry](https://www.britannica.com/art/fashion-industry)",
+      "contributed": "background source for fashion as an industry of design, production, distribution, marketing, and changing demand."
+    },
+    {
+      "kind": "external",
+      "ref": "[Melissa Perri, *Escaping the Build Trap*](https://www.oreilly.com/library/view/escaping-the-build/9781491973783/)",
+      "contributed": "reference point for product management as outcome-focused value creation rather than output or feature production."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/fashion-driven-software-development/index.md",
+      "contributed": "Canonical published wording, factual claims, names, dates, numbers, front matter, links, images, captions, callouts, comparisons, and question list for the reconstruction."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/fashion-driven-software-development/spec.md",
+      "contributed": "Legacy intent, audience, criteria, non-goals, modalities, decisions, source record, and changelog, all migrated before removal by the parent workflow."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Exact outcome contract, post thesis and role, AI Product Development opening/closing duties, incoming contrast, and leadership hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[risc-for-ai-software-development]]",
+      "contributed": "The preceding essay establishes inspectable platforms and evaluation for AI-assisted building; the new opening contrasts this with model-powered product assumptions."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Specified two local transition repairs before prose; no order or inherited-contract change. The next reader check is the final allowed round 2."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Revised index.md to the reviewed contract: added the RISC bridge/hook and complete roadmap, preserved concise AI definitions, glossed unfamiliar terms, distinguished team routines from decision rules and observable failures, moved the intact Questions before The Real Shift, strengthened synthesis and action, and added the leadership-ladder hand-off. Kept every original unit, heading, name, number, date, external link, table, image, caption, callout, reference, and front-matter value. Status draft; independent draft assessment is a separate check."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Recorded the independent flow verdict SOUND WITH NOTES and its drafting responses before prose revision. All section and paragraph orders and controlling ideas remain unchanged; no unresolved rubric note requires an author decision. Status draft."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted the legacy spec to a full paragraph-level outcome contract reconstructed before prose revision. Copied the final journal entry unchanged, retained all record-keeping and source constraints, and specified the Questions move, bridge/hook, roadmap, synthesis/action, term glosses, and leadership hand-off. Status draft under authorized auto mode; independent flow review and prose checking are subsequent workflow steps."
+    },
+    {
+      "date": "2026-06-11",
+      "change": "Added Modalities section; the spec now drives `summary.md`, `dialog.md`, and `comics.md` alongside the article. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Added the intro note that Samuel Beek's VEED experience helped frame the article's \"software feels like fashion\" metaphor. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Shortened several broad bold highlights so the skim path uses tighter phrases rather than full clauses. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Added matching bold emphasis to the opening key-points block so the skim path starts before the main body. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Added bold emphasis to key phrases so skimming readers can follow the article's main argument through the body text. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Made a light grammar and clarity pass on the published article, tightening model-powered wording and simplifying a few phrases. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Added a body paragraph connecting Holmquist's AI-as-design- material framing to the article's generative-model seasonality argument. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Added Lars Holmquist's `Intelligence on tap: AI as a new design material` to the source list and further reading. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Aligned the published title with the spec's generative-AI product scope. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Made model instability more explicit: new models can regress golden scenarios, workflows, controls, safety boundaries, latency/cost assumptions, or product fit even when they are stronger overall. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Reworked the product-management section so it acknowledges outcome-focused product management and the build-trap critique, then explains the AI-specific addition: unstable model materials require material scouting, seasonal bets, and evaluation of product fit. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Added a product-management section and related references: roadmaps as seasonal portfolios, product briefs as value hypotheses and evaluation contracts, discovery as model-material scouting, and PM as editor of coherent product change. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Added explicit emphasis on short seasons, unstable model materials, and the fact that product fit is not rationally predictable from model benchmarks alone. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Reduced the opening key-points list from six to five by combining the central thesis with the model-release consequence. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Made the central thesis prominent in the excerpt, key points, and opening: model-powered products may need frequent reinterpretation around new materials. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Initial spec and article draft. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    }
+  ]
+}

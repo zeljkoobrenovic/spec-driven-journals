@@ -1,0 +1,2106 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "leadership-ladder",
+  "journal": "ai-notes",
+  "part": "leadership",
+  "title": "From Prompting to Intent: The Leadership Ladder for Working with AI",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the complete published index.md and accepted legacy spec.md (revised 2026-06-12), frozen in /private/tmp/ai-notes-outcome-revision-20261112/original/leadership-ladder, using check_draft.py units and outcome_specs.parse_draft. Each original prose/list unit is retained; tables, quoted examples, callouts, and figures remain attached evidence. The contract is authored before prose revisions. Declared additions are one introduction roadmap and one final hand-off; declared movement is Questions to Consider before Final Thought. Existing opening/conclusion units gain the journal bridge, synthesis, callback, and action. The full journal entry fixes intent, thesis, role, and criteria. There is no journal fact ledger and the legacy spec sets no numeric word limit.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "How Marquet's intent-based leadership supplies language for human-AI collaboration without giving AI human accountability.",
+        "How the seven interaction levels differ and why higher autonomy requires stronger evidence and boundaries."
+      ],
+      "believe": [
+        "The right interaction level depends on ambiguity, consequences, and demonstrated competence rather than a desire to maximize autonomy."
+      ],
+      "can_do": [
+        "Rewrite a consequential command as an intent statement or spec with context, constraints, evaluation, review, and stop conditions."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader chooses an interaction level appropriate to the work and rejects the idea that higher autonomy is always better.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "How would you choose a level for formatting notes versus an agent changing an important workflow?",
+        "expected": "A command is sufficient for narrow, low-risk, easily checked work; ambiguous or consequential work needs explicit intent, competence evidence, limited permissions, review, and escalation before bounded delegation or monitored autonomy."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader can turn a command into an inspectable agreement about the intended outcome and permitted action.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What would you add to \"review this plan\" to make it an intent-based collaboration, and when would you write a spec?",
+        "expected": "Name the decision, context, constraints, options, success criteria, allowed actions, review points, and stop conditions; consequential work merits a written contract that people can evaluate before and after AI acts."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader preserves human accountability while applying the leadership analogy and scaling guardrails.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What cannot be transferred to AI when moving up the ladder, and what controls must increase?",
+        "expected": "Humans retain purpose, legitimate trade-offs, approval, trust, and consequences; greater autonomy requires scope, competence checks, observable actions, review, escalation, rollback, and a named owner."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How should leaders change their interaction with AI as it moves from narrow tasks to longer and more consequential workflows?",
+    "claim": "Leaders should move from commands to explicit intent, bounded delegation, and evidence-based autonomy as work demands it, while retaining human accountability and increasing review and control with each increase in autonomy.",
+    "disputed_by": "The view that more capable agents chiefly need better prompts and broader permissions, and that polished output is sufficient evidence that the underlying judgment has been delegated.",
+    "so_what": "Consequential AI work needs an inspectable agreement about goals, constraints, evaluation, and escalation before execution, so leaders can use agent capability without hiding the human decision.",
+    "how_why": "Commands omit context and legitimate trade-offs; intent statements and specs expose those choices, while competence evidence, boundaries, and review keep execution proportional to what the organization can verify.",
+    "supporting_claims": [
+      {
+        "id": "C1",
+        "claim": "Commands can produce plausible artifacts while leaving the context, legitimate trade-offs, and accountability of consequential work unresolved."
+      },
+      {
+        "id": "C2",
+        "claim": "Marquet's language of intent, competence, and control helps human-AI collaboration only when responsibility remains human."
+      },
+      {
+        "id": "C3",
+        "claim": "The appropriate ladder level follows the task's ambiguity, consequences, and verifiable capability rather than a preference for more autonomy."
+      },
+      {
+        "id": "C4",
+        "claim": "Intent statements and written specs turn hidden assumptions into a decision frame that both AI and humans can inspect."
+      },
+      {
+        "id": "C5",
+        "claim": "Greater autonomy needs stronger observable controls so polished language or execution cannot hide an unowned decision."
+      },
+      {
+        "id": "C6",
+        "claim": "Technology leaders can practice the required discipline by making one real interaction's intent, limits, and review explicit before generation."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Makes the journal's requirement for human responsibility operational through language, specifications, and bounded autonomy.",
+    "supports": [
+      "L1",
+      "L2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "problem_solution",
+        "applies_to": "leadership-problem through analogy-boundary"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "language-shift, architecture-example, delivery-example"
+      },
+      {
+        "pattern": "grouping",
+        "applies_to": "failure-modes and role-implications"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "weekly-practice"
+      }
+    ],
+    "rationale": "The command problem establishes why leadership language matters; the source model and its accountability boundary must precede the ladder so levels cannot be read as personhood or a mandate to maximize autonomy. The ladder supplies the numbers used by the language and spec examples. The two decision reviews show the contract at work before guardrails govern higher autonomy and failure modes expose misuse. Role implications and a weekly practice turn the model into action, followed by the existing self-assessment and a synthesis/hand-off. Moving examples before definitions would require unexplained levels; moving controls after the practice would invite action before its limits; leaving questions after references would reopen the essay after its conclusion."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "When AI can do more than a small task, what intent, boundaries, and review does the work require?"
+    },
+    "bridge": {
+      "from_reader_world": "Technology leaders use familiar command prompts while making decisions about changing products, preserving value, and earning trust.",
+      "to_topic": "Consequential product and engineering decisions need a visible agreement about intent and permitted action because a generated artifact cannot receive the leader's judgment or accountability."
+    },
+    "thesis_statement": {
+      "text": "As the work demands more than a command, leaders need explicit intent, bounded delegation, and evidence for autonomy, with stronger review and control while accountability remains human.",
+      "placement": "Preserved KEY POINTS bullets 1–3 and introduction paragraphs p02–p05."
+    },
+    "roadmap": {
+      "placement": "Added introduction paragraph p07, after Figure 1, states the body order and the part-level move to the next essay.",
+      "promises": [
+        {
+          "promise": "Start with the limits of command-style prompting and what Marquet's model contributes within its human-AI boundary.",
+          "kept_in": [
+            "leadership-problem",
+            "marquet-contribution",
+            "analogy-boundary"
+          ]
+        },
+        {
+          "promise": "Use the seven-level ladder to choose an interaction that fits the work.",
+          "kept_in": [
+            "collaboration-ladder"
+          ]
+        },
+        {
+          "promise": "Compare command and intent language, then make the agreement inspectable as a spec.",
+          "kept_in": [
+            "language-shift",
+            "written-intent"
+          ]
+        },
+        {
+          "promise": "Apply the pattern through contrasting architecture and delivery-risk review examples.",
+          "kept_in": [
+            "architecture-example",
+            "delivery-example"
+          ]
+        },
+        {
+          "promise": "Govern autonomy with guardrails and recognize the failure modes that hide accountability.",
+          "kept_in": [
+            "autonomy-guardrails",
+            "failure-modes"
+          ]
+        },
+        {
+          "promise": "Translate the ladder by leadership role, try one weekly practice, and assess current interactions before the final synthesis.",
+          "kept_in": [
+            "role-implications",
+            "weekly-practice",
+            "self-assessment"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "controlling_idea": "Deciding what AI-enabled work should change still requires people to lead, so better prompting alone is insufficient.",
+        "function": "context",
+        "form": "prose",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "The preceding essay treats product change as a decision about customer value, trust, and what should remain stable.",
+            "shows": "Those decisions create the need for leadership language that makes human intent visible.",
+            "source": "fashion-driven-software-development"
+          },
+          {
+            "kind": "quotation",
+            "what": "> **KEY POINTS:**\n>\n> * **Better prompts are not the real transition.** As AI moves from small tasks to architecture reviews, planning, and multi-step work, the leadership question shifts from \"What should I ask AI to do?\" to **what intent, boundaries, and review discipline the work requires** — the move from prompting to intent-based collaboration.\n> * **David Marquet's Leader-Leader model is the practical analogy**: replace \"do what I say\" with clear intent, competence, and control boundaries — and **spec-driven development is how you do it**, turning intent into a reviewable contract before AI produces anything. But the analogy has a limit: AI can act on intent, yet it **cannot own consequences** — leaders still own purpose, trade-offs, and trust.\n> * **Guardrails must scale with autonomy.** The more autonomy an AI system receives, the stronger its scope, evidence, logging, review points, stop conditions, and human ownership must become.",
+            "shows": "The preserved three KEY POINTS state the shift to intent, the human-accountability limit of the analogy, and the controls needed as autonomy grows."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "Deciding what AI-enabled work should change still requires people to lead, so better prompting alone is insufficient."
+        }
+      },
+      {
+        "id": "p02",
+        "controlling_idea": "When AI work grows beyond small tasks, the leadership question becomes what intent, context, boundaries, and review it requires.",
+        "function": "claim",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Better prompts alone do not settle how people lead consequential work.",
+          "introduces": "When AI work grows beyond small tasks, the leadership question becomes what intent, context, boundaries, and review it requires.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Summaries and emails versus architecture reviews, delivery planning, incident analysis, policy drafting, research, code changes, and multi-step workflows.",
+            "shows": "More consequential work needs a visible agreement about intent rather than an assumed transfer of judgment."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "When AI work grows beyond small tasks, the leadership question becomes what intent, context, boundaries, and review it requires."
+        }
+      },
+      {
+        "id": "p03",
+        "controlling_idea": "Marquet's human leadership model offers useful language for AI collaboration without giving AI human standing or accountability.",
+        "function": "context",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Consequential work needs language for intent and review.",
+          "introduces": "Marquet's human leadership model offers useful language for AI collaboration without giving AI human standing or accountability.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "David Marquet's Leader-Leader and Intent-Based Leadership models apply to human organizations.",
+            "shows": "Their language can guide delegation boundaries while the analogy remains explicitly limited.",
+            "source": "https://davidmarquet.com/books/turn-the-ship-around-book/"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "Marquet's human leadership model offers useful language for AI collaboration without giving AI human standing or accountability."
+        }
+      },
+      {
+        "id": "p04",
+        "controlling_idea": "Intent-based language makes the purpose and permitted action explicit rather than giving an isolated command.",
+        "function": "comparison",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The model supplies language for accountable collaboration.",
+          "introduces": "Intent-based language makes the purpose and permitted action explicit rather than giving an isolated command.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "Command: do this. Intent: here is what I am trying to achieve, the context, constraints, permitted action, stopping boundary, and how I will judge the result.",
+            "shows": "An intent statement gives the surrounding decision structure that a bare command omits."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "Intent-based language makes the purpose and permitted action explicit rather than giving an isolated command."
+        }
+      },
+      {
+        "id": "p05",
+        "controlling_idea": "A spec makes this intent a written agreement about outcome, boundaries, uncertainty, and review.",
+        "function": "definition",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Intent-based language makes purpose and boundaries explicit.",
+          "introduces": "A spec makes this intent a written agreement about outcome, boundaries, uncertainty, and review.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "A spec makes this intent a written agreement about outcome, boundaries, uncertainty, and review."
+        }
+      },
+      {
+        "id": "p06",
+        "controlling_idea": "This leadership posture makes AI work usable through clearer intent and control boundaries.",
+        "function": "synthesis",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "A written spec makes intent inspectable.",
+          "introduces": "This leadership posture makes AI work usable through clearer intent and control boundaries.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "figure",
+            "what": "Figure 1: assets/images/leadership-ladder/ai-leadership-ladder.png. Caption: The useful lesson from the Leader-Leader model is not that AI becomes a leader. It is that better work requires clearer intent, stronger context, and explicit control boundaries.",
+            "shows": "The useful lesson from the Leader-Leader model is not that AI becomes a leader. It is that better work requires clearer intent, stronger context, and explicit control boundaries.",
+            "source": "assets/images/leadership-ladder/ai-leadership-ladder.png"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C4"
+          ],
+          "how": "This leadership posture makes AI work usable through clearer intent and control boundaries."
+        }
+      },
+      {
+        "id": "p07",
+        "controlling_idea": "The reader will first choose and govern a collaboration level, then connect that operational practice to the personal capabilities developed in the next essay.",
+        "function": "transition",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The leadership posture requires explicit intent and control boundaries.",
+          "introduces": "The sequence from command limits and the bounded analogy through the ladder, language and specs, two reviews, guardrails, failure modes, role implications, practice, and self-assessment; the next essay develops agency, judgment, and persuasion.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "The reader will first choose and govern a collaboration level, then connect that operational practice to the personal capabilities developed in the next essay."
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "leadership-problem",
+      "heading": "The Leadership Problem Hidden Inside AI Adoption",
+      "controlling_idea": "Polished AI output does not transfer the judgment and accountability that consequential leadership work requires.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Polished AI output does not transfer the judgment and accountability that consequential leadership work requires."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction distinguishes prompting from explicit intent and control.",
+        "introduces": "Polished AI output does not transfer the judgment and accountability that consequential leadership work requires.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Familiar commands come before their limits, false delegation, and the human responsibilities they leave unresolved. Starting with the remedy would hide why a polished artifact is insufficient."
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "controlling_idea": "AI adoption often begins with commands that name an output.",
+          "function": "example",
+          "form": "list",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Summarize this document; write a strategy memo; create a rollout plan; review this architecture; tell me which option is best.",
+              "shows": "The familiar requests specify an artifact or answer without the surrounding leadership judgment."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "controlling_idea": "Commands suit simple verified tasks but leave the ambiguity of leadership work unresolved.",
+          "function": "comparison",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The familiar commands identify the desired output.",
+            "introduces": "Commands suit simple verified tasks but leave the ambiguity of leadership work unresolved.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "controlling_idea": "A command can produce polished advice while omitting the local constraints that determine whether it fits.",
+          "function": "cause_effect",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Leadership tasks contain ambiguity, conflicting constraints, and consequences.",
+            "introduces": "A command can produce polished advice while omitting the local constraints that determine whether it fits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "controlling_idea": "False delegation is treating generated artifacts as if they carried judgment, ownership, and legitimacy.",
+          "function": "definition",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Polished advice can conceal missing local constraints.",
+            "introduces": "False delegation is treating generated artifacts as if they carried judgment, ownership, and legitimacy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "controlling_idea": "Generated artifacts do not carry the human accountability their polish can imply.",
+          "function": "refutation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "False delegation mistakes an artifact for accountable judgment.",
+            "introduces": "Generated artifacts do not carry the human accountability their polish can imply.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2: assets/images/leadership-ladder/false-delegation-boundary.jpeg. Caption: AI can produce artifacts, but leaders still own judgment, legitimacy, and consequences.",
+              "shows": "AI can produce artifacts, but leaders still own judgment, legitimacy, and consequences.",
+              "source": "assets/images/leadership-ladder/false-delegation-boundary.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "controlling_idea": "AI can support thinking while leaders retain the choices and consequences.",
+          "function": "comparison",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Artifacts cannot own judgment, legitimacy, or consequences.",
+            "introduces": "AI can support thinking while leaders retain the choices and consequences.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| AI can help with... | Leaders still own... |\n| --- | --- |\n| Generating options | Deciding what matters in this context |\n| Drafting plans | Choosing an accountable path |\n| Comparing trade-offs | Naming which trade-offs are legitimate |\n| Finding risks | Deciding which risks are acceptable |\n| Rewriting messages | Earning trust with real people |\n| Executing bounded tasks | Setting boundaries, review points, and escalation paths |",
+              "shows": "AI can support thinking while leaders retain the choices and consequences.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Leadership Problem Hidden Inside AI Adoption ¶6"
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "controlling_idea": "Explicit intent avoids both underusing AI and overtrusting its outputs.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "AI assistance leaves legitimate trade-offs, trust, boundaries, and ownership with people.",
+            "introduces": "Explicit intent avoids both underusing AI and overtrusting its outputs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "marquet-contribution",
+      "heading": "What Marquet's Model Contributes",
+      "controlling_idea": "Marquet's language of intent, competence, clarity, and control offers a practical way to expose the human choices around AI work.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "Marquet's language of intent, competence, clarity, and control offers a practical way to expose the human choices around AI work."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The leadership problem is how to make intent explicit without assuming accountability has moved to AI.",
+        "introduces": "Marquet's language of intent, competence, clarity, and control offers a practical way to expose the human choices around AI work.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the human source before extracting its useful principles, then state the accountability limit before showing what AI can still do. Reversing that order would invite a literal human-AI equivalence."
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "controlling_idea": "Marquet's books describe how leadership language enables people to think and act with intent.",
+          "function": "evidence",
+          "form": "prose",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Turn the Ship Around! and Leadership Is Language describe leader-leader ownership and the words and habits that shape contribution.",
+              "shows": "The source model concerns active human thinking rather than better command compliance.",
+              "source": "https://davidmarquet.com/books/turn-the-ship-around-book/; https://davidmarquet.com/books/leadership-is-language/"
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "controlling_idea": "Intent, competence, clarity, and visible ownership are the model principles relevant to AI collaboration.",
+          "function": "explanation",
+          "form": "list",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Marquet's model ties leadership language to active thinking and ownership.",
+            "introduces": "Intent, competence, clarity, and visible ownership are the model principles relevant to AI collaboration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "controlling_idea": "Applying those principles to AI requires retaining moral accountability with humans.",
+          "function": "refutation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The principles permit distributed ownership in human organizations.",
+            "introduces": "Applying those principles to AI requires retaining moral accountability with humans.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "controlling_idea": "AI can nevertheless use richer intent and feedback to contribute more usefully.",
+          "function": "explanation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "AI does not own the consequences of its work.",
+            "introduces": "AI can nevertheless use richer intent and feedback to contribute more usefully.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "controlling_idea": "The leader makes the work explicit enough for AI to assist without becoming the hidden decision-maker.",
+          "function": "synthesis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "AI can use context and feedback while humans remain accountable.",
+            "introduces": "The leader makes the work explicit enough for AI to assist without becoming the hidden decision-maker.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "analogy-boundary",
+      "heading": "The Boundary of the Analogy",
+      "controlling_idea": "The analogy supports bounded AI assistance only if human responsibility remains distinct from configured system behavior.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "The analogy supports bounded AI assistance only if human responsibility remains distinct from configured system behavior."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "AI can use richer intent without becoming the hidden decision-maker.",
+        "introduces": "The analogy supports bounded AI assistance only if human responsibility remains distinct from configured system behavior.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Clarify responsibility before comparing the two systems, then use the comparison to reject both clerk-only use and naive autonomy. The extremes would be unexplained without the distinction."
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "controlling_idea": "Calling AI a teammate can conceal the difference between modeling human concerns and living with consequences.",
+          "function": "analysis",
+          "form": "prose"
+        },
+        {
+          "id": "p21",
+          "controlling_idea": "Human leadership concepts must become explicit configuration, evaluation, and permission boundaries in AI work.",
+          "function": "comparison",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "AI does not accept responsibility as a person can.",
+            "introduces": "Human leadership concepts must become explicit configuration, evaluation, and permission boundaries in AI work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| In human Leader-Leader systems | In human-AI collaboration |\n| --- | --- |\n| People are developed to think, decide, and own outcomes. | AI systems are configured, prompted, evaluated, and bounded. |\n| Control can move closer to people doing the work. | Permissions can move closer to the workflow only with guardrails. |\n| Competence includes skill, judgment, and professional responsibility. | Competence must be demonstrated through tests, examples, evaluations, and observed behavior. |\n| Clarity includes shared purpose and organizational context. | Clarity must be supplied through prompts, context windows, policies, memory, tools, and review. |\n| Accountability can be distributed across humans. | Accountability remains with humans and organizations. |",
+              "shows": "Human leadership concepts must become explicit configuration, evaluation, and permission boundaries in AI work.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Boundary of the Analogy ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "controlling_idea": "The responsibility boundary rules out both command-only use and unchecked autonomy.",
+          "function": "claim",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "AI accountability remains human even when workflow permissions increase.",
+            "introduces": "The responsibility boundary rules out both command-only use and unchecked autonomy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "controlling_idea": "Both extremes fail because the interaction model is a leadership system rather than a tooling detail.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The responsibility boundary rules out two extremes.",
+            "introduces": "Both extremes fail because the interaction model is a leadership system rather than a tooling detail.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "collaboration-ladder",
+      "heading": "The Human-AI Leadership Ladder",
+      "controlling_idea": "Choose the interaction level that the task and evidence can support rather than treating higher autonomy as a goal.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Choose the interaction level that the task and evidence can support rather than treating higher autonomy as a goal."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Command-only use and naive autonomy both ignore the leadership system around the work.",
+        "introduces": "Choose the interaction level that the task and evidence can support rather than treating higher autonomy as a goal.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "State that levels are choices rather than moral ranks, define their conditions and modes, then apply them to work examples. Examples before the ladder would depend on unexplained level numbers."
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "controlling_idea": "The ladder ranks interaction modes rather than the moral worth of lower or higher levels.",
+          "function": "explanation",
+          "form": "prose"
+        },
+        {
+          "id": "p25",
+          "controlling_idea": "The seven modes require progressively clearer intent, proven competence, bounded control, and review as autonomy rises.",
+          "function": "description",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The appropriate level depends on the work rather than a desire to climb.",
+            "introduces": "The seven modes require progressively clearer intent, proven competence, bounded control, and review as autonomy rises.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Level | Mode | Typical language | Good for | Failure mode |\n| --- | --- | --- | --- | --- |\n| 1 | Command | \"Do this exact task.\" | Formatting, extraction, conversion, simple transformations. | Brittle outputs; no shared context. |\n| 2 | Prompt/request | \"Draft a proposal for...\" | First drafts, summaries, quick alternatives. | Polished but generic artifacts. |\n| 3 | Critique/reflection | \"Here is my thinking; challenge it.\" | Finding gaps, assumptions, contradictions, blind spots. | AI stays trapped inside the frame you gave it. |\n| 4 | Recommendation | \"Compare options and recommend one.\" | Trade-off exploration and decision preparation. | Recommendations hide assumptions or overfit to incomplete context. |\n| 5 | Intent | \"I intend to achieve X under constraints Y; help design the path.\" | Ambiguous leadership work where context matters. | Requires human clarity, judgment, and review discipline. |\n| 6 | Bounded delegation | \"Execute these steps within these limits; escalate if...\" | Repeatable multi-step work with known boundaries. | Silent scope creep, missed exceptions, weak observability. |\n| 7 | Monitored autonomy | \"Operate within this policy and report exceptions.\" | Mature, well-instrumented workflows with strong controls. | Dangerous without auditability, rollback, and accountable ownership. |",
+              "shows": "The seven modes require progressively clearer intent, proven competence, bounded control, and review as autonomy rises.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Human-AI Leadership Ladder ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "controlling_idea": "Leaders make the ladder useful by identifying the level their work actually requires.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The seven modes have different uses and failure modes.",
+            "introduces": "Leaders make the ladder useful by identifying the level their work actually requires.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "controlling_idea": "The same level choice ranges from formatting notes to continuously operating production workflows.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Leaders need to identify the level a task requires.",
+            "introduces": "The same level choice ranges from formatting notes to continuously operating production workflows.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Level 1 reformats notes; Level 3 challenges a migration plan; Levels 4 or 5 compare adoption options; Level 6 opens issues, changes files, runs checks, and proposes a pull request; Level 7 operates continuously in production.",
+              "shows": "More consequential and autonomous work increases the required context and governance."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "controlling_idea": "High-autonomy tools paired with low-maturity language create leadership failure.",
+          "function": "claim",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Higher-level workflows impose a larger governance burden.",
+            "introduces": "High-autonomy tools paired with low-maturity language create leadership failure.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "controlling_idea": "A lightweight spec exposes the intent and review expectations that autonomous tools would otherwise infer.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Autonomy can outrun the maturity of the language around the work.",
+            "introduces": "A lightweight spec exposes the intent and review expectations that autonomous tools would otherwise infer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "language-shift",
+      "heading": "The Shift Is in the Language",
+      "controlling_idea": "The shift from command to intent adds the decision structure required to judge an output, not merely a longer prompt.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "The shift from command to intent adds the decision structure required to judge an output, not merely a longer prompt."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Written intent exposes the context and review expectations that an autonomous workflow needs.",
+        "introduces": "The shift from command to intent adds the decision structure required to judge an output, not merely a longer prompt.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Show a bare command and explain what it lacks before presenting the intent version and interpreting each added element. Reversing the pair would make prompt length look like the lesson."
+      },
+      "paragraphs": [
+        {
+          "id": "p30",
+          "controlling_idea": "An adoption-strategy prompt illustrates how a command becomes an intent statement.",
+          "function": "context",
+          "form": "prose"
+        },
+        {
+          "id": "p31",
+          "controlling_idea": "A bare adoption-strategy command requests a document without the decision context.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The comparison concerns an AI-assisted-development adoption decision.",
+            "introduces": "A bare adoption-strategy command requests a document without the decision context.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> Write a strategy for adopting AI-assisted development across engineering.",
+              "shows": "A bare adoption-strategy command requests a document without the decision context.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Shift Is in the Language ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "controlling_idea": "The command can generate a plausible draft but leaves the leadership context unspecified.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The command asks only for an adoption strategy.",
+            "introduces": "The command can generate a plausible draft but leaves the leadership context unspecified.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "controlling_idea": "The intent prompt makes the adoption decision and its evaluation boundaries inspectable.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The bare command omitted purpose, constraints, organizational readiness, and criteria.",
+            "introduces": "The intent prompt makes the adoption decision and its evaluation boundaries inspectable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> I intend to help our engineering leadership team decide how to introduce AI-assisted development over the next two quarters without reducing code quality, weakening security review, or overwhelming managers. We have 180 engineers across eight product groups, uneven AI experience, strong security concerns, and pressure to improve delivery speed.  \n>\n> Help me compare three adoption paths: a central enablement team, embedded champions, and broad access with lightweight guardrails. For each path, identify prerequisites, risks, manager workload, security implications, early signals of success, and reasons to stop. Ask clarifying questions before recommending a path.",
+              "shows": "The intent prompt makes the adoption decision and its evaluation boundaries inspectable.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Shift Is in the Language ¶4"
+            }
+          ]
+        },
+        {
+          "id": "p34",
+          "controlling_idea": "The added prompt elements perform leadership functions rather than merely increasing length.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The intent prompt supplies the decision context and boundaries.",
+            "introduces": "The added prompt elements perform leadership functions rather than merely increasing length.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Prompt element | Leadership function |\n| --- | --- |\n| \"I intend to...\" | States purpose and ownership. |\n| \"over the next two quarters\" | Defines time horizon. |\n| \"without reducing...\" | Names constraints and non-negotiables. |\n| \"180 engineers...\" | Supplies operating context. |\n| \"compare three paths\" | Defines the decision space. |\n| \"prerequisites, risks...\" | Makes evaluation criteria explicit. |\n| \"reasons to stop\" | Builds in escalation and safety. |\n| \"Ask clarifying questions\" | Prevents premature confidence. |",
+              "shows": "The added prompt elements perform leadership functions rather than merely increasing length.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: The Shift Is in the Language ¶5"
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "controlling_idea": "Intent-based collaboration makes output reviewable by clarifying work, boundaries, and accountability.",
+          "function": "synthesis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Each prompt element supplies a leadership function.",
+            "introduces": "Intent-based collaboration makes output reviewable by clarifying work, boundaries, and accountability.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3: assets/images/leadership-ladder/command-to-intent-language-shift.jpeg. Caption: Intent-based language turns a request into a reviewable boundary for AI-assisted work.",
+              "shows": "Intent-based language turns a request into a reviewable boundary for AI-assisted work.",
+              "source": "assets/images/leadership-ladder/command-to-intent-language-shift.jpeg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "written-intent",
+      "heading": "Spec-Driven Development Is Intent Written Down",
+      "controlling_idea": "A written spec gives both AI and humans an inspectable contract before execution and during review.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "A written spec gives both AI and humans an inspectable contract before execution and during review."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Intent-based language creates a reviewable boundary around the work.",
+        "introduces": "A written spec gives both AI and humans an inspectable contract before execution and during review.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Define the wider purpose of a spec before contrasting implicit and explicit agreements, then give internal examples, map fields to the ladder, and state the practical rule. The field mapping relies on the earlier ladder and examples."
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "controlling_idea": "Spec-driven delivery provides a useful implementation-and-review loop whose leadership purpose extends beyond software.",
+          "function": "context",
+          "form": "prose"
+        },
+        {
+          "id": "p37",
+          "controlling_idea": "A spec makes intent inspectable.",
+          "function": "claim",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The implementation-and-review loop has a broader leadership purpose.",
+            "introduces": "A spec makes intent inspectable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "controlling_idea": "Without a written contract the leader and AI can operate from different implicit understandings.",
+          "function": "cause_effect",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Inspectable intent gives both sides something explicit to examine.",
+            "introduces": "Without a written contract the leader and AI can operate from different implicit understandings.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "controlling_idea": "A spec supplies a shared target and review criteria before and after work.",
+          "function": "explanation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Implicit agreements let coherent output miss the actual intent.",
+            "introduces": "A spec supplies a shared target and review criteria before and after work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4: assets/images/leadership-ladder/spec-as-intent-contract.jpeg. Caption: A spec makes intent inspectable before AI acts and reviewable after it produces work.",
+              "shows": "A spec makes intent inspectable before AI acts and reviewable after it produces work.",
+              "source": "assets/images/leadership-ladder/spec-as-intent-contract.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "p40",
+          "controlling_idea": "The sibling outcome spec is the writing contract while the article is the published artifact.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A written contract lets humans inspect intent before and after work.",
+            "introduces": "The sibling outcome spec is the writing contract while the article is the published artifact.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The existing spec-driven-authoring cross-link and the post contract covering intent, audience, criteria, non-goals, uncertainty, decisions, sources, and history.",
+              "shows": "The same visible contract is used for substantive writing in this repository; the migrated local file is spec.json.",
+              "source": "spec-driven-authoring"
+            }
+          ]
+        },
+        {
+          "id": "p41",
+          "controlling_idea": "The same contract pattern can connect product intent to wider delivery and organizational decisions.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Authoring uses a visible contract rather than treating the article as its own intent.",
+            "introduces": "The same contract pattern can connect product intent to wider delivery and organizational decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The existing product-architecture cross-link connects product value, delivery, implementation, teams, roadmap, and evidence.",
+              "shows": "Written intent can organize work across a broader system than an individual writing task.",
+              "source": "what-is-spec-driven-product-architecture"
+            }
+          ]
+        },
+        {
+          "id": "p42",
+          "controlling_idea": "Spec fields provide the leadership functions needed to move from requests toward intent and bounded delegation.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The contract pattern applies across writing, software, and product architecture.",
+            "introduces": "Spec fields provide the leadership functions needed to move from requests toward intent and bounded delegation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Spec element | Leadership function | Ladder effect |\n| --- | --- | --- |\n| Intent | Names the outcome and accountable purpose. | Moves from task execution to outcome orientation. |\n| Audience or users | Identifies who the work must serve. | Prevents generic output. |\n| Success criteria | Defines how the result will be judged. | Turns review into a checkable activity. |\n| Non-goals | Sets boundaries and prevents scope creep. | Makes delegation safer. |\n| Open questions | Makes uncertainty visible. | Creates escalation triggers. |\n| Sources and context | Grounds the work in existing knowledge. | Reduces invention and context loss. |\n| Decision log | Records why the path was chosen. | Keeps accountability visible. |\n| Tests, validation, or review checklist | Checks whether the result matches intent. | Demonstrates competence before more autonomy is granted. |",
+              "shows": "Spec fields provide the leadership functions needed to move from requests toward intent and bounded delegation.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Spec-Driven Development Is Intent Written Down ¶7"
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "controlling_idea": "A spec concentrates human judgment at the moments when direction and trade-offs must be decided.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Spec fields expose purpose, uncertainty, boundaries, and validation.",
+            "introduces": "A spec concentrates human judgment at the moments when direction and trade-offs must be decided.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p44",
+          "controlling_idea": "Consequential work deserves intent written as a spec rather than a prompt alone.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A spec preserves human judgment before work, at reviews, and when trade-offs appear.",
+            "introduces": "Consequential work deserves intent written as a spec rather than a prompt alone.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "architecture-example",
+      "heading": "Example 1: Architecture Trade-Off Review",
+      "controlling_idea": "Architecture review becomes useful when the AI tests a visible intent against operational context while the engineer keeps the decision.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Architecture review becomes useful when the AI tests a visible intent against operational context while the engineer keeps the decision."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Consequential work needs a written decision frame before AI contributes.",
+        "introduces": "Architecture review becomes useful when the AI tests a visible intent against operational context while the engineer keeps the decision.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Name the illustrative decision, show the weak request and its missing context, then the intent version and its meaning. Keeping the diagnosis between the two prompts makes the improvement visible."
+      },
+      "paragraphs": [
+        {
+          "id": "p45",
+          "controlling_idea": "A principal engineer has to decide whether selected services should use event-driven architecture.",
+          "function": "context",
+          "form": "prose",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The existing illustrative order-platform review, with event-driven architecture introduced as services responding to events.",
+              "shows": "Architecture is a consequential decision whose operating context matters."
+            }
+          ]
+        },
+        {
+          "id": "p46",
+          "controlling_idea": "A general question about event-driven architecture invites a pattern comparison rather than a local decision.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The principal engineer needs a decision about selected services.",
+            "introduces": "A general question about event-driven architecture invites a pattern comparison rather than a local decision.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> Should we use event-driven architecture for our order platform?",
+              "shows": "A general question about event-driven architecture invites a pattern comparison rather than a local decision.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 1: Architecture Trade-Off Review ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p47",
+          "controlling_idea": "Generic architectural trade-offs do not establish whether the pattern fits this team and migration.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The weak question supplies neither the local goal nor operational constraints.",
+            "introduces": "Generic architectural trade-offs do not establish whether the pattern fits this team and migration.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p48",
+          "controlling_idea": "The intent version names the migration goal, constraints, current capability, and questions the engineer needs to decide.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The generic comparison lacks the operational context needed for a decision.",
+            "introduces": "The intent version names the migration goal, constraints, current capability, and questions the engineer needs to decide.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> I intend to decide whether our order platform should move selected workflows toward event-driven architecture in the next six months. The goal is to reduce coupling between inventory, payments, and fulfillment without increasing incident response time or making debugging harder for on-call teams.  \n>\n> Context: we have six services, two teams, uneven eventing experience, a growing number of cross-service incidents, and limited observability. Payments must remain strongly auditable. Fulfillment can tolerate some delay, but customer communication cannot be inconsistent.  \n>\n> Help me evaluate where event-driven architecture is appropriate, where request/response should remain, what capabilities we must build first, and what migration sequence would reduce risk. State assumptions, ask clarifying questions, and separate \"do now\" from \"defer.\"",
+              "shows": "The intent version names the migration goal, constraints, current capability, and questions the engineer needs to decide.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 1: Architecture Trade-Off Review ¶4"
+            }
+          ]
+        },
+        {
+          "id": "p49",
+          "controlling_idea": "Context-rich AI review improves the conditions for architecture judgment without taking the decision from the engineer.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The stronger prompt makes assumptions, constraints, and evaluation visible.",
+            "introduces": "Context-rich AI review improves the conditions for architecture judgment without taking the decision from the engineer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Without intent | With intent |\n| --- | --- |\n| AI gives a generic pattern comparison. | AI evaluates the pattern against operational maturity, service boundaries, auditability, and migration risk. |\n| The leader receives plausible advice but must reconstruct the context afterward. | The leader uses AI to stress-test a context-rich decision. |\n| The output may sound confident while hiding assumptions. | The interaction requires assumptions and clarifying questions to be surfaced. |",
+              "shows": "Context-rich AI review improves the conditions for architecture judgment without taking the decision from the engineer.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 1: Architecture Trade-Off Review ¶5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delivery-example",
+      "heading": "Example 2: Delivery Risk Review",
+      "controlling_idea": "Delivery-risk review becomes useful when AI evaluates the actual commitment against capacity and constraints while the director keeps approval.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Delivery-risk review becomes useful when AI evaluates the actual commitment against capacity and constraints while the director keeps approval."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The architecture example exposes context so AI can aid an accountable decision.",
+        "introduces": "Delivery-risk review becomes useful when AI evaluates the actual commitment against capacity and constraints while the director keeps approval.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Repeat the architecture example structure for a different leadership decision, so the reader can transfer the pattern without learning a new comparison format."
+      },
+      "paragraphs": [
+        {
+          "id": "p50",
+          "controlling_idea": "An engineering director needs to decide whether a product group can commit to its quarterly plan.",
+          "function": "context",
+          "form": "prose",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The existing illustrative delivery-risk review concerns a quarterly product-group commitment.",
+              "shows": "The same intent pattern applies to organizational capacity rather than an architectural pattern."
+            }
+          ]
+        },
+        {
+          "id": "p51",
+          "controlling_idea": "A generic request to review roadmap realism omits the conditions that make a commitment possible.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The director needs to judge whether a quarterly commitment is feasible.",
+            "introduces": "A generic request to review roadmap realism omits the conditions that make a commitment possible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> Review this roadmap and tell me if it is realistic.",
+              "shows": "A generic request to review roadmap realism omits the conditions that make a commitment possible.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 2: Delivery Risk Review ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p52",
+          "controlling_idea": "Roadmap realism depends on operating conditions that the document alone may not contain.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The weak request asks for realism without explaining the organization.",
+            "introduces": "Roadmap realism depends on operating conditions that the document alone may not contain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p53",
+          "controlling_idea": "The intent version directs AI toward the capacity and risk evidence needed for approval.",
+          "function": "example",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The roadmap alone omits capacity, unfinished work, and the credibility of estimates.",
+            "introduces": "The intent version directs AI toward the capacity and risk evidence needed for approval.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "> I intend to decide whether this product group can commit to the Q3 roadmap without creating hidden delivery risk. I do not want a generic risk list. I want help identifying where the plan is likely to break.  \n>\n> Context: the team has 22 engineers, two new managers, one unresolved reliability program, and three customer commitments already in flight. Last quarter, the team delivered 70% of planned scope and carried over two platform dependencies.  \n>\n> Review the roadmap against capacity, dependency risk, operational load, manager attention, and reversibility. Produce three outputs: risks that require leadership action, risks the team can manage locally, and questions I should ask before approving the plan.",
+              "shows": "The intent version directs AI toward the capacity and risk evidence needed for approval.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 2: Delivery Risk Review ¶4"
+            }
+          ]
+        },
+        {
+          "id": "p54",
+          "controlling_idea": "The director uses AI as a reasoning aid while retaining the decision to commit, change scope, or pause.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The intent prompt exposes constraints and separates risks by the action they require.",
+            "introduces": "The director uses AI as a reasoning aid while retaining the decision to commit, change scope, or pause.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Without intent | With intent |\n| --- | --- |\n| The director receives a polished risk summary that may miss the organization's real failure modes. | The director asks AI to evaluate the plan against specific capacity, dependency, and operational constraints. |\n| The AI may optimize for completeness. | The AI is directed toward decision usefulness. |\n| Approval pressure remains hidden. | The prompt makes the leadership decision explicit: whether to commit, change scope, or pause. |",
+              "shows": "The director uses AI as a reasoning aid while retaining the decision to commit, change scope, or pause.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Example 2: Delivery Risk Review ¶5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "autonomy-guardrails",
+      "heading": "Guardrails Scale With Autonomy",
+      "controlling_idea": "Higher autonomy is warranted only when intent, competence evidence, and bounded control can be checked.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Higher autonomy is warranted only when intent, competence evidence, and bounded control can be checked."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The examples keep consequential judgment and approval with humans.",
+        "introduces": "Higher autonomy is warranted only when intent, competence evidence, and bounded control can be checked.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Explain why prompts alone are insufficient, establish the three prerequisites, show how a failed prerequisite changes the level choice, and synthesize the observability rule. A list of controls before the decision rule would encourage a checklist without a gate."
+      },
+      "paragraphs": [
+        {
+          "id": "p55",
+          "controlling_idea": "At Levels 5 through 7, prompt quality must be supported by an operating model.",
+          "function": "claim",
+          "form": "prose"
+        },
+        {
+          "id": "p56",
+          "controlling_idea": "Clear intent, demonstrated competence, and bounded control are the three gates for more autonomy.",
+          "function": "recommendation",
+          "form": "list",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Higher ladder levels need an operating model.",
+            "introduces": "Clear intent, demonstrated competence, and bounded control are the three gates for more autonomy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p57",
+          "controlling_idea": "When any autonomy gate is missing, strengthen the controls or keep the work at a lower level.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "More autonomy requires all three gates to be satisfied.",
+            "introduces": "When any autonomy gate is missing, strengthen the controls or keep the work at a lower level.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "| Guardrail | Why it matters | Practical test |\n| --- | --- | --- |\n| Scope | Prevents the AI from expanding the task silently. | Can you state what the system may and may not touch? |\n| Competence evidence | Prevents trust from being based on demos or confidence. | Have you seen reliable performance on representative work? |\n| Observability | Makes AI-assisted work inspectable. | Can a human reconstruct what happened and why? |\n| Review checkpoints | Keeps judgment in the loop. | Does the workflow stop before consequential decisions? |\n| Stop conditions | Defines when the system must pause. | Are uncertainty, errors, missing context, or policy conflicts explicit escalation triggers? |\n| Rollback | Reduces the cost of mistakes. | Can you undo or contain the action quickly? |\n| Ownership | Keeps accountability human. | Is one person or team accountable for the outcome? |",
+              "shows": "When any autonomy gate is missing, strengthen the controls or keep the work at a lower level.",
+              "source": "_journals/ai-notes/posts/leadership-ladder/index.md: Guardrails Scale With Autonomy ¶3"
+            }
+          ]
+        },
+        {
+          "id": "p58",
+          "controlling_idea": "Autonomy without observability permits drift because people cannot inspect or contain delegated work.",
+          "function": "synthesis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Scope, evidence, observability, review, stopping, rollback, and ownership make the gates practical.",
+            "introduces": "Autonomy without observability permits drift because people cannot inspect or contain delegated work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 5: assets/images/leadership-ladder/guardrails-scale-with-autonomy.jpeg. Caption: As AI autonomy increases, guardrails must scale with it; otherwise delegation becomes drift.",
+              "shows": "As AI autonomy increases, guardrails must scale with it; otherwise delegation becomes drift.",
+              "source": "assets/images/leadership-ladder/guardrails-scale-with-autonomy.jpeg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "failure-modes",
+      "heading": "Common Failure Modes",
+      "controlling_idea": "Collaboration fails when language, output fluency, or autonomy conceals the human decisions and controls the work still needs.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Collaboration fails when language, output fluency, or autonomy conceals the human decisions and controls the work still needs."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Guardrails make more autonomous work inspectable and accountable.",
+        "introduces": "Collaboration fails when language, output fluency, or autonomy conceals the human decisions and controls the work still needs.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Move from misleading signals in prompts and outputs to failures in judgment, autonomous workflow boundaries, and ownership. This groups symptoms by what they conceal rather than scattering warnings through the instruction sequence."
+      },
+      "paragraphs": [
+        {
+          "id": "p59",
+          "controlling_idea": "Intent-based collaboration has recognizable traps in daily practice.",
+          "function": "context",
+          "form": "prose"
+        },
+        {
+          "id": "p60",
+          "controlling_idea": "Long prompts can conceal that the leader has not decided what matters.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Intent-based collaboration can fail despite apparent agreement.",
+            "introduces": "Long prompts can conceal that the leader has not decided what matters.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p61",
+          "controlling_idea": "Fluent artifact production is not the same as carrying work into a decision or commitment.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Surface signals such as prompt length can be mistaken for clarity.",
+            "introduces": "Fluent artifact production is not the same as carrying work into a decision or commitment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p62",
+          "controlling_idea": "Accepting an untested AI recommendation transfers judgment through an unexamined assumption.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Polished generated work does not itself constitute leadership.",
+            "introduces": "Accepting an untested AI recommendation transfers judgment through an unexamined assumption.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p63",
+          "controlling_idea": "Agentic work requires boundaries and an audit trail around its planning, actions, and feedback.",
+          "function": "definition",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Judgment can be hidden inside an unchecked recommendation.",
+            "introduces": "Agentic work requires boundaries and an audit trail around its planning, actions, and feedback.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p64",
+          "controlling_idea": "A cooperative tone does not give AI an understanding of responsibility.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Agentic language can conceal absent controls.",
+            "introduces": "A cooperative tone does not give AI an understanding of responsibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p65",
+          "controlling_idea": "A plan must name the human approver and reasoning so accountability remains visible.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Neither autonomous behavior nor human-like tone confers responsibility.",
+            "introduces": "A plan must name the human approver and reasoning so accountability remains visible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "role-implications",
+      "heading": "What This Means for Technology Leaders",
+      "controlling_idea": "Every technology-leadership role must make the AI-assisted work explicit in the decisions and reviews it owns.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "Every technology-leadership role must make the AI-assisted work explicit in the decisions and reviews it owns."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Failure modes conceal human decisions unless an approver and reasoning remain visible.",
+        "introduces": "Every technology-leadership role must make the AI-assisted work explicit in the decisions and reviews it owns.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Define the shared leadership capabilities before translating the operational ladder by role, then state the common responsibility. Role advice before the shared framing could sound like separate unrelated AI practices."
+      },
+      "paragraphs": [
+        {
+          "id": "p66",
+          "controlling_idea": "The ladder is a daily expression of agency, judgment, and persuasion: initiating action, choosing in context, and bringing people into a decision.",
+          "function": "explanation",
+          "form": "prose",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The existing link to prepare-for-ai-future offers the fuller treatment of agency, judgment, and persuasion.",
+              "shows": "The capabilities are named with short glosses here so the later essay is further reading rather than a prerequisite.",
+              "source": "prepare-for-ai-future"
+            }
+          ]
+        },
+        {
+          "id": "p67",
+          "controlling_idea": "Principal and staff engineers use AI to deepen technical reasoning while keeping judgment human.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The ladder translates shared leadership capabilities into daily work.",
+            "introduces": "Principal and staff engineers use AI to deepen technical reasoning while keeping judgment human.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p68",
+          "controlling_idea": "Engineering managers make AI use and review visible so teams can learn and protect quality.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Technical leaders retain judgment over AI-assisted reasoning.",
+            "introduces": "Engineering managers make AI use and review visible so teams can learn and protect quality.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p69",
+          "controlling_idea": "Directors, VPs, and CTOs match AI autonomy to the organization's readiness.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Managers need visible review and quality expectations.",
+            "introduces": "Directors, VPs, and CTOs match AI autonomy to the organization's readiness.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p70",
+          "controlling_idea": "Architects connect generated artifacts to the conditions that make decisions sustainable.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Organizational readiness determines what autonomy can be absorbed.",
+            "introduces": "Architects connect generated artifacts to the conditions that make decisions sustainable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p71",
+          "controlling_idea": "Across roles, greater AI capability requires leaders to become more explicit about the work.",
+          "function": "synthesis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Each leadership role supplies judgment or context that artifacts cannot own.",
+            "introduces": "Across roles, greater AI capability requires leaders to become more explicit about the work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "weekly-practice",
+      "heading": "A Practice for This Week",
+      "controlling_idea": "A leader can practice accountable AI collaboration by making one real interaction's intent, boundaries, and review explicit before generation.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "C6"
+        ],
+        "how": "A leader can practice accountable AI collaboration by making one real interaction's intent, boundaries, and review explicit before generation."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "All leadership roles must become more explicit about the work.",
+        "introduces": "A leader can practice accountable AI collaboration by making one real interaction's intent, boundaries, and review explicit before generation.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "chronological",
+        "rationale": "Choose a real interaction, decide whether it needs a spec, write its frame and evidence requirements, ask AI to check the frame, then assess why the sequence works. Producing the artifact first would defeat the practice."
+      },
+      "paragraphs": [
+        {
+          "id": "p72",
+          "controlling_idea": "Choose one consequential AI interaction and rewrite it as an intent statement.",
+          "function": "recommendation",
+          "form": "prose"
+        },
+        {
+          "id": "p73",
+          "controlling_idea": "Use a small spec when a mistaken result would matter.",
+          "function": "recommendation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The practice starts with one real AI interaction.",
+            "introduces": "Use a small spec when a mistaken result would matter.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p74",
+          "controlling_idea": "An intent statement makes the outcome, context, decision space, limits, and review explicit.",
+          "function": "process",
+          "form": "list",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The spec is a reviewable boundary between intent and execution.",
+            "introduces": "An intent statement makes the outcome, context, decision space, limits, and review explicit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p75",
+          "controlling_idea": "A spec also records the inputs, validation, and change history needed to inspect the work.",
+          "function": "process",
+          "form": "list",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The intent frame states the outcome and decision boundaries.",
+            "introduces": "A spec also records the inputs, validation, and change history needed to inspect the work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p76",
+          "controlling_idea": "AI should clarify and test the decision frame before producing the artifact.",
+          "function": "process",
+          "form": "list",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The human has supplied the frame, inputs, and validation expectations.",
+            "introduces": "AI should clarify and test the decision frame before producing the artifact.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p77",
+          "controlling_idea": "Checking the frame first slows work where confidence could otherwise outrun clarity.",
+          "function": "analysis",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "AI restates intent, exposes assumptions, asks questions, and proposes an approach before generation.",
+            "introduces": "Checking the frame first slows work where confidence could otherwise outrun clarity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p78",
+          "controlling_idea": "The same written-intent habit scales from a few prompt bullets to a tracked outcome contract.",
+          "function": "explanation",
+          "form": "prose",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Clarifying the frame before generation is the central habit.",
+            "introduces": "The same written-intent habit scales from a few prompt bullets to a tracked outcome contract.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A small task uses prompt bullets; a feature uses a tracked specification and acceptance tests; product architecture uses a structured source model; this article uses its sibling spec.json.",
+              "shows": "The size of the contract changes with the task while explicit intent remains the common leadership move."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "self-assessment",
+      "heading": "Questions to Consider",
+      "controlling_idea": "Readers can use their current AI interactions to locate missing intent or review before increasing autonomy.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C3",
+          "C5",
+          "C6"
+        ],
+        "how": "Readers can use their current AI interactions to locate missing intent or review before increasing autonomy."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The weekly practice scales explicit intent to the size and consequences of the task.",
+        "introduces": "Readers can use their current AI interactions to locate missing intent or review before increasing autonomy.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Keep the existing questions together after the practice so readers can apply it before the final synthesis; putting them after the references would reopen the argument after its ending."
+      },
+      "paragraphs": [
+        {
+          "id": "p79",
+          "controlling_idea": "The questions help readers distinguish appropriate commands from consequential work that lacks context, a spec, review, or stopping rules.",
+          "function": "recommendation",
+          "form": "list"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Final Thought",
+    "synthesis": "The ladder selects how much work to delegate, the spec makes the decision frame inspectable, and guardrails keep that delegation observable; together they make increased capability usable without hiding human responsibility.",
+    "so_what": "Leaders can use AI to reach better decisions with people who understand the reasoning instead of accumulating polished artifacts whose intent and approval are unclear.",
+    "callback": {
+      "to": "The opening shift from better prompting to asking what intent, boundaries, and review consequential AI work requires.",
+      "how": "The command-to-intent ladder now gives a practical answer: select one real interaction and expose its decision frame, boundaries, and review before generation."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Rewrite one real AI interaction as intent with explicit limits and review, using a spec when the consequences merit it."
+    },
+    "hand_off": {
+      "to": "prepare-for-ai-future",
+      "relationship": "elaboration",
+      "carries_over": "Intent-based collaboration defines the boundaries and evidence needed for AI-assisted work.",
+      "introduces": "The agency, contextual judgment, and persuasion people must practice to set those boundaries and turn outputs into shared decisions."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The self-assessment locates where current interactions lack intent, review, or stopping conditions.",
+      "introduces": "The combined effect of the ladder, written intent, and guardrails on accountable human decisions.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p80",
+        "controlling_idea": "The ladder, written intent, and guardrails together turn growing AI capability into work people can understand, judge, and own.",
+        "function": "synthesis",
+        "form": "prose",
+        "advances_thesis": {
+          "supports": [
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "The ladder, written intent, and guardrails together turn growing AI capability into work people can understand, judge, and own."
+        }
+      },
+      {
+        "id": "p81",
+        "controlling_idea": "The value of AI assistance is better decisions with people who understand the reasoning, rather than more artifacts alone.",
+        "function": "analysis",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Intent and controls connect generated work to accountable decisions.",
+          "introduces": "The value of AI assistance is better decisions with people who understand the reasoning, rather than more artifacts alone.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "The value of AI assistance is better decisions with people who understand the reasoning, rather than more artifacts alone."
+        }
+      },
+      {
+        "id": "p82",
+        "controlling_idea": "The practical climb from command to intent begins by making one real interaction's boundaries and review visible.",
+        "function": "recommendation",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "AI assistance matters when people can use its reasoning to make decisions.",
+          "introduces": "The practical climb from command to intent begins by making one real interaction's boundaries and review visible.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "The practical climb from command to intent begins by making one real interaction's boundaries and review visible."
+        }
+      },
+      {
+        "id": "p83",
+        "controlling_idea": "The next essay develops the agency, contextual judgment, and persuasion people need to set these boundaries and turn output into shared action.",
+        "function": "transition",
+        "form": "prose",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Intent-based collaboration defines the boundaries and evidence needed for AI-assisted work.",
+          "introduces": "The human capabilities required to initiate action, choose in context, and bring others into the decision.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "[[prepare-for-ai-future]] follows this operational ladder with the practice of agency, judgment, and persuasion.",
+            "shows": "The hand-off moves from the agreement that governs AI work to the people who make and carry it.",
+            "source": "prepare-for-ai-future"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C3",
+            "C4",
+            "C5",
+            "C6"
+          ],
+          "how": "The next essay develops the agency, contextual judgment, and persuasion people need to set these boundaries and turn output into shared action."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A full summary of *Turn the Ship Around!* or *Leadership Is Language*."
+    },
+    {
+      "topic": "A general article about leadership in the AI era; [[prepare-for-ai-future]] already covers agency, judgment, and persuasion at that level.",
+      "covered_in": [
+        "prepare-for-ai-future"
+      ]
+    },
+    {
+      "topic": "A generic prompt-engineering guide."
+    },
+    {
+      "topic": "A governance policy for autonomous AI agents."
+    },
+    {
+      "topic": "A claim that AI genuinely has intent, ownership, commitment, or moral agency."
+    },
+    {
+      "topic": "A claim that organizations should grant broad autonomy to AI systems without competence evidence, auditability, and human override."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [],
+  "decision_log": [
+    {
+      "date": "2026-05-28",
+      "decision": "Recommended developing the article as an\n**intent-based human-AI collaboration ladder**. This gives the rough draft a\ndistinct purpose and avoids overlapping too much with\n[[prepare-for-ai-future]]."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Chose Marquet's Intent-Based Leadership as the primary\nsource frame because it contributes a useful language shift: from permission\nand command toward intent, clarity, competence, and distributed decision\nmaking."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Rejected a broad \"AI leadership future\" direction because it\nwould repeat the already-developed post on agency, judgment, and persuasion."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Rejected a literal \"AI as leader/teammate\" framing because it\nrisks anthropomorphizing AI and weakening the article's accountability\nargument."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Recommended changing the title because the current title\nsignals the source model but not the article's practical promise."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Accepted the title\n`From Prompting to Intent: The Leadership Ladder for Working with AI` because\nit names both the practical transition and the article mechanism."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Chose architecture trade-off review and delivery-risk review\nas the main examples because they are recognizable technology-leadership\nscenarios and make the distinction between output generation and accountable\njudgment concrete."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Added spec-driven development as the concrete operating\npattern for the ladder: specs make intent, constraints, success criteria,\nvalidation, and review boundaries inspectable before AI acts."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Recommended a future article structure:\n1. Open with the problem: command-style prompting does not scale to agentic\n   AI.\n2. Introduce Marquet: Leader-Leader, Intent-Based Leadership, and why\n   language matters.\n3. Explain the adaptation boundary: AI can act on intent, but humans remain\n   accountable.\n4. Present the Human-AI Leadership Ladder.\n5. Show negative/positive examples at several levels.\n6. Define guardrails for bounded autonomy.\n7. End with practices leaders can try this week."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Proposed ladder shape for the article:\n\n| Level | Human-AI mode | Typical language | Risk if overused |\n| --- | --- | --- | --- |\n| 1 | Command | \"Do this exact task.\" | Brittle outputs; no shared context. |\n| 2 | Prompt/request | \"Draft a proposal for...\" | Polished but context-light artifacts. |\n| 3 | Critique/reflection | \"Here is my thinking; challenge it.\" | Useful feedback, but still reactive. |\n| 4 | Recommendation | \"Compare options and recommend one.\" | AI recommendation may hide assumptions. |\n| 5 | Intent | \"I intend to achieve X under constraints Y; help design the path.\" | Requires human clarity and review discipline. |\n| 6 | Bounded delegation | \"Execute these steps within these limits; escalate if...\" | Needs competence checks, logging, and stop conditions. |\n| 7 | Monitored autonomy | \"Operate within this policy and report exceptions.\" | Dangerous without auditability, ownership, and rollback. |"
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Legacy recommended direction (preserved):\nDevelop the article as a practical **human-AI collaboration ladder** inspired by\nMarquet's model. The ladder should describe how a technology leader's\ninteraction with AI can mature:\n\n1. From exact commands.\n2. To better prompts and requests.\n3. To critique, reflection, and recommendation.\n4. To intent statements with explicit context and constraints.\n5. To bounded delegation with review points.\n6. To monitored autonomy only where evidence, guardrails, logging, ownership,\n   and escalation paths exist.\n\nThis direction is stronger than a broad \"leadership in the AI future\" essay\nbecause it gives the article a concrete mechanism: language creates the\noperating boundary between human responsibility and AI capability. It also makes\nthe article distinct from [[prepare-for-ai-future]], which already covers\nagency, judgment, and persuasion at a broader leadership level.\n\nDo not make the article about \"AI becoming a leader.\" Make it about people\nlearning to lead work in which AI systems can increasingly propose, critique,\nexecute, and monitor within boundaries."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Legacy title alternatives (preserved):\nRecommended:\n\n- `From Prompting to Intent: The Leadership Ladder for Working with AI`\n\nGood alternatives:\n\n- `Intent-Based Leadership for Human-AI Collaboration`\n- `Leading with AI Without Delegating Leadership`\n- `From Commands to Intent: How Technology Leaders Should Work with AI`\n\nAvoid titles that are too broad, such as the current\n`Leading into the AI Future: Applying the Leader-Leader Model`. It is accurate,\nbut it does not tell the reader what practical problem the post solves."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Legacy proposed article shape (preserved):\n1. **Open with the problem**: command-style prompting works for small tasks, but\n   breaks down when AI systems are asked to explore options, make trade-offs, or\n   operate over longer workflows.\n2. **Introduce Marquet briefly**: Leader-Leader replaces \"do what I say\" with\n   intent, clarity, competence, and distributed decision-making.\n3. **Set the adaptation boundary**: AI can work from stated intent, but it does\n   not own consequences. Humans remain accountable for purpose, trade-offs,\n   consent, risk, and escalation.\n4. **Present the Human-AI Leadership Ladder** with levels, example language,\n   appropriate use, and failure modes.\n5. **Show examples**: rewrite weak command prompts into stronger intent-based\n   collaborations, preferably using engineering leadership scenarios.\n6. **Connect to spec-driven development**: show that a spec is the written\n   boundary between human intent and AI execution.\n7. **Define guardrails for higher autonomy**: scope, evidence of competence,\n   logging, review checkpoints, stop conditions, rollback, and human ownership.\n8. **Close with practices**: one or two rituals leaders can try this week, such\n   as writing prompts as intent statements or asking AI to state assumptions and\n   escalation conditions before proceeding."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Legacy drafting guidance (preserved):\n- Use Marquet's model as an analogy and source of leadership language, not as a\n  claim that AI systems are people.\n- Prefer \"AI systems\", \"AI agents\", or \"AI-assisted workflows\" over \"AI\n  teammate\" unless the sentence explicitly keeps human accountability clear.\n- Keep \"agentic AI\" grounded. Use it when discussing workflows that can plan,\n  act, observe results, and continue within constraints; do not use it as a\n  hype label.\n- When describing higher ladder levels, pair every increase in autonomy with a\n  corresponding increase in clarity, competence evidence, observability, and\n  human review.\n- Make the current diagram earn its place. If it remains, relabel it for the\n  AI-specific ladder. Otherwise replace it with a simpler ladder table and a\n  cleaner generated diagram later."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Legacy open-question resolutions (preserved; no unresolved question in that draft):\nNone for the current draft.\n\nResolved in the 2026-05-28 rewrite:\n\n- Adopted `From Prompting to Intent: The Leadership Ladder for Working with AI`\n  as the article title.\n- Focused the ladder on individual and team human-AI interaction, with a short\n  role-specific implications section for technology leaders.\n- Adapted Marquet's model rather than reproducing the original ladder\n  mechanically.\n- Avoided \"AI teammate\" as the core frame and kept human accountability\n  explicit.\n- Removed the broken leadership-section link.\n- Used architecture trade-off review and delivery-risk review as the two main\n  examples.\n- Kept the existing ladder image for now with a more precise caption. A future\n  visual pass could still redraw it, but the article no longer depends on that\n  work."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstruct the published essay as a full paragraph-level outcome spec, preserving its body order and wording except the declared transition, roadmap, conclusion, and terminology clarifications. Copy intent, thesis fields, role, and all three acceptance criteria exactly from the full journal entry; add no criteria. Leave status draft under the author's auto-mode instruction.",
+      "rejected": [
+        "Treating the reconstruction as permission to rewrite the essay or change its journal thesis.",
+        "Inventing a numeric word cap from the reading-time metadata."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Keep all six original introduction units, add a clear incoming bridge from deliberate product change in the first unit, and add one explicit roadmap unit after Figure 1. The roadmap promises the actual body groups and distinguishes this operational article from the next essay's personal leadership capabilities.",
+      "rejected": [
+        "Relying on the three KEY POINTS to predict every section.",
+        "Using vague phrases such as this question without naming the preceding product decision."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Move the unchanged Questions to Consider section immediately before Final Thought. Keep all existing section headings, figures, captions, quotations, tables, callouts, and the intact To Probe Further apparatus. Expand the existing three conclusion units to synthesize the mechanisms, answer why they matter, and give the opening a practical return; add one hand-off unit to prepare-for-ai-future using its declared elaboration relationship.",
+      "rejected": [
+        "Leaving Questions after the references, outside the specified argument.",
+        "Ending on a restated thesis without synthesis, practical consequence, and next-post hand-off."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Where needed, make section bridges name the preceding idea and gloss unfamiliar terms in their existing unit: event-driven architecture as services responding to events, agentic workflows as planning/acting/observing within boundaries, observability as reconstructing what happened, and agency/judgment/persuasion as initiating/choosing in context/bringing people into a decision. Keep the existing examples and their figures unchanged.",
+      "rejected": [
+        "Assuming the reader has already read the later leadership essay.",
+        "Adding new evidence or new company/product claims."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Update only the two article references to its sibling spec.md to spec.json because this authorized migration makes that the local contract. Retain legacy references in historical decisions and source descriptions.",
+      "rejected": [
+        "Leaving the article to point at a removed local contract.",
+        "Changing the historical records to imply outcome specs existed in May 2026."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Legacy success criteria 1–3, 5, 7–9 are covered as reader outcomes by copied AC-1 through AC-3. The inventory aspects of criteria 4 (a ladder with language examples) and 6 (positive/negative examples) are retained as specified evidence supporting AC-1/AC-2 rather than added criteria. Criterion 10 (excerpt, key-points block, and questions) remains a preservation requirement rather than a reader-outcome criterion. Original criteria, preserved for migration traceability:\n- [x] Reader can explain, in two or three sentences, what the Leader-Leader\n      / Intent-Based Leadership model contributes to AI-era leadership.\n- [x] Reader understands that the article is adapting Marquet's model as an\n      analogy, not treating AI as a person or moral agent.\n- [x] Reader can distinguish command-style prompting from intent-based\n      collaboration.\n- [x] Reader sees a practical ladder of human-AI interaction levels, with\n      examples of language at each level.\n- [x] Reader understands that increased AI autonomy requires clarity,\n      competence checks, bounded control, review points, and escalation paths.\n- [x] Reader sees at least one negative and one positive example of human-AI\n      interaction at different maturity levels.\n- [x] Reader can apply one immediate practice, such as rewriting a command\n      prompt into an intent statement with context, constraints, success\n      criteria, and review expectations.\n- [x] Reader understands spec-driven development as a concrete way to turn\n      intent, constraints, validation, and review expectations into an\n      inspectable contract before AI acts.\n- [x] Reader will not leave with the impression that leadership can be\n      delegated to AI or that \"agentic AI\" removes human responsibility.\n- [x] The article has a non-empty excerpt, key-points block, and closing\n      questions that match the recommended direction.",
+      "rejected": [
+        "Turning the preserved content inventories into new blocking acceptance criteria."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The existing published article and legacy spec are the factual authority for this pass; no journal research ledger is present. All names, quantities, dates, qualifications, links, illustrations, and captions remain. The illustrative adoption, architecture, and delivery prompts retain their exact figures and are explicitly presented as examples; no external claim is newly researched or corrected."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Fresh flow review 1 returned sound. Adopt all four drafting notes within existing units: distinguish the definition of false delegation from why artifacts cannot carry accountability; keep Marquet's preliminary boundary statement short before the practical analogy comparison; retain operational/migration constraints in the architecture example and capacity/commitment evidence in the delivery example; keep Questions to Consider a brief diagnostic after the practice. No order, heading, paragraph count, copied intent, thesis, role, or criterion changes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Add the required <br> after the existing three-bullet KEY POINTS callout, as specified by CLAUDE.md and the detailed-article house style. This is markup only: all words, callout lines, front matter, paragraph units, and reading order remain unchanged. No draft readers or finalization have run; regenerate the initial round-1 preparation after this correction."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/leadership-ladder/index.md",
+      "contributed": "Published wording, claims, examples, all quantities, links, tables, illustrations, captions, and the three-bullet KEY POINTS; primary factual authority for this reconstruction."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/leadership-ladder/spec.md (legacy; migrated here)",
+      "contributed": "Accepted intent, source framing, non-goals, modalities, resolved questions, decision history, drafting constraints, sources, and changelog; history retained in this contract."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "The exact full post intent, thesis, role, and acceptance criteria; the leadership-part opening and next-post elaboration hand-off."
+    },
+    {
+      "kind": "internal",
+      "ref": "fashion-driven-software-development",
+      "contributed": "The incoming responsibility for deliberate product decisions about value, trust, and what should remain stable."
+    },
+    {
+      "kind": "internal",
+      "ref": "prepare-for-ai-future",
+      "contributed": "Companion post defining agency, judgment, and persuasion as durable technology-leadership capabilities in the AI transition; the next post in the reading order."
+    },
+    {
+      "kind": "internal",
+      "ref": "spec-driven-authoring",
+      "contributed": "Foundation record defining sibling spec.md files as lightweight contracts for AI-mediated authoring and review (legacy source description preserved); the pattern supplies the writing-contract example."
+    },
+    {
+      "kind": "internal",
+      "ref": "what-is-spec-driven-product-architecture",
+      "contributed": "Broader product architecture example where structured specifications become the durable interface between product intent, implementation, delivery, and AI agents."
+    },
+    {
+      "kind": "external",
+      "ref": "David Marquet, Turn the Ship Around! — https://davidmarquet.com/books/turn-the-ship-around-book/",
+      "contributed": "Source for the Leader-Leader model and the shift from command-and-control toward leadership at every level; inherited from the published article and legacy spec."
+    },
+    {
+      "kind": "external",
+      "ref": "David Marquet, Leadership Is Language — https://davidmarquet.com/books/leadership-is-language/",
+      "contributed": "Source for the claim that leadership language shapes whether people comply, contribute, or think; inherited from the published article and legacy spec."
+    },
+    {
+      "kind": "external",
+      "ref": "David Marquet, Intent-Based Leadership overview — https://davidmarquet.com/",
+      "contributed": "Source for the I intend to language, the Ladder of Leadership, and the distinction between permission and intent; inherited from the legacy spec."
+    },
+    {
+      "kind": "external",
+      "ref": "Intent-Based Leadership — https://www.intentbasedleadership.com/about-us",
+      "contributed": "Supporting source for the broader model: moving away from command-and-control toward leader-leader cultures with clarity, accountability, and distributed decision-making; inherited from the published article and legacy spec."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Added the house-style <br> between KEY POINTS and the introduction before initial reader review; wording, units, metadata, and order unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Recorded fresh flow-review verdict sound and adopted its four drafting notes before revising prose; no order changes. Drafting will distinguish definition from accountability explanation, keep the initial boundary brief, preserve the examples' different constraints, and retain the questions as a diagnostic."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Reconstructed full outcome spec from the published article and legacy spec before prose revision. Copied the finalized journal contract exactly; preserved all historical records. Specified an explicit product-to-leadership bridge and roadmap, the Questions move before Final Thought, an accountable-work synthesis and next-post hand-off, targeted term explanations, and two local spec.json filename updates. Status draft; auto mode permits subsequent drafting. No numeric word limit or extra acceptance criteria added."
+    },
+    {
+      "date": "2026-06-12",
+      "change": "Added Modalities section; the spec now drives `summary.md`,\n`dialog.md`, and `comics.md` alongside the article. Status `accepted`.\n*(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Connected the article more explicitly to spec-driven\ndevelopment, adding a dedicated section and practice guidance that treats\nspecs as written intent boundaries for AI-assisted work. Status `accepted`.\n*(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Rewrote the post to match the spec: new title, excerpt,\nkey points, practical ladder, examples, guardrails, failure modes, role\nimplications, and closing practice. Status `accepted`. *(Zeljko,\nAI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Initial spec for the rough `leadership-ladder` article.\nRecommended the intent-based human-AI collaboration direction and captured\nalternatives, non-goals, sources, and a proposed article structure.\n*(Zeljko, AI-mediated session)*"
+    }
+  ]
+}

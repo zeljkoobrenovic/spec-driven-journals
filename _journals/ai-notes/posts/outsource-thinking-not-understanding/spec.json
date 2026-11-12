@@ -1,0 +1,1640 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "outsource-thinking-not-understanding",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "You Can Outsource Thinking. You Cannot Outsource Understanding.",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed before prose revision from the published index.md and accepted 2026-07-05 spec.md, with every actual prose/list unit mapped using check_draft.py units and outcome_specs.parse_draft. The final journal-spec.json supplies intent, thesis fields and role unchanged. Preserve the existing argument sequence, all original units, three-bullet KEY POINTS, front matter, names, numbers, quotations, links, image paths and captions. This contract specifies two additional units: an introductory roadmap and a concluding hand-off. It also moves the unchanged Questions to Consider section from after references to immediately before Closing Thought, clarifies the accountability sentence that currently contradicts its own paragraph, and asks the closing synthesis to make the capacity consequence explicit. The contract was written and received a sound fresh flow review before its authorized prose revision; the reconstruction mapping is retained in the run scratch directory. No journal fact ledger exists; no new external claims are introduced and no numeric length cap is invented.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The article's distinction between producing an artifact and personally understanding how it works and whether it serves a real need.",
+        "Why faster generation can leave human comprehension as the limiting step."
+      ],
+      "believe": [
+        "Outsourcing production does not transfer ownership or understanding to the person receiving the result.",
+        "Active reconstruction and questioning can build understanding while passive acceptance does not ensure it."
+      ],
+      "can_do": [
+        "Re-derive a generated design from a simple version, with each change motivated by a problem.",
+        "Test whether they can explain, change, and assess the value of generated work."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader distinguishes outsourced production from understanding how an artifact works and whether it serves its context.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "An AI produces a correct-looking design. What two kinds of understanding must its human owner still develop, and why?",
+        "expected": "How the design works well enough to explain, change, and debug it; whether it solves the real problem under local constraints. A produced artifact does not itself supply that personal grasp or accountable judgment."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader explains why faster generation can increase comprehension debt and separates passive delegation from active AI use.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Why can improving models leave humans more constrained, and what kind of AI use does the article caution against?",
+        "expected": "More artifacts arrive faster than people can understand and relate them to reality; accepting output passively can leave comprehension debt, while questioning and reconstructing it keeps humans engaged. The cited studies are cautions with their stated limits."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader can describe the reconstruction method as a human learning path rather than a claim to reveal the model's internal reasoning.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "How would you use the article's method to understand a generated design before owning it?",
+        "expected": "Start with the simplest working version, expose one limitation, make one motivated design decision, and repeat; explain why each part exists and test its fit to the real need, without treating the story as the model's actual internal process."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What must people retain when AI can produce the designs, code, and analyses they need?",
+    "claim": "People can delegate artifact production to AI, but must build their own understanding of how the result works and whether it serves a real need, using active questioning and stepwise reconstruction before taking ownership.",
+    "disputed_by": "The view that a correct generated artifact, accompanied by a fluent explanation, gives its recipient enough understanding to own it without further learning.",
+    "so_what": "Teams need time and practices for comprehension, or the volume of generated work can grow beyond their ability to explain, maintain, and judge it.",
+    "how_why": "Understanding connects causes, trade-offs, and local context in a person; generation increases artifact supply faster than human attention, while reconstruction makes each design choice answer a problem the learner has encountered.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Producing an artifact does not give its recipient the personal grasp of causes and reasons needed to understand it."
+      },
+      {
+        "id": "S2",
+        "claim": "Faster generation can increase the volume awaiting human comprehension without supplying that comprehension."
+      },
+      {
+        "id": "S3",
+        "claim": "Owning generated work requires understanding both how it functions and whether it serves the particular people and constraints it meets."
+      },
+      {
+        "id": "S4",
+        "claim": "Passive acceptance can leave comprehension debt, while active use keeps learning and scrutiny in the work."
+      },
+      {
+        "id": "S5",
+        "claim": "Reconstructing a design from a simple version, one motivated decision at a time, gives people a practical path to understanding it."
+      },
+      {
+        "id": "S6",
+        "claim": "Teams should make explanation, active questioning, and time for contextual judgment part of accepting generated work."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Locates the human comprehension constraint that remains after teams improve generation and delivery mechanics.",
+    "supports": [
+      "S4"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "the-line through how-and-whether"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "the-cost"
+      },
+      {
+        "pattern": "chronological",
+        "applies_to": "re-derive p35: the worked design path"
+      }
+    ],
+    "rationale": "Begin with the familiar mistake of equating possession of output with understanding, then show why increasing supply makes that mistake consequential. Explain the distinction before grounding it in real use, and ground real use before separating how from whether. The costs of passive acceptance motivate the stepwise reconstruction method; the method makes the Monday practices and self-assessment questions usable. Questions move before Closing Thought so reflection leads into the synthesis and the next-post hand-off rather than reopening the essay after references. Moving the method before the explanation of personal understanding would make it look like a prompting trick; moving the studies before the ownership problem would invite an anti-AI reading. The introduction already defines the basic terms, so the asymmetry section can use them before their deeper philosophical explanation."
+  },
+  "introduction": {
+    "hook": {
+      "type": "provocative_quotation",
+      "content": "You can outsource your thinking, but you cannot outsource your understanding."
+    },
+    "bridge": {
+      "from_reader_world": "The reader has received a fluent, correct-looking AI answer, design, code change or analysis and feels the work may be finished.",
+      "to_topic": "Ask what that possession proves about the reader’s own grasp, connecting the preceding essay’s relocated bottleneck to the comprehension that generated artifacts cannot acquire for their recipients."
+    },
+    "thesis_statement": {
+      "text": "Let AI produce the artifact, but build your own understanding of how it works and whether it meets the real need by questioning and reconstructing it before taking ownership.",
+      "placement": "The preserved KEY POINTS bullets establish the claim; introduction p03 states it in prose after defining the two acts."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Show the familiar mistake of equating a produced result with understanding and why faster generation puts pressure on it.",
+          "kept_in": [
+            "the-line",
+            "the-asymmetry"
+          ]
+        },
+        {
+          "promise": "Use the philosophical distinction and the last human mile to explain why understanding concerns both workings and contextual value.",
+          "kept_in": [
+            "the-distinction",
+            "meets-reality",
+            "how-and-whether"
+          ]
+        },
+        {
+          "promise": "Use the automation warning and qualified studies to examine the cost of passive acceptance.",
+          "kept_in": [
+            "the-cost"
+          ]
+        },
+        {
+          "promise": "Work through a design one motivated choice at a time, then turn that method into Monday practices and questions for the reader’s team.",
+          "kept_in": [
+            "re-derive",
+            "monday",
+            "questions"
+          ]
+        }
+      ],
+      "placement": "New final introduction paragraph p04, after the existing three introduction paragraphs."
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "form": "prose",
+        "controlling_idea": "The line popularized by Karpathy names a practical distinction between delegating production and acquiring understanding.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "The title line, repeated by Andrej Karpathy, in the existing opening; retain the intact three-bullet KEY POINTS callout before it.",
+            "shows": "The hook frames the essay as an examination of what receiving generated work leaves the human to do.",
+            "source": "Existing index.md introduction and To Probe Further; original quote author uncertain."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "The line popularized by Karpathy names a practical distinction between delegating production and acquiring understanding."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "A faster production stage can move the constraint to a slower stage that still needs attention.",
+          "introduces": "Human understanding as the constraint that artifact generation cannot remove on its recipient's behalf.",
+          "form": "paragraph",
+          "placement": "both"
+        }
+      },
+      {
+        "id": "p02",
+        "form": "prose",
+        "controlling_idea": "A correct answer can tempt its recipient to assume that understanding came with it.",
+        "function": "counterargument",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The claim that thinking can be delegated while understanding cannot.",
+          "introduces": "The reader’s plausible objection that a correct answer should be enough.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "If AI answers correctly, what remains to understand?",
+            "shows": "States the attractive assumption the rest of the essay must answer."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "A correct answer can tempt its recipient to assume that understanding came with it."
+        }
+      },
+      {
+        "id": "p03",
+        "form": "prose",
+        "controlling_idea": "Thinking here means producing an artifact, while understanding is the recipient’s grasp of its workings and fit to need.",
+        "function": "definition",
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The assumption that receiving the answer gives the recipient understanding.",
+          "introduces": "The operational distinction and the responsibility to build understanding actively.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "A draft, diagram, function, argument, or plan can be produced by a machine; the person still has to grasp how it fits together and whether it serves the need.",
+            "shows": "Defines the article’s terms without treating production and personal learning as the same act.",
+            "source": "Existing introduction ¶3"
+          },
+          {
+            "kind": "reasoning",
+            "what": "The previous essay’s point that faster production can move the constraint downstream applies here to human comprehension.",
+            "shows": "Connects the standalone distinction to the journal’s incoming elaboration, not to a claim that all AI use has one fixed effect.",
+            "source": "[[ai-is-an-amplifier-not-an-accelerator]]; incoming journal transition"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          "how": "Thinking here means producing an artifact, while understanding is the recipient’s grasp of its workings and fit to need."
+        }
+      },
+      {
+        "id": "p04",
+        "form": "prose",
+        "controlling_idea": "The essay follows the production–understanding gap from its growing pressure and conceptual basis to contextual ownership, passive-use risks, reconstruction, and practical checks.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The distinction between an artifact and the recipient’s grasp of it.",
+          "introduces": "The path by which the essay will turn the distinction into a working practice.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Preview the familiar confusion, the asymmetry, the philosophical distinction, the last human mile, how and whether, qualified studies, the stepwise system-design example, Monday moves and team questions.",
+            "shows": "Lets a reader predict every body section and the mix of reflection, attributed evidence, contrast tables and a worked method."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "The essay follows the production–understanding gap from its growing pressure and conceptual basis to contextual ownership, passive-use risks, reconstruction, and practical checks."
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "the-line",
+      "heading": "The Line We Keep Blurring",
+      "controlling_idea": "Possessing a generated result can conceal the absence of anyone able to explain or repair it.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Makes the receiving-artifact versus acquiring-understanding distinction visible in familiar engineering work."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The introduction distinguishes artifact production from personal understanding.",
+        "introduces": "A service design, migration and risk analysis make the confusion concrete.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "The brief invitation introduces the mistaken inference, the examples let the reader recognize it, their missing understanding exposes the failure, and the final distinction names what the examples establish. Putting the conclusion first would remove the recognition the examples provide."
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "prose",
+          "controlling_idea": "The confusion becomes visible when we watch generated artifacts arrive in everyday work.",
+          "function": "transition"
+        },
+        {
+          "id": "p06",
+          "form": "prose",
+          "controlling_idea": "A team can mistake receiving designs, migrations and analyses for gaining the understanding those artifacts seem to represent.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The invitation to watch production and understanding collapse into one.",
+            "introduces": "A sequence of familiar generated outputs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The illustrative sequence: ask for a service design, then a migration, then a risk analysis; the organization now “has” each.",
+              "shows": "A produced artifact encourages the inference that the organization has also acquired the judgment behind it.",
+              "source": "Existing The Line We Keep Blurring ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p07",
+          "form": "prose",
+          "controlling_idea": "The same artifacts may leave their recipients unable to explain a design choice, fix a migration, or recognize a risk.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The organization now possesses the design, migration and risk analysis.",
+            "introduces": "What those artifacts do not establish about the recipient’s understanding.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A queue rather than a direct call; traffic tripling; an unrepairable migration; an unrecognized risk.",
+              "shows": "Correct-looking results do not show that anyone can reason about their choices and failures.",
+              "source": "Existing The Line We Keep Blurring ¶3"
+            }
+          ]
+        },
+        {
+          "id": "p08",
+          "form": "prose",
+          "controlling_idea": "The artifact shows that production happened, not that understanding exists in its owner.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The gap between possessing outputs and being able to reason about them.",
+            "introduces": "The distinction the following sections explain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "the-asymmetry",
+      "heading": "AI Improves. You Stay the Same.",
+      "controlling_idea": "Increasing machine output moves pressure to the human comprehension that must still connect the work to a purpose.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Explains why the distinction matters more when production grows faster than people can absorb it."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Possession of output does not establish understanding.",
+        "introduces": "Why the growing supply of output makes that gap a bottleneck.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Introduce the comparison, present the machine side, then the human side, interpret the difference, illustrate it through Karpathy, and connect it to the earlier bottleneck principle. Reversing interpretation and comparison would ask the reader to accept the bottleneck before seeing its basis."
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "form": "prose",
+          "controlling_idea": "The different rates of machine production and human comprehension make the distinction urgent.",
+          "function": "context"
+        },
+        {
+          "id": "p10",
+          "form": "prose",
+          "controlling_idea": "The article’s machine-side evidence illustrates a sustained rise in the tasks AI systems can perform.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The different rates of progress.",
+            "introduces": "The machine side of the comparison.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "METR’s top-AI task length at 50% success has doubled about every seven months since 2019, as stated in the existing article.",
+              "shows": "Illustrates rising supply of generated work; preserve the task/success scope and the preprint qualification from the reference.",
+              "source": "Existing index.md and METR / Kwa et al. (2025), To Probe Further"
+            },
+            {
+              "kind": "source",
+              "what": "Existing references to Kaplan’s scaling laws and DeepMind’s “Chinchilla” study.",
+              "shows": "Supplies the article’s existing account of machine progress; add no new performance claim or citation.",
+              "source": "Existing AI Improves. You Stay the Same. ¶2"
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "Human attention and learning do not acquire an equivalent model-release schedule.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The measured improvement on the machine side.",
+            "introduces": "The human capacity that must absorb the results.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Hans Moravec, Mind Children (1988), and the existing contrast between formal reasoning and a one-year-old’s perception/common sense.",
+              "shows": "Use Moravec’s contrast as a related analogy, not a measurement of learning a software design. Narrow the inference to the declared point: a model release does not supply its human recipient with the attention and practice needed to understand the output.",
+              "source": "Existing article and legacy spec"
+            },
+            {
+              "kind": "figure",
+              "what": "Preserve computing-vs-human-capabilities.png, its complete alt text and Figure 1 caption, including its different time axes.",
+              "shows": "Visualizes the asymmetry used in the argument; use it as a conceptual comparison, not new evidence quantifying every individual’s ability to learn.",
+              "source": "assets/images/outsource-thinking-not-understanding/computing-vs-human-capabilities.png"
+            }
+          ]
+        },
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "The comparison identifies human comprehension as a bottleneck rather than making the human irrelevant.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The two different rates just compared.",
+            "introduces": "The practical interpretation of the gap.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "Karpathy’s account locates the bottleneck in knowing what is being built and why it matters.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that human comprehension becomes the limiting work.",
+            "introduces": "Karpathy’s experience of that limit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve the existing “I am becoming the bottleneck” quotation and its account of knowing what to build, why it matters, and how to guide agents.",
+              "shows": "The limit described is understanding and direction, rather than generating code.",
+              "source": "Andrej Karpathy; existing article and Sequoia Ascent 2026 source"
+            }
+          ]
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "Accelerating production moves the limit to understanding when understanding remains at human speed.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Karpathy’s example of comprehending less quickly than agents produce.",
+            "introduces": "The general bottleneck relationship developed by the preceding essay.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Keep the [[ai-is-an-amplifier-not-an-accelerator]] cross-link and explain the local generation gain versus downstream pressure in the sentence itself.",
+              "shows": "Makes the journal connection readable without requiring a reader to leave the essay."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-distinction",
+      "heading": "Thinking Is Not Understanding",
+      "controlling_idea": "Understanding requires grasping meaning and relationships rather than merely receiving correctly arranged symbols.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Explains the personal knowledge the recipient must develop before ownership is possible."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Understanding remains the bottleneck despite better generated answers.",
+        "introduces": "Why an answer cannot simply carry its recipient’s understanding with it.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Pose the gap, illustrate syntax without meaning through Searle, apply that distinction to passive receipt, add Polanyi’s tacit dimension, then make relational understanding concrete through a queue. The queue example depends on the meaning-versus-symbol distinction; putting it first would make the section look like a design checklist."
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "The production bottleneck raises the question of why the model cannot give the recipient understanding along with its answer.",
+          "function": "transition"
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "Searle’s Chinese Room separates successful symbol manipulation from the operator’s understanding of those symbols.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The question of how correct output differs from understanding.",
+            "introduces": "The Chinese Room thought experiment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "John Searle, Minds, Brains, and Programs (1980): a person manipulates Chinese symbols by a rulebook without knowing Chinese; preserve the syntax/semantics quotation.",
+              "shows": "Provides the article’s conceptual distinction, rather than empirical proof about the cognition of every model.",
+              "source": "Existing article and To Probe Further"
+            }
+          ]
+        },
+        {
+          "id": "p17",
+          "form": "prose",
+          "controlling_idea": "Passing along fluent output without grasping it reproduces the Chinese Room problem for the recipient.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The Chinese Room operator can return correct symbols without grasping their meaning.",
+            "introduces": "The same risk for a person who forwards AI output uncritically.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "The article’s “you have become the room” application.",
+              "shows": "Keeps the practical focus on whether the human recipient has acquired understanding, which is the post’s claim."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "Polanyi’s tacit knowledge names the part of understanding that people develop through experience rather than receive as written output.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The recipient needs meaning beyond the delivered symbols.",
+            "introduces": "The tacit dimension of that personal grasp.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Michael Polanyi, The Tacit Dimension (1966): “we can know more than we can tell.”",
+              "shows": "Explains why a written description alone does not supply all the practical grasp held by an experienced person.",
+              "source": "Existing article and legacy spec"
+            },
+            {
+              "kind": "example",
+              "what": "The experienced engineer who senses that a system will break under load before fully explaining why.",
+              "shows": "Shows the kind of practiced recognition the paragraph calls tacit knowledge.",
+              "source": "Existing Thinking Is Not Understanding ¶4"
+            }
+          ]
+        },
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "Understanding a design means seeing why its parts exist, what they cost, and how they depend on one another.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The personal grasp includes more than facts that can be handed over.",
+            "introduces": "The contrast between knowing that a queue exists and understanding its reasons.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Knowing the design uses a queue versus seeing what it protects against, what it costs and what breaks without it.",
+              "shows": "Makes relational understanding testable in the reader’s own design work.",
+              "source": "Existing Thinking Is Not Understanding ¶5"
+            },
+            {
+              "kind": "table",
+              "what": "Preserve the five-row Thinking (outsourceable) / Understanding (not outsourceable) table.",
+              "shows": "Collects production, syntax, transferability, speed, and the distinction between doing something for a person and learning with them.",
+              "source": "Existing article"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meets-reality",
+      "heading": "Understanding Is Where the Artifact Meets Reality",
+      "controlling_idea": "An artifact’s value depends on someone connecting its behavior to a particular need and context.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Connects personal comprehension to the real-world value the owner must assess."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Understanding means seeing causes, costs and relationships rather than receiving facts.",
+        "introduces": "Why those relationships matter where the artifact will be used.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State value at the point of use, ground it in the existing drill/hole analogy, apply it to local engineering questions, name the last human mile, and show the capacity consequence. The last-mile metaphor would remain abstract without the local questions; the volume consequence depends on seeing what the human must connect."
+      },
+      "paragraphs": [
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "The distinction matters because the artifact must connect with reality before it serves anyone.",
+          "function": "claim"
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "The drill-and-hole example locates value in the progress a product makes for a person.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that an artifact’s worth is decided at use.",
+            "introduces": "The existing value-at-use analogy.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Theodore Levitt’s quarter-inch drill/hole line, credited to Leo McGivena; Clayton Christensen’s jobs-to-be-done account.",
+              "shows": "Explains the gap between producing a thing and meeting a person’s need; preserve the existing attribution chain.",
+              "source": "Existing article and To Probe Further"
+            }
+          ]
+        },
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "A generated artifact must still be assessed against the traffic, systems, rules and people of its intended use.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Value depends on the progress the artifact makes in someone’s situation.",
+            "introduces": "The concrete context questions generated work must answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The existing questions about our traffic, old system, rules, customer risk and team’s ability to keep using the code.",
+              "shows": "Turns the value-at-use idea into judgments the recipient can make only by understanding the application context. Keep the drill as a tool and the right hole as the useful outcome; do not call holes unused artifacts and switch the analogy’s roles.",
+              "source": "Existing Understanding Is Where the Artifact Meets Reality ¶3"
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "The last human mile names the work of connecting a generic artifact to a specific situation and person.",
+          "function": "definition",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The artifact needs a connection to specific context.",
+            "introduces": "The last human mile and its organizational meaning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "The existing telecom/local-loop analogy: the fast long-distance network still needs a connection to each door.",
+              "shows": "Names the remaining contextual work after generation has been accelerated.",
+              "source": "Existing article"
+            },
+            {
+              "kind": "quotation",
+              "what": "Karim Lakhani and colleagues in Harvard Business Review: technical capability must meet organizational design.",
+              "shows": "Adds the existing organizational expression of the same last-mile problem.",
+              "source": "Existing article and To Probe Further; Karim Lakhani, Jared Spataro and Jen Stave (2026)"
+            },
+            {
+              "kind": "figure",
+              "what": "Preserve last-human-mile.jpeg, its full alt text and Figure 2 caption.",
+              "shows": "Shows value downstream of the human connection to real systems and people, not immediately downstream of generation.",
+              "source": "assets/images/outsource-thinking-not-understanding/last-human-mile.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "More rapidly produced artifacts can increase the load on that remaining human connection.",
+          "function": "cause_effect",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Each artifact still needs to be connected to a particular reality.",
+            "introduces": "The volume pressure on the last human mile.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "how-and-whether",
+      "heading": "Two Things You Have to Understand: How, and Whether",
+      "controlling_idea": "Ownership requires both an internal explanation of how the artifact works and a contextual judgment of whether it is worth using.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "Makes the two kinds of personal understanding explicit and distinguishes their failure modes."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The last human mile connects an artifact with its actual context.",
+        "introduces": "The two questions its owner must be able to answer.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Separate the two questions, develop how through Naur, explain the debt that appears when that theory is missing, then contrast whether and collect both in the table. Putting the debt before Naur would introduce its name without the missing knowledge it describes; putting value first would obscure the two distinct failure modes."
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "form": "prose",
+          "controlling_idea": "The human owner needs to distinguish understanding how the work functions from judging whether it serves the need.",
+          "function": "transition"
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "Naur’s theory-building account explains why owning code requires a model of its workings in the programmer’s mind.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The first question asks how the artifact works.",
+            "introduces": "The theory that allows an owner to explain, change and debug it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Peter Naur, Programming as Theory Building (1985); preserve the existing theory-building, team-dissolution and documentation quotations.",
+              "shows": "Grounds the article’s “understand how” requirement in the knowledge needed to explain and change a program.",
+              "source": "Existing article and To Probe Further"
+            }
+          ]
+        },
+        {
+          "id": "p27",
+          "form": "prose",
+          "controlling_idea": "Generated code without a human grasp of its workings creates comprehension debt.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The code alone does not supply the programmer’s theory.",
+            "introduces": "The ownership debt when nobody can explain the generated code.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Addy Osmani’s existing comprehension-debt definition and Google engineering-leader description.",
+              "shows": "Names the growing gap between code quantity and human understanding without adding a new company claim.",
+              "source": "Existing article; Comprehension Debt (2026)"
+            },
+            {
+              "kind": "quotation",
+              "what": "Simon Willison’s existing rule against committing code he cannot explain to another person.",
+              "shows": "Turns the missing-theory problem into a practical ownership test.",
+              "source": "Existing article; Not all AI-assisted programming is vibe coding (2025)"
+            },
+            {
+              "kind": "reasoning",
+              "what": "State the absence of human understanding when generated code arrives, without crediting the model as a programmer team that possessed the theory.",
+              "shows": "Keeps the ownership argument consistent with the earlier distinction between producing plausible output and understanding it."
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "form": "prose",
+          "controlling_idea": "The owner must also judge whether the artifact answers the right question in its real context.",
+          "function": "comparison",
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Explaining and maintaining the artifact addresses how it works.",
+            "introduces": "Judging whether its goal and consequences are appropriate addresses its value.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing checks of real need, limits, unmentioned harms, organization, people, history and values; retain [[prepare-for-ai-future]] and its direction/accountability/consent quotation.",
+              "shows": "Shows why receiving a generated answer does not remove responsibility for judging the question.",
+              "source": "Existing How, and Whether ¶4; correct its final sentence’s accidental denial of accountability"
+            },
+            {
+              "kind": "table",
+              "what": "Preserve the four-row how / whether comparison.",
+              "shows": "Distinguishes correctness and maintainability from value and judgment so one successful check cannot stand in for the other.",
+              "source": "Existing article"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-cost",
+      "heading": "The Cost of Outsourcing Understanding",
+      "controlling_idea": "Passive AI use can leave people confident in work they have not learned to understand.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Supplies the automation warning and qualified existing studies for distinguishing passive delegation from active learning."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Ownership requires personal understanding of how and whether.",
+        "introduces": "The tempting assumption that using the tool automatically creates that understanding.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the objection that use creates understanding, show the automation mechanism, present the newer studies with their qualifications, and limit the conclusion to passive acceptance. The pro-AI boundary must follow the evidence so the reader does not confuse a caution about use with a verdict against the tool; moving the studies first would hide the objection they answer."
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "form": "prose",
+          "controlling_idea": "Working with an AI does not by itself establish that the user has understood the resulting work.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Qualify the initial warning as evidence about passive acceptance before discussing the distinction from active, question-driven use.",
+              "shows": "Working with AI does not automatically create understanding, but the article does not treat every mode of assistance as harmful."
+            }
+          ]
+        },
+        {
+          "id": "p30",
+          "form": "prose",
+          "controlling_idea": "Bainbridge’s automation warning explains how losing routine practice can leave people less prepared for difficult exceptions.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that tool use alone need not build understanding.",
+            "introduces": "The mechanism by which automated routine work can erode the skill needed later.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Lisanne Bainbridge, Ironies of Automation (1983); preserve the existing 90%/10% illustrative framing as an example, not a new study statistic.",
+              "shows": "Explains why automating routine practice does not automatically prepare the human for harder exceptions.",
+              "source": "Existing article and legacy spec"
+            }
+          ]
+        },
+        {
+          "id": "p31",
+          "form": "prose",
+          "controlling_idea": "The cited studies give qualified reasons to distinguish passive acceptance from active, questioning AI use.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Bainbridge’s warning about losing the practice needed for judgment.",
+            "introduces": "Recent evidence concerning confidence, learning and passive delegation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Microsoft/Carnegie Mellon’s 2025 survey of 319 knowledge workers and the existing confidence/critical-thinking association.",
+              "shows": "Offers self-reported association, not a causal measure of every user’s understanding; retain the reference’s peer-reviewed/self-reported qualifications.",
+              "source": "Hao-Ping (Hank) Lee et al., CHI 2025; existing To Probe Further"
+            },
+            {
+              "kind": "statistic",
+              "what": "Anthropic’s 2026 trial and the existing 17% lower comprehension result, with the passive-versus-active distinction.",
+              "shows": "Supports the article’s concern about learning under passive delegation; preserve the preprint and task-specific nature already recorded in the sources.",
+              "source": "Judy Hanwen Shen and Alex Tamkin (2026); existing article and To Probe Further"
+            },
+            {
+              "kind": "source",
+              "what": "MIT Media Lab’s 2025 EEG essay study and “cognitive debt”; retain the small, not-peer-reviewed warning, not-proof caveat.",
+              "shows": "Adds directional caution without making this small study a universal or load-bearing causal claim.",
+              "source": "Nataliya Kosmyna et al. (2025); existing article and To Probe Further"
+            },
+            {
+              "kind": "reasoning",
+              "what": "Locally explain the existing amplifier comparison: developers can feel faster with AI while taking longer to complete work. Link the related essay and distinguish this analogy about unreliable confidence from studies of understanding.",
+              "shows": "Explains the practical danger of confidence failing to track real comprehension without assuming that the different studies measured the same thing.",
+              "source": "Existing The Cost of Outsourcing Understanding ¶3"
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "form": "prose",
+          "controlling_idea": "The warning concerns passive acceptance rather than using AI to help with thinking.",
+          "function": "refutation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The evidence distinguishes tool use from the learning a user actually performs.",
+            "introduces": "The pro-AI boundary that motivates active reconstruction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "re-derive",
+      "heading": "Manufacturing Understanding: Re-derive, Don't Consume",
+      "controlling_idea": "A person can build understanding by reconstructing a design from a simple working version through one motivated choice at a time.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows the practical learning path that turns a received result into personal grasp without pretending to reveal the model’s internal reasoning."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Passive receipt does not reliably create understanding.",
+        "introduces": "A deliberate reconstruction practice that keeps the recipient engaged.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the reconstruction method, connect it to the existing design principles, work through the URL-shortener path, explain why the unchanged final diagram is now understood, then generalize the prompt as a human learning path. The outcome of the example needs the steps before it; generalizing before the example would leave “re-derive” abstract."
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "form": "prose",
+          "controlling_idea": "The recipient must deliberately build understanding by following the steps that produce the design.",
+          "function": "recommendation"
+        },
+        {
+          "id": "p34",
+          "form": "prose",
+          "controlling_idea": "The existing design quotations frame reconstruction as a sequence of motivated refinements from a simple whole.",
+          "function": "evidence",
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The recommendation to rebuild a design through its steps.",
+            "introduces": "The source principles behind that reconstruction method.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "John Gall, Systemantics (1975), on a complex working system evolving from a simple working system; preserve the complete existing quotation.",
+              "shows": "Explicitly bridge system development to learning: use the sequence of problems and motivated design decisions as a path for reconstructing the design; do not present Gall’s law itself as proof about human learning.",
+              "source": "Existing article and legacy spec"
+            },
+            {
+              "kind": "quotation",
+              "what": "Christopher Alexander on structure-preserving transformations and differentiations one after another.",
+              "shows": "Gives the method its one-decision-at-a-time progression.",
+              "source": "Existing article; OOPSLA 1996 / IEEE Software 1999 reference"
+            },
+            {
+              "kind": "quotation",
+              "what": "Richard Feynman’s existing blackboard line, “What I cannot create, I do not understand.”",
+              "shows": "Expresses the article’s reconstruction test; do not add a new biographical claim or date.",
+              "source": "Existing article"
+            }
+          ]
+        },
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "The system-design explorer builds a URL-shortener design by making each new component answer a problem the learner has just encountered.",
+          "function": "example",
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The design principle of motivated refinement from a simple whole.",
+            "introduces": "The worked human learning path.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Preserve the project link and the three-item list: start with a client and server; expose lost mappings on restart; add a database, load balancing, caching, splitting, and regional proximity as their problems emerge. Make the existing edge-boosted result traceable by explaining nearby caching as part of the already-described response to delay between users and services.",
+              "shows": "Shows a repeatable problem→decision sequence instead of a finished architecture that the reader must merely trust. Explain the technical prerequisite at the load-balancer step: another working server must exist for requests to be routed around a failed one. State this as a requirement of the example, not a newly verified feature of the linked project.",
+              "source": "https://zeljkoobrenovic.github.io/spec-driven-system-design-interviews/; existing article"
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "form": "prose",
+          "controlling_idea": "The same final architecture becomes understandable when the learner can explain why each component arrived.",
+          "function": "analysis",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The learner has encountered each problem and the decision that responds to it.",
+            "introduces": "Why reconstructing the path changes understanding without changing the final diagram.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing contrast between a diagram accepted whole and the same diagram reconstructed, connected to Naur’s theory. Define edge-boosted at first use as serving frequent redirects from the nearby cache introduced in the prior step.",
+              "shows": "Explains the learning effect of the worked steps.",
+              "source": "Existing article"
+            },
+            {
+              "kind": "figure",
+              "what": "Preserve naive-to-evolved-staircase.jpeg, its complete alt text and Figure 3 caption.",
+              "shows": "Makes each added component visibly answer a prior limitation, supporting a human reconstruction rather than a model-reasoning transcript.",
+              "source": "assets/images/outsource-thinking-not-understanding/naive-to-evolved-staircase.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "form": "prose",
+          "controlling_idea": "Ask AI for a plausible human reconstruction of the work, not a story presented as the model’s hidden reasoning.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The design example made each choice answer a problem the learner understood.",
+            "introduces": "The same reconstruction practice for any generated work the reader needs to own.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Retain the existing design/proof/plan/diagnosis examples, the simplest-working-version questions, the explicit caveat about model explanations being made up, and [[breaking-vibe-monolith]] / [[risc-for-ai-software-development]].",
+              "shows": "Generalizes the practice while preserving the crucial distinction between a useful learning path and knowledge of how the model actually produced its answer. Explain each related essay’s connection locally: structural boundaries support shared understanding, while inspectable platform behavior supports trust.",
+              "source": "Existing article"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "monday",
+      "heading": "What to Do on Monday",
+      "controlling_idea": "Teams can make active understanding a visible condition of accepting generated work.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Turns the distinction and reconstruction method into repeatable acceptance practices."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The reconstruction method gives a person a path to understanding generated work.",
+        "introduces": "The everyday practices that keep that learning and judgment in the workflow.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the need for changed behavior, supply the preserved moves table as the paragraph’s evidence, then explain what unites those moves. The unifying observation depends on seeing the actions first."
+      },
+      "paragraphs": [
+        {
+          "id": "p38",
+          "form": "prose",
+          "controlling_idea": "Use explicit checks and time for comprehension when deciding whether generated work is ready to accept.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the six Monday moves: name the acts, re-derive, apply the Willison rule, use AI actively, staff and budget the last mile, watch confidence.",
+              "shows": "Turns the argument into checks of explanation, reconstruction and context rather than an assumption that output means completion. Clarify the Naur cell as understanding this particular artifact, rather than understanding Naur’s account of programming.",
+              "source": "Existing What to Do on Monday table"
+            }
+          ]
+        },
+        {
+          "id": "p39",
+          "form": "prose",
+          "controlling_idea": "These practices address the understanding a better model cannot acquire on its recipient’s behalf.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The six actions keep explanation, questioning and contextual judgment in the work.",
+            "introduces": "Their common purpose beyond buying a stronger model.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "Readers can use their recent AI-assisted work to locate missing understanding and ownership.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Asks the reader to apply the practices to actual work before the final synthesis."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The Monday practices make understanding an explicit acceptance responsibility.",
+        "introduces": "Questions that test the reader’s own work against those responsibilities.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Keep the original questions together after the practices they apply and before the closing synthesis. Leaving them after references would reopen the argument after its ending and leave their units outside the conclusion alignment."
+      },
+      "paragraphs": [
+        {
+          "id": "p40",
+          "form": "list",
+          "controlling_idea": "Use the original eight questions to check whether recent generated work is understood well enough to own.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing lead-in and all eight questions verbatim, including explanation/debugging, the two acts, lost AI context, the Willison test, confidence, re-derivation, staffing the last mile, and the growing understanding gap.",
+              "shows": "Lets the reader test the post’s distinction on work they actually have to stand behind.",
+              "source": "Existing Questions to Consider, moved intact before Closing Thought"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Closing Thought",
+    "synthesis": "The asymmetry makes personal understanding an ownership capacity: a growing stream of artifacts becomes usable work only as people reconstruct their reasons and judge their fit to real needs.",
+    "so_what": "Teams that make time for explanation and contextual judgment can own the work they accept; teams that count only completed artifacts can accumulate more than anyone can maintain or defend.",
+    "callback": {
+      "to": "The opening title line and the objection that a correct AI answer should already give the recipient understanding.",
+      "how": "Return to the distinction with its practical meaning established: the remaining work is to reconstruct the reasons and assess the need before taking responsibility, rather than merely possessing the answer."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Before owning the next generated artifact, explain how it works and why it fits the need, rebuilding the path from a simple version wherever understanding is missing."
+    },
+    "hand_off": {
+      "to": "breaking-vibe-monolith",
+      "relationship": "problem_solution",
+      "carries_over": "People must understand generated work well enough to maintain it and judge its value.",
+      "introduces": "Stable architectural seams that make such understanding and ownership possible across a growing team."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The reader has tested recent work against the practices of explanation, reconstruction and contextual judgment.",
+      "introduces": "Why understanding must be treated as capacity for ownership, and what that means as more work is generated.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p41",
+        "form": "prose",
+        "controlling_idea": "The opening distinction separates a delivered artifact from the personal understanding needed to stand behind it.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Return to the existing opening line through the original contrast between a product that can be made externally and the grasp of how and why that its owner must develop.",
+            "shows": "Connects the conceptual distinction, real-world fit and responsibility without introducing new evidence."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3"
+          ],
+          "how": "The opening distinction separates a delivered artifact from the personal understanding needed to stand behind it."
+        }
+      },
+      {
+        "id": "p42",
+        "form": "prose",
+        "controlling_idea": "The growth of generated work makes time for understanding a practical limit on the work a team can responsibly own.",
+        "function": "cause_effect",
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The owner needs personal grasp of how the artifact works and whether it fits.",
+          "introduces": "The capacity consequence when generation rises faster than comprehension.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Connect the existing asymmetry and last-human-mile argument to the time needed for explanation and contextual judgment.",
+            "shows": "Synthesizes why more output alone cannot increase the amount of work people can maintain and defend."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3",
+            "S6"
+          ],
+          "how": "The growth of generated work makes time for understanding a practical limit on the work a team can responsibly own."
+        }
+      },
+      {
+        "id": "p43",
+        "form": "prose",
+        "controlling_idea": "The work left by cheap production is to understand the next artifact well enough to explain it and judge its worth.",
+        "function": "recommendation",
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "Understanding limits the amount of generated work the team can own.",
+          "introduces": "A concrete takeaway anchored in the original closing emphasis on understanding.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Preserve the original “Thinking was never the hard part” closing thought as the author’s emphasis, while connecting it to the existing explanation/reconstruction test.",
+            "shows": "Returns the claim to an action already developed in the body, rather than ending with a slogan alone."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S5",
+            "S6"
+          ],
+          "how": "The work left by cheap production is to understand the next artifact well enough to explain it and judge its worth."
+        }
+      },
+      {
+        "id": "p44",
+        "form": "prose",
+        "controlling_idea": "The next question is how stable architectural seams let a growing team share and preserve that understanding.",
+        "function": "transition",
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "People must understand generated work well enough to maintain it and judge its value.",
+          "introduces": "The next essay’s architectural response to keeping understanding and ownership possible across a team.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Link [[breaking-vibe-monolith]] in this final paragraph, framing stable boundaries as the next essay’s subject rather than introducing a new argument here.",
+            "shows": "Hands off with the next journal entry’s exact problem→solution relationship."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S6"
+          ],
+          "how": "The next question is how stable architectural seams let a growing team share and preserve that understanding."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Not an AI-doom / \"AI makes us stupid\" piece. Cognitive-offloading evidence is a caution about *how* to use AI, not a verdict against it."
+    },
+    {
+      "topic": "Not a re-run of [[ai-is-the-reactor-not-the-plant]] (where the work is) or [[ai-is-an-amplifier-not-an-accelerator]] (the input sets the sign). This is the *epistemic* companion: what the human must still hold in their head.",
+      "covered_in": [
+        "ai-is-the-reactor-not-the-plant",
+        "ai-is-an-amplifier-not-an-accelerator"
+      ]
+    },
+    {
+      "topic": "Not a philosophy paper. Searle/Polanyi/Naur serve the practical distinction; the distinction does not serve them. Keep it readable for a broad audience."
+    },
+    {
+      "topic": "Not a pitch for the system-design-interview project. It is used as one worked example of the method, not as the point."
+    },
+    {
+      "topic": "Not a precise-numbers argument. Offloading/atrophy figures are attributed and directional, never load-bearing."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "The original author of the title quotation remains uncertain. The existing attribution decision is to say Andrej Karpathy popularized it, crediting an earlier tweet; do not call him its originator without further author-supplied evidence.",
+    "Final round 2 returned ESCALATE for undefined “edge-boosted,” with four uncorroborated minor flow notes. Closing edits explain the nearby-cache step and term, qualify the passive-use warning at its opening, explain the two related-article links, and clarify the Naur table cell. These are local repairs after the final permitted reader check; their readability is not independently rechecked, and the report is stale for both draft and spec. Review these closing edits before treating the article as checked; no third round was run."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "At the two-round limit, apply only cheap local fixes named by the final readers: explain edge caching within the existing delay-reduction example, narrow the opening evidence warning to passive use, connect the reconstruction method to the linked boundary/trust arguments, and clarify the Naur benefit cell. Keep all 44 units and their order, source claims, figures, dates, names and copied criteria. Record that the closing edits leave the ESCALATE report stale; do not claim a pass or run a third check."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 found four corroborated local reasoning gaps plus two minor ambiguities. Keep all 44 units and their order; narrow the Moravec inference, keep drill/hole roles consistent, describe the missing human theory directly, introduce the amplifier comparison locally, bridge incremental system design to reconstruction as learning, and state the redundant-server prerequisite for load balancing. Preserve all quotations, source claims, figures, dates and names; add no verified feature claim about the linked project."
+    },
+    {
+      "date": "2026-07-05",
+      "decision": "Built the whole post on the **thinking vs. understanding** split rather than the softer \"AI can't replace humans.\" Chosen because the distinction is falsifiable and actionable: thinking *is* outsourceable (that's the point), understanding is where the artifact meets reality. Rejected: a generic \"human-in-the-loop\" framing (too vague) and a \"jobs at risk\" framing (wrong altitude — this is epistemic, not economic)."
+    },
+    {
+      "date": "2026-07-05",
+      "decision": "Anchored \"understand how it was built\" on **Naur's Programming as Theory Building** as the load-bearing idea, with Searle and Polanyi as the philosophical scaffolding. Chosen because Naur makes the software-specific claim precisely: the value is the theory in the builders' heads, and code without it is dead — which is exactly the risk of AI-generated code no one understands."
+    },
+    {
+      "date": "2026-07-05",
+      "decision": "Used the **system-design-interview format** (naive design → improve one decision at a time) as the single worked example of the method, per author. Chosen because it operationalizes \"re-derive, don't consume\" — understanding as an emergent human path. Rejected: multiple small examples (dilutes the method); no example (leaves the method abstract)."
+    },
+    {
+      "date": "2026-07-05",
+      "decision": "Placed in **AI Software Development** beside reactor / amplifier / risc; the load-bearing example and evidence are dev-centric even though the thesis is broader."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstruct all 42 original prose/list units and preserve their order within each section. Add one roadmap paragraph and one closing hand-off; move Questions to Consider before Closing Thought. Tables, figures/captions and the KEY POINTS callout remain attachments, not new units. This yields 44 specified units across the introduction, nine body sections and conclusion.",
+      "rejected": [
+        "Rewriting the essay wholesale",
+        "Dropping preserved questions after the references",
+        "Counting illustrations as extra prose paragraphs"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Copy the final journal entry’s intent, all five thesis fields and role exactly; add six post-level supporting claims. No acceptance criteria are added. Keep status draft under the user’s auto-mode instruction, with at most two total draft-check rounds.",
+      "rejected": [
+        "Changing the journal contract from a post pass",
+        "Adding major or hidden requirements",
+        "Marking the spec accepted"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Map legacy success criteria 1, 3 and 4 to AC-1’s outcome of distinguishing production, workings and contextual value; criterion 2 to AC-2’s comprehension bottleneck; criterion 5 to AC-2’s passive/active distinction and qualified evidence; criterion 6 to AC-3’s human reconstruction method; criterion 7 to AC-2’s pro-AI distinction. Keep the named philosophical sources and studies as evidence. Drop only the criterion-3 inventory requirement of “at least two citable ideas” as a separate acceptance test: recognizing ownership is the outcome, counting sources is not.",
+      "rejected": [
+        "Duplicating the journal’s reader outcomes as content inventories"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Retain the legacy modality choices and their reasons: [x] `summary.md` — management summary. Warranted: clean leadership takeaway (don't mistake producing an artifact for acquiring understanding). | [x] `dialog.md` — two-host dialog. Warranted: the thinking/understanding split and \"AI improves, you stay the same\" play well as back-and-forth. | [x] `comics.md` — explainer comic (8 panels). Warranted: the Rex-prints- artifacts / Maya-carries-the-lightbulb motif makes the thinking-vs- understanding split visual, and the re-derive staircase and last-mile door are strong closing beats. Reuses the journal's Maya/Rex cast."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve the legacy Audience context: Engineers and technical leaders leaning hard on AI to generate code, designs, and documents, who sense but haven't named the discomfort of shipping things they don't fully understand. | Decision-makers who assume that because AI can *produce* an artifact, the organization has *acquired* the understanding the artifact represents. | Readers of the ai-notes spine who want the human/epistemic companion to the reactor (\"value is in the plant\"), amplifier (\"the input is what matters\"), and prepare-for-ai-future (\"judgment and accountability stay human\") notes. The copied journal intent remains unchanged, and specialized concepts are explained in the existing essay before the method uses them."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Correct the existing accountability sentence because its literal meaning negates the paragraph’s argument. Connect the introductory thesis to active reconstruction and the closing synthesis to capacity for ownership. These are local contract-alignment edits, with no new factual research, name, number, real-company claim, or image/caption edit. The exact minimal correction approved by the parent after reading the paragraph is: “You remain responsible for whether it was the right question.”",
+      "rejected": [
+        "Leaving the direct contradiction in place",
+        "Expanding into a new accountability or AI-capability argument"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The legacy spec sets no numeric word limit. Preserve its scale and most wording; do not convert the 18 min front matter into a cap. Full paragraph-level detail supersedes the old boilerplate preference for a spec shorter than the article.",
+      "rejected": [
+        "Inventing a word cap",
+        "Raising a non-existent cap"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carry the legacy structure and illustration history in the reconstructed section/evidence fields and unchanged record-keeping text. Retain To Probe Further verbatim as reference apparatus outside numbered argument units, after the closing hand-off.",
+      "rejected": [
+        "Deleting source history after conversion",
+        "Moving reference material into the argument"
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Fresh isolated flow review (flow-review-1.txt) judged the proposed 44-unit order sound, with no moves, merges or cuts required. Retain the validated order and proceed to the authorized prose phase."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve the legacy questions as history rather than unresolved workflow items: ~~Origin/attribution of the title quote.~~ **Resolved:** popularized by **Andrej Karpathy** (X, Apr 30 2026; expanded at Sequoia Ascent 2026), who credited an earlier tweet — original author uncertain. Frame as \"popularized by Karpathy,\" not originated. His companion line — \"*I am becoming the bottleneck* of even knowing what we are trying to build, why it is worth doing, and how to direct my agents\" — is directly on-thesis and should anchor the asymmetry section. | Comics modality: defer decision until article + summary are done. The 2026-07-05 changelog records completion of the comics, so its older deferral no longer needs an author decision. The uncertainty about the quotation’s original author remains open."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The prose phase is authorized to close these recorded reconstruction gaps: Reconstruction gap, awaiting the authorized prose phase: the published introduction has no complete body roadmap or explicit active-reconstruction thesis in its prose. Add p04 and make p03 carry the full copied thesis without changing the KEY POINTS callout. | Reconstruction gap, awaiting the authorized prose phase: Questions to Consider follows To Probe Further. Move its text intact before Closing Thought so p40 is a specified body unit and the essay ends with synthesis and hand-off. | Reconstruction gap, awaiting the authorized prose phase: the published closing repeats the distinction without explicitly connecting rising output to ownership capacity and has no final link to breaking-vibe-monolith. Revise p42–p43 locally and add p44. | Reconstruction gap, awaiting the authorized prose phase: How, and Whether ends “You cannot be held responsible for whether it was the right question,” contradicting the paragraph’s accountability point and the copied contract. Correct that sentence to retain human responsibility for judging the question. They are implementation obligations, not unresolved author questions."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Scope record from Phase A: Author review: existing broad claims about machine progress, fixed human capability, philosophy, and the learning studies were not newly researched. Preserve their figures, sources and qualifications; the spec uses them only for the practical distinction in the journal contract, not a universal claim about minds or every AI user. This pass preserves the supplied evidence rather than undertaking a separate factual review."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Phase B preservation checks confirmed the complete original front matter and KEY POINTS callout, all tables and image/caption lines, the moved Questions text, reference apparatus, original links and numeric tokens unchanged. Added only repeated cross-links to ai-is-an-amplifier-not-an-accelerator and breaking-vibe-monolith. The article has 4,658 checker-counted words, up from 4,446, with no legacy cap; no existing heading text or real-world name/figure/date changed."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "[[ai-is-the-reactor-not-the-plant]]",
+      "contributed": "value/work is in the plant around the model. This post: the plant's most human part is understanding."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[ai-is-an-amplifier-not-an-accelerator]]",
+      "contributed": "the input sets the sign; understanding is the input AI can't supply."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[prepare-for-ai-future]]",
+      "contributed": "judgment, agency, accountability stay human. This post sharpens *why*: they require understanding, which can't be delegated."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[risc-for-ai-software-development]]",
+      "contributed": "trust/inspectability as the bottleneck; understanding is what makes output inspectable."
+    },
+    {
+      "kind": "external",
+      "ref": "**Andrej Karpathy** (X, Apr 30 2026; Sequoia Ascent 2026)",
+      "contributed": "popularized the title line and the companion \"*I am becoming the bottleneck*.\" Anchors the asymmetry. Popularized, not originated (credited an earlier tweet)."
+    },
+    {
+      "kind": "external",
+      "ref": "**Peter Naur, *Programming as Theory Building* (1985)**",
+      "contributed": "the program's value is the *theory* in the builders' heads; \"the death of a program happens when the programmer team possessing its theory is dissolved\"; reviving a theory from documentation alone is \"strictly impossible.\" The load-bearing \"understand how\" source."
+    },
+    {
+      "kind": "external",
+      "ref": "**John Searle, *Minds, Brains, and Programs* (1980)**",
+      "contributed": "the Chinese Room; \"syntax is neither constitutive of nor sufficient for semantics\"; manipulating symbols ≠ understanding them."
+    },
+    {
+      "kind": "external",
+      "ref": "**Michael Polanyi, *The Tacit Dimension* (1966), p.4**",
+      "contributed": "\"we can know more than we can tell\"; understanding has a tacit core that resists full externalization."
+    },
+    {
+      "kind": "external",
+      "ref": "**Lisanne Bainbridge, *Ironies of Automation* (1983)**",
+      "contributed": "automating the routine leaves humans the hardest part and *erodes the skill* needed for it. Seminal; transfers directly to AI."
+    },
+    {
+      "kind": "external",
+      "ref": "**Lee et al. (Microsoft / Carnegie Mellon), CHI 2025**",
+      "contributed": "survey of 319 knowledge workers: \"higher confidence in GenAI is associated with less critical thinking.\" Peer-reviewed."
+    },
+    {
+      "kind": "external",
+      "ref": "**Shen & Tamkin (Anthropic), *How AI Impacts Skill Formation* (2026)**",
+      "contributed": "RCT: AI-assisted engineers scored 17% lower on a comprehension quiz; *passive* delegation impairs learning far more than active use. Preprint; directional."
+    },
+    {
+      "kind": "external",
+      "ref": "**MIT Media Lab, *Your Brain on ChatGPT* (Kosmyna et al., 2025)**",
+      "contributed": "EEG evidence of reduced neural engagement / \"cognitive debt.\" **Preprint, not peer-reviewed; small n**; use directionally and flag."
+    },
+    {
+      "kind": "external",
+      "ref": "**Addy Osmani, \"Comprehension Debt\" (2026)**",
+      "contributed": "\"the growing gap between how much code exists in your system and how much of it any human being genuinely understands.\" The coinage for \"understanding debt.\""
+    },
+    {
+      "kind": "external",
+      "ref": "**Simon Willison** (2025)",
+      "contributed": "\"I won't commit any code… if I couldn't explain exactly what it does to somebody else.\" The \"understand it or don't ship it\" rule."
+    },
+    {
+      "kind": "external",
+      "ref": "**METR, *Measuring AI Ability to Complete Long Tasks* (Kwa et al., 2025)**",
+      "contributed": "AI task-time-horizon doubles ~every 7 months. The quantitative \"AI accelerates\" half of the asymmetry. Preprint; flag."
+    },
+    {
+      "kind": "external",
+      "ref": "**Hans Moravec, *Mind Children* (1988), p.15**",
+      "contributed": "adult-level test performance is easy for machines, a one-year-old's perception \"difficult or impossible.\" The fixed-human-substrate point."
+    },
+    {
+      "kind": "external",
+      "ref": "**Theodore Levitt / Leo McGivena / Clayton Christensen (JTBD)**",
+      "contributed": "\"people don't want a quarter-inch drill, they want a quarter-inch hole\"; value at the point of use. (Popularized by Levitt, who credited McGivena; extended by Christensen.)"
+    },
+    {
+      "kind": "external",
+      "ref": "**John Gall, *Systemantics* (Gall's Law, 1975)**",
+      "contributed": "\"a complex system that works is invariably found to have evolved from a simple system that worked.\" Supports \"re-derive from naive.\""
+    },
+    {
+      "kind": "external",
+      "ref": "**Christopher Alexander** (OOPSLA 1996 / *IEEE Software* 1999)",
+      "contributed": "\"structure-preserving transformations… introducing differentiations one after the other.\" The evolve-one-decision-at-a-time move."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/outsource-thinking-not-understanding/index.md",
+      "contributed": "Authoritative published wording, facts, figures, tables, callouts, links and reference qualifications; reconstruction baseline copied to the run scratch directory."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/outsource-thinking-not-understanding/spec.md",
+      "contributed": "Legacy intent, audience, criteria mapping, non-goals, modality rationale, resolved/unresolved questions, decisions, sources and changelog, retained in this migrated contract."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Exact post intent, thesis and role; the incoming elaboration and outgoing problem-solution relationship."
+    },
+    {
+      "kind": "internal",
+      "ref": "breaking-vibe-monolith",
+      "contributed": "The next post’s already-declared architectural response: stable seams make shared understanding and ownership possible."
+    },
+    {
+      "kind": "external",
+      "ref": "Karim Lakhani, Jared Spataro & Jen Stave, The “Last Mile” Problem Slowing AI Transformation (Harvard Business Review, 2026)",
+      "contributed": "An existing article source absent from the old spec list; its supplied quotation connects technical capability to organizational design. Retained without new research."
+    },
+    {
+      "kind": "external",
+      "ref": "Richard Feynman, existing blackboard quotation in the published article",
+      "contributed": "An existing article source absent from the old spec list: “What I cannot create, I do not understand.” Retained without adding a date or new attribution claim."
+    },
+    {
+      "kind": "external",
+      "ref": "Kaplan scaling laws and DeepMind “Chinchilla” study, as named in the published article",
+      "contributed": "Existing machine-progress explanation absent from the old spec source list. Retained as supplied, without adding findings or new research."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Closed after round-2 ESCALATE (16 passes, one major and four minor findings). Specified local closing repairs before prose; final report will remain stale and no further reader round will run."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Specified local reader-identified repairs before prose. No inherited intent, thesis, role, criterion or unit-order change; prepare the final allowed check as round 2."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Completed authorized prose alignment after the sound flow review: added the full roadmap and incoming bottleneck link, moved Questions intact before Closing Thought, corrected the accountability reversal, connected the closing to ownership capacity, and added the breaking-vibe-monolith hand-off. All 44 units align structurally. Front matter, callout, tables, images/captions, questions, references, original links and numeric tokens were checked against the baseline and preserved. Independent draft-check round 1 remains pending."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Fresh isolated flow rubric returned sound with no changes. Authorized Phase B will realize the specified roadmap, reflection placement, accountability correction, ownership-capacity synthesis and next-post hand-off. Resolved historical/workflow questions have moved to the decision log; original quotation authorship remains uncertain."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted the legacy accepted spec.md into a full paragraph-level spec.json at status draft under the author’s unattended outcome-revision instruction. Copied the journal contract exactly; mapped all existing units and preserved record keeping. Specified a complete introductory roadmap, Questions before Closing Thought, the accountability correction, a clearer ownership-capacity synthesis and the next-post hand-off. Prose is still unchanged at this Phase A checkpoint. No new criteria or numeric word cap."
+    },
+    {
+      "date": "2026-07-05",
+      "change": "All images generated (Gemini / Nano-Banana): hero logo, 2 inline figures (last-human-mile, naive-to-evolved-staircase), 8 comic panels. Added a real author-supplied chart (computing vs. human capabilities) as Figure 1 of the asymmetry section; the redundant generated `diverging-curves` figure was dropped in favour of it, and the remaining figures renumbered. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-05",
+      "change": "Comics modality added (8 panels, Maya/Rex cast; motif: Rex prints artifacts / understanding is a lightbulb only ever over a human head). Panels staged as placeholders awaiting image generation. Fourth modality now live; spec Modalities box checked. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-05",
+      "change": "Article, summary, and dialog written. Spec and post agree. Status `draft → accepted`. Three inline figures staged as placeholders, awaiting image generation; comics deferred. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-05",
+      "change": "Sources finalized against the deep-research bundle. Locked the title quote to **Karpathy (popularized, 2026)** with his \"I am becoming the bottleneck\" as the asymmetry anchor; promoted Naur, Searle, Polanyi, Bainbridge, the Microsoft/CMU + Anthropic + MIT studies, Osmani, Willison, METR, Moravec, Levitt/JTBD, Gall, and Alexander to load-bearing/colour roles. Status stays `draft` (article not yet written). *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-05",
+      "change": "Initial spec. Status `draft`. Thinking-vs-understanding framing; article + summary + dialog planned (comics deferred). *(Željko Obrenović, AI-mediated session)*"
+    }
+  ]
+}

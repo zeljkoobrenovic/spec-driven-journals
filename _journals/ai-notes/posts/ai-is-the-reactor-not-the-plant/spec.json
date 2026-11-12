@@ -1,0 +1,1230 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "ai-is-the-reactor-not-the-plant",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "AI Is the Reactor, Not the Plant",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the complete published index.md and accepted legacy spec.md, using check_draft.py units and outcome_specs.parse_draft on the preserved 2026-11-12 baseline. The article has 29 prose/list units plus its unchanged three-bullet KEY POINTS callout. Tables, images and captions remain evidence attached to their existing units. The contract preserves the seven original body sections and their paragraph counts, moves the existing Questions to Consider unit before Closing Thought, and adds one short final hand-off unit, for 30 specified prose/list units. It requires a fuller roadmap, a bridge from intended behavior to surrounding controls, an explicit non-universal interpretation of the cost evidence, and a closing synthesis. These are prospective requirements, not claims about the unchanged Phase A prose. No journal research ledger exists: the baseline article and legacy spec are the factual authority, including every nuclear cost figure and its qualification. Intent, the five thesis fields and role are copied unchanged from the final journal entry. The author authorized auto mode and no more than two total draft-check rounds; the spec remains draft.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "The difference between raw model capability and the surrounding systems that make it usable.",
+        "How control, channel, and contain map to AI engineering and why safeguards need layers."
+      ],
+      "believe": [
+        "Trustworthy production use requires sustained investment around the model.",
+        "The reactor analogy explains surrounding work without equating AI risks with physical nuclear hazards."
+      ],
+      "can_do": [
+        "Identify control, conversion, containment, and accountable ownership work missing from an AI plan."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader maps each of control, channel, and contain to a concrete AI practice and explains why a single safeguard is insufficient.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "For an AI workflow, what would control, channel, and contain mean, and what does defense in depth add?",
+        "expected": "Control limits actions through scope, instructions, or permissions; channel turns outputs into checked results through evaluation or workflows; contain bounds failures through sandboxing, review, limits, or rollback; another layer must hold when one fails."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader uses the nuclear evidence directionally and can state the analogy's limits.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What does the nuclear cost evidence support, and what should you avoid inferring about AI from the analogy?",
+        "expected": "The surrounding plant accounts for substantial work and cost; attributed breakdowns with different bases are not universal ratios or AI budgets; AI has different hazards, changing behavior, and can have value without a production control system."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader identifies an engineering or organizational investment beyond choosing a more capable model.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What concrete change would this article suggest to the staffing, measurement, or ownership of an AI project?",
+        "expected": "Budget for evaluation and surrounding systems, define permissions and layered safeguards, measure conversion into correct results, or name the accountable human owner; connect the choice to trustworthy use."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Where should teams direct engineering effort when a capable model is already available?",
+    "claim": "Teams seeking trustworthy production use should treat the model as one component and direct most engineering effort to the surrounding controls, evaluation, workflows, and accountable operation.",
+    "disputed_by": "The view that selecting or training a sufficiently capable model solves most of the production problem, leaving integration and oversight as minor finishing work.",
+    "so_what": "Project budgets, delivery plans, and ownership need to include the work that turns a convincing demonstration into a service people can rely on.",
+    "how_why": "Raw generation does not itself constrain permitted actions, verify results, contain failures, or assign responsibility; those properties come from the systems around it, as the bounded reactor analogy illustrates.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "A capable core is only one component of a usable system, as the reactor function and attributed plant cost evidence illustrate."
+      },
+      {
+        "id": "S2",
+        "claim": "Control, channel and contain identify distinct engineering responsibilities that turn model output into trustworthy production work."
+      },
+      {
+        "id": "S3",
+        "claim": "Safeguards need independent layers designed to hold when another layer fails."
+      },
+      {
+        "id": "S4",
+        "claim": "Organizations and society need accountable operating structures around capability, extending the plant analogy beyond software."
+      },
+      {
+        "id": "S5",
+        "claim": "The reactor analogy supports a bounded argument about surrounding work, without transferring nuclear cost ratios or physical hazards to AI."
+      },
+      {
+        "id": "S6",
+        "claim": "Teams should make the surrounding work explicit in project budgets, permissions, measurement and human ownership."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Establishes the engineering controls and ownership for dependable production use, preparing for the later product essay's separate question of changing customer workflows.",
+    "supports": [
+      "S2"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "reactor-core and plant-cost: explain the heat source, give attributed cost evidence, and interpret it directionally."
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "three-jobs through widening-out: engineering functions, layered safeguards, then organizational and societal operation."
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "analogy-limits through monday and questions: constrain the analogy before turning it into planning decisions."
+      }
+    ],
+    "rationale": "The reader first learns what the nuclear core supplies and why the surrounding plant accounts for substantial work. Only then can the three jobs and independent safeguards give the AI comparison concrete meaning. Organizations and society extend those already explained responsibilities; their limits are stated before practical advice so the analogy does not become a claim of equivalent hazards or budgets. The Monday moves supply the terms needed by the unchanged team questions. Moving those questions before the closing synthesis keeps application beside action and lets the article finish on the investment decision and its consequence for the next essay. Starting with cost percentages would leave their object unclear; moving the wider analogy before the engineering mapping would leave it ungrounded; putting questions after references would break the closing and leave them outside the specification alignment."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "It is easy to be dazzled by the core."
+    },
+    "bridge": {
+      "from_reader_world": "Engineers can generate structure cheaply and can name intended behavior, yet are still tempted to judge AI work by which model is most capable.",
+      "to_topic": "A model alone does not make that intended behavior dependable; the reactor and its surrounding plant distinguish raw capability from the work that controls and checks it."
+    },
+    "thesis_statement": {
+      "text": "For trustworthy production use, the model is the reactor; most of the engineering is the plant around it that controls, channels and contains its capability.",
+      "placement": "Existing KEY POINTS bullet 3 and introduction paragraph p03, with production scope made clear in p04."
+    },
+    "roadmap": {
+      "placement": "Introduction paragraph p04, retaining the limited-analogy framing while naming the argument in reading order.",
+      "promises": [
+        {
+          "promise": "Start with what a reactor core does and the attributed cost evidence for the surrounding plant.",
+          "kept_in": [
+            "reactor-core",
+            "plant-cost"
+          ]
+        },
+        {
+          "promise": "Map control, channel and contain to AI work, then explain why safeguards need independent layers.",
+          "kept_in": [
+            "three-jobs",
+            "defense-in-depth"
+          ]
+        },
+        {
+          "promise": "Extend the pattern to organizations and society, then state where the analogy breaks.",
+          "kept_in": [
+            "widening-out",
+            "analogy-limits"
+          ]
+        },
+        {
+          "promise": "Turn the bounded analogy into practical moves and questions for teams taking an AI demo into production.",
+          "kept_in": [
+            "monday",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "form": "prose",
+        "controlling_idea": "The core attracts attention before the work around it does.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "The unchanged KEY POINTS callout has exactly three bullets: raw AI capability as reactor heat; the surrounding plant as most of the engineering; the corresponding AI controls, evaluation and operating systems.",
+            "shows": "The callout makes the direction visible to a skim reader while the opening sentence names the attraction the essay will correct.",
+            "source": "Baseline index.md, KEY POINTS callout"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "The core attracts attention before the work around it does."
+        }
+      },
+      {
+        "id": "p02",
+        "form": "prose",
+        "controlling_idea": "Asking which model is most capable leaves open how to make it deliver the behavior we intend.",
+        "function": "comparison",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "The existing questions compare how hot a nuclear core can get with which AI model is best or how capable its latest release is.",
+            "shows": "The familiar fascination with capability does not answer how the generated system should behave or be made dependable."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The core is easy to admire.",
+          "introduces": "The capability-first questions that distract from intended behavior.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Asking which model is most capable leaves open how to make it deliver the behavior we intend."
+        }
+      },
+      {
+        "id": "p03",
+        "form": "prose",
+        "controlling_idea": "Trustworthy production value depends on the systems that control, channel and contain raw capability.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "A reactor core without its surrounding plant is not a power station; the existing paragraph describes the work that turns raw power into useful and safe output.",
+            "shows": "Capability needs surrounding engineering to become dependable production value; the comparison is not a denial of useful model output on its own."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The questions focus on the core itself.",
+          "introduces": "The surrounding work that makes capability dependable.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S6"
+          ],
+          "how": "Trustworthy production value depends on the systems that control, channel and contain raw capability."
+        }
+      },
+      {
+        "id": "p04",
+        "form": "prose",
+        "controlling_idea": "The bounded reactor analogy will lead from nuclear evidence through AI responsibilities and their limits to practical production decisions.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "The article uses the existing attributed nuclear facts, AI mappings and team questions; it does not introduce a universal nuclear ratio or a new factual case.",
+            "shows": "The roadmap promises the kind of evidence and the cautious, practical tone the body supplies."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Surrounding engineering creates dependable use.",
+          "introduces": "The ordered route through nuclear function and cost, AI functions and layers, wider operation, limits, Monday moves and team questions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "The bounded reactor analogy will lead from nuclear evidence through AI responsibilities and their limits to practical production decisions."
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "reactor-core",
+      "heading": "What a Reactor Core Actually Is",
+      "controlling_idea": "A reactor supplies heat whose useful production role depends on control.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Defines the source and the necessary surrounding work before cost evidence or AI mapping depends on those terms."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction distinguishes raw power from a useful plant.",
+        "introduces": "The reactor core as a heat source whose output must be controlled.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "prose",
+          "controlling_idea": "A reactor core is the plant’s heat source.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The NRC describes the reactor as the heat source for the power plant, just like the boiler is for a coal plant; the paragraph identifies the self-sustaining fission chain reaction as how that heat is produced.",
+              "shows": "The unusual physics does not change the reactor’s limited functional role within the whole plant.",
+              "source": "U.S. NRC, Reactor Concepts Manual (R-100), as quoted in the baseline article"
+            }
+          ]
+        },
+        {
+          "id": "p06",
+          "form": "prose",
+          "controlling_idea": "Controlling the chain reaction makes its heat usable for predictable electricity generation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The existing NRC quotation connects consistent and constant heat energy with predictable and controllable steam generation and electricity.",
+              "shows": "Steady useful output is a result of control, not a synonym for raw heat.",
+              "source": "U.S. NRC, Reactor Concepts Manual (R-100), as quoted in the baseline article"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The core provides heat.",
+            "introduces": "Why that heat must be steady to serve the plant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "prose",
+          "controlling_idea": "An unchecked reaction illustrates why control is essential to making the heat source usable.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The baseline explains an unchecked reaction producing energy faster than surrounding systems can use or absorb it, and the inability to run a grid on an unsteady source.",
+              "shows": "Control is part of the useful system rather than a cosmetic feature. Preserve the existing physical account without introducing detonation language or new nuclear claims.",
+              "source": "Baseline index.md, What a Reactor Core Actually Is paragraph 3"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Controlled heat supports predictable generation.",
+            "introduces": "The unusable and dangerous result described for an unchecked reaction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "form": "prose",
+          "controlling_idea": "The core can matter enormously while still requiring the surrounding plant to fulfill its purpose.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing core-matters conclusion follows the heat-source and control explanation.",
+              "shows": "Valuing the plant does not require dismissing the core, and prepares the reader to ask how much engineering sits around it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The contrast between steady output and an unchecked reaction.",
+            "introduces": "The distinction between an essential core and a complete usable system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Define the heat source, explain steady use, contrast the unchecked case, and draw the core-versus-system distinction. Reversing the control and hazard paragraphs would introduce the failure before the reader knows the useful operating goal."
+      }
+    },
+    {
+      "id": "plant-cost",
+      "heading": "Most of the Plant Is Not the Core",
+      "controlling_idea": "The attributed nuclear estimates show substantial cost outside the reactor without establishing a universal ratio.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S5"
+        ],
+        "how": "Grounds the surrounding-work claim in existing numbers while keeping their source years, bases and limits visible."
+      },
+      "transition_in": {
+        "relationship": "additional_support",
+        "carries_over": "The core needs surrounding engineering to become useful.",
+        "introduces": "Existing cost evidence for the scale of that surrounding work.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p09",
+          "form": "prose",
+          "controlling_idea": "Most of a nuclear plant’s cost and engineering sits outside the reactor.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The baseline article’s directional claim about cost, components and engineering effort leads into its attributed cost breakdowns.",
+              "shows": "The numbers are introduced to support a scale-of-work argument rather than a decimal target.",
+              "source": "Baseline index.md, Most of the Plant Is Not the Core"
+            }
+          ]
+        },
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "The two attributed estimates put the reactor-related share in a minority while using different cost bases.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "WNA’s 2020 supply-chain breakdown: nuclear island about 28% of plant cost, already including the reactor coolant system and steam supply; conventional island (turbine) about 15%; balance of plant about 18%; site and civil works about 20%; instrumentation and control about 8%. The vessel and core alone are smaller than the nuclear island.",
+              "shows": "Large shares pay for systems around the reactor; the named nuclear-island category must not be mistaken for the bare core.",
+              "source": "World Nuclear Association, Economics of Nuclear Power, 2020 supply-chain cost-by-activity breakdown, as cited in the baseline"
+            },
+            {
+              "kind": "statistic",
+              "what": "The 1980 DOE estimate is for a hypothetical plant and is illustrative, not a constant: reactor 15–20% of direct cost, co-equal with turbine and plant structures; engineering design cost nearly as much as the reactor; roughly a third of total cost was indirect services, construction management and overhead.",
+              "shows": "A separately based historical estimate points in the same direction. Its direct-cost denominator differs from the WNA percentages, so the estimates cannot be treated as strictly comparable.",
+              "source": "IFP, Why Does Nuclear Power Plant Construction Cost So Much?, reporting the 1980 DOE breakdown, as cited in the baseline"
+            },
+            {
+              "kind": "table",
+              "what": "The unchanged intuition/reality table contrasts equating reactor and plant, treating the core as the hard part, and assuming a better core alone makes a better plant.",
+              "shows": "The cost figures support redirecting attention toward control, cooling, containment, instrumentation and conversion rather than treating the source as the whole system."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The surrounding plant carries much of the work.",
+            "introduces": "The attributed WNA and historical DOE figures, with their qualifications kept beside them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "The cost evidence is directional support for surrounding work, not a universal reactor percentage or an AI budget formula.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Unchanged Figure 1 and its plant-cost-breakdown.jpeg image and caption reproduce the WNA 2020 cost-by-activity comparison, including the nuclear-island label and about 28% share.",
+              "shows": "The visual reinforces the minority share of the named nuclear-island category; the paragraph and preceding list carry the definitions and caveats needed to read it.",
+              "source": "assets/images/ai-is-the-reactor-not-the-plant/plant-cost-breakdown.jpeg"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The two sources point the same way despite different bases.",
+            "introduces": "The bounded inference the article draws from those figures.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the surrounding-work claim, present the complete attributed list with its caveats and contrast table, then give the directional interpretation beside the figure. Moving the interpretation away from the numbers would make a false precise comparison easier."
+      }
+    },
+    {
+      "id": "three-jobs",
+      "heading": "The Three Jobs of the Plant",
+      "controlling_idea": "Control, channel and contain describe the surrounding engineering that makes capability usable.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Turns the cost-based distinction into concrete responsibilities around an AI model."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The surrounding plant accounts for substantial work.",
+        "introduces": "What that work does through the article’s three-job framing.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "The article’s control, channel and contain triad maps three surrounding jobs to AI without claiming an exact match to IAEA safety functions.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The IAEA functions remain control the reaction, remove the heat, and confine the material. Preserve the explanation that removing heat safely from the core differs from the article’s channel job of converting heat into sellable electricity.",
+              "shows": "The nuclear reference grounds the structure while its explicit mismatch keeps the analogy from being presented as an official nuclear taxonomy.",
+              "source": "IAEA SSR-2/1, Safety of Nuclear Power Plants: Design, as cited in the baseline"
+            },
+            {
+              "kind": "table",
+              "what": "The unchanged mapping table: control rods of boron, cadmium or hafnium plus moderator and coolant map to prompts, instructions, tool permissions, retrieval and orchestration; coolant and turbine conversion map to evaluations, structured outputs, schemas and workflows; fuel cladding, coolant system and containment building map to sandboxes, output filters, human review, rate limits and rollback.",
+              "shows": "Readers can name concrete AI work for each job: constrain actions, produce a checkable result, and bound damage when things fail."
+            },
+            {
+              "kind": "figure",
+              "what": "Unchanged Figure 2 and control-channel-contain-mapping.jpeg repeat the three rows with reactor mechanisms and AI counterparts.",
+              "shows": "The image provides a compact recall aid for the same three responsibilities, whose relevance is explained in the table and the next paragraph.",
+              "source": "assets/images/ai-is-the-reactor-not-the-plant/control-channel-contain-mapping.jpeg"
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "The three jobs improve the surrounding product system rather than increasing core power.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "None of the mapped jobs is make the core hotter; the baseline contrasts these trust-building activities with model training.",
+              "shows": "The mapping explains why production engineering effort should include the plant instead of ending at the model choice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table and figure show three jobs around the core.",
+            "introduces": "Their shared focus on useful, trustworthy operation rather than more raw power.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "The surrounding controls create trust by making generated work inspectable and testable.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Keep the existing cross-link to risc-for-ai-software-development and its explicit summary: the adoption bottleneck is whether output can be inspected, tested and trusted.",
+              "shows": "The related essay reinforces the trust principle without being required reading; gloss control plane here as the surrounding controls that make the model’s work reviewable.",
+              "source": "risc-for-ai-software-development"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The mapped jobs make the product trustworthy.",
+            "introduces": "The same inspectability-and-trust principle in the related RISC essay.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Define the three-job mapping with its limits, explain the common focus of all three jobs, then connect that focus to inspectability. Naming the related essay first would ask its title to supply an argument the local mapping has not yet made."
+      }
+    },
+    {
+      "id": "defense-in-depth",
+      "heading": "Defense in Depth: No Single Guardrail",
+      "controlling_idea": "A safeguard must be backed by independent layers that can hold when it fails.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Develops containment and control from a list of measures into a design principle about failure."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The surrounding controls are where trustworthy operation is built.",
+        "introduces": "Why those controls cannot depend on a single guardrail.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "Trust in the surrounding controls requires a plan for a safeguard failing.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing transition introduces one more nuclear idea; make its connection to the preceding trust claim explicit without adding another unit.",
+              "shows": "The reader knows why independent layers follow the three-job mapping rather than reading the section as a new analogy."
+            }
+          ]
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "Nuclear defense in depth assumes failures and supplies successive independent protections.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve the IAEA’s five levels from prevention through limiting consequences, the NRC phrase successive compensatory measures, and at least two diverse and independent shutdown systems where one alone can hold the reaction in check.",
+              "shows": "The operative principle is independence under failure, not simply having several controls.",
+              "source": "IAEA SSR-2/1 and NRC sources as attributed in the baseline"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A safeguard may fail.",
+            "introduces": "The nuclear philosophy of independent layers designed around that possibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p17",
+          "form": "list",
+          "controlling_idea": "AI systems can apply the layered principle across prevention, detection, damage control, mitigation and consequences.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Keep all five existing AI list items: prevent with constrained tools, least privilege and scope; catch early with validation, evaluation gates and anomaly detection; stop damage with sandboxes and human review; mitigate with limits, circuit breakers and rollback; limit consequences with logs, monitoring and incident response.",
+              "shows": "Each layer has a different role so failure of a prompt or filter need not leave the system without another defense."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Independent nuclear safeguards back one another up.",
+            "introduces": "Concrete AI safeguards organized by the same failure-aware principle.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "Defense in depth means designing the next layer to hold, rather than merely adding more filters.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Unchanged Figure 3 and defense-in-depth-layers.jpeg show a crack in one inner ring while the next ring holds, retaining all five defense labels and the caption.",
+              "shows": "The layer that survives the failure expresses the independence principle the list should be used to implement.",
+              "source": "assets/images/ai-is-the-reactor-not-the-plant/defense-in-depth-layers.jpeg"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The list gives five different safeguard roles.",
+            "introduces": "The design test that makes those roles a layered system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the failure question, explain the existing nuclear evidence, map it to AI controls, and interpret the map as a test of independence. The AI list before that evidence would look like an arbitrary checklist rather than a response to failure."
+      }
+    },
+    {
+      "id": "widening-out",
+      "heading": "Widening Out: Organizations and Society Are Plants Too",
+      "controlling_idea": "Accountable operating structures play the surrounding-plant role at organizational and societal scales.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S5"
+        ],
+        "how": "Extends the engineering model to the people and institutions that govern its use while preserving the structural-only comparison."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Technical systems require safeguards and review around capability.",
+        "introduces": "The same pattern in organizational and societal operation.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "The surrounding-work pattern extends beyond engineering to larger operating systems.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The baseline explicitly moves one level up from the engineering argument with a caution about the comparison.",
+              "shows": "The change in scale is signposted before organizational responsibilities are introduced."
+            }
+          ]
+        },
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "An organization gets dependable value through accountable decisions, review and recovery around model access.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The existing organizational questions ask who is accountable, which decisions remain human, how work is reviewed, and how failures are caught and fixed.",
+              "shows": "Owning access to capability is insufficient to specify how an enterprise uses it responsibly."
+            },
+            {
+              "kind": "source",
+              "what": "Preserve breaking-vibe-monolith for the better-structure argument and prepare-for-ai-future for judgment, accountability and deciding; preserve the existing concluding contrast between the cheap reactor and costly plant.",
+              "shows": "The local explanation makes both forward cross-links optional reinforcement, rather than prerequisites.",
+              "source": "breaking-vibe-monolith; prepare-for-ai-future"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The engineering pattern can recur at a larger scale.",
+            "introduces": "The organization’s operating model around AI.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "Society’s surrounding institutions shape whether powerful capability is channeled toward a net benefit.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Keep the existing comparison to institutions, norms, laws and accountability; retain the hedge It is fair to say before the historical nuclear statement and the list of regulation, operating discipline, liability, oversight and public trust.",
+              "shows": "The social plant comparison concerns governance and operating conditions, not a new historical measurement or a claim about equal hazards.",
+              "source": "Baseline index.md, Widening Out paragraph 3"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Organizations need operating structures around capability.",
+            "introduces": "Society’s institutions and accountability structures serve a comparable wider role.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "The wider comparison concerns surrounding structure, not equivalence between AI danger and fission.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the explicit structure-not-danger caution and the bounded lesson about channeling capability toward what people want.",
+              "shows": "The widening remains an argument about responsibility and engineering effort, and opens the fuller examination of limits."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The analogy now extends to society.",
+            "introduces": "The constraint that this extension is structural rather than a hazard equivalence.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "Signal the move beyond engineering, describe organizational operation, widen to society, then constrain what the scale comparison means. Society first would skip the familiar organizational responsibilities that ground the larger claim; removing the final caution would invite an equivalence the article rejects."
+      }
+    },
+    {
+      "id": "analogy-limits",
+      "heading": "Where the Analogy Breaks",
+      "controlling_idea": "The analogy remains useful only when its differences from AI stay explicit.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Prevents the surrounding-work claim being read as a universal equivalence of physics, risks, standards or model usefulness."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The wider analogy is about structure rather than equal danger.",
+        "introduces": "Four explicit limits on how the comparison may be used.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "Four differences bound the useful reactor analogy.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Keep the four where-it-holds/where-it-breaks rows: heat and radiation versus wrong outputs, misuse and over-trust; fixed reactor physics versus statistical, changing model behavior; mature nuclear standards and operating data versus an unsettled AI rulebook; an unusable bare reactor core versus a raw model’s real chat-box value.",
+              "shows": "The argument is about durable, trustworthy production use and surrounding work, not identical hazards, stable model physics or the absence of standalone model value."
+            }
+          ]
+        },
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "The useful conclusion is the work around capability, not literal nuclear imagery applied to AI.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Retain the rejected phrases AI will melt down and containment dome for GPUs as examples of abusing the analogy.",
+              "shows": "Readers can distinguish the narrow planning lesson from a literal inference the essay does not support."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table has separated valid similarities from the four differences.",
+            "introduces": "The narrow core-versus-surrounding-work inference that survives.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "monday",
+      "heading": "What to Do on Monday",
+      "controlling_idea": "Teams can turn the bounded analogy into explicit choices about budgets, permissions, safeguards, measurement and ownership.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Makes the surrounding-work thesis usable when planning and reviewing an AI project."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The analogy’s surviving lesson is where useful production work sits.",
+        "introduces": "Concrete changes to where teams spend effort.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "form": "prose",
+          "controlling_idea": "An AI project plan should treat the surrounding plant as deliberate engineering work.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all five moves and their existing descriptions: budget for the plant, build the throttle first, layer safeguards, measure conversion, and name who owns the reaction. Preserve the existing 90% done demo and six months of plant-building wording as the author’s planning illustration, not a measured industry statistic.",
+              "shows": "Each row turns the abstract responsibilities into a planning action with an explicit benefit: realistic estimates, bounded permissions, resilience to failure, checkable output and human accountability."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "These moves invest in the surrounding system that turns capability into usable value.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The baseline explains that none of the five moves requires getting a better model.",
+              "shows": "The recommendations directly implement the investment priority argued by the essay rather than becoming general AI advice."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table specifies five planning moves and their benefits.",
+            "introduces": "Their common purpose of building the plant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "A team can use the plant model to identify missing work in an AI project moving toward production.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Turns the Monday moves into a review of the reader’s own budget, safeguards, control, measurement and accountability."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Monday table names the planning moves.",
+        "introduces": "The unchanged questions ask whether those moves are present in the team’s own project.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "form": "list",
+          "controlling_idea": "Reviewing the project’s budget, backup safeguards, throttle, result measures and accountable owner reveals what the plant still needs.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the complete existing Questions to Consider lead-in and all six questions, including the second guardrail, kill switch, incident review and comparison between core and plant investments.",
+              "shows": "The reader applies already explained responsibilities to an actual project without needing a new concept or a new factual example."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Closing Thought",
+    "synthesis": "The cost evidence, three engineering jobs and accountable operating model together make the surrounding plant part of the product itself: the investment that turns capability into a service people can rely on.",
+    "so_what": "A team should plan, fund and own that surrounding work from the start instead of treating a convincing model demonstration as almost-finished production delivery.",
+    "callback": {
+      "to": "The opening attraction to the core and questions about which model is most capable.",
+      "how": "The reader can still admire the core while judging the complete system by whether it turns output into dependable results."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Treat evaluation, controls, layered safeguards and accountable operation as the work of building the AI product; use the team questions to identify what is missing."
+    },
+    "hand_off": {
+      "to": "ai-is-an-amplifier-not-an-accelerator",
+      "relationship": "cause_effect",
+      "carries_over": "A model becomes useful through the engineering and operating system around it.",
+      "introduces": "How that system determines whether more generation improves results or increases downstream strain."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The team questions expose the surrounding work a real project must own.",
+      "introduces": "Why that work belongs in the product plan from the start.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p28",
+        "form": "prose",
+        "controlling_idea": "A complete production service comes from the surrounding engineering and accountable operation, so that work belongs in the product plan from the start.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Return to the original contrast between a genuine marvel and a power station, connecting the earlier cost, safeguard and ownership arguments without adding new evidence.",
+            "shows": "The reader can now explain why raw capability alone does not settle the delivery plan or responsibility for the result."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3",
+            "S4",
+            "S6"
+          ],
+          "how": "A complete production service comes from the surrounding engineering and accountable operation, so that work belongs in the product plan from the start."
+        }
+      },
+      {
+        "id": "p29",
+        "form": "prose",
+        "controlling_idea": "The work ahead is building the plant that makes raw AI capability trustworthy and useful in production.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Preserve the original closing paragraph’s Generative AI handed us a reactor core and control, channeling, and containment synthesis, including its emphasis on the work ahead.",
+            "shows": "The memorable takeaway now rests on the practical decisions and bounded comparison established in the body."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The surrounding work belongs in the product plan.",
+          "introduces": "The author’s call to invest in that work.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S6"
+          ],
+          "how": "The work ahead is building the plant that makes raw AI capability trustworthy and useful in production."
+        }
+      },
+      {
+        "id": "p30",
+        "form": "prose",
+        "controlling_idea": "The surrounding system determines whether increasing generation improves results or creates more work downstream.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "A short new hand-off links to ai-is-an-amplifier-not-an-accelerator as the next inquiry into the effects of increasing generation inside a real delivery system.",
+            "shows": "The next essay follows causally from treating the model as one component rather than the whole production system.",
+            "source": "ai-is-an-amplifier-not-an-accelerator"
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Capability becomes useful through the surrounding plant.",
+          "introduces": "The next question of whether more generation improves results or adds downstream strain.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S6"
+          ],
+          "how": "The surrounding system determines whether increasing generation improves results or creates more work downstream."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A nuclear engineering tutorial or a safety-record debate about nuclear power."
+    },
+    {
+      "topic": "A claim that AI is as physically dangerous as fission, or that it can melt down or detonate in any literal sense."
+    },
+    {
+      "topic": "A specific evals/guardrails/orchestration toolchain recommendation."
+    },
+    {
+      "topic": "An AI-safety / x-risk policy argument. The control-plane point is about engineering and operating reality, not existential risk."
+    },
+    {
+      "topic": "A precise, universal cost percentage for the reactor: figures remain attributed and support only the directional claim."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "Sibling summary.md, dialog.md and comics.md were not revised in this pass. Their shared facts and central argument remain intact, but they do not carry the expanded roadmap, reordered question section or new amplifier hand-off; review editorial navigation if those modalities are refreshed."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-06-25",
+      "decision": "Chose the title AI Is the Reactor, Not the Plant to put the thesis in the title: the model is one part, the plant around it is the work."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "Scope decided as both, layered: engineering control plane first, then widen to organization and society. Section: AI Software Development, next to the RISC and vibe-monolith posts. This preserves the legacy placement rationale as history; the journal contract now gives the exact reading order."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "Nuclear depth kept light and accurate: a few verifiable touchpoints (heat source, control rods, three barriers, defense-in-depth, cost split) used as anchors, not a point-by-point engineering mapping, to keep the article readable and avoid over-stretching."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "Will include an explicit Where the analogy breaks section, because the strongest version of an analogy names its own limits."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "Decided NOT to use the ~80% of overnight cost is EPC figure: it was adversarially refuted in research (1-2). Use only the WNA cost-by-activity split and the attributed 1980 DOE breakdown."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "Decided to scope the uncontrolled = dangerous point to powerful and useless without control, not explodes like a bomb, because low-enriched commercial reactors cannot detonate and real accidents are decay-heat/meltdown-driven over hours. Preserved as the legacy research decision, not a new verification in this pass."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Copy journal intent, acceptance criteria, the five thesis fields and role unchanged. Add six local supporting claims, but add no acceptance criteria or numeric word limit. The legacy spec set no numeric cap.",
+      "rejected": [
+        "Rewriting the copied thesis or introducing a higher or invented word limit.",
+        "Adding a post-specific acceptance gate when the three journal criteria and standard checks already test the legacy outcomes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve all eight legacy success criteria as reader outcomes through the existing journal contract: sticky model and surrounding investment map to intent and AC-3; attributable directional nuclear evidence maps to AC-2; triad and layered safeguards map to AC-1; organizational and societal application maps to AC-3 and S4; explicit limits and avoiding model-dismissal or nuclear-risk equivalence map to AC-2. The former short actionable section inventory becomes the reader’s ability to identify a concrete investment in AC-3. No legacy outcome is dropped.",
+      "rejected": [
+        "Copying content inventories as new acceptance criteria.",
+        "Discarding the organizational or societal application to shorten the essay."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstruct all baseline prose/list units, attaching tables, images, captions and the initial callout as evidence rather than inventing standalone prose units. Preserve front matter, every image, every caption, all existing links, and the exact three-bullet KEY POINTS block.",
+      "rejected": [
+        "Rewriting the essay wholesale.",
+        "Removing callouts or treating visual assets as optional."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Retain the seven existing body sections in order. Move the unchanged Questions to Consider section immediately before Closing Thought so the reader applies the Monday moves before the synthesis and hand-off; preserve To Probe Further intact at the end.",
+      "rejected": [
+        "Leaving reader questions after the references, where they fall outside conclusion alignment.",
+        "Renaming the existing headings or dropping the questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Specify a complete roadmap, a concise intended-behavior bridge, a plain control-plane gloss, and a clearer boundary into defense in depth. Strengthen the first closing unit’s synthesis and add a separate short final unit linking to the amplifier essay; the new unit keeps the hand-off from competing with the original final paragraph’s takeaway.",
+      "rejected": [
+        "Adding new explanatory sections or new factual examples.",
+        "Packing the new hand-off into the original concluding paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Keep the WNA 2020 breakdown and the 1980 hypothetical DOE estimate exactly as published, including nuclear-island scope, direct versus plant/total cost bases, their lack of strict comparability, and the directional-not-decimal interpretation. Add only the interpretive statement that the evidence is not a universal reactor ratio or AI budget formula.",
+      "rejected": [
+        "Correcting or updating cost figures in this outcome pass.",
+        "Dropping historical-estimate caveats, comparing unlike denominators, or inferring an AI cost percentage."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Proceed from draft specifications under the author’s auto-mode instruction, keep status draft, and stop at no more than two total draft-check invocations. Parent owns fresh isolated readers, migration staging and the final build.",
+      "rejected": [
+        "Changing status to accepted.",
+        "A third draft-check round or an independent build or commit from this post pass."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "A fresh isolated reader reviewed only flow.txt and returned sound with no actionable notes. Retain the planned order and all transitions; proceed to the authorized local prose revision. The review is saved in scratch flow-review-1.txt.",
+      "rejected": [
+        "Moving, merging or cutting a unit without a demonstrated reader benefit."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Implemented the sound-reviewed contract through seven local prose-unit edits, the unchanged Questions to Consider section moved before Closing Thought, and one new final amplifier hand-off. The protected-material audit confirms exact front matter, KEY POINTS, tables, image/caption lines, question text, reference text, cost list and numeric tokens; every existing link is preserved. No real name, figure, date, factual claim or heading text was changed or added. Sibling modalities remain outside this pass."
+    },
+    {
+      "date": "2026-06-25",
+      "decision": "The legacy spec recorded no questions blocking its first draft. Preserved here as historical record rather than an unresolved question."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Independent draft-check round 1 returned REVISE with 53 passed results, 2 failed results and 0 waivers; all three copied acceptance criteria passed. Both failures concern the same Introduction p02-to-p03 boundary: the pronoun Both could appear to reject the intended-behavior question rather than the preceding capability questions. Replaced that pronoun sentence with explicit core-temperature and model-capability referents. No unit, order, controlling idea, transition contract or protected material changed. One round has completed; round 2 is the final authorized check. The previous unchecked-readers workflow placeholder is now historical and has been removed from open_questions."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "risc-for-ai-software-development",
+      "contributed": "Legacy source: trust and inspectability as the adoption bottleneck; the platform surface around the model."
+    },
+    {
+      "kind": "internal",
+      "ref": "breaking-vibe-monolith",
+      "contributed": "Legacy source: the way out of the burn is structure, not more force; freezing high-blast-radius seams."
+    },
+    {
+      "kind": "internal",
+      "ref": "prepare-for-ai-future",
+      "contributed": "Legacy source: judgment, accountability, and the shift from artifact to decision."
+    },
+    {
+      "kind": "external",
+      "ref": "U.S. NRC, Reactor Concepts Manual (R-100). Legacy research verification dated 2026-06-25. https://www.nrc.gov/cdn/legacy/reading-rm/training/reactor-concepts-training-course.pdf",
+      "contributed": "The reactor as the heat source for the power plant, just like the boiler is for a coal plant; consistent and constant, predictable and controllable output; the three barriers to fission-product escape. Carried from the legacy spec, not reverified in this pass."
+    },
+    {
+      "kind": "external",
+      "ref": "World Nuclear Association, Nuclear Power Reactors and Safety of Nuclear Power Reactors. Legacy research verification dated 2026-06-25.",
+      "contributed": "Control rods (boron/cadmium/hafnium), moderator, coolant; three barriers; defense in depth; the three basic safety functions. Carried from the legacy spec."
+    },
+    {
+      "kind": "external",
+      "ref": "IAEA, SSR-2/1, Safety of Nuclear Power Plants: Design. Legacy research verification dated 2026-06-25. https://www-pub.iaea.org/MTCD/publications/PDF/Pub1534_web.pdf",
+      "contributed": "Five levels of defense in depth; three fundamental safety functions (control reactivity, remove heat, confine material); at least two diverse, independent shutdown systems. The author’s triad is a qualified analogy, not an identical taxonomy."
+    },
+    {
+      "kind": "external",
+      "ref": "U.S. DOE, Nuclear 101: How Does a Nuclear Reactor Work? Legacy research verification dated 2026-06-25.",
+      "contributed": "Control rods, moderator, coolant; carried over from the legacy source list even though the published reference list is shorter."
+    },
+    {
+      "kind": "external",
+      "ref": "World Nuclear Association, Economics of Nuclear Power (2020 World Nuclear Supply Chain report). Legacy research verification dated 2026-06-25. https://world-nuclear.org/information-library/economic-aspects/economics-of-nuclear-power",
+      "contributed": "Cost by activity: nuclear island about 28%, conventional island 15%, balance of plant 18%, civil works 20%, instrumentation and control about 8%; retain the original bases and nuclear-island definition."
+    },
+    {
+      "kind": "external",
+      "ref": "IFP, Why Does Nuclear Power Plant Construction Cost So Much? Legacy research verification dated 2026-06-25. https://ifp.org/nuclear-power-plant-construction-costs/",
+      "contributed": "The 1980 DOE hypothetical-plant breakdown: reactor, turbine and structures each about 15–20% of direct cost; engineering about reactor cost; roughly one third of total cost indirect. Attributed as one historical estimate, with a denominator different from WNA’s."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/ai-is-the-reactor-not-the-plant/index.md",
+      "contributed": "Primary source for existing wording, all figures and qualifications, paragraph units, front matter, callouts, links, tables, images, captions, references and questions."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/ai-is-the-reactor-not-the-plant/spec.md",
+      "contributed": "Legacy intent, outcomes, non-goals, modalities, open questions, six decision entries, source list and both changelog entries; preserved before its parent-managed migration."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Copied intent, thesis and role; exact previous/next relationship; source of the production-use scope and fixed acceptance criteria."
+    },
+    {
+      "kind": "internal",
+      "ref": "from-structure-to-behavior",
+      "contributed": "Preceding essay establishes cheap generated structure, intended behavior and outcomes; the opening bridge elaborates that need through surrounding controls."
+    },
+    {
+      "kind": "internal",
+      "ref": "ai-is-an-amplifier-not-an-accelerator",
+      "contributed": "Next essay asks how the surrounding delivery system determines whether more generation improves results or increases downstream strain."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "After round 1 returned REVISE (53 pass, 2 fail, 0 waived), replaced the ambiguous opening sentence of introduction p03 with explicit capability-question referents. Both failures addressed the same boundary. Moved workflow and legacy no-blocking-question notes into dated history; unchanged order requires no new flow rubric. Preparing the final authorized round 2; status remains draft."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Implemented Phase B from the sound-reviewed draft spec: added the intended-behavior bridge, production qualifier, complete roadmap, bounded cost interpretation, control-plane gloss, failure transition, closing synthesis and separate amplifier hand-off; moved unchanged questions before the conclusion. Resolved the Phase A reconstruction gaps. Kept all protected material exact and all specs draft; independent draft checks pending."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Fresh independent flow rubric returned sound with no actionable notes before prose revision. Retained the complete proposed sequence and all journal fields; status remains draft."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Reconstructed a full paragraph-level outcome spec before prose revision, copying the final journal contract; preserved all legacy records and factual qualifications. Planned the questions move, complete roadmap, local bridges, production-scope clarification, closing synthesis and a separate next-post hand-off. Status draft under authorized auto mode; no prose edited in Phase A."
+    },
+    {
+      "date": "2026-06-25",
+      "change": "Applied post-review minor fixes across index, summary, and dialog: softened the IAEA three functions mapping (it rhymes with, does not equal, the control/channel/contain triad), added the direct cost base qualifier to the 1980 DOE figure so it is not read against the WNA base, and hedged the one unsourced society-history claim. Status accepted. (Zeljko, AI-mediated session)"
+    },
+    {
+      "date": "2026-06-25",
+      "change": "Initial spec and article draft, with summary, dialog, and comic modalities. Built on deep-research with adversarial verification of the nuclear facts. Status accepted. (Zeljko, AI-mediated session)"
+    }
+  ]
+}

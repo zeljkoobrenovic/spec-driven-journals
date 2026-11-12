@@ -1,0 +1,1678 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "ai-is-an-amplifier-not-an-accelerator",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "AI Is an Amplifier, Not an Accelerator",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed before prose revision from the published index.md, its accepted 2026-06-29 spec.md, and its historical PLAN.md, using check_draft.py units and outcome_specs.parse_draft. The final journal contract supplies intent, thesis, role, and the next-post transition unchanged. This contract preserves the published units and evidence except for the explicitly planned additions, section moves, and blank-line recovery of two existing paragraphs. No journal research ledger exists. The baseline remains in /private/tmp/ai-notes-outcome-revision-20261112/original/ai-is-an-amplifier-not-an-accelerator. Phase B implemented the approved contract after the independent sound flow verdict: roadmap, bounded arithmetic and measurement qualifications, moved limits/questions, restored prose units, and next-post hand-off. Independent draft readers have not yet judged the result.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Why AI effects vary with task, user, standards, and operating context rather than guaranteeing a uniform speedup.",
+        "Why cheaper generation can raise ownership costs and leave team throughput constrained."
+      ],
+      "believe": [
+        "Measured system outcomes matter more than felt individual speed.",
+        "AI investment should improve the inputs and constraints that govern results."
+      ],
+      "can_do": [
+        "Locate a likely bottleneck and choose what to measure before scaling AI use."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader explains the amplifier model, its evidence, and its limits without treating the arithmetic as a universal law.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What does the amplifier model explain about differing AI results, and where does the metaphor stop helping?",
+        "expected": "Effects depend on user, task, and context and can worsen results; the cited contrasting studies illustrate that variability; AI also adds capabilities and its gain varies rather than remaining one constant."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader explains how faster generation can coexist with unchanged or worse team delivery and higher ownership costs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "A team generates code faster but its review queue grows and releases do not improve. How does the article explain that result?",
+        "expected": "Improving a non-bottleneck adds work before the constraint; review, integration, legacy limits, and coordination can absorb local gains, while maintaining more code can offset generation savings."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader proposes a measured adoption move tied to the real bottleneck and the quality of inputs.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Before expanding AI use, what would you measure or change, and why?",
+        "expected": "Measure actual task and delivery outcomes rather than perception, examine downstream review and maintenance burden, strengthen standards or context, and address the limiting stage before scaling."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "Why does AI adoption produce faster individuals without consistently producing faster or cheaper delivery?",
+    "claim": "AI can improve or worsen task speed and correctness while increasing downstream review and maintenance work, so teams should measure those effects and address delivery bottlenecks before scaling generation.",
+    "disputed_by": "The view that wider access to a more capable coding model will translate individual speed gains into broadly similar delivery and cost gains across teams.",
+    "so_what": "Leaders need measured task and system outcomes to decide where to invest; otherwise they can expand review queues and maintenance bills while celebrating faster generation.",
+    "how_why": "Capability varies across tasks, ownership costs sit downstream of generation, and a faster non-bottleneck cannot increase throughput beyond the stage that limits the delivery chain.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "The amplifier image is useful for asking how context changes an AI outcome, but it is not a universal arithmetic law."
+      },
+      {
+        "id": "S2",
+        "claim": "Task studies show why actual time, output, and correctness must be measured separately from the feeling of speed."
+      },
+      {
+        "id": "S3",
+        "claim": "Faster generation can add ownership and coordination work at the stages that constrain delivery."
+      },
+      {
+        "id": "S4",
+        "claim": "Standards and organizational foundations shape whether more generation becomes reliable work."
+      },
+      {
+        "id": "S5",
+        "claim": "Teams should strengthen inputs and measure the limiting stages before expanding AI use."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Explains why adding generation to the surrounding system can increase strain unless teams address its inputs and limiting stages.",
+    "supports": [
+      "S3"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "wrong-word, multiplier, metaphor-limits: establish the image and bound it before applying it"
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "speed, cost, bottleneck, team-gap, quality, organizations: task results lead into lifecycle, delivery, team, and organizational conditions"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "speed, cost, bottleneck, team-gap: claims, existing evidence, interpretation"
+      }
+    ],
+    "rationale": "The opening challenges automatic acceleration. The model and its limits come before the studies so readers do not mistake a mnemonic for a law. Measured task variation precedes lifecycle cost; cost leads directly to the delivery bottleneck, then the individual/team gap it explains. Quality and organizational foundations answer what makes greater output usable before the Monday moves and team questions apply it. The closing combines input quality with stage choice and hands the already named understanding burden to the next essay. Delaying limits would let readers interpret the differing study measures as one multiplier; separating cost from bottlenecks would hide where the relocated work lands; leaving questions after references would interrupt the final synthesis and lose their unit alignment."
+  },
+  "introduction": {
+    "hook": {
+      "type": "puzzling_scenario",
+      "content": "Buy the tools, hand them out, and the whole organization speeds up."
+    },
+    "bridge": {
+      "from_reader_world": "Engineers and leaders hear that AI will make everyone faster and expect purchasing and distributing tools to deliver the gain.",
+      "to_topic": "If model value depends on the surrounding engineering and operating system, added generation can improve results or increase strain; the reader must inspect and measure that system."
+    },
+    "thesis_statement": {
+      "text": "AI can make tasks faster or slower while adding downstream ownership work, so measure the results and address the delivery constraint before scaling generation.",
+      "placement": "Introduction p03, with the unchanged KEY POINTS callout as the author's shorthand"
+    },
+    "roadmap": {
+      "placement": "Introduction p04",
+      "promises": [
+        {
+          "promise": "Explain the accelerator and amplifier images and bound the arithmetic before applying it.",
+          "kept_in": [
+            "wrong-word",
+            "multiplier",
+            "metaphor-limits"
+          ]
+        },
+        {
+          "promise": "Use contrasting studies to separate felt speed from measured task effects.",
+          "kept_in": [
+            "speed"
+          ]
+        },
+        {
+          "promise": "Trace cheaper generation into ownership cost, bottlenecks, and the individual-versus-team gap.",
+          "kept_in": [
+            "cost",
+            "bottleneck",
+            "team-gap"
+          ]
+        },
+        {
+          "promise": "Explain how standards and the operating model shape the result.",
+          "kept_in": [
+            "quality",
+            "organizations"
+          ]
+        },
+        {
+          "promise": "Turn the argument into Monday moves and questions for a real team initiative.",
+          "kept_in": [
+            "monday",
+            "questions"
+          ]
+        }
+      ]
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "form": "prose",
+        "controlling_idea": "The familiar promise that buying AI tools makes all work faster is the assumption this essay tests.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "> **KEY POINTS:**\n>\n> * **\"Accelerator\" is the wrong word.** An accelerator only adds speed, always in the same direction. AI doesn't add — it *multiplies*. It takes whatever you already have and makes it bigger: a skill, a process, a codebase, a goal.\n> * **A multiplier keeps the sign of its input.** Point AI at strength and it compounds the strength. Point it at a mess — a brittle process, a confused goal, no standards — and it compounds the mess, faster and more expensively. The same tool that makes one developer 39% faster makes another, on a codebase he knows by heart, measurably *slower*.\n> * **So the leverage is never in the AI — it is in what, and which part, you amplify.** An amplifier acts on one part, not the whole: speed up the fast stage of an unbalanced system and you just jam the bottleneck behind it. That is why individuals feel faster while their teams often don't. The durable work isn't a bigger multiplier; it's fixing the input and widening the slowest part.",
+            "shows": "The unchanged three-bullet KEY POINTS callout gives the author's shorthand for variable outcomes, input quality, and downstream constraints; the prose must bound that shorthand as a metaphor."
+          },
+          {
+            "kind": "scenario",
+            "what": "Buy AI tools, hand them out, and expect the whole organization to speed up.",
+            "shows": "The familiar adoption story makes the expectation of automatic gains concrete; it is an illustrative expectation, not a new company case."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "The familiar promise that buying AI tools makes all work faster is the assumption this essay tests."
+        }
+      },
+      {
+        "id": "p02",
+        "form": "prose",
+        "controlling_idea": "The accelerator story makes AI strategy look like a purchasing decision.",
+        "function": "analysis",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "An accelerator pedal whose only decision is how hard to press.",
+            "shows": "The pedal image exposes the assumption that more tool access alone yields more speed."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "The accelerator story makes AI strategy look like a purchasing decision."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The familiar promise that buying AI tools makes all work faster is the assumption this essay tests.",
+          "introduces": "The accelerator story makes AI strategy look like a purchasing decision.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p03",
+        "form": "prose",
+        "controlling_idea": "AI can improve or worsen work through the system around it, so task and delivery outcomes must be measured before generation is scaled.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Carry over the preceding reactor essay's distinction between model capability and its surrounding engineering and operating system.",
+            "shows": "Whether added generation helps depends on what that surrounding system can check, absorb, and maintain; no prior reading is required."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3",
+            "S5"
+          ],
+          "how": "AI can improve or worsen work through the system around it, so task and delivery outcomes must be measured before generation is scaled."
+        },
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The accelerator story makes AI strategy look like a purchasing decision.",
+          "introduces": "AI can improve or worsen work through the system around it, so task and delivery outcomes must be measured before generation is scaled.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p04",
+        "form": "prose",
+        "controlling_idea": "The essay will bound the amplifier metaphor, compare task evidence, trace downstream costs and constraints, then turn standards and organizational context into practical checks.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Roadmap: accelerator/amplifier distinction and arithmetic; metaphor limits; measured speed; ownership cost; bottlenecks; individual/team gap; quality; organizations; Monday moves and team questions.",
+            "shows": "Every body section is promised in the order the reader will encounter it, with studies and practical comparison tables rather than a literature review."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "The essay will bound the amplifier metaphor, compare task evidence, trace downstream costs and constraints, then turn standards and organizational context into practical checks."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "AI can improve or worsen work through the system around it, so task and delivery outcomes must be measured before generation is scaled.",
+          "introduces": "The essay will bound the amplifier metaphor, compare task evidence, trace downstream costs and constraints, then turn standards and organizational context into practical checks.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "wrong-word",
+      "heading": "The Wrong Word",
+      "controlling_idea": "The accelerator promise hides the possibility that the same class of tool can worsen results in a different context.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "The accelerator promise hides the possibility that the same class of tool can worsen results in a different context."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction challenges automatic gains and promises a more useful model.",
+        "introduces": "The accelerator promise hides the possibility that the same class of tool can worsen results in a different context.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p05",
+          "form": "prose",
+          "controlling_idea": "The distinction between an accelerator and an amplifier changes what results people expect from AI.",
+          "function": "claim"
+        },
+        {
+          "id": "p06",
+          "form": "prose",
+          "controlling_idea": "In the accelerator story, a pedal adds speed without changing the direction chosen by the driver.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "The unchanged pedal and driving-toward-a-cliff analogy.",
+              "shows": "It describes the adoption story being challenged, not a scientific definition of acceleration or a law of AI behavior."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The distinction between an accelerator and an amplifier changes what results people expect from AI.",
+            "introduces": "In the accelerator story, a pedal adds speed without changing the direction chosen by the driver.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "prose",
+          "controlling_idea": "A guitar amplifier increases both a clear signal and the noise supplied to it.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "A clean chord and a buzzing, badly-fretted chord both become louder through the same guitar amplifier.",
+              "shows": "The result depends on what reaches the input; the tool does not judge whether the music is good."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "In the accelerator story, a pedal adds speed without changing the direction chosen by the driver.",
+            "introduces": "A guitar amplifier increases both a clear signal and the noise supplied to it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p08",
+          "form": "prose",
+          "controlling_idea": "The amplifier image predicts context-dependent effects, including worse results for some users and tasks.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Contrast the expectation of uniform speedup with the possibility that inputs and task fit change the outcome.",
+              "shows": "The metaphor supplies a question to test rather than proving every observed effect."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A guitar amplifier increases both a clear signal and the noise supplied to it.",
+            "introduces": "The amplifier image predicts context-dependent effects, including worse results for some users and tasks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p09",
+          "form": "prose",
+          "controlling_idea": "The two stories should be judged by the results they help readers anticipate.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "The amplifier image predicts context-dependent effects, including worse results for some users and tasks.",
+            "introduces": "The two stories should be judged by the results they help readers anticipate.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "State the changed expectation, explain the pedal, contrast the amplifier, then identify the prediction to test. Reversing the two analogies would make the replacement appear before the expectation it corrects."
+      }
+    },
+    {
+      "id": "multiplier",
+      "heading": "A Multiplier, Not an Adder",
+      "controlling_idea": "The gain-times-input mnemonic directs attention to what a human-plus-tool system brings to the work.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "The gain-times-input mnemonic directs attention to what a human-plus-tool system brings to the work."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The accelerator promise hides the possibility that the same class of tool can worsen results in a different context.",
+        "introduces": "The gain-times-input mnemonic directs attention to what a human-plus-tool system brings to the work.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "form": "prose",
+          "controlling_idea": "A short arithmetic mnemonic can make the amplifier image memorable without making it a performance formula.",
+          "function": "explanation"
+        },
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "The mnemonic represents output as gain multiplied by input.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "output = gain × input",
+              "shows": "The equation is shorthand for dependence on input; it is not a measurement model for AI performance."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A short arithmetic mnemonic can make the amplifier image memorable without making it a performance formula.",
+            "introduces": "The mnemonic represents output as gain multiplied by input.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "Within that simplified image, a positive gain scales either a positive or a negative input.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "The existing contrast between output = input + speed and output = gain × input.",
+              "shows": "Sign preservation belongs to the selected arithmetic image, not to a universal claim that skill or AI gain is one scalar."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The mnemonic represents output as gain multiplied by input.",
+            "introduces": "Within that simplified image, a positive gain scales either a positive or a negative input.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "The useful prompt is to inspect whether the supplied skill, process, codebase, or goal is worth increasing.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Existing examples of strong skills, clear processes, clean codebases, confused goals, and brittle processes.",
+              "shows": "The image redirects investment toward the condition of the work."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1: multiplier-diagram.jpeg; preserve image, alt text, and caption exactly.",
+              "shows": "The positive and negative branches visualize the mnemonic; surrounding prose names its limits before empirical claims follow."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Within that simplified image, a positive gain scales either a positive or a negative input.",
+            "introduces": "The useful prompt is to inspect whether the supplied skill, process, codebase, or goal is worth increasing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "Engelbart located amplified capability in the human-plus-tool system.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "In 1962 Douglas Engelbart wrote Augmenting Human Intellect: A Conceptual Framework and used intelligence amplification.",
+              "shows": "This lineage directs attention to the combined system rather than attributing all capability to the machine.",
+              "source": "Douglas Engelbart, Augmenting Human Intellect: A Conceptual Framework (SRI, 1962); existing linked reference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The useful prompt is to inspect whether the supplied skill, process, codebase, or goal is worth increasing.",
+            "introduces": "Engelbart located amplified capability in the human-plus-tool system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "Jobs' bicycle-for-the-mind image similarly leaves direction with the person using the tool.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Steve Jobs: \"a tool,\" he said, \"can amplify an inherent ability a man has.\"",
+              "shows": "The bicycle comparison keeps human ability and choice of direction visible.",
+              "source": "Steve Jobs, bicycle for the mind; existing legacy source and article quotation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Engelbart located amplified capability in the human-plus-tool system.",
+            "introduces": "Jobs' bicycle-for-the-mind image similarly leaves direction with the person using the tool.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "The amplifier image raises questions about the input and the stage being helped, but its limits must be clear before testing it against studies.",
+          "function": "transition",
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Jobs' bicycle-for-the-mind image similarly leaves direction with the person using the tool.",
+            "introduces": "The amplifier image raises questions about the input and the stage being helped, but its limits must be clear before testing it against studies.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the mnemonic, explain its restricted arithmetic, show what to inspect, and use Engelbart and Jobs as lineage before turning to limits. Removing the restriction before the equation would invite readers to treat it as a quantitative law."
+      }
+    },
+    {
+      "id": "metaphor-limits",
+      "heading": "Where the Metaphor Breaks",
+      "controlling_idea": "AI can add new capability and its effects vary by task, so the amplifier image is a bounded guide rather than a constant multiplier.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "AI can add new capability and its effects vary by task, so the amplifier image is a bounded guide rather than a constant multiplier."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The gain-times-input mnemonic directs attention to what a human-plus-tool system brings to the work.",
+        "introduces": "AI can add new capability and its effects vary by task, so the amplifier image is a bounded guide rather than a constant multiplier.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "form": "prose",
+          "controlling_idea": "The amplifier metaphor breaks when it denies new capabilities or assumes one stable gain.",
+          "function": "comparison"
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "The surviving claim is that work outcomes depend on context and may worsen, not that AI can only scale what a user could already do.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The amplifier metaphor breaks when it denies new capabilities or assumes one stable gain.",
+            "introduces": "The surviving claim is that work outcomes depend on context and may worsen, not that AI can only scale what a user could already do.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "speed",
+      "heading": "It Amplifies Speed (in Both Directions)",
+      "controlling_idea": "Studies of different users and tasks show that perceived speed, measured time, task output, and correctness must be distinguished.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Studies of different users and tasks show that perceived speed, measured time, task output, and correctness must be distinguished."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "AI can add new capability and its effects vary by task, so the amplifier image is a bounded guide rather than a constant multiplier.",
+        "introduces": "Studies of different users and tasks show that perceived speed, measured time, task output, and correctness must be distinguished.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "The claim that AI makes work faster is true in some measured settings and false in others.",
+          "function": "claim"
+        },
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "The METR result shows why a felt speedup cannot substitute for measuring task completion.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Mid-2025 randomized controlled trial: sixteen experienced open-source developers on their own large, mature repositories were 19% slower with AI while estimating about 20% faster.",
+              "shows": "The measured result and the developers' perception had opposite directions in this setting; preserve all figures and qualifications.",
+              "source": "METR, Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity; existing July 2025 reference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The claim that AI makes work faster is true in some measured settings and false in others.",
+            "introduces": "The METR result shows why a felt speedup cannot substitute for measuring task completion.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "The cited Copilot field experiments show that benefits can differ between junior and senior developers.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "GitHub Copilot field experiments at Microsoft and Accenture: juniors and recent hires completed 27–39% more tasks; the most senior developers gained on the order of 8–13%.",
+              "shows": "These task-output results illustrate different gains in their studied settings; comparison with METR is not a common-tool controlled comparison. Explain that positive gain was an assumption of the opening arithmetic, while the sign of the measured effect compares work with and without AI; expertise alone does not predict benefit because task/tool fit matters.",
+              "source": "Copilot field experiments; existing MIT Sloan write-up."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The METR result shows why a felt speedup cannot substitute for measuring task completion.",
+            "introduces": "The cited Copilot field experiments show that benefits can differ between junior and senior developers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "The jagged frontier describes task-dependent competence, including cases where AI lowers correctness.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Harvard and Boston Consulting Group, 2023: on eighteen inside-frontier tasks, AI users completed 12.2% more tasks, 25.1% faster, at higher quality; on an outside-frontier task they were 19% less likely to reach the correct answer.",
+              "shows": "Task fit changes the result; task count, completion time, and correctness remain distinct outcomes.",
+              "source": "Dell'Acqua et al., Navigating the Jagged Technological Frontier (2023); existing linked reference."
+            },
+            {
+              "kind": "table",
+              "what": "Preserve the accelerator-story / studies table and every percentage.",
+              "shows": "The contrasts oppose uniform gains, expert advantage, perceived speed as measurement, and tool-only explanations; read the percentages with their preceding outcome labels. Before the table, distinguish elapsed time, completed tasks, and correctness as separate measures from separate studies."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2: speed-spectrum.jpeg; preserve image, alt text, and caption exactly.",
+              "shows": "The spectrum illustrates variability qualitatively; the studies do not share a single performance measure or experimental setting. Establish before the visual that its range is a schematic of direction, not a quantitative ranking on one speed scale."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The cited Copilot field experiments show that benefits can differ between junior and senior developers.",
+            "introduces": "The jagged frontier describes task-dependent competence, including cases where AI lowers correctness.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "The practical response to varied study outcomes is to measure the particular user-task combination rather than infer speed from the tool or the feeling.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Apply the distinction already introduced before the comparison: elapsed time, completed tasks, and correctness require task-specific measurement.",
+              "shows": "The illustration cannot be read as a common numerical scale; task-specific measurement is the defensible lesson."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The jagged frontier describes task-dependent competence, including cases where AI lowers correctness.",
+            "introduces": "The practical response to varied study outcomes is to measure the particular user-task combination rather than infer speed from the tool or the feeling.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Start with the speed promise, show a perception-reversing slowdown, contrast reported gains, then explain task fit and draw a measurement rule. Putting the rule first would hide the reason perception alone is unreliable; treating the studies as one scale would defeat the bounded model."
+      }
+    },
+    {
+      "id": "cost",
+      "heading": "It Amplifies Cost",
+      "controlling_idea": "Cheaper generation can increase downstream ownership costs by producing more work to review, maintain, and understand.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Cheaper generation can increase downstream ownership costs by producing more work to review, maintain, and understand."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Task-level speed cannot by itself establish the value of AI use.",
+        "introduces": "Cheaper generation can increase downstream ownership costs by producing more work to review, maintain, and understand.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "A lower generation cost does not establish a lower cost for the full software lifecycle.",
+          "function": "claim"
+        },
+        {
+          "id": "p25",
+          "form": "prose",
+          "controlling_idea": "The extra volume generated cheaply still has to be reviewed, tested, debugged, understood, and changed safely.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the distinction between generating code and owning it, including the six-month understanding example.",
+              "shows": "More output can increase work at the costly ownership stages."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A lower generation cost does not establish a lower cost for the full software lifecycle.",
+            "introduces": "The extra volume generated cheaply still has to be reviewed, tested, debugged, understood, and changed safely.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "The cited code-debt analyses provide directional warnings about ownership burden rather than settled cost constants.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Preserve roughly 1.7× more issues per pull request, about 23.5% more incidents per pull request, 211 million lines, roughly eightfold duplication in 2024, and maintenance projections toward 4× by the second year.",
+              "shows": "These existing vendor/industry figures illustrate possible downstream burden; keep the explicit directional-not-decimal, young-field, attribution, and projection qualifications.",
+              "source": "Existing GitClear / industry analyses and legacy Sources cost/debt cluster; no new factual verification or attribution in this pass."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The extra volume generated cheaply still has to be reviewed, tested, debugged, understood, and changed safely.",
+            "introduces": "The cited code-debt analyses provide directional warnings about ownership burden rather than settled cost constants.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "prose",
+          "controlling_idea": "Increasing production while leaving ownership capacity unchanged relocates cost downstream.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the What gets cheaper / What can get more expensive table.",
+              "shows": "Generation, starting, typing, and production-unit costs differ from review, ownership, judgment, and maintenance burdens."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3: cheap-to-generate-expensive-to-own.jpeg; preserve image, alt text, and caption exactly.",
+              "shows": "The lifecycle image illustrates cost relocation rather than a measured budget curve."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cited code-debt analyses provide directional warnings about ownership burden rather than settled cost constants.",
+            "introduces": "Increasing production while leaving ownership capacity unchanged relocates cost downstream.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "prose",
+          "controlling_idea": "Generation savings and ownership savings are different claims whose bills can appear at different times.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Increasing production while leaving ownership capacity unchanged relocates cost downstream.",
+            "introduces": "Generation savings and ownership savings are different claims whose bills can appear at different times.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Define the cost distinction before presenting hedged debt figures, then interpret the table and lifecycle illustration and separate the two savings claims. Moving the figures ahead of the distinction would invite a precise-cost argument the source deliberately avoids."
+      }
+    },
+    {
+      "id": "bottleneck",
+      "heading": "It Amplifies the Bottleneck",
+      "controlling_idea": "Increasing work at a non-bottleneck can enlarge queues and strain the stage that limits delivery.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Increasing work at a non-bottleneck can enlarge queues and strain the stage that limits delivery."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Cheaper generation can increase downstream ownership costs by producing more work to review, maintain, and understand.",
+        "introduces": "Increasing work at a non-bottleneck can enlarge queues and strain the stage that limits delivery.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p29",
+          "form": "prose",
+          "controlling_idea": "A delivery chain contains several stages, so a local improvement need not improve its total throughput.",
+          "function": "explanation"
+        },
+        {
+          "id": "p30",
+          "form": "prose",
+          "controlling_idea": "The Theory of Constraints explains why extra non-bottleneck output can accumulate before the limiting stage.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Eliyahu Goldratt / Theory of Constraints: \"any improvement made anywhere besides the bottleneck is an illusion.\"",
+              "shows": "In the throughput model being used, increasing a stage that is not limiting output does not remove the existing constraint; work in progress can accumulate.",
+              "source": "Eliyahu Goldratt, The Goal / existing Theory of Constraints reference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A delivery chain contains several stages, so a local improvement need not improve its total throughput.",
+            "introduces": "The Theory of Constraints explains why extra non-bottleneck output can accumulate before the limiting stage.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "list",
+          "controlling_idea": "Faster code generation can push more work onto code review, integration, and fragile legacy systems.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Keep ten to fifteen pull requests a week, fifty to a hundred, and the 2026 dataset's roughly 59% feature-branch throughput rise alongside falling median main-branch throughput.",
+              "shows": "The existing directional dataset illustrates a queue growing without a delivery improvement; it is not a universal effect.",
+              "source": "Existing article and legacy CircleCI 2026 data via industry write-ups."
+            },
+            {
+              "kind": "scenario",
+              "what": "Keep the afternoon UI, backend, auth, twelve-year-old billing service, and fragile-legacy examples exactly as illustrative cases.",
+              "shows": "More upstream change can meet context or capacity the generator does not remove."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4: bottleneck-pipeline.jpeg; preserve image, alt text, and caption exactly.",
+              "shows": "The queue diagram makes the non-bottleneck improvement visible as work waiting at the constraint."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The Theory of Constraints explains why extra non-bottleneck output can accumulate before the limiting stage.",
+            "introduces": "Faster code generation can push more work onto code review, integration, and fragile legacy systems.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p32",
+          "form": "prose",
+          "controlling_idea": "Investment should target the actual limiting stage rather than assume the fastest production stage deserves more capacity.",
+          "function": "recommendation",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Faster code generation can push more work onto code review, integration, and fragile legacy systems.",
+            "introduces": "Investment should target the actual limiting stage rather than assume the fastest production stage deserves more capacity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          },
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Distinguish speeding generation from relieving a downstream constraint; invest in that constraint and use AI there only where it demonstrably helps the work.",
+              "shows": "The recommendation does not assume that the generator improves every downstream stage or that all forms of AI assistance are ruled out."
+            }
+          ]
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the chain before naming its constraint, show the downstream examples, then choose where effort belongs. The recommendation would be arbitrary before the reader can distinguish a local gain from throughput."
+      }
+    },
+    {
+      "id": "team-gap",
+      "heading": "Why Your Team Didn't Get Faster (Even Though You Did)",
+      "controlling_idea": "Local gains and reported speedups can coexist with constrained team delivery because work and coordination still pass through shared stages.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Local gains and reported speedups can coexist with constrained team delivery because work and coordination still pass through shared stages."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Increasing work at a non-bottleneck can enlarge queues and strain the stage that limits delivery.",
+        "introduces": "Local gains and reported speedups can coexist with constrained team delivery because work and coordination still pass through shared stages.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p33",
+          "form": "prose",
+          "controlling_idea": "The constraint model helps explain why individuals can report faster work without their team shipping faster.",
+          "function": "claim"
+        },
+        {
+          "id": "p34",
+          "form": "prose",
+          "controlling_idea": "DORA 2024 places positive individual perceptions alongside negative team-level associations without proving that every perceived gain was real.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "DORA 2024: around three-quarters used AI, most felt more productive, while adoption was associated with a negative effect on delivery throughput and stability.",
+              "shows": "Perception and system measurement concern different levels; preserve the association wording and do not convert the perceptions into a measured causal gain.",
+              "source": "DORA / Google Cloud, 2024 Accelerate State of DevOps; existing linked source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The constraint model helps explain why individuals can report faster work without their team shipping faster.",
+            "introduces": "DORA 2024 places positive individual perceptions alongside negative team-level associations without proving that every perceived gain was real.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "prose",
+          "controlling_idea": "Higher output from individuals can add coordination work at already constrained shared stages.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Fred Brooks: communication paths grow roughly with the square of team size; integration, architectural decisions, and difficult debugging have work that does not parallelize.",
+              "shows": "Producing more changes can create more to review, align, and reconcile; preserve the source claim and label the AI consequence as the article's reasoning.",
+              "source": "Fred Brooks, The Mythical Man-Month / existing reference."
+            },
+            {
+              "kind": "table",
+              "what": "Preserve the Individual / Team-system table and its existing wording.",
+              "shows": "Introduce the table before it appears as the conditional case where an individual gain has actually been measured. Its positive individual row does not describe every person or task and does not override METR."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "DORA 2024 places positive individual perceptions alongside negative team-level associations without proving that every perceived gain was real.",
+            "introduces": "Higher output from individuals can add coordination work at already constrained shared stages.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p36",
+          "form": "prose",
+          "controlling_idea": "Even a measured local gain becomes a system gain only when the shared constraint allows it through.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Draw the system-level lesson from the conditional local-gain comparison already framed before the table.",
+              "shows": "This reconciles the individual-gain table with the essay's central variability claim."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Higher output from individuals can add coordination work at already constrained shared stages.",
+            "introduces": "Even a measured local gain becomes a system gain only when the shared constraint allows it through.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the observed individual/team gap, distinguish perceived from measured evidence, add the coordination mechanism, and conclude with a conditional local-to-system claim. Without the distinction the section would contradict METR by assuming every individual became faster."
+      }
+    },
+    {
+      "id": "quality",
+      "heading": "It Amplifies Quality — and Slop",
+      "controlling_idea": "Standards and review shape whether increased generation becomes usable quality or more unchecked material.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Standards and review shape whether increased generation becomes usable quality or more unchecked material."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The team gap shows that faster production still depends on shared review and coordination.",
+        "introduces": "Standards and review shape whether increased generation becomes usable quality or more unchecked material.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p37",
+          "form": "prose",
+          "controlling_idea": "Evaluations, meaningful tests, review, and a definition of good work shape what generated material the team accepts.",
+          "function": "explanation"
+        },
+        {
+          "id": "p38",
+          "form": "prose",
+          "controlling_idea": "The surrounding plant of evaluation and guardrails makes trust in generated work possible.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve [[ai-is-the-reactor-not-the-plant]] and [[risc-for-ai-software-development]] and their self-contained explanations.",
+              "shows": "The earlier system distinction and optional later platform discussion support the quality role of standards without making those posts prerequisites."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Evaluations, meaningful tests, review, and a definition of good work shape what generated material the team accepts.",
+            "introduces": "The surrounding plant of evaluation and guardrails makes trust in generated work possible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "organizations",
+      "heading": "It Amplifies Organizations",
+      "controlling_idea": "Organizational foundations condition what widespread AI use can deliver.",
+      "function": "evidence",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Organizational foundations condition what widespread AI use can deliver."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Standards and review shape whether increased generation becomes usable quality or more unchecked material.",
+        "introduces": "Organizational foundations condition what widespread AI use can deliver.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p39",
+          "form": "prose",
+          "controlling_idea": "The team-level quality argument extends to the operating model of the organization.",
+          "function": "claim"
+        },
+        {
+          "id": "p40",
+          "form": "prose",
+          "controlling_idea": "DORA 2025 reports adoption alongside both higher throughput and rising instability.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "2025 DORA report: \"AI is an amplifier\" and \"magnifies the strengths of high-performing organizations and the dysfunctions of struggling ones.\"",
+              "shows": "The report supports examining the organizational setting of AI use.",
+              "source": "DORA / Google Cloud, 2025 State of AI-assisted Software Development; existing linked source."
+            },
+            {
+              "kind": "statistic",
+              "what": "Roughly 90% of respondents using AI; adoption associated with higher delivery throughput and rising delivery instability.",
+              "shows": "Preserve the date, proportion, and association language; speed alone does not establish dependable delivery.",
+              "source": "Same existing 2025 DORA source."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The team-level quality argument extends to the operating model of the organization.",
+            "introduces": "DORA 2025 reports adoption alongside both higher throughput and rising instability.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "prose",
+          "controlling_idea": "The DORA team profiles draw attention to organizational foundations rather than access to AI alone.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Seven distinct team profiles and the existing foundation list: communicated AI stance, accessible healthy data, version control, small batches, user focus, and internal platform.",
+              "shows": "The preserved list makes organizational context concrete; do not invent or add capabilities or profiles.",
+              "source": "Same existing 2025 DORA source."
+            },
+            {
+              "kind": "quotation",
+              "what": "DORA lead author: returns come \"from a strategic focus on the underlying organizational systems.\"",
+              "shows": "The cited interpretation directs investment toward the operating system around the tools.",
+              "source": "Same existing article attribution."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 5: dora-amplifier-split.jpeg; preserve image, alt text, and caption exactly.",
+              "shows": "The two paths illustrate context-dependent outcomes; the picture does not establish deterministic causation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "DORA 2025 reports adoption alongside both higher throughput and rising instability.",
+            "introduces": "The DORA team profiles draw attention to organizational foundations rather than access to AI alone.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p42",
+          "form": "prose",
+          "controlling_idea": "Low reported trust makes the need for foundations to channel AI output visible.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "Only around a third reported trusting output and a vanishingly small share reported high trust.",
+              "shows": "Preserve the existing qualifications; distributing generation alone does not resolve confidence in its results.",
+              "source": "Same existing DORA discussion."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "The DORA team profiles draw attention to organizational foundations rather than access to AI alone.",
+            "introduces": "Low reported trust makes the need for foundations to channel AI output visible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p43",
+          "form": "prose",
+          "controlling_idea": "Better engineering structure and accountable human direction are concrete organizational inputs to improve.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Keep [[breaking-vibe-monolith]] and [[prepare-for-ai-future]] with the existing one-sentence explanation of each.",
+              "shows": "The links provide optional extensions of the engineering and human contributions; the meaning remains available in this essay."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Low reported trust makes the need for foundations to channel AI output visible.",
+            "introduces": "Better engineering structure and accountable human direction are concrete organizational inputs to improve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Move from the organization-wide claim to reported outcomes, then the foundations that differentiate them, their relevance to trust, and the engineering/human implications. Putting the recommendations before the reported contrast would make them look like a separate agenda."
+      }
+    },
+    {
+      "id": "monday",
+      "heading": "What to Do on Monday",
+      "controlling_idea": "A useful adoption plan measures actual results and strengthens the inputs and limiting stages before scaling.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "A useful adoption plan measures actual results and strengthens the inputs and limiting stages before scaling."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Organizational foundations condition what widespread AI use can deliver.",
+        "introduces": "A useful adoption plan measures actual results and strengthens the inputs and limiting stages before scaling.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "prose",
+          "controlling_idea": "The preceding evidence becomes a set of moves for improving input quality and addressing real constraints.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the Monday actions table. Before it, explain that upstream standards means setting criteria and arranging tests and review capacity before generation; checks of produced work still occur afterward.",
+              "shows": "Readers can translate the table’s shorthand into a coherent sequence of preparation, generation, and checking."
+            }
+          ]
+        },
+        {
+          "id": "p45",
+          "form": "prose",
+          "controlling_idea": "These moves improve what the tool works on and what the system can absorb.",
+          "function": "synthesis",
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The preceding evidence becomes a set of moves for improving input quality and addressing real constraints.",
+            "introduces": "These moves improve what the tool works on and what the system can absorb.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "A team can use the model to question its own measurements, ownership budget, standards, bottleneck, and operating conditions.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "A team can use the model to question its own measurements, ownership budget, standards, bottleneck, and operating conditions."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "A useful adoption plan measures actual results and strengthens the inputs and limiting stages before scaling.",
+        "introduces": "A team can use the model to question its own measurements, ownership budget, standards, bottleneck, and operating conditions.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p46",
+          "form": "list",
+          "controlling_idea": "The existing team questions turn the Monday moves into a review of a concrete AI initiative.",
+          "function": "process"
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Closing Thought",
+    "synthesis": "Task fit and input quality decide whether a local change helps, while the limiting stage decides whether that help reaches delivery; investment must address both rather than assume more generation creates more value.",
+    "so_what": "Teams can direct budget and attention toward measured delivery and ownership capacity instead of expanding queues and maintenance while celebrating output.",
+    "callback": {
+      "to": "The opening purchasing story and accelerator pedal.",
+      "how": "The closing amplify what and amplify which part questions turn a supposed purchasing decision into a choice about inputs, constraints, and measured results."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Measure the work, improve the input, and widen the real constraint before scaling generation."
+    },
+    "hand_off": {
+      "to": "outsource-thinking-not-understanding",
+      "relationship": "elaboration",
+      "carries_over": "A faster production stage can move the constraint to a slower stage that still needs attention.",
+      "introduces": "Human understanding as the constraint that artifact generation cannot remove on its recipient's behalf."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "A team can use the model to question its own measurements, ownership budget, standards, bottleneck, and operating conditions.",
+      "introduces": "The team's concrete questions return to the opening promise with a clearer choice of input and limiting stage.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p47",
+        "form": "prose",
+        "controlling_idea": "The question amplify what replaces the opening assumption that buying tools is enough.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "Return to the opening pedal and amplifier contrast with the existing amplify what question.",
+            "shows": "The reader can now see a choice of input and measurement behind the purchasing decision."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S5"
+          ],
+          "how": "The question amplify what replaces the opening assumption that buying tools is enough."
+        }
+      },
+      {
+        "id": "p48",
+        "form": "prose",
+        "controlling_idea": "The evidence makes input quality a practical investment decision rather than a guarantee that every AI effect has one sign.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Recall the existing contrasts between skills and confusion, sound processes and brittle ones, without adding examples or evidence.",
+            "shows": "The bounded metaphor directs attention to conditions the team can improve, while the studied effects still need measurement."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S4"
+          ],
+          "how": "The evidence makes input quality a practical investment decision rather than a guarantee that every AI effect has one sign."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The question amplify what replaces the opening assumption that buying tools is enough.",
+          "introduces": "The evidence makes input quality a practical investment decision rather than a guarantee that every AI effect has one sign.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p49",
+        "form": "prose",
+        "controlling_idea": "Choosing which stage to improve matters as much as the quality of what is supplied to it.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Recall review queues, integration, legacy, and coordination already explained in the body.",
+            "shows": "The combination of context and constraints explains why even a useful local improvement may not produce a delivery improvement."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S3"
+          ],
+          "how": "Choosing which stage to improve matters as much as the quality of what is supplied to it."
+        },
+        "transition_in": {
+          "relationship": "additional_support",
+          "carries_over": "The evidence makes input quality a practical investment decision rather than a guarantee that every AI effect has one sign.",
+          "introduces": "Choosing which stage to improve matters as much as the quality of what is supplied to it.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p50",
+        "form": "prose",
+        "controlling_idea": "The durable work is improving the inputs and constraints that let measured gains reach the people relying on the system.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Synthesize task fit, ownership, quality standards, bottlenecks, and direction without repeating their full inventories.",
+            "shows": "Budgets and effort can then buy dependable delivery rather than more waiting work or maintenance."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3",
+            "S4",
+            "S5"
+          ],
+          "how": "The durable work is improving the inputs and constraints that let measured gains reach the people relying on the system."
+        },
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "Choosing which stage to improve matters as much as the quality of what is supplied to it.",
+          "introduces": "The durable work is improving the inputs and constraints that let measured gains reach the people relying on the system.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p51",
+        "form": "prose",
+        "controlling_idea": "Human understanding is a remaining constraint that more artifact production cannot remove for the recipient.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Link to [[outsource-thinking-not-understanding]] in this final unit, building on understanding as an ownership cost and the Monday ownership move.",
+            "shows": "The hand-off elaborates an established constraint; the next essay explains how the human owner can build that understanding."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S5"
+          ],
+          "how": "Human understanding is a remaining constraint that more artifact production cannot remove for the recipient."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The durable work is improving the inputs and constraints that let measured gains reach the people relying on the system.",
+          "introduces": "Human understanding is a remaining constraint that more artifact production cannot remove for the recipient.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Not an AI-hype or AI-doom piece, and not a verdict on whether AI is \"worth it.\" It is a mental-model correction with a pragmatic angle."
+    },
+    {
+      "topic": "Not a literature review. Studies serve the idea; the idea does not serve the studies."
+    },
+    {
+      "topic": "Not a claim that AI is *only* a multiplier — the limits section concedes it also adds genuinely new capability and that gain varies task to task."
+    },
+    {
+      "topic": "Not a re-run of [[ai-is-the-reactor-not-the-plant]]. Reactor = *where the work is* (static). Amplifier = *which direction the work goes* (dynamic, signed). Reference it; don't duplicate it.",
+      "covered_in": [
+        "ai-is-the-reactor-not-the-plant"
+      ]
+    },
+    {
+      "topic": "Not a precise-numbers argument. Cost/debt figures are attributed and used directionally, never as settled constants."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "None blocking. (Resolved: `comics.md` is shipped — see Modalities.)",
+    "The published KEY POINTS, excerpt, several tables, and all figure captions remain verbatim under the preservation brief. Their absolute multiplier wording is shorthand; body revisions must make the limits unmistakable. If independent readers still cannot reconcile that shorthand with copied AC-1, report the conflict for the author rather than silently changing the protected material.",
+    "The legacy source list calls the principal studies peer-reviewed / first-party and includes directional vendor/industry cost figures. Those historical labels and figures are carried over, not freshly verified; source verification and factual corrections are outside this pass.",
+    "The summary, dialog, and comics retain their published framing and order. Their unqualified arithmetic, individual-gain language, and later metaphor limits may now need a separate consistency pass; updating those modalities is outside this article-only pass.",
+    "Final round 2: ESCALATE. Both independent flow readers still interpret the preserved Figure 2 caption as a common numerical speed scale, despite the preceding explanation that elapsed time, completed tasks and correctness are unlike measures from separate studies. The judge identifies a spec conflict between preserving the caption verbatim and preventing that reading. Author decision: permit revision of the figure/caption presentation so it illustrates variation without implying a shared quantitative scale; no further round was run.",
+    "Final round 2 also records two uncorroborated minor flow notes: the individual-gain table still sounds universal to one reader despite its measured-positive-case lead-in, and the Monday table’s “not after” wording still conflicts for that reader with applying checks to generated outputs. The other reader found both explanations clear. Consider editing those preserved table cells during the same author-approved wording pass. Additional surrounding explanation would add repetition rather than resolve the protected wording itself."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Stopped after the requested second check: one major spec conflict remains in the protected speed figure/caption, with two minor protected-table wording notes. No safe, plainly right prose-only fix remains within the preservation contract. Retained the judged draft unchanged, recorded the author decisions in open_questions, and ran no third check. These record-keeping edits make the final report stale for the spec; its draft hash remains current."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 independent readers corroborated four local flow problems and one reader identified a bottleneck ambiguity. Clarify the arithmetic assumption versus measured effect; frame unlike study measures and the conditional individual-gain case before their preserved visuals; distinguish arranging checks before generation from applying them afterward; qualify AI assistance at the constraint. Keep all 51 units, their order, copied criteria, sources, names, figures, tables and captions unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Phase B implemented exactly the approved 51 units. Added one roadmap and one next-post hand-off; moved the limits and questions sections; separated image/caption/prose blocks so two existing paragraphs are counted. Qualified universal metaphor wording, cross-study measures, and reported individual speed without changing any study result. Front matter, KEY POINTS, images, captions, tables, all number tokens, existing links, reference text, question text, and every heading were verified unchanged against the baseline. Added only the incoming reactor cross-link and outgoing understanding cross-link. Sibling modalities remain unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Fresh isolated flow rubric: SOUND. The reader received only flow.txt, found all prerequisites established, and requested no move, merge, or cut. Apply the approved order and unit contract in Phase B; no unadopted flow notes remain. Full verdict: /private/tmp/ai-notes-outcome-revision-20261112/ai-is-an-amplifier-not-an-accelerator/flow-review-1.txt."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Copy the final journal intent, all three acceptance criteria, five thesis fields, and role exactly; add only supporting claims. No new acceptance criterion or numeric word limit is introduced.",
+      "rejected": [
+        "Replacing the journal thesis with the legacy universal sign-preserving formula.",
+        "Treating timetoread as a word cap."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Move Where the Metaphor Breaks immediately after A Multiplier, Not an Adder, before the study evidence. Its content stays intact; the preceding and following transitions will name the limits before interpreting results.",
+      "rejected": [
+        "Leaving the qualification until after all empirical examples."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Move Questions to Consider intact immediately before Closing Thought. Preserve references after the closing. Every body section is promised in a new introduction roadmap.",
+      "rejected": [
+        "Leaving the question unit after reference apparatus, outside the conclusion region."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Recover the existing paragraphs after Figures 3 and 5 with blank lines; the parser currently includes them in image blocks. Keep every image, caption, callout, front-matter value, name, number, date, and existing link exactly.",
+      "rejected": [
+        "Dropping text the unit parser failed to expose.",
+        "Editing the study figures or protected visual captions in an outcome revision."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Add only the introduction roadmap and final next-post hand-off as new prose units. Other edits must be local bridges or qualifications required by the copied outcomes. The understanding hand-off elaborates existing ownership work rather than introducing evidence in the conclusion.",
+      "rejected": [
+        "Rewriting the whole essay into a different voice.",
+        "Adding new company facts or research."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Legacy success criteria mapped into the copied reader outcomes: Legacy criterion 1 is reframed by copied AC-1: retain the memorable mnemonic while requiring readers to reject a universal arithmetic law. Legacy criterion 2 is reframed by copied AC-1: explain what the accelerator story misses; do not teach an additive definition of physical acceleration. Legacy criterion 3 becomes the contrasting-study explanation in copied AC-1 and the measurement choice in AC-3, preserving every figure and outcome label. Legacy criterion 4 becomes the ownership-cost explanation in copied AC-2. Legacy criterion 5 becomes the standards/context explanation in copied AC-1 and the input-quality adoption move in AC-3. Legacy criterion 6 becomes the explicit new-capability and nonconstant-gain limits in copied AC-1. Legacy criterion 7 becomes the non-bottleneck and downstream-constraint diagnosis in copied AC-2. Legacy criterion 8 becomes the conditional local-to-system explanation in copied AC-2; the old assertion that individual gains reliably rise is bounded by the same article's contrary task evidence. Legacy criterion 9 becomes the measured practical move in copied AC-3. Legacy criterion 10 is retained through the bounded-model non-goal and AC-1's contrast between beneficial and adverse outcomes; no separate anti-AI attitude criterion is added.",
+      "rejected": [
+        "Keeping content-inventory criteria as additional major requirements."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carry the legacy Audience record without narrowing the copied journal intent: - Engineers and technical leaders deciding where to spend AI effort, who have\n  absorbed the \"AI makes us faster\" framing and are about to be surprised by the\n  bill, the slowdown, or the slop.\n- Decision-makers evaluating AI adoption who expect a uniform speedup across\n  teams and tasks.\n- Readers of the ai-notes spine — [[ai-is-the-reactor-not-the-plant]],\n  [[breaking-vibe-monolith]], [[risc-for-ai-software-development]],\n  [[prepare-for-ai-future]] — who want the *dynamic, signed* companion to the\n  reactor's *static* \"the work is in the plant\" point."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carry the legacy modality rationale and shipped-state record: - [x] `summary.md` — management summary. Warranted: there is a clean leadership\n      takeaway (don't buy speed; fix the input).\n- [x] `dialog.md` — two-host dialog. Warranted: the \"it cut both ways\" spectrum\n      (faster *or* slower, cheaper *or* costlier) plays well as back-and-forth.\n- [x] `comics.md` — explainer comic. The multiplier-with-a-negative-input image\n      is a strong visual gag and carries the \"amplify what?\" beat well; shipped\n      after the article and summary landed."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Historical Structure record retained for traceability; the moves explicitly decided above supersede only its order: House style (KEY POINTS block → MADR-ish body → contrast tables → Monday moves →\nClosing → To Probe Further → Questions). Section order:\n\n1. **The Wrong Word** — the accelerator framing and why it misleads; introduce\n   amplifier.\n2. **A Multiplier, Not an Adder** — the mechanism: `gain × input`, sign\n   preserved; lineage (Engelbart's \"intelligence amplification\"; Jobs' \"bicycle\n   for the mind\").\n3. **It Amplifies Speed (in Both Directions)** — METR −19% (and the +20%\n   perception gap); Copilot juniors +27–39% vs seniors +8–13%; BCG/Harvard\n   jagged frontier (+12.2% inside, −19% correct outside).\n4. **It Amplifies Cost** — cheap to generate, expensive to own; the cost-structure\n   data.\n5. **It Amplifies the Bottleneck (Friction in an Unbalanced System)** — a system\n   is series-connected; amplify one part of an unbalanced system and the strain\n   moves to the part you didn't (review, integration, fragile legacy), often\n   making it worse. Theory of Constraints; CircleCI feature-branch +59% while\n   median main-branch throughput fell; the legacy-gets-less-stable dynamic.\n6. **Why Your Team Didn't Get Faster (Even Though You Did)** — individual gains\n   real but absorbed at the bottleneck and lost to coordination friction; DORA\n   2024 (individuals felt more productive; system throughput/stability down);\n   Brooks-style communication overhead as everyone moves at different speeds.\n7. **It Amplifies Quality — and Slop** — standards/guardrails set the sign; tie to\n   the reactor \"plant.\"\n8. **It Amplifies Organizations** — DORA amplifier finding, seven profiles, the\n   foundational capabilities that decide the sign.\n9. **Where the Metaphor Breaks** — holds/breaks contrast table.\n10. **What to Do on Monday** — move / what-it-looks-like / what-it-buys table\n    (now includes \"amplify the bottleneck, not the fast part\").\n11. **Closing Thought** — the multiplier acts on the number you give it; the work\n    is the number.\n\nInline figures (article-illustrator): the `gain × input` diagram with a\nnegative-input branch; the speed spectrum from −19% to +39%; cheap-to-generate /\nexpensive-to-own cost curve; the DORA amplifier split; **an unbalanced-pipeline\nfigure (one stage sped up, work-in-progress piling at the next stage / the\nfragile-legacy bottleneck)**. Attribute every number; keep claims directional."
+    },
+    {
+      "date": "2026-06-29",
+      "decision": "Framed the whole post on the **multiplier vs. adder** distinction rather than just \"amplifier sounds nicer than accelerator.\" Chosen because the sign-preservation (`gain × input`, input can be negative) is what makes the claim falsifiable and practical, not just rhetorical. Rejected: a looser \"AI amplifies everything\" framing with no mechanism."
+    },
+    {
+      "date": "2026-06-29",
+      "decision": "Organized the body around **four axes** (speed, cost, quality, organization), each a cliché the post refuses with data. Rejected: a single software-delivery focus (too narrow) and a pure org/society essay (too far from the strongest evidence, which is software-delivery-centric)."
+    },
+    {
+      "date": "2026-06-29",
+      "decision": "Added a **systems/friction** strand (two new sections: the bottleneck, and the individual-vs-team gap) at the author's request. Chosen because it sharpens the thesis from \"amplifying a negative is bad\" to the more practical \"amplifying *one part of an unbalanced system* relocates and worsens the strain\" — grounded in the Theory of Constraints rather than asserted. Placed right after Cost (the bottleneck is where relocated cost lands) and before Quality/Organization. Rejected: folding it into the Organizations section (too cramped; the constraint point and the coordination point each deserve their own beat) and adding it as a single section (the *system has a bottleneck* and *teams don't get the individual gain* are distinct claims with distinct evidence)."
+    },
+    {
+      "date": "2026-06-29",
+      "decision": "Placed in the **AI Software Development** section beside reactor / vibe-monolith / risc. The evidence base is software-delivery-centric; the org widening keeps it from being narrowly dev-only but doesn't move it to Leadership."
+    },
+    {
+      "date": "2026-06-29",
+      "decision": "Load-bearing evidence is the **peer-reviewed / first-party** studies (METR, BCG-HBS, Copilot RCTs, DORA); the AI-code debt figures are *corroborating colour*, attributed and hedged, never load-bearing — same discipline the reactor post used for cost percentages."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/ai-is-an-amplifier-not-an-accelerator/index.md",
+      "contributed": "Authoritative published wording, units, facts, callouts, images, captions, and links for reconstruction."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/ai-is-an-amplifier-not-an-accelerator/spec.md",
+      "contributed": "Legacy accepted intent, audience, success criteria, non-goals, modality rationale, open questions, decision history, sources, and changelog; history migrated here before parent removes the old contract."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/ai-is-an-amplifier-not-an-accelerator/PLAN.md",
+      "contributed": "Historical plan referenced by the legacy spec; not authority to add facts omitted from the published article."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Exact inherited outcome, acceptance criteria, thesis, role, and adjacent-post transitions."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[ai-is-the-reactor-not-the-plant]]",
+      "contributed": "[[ai-is-the-reactor-not-the-plant]] — the static companion: value/work is in the plant around the core. Amplifier is the signed, dynamic version."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[breaking-vibe-monolith]]",
+      "contributed": "[[breaking-vibe-monolith]] — AI amplifies bad structure into a faster blob."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[risc-for-ai-software-development]]",
+      "contributed": "[[risc-for-ai-software-development]] — trust/inspectability as the bottleneck; standards set the sign."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[prepare-for-ai-future]]",
+      "contributed": "[[prepare-for-ai-future]] — judgment and direction become scarce because AI amplifies whatever direction it is given."
+    },
+    {
+      "kind": "external",
+      "ref": "DORA / Google Cloud, *2025 State of AI-assisted Software Development*",
+      "contributed": "DORA / Google Cloud, *2025 State of AI-assisted Software Development* — the headline \"AI is an amplifier\"; adoption ~90%, low trust, throughput up but instability up, seven team profiles, foundational capabilities. The post's spine."
+    },
+    {
+      "kind": "external",
+      "ref": "METR (Jul 2025), *Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity*",
+      "contributed": "METR (Jul 2025), *Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity* — experienced devs **−19%** slower yet self-estimated **+20%** faster. The keystone \"it can slow you down\" fact."
+    },
+    {
+      "kind": "external",
+      "ref": "Copilot field experiments (Microsoft/Accenture; MIT Sloan write-up)",
+      "contributed": "Copilot field experiments (Microsoft/Accenture; MIT Sloan write-up) — juniors **+27–39%**, seniors **+8–13%**; juniors accept more suggestions."
+    },
+    {
+      "kind": "external",
+      "ref": "Dell'Acqua et al., *Navigating the Jagged Technological Frontier* (BCG × Harvard, 2023)",
+      "contributed": "Dell'Acqua et al., *Navigating the Jagged Technological Frontier* (BCG × Harvard, 2023) — inside frontier **+12.2%** tasks / **+25.1%** faster / better quality; outside **−19%** less likely correct."
+    },
+    {
+      "kind": "external",
+      "ref": "AI-code cost/debt cluster (GitClear 211M LOC; 8.1M-PR / 4,800-team analysis; industry write-ups)",
+      "contributed": "AI-code cost/debt cluster (GitClear 211M LOC; 8.1M-PR / 4,800-team analysis; industry write-ups) — duplication ~8×, ~1.7× issues/PR, incidents +23.5%, maintenance up to 4× by year two. Directional, attributed."
+    },
+    {
+      "kind": "external",
+      "ref": "Eliyahu Goldratt, *The Goal* / Theory of Constraints",
+      "contributed": "Eliyahu Goldratt, *The Goal* / Theory of Constraints — a system's throughput is set by its bottleneck; \"any improvement made anywhere besides the bottleneck is an illusion\"; speeding a non-bottleneck just piles up work-in-progress in front of the constraint. The formal backbone of the bottleneck section."
+    },
+    {
+      "kind": "external",
+      "ref": "DORA / Google Cloud, *2024 Accelerate State of DevOps*",
+      "contributed": "DORA / Google Cloud, *2024 Accelerate State of DevOps* — ~75% used AI and felt more productive individually, yet AI was associated with *negative* effects on delivery throughput and stability — the measured individual-vs-system gap."
+    },
+    {
+      "kind": "external",
+      "ref": "CircleCI 2026 data (via industry write-ups)",
+      "contributed": "CircleCI 2026 data (via industry write-ups) — feature-branch throughput up ~59% YoY while median main-branch throughput fell; PR queues 10–15/week → 50–100. The bottleneck made visible. Directional, attributed."
+    },
+    {
+      "kind": "external",
+      "ref": "Fred Brooks, *The Mythical Man-Month* (Brooks's Law)",
+      "contributed": "Fred Brooks, *The Mythical Man-Month* (Brooks's Law) — communication paths grow ~with the square of team size; integration and the critical path don't parallelize. The coordination-friction half of the team-gap section."
+    },
+    {
+      "kind": "external",
+      "ref": "Engelbart, *Augmenting Human Intellect: A Conceptual Framework* (SRI, 1962)",
+      "contributed": "Engelbart, *Augmenting Human Intellect: A Conceptual Framework* (SRI, 1962) — \"intelligence amplification\"; the augmented capability belongs to the human+tool system."
+    },
+    {
+      "kind": "external",
+      "ref": "Steve Jobs, \"bicycle for the mind\"",
+      "contributed": "Steve Jobs, \"bicycle for the mind\" — \"a tool can amplify an inherent ability.\""
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Closed at round-2 ESCALATE (16 passes, one major and two minor findings). Recorded remaining author decisions only; draft unchanged. Report stale for spec record-keeping edits, with no further check under the two-round limit."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Specified local round-1 reader repairs before prose; no unit order, inherited intent, thesis, role or criterion change. Final check will be round 2 under the author’s limit."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Revised index.md to the independently reviewed spec, preserving protected material and empirical figures. Validator and deterministic structure pass with 51 units and 4,854 counted words; the legacy spec had no numeric cap. Prepared for independent round-one readers; no draft verdict is claimed."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Independent flow review returned sound with no actionable notes. Prose revision is authorized from this draft spec in auto mode; intent, thesis, role, criteria, order, and units remain unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Reconstructed a full paragraph-level outcome spec before prose changes, preserving all legacy record-keeping and the final journal contract. Planned bounded-metaphor qualifications, an explicit roadmap, earlier limits, question relocation, two recovered paragraphs, and the understanding hand-off. Status draft under the user's auto-mode authorization; no draft checks have run yet."
+    },
+    {
+      "date": "2026-06-29",
+      "change": "Systems/friction strand propagated to all four modalities: two new article sections (\"It Amplifies the Bottleneck\", \"Why Your Team Didn't Get Faster\") + a fifth inline figure; a new summary bullet pair; a two-segment dialog addition; a new comic panel (07-the-bottleneck, strip now 9 panels). KEY POINTS third bullet rewritten to carry the \"which part\" idea (still exactly three bullets). Spec and post agree again; status stays `accepted`."
+    },
+    {
+      "date": "2026-06-29",
+      "change": "Spec extended (author request) with a **systems/friction** strand: two new sections (the bottleneck; the individual-vs-team gap), new success criteria, new sources (Theory of Constraints, DORA 2024, CircleCI, Brooks's Law). Spec updated *before* the article per the spec-first rule."
+    },
+    {
+      "date": "2026-06-29",
+      "change": "Article, summary, and dialog written and reviewed (post-review: 0 blockers, 0 major). Spec and post agree. Status `draft → accepted`. Four inline figures staged as placeholders, awaiting image generation. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-06-29",
+      "change": "Initial spec from `PLAN.md`. Status `draft`. Four-axis amplifier framing, three modalities planned (article + summary + dialog; comics deferred). *(Željko Obrenović, AI-mediated session)*"
+    }
+  ]
+}

@@ -1,0 +1,1660 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "breaking-vibe-monolith",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed on 2026-11-12 from the complete published index.md and legacy spec.md before revising prose. check_draft.py units and outcome_specs.parse_draft mapped every existing prose/list unit and its tables, images, captions and callouts. Existing section order and prose are retained except the explicitly specified move of Questions to Consider before Closing Thought, one telemetry/measurement paragraph split, two introduction additions and two conclusion additions. The KEY POINTS and all four figures remain attached evidence; the full To Probe Further apparatus is preserved after the conclusion rather than treated as argument. No PLAN or _research ledger exists. This is a draft contract for the authorized auto revision, not a claim that the existing prose already meets it.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "How continuous re-architecting creates a Vibe Monolith even when a current architecture diagram looks modular.",
+        "How unstable boundaries increase cognitive load, concentrate ownership, and make scaling harder."
+      ],
+      "believe": [
+        "Architecture must preserve enough stability for people to understand and share responsibility for AI-built systems.",
+        "Human workload belongs in the assessment of sustainable delivery speed."
+      ],
+      "can_do": [
+        "Recognize temporal instability and identify domain boundaries, API contracts, and data-model decisions that need deliberate change control."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader distinguishes the Vibe Monolith from the classic, distributed, and release monoliths, and from under-refactoring.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What makes the Vibe Monolith distinct if its components look modular today?",
+        "expected": "Its architecture and boundaries keep moving, preventing people from reasoning about one part over time; this differs from a single application, static cross-service coupling, release coordination, and duplication caused by under-refactoring."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader connects moving boundaries to cognitive load, concentrated ownership, burnout, and the difficulty of scaling beyond a small team.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "How does architectural instability create a human cost, especially for people fluent with AI?",
+        "expected": "People cannot rely on stable seams or share lasting ownership, so responsibility concentrates on those who can still hold the whole system in mind; validation load rises and individual speed fails to remove coordination limits."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader names a concrete way to stabilize high-impact seams while allowing changes within them.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What should a team hold stable, and what first action follows from the article?",
+        "expected": "Domain boundaries, API contracts, and the data model need deliberate decisions and review; record them, gate changes to them, track churn and review burden, or use a focused architecture forum while allowing work inside the boundaries."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "How can teams sustain AI-assisted development when the architecture changes faster than people can understand and own it?",
+    "claim": "Teams should stabilize domain boundaries, API contracts, and data models while allowing fast changes within them, because continuous re-architecting destroys shared ownership and concentrates validation work on a few engineers.",
+    "disputed_by": "The view that repeated end-to-end regeneration and enough after-the-fact testing can sustain rapid development without deliberately holding architectural boundaries stable.",
+    "so_what": "Architecture decisions determine whether increased output can scale across teams without exhausting the people who understand the system.",
+    "how_why": "When boundaries keep moving, local reasoning and durable ownership fail; the few people able to follow the whole system inherit the coordination and validation burden, while stable seams make that work divisible.",
+    "supporting_claims": [
+      {
+        "id": "C1",
+        "claim": "Generated changes can outrun shared understanding, and brute-force generation plus after-the-fact verification consumes finite technical and human capacity."
+      },
+      {
+        "id": "C2",
+        "claim": "Continuous re-architecting produces a distinct temporal failure: a system can look modular today while its moving foundations prevent safe local reasoning over time."
+      },
+      {
+        "id": "C3",
+        "claim": "Moving boundaries create avoidable cognitive load and concentrate ownership and validation on the few engineers who can still understand the whole system."
+      },
+      {
+        "id": "C4",
+        "claim": "Whole-system understanding can sustain a small team's speed, but it cannot replace the durable boundaries a larger organization needs to coordinate."
+      },
+      {
+        "id": "C5",
+        "claim": "Deliberately controlling changes to domain boundaries, API contracts and data models makes ownership divisible while preserving fast change within those seams."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Shows how architecture can protect and distribute the understanding that the preceding essay says people must retain.",
+    "supports": [
+      "S5"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "small_to_large",
+        "applies_to": "trust-gap"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "brute-force and continuous-rearchitecting"
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "monolith-taxonomy"
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "best-people and scaling"
+      },
+      {
+        "pattern": "large_to_small",
+        "applies_to": "cooling-down through monday"
+      }
+    ],
+    "rationale": "Begin with an unreviewable change and the trust gap, then show why more generation and verification effort is unsustainable. Name continuous re-architecting and distinguish the temporal monolith before deriving cognitive load, concentrated ownership and the scaling limit. Only then can stable seams answer a specific failure rather than become generic governance advice. Put Monday actions and the preserved reflection questions before the final synthesis and platform hand-off. Moving the human cost after the solution would turn a co-equal part of the thesis into an aside; moving the taxonomy after it would leave the causal mechanism undefined."
+  },
+  "introduction": {
+    "hook": {
+      "type": "direct_statement",
+      "content": "Software now grows faster than our trust in it."
+    },
+    "bridge": {
+      "from_reader_world": "People must understand generated work well enough to maintain it and judge its value, even when AI produces it quickly.",
+      "to_topic": "A growing team needs architectural stability that lets people share that understanding instead of requiring each person to hold the whole system in mind."
+    },
+    "thesis_statement": {
+      "text": "Hold domain boundaries, API contracts, and the data model stable deliberately, so AI can change their internals quickly without dissolving ownership or concentrating validation on a few engineers.",
+      "placement": "The preserved KEY POINTS bullets 2 and 3 state the diagnosis and response; introduction p02 connects them to shared human understanding."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Begin with the 17,000-line pull request to show why generating code and verifying it by brute force opens a trust gap and spends finite resources.",
+          "kept_in": [
+            "trust-gap",
+            "brute-force",
+            "resource-cost"
+          ]
+        },
+        {
+          "promise": "Distinguish continuous re-architecting from under-refactoring, then locate the Vibe Monolith among four kinds of monolith.",
+          "kept_in": [
+            "continuous-rearchitecting",
+            "monolith-taxonomy"
+          ]
+        },
+        {
+          "promise": "Trace moving boundaries into cognitive load, concentrated ownership and burnout, then explain why small-team speed does not remove the coordination limit.",
+          "kept_in": [
+            "cognitive-load",
+            "best-people",
+            "scaling"
+          ]
+        },
+        {
+          "promise": "Identify the seams to hold stable, turn that principle into Monday actions, and use reflection questions to choose where to start.",
+          "kept_in": [
+            "cooling-down",
+            "monday",
+            "questions"
+          ]
+        }
+      ],
+      "placement": "New introduction p03, after the original trust-and-sustainability opening and a short bridge from understanding to shared ownership. Use a concrete article roadmap with the anecdote, comparisons, human costs and first actions; do not add an abrupt itinerary of the journal."
+    },
+    "paragraphs": [
+      {
+        "id": "p01",
+        "form": "prose",
+        "controlling_idea": "Trust and sustainability are the scarce resources that frame the architecture problem in AI-assisted development.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "> **KEY POINTS:**\n>\n> * **Software now grows faster than our trust in it.** AI lets us generate code by brute force and verify it by brute force — and brute force burns hardware, money, tokens, and, most of all, the engineers who are *best* at AI. That gap, not raw capability, is the problem.\n> * The architectural symptom is **continuous re-architecting**, and its product is the **Vibe Monolith**: a system that is modular on paper yet behaves as one rigid entity, because its foundations never hold still long enough for anyone to own or reason about a single part.\n> * Architecture's job now is to **cool the system down** — freeze the highest-blast-radius seams (**domain boundaries, API contracts, the data model**) and let AI move fast inside them. **The way out of the burn is not more force; it is better structure.**",
+            "shows": "The existing three-bullet KEY POINTS callout states the trust gap, the Vibe Monolith diagnosis and the stable-seam response before the essay develops them.",
+            "source": "Published index.md; preserve this callout exactly."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C5"
+          ],
+          "how": "Trust and sustainability are the scarce resources that frame the architecture problem in AI-assisted development."
+        }
+      },
+      {
+        "id": "p02",
+        "form": "prose",
+        "controlling_idea": "Human understanding can be shared across a growing team only when people have stable architectural boundaries around the work they own.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The preceding essay requires people to understand generated work before owning it; this essay asks how architecture keeps that responsibility divisible.",
+            "shows": "The incoming problem-solution bridge motivates stable seams through a responsibility the reader can recognize without having read the earlier essay."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Trust and sustainability depend on people understanding what they accept.",
+          "introduces": "Stable boundaries allow a team to divide that understanding and ownership.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C3",
+            "C5"
+          ],
+          "how": "Human understanding can be shared across a growing team only when people have stable architectural boundaries around the work they own."
+        }
+      },
+      {
+        "id": "p03",
+        "form": "prose",
+        "controlling_idea": "The essay follows the trust gap through architectural churn and human burden before choosing stable seams and practical first moves.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A 17,000-line PR; generation and verification costs; continuous re-architecting and monolith comparisons; cognitive load and burnout; small-team scaling; frozen seams; Monday actions and reflection questions.",
+            "shows": "A concrete roadmap tells a standalone reader the order, evidence and practical destination of the essay."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The architectural task is to make human understanding and ownership sustainable.",
+          "introduces": "The article will diagnose the obstacles before proposing seam-level controls.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C2",
+            "C3",
+            "C4",
+            "C5"
+          ],
+          "how": "The essay follows the trust gap through architectural churn and human burden before choosing stable seams and practical first moves."
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "trust-gap",
+      "heading": "Software Is Growing Faster Than Our Trust",
+      "controlling_idea": "A development process loses its trust-building function when generated changes arrive faster than people can understand them.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Makes the comprehension gap concrete before diagnosing its costs."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "The reported PR gives the reader a concrete scale, its review purpose explains the failure, and the broader lifecycle contrast shows why the case matters. Putting the general claim first would weaken the evidence-to-stakes progression."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "The roadmap starts with the widening gap between software output and trust.",
+        "introduces": "A CTO's reported 17,000-line PR makes that gap concrete.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p04",
+          "form": "prose",
+          "controlling_idea": "A CTO's reported 17,000-line pull request compresses an enormous amount of work into one review event.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "A startup CTO in Amsterdam reported merging one pull request of 17,000 lines of code, described as one to two person-years of work.",
+              "shows": "The anecdote establishes the scale that the following paragraph tests against the purpose of review.",
+              "source": "Published essay; preserve names, location and figures; this is a reported anecdote."
+            }
+          ]
+        },
+        {
+          "id": "p05",
+          "form": "prose",
+          "controlling_idea": "A review ceremony cannot manufacture trust when the change is too large for a reviewer to understand.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "A pull request is the checkpoint at which a person should understand a change well enough to vouch for it; the reported 17,000-line PR still went through approval.",
+              "shows": "The distinction between performing the ceremony and achieving its purpose makes the trust failure visible."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The 17,000-line change reaches one review checkpoint.",
+            "introduces": "The scale undermines the understanding that checkpoint is meant to establish.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p06",
+          "form": "prose",
+          "controlling_idea": "AI-driven growth can outrun the time people need to understand its implications.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing essay identifies AI use across the software development lifecycle and in new product capabilities, with new integrations arriving before earlier implications are understood.",
+              "shows": "The anecdote reflects a wider mismatch between the supply of changes and the attention needed to trust them."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The single PR shows output arriving without matching comprehension.",
+            "introduces": "The same gap can appear across lifecycle changes and product integrations.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p07",
+          "form": "prose",
+          "controlling_idea": "Incremental development builds trust alongside code, while a large generated change can collapse those checkpoints into one.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Short iterations, working software, continuous feedback and retrospectives in the author's account of agile development.",
+              "shows": "These practices explain the gradual accumulation of confidence that the 17,000-line example bypasses.",
+              "source": "Published essay."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1, trust-gap.jpeg: a steep CODE curve and flatter TRUST curve with a shaded gap; preserve image, alt text and caption exactly.",
+              "shows": "The conceptual illustration visualizes code and trust growing at different rates; it is not a measured chart.",
+              "source": "assets/images/breaking-vibe-monolith/trust-gap.jpeg"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "AI-driven change can outpace understanding.",
+            "introduces": "Earlier incremental checkpoints show what is lost when that pacing disappears.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "brute-force",
+      "heading": "We Are Using Brute Force — for Both Building and Believing",
+      "controlling_idea": "Increasing generation and after-the-fact verification effort does not by itself supply shared understanding or a clear standard of quality.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Explains why simply adding more work on both sides does not close the trust gap."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Set out the two sides together before explaining the verification limit; discussing the limit first would leave the reader without the mechanism being judged."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Trust no longer grows in step with generated code.",
+        "introduces": "Teams try to close the gap by applying more effort to generation and verification.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p08",
+          "form": "prose",
+          "controlling_idea": "Both building AI-generated systems and trying to trust them can become exercises in brute force.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The existing Building/Believing table contrasts rapid black-box generation with extensive after-the-fact testing and evaluation.",
+              "shows": "Working output does not establish comprehension, and more checks do not compensate for an undefined shared standard of good behavior.",
+              "source": "Published essay; preserve both rows and their qualifications."
+            }
+          ]
+        },
+        {
+          "id": "p09",
+          "form": "prose",
+          "controlling_idea": "Verification effort escalates when the quality standard is unclear and the volume exceeds human review capacity.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Testing against a standard not fully defined and reviewing more material than people can meaningfully examine.",
+              "shows": "The problem is the relation between output, criteria and attention, so additional verification has its own growing cost."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Building/Believing contrast shows weaknesses on both sides.",
+            "introduces": "The trust side combines unclear criteria with excessive review volume.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "resource-cost",
+      "heading": "Brute Force Does Not Scale — Everything and Everyone Is Burning",
+      "controlling_idea": "Brute-force production and verification spend finite technical and human capacity, including the future supply of experienced maintainers.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "C1"
+        ],
+        "how": "Establishes why an architectural response must reduce the burden rather than merely add effort."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Start with the full resource burden and then examine its longer-lived human consequence. The career-pipeline point would be a detour without the resource constraint first."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Verification has become an escalating cost.",
+        "introduces": "The combined production and verification load consumes scarce resources.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p10",
+          "form": "list",
+          "controlling_idea": "Brute force consumes hardware, inference, verification capacity and human attention at the same time.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The preserved four-item list: hardware competition; overloaded and expensive inference; compute for verification; engineers absorbing the rate of change.",
+              "shows": "The resource problem extends beyond the price or speed of producing code.",
+              "source": "Published essay; preserve the four examples without extending their factual scope."
+            }
+          ]
+        },
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "The burden also falls on future maintenance capacity when the junior-to-senior career pipeline is weakened.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing essay observes that newly generated technical debt needs senior judgment while junior roles that develop future seniors are being cut in many places.",
+              "shows": "A development model can consume both current expertise and the path by which it is renewed; preserve the author's qualification \"in many places\"."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The resource list ends with current engineers under pressure.",
+            "introduces": "The same reliance on human judgment creates a longer-term capacity problem.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "continuous-rearchitecting",
+      "heading": "The Architectural Symptom: Continuous Re-Architecting",
+      "controlling_idea": "The author's observed agentic failure mode is repeated foundation change, which must be distinguished from published under-refactoring findings.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "Names the mechanism that stable-seam governance must address without treating different evidence as proof of one cause."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Name continuous re-architecting, make churn observable, distinguish two mechanisms, then isolate the moving-foundation problem. The taxonomy that follows needs this distinction; putting the term after the evidence would leave the reader guessing what the figures explain."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Brute force consumes resources because the resulting work still needs human judgment.",
+        "introduces": "Continuous re-architecting is the architectural pattern the author observes within that workload.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "Continuous re-architecting is the author's name for the repeated rebuilding of foundations in an AI-powered software development lifecycle.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The author's observation of AI-powered SDLC work; expand SDLC as software development lifecycle at this occurrence.",
+              "shows": "Naming and briefly glossing the repeated foundation changes gives the reader the mechanism the next evidence and comparison will examine."
+            }
+          ]
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "Churn makes rapid reworking visible, while the interpretation of that churn remains distinct from the published measurements.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "statistic",
+              "what": "GitClear's analysis of roughly 211 million changed lines projected code churn, defined as lines reverted or rewritten within two weeks, to double across the AI-adoption period while the share of moved code fell.",
+              "shows": "The reported measurement supports concern about churn, not a universal causal finding that agents repeatedly redesign foundations.",
+              "source": "Published essay citing GitClear, AI Copilot Code Quality (2025); preserve figures and projection language."
+            },
+            {
+              "kind": "case",
+              "what": "The author observes more commits and higher churn in fully agentic projects and labels the continuous re-architecting explanation as an intuition.",
+              "shows": "The agentic explanation is the author's situated observation, with a different scope from the published under-refactoring work.",
+              "source": "Published essay; preserve the 17k-PR comparison and observation/intuition caveats."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Continuous re-architecting repeatedly changes foundations.",
+            "introduces": "Churn is a visible signal, but its cause needs to be separated from the measurement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "Autocomplete under-refactoring and agentic re-architecting are different mechanisms despite both producing churn.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The preserved autocomplete/agentic table compares eras, failure modes and traps: duplication and missed reuse versus repeated changes to data structures, APIs, domain boundaries and core concepts.",
+              "shows": "The reader can distinguish the published under-refactoring account from the author's proposed foundation-instability account.",
+              "source": "Published essay; preserve all rows and the context-window explanation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Both the reported measurements and the author's projects involve churn.",
+            "introduces": "The comparison separates under-refactoring from repeated end-to-end foundation changes.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "End-to-end agentic development can keep reopening foundations whose implications require deliberate human judgment.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing paragraph contrasts duplicated additions with repeated rewrites of the foundations and retains the author's distinction between autocomplete and agentic work.",
+              "shows": "The architectural risk concerns changing the assumptions beneath the system, rather than merely adding too much code."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The comparison identifies foundations as the agentic failure point.",
+            "introduces": "Those rapid foundational rewrites undermine deliberate long-term planning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "Repeated foundation changes can make even an elegant design behave like a Vibe Monolith.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The author introduces a failure mode beyond obvious technical debt and visibly poor structure.",
+              "shows": "The next section must explain why a clean snapshot of modularity is insufficient."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Foundations can change too quickly for their implications to be understood.",
+            "introduces": "The resulting failure can persist even when the current design looks elegant.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "monolith-taxonomy",
+      "heading": "A Taxonomy of Monoliths — and Why the Vibe Monolith Is Different",
+      "controlling_idea": "The Vibe Monolith differs from static or release coupling because architecture that looks modular today does not stay stable enough for local reasoning over time.",
+      "function": "definition",
+      "advances_thesis": {
+        "supports": [
+          "C2"
+        ],
+        "how": "Distinguishes the coined failure mode from familiar monolith categories before tracing its human consequences."
+      },
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Locate each kind of coupling, identify the temporal kind, then explain how a modular snapshot can still lose local changeability across successive rewrites. Without the comparison first, the Vibe Monolith could be mistaken for ordinary distributed coupling."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The previous section names a Vibe Monolith despite an elegant current design.",
+        "introduces": "A comparison of where coupling lives explains the distinction.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "form": "prose",
+          "controlling_idea": "Monolith categories differ in where changes become dependent on one another.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The preserved four-row taxonomy: classic monolith (application and database), distributed monolith (interdependent services), release monolith (release coordination), and Vibe Monolith (moving architecture).",
+              "shows": "The last category locates the problem in instability across time rather than only in code layout, service dependencies or release organization.",
+              "source": "Published essay; preserve all descriptions and trade-offs; gloss coupling as changes in one part requiring changes elsewhere."
+            }
+          ]
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "The author uses Vibe Monolith to identify the temporal coupling observed in AI-driven end-to-end development.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2, monolith-taxonomy.jpeg: the four kinds of monolith; preserve image, alt text and caption exactly.",
+              "shows": "The visual reinforces that the proposed Vibe Monolith is defined by boundaries that do not hold still, not by a particular diagram shape.",
+              "source": "assets/images/breaking-vibe-monolith/monolith-taxonomy.jpeg"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The taxonomy distinguishes four locations of coupling.",
+            "introduces": "The author singles out instability over time in AI-driven development.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "A modular architecture at one moment does not guarantee that a team can keep changing each part independently.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing essay describes genuine modularity and decoupling in a snapshot of an agent-generated system.",
+              "shows": "The snapshot must be distinguished explicitly from the stability of its boundaries across successive changes."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The Vibe Monolith's distinguishing trait is architectural motion over time.",
+            "introduces": "A modular snapshot can coexist with the loss of durable local reasoning.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "End-to-end rewrites spread change across components by repeatedly changing the dependencies between them.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The preserved account of rigid interactions and unforeseen ripples from one part to another, made explicit as dependencies shifting across repeated rewrites.",
+              "shows": "Temporal change propagation explains the monolithic behavior without contradicting the preceding claim that components can be modular at one moment."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A current diagram does not show whether component boundaries will remain reliable.",
+            "introduces": "Changing those dependencies across agent runs makes local changes ripple through the system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "Local reasoning becomes unsafe when the boundaries that contain a person's attention keep moving.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The architecture can look well designed now but different next week, leaving no durable boundary around the part someone owns.",
+              "shows": "Stability over time is the missing property that connects the taxonomy to human understanding and shared responsibility."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Repeated rewrites make dependencies unreliable across time.",
+            "introduces": "People cannot safely reason about just one part while its boundaries keep moving.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cognitive-load",
+      "heading": "The Real Cost: Cognitive Load and the Collapse of Clear Ownership",
+      "controlling_idea": "Unstable architecture removes the boundaries that let individuals limit cognitive load and teams hold durable responsibilities.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Connects temporal instability to human and organizational costs rather than treating modularity as a diagram property."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Establish the team-and-architecture relationship, then group its consequences by individual attention and team ownership. The two costs need the shared boundary principle first; mixing their examples would blur personal cognitive load with responsibility across teams."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Moving boundaries prevent safe reasoning about a local part.",
+        "introduces": "The same failure burdens individuals and disrupts how teams divide responsibility.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "Stable architecture enables teams to divide work along boundaries they can understand and own.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Team Topologies treats the team as the unit of delivery and cognitive load as a design concern; the essay invokes Conway's Law to connect organizational and service boundaries.",
+              "shows": "The argument establishes why architectural seams also matter to the organization of people.",
+              "source": "Published essay; preserve Team Topologies and Conway's Law references and their stated interpretation."
+            }
+          ]
+        },
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "Shifting structure creates avoidable cognitive load beyond the intrinsic difficulty of the problem domain.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing contrast between intrinsic domain difficulty and extraneous load from weak boundaries requires people to hold more of the system in mind.",
+              "shows": "Defining extraneous load shows that the added burden is an architectural consequence rather than an unavoidable property of the work."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Stable boundaries let humans divide and contain their work.",
+            "introduces": "At the individual level, moving boundaries enlarge the mental model a person must maintain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "Moving seams prevent teams from establishing durable ownership and accountability.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Team Topologies' phrase \"hidden monoliths and coupling in the software-delivery chain\" and the author's qualified comparison of the Vibe Monolith as its AI-native cousin.",
+              "shows": "The comparison explains how an apparently technical instability becomes confusion, miscommunication and weaker trust in shared ownership.",
+              "source": "Published essay; preserve the qualification \"arguably\"."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Individuals cannot safely limit their attention to one stable part.",
+            "introduces": "Teams likewise lose the stable seams needed for lasting responsibilities.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "best-people",
+      "heading": "The Burden Lands on Your Best People",
+      "controlling_idea": "Architectural instability concentrates validation and ownership on the people most able to follow the whole system, hiding their depletion behind high output.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "C3"
+        ],
+        "how": "Shows the feedback between moving foundations and concentrated human burden while retaining the productivity caveat."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "Begin with one CTO's observation and its contrast with the expected benefit of AI, then broaden to the shift in validation work, hidden depletion, review telemetry and missing cost measures before synthesizing the architectural feedback loop. The section moves from a concrete report to a wider structural explanation; moving the observation after that explanation would remove the reader's concrete reason to examine the mechanism."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Unstable seams dissolve durable team ownership.",
+        "introduces": "A CTO reports that the people most fluent with AI carry the heaviest burden.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p25",
+          "form": "prose",
+          "controlling_idea": "A CTO reports that the engineers most fluent with AI feel the greatest burden from its use.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Another CTO at a startup scaling up reports that the team members who are really good at AI in the SDLC feel an incredible burden.",
+              "shows": "The anecdote makes the concentration of human cost concrete instead of attributing it to people failing to adopt AI.",
+              "source": "Published essay; preserve the second CTO anecdote and its reported nature."
+            }
+          ]
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "The reported burden reverses the expectation that the people strongest with AI must have the lightest workload.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The preserved assumptions/observations table: strong versus weak users, who burns out, and authoring versus validating.",
+              "shows": "The comparison shifts attention from adaptation failure to the work absorbed by people who adopted AI most effectively.",
+              "source": "Published essay; preserve all three rows."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The CTO locates the burden among capable AI users.",
+            "introduces": "The accompanying table contrasts that observation with the naive expectation of less work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p27",
+          "form": "prose",
+          "controlling_idea": "The shift from authoring to validating replaces manual execution with interpretation, verification and decisions.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing account contrasts less boilerplate and faster iteration with the interpretation and judgment needed to accept generated work.",
+              "shows": "The load changes in kind, explaining why lower coding effort can coincide with heavier cognitive work. Keep the architectural thread visible by tying validation load to the changing boundaries already established."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The comparison shows fluent AI users carrying more burden despite less manual coding.",
+            "introduces": "Their work has shifted into validation and decision-making.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p28",
+          "form": "prose",
+          "controlling_idea": "High output can hide the depletion that the essay calls high-functioning burnout.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing paragraph describes sustained performance while mental reserves erode under cognitive load, and asks at what cost that speed is sustainable.",
+              "shows": "Visible delivery alone cannot reveal whether the people maintaining it have reserves left; retain the author's terminology and existing assertions without adding medical claims."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Validation work is cognitively demanding even when execution becomes cheap.",
+            "introduces": "Maintained output can hide the accumulating personal cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "prose",
+          "controlling_idea": "The reported telemetry describes AI-era review work as becoming structurally harder as changes grow.",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Faros AI and The AI Engineering Report: PR size, files touched per PR and bugs per PR climb with adoption; human review time rises despite agent review because people adjudicate flagged issues.",
+              "shows": "The pattern supports examining the difficulty of human validation rather than only how many changes were generated.",
+              "source": "Published essay; retain attributions and do not add findings."
+            },
+            {
+              "kind": "example",
+              "what": "White-box review is glossed as a human reading every line; the author connects thousands of generated lines an hour and the 17k-line PR with the burden on the senior reviewer.",
+              "shows": "The example links the opening artifact to its human validation cost.",
+              "source": "Published essay; retain existing figures."
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Depletion can remain hidden behind maintained delivery.",
+            "introduces": "Review telemetry illustrates the growing difficulty of the work producing that burden.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "form": "prose",
+          "controlling_idea": "Standard productivity measures can miss the human cost of maintaining high output.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The final sentences of the original telemetry paragraph say validation time, technical debt and burnout sit outside standard productivity metrics and managers report rosier conditions than workers.",
+              "shows": "Separating visibility from workload makes the later recommendation to measure hidden costs follow from a clear, distinct point."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Telemetry reveals growing review difficulty.",
+            "introduces": "The full validation and human cost can nevertheless remain outside standard productivity measures.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p31",
+          "form": "prose",
+          "controlling_idea": "Moving architecture concentrates responsibility on the few people who still understand the whole, reinforcing their burden.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Unstable seams prevent distributing ownership; drive-by contributions leave maintenance and refactoring with the few who retain the system model. Explain the return step as the article’s reasoning: depleted maintainers have less capacity to review boundary changes, document decisions and restore structure, so instability can grow and concentrate the burden again.",
+              "shows": "The architecture problem and the human burden reinforce one another, making the earlier costs part of the same structural problem."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 3, burnout-loop.jpeg: unstable architecture, no stable seams, ownership falls on the few, the few burn out; preserve image, alt text and caption exactly.",
+              "shows": "The illustration visualizes the feedback loop described in the paragraph.",
+              "source": "assets/images/breaking-vibe-monolith/burnout-loop.jpeg"
+            },
+            {
+              "kind": "quotation",
+              "what": "Preserve the complete \"One honest caveat\" blockquote on uneven and idiosyncratic productivity gains, personal workflow fit, and experienced developers becoming slower while feeling faster.",
+              "shows": "The caveat limits generalizations about individual speed; the architectural argument concerns sustainable ownership rather than an assumed universal productivity gain.",
+              "source": "Published essay callout following Figure 3."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "The cost can remain invisible despite high measured output.",
+            "introduces": "Without stable seams, ownership and validation keep returning to those who can follow the whole system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "scaling",
+      "heading": "Why Small Teams Fly and Scaling Stalls",
+      "controlling_idea": "Individual speed does not remove the coordination constraint that appears when ownership must be shared across a larger organization.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "C4"
+        ],
+        "how": "Explains why architecture that a few people can carry mentally becomes a scaling limit."
+      },
+      "flow": {
+        "pattern": "small_to_large",
+        "rationale": "Connect concentrated understanding to coordination, state the role of stable responsibility, then contrast a small group with a larger organization. Reversing the size comparison would obscure why the same approach changes character as ownership must be divided."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The architecture depends on the few people able to hold the whole system in mind; individual productivity gains remain uneven.",
+        "introduces": "The same reliance on a small shared mental model helps explain the scaling limit.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p32",
+          "form": "prose",
+          "controlling_idea": "The reliance on a few people's whole-system understanding also explains a limit on team growth.",
+          "function": "transition",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Replace the vague backward pointer \"This framing\" with an explicit reference to concentrated ownership, while retaining the author's practice-based observation.",
+              "shows": "The productivity caveat remains intact without becoming the accidental referent of the scaling argument."
+            }
+          ]
+        },
+        {
+          "id": "p33",
+          "form": "prose",
+          "controlling_idea": "Stable architecture makes work divisible into durable team responsibilities.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The original paragraph defines good architecture functionally as stability that supports splitting work and defining teams.",
+              "shows": "This establishes the coordination property the size comparison will use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A handful of people cannot indefinitely carry all system understanding.",
+            "introduces": "Stable structure provides the means to divide that responsibility.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p34",
+          "form": "prose",
+          "controlling_idea": "A small team can move quickly while the whole system still fits in a handful of people's heads.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "The author observes startups of up to ten people moving quickly and describes new product MVPs built this way; gloss MVPs as minimum viable products.",
+              "shows": "At this scale, shared whole-system understanding can temporarily substitute for durable boundaries; retain this as the author's observation after the uneven-productivity caveat.",
+              "source": "Published essay; preserve the up-to-ten scale and all original scope qualifications."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Durable boundaries are needed to divide work.",
+            "introduces": "A small group may defer that division because a few people still understand everything.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p35",
+          "form": "prose",
+          "controlling_idea": "The same end-to-end work style becomes a coordination limit when a larger organization needs durable boundaries.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The existing contrast between \"works on my machine\" and \"works for 10,000 users\", and the author's statement that many AI-built applications do not reach production.",
+              "shows": "Distinguish production/user scale from team count before using the comparison. The preserved claim illustrates production difficulty, not a measurement proving a team-size threshold; connect the dimensions through the review, reliability and maintenance responsibilities that must be shared across stable seams.",
+              "source": "Published essay; preserve 10,000 users."
+            },
+            {
+              "kind": "reasoning",
+              "what": "AI can reduce individual execution constraints while leaving the need for coordination intact.",
+              "shows": "More individual output does not create stable responsibilities across teams."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The small group can rely on shared whole-system knowledge.",
+            "introduces": "Larger organizations need divided ownership that continuous re-architecting prevents.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cooling-down",
+      "heading": "The Role of Architecture: Cooling the System Down",
+      "controlling_idea": "Architecture should hold high-impact seams stable deliberately so fast changes inside them remain understandable and governable.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Answers the architectural and human problem with a concrete division between controlled boundary change and fast local change."
+      },
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Name the stabilizing role, explain why it enables oversight, identify the three seams, then show supporting practices and related applications. The seam table must precede the practices because otherwise the practices have no stated boundary to protect."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Individual speed does not resolve the coordination limit created by unstable ownership.",
+        "introduces": "Architecture can make change divisible by deliberately holding the important boundaries stable.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p36",
+          "form": "prose",
+          "controlling_idea": "Cooling the system down means introducing enough stability to make its rate of change sustainable.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing response uses architecture to keep the system and its people from being consumed by repeated brute-force change.",
+              "shows": "The metaphor now names a specific response to the coordination and workload problems already established."
+            }
+          ]
+        },
+        {
+          "id": "p37",
+          "form": "prose",
+          "controlling_idea": "Governance that matches generation speed makes human oversight tractable as model capability grows.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The existing essay connects faster generation with the need for governance and the increasing value of human oversight.",
+              "shows": "Architecture is offered as a way to focus judgment rather than require an individual to inspect every generated line."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The proposed response is stability within fast development.",
+            "introduces": "The purpose of that stability is sustainable human oversight.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p38",
+          "form": "prose",
+          "controlling_idea": "Domain boundaries, API contracts and the data model deserve deliberate change control because their changes affect the most other work.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The preserved table of three seams: domain boundaries and ownership, API contracts and independent internal changes, shared data-model structures and instability.",
+              "shows": "These seams determine how widely change spreads, giving the reader a concrete test for what to hold stable; gloss bounded contexts briefly in the existing domain-boundary explanation.",
+              "source": "Published essay; preserve all three rows."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4, frozen-seams-stack.jpeg: fluid AI change above three stable foundation bars; preserve image, alt text and caption exactly.",
+              "shows": "The visual separates fast change inside a boundary from deliberate changes to that boundary.",
+              "source": "assets/images/breaking-vibe-monolith/frozen-seams-stack.jpeg"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Human oversight needs a tractable focus.",
+            "introduces": "Choose the seams with the greatest effect on other teams and parts of the system.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p39",
+          "form": "list",
+          "controlling_idea": "Focused architectural practices keep boundary changes deliberate while allowing work inside them to move quickly.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The preserved list: a lightweight architecture forum on contracts and guardrails; cognitive-load checks and team boundaries; golden paths and a platform layer.",
+              "shows": "Each practice maintains the division of work or absorbs avoidable load; gloss golden paths as supported routes for common development tasks without adding a product example.",
+              "source": "Published essay; preserve list items and Figure 4 reference."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "The high-impact seams have been named.",
+            "introduces": "Practices keep those seams stable without freezing local implementation work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p40",
+          "form": "prose",
+          "controlling_idea": "The same stable-core principle connects architectural seams with inspectable platforms and deliberate product change.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve [[risc-for-ai-software-development]] and [[fashion-driven-software-development]] in their original paragraph.",
+              "shows": "The links extend the already-explained idea to a smaller shared platform surface and a stable core amid seasonal change; they are further reading, not prerequisites.",
+              "source": "Published essay internal cross-links."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The practices protect boundaries and absorb avoidable load.",
+            "introduces": "Their common purpose is a system that a larger group can sustainably build on.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p41",
+          "form": "prose",
+          "controlling_idea": "The author uses the existing DeepSeek example to illustrate the principle that better structure can replace more brute-force expenditure.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The published paragraph cites DeepSeek as an example of strong results without simply spending ever more compute and money.",
+              "shows": "The analogy illustrates the structural instinct already argued for; do not extend it into new model performance, price or architecture facts.",
+              "source": "Published essay; preserve the entity and the exact scope of the claim."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The related practices reduce the surface and burden people must manage.",
+            "introduces": "The existing model-layer analogy reinforces the preference for structural choices over additional force.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "monday",
+      "heading": "What to Do on Monday",
+      "controlling_idea": "Teams can start stabilizing their architecture by recording and reviewing boundary changes while making hidden review and ownership costs visible.",
+      "function": "process",
+      "advances_thesis": {
+        "supports": [
+          "C5"
+        ],
+        "how": "Turns the stable-seam response into actions a reader can begin without designing a new operating model."
+      },
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the operational translation, provide the complete five-move table, then explain its shared purpose. The actions follow the three seams so their review focus is already meaningful."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The previous section defines stable seams and supporting practices.",
+        "introduces": "Five small moves make the principle actionable.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p42",
+          "form": "prose",
+          "controlling_idea": "Five concrete first moves turn stable seams into a routine of explicit boundaries, targeted review and visible human cost.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the five Monday moves and their full explanations: name the frozen seams; gate the seams, not the code; measure the unmeasured; find who holds the whole system; run a lightweight architecture forum.",
+              "shows": "The table connects each action to either deliberate foundation changes, focused attention or detection of concentrated human burden.",
+              "source": "Published essay; preserve the two-week churn definition, 17,000-line reference, one-or-two people and all other existing details."
+            }
+          ]
+        },
+        {
+          "id": "p43",
+          "form": "prose",
+          "controlling_idea": "These controls aim to make governance keep pace with generation by focusing it where consequences spread furthest.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The original closing sentence describes governance that matches the speed rather than changing generation itself.",
+              "shows": "The common purpose of the five actions is a sustainable division of attention and ownership."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The five moves place review at boundaries and expose hidden load.",
+            "introduces": "Their shared goal is governance that can support the speed of generation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ]
+    },
+    {
+      "id": "questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "A team can use the essay's questions to locate its own trust gap, moving seams and concentrated burden before choosing a first action.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5"
+        ],
+        "how": "Asks the reader to apply the diagnosis and actions to a real organization before the closing synthesis."
+      },
+      "flow": {
+        "pattern": "grouping",
+        "rationale": "Keep the existing reflection questions together after the practical actions and before the closing. Earlier placement would ask about frozen seams before explaining the response; placement after references would interrupt the ending and leave the units outside the conclusion boundary."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Monday moves provide a set of possible first actions.",
+        "introduces": "The preserved questions help the reader decide which problem and seam to address locally.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p44",
+          "form": "list",
+          "controlling_idea": "The reflection questions test whether the reader's organization is gaining trust or accumulating unstable ownership as AI output grows.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing introductory sentence and all eight questions, from the review ceremony through churn, temporal coupling, frozen seams, whole-system owners, quiet depletion, structural response and choosing three seams on Monday.",
+              "shows": "The reader applies the complete causal chain and selects a first step rather than leaving the argument at an abstract diagnosis.",
+              "source": "Published Questions to Consider; move the complete section without changing its text."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Closing Thought",
+    "synthesis": "Trust, maintainability and human sustainability meet in the same architectural decision: a team can sustain generated output only when the boundaries make understanding and responsibility shareable.",
+    "so_what": "Choosing what must remain stable limits how much validation falls on the few people who understand the whole system, allowing speed to persist beyond a small group.",
+    "callback": {
+      "to": "The opening trust-and-sustainability frame, grounded by the reported 17,000-line pull request in the first body section.",
+      "how": "The reader can now see the unreviewable PR as a failure to make understanding and responsibility divisible, rather than only an unusually large change."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Choose the domain boundaries, API contracts and data-model decisions whose changes spread furthest; record them and make changes to them deliberate while allowing local implementation to move quickly."
+    },
+    "hand_off": {
+      "to": "risc-for-ai-software-development",
+      "relationship": "elaboration",
+      "carries_over": "Stable seams let teams reason locally and share ownership of an AI-built system.",
+      "introduces": "How to keep the platform inside those seams inspectable without discarding expertise or operational safeguards."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The reflection questions locate a team's trust gap, unstable seams and concentrated ownership.",
+      "introduces": "The closing joins those findings into a principle for sustaining generated work.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p45",
+        "form": "prose",
+        "controlling_idea": "Architecture makes rapid output sustainable when it creates stable structures through which people can share understanding and responsibility.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Retain the existing Closing Thought's trust-and-sustainability language, callback to a year of work in an unreviewable PR, resource costs and concentration on fluent AI users.",
+            "shows": "Make explicit how the trust gap and human cost are two consequences of work that cannot be safely divided; add no new evidence or entity."
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "C1",
+            "C3",
+            "C4",
+            "C5"
+          ],
+          "how": "Architecture makes rapid output sustainable when it creates stable structures through which people can share understanding and responsibility."
+        }
+      },
+      {
+        "id": "p46",
+        "form": "prose",
+        "controlling_idea": "The next practical step is to record the highest-impact seams and require deliberate review when those seams change.",
+        "function": "recommendation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Apply the already-developed Monday moves to the domain boundaries, API contracts and data-model decisions that carry the widest consequences.",
+            "shows": "The closing leaves the reader with a course of action that preserves fast change inside the boundaries."
+          }
+        ],
+        "transition_in": {
+          "relationship": "problem_solution",
+          "carries_over": "Shared understanding needs architecture stable enough to divide responsibility.",
+          "introduces": "Choose and record the seams whose changes must be deliberate.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C5"
+          ],
+          "how": "The next practical step is to record the highest-impact seams and require deliberate review when those seams change."
+        }
+      },
+      {
+        "id": "p47",
+        "form": "prose",
+        "controlling_idea": "With stable seams in place, the next design question is how to keep the platform within them inspectable without losing needed expertise or safeguards.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "[[risc-for-ai-software-development]] develops the inspectability of the platform that humans and AI share.",
+            "shows": "The explicit final cross-link elaborates on stable local ownership using the exact next-post relationship from the journal contract.",
+            "source": "journal-spec.json next post transition; existing internal cross-link target."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Stable seams allow teams to reason locally and share ownership.",
+          "introduces": "The next essay examines the platform inside those seams and the expertise and safeguards it must retain.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "C5"
+          ],
+          "how": "With stable seams in place, the next design question is how to keep the platform within them inspectable without losing needed expertise or safeguards."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Not a verdict that AI-assisted development is bad or should be slowed; the fix is governance that matches the speed, not slower generation."
+    },
+    {
+      "topic": "Not a tools comparison or a how-to for any specific agent, framework, or platform."
+    },
+    {
+      "topic": "Not a microservices-vs-monolith debate; the Vibe Monolith can occur *inside* a clean microservice architecture."
+    },
+    {
+      "topic": "Not a burnout self-help piece; the burnout is framed as a structural consequence of architectural instability, not an individual failing."
+    },
+    {
+      "topic": "The people cost does not get reduced to a mere symptom of the architecture problem, nor the architecture problem to a mere cause of burnout — the two halves close a loop; keep both first-class."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "For author review outside this editorial pass: the source uses broad claims about a clinical name for high-functioning burnout, the proportion of AI-built applications reaching production, and industry/model examples with unevenly precise attribution. No research ledger or new verification supports changing them here; the original wording, scope and existing caveats remain the source of truth."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 readers corroborated missing feedback-loop and scaling explanations; one reader lost the architectural thread during the workload discussion. Revise p27, p31 and p35 only: remind readers why shifting boundaries increase validation work, state the burnout-to-instability return mechanism as reasoning, and distinguish user/production scale from team growth while connecting their ownership demands. Preserve 47 units, order, inherited criteria and all protected quotations, images, captions, names and figures."
+    },
+    {
+      "date": "2026-06-21",
+      "decision": "Titled the post around the **Vibe Monolith** rather than \"trust and sustainability.\" The coined term is the memorable, ownable idea; trust/sustainability is the framing, not the hook. Rejected \"IT Architecture in the Age of AI\" (the INPUT's working title) as too generic for an AI Notes piece."
+    },
+    {
+      "date": "2026-06-21",
+      "decision": "Placed in the **AI Software Development** section next to [[risc-for-ai-software-development]], not Leadership. The burnout material is strong but secondary to the architecture thesis; the two share a journal thread on trust as the AI-development bottleneck."
+    },
+    {
+      "date": "2026-06-21",
+      "decision": "Kept the burnout half as a co-equal beat rather than a closing aside. The post's distinctive claim is that system-level instability *manufactures* the human cost; cutting it would reduce the piece to a generic tech-debt argument."
+    },
+    {
+      "date": "2026-06-21",
+      "decision": "Heavy rework of INPUT.md into AI Notes house style (KEY POINTS block, Title Case headings, tables of contrasts, bold-skim path), rather than a light copy-edit, per author direction. Preserved the load- bearing anecdotes (the 17k-line PR, the two CTOs) and the coined terms verbatim."
+    },
+    {
+      "date": "2026-06-21",
+      "decision": "Kept the published-research caveats (AI under-refactors; productivity gains are uneven; some experienced devs are slower while feeling faster) because they make the argument more credible, not less."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstruct a full paragraph-level outcome spec from the published essay before changing its prose. Copy intent, every journal thesis field and role exactly from the final journal entry; add only post supporting claims. Keep status draft under the user's auto-mode authorization, with at most two total draft-check rounds.",
+      "rejected": [
+        "Changing the journal thesis or accepting the spec during an unattended pass.",
+        "Drafting prose before the separate flow review."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Keep the existing main section order and all headings. Move Questions to Consider intact from after To Probe Further to immediately before Closing Thought, leaving references intact after the conclusion.",
+      "rejected": [
+        "Leaving reflection units after the references where the conclusion parser cannot align them.",
+        "Putting questions after the final synthesis and hand-off."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Retain the original lead and exact KEY POINTS; add two introduction units for the understanding-to-shared-ownership bridge and the concrete roadmap. Add a closing action and an explicit elaboration hand-off to [[risc-for-ai-software-development]].",
+      "rejected": [
+        "Treating the existing callout alone as a roadmap for all eleven body sections.",
+        "Abruptly listing the surrounding journal posts instead of explaining this essay's path."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Split the long review-telemetry paragraph at \"Tellingly\" so increasing review difficulty and missing cost measures each have one controlling idea. Preserve both parts, all figures, names and claims.",
+      "rejected": [
+        "Deleting measurement visibility to shorten the essay.",
+        "Keeping two separately actionable findings in one dense paragraph."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Clarify the existing snapshot-versus-time distinction in the taxonomy, expand or gloss SDLC, coupling, MVPs, bounded contexts and golden paths where needed, and give the scaling opener an explicit referent after the productivity caveat. Preserve all caveats and add no facts about real companies or products.",
+      "rejected": [
+        "Resolving the taxonomy ambiguity by dropping its claim of genuine modularity.",
+        "Letting \"This framing\" point ambiguously to the immediately preceding productivity caveat."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Keep the three journal acceptance criteria unchanged and add none. Legacy criteria 3–4 map to AC-1; 5–6 to AC-2; 7–8 to AC-3. Legacy criteria 1–2 remain explicit duties of C1 and the opening three sections, while criterion 9 remains the C5 response and conclusion. No legacy reader outcome is dropped.",
+      "rejected": [
+        "Copying nine partially overlapping legacy checks as additional blocking criteria.",
+        "Inventing a numeric word limit from the 18 min front matter."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carry over the legacy audience as editorial context without altering the copied intent: engineering and technology leaders scaling AI-assisted development, principal and staff engineers experiencing architectural churn, tech leaders weighing delivery against stability and team health, and readers of [[risc-for-ai-software-development]] and [[fashion-driven-software-development]]. Standalone reading still requires local definitions; prior posts are not prerequisites."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Carry over all legacy modality roles: summary.md is the management summary for scaling decisions; dialog.md is the Ana/Ben conversation in which Ana carries the argument and Ben tests the \"normal tech debt / just slow down\" objections; comics.md is the 17k-line PR, clean-but-monolithic diagram and frozen-seams explanation. Those files are outside this pass and may need alignment after the article changes."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The legacy Open questions section said \"None for the current draft.\" Preserve that historical state here while recording reconstruction gaps below. No journal research ledger exists; existing factual assertions and attributions are retained, with no external fact revision in this pass."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "A fresh agent read only flow.txt and judged the order sound with notes (flow-review-1.txt). Adopt both metadata notes before prose: label brute-force consistently as assertion/evidence/reasoning in the overview and local flow, and describe best-people as an observation-first move from a concrete report to a wider structural explanation. No unit moves, merges or cuts were requested or made."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Treat the five reconstruction gaps as planned workflow work, not unresolved author questions: introduction bridge and roadmap, intact question-section move, telemetry split, closing action/hand-off, and local taxonomy/terminology/transition clarification. Phase B implements these already-specified changes; the remaining author question concerns only the inherited factual attribution outside this editorial pass."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The protected-source audit confirms exact front matter, both CTO anecdotes, all callouts, four image references/alt texts/captions, all eight questions and the references; every original number and link occurrence remains. The five reconstruction workflow gaps are implemented. Summary, dialog and comics remain unchanged: their central temporal-instability argument still aligns, while the article's new journal bridge, hand-off and terminology clarifications may merit a later companion edit."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "[[risc-for-ai-software-development]]",
+      "contributed": "Legacy source: trust as the adoption bottleneck; reducing the platform surface AI builds on so humans can reason about it."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[fashion-driven-software-development]]",
+      "contributed": "Legacy source: stable core vs. seasonal change; what to hold still while the material moves."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/breaking-vibe-monolith/INPUT.md",
+      "contributed": "Legacy source: the complete source essay (the 17k-line PR anecdote, the monolith taxonomy, the Vibe Monolith coinage, the burnout-loop argument, the \"cooling the system down\" response)."
+    },
+    {
+      "kind": "external",
+      "ref": "GitClear, AI Copilot Code Quality (2025), https://www.gitclear.com/ai_assistant_code_quality_2025_research",
+      "contributed": "Legacy source: churn doubling, duplication, and the decline of refactoring across 211M changed lines. The published prose retains projection language and distinguishes this from the author's agentic observations."
+    },
+    {
+      "kind": "external",
+      "ref": "The AI Engineering Report (2026) and Faros AI, https://www.faros.ai/",
+      "contributed": "Legacy source: PR size, files touched, bugs per PR, and the human review/verification burden under high AI adoption."
+    },
+    {
+      "kind": "external",
+      "ref": "Matthew Skelton & Manuel Pais, Team Topologies, https://teamtopologies.com/",
+      "contributed": "Legacy source: cognitive load, Conway's Law, hidden monoliths, and designing team boundaries around stable architectural seams."
+    },
+    {
+      "kind": "external",
+      "ref": "\"High-functioning burnout among developers after AI\"",
+      "contributed": "Legacy source: the shift from authoring to validating, and its human cost. The old spec supplies no more precise attribution."
+    },
+    {
+      "kind": "external",
+      "ref": "DeepSeek",
+      "contributed": "Legacy source: example that structural cleverness can substitute for brute expenditure of compute and money; no new claim is added in this pass."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/breaking-vibe-monolith/index.md",
+      "contributed": "Authoritative published prose for reconstruction, including both CTO anecdotes, figures, tables, the three-bullet KEY POINTS, productivity caveat, links and questions. Exact baseline is preserved under /private/tmp/ai-notes-outcome-revision-20261112/original/breaking-vibe-monolith/."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/breaking-vibe-monolith/spec.md",
+      "contributed": "Legacy intent, audience, nine success criteria, five non-goals, modality roles, empty open-questions state, all decision-log entries, sources and changelog."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Final full post entry supplies the intent, three acceptance criteria, thesis and role verbatim, plus the incoming understanding-to-architecture bridge and outgoing stable-seams-to-inspectable-platform hand-off."
+    },
+    {
+      "kind": "external",
+      "ref": "Melvin Conway, Conway's Law, https://www.melconway.com/Home/Conways_Law.html",
+      "contributed": "Existing To Probe Further link and description; preserve intact as apparatus."
+    },
+    {
+      "kind": "external",
+      "ref": "Platform engineering / golden paths, https://platformengineering.org/",
+      "contributed": "Existing To Probe Further link and description; preserve intact as apparatus."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Specified three local reader repairs before prose and the final allowed round-2 check; no unit-order or inherited-contract change."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Phase B revised index.md in the reviewed order: added the understanding/ownership bridge and concrete roadmap, clarified temporal coupling and existing term definitions, split review telemetry from cost visibility at \"Tellingly\", moved the intact questions before Closing Thought, and added a closing action and RISC hand-off. No heading, front matter, original number, name, image, caption, callout, reference or factual claim changed. The roadmap repeats the existing 17,000-line figure once. Validator and deterministic structure checks pass; independent draft check has not yet run."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Fresh flow rubric: sound with notes. Reconciled the section-2 overview label and described section 7's observation-first sequence accurately before prose revision. The accepted order and all paragraph controlling ideas are unchanged."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted the legacy spec into a full paragraph-level outcome contract with five supporting claims, copied journal intent/thesis/role, explicit transitions and roadmap, preserved record keeping, and pre-specified local structure and clarity changes. Status accepted in the legacy spec becomes draft for this user-authorized auto revision; no prose changed in Phase A."
+    },
+    {
+      "date": "2026-06-21",
+      "change": "Retitled to \"Breaking Up the Vibe Monolith: Architecting AI-Built Systems to Keep Their Cool\" (visible `title` only; `permalink` and the `breaking-vibe-monolith` slug unchanged for URL/cross-link stability). Intent and criteria unchanged → stays `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-06-21",
+      "change": "Applied post-review fixes: echoed the five \"Monday\" moves into `summary.md` and `dialog.md`, folded \"scaling stalls\" into comic panel 6, trimmed repeated \"burning people\" phrasing in `index.md`, plus two nits. Spec and all modalities now agree → status `draft` → `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-06-21",
+      "change": "Revision pass on the article: added a \"What to Do on Monday\" actions section (new Success criterion), attributed the churn/PR-size/review stats to GitClear and Faros AI, referenced all four inline figures from the prose, and expanded Further Reading. Spec stays `draft`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-06-21",
+      "change": "Initial spec. Status `draft`. Drives `index.md` plus `summary.md`, `dialog.md`, `comics.md`. *(Zeljko, AI-mediated session)*"
+    }
+  ]
+}

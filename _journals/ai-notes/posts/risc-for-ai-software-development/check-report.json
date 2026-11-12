@@ -1,0 +1,747 @@
+{
+  "spec": "_journals/ai-notes/posts/risc-for-ai-software-development/spec.json",
+  "draft": "_journals/ai-notes/posts/risc-for-ai-software-development/index.md",
+  "spec_sha": "d319a8c15c9659a7",
+  "draft_sha": "7610648923f28583",
+  "run_at": "2026-11-12T13:44:08+01:00",
+  "round": 2,
+  "verdict": "escalate",
+  "reverse_outline": [
+    {
+      "draft_locator": "Introduction callout",
+      "summary": "A deliberately smaller platform can make generated systems easier to trust.",
+      "matched_spec_paragraph": null
+    },
+    {
+      "draft_locator": "Introduction ¶1",
+      "summary": "Code volume is the wrong measure of AI engineering progress.",
+      "matched_spec_paragraph": "p001"
+    },
+    {
+      "draft_locator": "Introduction ¶2",
+      "summary": "The central question is whether generated systems deserve trust.",
+      "matched_spec_paragraph": "p002"
+    },
+    {
+      "draft_locator": "Introduction ¶3",
+      "summary": "Inspectable behavior and verifiable safeguards enable trust in AI changes.",
+      "matched_spec_paragraph": "p003"
+    },
+    {
+      "draft_locator": "Introduction ¶4",
+      "summary": "Stable boundaries also need an inspectable implementation platform.",
+      "matched_spec_paragraph": "p004"
+    },
+    {
+      "draft_locator": "Introduction ¶5",
+      "summary": "RISC offers a precedent for choosing simpler foundations.",
+      "matched_spec_paragraph": "p005"
+    },
+    {
+      "draft_locator": "Introduction ¶6",
+      "summary": "Changing costs historically made simpler processor instructions attractive.",
+      "matched_spec_paragraph": "p006"
+    },
+    {
+      "draft_locator": "Introduction ¶7",
+      "summary": "The software platform serves as an agent's instruction set.",
+      "matched_spec_paragraph": "p007"
+    },
+    {
+      "draft_locator": "Introduction ¶8",
+      "summary": "Modern platform surfaces comprise many interacting tools and conventions.",
+      "matched_spec_paragraph": "p008"
+    },
+    {
+      "draft_locator": "Introduction ¶9",
+      "summary": "Agents and human reviewers must understand the same platform surface.",
+      "matched_spec_paragraph": "p009"
+    },
+    {
+      "draft_locator": "Introduction ¶10",
+      "summary": "Continual platform change makes shared understanding harder.",
+      "matched_spec_paragraph": "p010"
+    },
+    {
+      "draft_locator": "Introduction ¶11",
+      "summary": "Reduce hidden complexity while retaining valuable mature safeguards.",
+      "matched_spec_paragraph": "p011"
+    },
+    {
+      "draft_locator": "Introduction ¶12",
+      "summary": "The article will develop and test a practical platform reduction strategy.",
+      "matched_spec_paragraph": "p012"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶1",
+      "summary": "Reviewers must understand the responsibilities a generated change creates.",
+      "matched_spec_paragraph": "p013"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶2",
+      "summary": "Review questions reveal the behavior and maintenance burden being accepted.",
+      "matched_spec_paragraph": "p014"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶3",
+      "summary": "A working demonstration cannot substitute for understanding.",
+      "matched_spec_paragraph": "p015"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶4",
+      "summary": "Human review effort constrains adoption of generated software.",
+      "matched_spec_paragraph": "p016"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶5",
+      "summary": "Layers of platform conventions multiply the effort required to inspect code.",
+      "matched_spec_paragraph": "p017"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶6",
+      "summary": "The relevant problem is the breadth of the platform.",
+      "matched_spec_paragraph": "p018"
+    },
+    {
+      "draft_locator": "The Trust Bottleneck ¶7",
+      "summary": "Hidden behavior raises the effort required to establish trust.",
+      "matched_spec_paragraph": "p019"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶1",
+      "summary": "RISC made capable computation easier to implement through regular primitives.",
+      "matched_spec_paragraph": "p020"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶2",
+      "summary": "The software analogy calls for purposeful reduction rather than primitive tools.",
+      "matched_spec_paragraph": "p021"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶3",
+      "summary": "Every abstraction should justify its implementation and debugging costs.",
+      "matched_spec_paragraph": "p022"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶4",
+      "summary": "Useful engineering conveniences often introduce complexity.",
+      "matched_spec_paragraph": "p023"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶5",
+      "summary": "AI changes the balance of those convenience tradeoffs.",
+      "matched_spec_paragraph": "p024"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶6",
+      "summary": "Cheap local implementation changes when broad abstractions justify their costs.",
+      "matched_spec_paragraph": "p025"
+    },
+    {
+      "draft_locator": "What RISC Contributes as an Analogy ¶7",
+      "summary": "Reconsider complex capabilities when their underlying economics change.",
+      "matched_spec_paragraph": "p026"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶1",
+      "summary": "Frameworks define the actions an AI agent can take.",
+      "matched_spec_paragraph": "p027"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶2",
+      "summary": "Agents must interpret a framework's conventions and interactions.",
+      "matched_spec_paragraph": "p028"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶3",
+      "summary": "Framework use imposes a substantial interpretation burden.",
+      "matched_spec_paragraph": "p029"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶4",
+      "summary": "Restricting available primitives can improve trust in generated behavior.",
+      "matched_spec_paragraph": "p030"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶5",
+      "summary": "Reduction helps only when adequate capability remains with less hidden behavior.",
+      "matched_spec_paragraph": "p031"
+    },
+    {
+      "draft_locator": "The Instruction Set for AI Development ¶6",
+      "summary": "Platform choice should support joint human and agent understanding.",
+      "matched_spec_paragraph": "p032"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶1",
+      "summary": "File based coding tools illustrate a small shared platform surface.",
+      "matched_spec_paragraph": "p033"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶2",
+      "summary": "Filesystem work offers a limited set of fundamental operations.",
+      "matched_spec_paragraph": "p034"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶3",
+      "summary": "Basic file and testing operations support coding agents' work.",
+      "matched_spec_paragraph": "p035"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶4",
+      "summary": "Visible source changes make sophisticated agent work reviewable and reversible.",
+      "matched_spec_paragraph": "p036"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶5",
+      "summary": "Opaque configuration and hidden workflow state weaken human review.",
+      "matched_spec_paragraph": "p037"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶6",
+      "summary": "Filesystem properties make it a useful substrate for agent work.",
+      "matched_spec_paragraph": "p038"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶7",
+      "summary": "Small visible primitives can support powerful and trustworthy composition.",
+      "matched_spec_paragraph": "p039"
+    },
+    {
+      "draft_locator": "Claude Code and Codex as RISC-Like Tools ¶8",
+      "summary": "Inspectable structured text also supports trustworthy AI work beyond coding.",
+      "matched_spec_paragraph": "p040"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶1",
+      "summary": "Dependencies can supply expertise that local implementations lack.",
+      "matched_spec_paragraph": "p041"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶2",
+      "summary": "Imported code introduces several kinds of hidden maintenance risk.",
+      "matched_spec_paragraph": "p042"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶3",
+      "summary": "AI can select dependencies without regard for the team's ability to own them.",
+      "matched_spec_paragraph": "p043"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶4",
+      "summary": "The preference for reuse arose partly from expensive human implementation.",
+      "matched_spec_paragraph": "p044"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶5",
+      "summary": "AI shifts the implementation cost assumption behind reuse.",
+      "matched_spec_paragraph": "p045"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶6",
+      "summary": "Cheap tested local code warrants reconsidering automatic dependency reuse.",
+      "matched_spec_paragraph": "p046"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶7",
+      "summary": "Expertise intensive infrastructure should retain mature implementations.",
+      "matched_spec_paragraph": "p047"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶8",
+      "summary": "Narrow ordinary behaviors may be easier to own as local code.",
+      "matched_spec_paragraph": "p048"
+    },
+    {
+      "draft_locator": "Fewer Dependencies, Fewer Hidden Risks ¶9",
+      "summary": "Dependency decisions need a fresh cost comparison.",
+      "matched_spec_paragraph": "p049"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶1",
+      "summary": "Warnings against reinvention protect teams from underestimated complexity.",
+      "matched_spec_paragraph": "p050"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶2",
+      "summary": "The warning remains relevant without settling every AI era choice.",
+      "matched_spec_paragraph": "p051"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶3",
+      "summary": "Different categories of reusable capability merit different treatment.",
+      "matched_spec_paragraph": "p052"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶4",
+      "summary": "AI expands the range of affordable local implementations and supporting material.",
+      "matched_spec_paragraph": "p053"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶5",
+      "summary": "Cheaper implementation makes engineering judgment more necessary.",
+      "matched_spec_paragraph": "p054"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶6",
+      "summary": "Accept local generated code only when it is understandable, testable, and owned.",
+      "matched_spec_paragraph": "p055"
+    },
+    {
+      "draft_locator": "Reinventing the Wheel, Carefully ¶7",
+      "summary": "Use the acceptance criteria to choose between reuse and local generation.",
+      "matched_spec_paragraph": "p056"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶1",
+      "summary": "Reduction means locating complexity where it can be managed well.",
+      "matched_spec_paragraph": "p057"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶2",
+      "summary": "Basic web and data primitives can support capable reliable systems.",
+      "matched_spec_paragraph": "p058"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶3",
+      "summary": "Remove unnecessary abstraction where generated work must be reviewed.",
+      "matched_spec_paragraph": "p059"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶4",
+      "summary": "Abstractions should clarify the mechanism rather than conceal it.",
+      "matched_spec_paragraph": "p060"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶5",
+      "summary": "Generated framework fluency can conceal brittle operational understanding.",
+      "matched_spec_paragraph": "p061"
+    },
+    {
+      "draft_locator": "Simple Does Not Mean Primitive ¶6",
+      "summary": "A smaller platform can expose failure mechanisms.",
+      "matched_spec_paragraph": "p062"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶1",
+      "summary": "A focused internal dashboard provides a frontend decision example.",
+      "matched_spec_paragraph": "p063"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶2",
+      "summary": "A conventional frontend setup can introduce many platform layers.",
+      "matched_spec_paragraph": "p064"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶3",
+      "summary": "Existing organizational support and future scope can justify that setup.",
+      "matched_spec_paragraph": "p065"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶4",
+      "summary": "A narrow workflow may fit a small browser based implementation.",
+      "matched_spec_paragraph": "p066"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶5",
+      "summary": "Direct browser code trades mature frontend support for easier inspection.",
+      "matched_spec_paragraph": "p067"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶6",
+      "summary": "The right frontend choice depends on the situation.",
+      "matched_spec_paragraph": "p068"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶7",
+      "summary": "Select the smallest frontend platform that supports reliable, reviewable behavior.",
+      "matched_spec_paragraph": "p069"
+    },
+    {
+      "draft_locator": "Example: Frontend Without the Framework Reflex ¶8",
+      "summary": "Minimum size, fashion, and generation speed are insufficient selection criteria.",
+      "matched_spec_paragraph": "p070"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶1",
+      "summary": "Messaging complexity reflects real failure and recovery requirements.",
+      "matched_spec_paragraph": "p071"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶2",
+      "summary": "Those reliability requirements can justify a mature messaging framework.",
+      "matched_spec_paragraph": "p072"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶3",
+      "summary": "Many applications need only a limited range of messaging behaviors.",
+      "matched_spec_paragraph": "p073"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶4",
+      "summary": "Broad messaging abstractions can hide mistakes and impede debugging.",
+      "matched_spec_paragraph": "p074"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶5",
+      "summary": "Explicit local messaging primitives can expose the required mechanisms.",
+      "matched_spec_paragraph": "p075"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶6",
+      "summary": "Explicit messaging behavior is easier to inspect.",
+      "matched_spec_paragraph": "p076"
+    },
+    {
+      "draft_locator": "Example: Messaging Without a Giant Abstraction ¶7",
+      "summary": "Simplify application integration without recreating messaging infrastructure.",
+      "matched_spec_paragraph": "p077"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶1",
+      "summary": "Framework reuse delivers real savings and accumulated expertise.",
+      "matched_spec_paragraph": "p078"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶2",
+      "summary": "Abstraction also imposes continuing comprehension and ownership costs.",
+      "matched_spec_paragraph": "p079"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶3",
+      "summary": "Frontend and messaging choices must include the cost of reliable ownership.",
+      "matched_spec_paragraph": "p080"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶4",
+      "summary": "The relevant comparison goes beyond whether code is reused or built.",
+      "matched_spec_paragraph": "p081"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶5",
+      "summary": "Changed economics warrant reassessment without predetermining the winner.",
+      "matched_spec_paragraph": "p082"
+    },
+    {
+      "draft_locator": "AI Changes the Economics of Abstraction ¶6",
+      "summary": "AI increases the value of architectural judgment.",
+      "matched_spec_paragraph": "p083"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶1",
+      "summary": "Platform reduction still requires evidence through evaluation.",
+      "matched_spec_paragraph": "p084"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶2",
+      "summary": "Small generated implementations can still contain serious defects.",
+      "matched_spec_paragraph": "p085"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶3",
+      "summary": "Reduction can make thorough evaluation more feasible.",
+      "matched_spec_paragraph": "p086"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶4",
+      "summary": "Fewer hidden layers allow direct testing and inspection of behavior.",
+      "matched_spec_paragraph": "p087"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶5",
+      "summary": "Evaluation requirements should be part of the platform agreement.",
+      "matched_spec_paragraph": "p088"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶6",
+      "summary": "Specs, inspectable implementation, and evaluation serve complementary purposes.",
+      "matched_spec_paragraph": "p089"
+    },
+    {
+      "draft_locator": "Reduced Platforms Need Stronger Evaluation ¶7",
+      "summary": "All three supporting practices must be present.",
+      "matched_spec_paragraph": "p090"
+    },
+    {
+      "draft_locator": "Where Complexity Still Belongs ¶1",
+      "summary": "Reduction becomes harmful when it discards necessary safeguards.",
+      "matched_spec_paragraph": "p091"
+    },
+    {
+      "draft_locator": "Where Complexity Still Belongs ¶2",
+      "summary": "Mature shared abstractions can be the simplest reliable organizational choice.",
+      "matched_spec_paragraph": "p092"
+    },
+    {
+      "draft_locator": "Where Complexity Still Belongs ¶3",
+      "summary": "Reuse mature abstractions when expertise and safeguards dominate the decision.",
+      "matched_spec_paragraph": "p093"
+    },
+    {
+      "draft_locator": "Where Complexity Still Belongs ¶4",
+      "summary": "Prefer local reduction when narrow behavior can be tested and safely owned.",
+      "matched_spec_paragraph": "p094"
+    },
+    {
+      "draft_locator": "Where Complexity Still Belongs ¶5",
+      "summary": "Judge complexity by the value it provides rather than code size.",
+      "matched_spec_paragraph": "p095"
+    },
+    {
+      "draft_locator": "A RISC-Like Platform Strategy for AI Teams ¶1",
+      "summary": "Teams can encode reuse decisions in shared platform rules.",
+      "matched_spec_paragraph": "p096"
+    },
+    {
+      "draft_locator": "A RISC-Like Platform Strategy for AI Teams ¶2",
+      "summary": "Define preferred primitives, review practices, and evidence for generated work.",
+      "matched_spec_paragraph": "p097"
+    },
+    {
+      "draft_locator": "A RISC-Like Platform Strategy for AI Teams ¶3",
+      "summary": "The strategy aims to keep an evolving platform understandable.",
+      "matched_spec_paragraph": "p098"
+    },
+    {
+      "draft_locator": "A RISC-Like Platform Strategy for AI Teams ¶4",
+      "summary": "Document preferred building blocks and required justification and checks.",
+      "matched_spec_paragraph": "p099"
+    },
+    {
+      "draft_locator": "A RISC-Like Platform Strategy for AI Teams ¶5",
+      "summary": "Those shared rules form the team's reduced instruction set.",
+      "matched_spec_paragraph": "p100"
+    },
+    {
+      "draft_locator": "The Human Role ¶1",
+      "summary": "People must design and maintain the platform's choices.",
+      "matched_spec_paragraph": "p101"
+    },
+    {
+      "draft_locator": "The Human Role ¶2",
+      "summary": "Platform reduction redirects rather than eliminates engineering work.",
+      "matched_spec_paragraph": "p102"
+    },
+    {
+      "draft_locator": "The Human Role ¶3",
+      "summary": "Engineers should focus on platform selection, constraints, review, and stewardship.",
+      "matched_spec_paragraph": "p103"
+    },
+    {
+      "draft_locator": "The Human Role ¶4",
+      "summary": "Humans decide how much system complexity the organization can accept.",
+      "matched_spec_paragraph": "p104"
+    },
+    {
+      "draft_locator": "The Human Role ¶5",
+      "summary": "Leading platform reduction requires agency, judgment, and persuasion.",
+      "matched_spec_paragraph": "p105"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶1",
+      "summary": "Engineering judgment must test the limits of the RISC analogy.",
+      "matched_spec_paragraph": "p106"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶2",
+      "summary": "Smaller systems require disciplined tradeoffs rather than automatic preference.",
+      "matched_spec_paragraph": "p107"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶3",
+      "summary": "Platform reduction has foreseeable failure modes.",
+      "matched_spec_paragraph": "p108"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶4",
+      "summary": "Reduction fails when it removes safeguards or recreates dependencies poorly.",
+      "matched_spec_paragraph": "p109"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶5",
+      "summary": "Generation capability alone cannot justify building an alternative.",
+      "matched_spec_paragraph": "p110"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶6",
+      "summary": "A mature platform may minimize the organization's total ownership burden.",
+      "matched_spec_paragraph": "p111"
+    },
+    {
+      "draft_locator": "The Risks of RISC Thinking ¶7",
+      "summary": "Reduced platforms need deliberate and continuing stewardship.",
+      "matched_spec_paragraph": "p112"
+    },
+    {
+      "draft_locator": "Questions to Consider ¶1",
+      "summary": "Review existing platform choices against inspectability, ownership, and evaluation needs.",
+      "matched_spec_paragraph": "p113"
+    },
+    {
+      "draft_locator": "Final Thought ¶1",
+      "summary": "Complexity should be justified against present economic conditions.",
+      "matched_spec_paragraph": "p114"
+    },
+    {
+      "draft_locator": "Final Thought ¶2",
+      "summary": "Faster production without equally faster verification changes abstraction value.",
+      "matched_spec_paragraph": "p115"
+    },
+    {
+      "draft_locator": "Final Thought ¶3",
+      "summary": "Stable boundaries and inspectable platforms sustain evaluation and human ownership.",
+      "matched_spec_paragraph": "p116"
+    },
+    {
+      "draft_locator": "Final Thought ¶4",
+      "summary": "A smaller understandable platform may offer an advantage in AI development.",
+      "matched_spec_paragraph": "p117"
+    },
+    {
+      "draft_locator": "Final Thought ¶5",
+      "summary": "Reduction lowers risk when it improves regularity, inspection, and evaluation.",
+      "matched_spec_paragraph": "p118"
+    },
+    {
+      "draft_locator": "Final Thought ¶6",
+      "summary": "The proposal does not demand primitive or universally framework free systems.",
+      "matched_spec_paragraph": "p119"
+    },
+    {
+      "draft_locator": "Final Thought ¶7",
+      "summary": "Choose the smallest reliable, verifiable platform the team can own.",
+      "matched_spec_paragraph": "p120"
+    },
+    {
+      "draft_locator": "Final Thought ¶8",
+      "summary": "Building products around generative models introduces a distinct problem for the next article.",
+      "matched_spec_paragraph": "p121"
+    }
+  ],
+  "results": [
+    {
+      "criterion": "structure",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "severity": "blocker",
+      "finding": "sections, unit counts and unit forms match the spec"
+    },
+    {
+      "criterion": "reverse_outline_matches_spec",
+      "check": "reverse_outline_matches_spec",
+      "verdict": "pass",
+      "finding": "Audited all 121 mapped units, p001–p121, against the independent summaries in draft order: 12 introductory units, 101 body units across all 16 sections, and eight concluding units. The summaries preserve the contract’s progression from trust and shared platform surface through bounded reuse choices to evaluation and stewardship; shorter summaries such as p108 are supported by their attached risk/control evidence. The introduction callout is attached evidence with a null mapping, not an extra contracted paragraph.",
+      "severity": "blocker"
+    },
+    {
+      "criterion": "one_controlling_idea_per_paragraph",
+      "check": "one_controlling_idea_per_paragraph",
+      "verdict": "pass",
+      "finding": "Audited all 105 prose units, all 16 grouped list units, and the opening callout; the independent outliner flags no unit as carrying two ideas. The longer units remain unified: p030 defines the comparison’s technical terms, p057 makes one hardware/software analogy, p070 rejects three substitutes for the same decision rule, p097 enumerates one shared platform strategy, and p116 combines the prerequisites of sustainable ownership.",
+      "severity": "major"
+    },
+    {
+      "criterion": "paragraph_traces_to_thesis",
+      "check": "paragraph_traces_to_thesis",
+      "verdict": "pass",
+      "finding": "Audited every unit p001–p121, using section-level support where a paragraph inherits it. The trust discussion develops S1; the analogy and text-first surfaces develop S2; reuse and retained expertise develop S3; both worked cases develop S4; evaluation develops S5; platform policy, human responsibility, risks, and reflection develop S6. Introductory and concluding synthesis connects these claims, and p121 uses the S5/S6 responsibility for intended behavior to motivate its declared hand-off. No unit introduces an unrelated argument.",
+      "severity": "major"
+    },
+    {
+      "criterion": "evidence_is_explained",
+      "check": "evidence_is_explained",
+      "verdict": "pass",
+      "finding": "Audited all 71 declared evidence items across p001–p121 and the actual draft’s six tables, four figures and captions, three detached quotations, and other inline quotations and examples. The platform table is interpreted by the sufficient-capability condition in p031; the text-first table by visible composition in p039; the wheel table by the bounded judgment and acceptance questions in p053–p056; the economics table by the contextual choice in p082; the evaluation table by the spec/implementation/evaluation explanation in p089; and the risk matrix and Figure 4 by the safeguards and whole-system ownership analysis in p109–p112. The historical analogy, frontend and messaging scenarios, and quoted decision questions have explicit argumentative roles rather than being left as unexplained evidence. This assesses explanation and relevance, not external factual verification of the preserved historical or product claims.",
+      "severity": "major"
+    },
+    {
+      "criterion": "transition_expresses_declared_relationship",
+      "check": "transition_expresses_declared_relationship",
+      "verdict": "pass",
+      "finding": "Audited all 103 within-container paragraph boundaries and all 17 container boundaries against their declared relationships and carried-over ideas, including the concluding hand-off. The text carries trust cost into the RISC response, qualifies visible files with imported dependency behavior, moves from the frontend case to messaging’s failure handling, synthesizes both cases in p078–p080, connects judgment to evaluation at p084, and turns reuse criteria into shared rules at p096. Contrast, elaboration, example, emphasis, cause/effect, and summary relationships are present throughout; p116 has an independently reported wording problem, but its connection to the preceding trust/ownership cost remains the specified elaboration.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "pass",
+      "finding": "Audited the declared post-level problem/solution progression, its prerequisite, comparison, and small-to-large sequences, and every section’s local order against both independent flow accounts. Both readers correctly reconstruct why every section occurs where it does, including the economic synthesis after the cases, evaluation before policy, responsibility before risks, reflection before synthesis, and the final product hand-off. They recommend retaining the order and report no other lost connection; the one shared sentence-level hesitation is recorded separately below.",
+      "severity": "major"
+    },
+    {
+      "criterion": "flow_is_followable",
+      "check": "flow_is_followable",
+      "verdict": "fail",
+      "spec_locus": "/conclusion/paragraphs/2",
+      "draft_locus": "Final Thought ¶3",
+      "quote": "Specifying behavior and exposing changes help only when the platform leaves evaluation and human ownership possible as output grows.",
+      "finding": "Both independent flow readers reread this sentence because “leaves evaluation and human ownership possible” is abstract; the second could not initially tell whether it meant permission to perform those activities or keeping the growing system manageable enough to perform them. State the intended ongoing ability to test, review, and maintain the growing system directly; the surrounding synthesis and section order can stay.",
+      "fault": "draft",
+      "corroborated_by": "flow-reader-1.txt, Issue 1, and independently flow-reader-2.txt, item 1: both quote this exact Final Thought sentence and identify the same ambiguous phrase as the reason for rereading.",
+      "severity": "major"
+    },
+    {
+      "criterion": "known_before_new",
+      "check": "known_before_new",
+      "verdict": "pass",
+      "finding": "Audited first uses and paragraph openings throughout p001–p121, including the explanatory terms expressly required by the contract’s evidence instructions. RISC, the platform instruction-set analogy, observability, blast radius, CPU opcodes, SaaS/API/ORM/CI, DRY, DOM, outbox/inbox, idempotency keys, contract/property/regression/golden tests, messaging failure terms, mechanical sympathy, mutation/fault tests, and blessed primitives receive explanations before the argument depends on their specialized meaning. Both flow readers find those definitions sufficient. The supplied post spec has no separate audience knowledge list; this verdict concerns the observed prerequisite dependencies and requested glosses in the supplied prose.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_introduction_pattern",
+      "check": "no_weak_introduction_pattern",
+      "verdict": "pass",
+      "finding": "Audited the callout and all introduction units p001–p012. The opening asks a specific consequential question about trusting generated systems, explains the actual trust mechanism, bounds the RISC analogy, states the conditional thesis, and supplies a concrete roadmap. It is not a placeholder, a mere restatement of the essay question, a dictionary opening, a sweeping historical opening, or a book report.",
+      "severity": "major"
+    },
+    {
+      "criterion": "no_weak_conclusion_pattern",
+      "check": "no_weak_conclusion_pattern",
+      "verdict": "pass",
+      "finding": "Audited all eight Final Thought units p114–p121. The conclusion develops the combined role of boundaries, inspectability, evaluation, and ownership, gives a concrete platform-selection course of action, and limits the next-post contrast to its explicitly contracted hand-off. It does not reveal its thesis for the first time, rely on sentiment, import body evidence, or finish with a rephrased thesis alone; the local wording failure in p116 does not make the ending one of the enumerated weak patterns.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_synthesizes_and_answers_so_what",
+      "check": "conclusion_synthesizes_and_answers_so_what",
+      "verdict": "pass",
+      "finding": "Audited p114–p121 against the synthesis, so-what, and takeaway contract. The conclusion combines the changed production/trust economics with stable boundaries, inspectable platforms, evaluation, and continuing human ownership rather than merely repeating one section. Its actionable selection rule in p120 explains the payoff as work the team understands and maintains instead of a growing review burden; the abstract phrasing in p116 is separately identified by the flow check.",
+      "severity": "major"
+    },
+    {
+      "criterion": "conclusion_calls_back_to_introduction",
+      "check": "conclusion_calls_back_to_introduction",
+      "verdict": "pass",
+      "finding": "Audited p114–p121 against callback.to and callback.how. The contrast between falling production cost and slower improvement in trust cost returns to the opening questions about how much code can be generated and how much can be trusted; p116 reconnects stable boundaries to dependable behavior, while p120 answers the opening with a reliable-platform choice and retained expertise rather than an output-volume target.",
+      "severity": "major"
+    },
+    {
+      "criterion": "intro_predicts_content",
+      "check": "intro_predicts_content",
+      "verdict": "pass",
+      "finding": "Compared the introduction-only reader’s predictions with all 16 body sections, the complete roadmap, and the conclusion. The reader predicts reviewer questions, the concrete instruction-set comparison and coding tools, dependency risks and reuse criteria, frontend and messaging examples, economic synthesis, evaluation, shared strategy, the human role, risks, and local reflection in their actual order. The predicted qualified historical analogy, practical examples, comparisons, and practitioner tone match the draft; the reader correctly does not claim the introduction promises measured case studies.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-1",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The independent AC-1 reader expands RISC correctly, explains the analogy as a deliberately smaller and more regular software surface shared by agents and human reviewers, names frameworks, libraries, APIs, conventions, tools, and dependencies, and recognizes that this surface changes over time. The answer also preserves the mature-expertise and sufficient-capability qualification, satisfying the criterion’s shared-understanding outcome.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-2",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The independent AC-2 reader allows a narrow helper only when behavior and edge cases are understandable and testable, failure is local and recoverable, and maintenance is owned. The reader retains mature security-sensitive implementations for expertise, difficult edge cases, standards, and operational experience, and explicitly compares total burden and reliability rather than line count or generation speed.",
+      "severity": "major"
+    },
+    {
+      "criterion": "AC-3",
+      "check": "custom",
+      "verdict": "pass",
+      "finding": "The independent AC-3 reader identifies platform stewardship, shared primitives and examples, review rules, ownership of repeated or growing local code, specs, meaningful tests, runtime visibility, and whole-system review including operations and rollback. The answer accounts for sprawl, fragmentation, false confidence, missed safeguards and edge cases, and complexity moved out of the code; it correctly leaves project-specific thresholds to context.",
+      "severity": "major"
+    }
+  ]
+}

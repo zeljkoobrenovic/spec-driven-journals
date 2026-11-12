@@ -1,0 +1,1441 @@
+{
+  "$schema": "../../../../_wiring/outcome-specs/post-spec.schema.json",
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "from-structure-to-behavior",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "From Structure to Behavior, From Output to Outcome",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed from the published 2026-07-24 index.md and accepted legacy spec.md, using check_draft.py units and outcome_specs.parse_draft to map all 36 existing prose/list units. This contract precedes the revised prose. It retains the argument and adds one opening-question unit, one Monday-table lead-in and one closing handoff unit (39 units total); moves the existing Questions to Consider unit before Closing Thought; and specifies the concise opening and roadmap duties the published essay does not yet carry. Four figures, all captions, tables, references, links, front matter and the three-bullet KEY POINTS remain intact. No journal research ledger exists.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "Why structural design served as an early proxy for behavior, and how cheaper generation changes that trade-off.",
+        "How the move from structure to behavior parallels the product-management move from output to outcome."
+      ],
+      "believe": [
+        "Product, design, architecture, and engineering can co-author intended outcomes and behavior while retaining distinct expertise.",
+        "Cheaper structural production increases the need for behavioral and structural judgment."
+      ],
+      "can_do": [
+        "State an intended behavior and its outcome before asking an agent to generate a design.",
+        "Identify a handoff where one shared specification would preserve intent."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader explains the shared pattern behind structure-to-behavior and output-to-outcome, including why the old proxies were useful.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "Why did engineers focus on structure, and how is the change described here related to product management moving from output to outcome?",
+        "expected": "The visible artifact was easier to inspect and costly to produce, so it stood in for the harder-to-observe effect; cheaper production shifts attention to behavior and outcomes and allows earlier observation."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader explains how one shared specification can connect disciplines without making their expertise interchangeable.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What could product managers, designers, architects, and engineers share, and what would remain different about their contributions?",
+        "expected": "A structured specification connects customer outcomes, intended behavior, and constraints; the product-domain example makes this concrete, while each discipline retains its judgment and expertise."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader can choose a practical change to review or specification work while preserving the need to judge generated structure.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What would you change in a design review after reading this, and why would generated architecture still need human attention?",
+        "expected": "Review intended behavior, edge cases, failures, and outcomes before or alongside structure; behavior remains hard to specify, verify, and agree on, and generated structure still affects operation, cost, and evolution."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "What should become the central work of software disciplines when AI makes structure cheaper to produce?",
+    "claim": "As AI makes structure cheaper to produce and behavior faster to observe, product, design, architecture, and engineering should co-author specifications of intended outcomes and behavior while retaining their distinct expertise.",
+    "disputed_by": "The view that AI mainly accelerates each existing craft, so separate artifact ownership and sequential handoffs should remain the organizing model.",
+    "so_what": "Teams should spend review effort on the behavior users need and preserve intent across disciplines instead of treating a completed diagram, feature, or codebase as evidence of value.",
+    "how_why": "Structure was an inspectable proxy when construction delayed feedback; cheaper construction exposes the harder questions of what should happen and why, which every discipline must answer together.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Structure was a rational proxy for quality while it was inspectable early and behavior was costly to observe."
+      },
+      {
+        "id": "S2",
+        "claim": "Cheaper generation and regeneration shorten behavioral feedback, making precise behavioral intent the scarce work."
+      },
+      {
+        "id": "S3",
+        "claim": "Engineering's structure-to-behavior shift and product management's output-to-outcome shift correct the same substitution of a controllable artifact for its intended effect."
+      },
+      {
+        "id": "S4",
+        "claim": "A shared specification can connect outcome, interaction, constraint and implementation decisions without making disciplinary expertise interchangeable."
+      },
+      {
+        "id": "S5",
+        "claim": "The product-domain model demonstrates how structured, validated intent can become a shared artifact that humans and agents can work against."
+      },
+      {
+        "id": "S6",
+        "claim": "Teams must redirect effort toward specifying, exercising and agreeing on behavior while continuing to judge generated structure."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Establishes what generated software must serve before the part addresses how teams can trust and maintain it.",
+    "supports": [
+      "S1"
+    ]
+  },
+  "flow": {
+    "pattern": "prerequisite_order",
+    "additional_patterns": [
+      {
+        "pattern": "comparison",
+        "applies_to": "product-management-already-made-this-trip"
+      },
+      {
+        "pattern": "assertion_evidence_reasoning",
+        "applies_to": "what-the-shared-artifact-looks-like"
+      }
+    ],
+    "rationale": "First justify the old structural proxy so its correction does not dismiss the craft. Explain the generation and feedback change before comparing it with product outcomes; establish the causal behavior-outcome link before deriving shared authorship. The worked artifact then makes that claim concrete, the warning limits it, and role moves plus reflection questions let readers apply it before the final synthesis and handoff. Moving the convergence claim before the comparison would leave its shared subject unexplained; moving the questions after the closing or references would make the essay end on a disconnected exercise."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "When AI makes the artifact easy to produce, what work still determines the outcome? In software, that question begins with what users need the system to do."
+    },
+    "bridge": {
+      "from_reader_world": "Engineers and adjacent disciplines know the effort of designing, reviewing and handing off code, diagrams, mockups and requirement documents.",
+      "to_topic": "Separate the effort of producing those artifacts from the behavior and outcome they are meant to cause; Hohpe's observation makes that distinction concrete for software."
+    },
+    "thesis_statement": {
+      "text": "As AI makes structure cheaper to produce and behavior faster to observe, product, design, architecture, and engineering should co-author specifications of intended outcomes and behavior while retaining their distinct expertise.",
+      "placement": "The preserved KEY POINTS callout, especially bullet 3, and introduction p3, with its explicit qualification about distinct expertise."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Explain why structural proxies were rational and what AI changes about their cost and feedback.",
+          "kept_in": [
+            "why-we-were-structuralists",
+            "what-ai-changed"
+          ]
+        },
+        {
+          "promise": "Compare the shift with product management's outcome correction and derive the shared work between disciplines.",
+          "kept_in": [
+            "product-management-already-made-this-trip",
+            "the-borders-collapse"
+          ]
+        },
+        {
+          "promise": "Show one concrete shared artifact and explain why specifying behavior is still harder.",
+          "kept_in": [
+            "what-the-shared-artifact-looks-like",
+            "the-warning-behavior-is-harder"
+          ]
+        },
+        {
+          "promise": "Offer role-specific Monday moves and questions for choosing where to start.",
+          "kept_in": [
+            "what-to-do-on-monday",
+            "questions-to-consider"
+          ]
+        }
+      ],
+      "placement": "Introduction p4: expand the current roadmap in its current position; add one short sentence tracing the journal from intended behavior through controls, delivery constraints, understanding and maintainable architecture to model-dependent product value and responsible leadership."
+    },
+    "paragraphs": [
+      {
+        "id": "p1",
+        "form": "prose",
+        "controlling_idea": "When AI makes an artifact easier to produce, the remaining question is what work makes its intended effect happen.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Journal opening question: When AI makes the artifact easy to produce, what work still determines the outcome? In software this asks what still determines whether the system serves its users.",
+            "shows": "Introduces the journal and software part through the same artifact-versus-effect question.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          },
+          {
+            "kind": "reasoning",
+            "what": "Preserve the existing three-bullet KEY POINTS callout verbatim before the prose.",
+            "shows": "Gives skim readers the proxy, cheaper-production mechanism and harder shared work without requiring earlier posts.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S4",
+            "S6"
+          ],
+          "how": "When AI makes an artifact easier to produce, the remaining question is what work makes its intended effect happen."
+        }
+      },
+      {
+        "id": "p2",
+        "form": "prose",
+        "controlling_idea": "Hohpe's observation directs software work toward behavior because users experience the effect of structure rather than its design.",
+        "function": "evidence",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "Gregor Hohpe's linked LinkedIn observation, short quotation about end users seeing behavior, warning that behavior is harder, and Barry O'Reilly postscript; retain the published compressed paraphrase.",
+            "shows": "Supplies the concrete observation the essay develops while preserving its warning and attribution.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S6"
+          ],
+          "how": "Hohpe's observation directs software work toward behavior because users experience the effect of structure rather than its design."
+        },
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "The opening asks what determines the outcome once production is easier.",
+          "introduces": "Hohpe's software example locates that remaining work in behavior.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p3",
+        "form": "prose",
+        "controlling_idea": "The shift toward behavior joins the software disciplines around the same intended effects that product management calls outcomes.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The published comparison between software's current shift and product management's earlier output-to-outcome correction.",
+            "shows": "States the essay's own claim before developing the analogy; add only the explicit qualification that expertise remains distinct.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S4"
+          ],
+          "how": "The shift toward behavior joins the software disciplines around the same intended effects that product management calls outcomes."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Hohpe identifies a change in what software work is about.",
+          "introduces": "The author extends that observation through the output-to-outcome analogy to shared specification with distinct expertise.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p4",
+        "form": "prose",
+        "controlling_idea": "The essay establishes why work converges on behavior before making that shift practical and opening the journal's wider questions of dependable software, product value and leadership.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Keep the local roadmap complete; explicitly say this article establishes what generated software should serve, then connect the later journal itinerary to delivering that intention. Keep both scopes in the existing roadmap unit.",
+            "shows": "Readers can anticipate the local argument without mistaking the software opening for the entire journal.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "The essay establishes why work converges on behavior before making that shift practical and opening the journal's wider questions of dependable software, product value and leadership."
+        },
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "The introduction has stated the shared-work thesis.",
+          "introduces": "A concise roadmap names every local body section and the wider journal path.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "why-we-were-structuralists",
+      "heading": "Why We Were Structuralists",
+      "controlling_idea": "Structure became a rational proxy for quality because it could be inspected long before behavior could be observed.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "Explains why the old focus made sense before arguing for its correction."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The introduction promises to explain the old proxy before changing it.",
+        "introduces": "The timing and cost constraints that made structural judgment useful.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p5",
+          "form": "prose",
+          "controlling_idea": "The shift away from structural production does not make the profession's earlier structural judgment a mistake.",
+          "function": "context"
+        },
+        {
+          "id": "p6",
+          "form": "prose",
+          "controlling_idea": "Behavior was difficult to judge early because it became fully observable only when an expensive system was running.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Behavior defined as what the system does for a real user in a real situation; late observation in production under real load; prose specifications difficult to execute, verify or synchronize.",
+              "shows": "Explains why behavior alone could not provide the early review signal teams needed.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The opening asks readers to judge structure fairly under its original constraints.",
+            "introduces": "The delayed feedback and prose specifications that limited early behavioral review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p7",
+          "form": "prose",
+          "controlling_idea": "Early structural review offered a useful way to estimate the cost of changing a system.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Module diagrams, coupling, dependencies and domain boundaries examined before code; a wrong boundary requiring months of manual rework.",
+              "shows": "Connects early visibility to the cost-of-change concern rather than treating structure as cosmetic.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 1 and assets/images/from-structure-to-behavior/structure-early-behavior-late.jpeg, with its existing caption.",
+              "shows": "Shows the timing gap that made structure a proxy for later observable behavior.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Behavior could be judged only after costly construction.",
+            "introduces": "Module diagrams, coupling and boundaries could be inspected before construction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p8",
+          "form": "prose",
+          "controlling_idea": "Teams optimized visible structural properties as proxies for the user behavior they could not yet observe.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "What we could inspect early / What actually mattered: boundaries and the user's job; dependencies and stress behavior; domain models and safe change; deployment topology and failure experience.",
+              "shows": "Makes the artifact-to-effect substitution concrete across familiar architectural concerns.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Structure provided early evidence of likely change costs.",
+            "introduces": "The contrast table pairs inspectable structural concerns with the effects they were meant to serve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p9",
+          "form": "prose",
+          "controlling_idea": "Review and career practices reinforced the structural proxy because it answered the period's real construction constraint.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Design reviews, architecture boards and career ladders rewarding structural fluency.",
+              "shows": "Explains how a practical proxy became the center of professional identity.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The table identifies the structural properties teams could inspect.",
+            "introduces": "Professional review and reward systems grew around those properties.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p10",
+          "form": "prose",
+          "controlling_idea": "The proxy became harmful when structural quality was treated as the goal rather than a means to user behavior.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The system responding, a payment clearing, an answer being right and a failure being handled gracefully, contrasted with hexagonal architecture.",
+              "shows": "Shows the effects users experience and why structural review must remain accountable to them.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The structural focus was a rational adaptation to earlier constraints.",
+            "introduces": "Its limitation appears when teams lose the connection to experienced behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "The reader needs the delay in observing behavior before the contrast with early structure makes sense. The table then makes the proxy explicit, its professional consequences explain its persistence, and only then can its failure be criticized fairly. Moving the criticism first would make the old craft look irrational."
+      }
+    },
+    {
+      "id": "what-ai-changed",
+      "heading": "What AI Changed",
+      "controlling_idea": "Cheaper structural generation shifts scarce work toward precise intended behavior by reducing both rework costs and feedback delay.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Explains the mechanism that changes the old structural trade-off."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "Structure was a proxy whose justification depended on expensive construction and delayed behavior.",
+        "introduces": "AI changes those production costs and the time to observe the intended effect.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p11",
+          "form": "prose",
+          "controlling_idea": "AI changes the structural proxy's central constraint by making structure cheaper to produce.",
+          "function": "claim"
+        },
+        {
+          "id": "p12",
+          "form": "prose",
+          "controlling_idea": "Cheap regeneration reduces the value of committing to the right structure before anything can be tried.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Agents scaffolding a service, splitting a module, introducing a queue and rearranging boundaries; the published contrast between months of manual rework and an afternoon of agent time plus review.",
+              "shows": "Shows why the effect is not only faster first drafts but lower rework cost.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The section claims that producing structure is no longer expensive.",
+            "introduces": "Regeneration makes changing a structural decision cheaper as well.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p13",
+          "form": "prose",
+          "controlling_idea": "Fast end-to-end assembly lets observed behavior improve the specification much earlier.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "The published months-to-days contrast: put a working system before real users, observe it and sharpen the specification.",
+              "shows": "Explains how cheap structure supplies a way to study behavior rather than merely demanding better advance specification.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 2 and assets/images/from-structure-to-behavior/shortened-feedback-loop.jpeg, with its existing caption.",
+              "shows": "Depicts the change from a long construction delay to a tighter observation-and-specification loop.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Generation and regeneration reduce the cost of structural construction.",
+            "introduces": "The same reduction also shortens the wait for a working system to reveal behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p14",
+          "form": "prose",
+          "controlling_idea": "The remaining risk is whether anyone can state precisely what the generated system should do.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "A modular and decoupled result with the wrong behavior; specification questions about users, conditions, edges and conflicting goals.",
+              "shows": "Shows why precise intent remains necessary even after construction becomes easier.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Teams can build and observe behavior sooner.",
+            "introduces": "A vague intention can still produce plausible structure for the wrong behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p15",
+          "form": "prose",
+          "controlling_idea": "Removing the construction bottleneck makes the behavioral question immediate instead of indefinitely deferrable.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The existing behavior-driven-development reference, 2006 date and contrast between the answers \"we're building\" and \"what does it do?\".",
+              "shows": "Illustrates the difference between wanting behavioral attention and losing the work that used to postpone it.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Precise behavior is the remaining constraint.",
+            "introduces": "The author explains why AI forces attention to that constraint when earlier invitations did not.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p16",
+          "form": "prose",
+          "controlling_idea": "The economic pattern is a shift of effort from abundant structural production toward scarce behavioral specification.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Existing [[ai-is-the-reactor-not-the-plant]] cross-link and the claim that value migrates to stages that stay scarce.",
+              "shows": "Summarizes the mechanism in self-contained terms; present the link as further elaboration rather than prior knowledge.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Construction can no longer absorb the effort that behavioral questions require.",
+            "introduces": "The scarcity principle links the mechanism to the next post without requiring that post to have been read.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the changed constraint, show lower rework cost and faster feedback, then locate the remaining risk and explain why attention moves there. The final scarcity statement generalizes that mechanism. Stating the conclusion before showing both effects would obscure why generation changes more than speed."
+      }
+    },
+    {
+      "id": "product-management-already-made-this-trip",
+      "heading": "Product Management Already Made This Trip",
+      "controlling_idea": "Product management's move from output to outcome reveals the same correction from controllable artifacts to intended effects.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Establishes the analogy and then connects system behavior causally to customer outcomes."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "Software work moves toward the scarce task of specifying behavior once construction becomes easier.",
+        "introduces": "Product management has already confronted an analogous move from outputs to outcomes.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p17",
+          "form": "prose",
+          "controlling_idea": "Product management supplies a second instance of the shift from produced artifact to intended effect.",
+          "function": "claim"
+        },
+        {
+          "id": "p18",
+          "form": "prose",
+          "controlling_idea": "Product management's outcome correction judged shipped work by the customer behavior it changed.",
+          "function": "definition",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Melissa Perri's build trap and Josh Seiden's quoted definition: \"a change in customer behavior that drives business results.\" Preserve names, attribution and wording.",
+              "shows": "Provides the product-side terms needed to compare the two disciplines.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "The section claims that product management lived through the same correction.",
+            "introduces": "The build trap and Seiden's definition explain what the correction changed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p19",
+          "form": "prose",
+          "controlling_idea": "The engineering and product shifts share corresponding proxies, constraints, effects and failure modes.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Six-row Software engineering / Product management table: what was optimized, why it was rational, experienced effect, what broke the proxy, scarce work and named failure mode.",
+              "shows": "Shows that the resemblance concerns the same artifact-versus-effect structure rather than only shared vocabulary.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "The product-side output and outcome terms are now defined.",
+            "introduces": "The existing side-by-side table aligns them with the engineering mechanism.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p20",
+          "form": "prose",
+          "controlling_idea": "Both disciplines are forced to face their intended effect when the controllable artifact stops being scarce.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Visible artifacts are easier to control than effects are to specify and measure; cheaper artifacts remove the reason to use them as the main proxy.",
+              "shows": "Explains the comparison rather than leaving the table to make the argument alone.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table aligns the same changes across both disciplines.",
+            "introduces": "The author states the general pattern that explains the parallel.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p21",
+          "form": "prose",
+          "controlling_idea": "Customer outcomes constrain the system behavior that must cause them.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Specify the outcome to constrain the behavior; justify the behavior by the outcome; what should happen in the world and what the system should do to cause it.",
+              "shows": "Establishes the shared subject that makes co-authored specifications possible.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The two disciplines share a pattern of returning attention to effects.",
+            "introduces": "Their destinations also connect: system behavior is meant to produce the customer behavior that defines an outcome.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "The reader must learn the product-side meaning of outcome before the comparison table can be read, then hear what the table shows before the stronger causal connection between system behavior and customer outcomes is made. Putting the connection first would assume the term the analogy exists to explain."
+      }
+    },
+    {
+      "id": "the-borders-collapse",
+      "heading": "The Borders Collapse",
+      "controlling_idea": "Shared intended effects make disciplinary artifact boundaries less useful without erasing the different judgments each discipline contributes.",
+      "function": "cause_effect",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "Derives co-authorship from the causal connection between outcomes and behavior while bounding the claim."
+      },
+      "transition_in": {
+        "relationship": "cause_effect",
+        "carries_over": "The product outcome and the engineering behavior describe connected parts of one intended effect.",
+        "introduces": "The same connection changes how disciplines divide their artifacts and handoffs.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p22",
+          "form": "prose",
+          "controlling_idea": "The connection between outcomes and behavior has a consequence for how disciplines work together.",
+          "function": "transition"
+        },
+        {
+          "id": "p23",
+          "form": "prose",
+          "controlling_idea": "Discipline boundaries were organized around artifacts whose creation and translation required separate craft.",
+          "function": "context",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Product requirement documents, design mockups, business capability maps, enterprise landscape diagrams and engineering code, plus the handoffs between them.",
+              "shows": "Makes the boundary being questioned concrete before claiming that it can collapse.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The section promises a consequence for disciplinary boundaries.",
+            "introduces": "The old artifact-based division of labor explains what those boundaries were doing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p24",
+          "form": "prose",
+          "controlling_idea": "As artifact generation becomes easier, each discipline's remaining judgment concerns an aspect of intended outcomes and behavior.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "The five-discipline Old scarce artifact / Residual scarce work table, retained in full.",
+              "shows": "Connects each discipline's distinctive contribution to the common question of what should happen and under which constraints.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Separate artifacts required separate craft and costly translation.",
+            "introduces": "The role table identifies the specification decisions that remain when production is generated.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p25",
+          "form": "prose",
+          "controlling_idea": "Those contributions can form adjacent layers of one specification instead of a sequence of separate artifacts.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3 and assets/images/from-structure-to-behavior/five-artifacts-one-spec.jpeg, with its existing caption.",
+              "shows": "Shows how five discipline artifacts can become a shared specification while retaining multiple authors.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            },
+            {
+              "kind": "reasoning",
+              "what": "The right-hand table column can be read as one document drafted at different altitudes.",
+              "shows": "Explains why the table implies a different coordination model rather than merely new role descriptions.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The role table maps each remaining decision to outcomes, behavior or constraints.",
+            "introduces": "Reading those decisions together reveals one layered artifact that people can co-author.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p26",
+          "form": "prose",
+          "controlling_idea": "Collapsing artifact boundaries preserves disciplinary expertise while reducing the loss of intent at handoffs.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Design judgment about interaction, architecture judgment about systemic risk and product judgment about evidence and markets; the strategy-to-code translation chain.",
+              "shows": "Bounds the thesis to artifact ownership and shows what intent the shared artifact should preserve.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "One layered specification can replace separate artifacts.",
+            "introduces": "The qualification distinguishes shared authorship from interchangeable expertise.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "prerequisite_order",
+        "rationale": "Establish what the old borders separated before contrasting the remaining decisions, then infer the shared artifact and immediately limit the claim. Moving the expertise qualification earlier would qualify an unspecified change; omitting it would invite a role-elimination reading."
+      }
+    },
+    {
+      "id": "what-the-shared-artifact-looks-like",
+      "heading": "What the Shared Artifact Looks Like",
+      "controlling_idea": "The product-domain model makes the shared specification concrete as structured, validated intent that connects outcomes to implementation.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "Shows one constructive shape for the common artifact without turning the essay into a methodology tutorial."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Disciplines can co-author one layered specification without losing expertise.",
+        "introduces": "The author's product-domain model provides a worked example of that artifact.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p27",
+          "form": "prose",
+          "controlling_idea": "The author's spec-driven product architecture work is one worked example of the proposed shared artifact.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Existing [[what-is-spec-driven-product-architecture]] cross-link and the explicit qualification that it is one possible shape.",
+              "shows": "Grounds the argument without claiming a universal model.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ]
+        },
+        {
+          "id": "p28",
+          "form": "prose",
+          "controlling_idea": "The product-domain model connects the layers previously divided among disciplines in one set of structured files.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "case",
+              "what": "Customer groups and jobs, strategy and KPIs, capabilities, implementation-facing product bricks, teams, roadmaps and evidence, authored and validated together in a repository.",
+              "shows": "Shows the scope of the example and why its layers can preserve intent across former artifact boundaries.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            },
+            {
+              "kind": "source",
+              "what": "The already linked local record defines a product brick as an implementation-facing unit that can be built, owned and evolved, connected to product value; it can include user-facing components, services and data dependencies. Use this definition immediately after its first mention in the existing model-description paragraph.",
+              "shows": "Lets the reader understand how outcome-facing capabilities connect to buildable and ownable implementation, without requiring the linked article.",
+              "source": "_journals/spec-driven-product-architecture/posts/what-is-spec-driven-product-architecture/index.md:123"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The prior paragraph names the worked example.",
+            "introduces": "Its connected layers and human-agent authoring explain what the shared artifact actually contains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p29",
+          "form": "list",
+          "controlling_idea": "The model works as a shared artifact because its traceable outcomes and validation rules let humans and agents check each contribution.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the two-property list: outcomes trace down to capabilities and bricks, while identifiers, schema and references constrain checkable agent contributions.",
+              "shows": "Explains the shared requirement behind both properties: contributions must be traceable to intent and checkable by others.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The model connects the disciplines' layers in structured files.",
+            "introduces": "Two properties explain why that connection is useful to authors and reviewers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p30",
+          "form": "prose",
+          "controlling_idea": "Structural discipline shifts toward the enduring specification when code can be regenerated from it.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 4 and assets/images/from-structure-to-behavior/intent-structured-code-fluid.jpeg, with its existing caption.",
+              "shows": "Makes the inversion visible without implying that generated code no longer needs judgment.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The shared model requires explicit structure and validation.",
+            "introduces": "The inversion places durable structure around intent while code becomes more fluid.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Name the example and its limits, describe its actual shape, explain the properties that make it usable, then derive the inversion. Leading with the inversion would use an abstract slogan before the reader has seen the artifact it describes."
+      }
+    },
+    {
+      "id": "the-warning-behavior-is-harder",
+      "heading": "The Warning: Behavior Is Harder",
+      "controlling_idea": "Behavioral specification demands more judgment even when its structured artifact is easier to generate.",
+      "function": "counterargument",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Explains the skill and review duties that qualify the shift toward generated structure."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "The worked example makes structured intent and generated code look achievable.",
+        "introduces": "Hohpe's warning identifies the work that becomes harder rather than disappearing.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p31",
+          "form": "prose",
+          "controlling_idea": "Hohpe's warning that behavior is harder is a condition of the argument rather than an optional caution.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "The existing short phrase \"while highly valuable, this is also harder\" attributed to Hohpe.",
+              "shows": "Returns to the qualification already introduced with the anchor observation.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ]
+        },
+        {
+          "id": "p32",
+          "form": "list",
+          "controlling_idea": "Behavior is harder because its possible situations, evidence and cross-discipline decisions resist complete advance specification.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the three-part list on specifying completely, verifying by exercise, and agreeing across disciplines.",
+              "shows": "Shows why faster generation raises the importance of judgment rather than eliminating it.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            },
+            {
+              "kind": "source",
+              "what": "Barry O'Reilly's residuality theory, explained in the published verification item as stressing naive designs to learn what survives.",
+              "shows": "Explains the introduction's postscript through the verification problem: behavior must be exercised under stress rather than inferred from a static picture. Keep the attribution and time references brief enough that the list's next agreement item follows directly.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The opening states that behavior remains harder.",
+            "introduces": "The existing list explains the completeness, verification and agreement burdens.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p33",
+          "form": "prose",
+          "controlling_idea": "Generated structure still requires human judgment because it can undermine the behavior teams must own.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve [[breaking-vibe-monolith]] and [[outsource-thinking-not-understanding]] with their self-contained claims about congealing structure and human ownership.",
+              "shows": "Prevents cheap structural production being mistaken for the end of architectural judgment; remove only the inaccurate implication that these posts have already been read.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ],
+          "transition_in": {
+            "relationship": "additional_support",
+            "carries_over": "Specifying, verifying and agreeing on behavior remain difficult.",
+            "introduces": "The associated duty to review generated structure also remains.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Return to the initial warning, explain its three forms, then state the structural review duty that prevents overreading the thesis. Placing the practical moves ahead of these constraints would invite readers to act as if shared specification removes the hard work."
+      }
+    },
+    {
+      "id": "what-to-do-on-monday",
+      "heading": "What to Do on Monday",
+      "controlling_idea": "Each role can redirect effort toward checkable intended behavior while preserving the judgment its discipline contributes.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S6"
+        ],
+        "how": "Turns the shared-work thesis and its cautions into concrete changes in review and authorship."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Behavior requires explicit judgment and generated structure still needs review.",
+        "introduces": "The role-specific moves show where to put that judgment in ordinary work.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p34",
+          "form": "prose",
+          "controlling_idea": "Put each role's judgment into the intended outcomes, behavior and constraints that generated work must satisfy.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the entire Role / Move / What it buys you table for Engineer, Architect, Product manager, Designer / business architect and Leader. Add only a short lead-in linking the table to the harder work just established.",
+              "shows": "Gives each reader a practical change and explains the benefit, while making the previously standalone table part of a checkable unit.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "questions-to-consider",
+      "heading": "Questions to Consider",
+      "controlling_idea": "Readers can locate where their own review habits and artifact handoffs still substitute structure for intended effects.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S4",
+          "S6"
+        ],
+        "how": "Lets readers apply the proposed moves to a concrete review or handoff before the closing synthesis."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The Monday table offers a change for each role.",
+        "introduces": "The existing questions help readers identify where to apply one in their own organization.",
+        "form": "sentence",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p35",
+          "form": "list",
+          "controlling_idea": "Use the questions to choose where review attention or a shared specification would preserve behavioral intent in your organization.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the existing lead-in and all seven questions on design review, checkable behavior, translation loss, customer change, scarce judgment, who joins outcome decisions, and expertise versus artifact borders.",
+              "shows": "Turns the role table into a reader's self-assessment without adding a new claim or external fact.",
+              "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Closing Thought",
+    "synthesis": "The two formerly separate proxy problems become one shared responsibility: when artifacts are easier to produce, the disciplines must preserve intended effects across their decisions instead of treating artifact completion as value. Their expertise remains distinct because the behavioral judgments are harder, not interchangeable.",
+    "so_what": "Choose a real review or handoff where people can state a checkable behavior and the outcome it serves, then judge generated work against that intention instead of treating its completion as success.",
+    "callback": {
+      "to": "The opening question about what determines outcomes when artifacts become easier to produce, made concrete by Hohpe's observation that users only see behavior.",
+      "how": "The reader can now answer with shared specification and judgment: the user's experienced behavior links disciplines whose artifacts once separated their work."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Write and review the intended outcome and behavior together, preserve each discipline's judgment, and examine the surrounding controls that make generated capability serve the intention."
+    },
+    "hand_off": {
+      "to": "ai-is-the-reactor-not-the-plant",
+      "relationship": "elaboration",
+      "carries_over": "Generating structure cheaply shifts attention to the behavior and outcomes it must serve.",
+      "introduces": "The surrounding controls and evaluation that make generated capability serve those intentions."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The role moves and reflection questions identify where the reader's attention and handoffs should change.",
+      "introduces": "The synthesis explains why those choices are one shared responsibility once artifact production becomes easier.",
+      "form": "sentence",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p36",
+        "form": "prose",
+        "controlling_idea": "The shared duty to cause an intended effect becomes clearer when producing a professional artifact no longer justifies the old division of attention.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The published closing comparison of engineering's structural proxy and product management's output proxy, both rational under their old constraints.",
+            "shows": "Combine the two cases into the shared responsibility now exposed, rather than merely restating their histories.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          "how": "The shared duty to cause an intended effect becomes clearer when producing a professional artifact no longer justifies the old division of attention."
+        }
+      },
+      {
+        "id": "p37",
+        "form": "prose",
+        "controlling_idea": "Teams must now answer what the system should do and for whom because construction can no longer defer those decisions.",
+        "function": "analysis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Preserve the closing questions: What should this system do? For whom? What should change in the world because it exists?",
+            "shows": "Makes the consequence of the synthesis concrete without introducing new evidence.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S6"
+          ],
+          "how": "Teams must now answer what the system should do and for whom because construction can no longer defer those decisions."
+        },
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "The old artifact proxies no longer settle whether intended effects are achieved.",
+          "introduces": "The reader's responsibility is to answer the behavioral and outcome questions directly.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p38",
+        "form": "prose",
+        "controlling_idea": "The disciplines' shared conversation returns attention to the behavior users have experienced all along.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The existing callback that users never saw structure and only saw behavior.",
+            "shows": "Returns to Hohpe's observation with the cross-discipline consequence the opening could not yet establish.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S4"
+          ],
+          "how": "The disciplines' shared conversation returns attention to the behavior users have experienced all along."
+        },
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "The unavoidable questions concern the system's effect on users.",
+          "introduces": "The callback shows why different disciplines now need to answer those questions together.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      },
+      {
+        "id": "p39",
+        "form": "prose",
+        "controlling_idea": "Start with a shared, checkable intention, then ask what controls and evaluation make generated capability serve it.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "End with a brief action and [[ai-is-the-reactor-not-the-plant]] handoff, explicitly treating the shared specification as the starting point for dependable operation.",
+            "shows": "Leaves a course of action and the precise next question without adding evidence or attempting the next post's answer.",
+            "source": "_journals/ai-notes/posts/from-structure-to-behavior/index.md (published baseline, 2026-07-24)"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S4",
+            "S6"
+          ],
+          "how": "Start with a shared, checkable intention, then ask what controls and evaluation make generated capability serve it."
+        },
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The reader has a shared specification of the behavior and outcomes generated work should serve.",
+          "introduces": "The next post examines the surrounding controls and evaluation that make capability fulfill those intentions.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "Not an obituary for software architecture or architects. The claim is that structural *production* is commoditized; structural *judgment* (operability, cost, failure modes) survives — and behavior specification needs it."
+    },
+    {
+      "topic": "Not a role-elimination or org-design piece. Borders blur; expertise does not become interchangeable, and the post does not predict job losses or propose a new org chart."
+    },
+    {
+      "topic": "Not a full pitch for spec-driven product architecture — it appears as one worked example of the converged artifact, roughly one section, with pointers to the dedicated journal.",
+      "covered_in": [
+        "what-is-spec-driven-product-architecture"
+      ]
+    },
+    {
+      "topic": "Not a methodology tutorial (no BDD/TDD how-to, no spec-format prescriptions)."
+    },
+    {
+      "topic": "Not a re-run of [[outsource-thinking-not-understanding]] — that note says understanding stays human; this one says *which work* the disciplines converge on. Cross-link, don't repeat.",
+      "covered_in": [
+        "outsource-thinking-not-understanding"
+      ]
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "~~Exact primary URL for the Hohpe LinkedIn post.~~ **Resolved:** pinned by the author — https://www.linkedin.com/posts/ghohpe_structure-behavior-activity-7486322897817538561-Bc1T — now linked in the quote attribution and To Probe Further.",
+    "Whether section 5 (border collapse) needs a named external witness (e.g. team-topology / fusion-team commentary) or stands on the argument alone.",
+    "Preserve the published Seiden quotation using \"customer behavior\"; the legacy source note below says \"human behavior\". This pass carries both records without adjudicating or changing the attributed quotation, because new factual research is outside scope."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 returned REVISE: 207 passed, five failed (three major, two minor), all fault draft. Revise only p4 (article-to-journal connection), p14 (explicit risk antecedent), p28 (readable model description and sourced first-use brick definition) and the verification item in p32 (direct stress-testing thread with the Barry O'Reilly attribution and existing time references retained). Keep all 39 units, their order, their controlling ideas, journal fields and acceptance criteria unchanged. No new flow rubric is needed because no idea order changes. Prepare the second and final authorized draft check after preservation and structure checks.",
+      "rejected": [
+        "Moving the journal roadmap out of the required introduction.",
+        "Moving or splitting the warning list.",
+        "Inventing a company or product example for a brick."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Resolved the Phase A reconstruction gaps in Phase B: inserted the opening question, completed the compact roadmap, stated the distinct-expertise qualification in the introduction, added the Monday lead-in and next-post handoff, and moved the original Questions block before the closing synthesis. Replaced the journal-position phrase \"earlier notes\" with \"related notes\" and expanded SDLC on first prose use. Preserved the existing Hohpe paraphrase otherwise. No names, dates, figures, numerical tokens or heading text changed; no real-world factual claims were added."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Fresh isolated flow reader returned sound with notes in flow-review-1.txt, with no moves, merges or cuts. Adopted its only note: narrow the post-level assertion_evidence_reasoning label to what-the-shared-artifact-looks-like, leaving The Borders Collapse under its existing prerequisite_order pattern. No idea order or transition changes; no unadopted flow notes. The opening question uses one direct software bridge rather than repeating the same question.",
+      "rejected": [
+        "Changing the already sound argument order.",
+        "Leaving contradictory pattern labels in the post and section declarations."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstructed the published essay at full paragraph level before editing prose. Retain every existing body paragraph, list, table, figure, caption, source and question; attach visual material to its controlling paragraph. The legacy Structure item \"The Quote\" is realized in the existing unheaded introduction rather than invented as a new section. No canonical research ledger exists; use the published article and legacy spec as the fact record.",
+      "rejected": [
+        "A general rewrite, new external research, or a new standalone quote section."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Copy the journal entry's intent, three criteria, thesis fields and role unchanged. Legacy success criteria 1–3 and 5 map to AC-1; criterion 4 to AC-2; criteria 6–7 to AC-3. Criterion 8 remains a faithful-paraphrase and evidence-preservation requirement in the introduction and warning, rather than a new acceptance criterion. No added criteria require author review.",
+      "rejected": [
+        "Adding content-inventory criteria or changing the journal-level outcomes."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Move the existing Questions to Consider block intact before Closing Thought. Preserve every heading and the references block; end the argument with synthesis, callback and next-post handoff, with To Probe Further last.",
+      "rejected": [
+        "Leaving questions after the references, outside the checker's conclusion boundary.",
+        "Placing a self-assessment after the final synthesis."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Add one brief opening question that carries the journal and part question; retain Hohpe's full compressed opening observation. Expand the existing roadmap to name the shared-artifact example, difficulty warning, Monday moves and reflection questions, with only one short final sentence naming the wider journal path.",
+      "rejected": [
+        "Two long navigation roadmaps that distract from this standalone essay.",
+        "Pretending the published introduction already carries the complete journal opening."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Add one short prose lead-in to the Monday table so it carries an explicit transition and is counted as a checkable unit. Keep its role rows unchanged. Add a final short conclusion paragraph linking to ai-is-the-reactor-not-the-plant with its declared elaboration relationship.",
+      "rejected": [
+        "Changing or splitting the practical table.",
+        "Treating a mid-essay link as the required closing handoff."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Preserve the legacy modality plan: summary for the leadership/staffing consequence, dialog for the two shifts and a skeptical border-collapse discussion, and comics for the proxy-to-shared-spec arc and journal convention. Their existing content is outside this revision pass."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The legacy spec contains no numeric word limit; do not derive one from front matter or invent one. Keep status draft under the user's authorized auto run, with no more than two draft-check rounds and no commit or push."
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "Framed the post as **one pattern seen twice** (structure → behavior in engineering; output → outcome in product) rather than as a commentary on the Hohpe quote alone. Chosen because the analogy is the author's core addition and carries the border-collapse thesis. Rejected: quote-plus-riff essay (too thin); leading with spec-driven product architecture (reads as a pitch, buries the general argument)."
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "Placed the **border-collapse thesis as the payoff** (section 5) rather than the headline. Chosen because it only lands after the two shifts are established as the same pattern. Rejected: \"the end of the PM/ engineer split\" as the title claim (overclaims; invites org-chart readings the Non-goals fence off)."
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "Used [[what-is-spec-driven-product-architecture]] as the single worked example of the converged artifact, one section only. Rejected: spreading it through the post (turns the essay into a project pitch)."
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "Slug `from-structure-to-behavior`; placed in the **AI Software Development** section of `config.yaml` — the anchor quote and the argument start in the SDLC even though the thesis reaches product. Rejected: AI Product Development section (the output→outcome material is the analogy, not the subject)."
+    },
+    {
+      "date": "2026-07-24",
+      "decision": "Modalities deferred to after the article (author default in this journal is to add summary/dialog/comics incrementally). Resolved same day after the article was reviewed: all three added, matching every other post in the journal."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "[[what-is-spec-driven-product-architecture]]",
+      "contributed": "the worked example: the product-domain model as the shared, validated spec connecting customer outcomes to implementation structure."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[outsource-thinking-not-understanding]]",
+      "contributed": "generated structure still has to be understood by a human; the last human mile applies to generated architecture too."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[ai-is-the-reactor-not-the-plant]]",
+      "contributed": "value lives in what surrounds generation; here, the surrounding work is behavior specification."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[breaking-vibe-monolith]]",
+      "contributed": "structure quietly returns as the thing that keeps generated systems manageable; the counterweight to \"structure is cheap now.\""
+    },
+    {
+      "kind": "external",
+      "ref": "**Gregor Hohpe, [LinkedIn post](https://www.linkedin.com/posts/ghohpe_structure-behavior-activity-7486322897817538561-Bc1T) (2026)**",
+      "contributed": "the anchor quote: AI-led SDLC forces the move from structure to behavior; users only see behavior; \"while highly valuable, this is also harder.\""
+    },
+    {
+      "kind": "external",
+      "ref": "**Gregor Hohpe, *The Software Architect Elevator***",
+      "contributed": "the same author's frame for architects connecting business intent (\"penthouse\") to technical reality (\"engine room\") — the border-crossing move the post generalizes."
+    },
+    {
+      "kind": "external",
+      "ref": "**Barry O'Reilly, *Residues: Time, Change, and Uncertainty in Software Architecture* / residuality theory**",
+      "contributed": "the explicit critique of structuralism in architecture the quote's postscript nods to: the world as processes, not static structures."
+    },
+    {
+      "kind": "external",
+      "ref": "**Josh Seiden, *Outcomes Over Output* (2019)**",
+      "contributed": "the canonical statement of the product-side shift; outcome as \"a change in human behavior that drives business results\" — note the word *behavior* on both sides of the analogy."
+    },
+    {
+      "kind": "external",
+      "ref": "**Melissa Perri, *Escaping the Build Trap* (2018)**",
+      "contributed": "output-optimizing organizations mistake shipping features for creating value; the product twin of structure-worship."
+    },
+    {
+      "kind": "external",
+      "ref": "**Marty Cagan (SVPG), *Inspired* / *Empowered***",
+      "contributed": "teams given outcomes to achieve rather than outputs to ship; the operating model the border collapse points toward."
+    },
+    {
+      "kind": "external",
+      "ref": "**Dan North, *Introducing BDD* (2006)**",
+      "contributed": "historical precedent: renaming tests to behavior changed what engineers specified; evidence the industry has tried to face behavior before, ahead of the tooling that now makes it cheap."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/from-structure-to-behavior/index.md",
+      "contributed": "Authoritative published prose, facts, attribution, front matter, links, four figures and captions, tables, KEY POINTS callout, references and seven reflection questions for this reconstruction."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/from-structure-to-behavior/spec.md (baseline archived in /private/tmp/ai-notes-outcome-revision-20261112/original/from-structure-to-behavior/spec.md)",
+      "contributed": "Legacy intent, outcomes, non-goals, modality decisions, open questions, sources and full decision/changelog history."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Exact copied intent, thesis and role; journal and part opening duties; the next post's elaboration relationship."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/spec-driven-product-architecture/posts/what-is-spec-driven-product-architecture/index.md:123",
+      "contributed": "Existing linked record supplies the first-use product-brick definition for the round-one known-before-new finding: a buildable, ownable, evolvable implementation unit, with user-facing components, services and data dependencies as possible contents. No company-specific example or product claim added."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Before round-two prose revision, recorded the five draft findings and the four affected units; added the definition source already linked by the essay. Unit order, count and controlling ideas stay unchanged. Round-one report becomes stale until the final authorized check is finalized."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Revised index.md to the 39-unit contract after the fresh flow review. All original prose/list units remain; Questions now precedes Closing Thought, with three new units for opening, Monday lead-in and handoff. Original front matter, three-bullet callout, tables, images, captions, links, references and questions were checked against the baseline. Status remains draft; independent draft check pending."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Before prose revision, recorded the fresh flow verdict sound with notes and aligned the post-level pattern annotation with the section-level declaration; no order change. Kept the journal/part opening question and software bridge concise."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Converted the accepted legacy spec to a draft outcome spec before prose, retaining the full historical record. Copied the final journal contract unchanged; reconstructed all units; specified the Questions move, concise opening/roadmap, Monday lead-in and closing handoff. No article, modality, asset or front-matter edit in Phase A."
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Article illustrated: 4 inline figures generated (Gemini) — structure-early/behavior-late timeline, shortened feedback loop, five-artifacts-to-one-spec convergence, intent-structured/code-fluid inversion. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Author decision: summarize Hohpe's post with a link back instead of reproducing it verbatim; direct quotes trimmed to short key phrases. Success criterion and Structure §1 updated to match. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Author addition: cheap structure also shortens the behavior feedback loop (fast end-to-end assembly → behavior observable early, not just specifiable). Added to Structure §3, Success criteria, article, summary, and dialog. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Summary, dialog, and comics modalities written; all 8 comic panels, the post icon, and the hero logo generated (Gemini). All four tabs verified in the build. Status stays `accepted`. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Article written, author-reviewed and lightly reworded; spec and post agree. Status `draft → accepted`. Modalities decision resolved: summary, dialog, and comics all planned. *(Željko Obrenović, AI-mediated session)*"
+    },
+    {
+      "date": "2026-07-24",
+      "change": "Initial spec. Status `draft`. One-pattern-seen-twice framing; border-collapse as payoff; article-only to start. *(Željko Obrenović, AI-mediated session)*"
+    }
+  ]
+}

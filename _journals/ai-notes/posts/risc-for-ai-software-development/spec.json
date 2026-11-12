@@ -1,0 +1,3020 @@
+{
+  "spec_version": "0.1",
+  "kind": "post",
+  "id": "risc-for-ai-software-development",
+  "journal": "ai-notes",
+  "part": "ai-software-development",
+  "title": "Can RISC-Inspired Platforms Make AI Less Risky?",
+  "status": "draft",
+  "revised": "2026-11-12",
+  "basis": "Reconstructed before prose revision from the full published index.md (4,516 parser-counted words; 120 substantive units including the reflection questions), the complete accepted spec.md revised 2026-06-12, and the final full journal entry. Tables, figures, captions, and quotations remain paragraph evidence; the three-bullet KEY POINTS remains an introduction callout. The planned contract preserves every existing word and claim while consolidating the two opening units in Simple Does Not Mean Primitive and the three closing Not: units in the frontend example, adds an incoming bridge and concrete roadmap, moves Questions to Consider before Final Thought, and adds the part synthesis and cross-part hand-off. The original draft did not perform those duties; Phase B now realizes the reviewed contract, with changes recorded in the decision log and changelog, while independent draft checking remains pending. No journal research ledger exists and no external factual updates were made.",
+  "intent": {
+    "outcome": {
+      "know": [
+        "How the RISC analogy applies to the changing platform surface shared by coding agents and human reviewers.",
+        "Why lower generation cost changes, but does not settle, reuse-versus-local-code decisions."
+      ],
+      "believe": [
+        "The smallest reliable platform is preferable when it lowers total understanding and ownership burden.",
+        "Reduction must preserve evaluation, operational safeguards, and mature expertise where they are needed."
+      ],
+      "can_do": [
+        "Choose between reuse and generated local code using scope, edge cases, failure consequences, inspectability, and ownership.",
+        "Identify the risks of local-code sprawl, false confidence, fragmentation, and displaced complexity."
+      ]
+    },
+    "acceptance_criteria": [
+      {
+        "id": "AC-1",
+        "statement": "A reader explains RISC and the platform analogy in terms of both agent and reviewer understanding.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What does RISC mean here, and what is the software equivalent of an instruction set?",
+        "expected": "Reduced Instruction Set Computer supplies an analogy for a smaller, regular surface; frameworks, APIs, dependencies, conventions, and local code form a changing platform that both agents and humans must understand, with text files, tests, diffs, and version control as inspectable examples."
+      },
+      {
+        "id": "AC-2",
+        "statement": "A reader makes a bounded reuse-versus-generation decision without concluding that fewer dependencies are always better.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "How would the article compare generating a narrow local helper with replacing a mature security-sensitive library?",
+        "expected": "The helper may be appropriate if small, testable, locally recoverable, and owned; mature high-risk implementations retain expertise and edge-case coverage. Compare total review, operation, and maintenance burden rather than line count or generation speed."
+      },
+      {
+        "id": "AC-3",
+        "statement": "A reader connects reduction to evaluation and stewardship, including risks created by excessive reduction.",
+        "check": "custom",
+        "method": "cold_reader",
+        "severity": "major",
+        "probe": "What must accompany a reduced platform so that local simplicity does not create a new problem?",
+        "expected": "Tests, observable failure behavior, review and ownership, shared primitives or examples, and checks for fragmentation, missed edge cases, false confidence, sprawl, and complexity moved into operations or hidden knowledge."
+      }
+    ]
+  },
+  "thesis": {
+    "question": "When can reducing a software platform make AI-assisted development easier to trust?",
+    "claim": "Reducing the platform surface can make AI-generated systems easier to trust when it exposes behavior for joint human and agent review while preserving mature abstractions whose expertise and safeguards outweigh their complexity.",
+    "disputed_by": "The view that broad frameworks and dependency reuse remain the default answer because saving implementation effort outweighs the added review surface even when generation is cheap.",
+    "so_what": "Platform and dependency choices should be judged by how well the team can evaluate, operate, and own the result, not only by how quickly a model can generate it.",
+    "how_why": "Fewer hidden behaviors lower the effort of tracing changes and failures, but local replacements also create edge-case and maintenance obligations; evaluation and stewardship determine which choice reduces the total burden.",
+    "supporting_claims": [
+      {
+        "id": "S1",
+        "claim": "Hidden behavior in a changing platform increases the review burden that limits responsible adoption of AI-generated code."
+      },
+      {
+        "id": "S2",
+        "claim": "A smaller, regular platform can expose behavior through primitives that agents and human reviewers can inspect together."
+      },
+      {
+        "id": "S3",
+        "claim": "Cheaper local generation changes the reuse calculation, but mature expertise can still outweigh the complexity of an abstraction."
+      },
+      {
+        "id": "S4",
+        "claim": "Frontend and messaging choices should minimize the platform needed for reliable, reviewable behavior in their particular context."
+      },
+      {
+        "id": "S5",
+        "claim": "Reduced platforms make evaluation more tractable only when specifications, tests, observability, and human review accompany the generated behavior."
+      },
+      {
+        "id": "S6",
+        "claim": "Human platform stewardship must control sprawl, fragmentation, missed edge cases, and displaced complexity across the whole system."
+      }
+    ]
+  },
+  "role": {
+    "contribution": "Turns stable seams into a platform strategy that reduces the amount of hidden behavior agents and reviewers must reason about.",
+    "supports": [
+      "S6"
+    ]
+  },
+  "flow": {
+    "pattern": "problem_solution",
+    "additional_patterns": [
+      {
+        "pattern": "prerequisite_order",
+        "applies_to": "trust-bottleneck, risc-analogy, instruction-set, text-first-tools: establish the trust problem, interpret the analogy, define the platform surface, and make it visible."
+      },
+      {
+        "pattern": "comparison",
+        "applies_to": "dependency-risks, reuse-decision, simple-not-primitive, frontend-example, messaging-example: weigh mature expertise against bounded local implementations."
+      },
+      {
+        "pattern": "small_to_large",
+        "applies_to": "frontend-example, messaging-example, abstraction-economics: generalize the two cases into a common decision about total ownership cost."
+      },
+      {
+        "pattern": "problem_solution",
+        "applies_to": "evaluation, retain-complexity, platform-strategy, human-role, risks, reflection-questions: establish evidence and retention obligations, assign ownership, identify failure modes, and prompt a local review."
+      }
+    ],
+    "rationale": "Begin with the review burden before proposing reduction. Define the bounded RISC analogy and show inspectable primitives before asking readers to choose them. Keep the legitimate value of dependencies adjacent to the reuse criteria; the frontend and messaging examples then test those criteria. The later economics section generalizes those examples rather than introducing the premise for the first time. Evaluation precedes organizational policy so the policy retains its reliability obligations; human ownership precedes the risks it must control. The reflection questions apply the argument before the final synthesis. Moving examples ahead of the conditions would imply universal minimalism; moving evaluation or stewardship after the close would leave the smallest-reliable-platform recommendation unearned."
+  },
+  "introduction": {
+    "hook": {
+      "type": "thought_provoking_question",
+      "content": "Software engineering is learning the wrong lesson from AI if the only question is \"How much code can we generate?\" The harder question is: How much of the generated system can we trust?"
+    },
+    "bridge": {
+      "from_reader_world": "Engineers can already produce changes faster than they can confidently review, operate, and maintain them; stable architectural seams protect local ownership.",
+      "to_topic": "The platform inside those seams must also expose behavior for agents and people to inspect together. RISC supplies a bounded analogy for asking which complexity still earns its place."
+    },
+    "thesis_statement": {
+      "text": "Reduce the changing platform surface when this makes behavior jointly reviewable, while retaining abstractions whose expertise and safeguards justify their complexity.",
+      "placement": "The unchanged KEY POINTS states the reduced-platform and smallest-reliable-platform direction; introduction p011 states its mature-expertise condition explicitly."
+    },
+    "roadmap": {
+      "promises": [
+        {
+          "promise": "Build on the trust problem and RISC analogy already introduced: turn them into reviewer questions, a cost test for complexity, and a concrete platform instruction set.",
+          "kept_in": [
+            "trust-bottleneck",
+            "risc-analogy",
+            "instruction-set"
+          ]
+        },
+        {
+          "promise": "Use Claude Code and Codex's existing text-first examples to show what an inspectable work surface looks like.",
+          "kept_in": [
+            "text-first-tools"
+          ]
+        },
+        {
+          "promise": "Compare dependency expertise with hidden risk and turn the reuse-versus-generation question into bounded decision criteria.",
+          "kept_in": [
+            "dependency-risks",
+            "reuse-decision",
+            "simple-not-primitive"
+          ]
+        },
+        {
+          "promise": "Apply those criteria to a narrow frontend and messaging, then draw out the economics of abstraction.",
+          "kept_in": [
+            "frontend-example",
+            "messaging-example",
+            "abstraction-economics"
+          ]
+        },
+        {
+          "promise": "Explain the evaluation that reduced platforms need, when mature complexity still belongs, and how teams can set and own shared platform rules.",
+          "kept_in": [
+            "evaluation",
+            "retain-complexity",
+            "platform-strategy",
+            "human-role"
+          ]
+        },
+        {
+          "promise": "Examine the risks of excessive reduction and use the reflection questions to review a team's own platform choices.",
+          "kept_in": [
+            "risks",
+            "reflection-questions"
+          ]
+        }
+      ],
+      "placement": "New final introductory paragraph p012, after the bounded thesis; write a concrete article roadmap rather than a generic promise to discuss implications."
+    },
+    "paragraphs": [
+      {
+        "id": "p001",
+        "form": "prose",
+        "controlling_idea": "Code volume alone is the wrong measure of progress in AI-assisted software development.",
+        "function": "context",
+        "evidence": [
+          {
+            "kind": "quotation",
+            "what": "> **KEY POINTS:**\n>\n> * **The bottleneck is not whether AI can generate code — it is whether engineers can understand, verify, and trust it.** The platform surface we ask AI to build on (frameworks, libraries, dependencies, SaaS APIs, runtime conventions) is what makes that hard.\n> * **RISC — Reduced Instruction Set Computer — is the analogy**: a deliberately reduced platform makes AI-generated systems easier to review, test, debug, secure, and maintain. And because **AI changes the economics of abstraction**, cheaply generating small, fit-for-purpose code can be safer than importing a large opaque wheel.\n> * **Simple does not mean primitive.** The goal is the smallest reliable platform humans and AI can reason about together.",
+            "shows": "The unchanged three-bullet KEY POINTS makes the trust problem, reduced-platform analogy, and smallest-reliable-platform boundary visible before the argument.",
+            "source": "Published article, opening KEY POINTS"
+          }
+        ],
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Code volume alone is the wrong measure of progress in AI-assisted software development."
+        }
+      },
+      {
+        "id": "p002",
+        "form": "prose",
+        "controlling_idea": "The harder question is how much of the generated system the team can trust.",
+        "function": "claim",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Code volume alone is the wrong measure of progress in AI-assisted software development.",
+          "introduces": "The harder question is how much of the generated system the team can trust.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "The harder question is how much of the generated system the team can trust."
+        }
+      },
+      {
+        "id": "p003",
+        "form": "prose",
+        "controlling_idea": "Trust depends on evidence and understandable behavior, so unreviewable output limits adoption.",
+        "function": "explanation",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Inspectability, tests, observability, understandable abstractions, limited blast radius, and experienced review in the published opening.",
+            "shows": "These are observable bases for confidence rather than confidence in a model's tone; gloss observability as runtime visibility and blast radius as the scope of a failure without adding factual claims."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The harder question is how much of the generated system the team can trust.",
+          "introduces": "Trust depends on evidence and understandable behavior, so unreviewable output limits adoption.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S5"
+          ],
+          "how": "Trust depends on evidence and understandable behavior, so unreviewable output limits adoption."
+        }
+      },
+      {
+        "id": "p004",
+        "form": "prose",
+        "controlling_idea": "Stable architectural seams still need an inspectable platform inside them so teams can share ownership.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "[[breaking-vibe-monolith]] and the journal entry's incoming elaboration from stable seams to their internal platform.",
+            "shows": "The preceding essay preserves local reasoning over time; this essay asks how much hidden behavior the people working inside those seams must understand.",
+            "source": "journal-spec.json / ai-software-development / risc-for-ai-software-development.transition_in"
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Trust depends on evidence and understandable behavior, so unreviewable output limits adoption.",
+          "introduces": "Stable architectural seams still need an inspectable platform inside them so teams can share ownership.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S6"
+          ],
+          "how": "Stable architectural seams still need an inspectable platform inside them so teams can share ownership."
+        }
+      },
+      {
+        "id": "p005",
+        "form": "prose",
+        "controlling_idea": "RISC offers a bounded analogy based on a simpler, more regular computer instruction set.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "RISC means Reduced Instruction Set Computer, as already stated in the article.",
+            "shows": "The analogy concerns regularity and manageable complexity rather than a literal equivalence between computer hardware and software platforms."
+          }
+        ],
+        "transition_in": {
+          "relationship": "example",
+          "carries_over": "Stable architectural seams still need an inspectable platform inside them so teams can share ownership.",
+          "introduces": "RISC offers a bounded analogy based on a simpler, more regular computer instruction set.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2"
+          ],
+          "how": "RISC offers a bounded analogy based on a simpler, more regular computer instruction set."
+        }
+      },
+      {
+        "id": "p006",
+        "form": "prose",
+        "controlling_idea": "Patterson and Ditzel questioned complexity when changed economics weakened its cost-effectiveness.",
+        "function": "evidence",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "The existing account of David Patterson and David Ditzel: compilers used only part of the instruction set, while complex instructions increased implementation, debugging, and optimization burdens.",
+            "shows": "It supplies the historical rationale for reconsidering abstractions when their costs and benefits change, without expanding the article's hardware claims.",
+            "source": "David A. Patterson and David R. Ditzel, The Case for the Reduced Instruction Set Computer; existing linked paper"
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "RISC offers a bounded analogy based on a simpler, more regular computer instruction set.",
+          "introduces": "Patterson and Ditzel questioned complexity when changed economics weakened its cost-effectiveness.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3"
+          ],
+          "how": "Patterson and Ditzel questioned complexity when changed economics weakened its cost-effectiveness."
+        }
+      },
+      {
+        "id": "p007",
+        "form": "prose",
+        "controlling_idea": "The software counterpart of an instruction set is the platform surface an agent works against.",
+        "function": "definition",
+        "evidence": [
+          {
+            "kind": "analogy",
+            "what": "The existing contrast between CPU opcodes and the software platform surface.",
+            "shows": "This transfers only the design question to software; briefly identify CPU opcodes as hardware instructions."
+          }
+        ],
+        "transition_in": {
+          "relationship": "similarity",
+          "carries_over": "Patterson and Ditzel questioned complexity when changed economics weakened its cost-effectiveness.",
+          "introduces": "The software counterpart of an instruction set is the platform surface an agent works against.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "The software counterpart of an instruction set is the platform surface an agent works against."
+        }
+      },
+      {
+        "id": "p008",
+        "form": "prose",
+        "controlling_idea": "That platform surface includes the frameworks, services, tools, and conventions around the generated code.",
+        "function": "description",
+        "evidence": [
+          {
+            "kind": "example",
+            "what": "Preserve the complete existing inventory from Frameworks and Libraries through Testing frameworks and Deployment templates.",
+            "shows": "The examples make platform surface concrete; expand unfamiliar abbreviations such as SaaS, API, ORM, and CI in place, preserving all named technologies."
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "The software counterpart of an instruction set is the platform surface an agent works against.",
+          "introduces": "That platform surface includes the frameworks, services, tools, and conventions around the generated code.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "That platform surface includes the frameworks, services, tools, and conventions around the generated code."
+        }
+      },
+      {
+        "id": "p009",
+        "form": "prose",
+        "controlling_idea": "The same platform surface must be understood by both the coding agent and the humans who own its result.",
+        "function": "claim",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "That platform surface includes the frameworks, services, tools, and conventions around the generated code.",
+          "introduces": "The same platform surface must be understood by both the coding agent and the humans who own its result.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2"
+          ],
+          "how": "The same platform surface must be understood by both the coding agent and the humans who own its result."
+        }
+      },
+      {
+        "id": "p010",
+        "form": "prose",
+        "controlling_idea": "Unlike the hardware analogy, this shared software instruction set changes as tools and local code evolve.",
+        "function": "comparison",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Existing examples of framework versions, dependency changes, evolving SaaS APIs, new platform conventions, security rules, and generated local code.",
+            "shows": "A platform that changes under both participants increases the work of keeping their understanding current."
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "The same platform surface must be understood by both the coding agent and the humans who own its result.",
+          "introduces": "Unlike the hardware analogy, this shared software instruction set changes as tools and local code evolve.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1"
+          ],
+          "how": "Unlike the hardware analogy, this shared software instruction set changes as tools and local code evolve."
+        }
+      },
+      {
+        "id": "p011",
+        "form": "prose",
+        "controlling_idea": "Reduce the changing platform surface when this makes behavior jointly reviewable, while retaining abstractions whose expertise and safeguards justify their complexity.",
+        "function": "claim",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "Expand the existing final introduction sentence with the journal thesis's condition: complexity reduction must preserve needed expertise and safeguards.",
+            "shows": "The full bounded claim appears before the body rather than leaving the anti-minimalism qualification for later."
+          }
+        ],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Unlike the hardware analogy, this shared software instruction set changes as tools and local code evolve.",
+          "introduces": "Reduce the changing platform surface when this makes behavior jointly reviewable, while retaining abstractions whose expertise and safeguards justify their complexity.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3"
+          ],
+          "how": "Reduce the changing platform surface when this makes behavior jointly reviewable, while retaining abstractions whose expertise and safeguards justify their complexity."
+        }
+      },
+      {
+        "id": "p012",
+        "form": "prose",
+        "controlling_idea": "The article moves from the trust burden and RISC analogy through concrete tools and reuse choices to evaluation, stewardship, risks, and a practical platform review.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "A concrete roadmap names the trust and instruction-set discussion, Claude Code and Codex, dependency choices and two examples, the economic comparison, evaluation, shared standards, human judgment, risks, and reflection questions. Acknowledge that the introduction has established the trust problem and analogy; distinguish the body’s operational tests and comparisons from that setup, avoiding the impression that the argument starts over.",
+            "shows": "Readers can anticipate every body section and know that examples and decision aids, rather than a stack prescription, will support the argument."
+          }
+        ],
+        "transition_in": {
+          "relationship": "sequence",
+          "carries_over": "Reduce the changing platform surface when this makes behavior jointly reviewable, while retaining abstractions whose expertise and safeguards justify their complexity.",
+          "introduces": "The article moves from the trust burden and RISC analogy through concrete tools and reuse choices to evaluation, stewardship, risks, and a practical platform review.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "how": "The article moves from the trust burden and RISC analogy through concrete tools and reuse choices to evaluation, stewardship, risks, and a practical platform review."
+        }
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "trust-bottleneck",
+      "heading": "The Trust Bottleneck",
+      "controlling_idea": "The adoption bottleneck is the human work of understanding and verifying the generated system.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1"
+        ],
+        "how": "The adoption bottleneck is the human work of understanding and verifying the generated system."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "The roadmap begins with the trust cost of a complex moving platform.",
+        "introduces": "The concrete questions reviewers must answer before adopting generated code.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p013",
+          "form": "prose",
+          "controlling_idea": "Generating software-shaped text does not establish that a team can responsibly adopt it.",
+          "function": "claim",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Open by applying the established trust requirement to the specific generated change a reviewer must decide to adopt.",
+              "shows": "The body deepens the setup through concrete review questions rather than restarting the general claim that AI can produce code."
+            }
+          ]
+        },
+        {
+          "id": "p014",
+          "form": "list",
+          "controlling_idea": "Responsible review requires answers about the change, its assumptions, failure paths, and future ownership.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all eight existing review questions from What did the AI change? to Who will maintain it after the agent leaves the session?",
+              "shows": "A working output leaves distinct verification and ownership questions that still need answers."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Generating software-shaped text does not establish that a team can responsibly adopt it.",
+            "introduces": "Responsible review requires answers about the change, its assumptions, failure paths, and future ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p015",
+          "form": "prose",
+          "controlling_idea": "A working demonstration cannot compensate for unanswered review questions.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Responsible review requires answers about the change, its assumptions, failure paths, and future ownership.",
+            "introduces": "A working demonstration cannot compensate for unanswered review questions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p016",
+          "form": "prose",
+          "controlling_idea": "Larger, less direct systems impose more work on reviewers before confidence is warranted.",
+          "function": "cause_effect",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A working demonstration cannot compensate for unanswered review questions.",
+            "introduces": "Larger, less direct systems impose more work on reviewers before confidence is warranted.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p017",
+          "form": "prose",
+          "controlling_idea": "A plausible generated frontend can compose more abstractions than its reviewer can inspect in the available time.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing generated React component example, including state-management hooks, routing, validators, form libraries, CSS-in-JS, transformations, analytics wrappers, generated clients, and transitive npm dependencies.",
+              "shows": "Individually familiar pieces can create a combined review surface that is too large; this is an illustrative possibility, not a new claim about React."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "Larger, less direct systems impose more work on reviewers before confidence is warranted.",
+            "introduces": "A plausible generated frontend can compose more abstractions than its reviewer can inspect in the available time.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p018",
+          "form": "prose",
+          "controlling_idea": "The issue illustrated by the React example is platform surface area rather than React itself.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A plausible generated frontend can compose more abstractions than its reviewer can inspect in the available time.",
+            "introduces": "The issue illustrated by the React example is platform surface area rather than React itself.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p019",
+          "form": "prose",
+          "controlling_idea": "Every additional hidden behavior adds to the cost of warranted trust.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 1, assets/images/risc-for-ai-software-development/trust-bottleneck-review-surface.jpeg, and its existing caption.",
+              "shows": "The figure makes the review path through diffs, tests, observability, and human review visible; preserve image, alt text, and caption exactly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The issue illustrated by the React example is platform surface area rather than React itself.",
+            "introduces": "Every additional hidden behavior adds to the cost of warranted trust.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "State the adoption limit, show the reviewer's questions, then use the existing frontend example to explain why hidden behavior adds work. Starting with the example would make the section seem to be about one framework rather than review cost."
+      }
+    },
+    {
+      "id": "risc-analogy",
+      "heading": "What RISC Contributes as an Analogy",
+      "controlling_idea": "RISC contributes a cost-effectiveness question about complexity, not a demand to use primitive tools.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "RISC contributes a cost-effectiveness question about complexity, not a demand to use primitive tools."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Hidden behavior increases the work of earning trust.",
+        "introduces": "A bounded analogy for selecting a regular, transparent platform rather than maximizing its capability surface.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p020",
+          "form": "prose",
+          "controlling_idea": "RISC sought regular instructions that could be understood and supported efficiently, rather than less computing.",
+          "function": "definition",
+          "evidence": []
+        },
+        {
+          "id": "p021",
+          "form": "prose",
+          "controlling_idea": "The software lesson is to prefer transparency when it improves inspection, testing, and maintenance.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve the existing blockquote: Prefer a smaller, more regular, more transparent platform surface when that makes AI-generated systems easier for humans to inspect, test, and maintain.",
+              "shows": "The qualifying when keeps the analogy conditional rather than making minimalism an end in itself."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "RISC sought regular instructions that could be understood and supported efficiently, rather than less computing.",
+            "introduces": "The software lesson is to prefer transparency when it improves inspection, testing, and maintenance.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p022",
+          "form": "prose",
+          "controlling_idea": "Complexity must earn its place because it can increase implementation and debugging burdens.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "The existing Patterson and Ditzel hardware cost-effectiveness comparison.",
+              "shows": "The hardware example supplies the question to ask about software costs without asserting identical mechanisms.",
+              "source": "The existing linked Patterson and Ditzel paper"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The software lesson is to prefer transparency when it improves inspection, testing, and maintenance.",
+            "introduces": "Complexity must earn its place because it can increase implementation and debugging burdens.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p023",
+          "form": "list",
+          "controlling_idea": "Software abstractions often enter for legitimate benefits that a reduction decision must preserve.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "The six existing bullets about time savings, edge cases, infrastructure, maturity, DRY, and ecosystem integration.",
+              "shows": "These benefits explain why dependency use is not itself a fault; gloss DRY as avoiding repeated code at its first prose use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Complexity must earn its place because it can increase implementation and debugging burdens.",
+            "introduces": "Software abstractions often enter for legitimate benefits that a reduction decision must preserve.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p024",
+          "form": "prose",
+          "controlling_idea": "Those legitimate benefits remain, but AI changes the relative costs of obtaining them.",
+          "function": "transition",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Software abstractions often enter for legitimate benefits that a reduction decision must preserve.",
+            "introduces": "Those legitimate benefits remain, but AI changes the relative costs of obtaining them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p025",
+          "form": "prose",
+          "controlling_idea": "A general abstraction is less attractive when unused breadth costs more than its needed expertise delivers.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the expertise, security, performance, compatibility, and operational-maturity qualifications alongside the cognitive-load and dependency-risk costs.",
+              "shows": "This gives the economic condition for reduction without implying that local generation automatically wins."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Those legitimate benefits remain, but AI changes the relative costs of obtaining them.",
+            "introduces": "A general abstraction is less attractive when unused breadth costs more than its needed expertise delivers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p026",
+          "form": "prose",
+          "controlling_idea": "The RISC-inspired decision is whether each complex abstraction is still cost-effective under changed economics.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A general abstraction is less attractive when unused breadth costs more than its needed expertise delivers.",
+            "introduces": "The RISC-inspired decision is whether each complex abstraction is still cost-effective under changed economics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Clarify the historical design principle before applying it, acknowledge the reasons abstractions exist, then state how lower generation cost changes their justification. Reversing this would make reduction look like a rejection of all abstraction."
+      }
+    },
+    {
+      "id": "instruction-set",
+      "heading": "The Instruction Set for AI Development",
+      "controlling_idea": "A reduced software instruction set helps only when both agents and humans can reason about sufficient capability.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S1",
+          "S2"
+        ],
+        "how": "A reduced software instruction set helps only when both agents and humans can reason about sufficient capability."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Complex abstractions must justify their cost.",
+        "introduces": "The concrete platform rules an agent must decode and the smaller alternatives a reviewer can inspect.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p027",
+          "form": "prose",
+          "controlling_idea": "A framework is both a development aid and a set of instructions an agent must follow.",
+          "function": "definition",
+          "evidence": []
+        },
+        {
+          "id": "p028",
+          "form": "prose",
+          "controlling_idea": "Using a framework correctly requires understanding its patterns, versions, interactions, and implicit behavior.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing inventory of allowed and idiomatic patterns, versions, deprecated APIs, plugins, generated files, configuration, runtime conventions, and errors.",
+              "shows": "These are the concrete decoding obligations hidden behind the label framework."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A framework is both a development aid and a set of instructions an agent must follow.",
+            "introduces": "Using a framework correctly requires understanding its patterns, versions, interactions, and implicit behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p029",
+          "form": "prose",
+          "controlling_idea": "Those obligations make instruction decoding a significant part of the work.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Using a framework correctly requires understanding its patterns, versions, interactions, and implicit behavior.",
+            "introduces": "Those obligations make instruction decoding a significant part of the work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p030",
+          "form": "prose",
+          "controlling_idea": "A reduced platform narrows the choices an agent and reviewer must interpret.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all seven platform-surface rows comparing large and reduced instruction sets: UI, Messaging, Data access, Configuration, Background jobs, Frontend state, and Integrations.",
+              "shows": "The alternatives make reduced surface concrete without making it automatically preferable; briefly gloss DOM as the browser's document object model, outbox/inbox records as tracking messages to send or already received, and idempotency keys as identifiers used to avoid repeating an effect."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Those obligations make instruction decoding a significant part of the work.",
+            "introduces": "A reduced platform narrows the choices an agent and reviewer must interpret.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p031",
+          "form": "prose",
+          "controlling_idea": "The reduced alternative is preferable only if it supplies enough capability with less hidden behavior.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A reduced platform narrows the choices an agent and reviewer must interpret.",
+            "introduces": "The reduced alternative is preferable only if it supplies enough capability with less hidden behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p032",
+          "form": "prose",
+          "controlling_idea": "The decisive question is whether humans and AI can reason about the result together.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 2, assets/images/risc-for-ai-software-development/large-vs-reduced-platform-surface.jpeg, with its existing caption.",
+              "shows": "The figure shows that the instruction set is shared by the agent and reviewer; preserve image, alt text, and caption exactly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The reduced alternative is preferable only if it supplies enough capability with less hidden behavior.",
+            "introduces": "The decisive question is whether humans and AI can reason about the result together.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Show what the agent must know before comparing large and reduced surfaces, then qualify the comparison by capability and joint understanding. A table without that setup would invite readers to treat its reduced column as a universal recommendation."
+      }
+    },
+    {
+      "id": "text-first-tools",
+      "heading": "Claude Code and Codex as RISC-Like Tools",
+      "controlling_idea": "Text-first agent workflows illustrate a reduced surface whose changes remain visible for human review.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S2"
+        ],
+        "how": "Text-first agent workflows illustrate a reduced surface whose changes remain visible for human review."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Humans and agents need a shared surface they can reason about.",
+        "introduces": "The existing Claude Code and Codex examples built around files, tests, and diffs.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p033",
+          "form": "prose",
+          "controlling_idea": "Claude Code and Codex illustrate how development work can operate over an inspectable filesystem substrate.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the published claim about Claude Code and Codex: their most powerful substrate is often the filesystem, with text files, code, configuration, tests, scripts, and generated diffs.",
+              "shows": "These are the article's existing examples of the principle; retain the qualifier often and add no product claims or updates.",
+              "source": "Published article, Claude Code and Codex as RISC-Like Tools"
+            }
+          ]
+        },
+        {
+          "id": "p034",
+          "form": "prose",
+          "controlling_idea": "That filesystem substrate is a small instruction set.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Claude Code and Codex illustrate how development work can operate over an inspectable filesystem substrate.",
+            "introduces": "That filesystem substrate is a small instruction set.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p035",
+          "form": "list",
+          "controlling_idea": "Basic file and development operations compose the existing agent workflow.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the nine operations from read files and search text through update documentation and leave changes in version control for human review.",
+              "shows": "The list gives concrete actions whose results a human can inspect; do not add operations or expand product capabilities."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "That filesystem substrate is a small instruction set.",
+            "introduces": "Basic file and development operations compose the existing agent workflow.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p036",
+          "form": "prose",
+          "controlling_idea": "These operations support substantial work while keeping its changed behavior reviewable.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the existing review, test, diff, revert, split, discussion, and source-as-shared-surface explanation.",
+              "shows": "The value lies in concrete evidence and reversibility rather than in operation count alone."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Basic file and development operations compose the existing agent workflow.",
+            "introduces": "These operations support substantial work while keeping its changed behavior reviewable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p037",
+          "form": "prose",
+          "controlling_idea": "Opaque configuration and hidden workflow state make the same review questions harder to answer.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the generic comparison with opaque SaaS configuration, hidden workflow state, UI-only admin panels, and nested conventions, plus the existing questions about changes, truth, diffs, tests, rollback, and hidden settings.",
+              "shows": "The contrast identifies why a weaker visible change record increases review difficulty without adding a claim about any named service."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "These operations support substantial work while keeping its changed behavior reviewable.",
+            "introduces": "Opaque configuration and hidden workflow state make the same review questions harder to answer.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p038",
+          "form": "prose",
+          "controlling_idea": "Text-first primitives each give reviewers a concrete way to inspect or check work.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve the seven-row Text-first primitive / Why it helps AI-assisted development table.",
+              "shows": "Each primitive contributes a distinct review affordance, from explicit behavior to visible intent; preserve all wording and named operations."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Opaque configuration and hidden workflow state make the same review questions harder to answer.",
+            "introduces": "Text-first primitives each give reviewers a concrete way to inspect or check work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p039",
+          "form": "prose",
+          "controlling_idea": "Small composable primitives earn trust by keeping their work visible.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Text-first primitives each give reviewers a concrete way to inspect or check work.",
+            "introduces": "Small composable primitives earn trust by keeping their work visible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p040",
+          "form": "prose",
+          "controlling_idea": "The same inspectable-source principle applies to specifications and other knowledge work.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the examples of architecture, product modeling, operations, governance, and [[spec-driven-authoring]], where spec and post are both reviewable files.",
+              "shows": "The extension follows the shared-source principle without requiring readers to follow the cross-link to understand it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "Small composable primitives earn trust by keeping their work visible.",
+            "introduces": "The same inspectable-source principle applies to specifications and other knowledge work.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Introduce the existing tools and their file substrate, list the operations, then explain their review value through a contrast and a table before applying the same principle beyond code. The benefits would be abstract without the concrete operations first."
+      }
+    },
+    {
+      "id": "dependency-risks",
+      "heading": "Fewer Dependencies, Fewer Hidden Risks",
+      "controlling_idea": "A dependency decision must weigh its concentrated expertise against the hidden obligations it imports.",
+      "function": "comparison",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "A dependency decision must weigh its concentrated expertise against the hidden obligations it imports."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Text-first operations keep the change visible.",
+        "introduces": "Dependencies can supply expertise while hiding behavior and obligations behind that visible code.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p041",
+          "form": "prose",
+          "controlling_idea": "Good dependencies concentrate expertise that teams should not casually discard.",
+          "function": "counterargument",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve security, accessibility, protocol details, browser quirks, cloud integration, performance, and compatibility as benefits of expertise.",
+              "shows": "These benefits explain why avoiding every dependency would recreate infrastructure without its accumulated knowledge."
+            }
+          ]
+        },
+        {
+          "id": "p042",
+          "form": "list",
+          "controlling_idea": "Dependencies also bring risks and obligations that are not visible in a short import statement.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the ten existing dependency-risk bullets, from transitive vulnerabilities to unfamiliar debugging paths.",
+              "shows": "The list makes the total ownership cost visible, including lifecycle, legal, operational, and integration concerns."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Good dependencies concentrate expertise that teams should not casually discard.",
+            "introduces": "Dependencies also bring risks and obligations that are not visible in a short import statement.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p043",
+          "form": "prose",
+          "controlling_idea": "Generated code may import familiar-looking dependencies without matching the organization's needs or maintenance appetite.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing twenty-lines local alternative and seen-often framework-pattern examples.",
+              "shows": "A familiar generated choice is not evidence that the dependency's burden fits the task; retain twenty lines exactly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Dependencies also bring risks and obligations that are not visible in a short import statement.",
+            "introduces": "Generated code may import familiar-looking dependencies without matching the organization's needs or maintenance appetite.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p044",
+          "form": "prose",
+          "controlling_idea": "The usual warning against reinventing the wheel assumes expensive human implementation.",
+          "function": "context",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Generated code may import familiar-looking dependencies without matching the organization's needs or maintenance appetite.",
+            "introduces": "The usual warning against reinventing the wheel assumes expensive human implementation.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p045",
+          "form": "prose",
+          "controlling_idea": "AI changes that implementation-cost assumption.",
+          "function": "transition",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The usual warning against reinventing the wheel assumes expensive human implementation.",
+            "introduces": "AI changes that implementation-cost assumption.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p046",
+          "form": "prose",
+          "controlling_idea": "Cheap local implementation makes the relevant comparison one of simplicity, safety, and maintainability under ownership.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve the existing wheel comparison blockquote and the conditional small, readable, tested implementation in minutes.",
+              "shows": "The question includes ownership and reliability, so lower generation cost alone does not decide it."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "AI changes that implementation-cost assumption.",
+            "introduces": "Cheap local implementation makes the relevant comparison one of simplicity, safety, and maintainability under ownership.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p047",
+          "form": "prose",
+          "controlling_idea": "High-risk universal problems still justify mature implementations rather than casual AI rewrites.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the list of cryptography, authentication, payment processing, distributed consensus, database engines, accessibility primitives, protocol implementations, and security-sensitive infrastructure.",
+              "shows": "These examples identify expertise whose failure consequences can outweigh local simplicity."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Cheap local implementation makes the relevant comparison one of simplicity, safety, and maintainability under ownership.",
+            "introduces": "High-risk universal problems still justify mature implementations rather than casual AI rewrites.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p048",
+          "form": "prose",
+          "controlling_idea": "Narrow local behaviors may sometimes be easier to own than another general dependency.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the event dispatcher, DOM component, narrow internal CSV parser, retry loop, one-page admin interface, and mapping function examples.",
+              "shows": "These examples bound the situations in which local generated code may reduce review and maintenance burden."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "High-risk universal problems still justify mature implementations rather than casual AI rewrites.",
+            "introduces": "Narrow local behaviors may sometimes be easier to own than another general dependency.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p049",
+          "form": "prose",
+          "controlling_idea": "The aim is to recalculate reuse economics rather than reinvent everything.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Narrow local behaviors may sometimes be easier to own than another general dependency.",
+            "introduces": "The aim is to recalculate reuse economics rather than reinvent everything.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Credit dependencies before listing their risks, then identify the changed implementation assumption and compare high-risk and narrow local cases. Reversing the caveat and examples would suggest the argument is against dependencies as a class."
+      }
+    },
+    {
+      "id": "reuse-decision",
+      "heading": "Reinventing the Wheel, Carefully",
+      "controlling_idea": "Teams can make the reuse decision by classifying the problem and checking whether local ownership is tractable.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3"
+        ],
+        "how": "Teams can make the reuse decision by classifying the problem and checking whether local ownership is tractable."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Reuse must be reconsidered against total ownership cost.",
+        "introduces": "A problem classification and concrete acceptance questions for generated local code.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p050",
+          "form": "prose",
+          "controlling_idea": "The warning against reinventing the wheel protects teams from underestimated work and edge cases.",
+          "function": "context",
+          "evidence": []
+        },
+        {
+          "id": "p051",
+          "form": "prose",
+          "controlling_idea": "The warning remains useful without being a complete decision rule.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The warning against reinventing the wheel protects teams from underestimated work and edge cases.",
+            "introduces": "The warning remains useful without being a complete decision rule.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p052",
+          "form": "prose",
+          "controlling_idea": "High-risk, medium-complexity, and narrow local problems call for different reuse decisions.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all three rows of the Wheel type / Reuse or generate? / Reason table.",
+              "shows": "The classification separates mature universal implementations from context-dependent product behavior and bounded local code."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The warning remains useful without being a complete decision rule.",
+            "introduces": "High-risk, medium-complexity, and narrow local problems call for different reuse decisions.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p053",
+          "form": "prose",
+          "controlling_idea": "Cheaper code and supporting artifacts make more small local implementations feasible.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the existing claim about tests, examples, documentation, and variants becoming easier to generate.",
+              "shows": "Lower production cost expands the candidates for judgment without establishing their reliability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "High-risk, medium-complexity, and narrow local problems call for different reuse decisions.",
+            "introduces": "Cheaper code and supporting artifacts make more small local implementations feasible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p054",
+          "form": "prose",
+          "controlling_idea": "More feasible local implementations increase the need for judgment.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Cheaper code and supporting artifacts make more small local implementations feasible.",
+            "introduces": "More feasible local implementations increase the need for judgment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p055",
+          "form": "list",
+          "controlling_idea": "A local replacement is acceptable only when its behavior, tests, failure scope, and ownership can be understood.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the seven existing questions from one-sitting understanding through a clear reason not to use a mature library.",
+              "shows": "The questions turn the comparison into a bounded decision; gloss property tests as checking general rules, regression tests as guarding previous behavior, and golden tests as comparing against known expected examples at their first use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "More feasible local implementations increase the need for judgment.",
+            "introduces": "A local replacement is acceptable only when its behavior, tests, failure scope, and ownership can be understood.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p056",
+          "form": "prose",
+          "controlling_idea": "Unmet ownership and evaluation conditions favor reuse; satisfying them can make local generation reasonable.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "figure",
+              "what": "Figure 3, assets/images/risc-for-ai-software-development/reuse-vs-generate-decision-path.jpeg, with its existing caption.",
+              "shows": "The decision path keeps judgment between lower generation cost and a reuse decision; preserve image, alt text, and caption exactly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A local replacement is acceptable only when its behavior, tests, failure scope, and ownership can be understood.",
+            "introduces": "Unmet ownership and evaluation conditions favor reuse; satisfying them can make local generation reasonable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Start with the reason for the reuse warning, distinguish three scopes of problem, then test a particular local replacement against explicit criteria. The checklist would lack a risk boundary without the classification first."
+      }
+    },
+    {
+      "id": "simple-not-primitive",
+      "heading": "Simple Does Not Mean Primitive",
+      "controlling_idea": "Useful abstraction makes behavior easier to understand rather than hiding the behavior reviewers need to evaluate.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S3"
+        ],
+        "how": "Useful abstraction makes behavior easier to understand rather than hiding the behavior reviewers need to evaluate."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Local generation is justified only under explicit reliability and ownership conditions.",
+        "introduces": "Why a reduced platform can remain capable without hiding its failure modes.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p057",
+          "form": "prose",
+          "controlling_idea": "A reduced software platform should manage complexity as deliberately as the RISC hardware analogy, preserving capability rather than minimizing it.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Preserve every word of the two original opening paragraphs, joining them with a space: A reduced platform is not a primitive platform. RISC machines were not less serious computers. They moved complexity to places where it could be managed effectively: compilers, pipelines, registers, caches, and implementation discipline. The software analogy should be equally disciplined.",
+              "shows": "The existing hardware account and its explicit software comparison make one point about disciplined management of complexity; their consolidation retains all words and claims without a second opening beat."
+            }
+          ]
+        },
+        {
+          "id": "p058",
+          "form": "list",
+          "controlling_idea": "Simple foundations can support serious behavior when they fit the domain.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all six bullets about HTML/CSS/DOM, SQL, HTTP, files/queues/tables/events, explicit state machines, and narrow typed functions.",
+              "shows": "These familiar foundations establish capability without equating simplicity with limited usefulness."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A reduced software platform should manage complexity as deliberately as the RISC hardware analogy, preserving capability rather than minimizing it.",
+            "introduces": "Simple foundations can support serious behavior when they fit the domain.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p059",
+          "form": "prose",
+          "controlling_idea": "The target is unnecessary abstraction where generated behavior must be reviewed.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Simple foundations can support serious behavior when they fit the domain.",
+            "introduces": "The target is unnecessary abstraction where generated behavior must be reviewed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p060",
+          "form": "prose",
+          "controlling_idea": "Good abstraction compresses understanding while bad abstraction conceals it.",
+          "function": "comparison",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The target is unnecessary abstraction where generated behavior must be reviewed.",
+            "introduces": "Good abstraction compresses understanding while bad abstraction conceals it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p061",
+          "form": "prose",
+          "controlling_idea": "Generated fluency in an abstraction may hide brittle use that lacks the team's operational understanding.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the existing contrast between a human team's repeated framework use and an agent's apparently fluent generated code.",
+              "shows": "The contrast explains why visible syntax alone does not establish reliable use of the abstraction."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Good abstraction compresses understanding while bad abstraction conceals it.",
+            "introduces": "Generated fluency in an abstraction may hide brittle use that lacks the team's operational understanding.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p062",
+          "form": "prose",
+          "controlling_idea": "A reduced surface helps make those failure modes visible.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Generated fluency in an abstraction may hide brittle use that lacks the team's operational understanding.",
+            "introduces": "A reduced surface helps make those failure modes visible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "One opening paragraph carries the hardware-to-software comparison about disciplined complexity management, followed by familiar durable building blocks and the distinction between useful abstraction and brittle apparent fluency. Combining the comparison keeps its qualification next to the hardware account; the examples still follow the earlier reliability conditions rather than functioning as a blanket rewrite instruction."
+      }
+    },
+    {
+      "id": "frontend-example",
+      "heading": "Example: Frontend Without the Framework Reflex",
+      "controlling_idea": "For a narrow internal frontend, the smallest reliable platform depends on the capabilities and conventions the team must preserve.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "For a narrow internal frontend, the smallest reliable platform depends on the capabilities and conventions the team must preserve."
+      },
+      "transition_in": {
+        "relationship": "example",
+        "carries_over": "Reduced surfaces can make failure modes more visible without rejecting useful abstraction.",
+        "introduces": "The existing illustrative comparison between a framework stack and explicit browser code for an internal tool.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p063",
+          "form": "prose",
+          "controlling_idea": "A small failed-import review dashboard supplies a bounded illustrative frontend need.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "scenario",
+              "what": "The existing hypothetical internal dashboard for reviewing failed imports, retrying records, and annotating known issues.",
+              "shows": "It fixes the scope that makes the following comparison meaningful; preserve its illustrative framing."
+            }
+          ]
+        },
+        {
+          "id": "p064",
+          "form": "list",
+          "controlling_idea": "A familiar framework-first response assembles many capabilities before their need is established.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing nine-item default stack list, including React, routing, component/table/form libraries, state, build, lint/test plugins, and generated clients.",
+              "shows": "The list makes the potential review surface concrete without adding claims about a product."
+            }
+          ],
+          "transition_in": {
+            "relationship": "example",
+            "carries_over": "A small failed-import review dashboard supplies a bounded illustrative frontend need.",
+            "introduces": "A familiar framework-first response assembles many capabilities before their need is established.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p065",
+          "form": "prose",
+          "controlling_idea": "That framework stack may fit an established organizational platform or a growing product surface.",
+          "function": "counterargument",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A familiar framework-first response assembles many capabilities before their need is established.",
+            "introduces": "That framework stack may fit an established organizational platform or a growing product surface.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p066",
+          "form": "list",
+          "controlling_idea": "A narrow workflow may instead be implemented with a small explicit browser surface.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the seven-item alternative list, including one HTML page, one CSS file, one JavaScript module, direct DOM rendering, fetch calls, local state, and focused tests.",
+              "shows": "The alternative makes most behavior directly inspectable under the stated narrow scope; preserve all existing counts and technologies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "That framework stack may fit an established organizational platform or a growing product surface.",
+            "introduces": "A narrow workflow may instead be implemented with a small explicit browser surface.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p067",
+          "form": "prose",
+          "controlling_idea": "The explicit alternative exchanges platform capabilities for easier inspection, so it is not automatically better.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve every caveat about accessibility, component reuse, routing, design-system consistency, and long-term maintainability alongside the review and dependency benefits.",
+              "shows": "These omissions determine whether inspection gains actually justify the smaller implementation."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A narrow workflow may instead be implemented with a small explicit browser surface.",
+            "introduces": "The explicit alternative exchanges platform capabilities for easier inspection, so it is not automatically better.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p068",
+          "form": "prose",
+          "controlling_idea": "Context determines which set of tradeoffs the team can accept.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The explicit alternative exchanges platform capabilities for easier inspection, so it is not automatically better.",
+            "introduces": "Context determines which set of tradeoffs the team can accept.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p069",
+          "form": "prose",
+          "controlling_idea": "The correct target is the smallest platform that supports reliable behavior and confident review.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Context determines which set of tradeoffs the team can accept.",
+            "introduces": "The correct target is the smallest platform that supports reliable behavior and confident review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p070",
+          "form": "prose",
+          "controlling_idea": "Platform size, stack fashion, and generation speed are inadequate substitutes for reliable behavior and confident review.",
+          "function": "refutation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve all words of the original three Not: paragraphs in one prose paragraph: Not: \"What is the smallest platform possible?\" Not: \"What is the trendiest stack?\" Not: \"What can AI generate most quickly?\"",
+              "shows": "The three rejected shortcuts jointly qualify the positive smallest-reliable-platform criterion, so one paragraph preserves the contrast without three successive ending beats."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The correct target is the smallest platform that supports reliable behavior and confident review.",
+            "introduces": "Platform size, stack fashion, and generation speed are inadequate substitutes for reliable behavior and confident review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Fix one narrow workflow, describe the framework choice and when it fits, then compare explicit browser code with its capability gaps before stating the decision criterion. A single final qualification groups minimum size, fashion, and generation speed as inadequate substitutes for reliability and review. Without the initial scope or qualifications, the example would imply that the smaller stack is universally safer."
+      }
+    },
+    {
+      "id": "messaging-example",
+      "heading": "Example: Messaging Without a Giant Abstraction",
+      "controlling_idea": "A narrow messaging need can expose its operating behavior without replacing the underlying mature infrastructure.",
+      "function": "example",
+      "advances_thesis": {
+        "supports": [
+          "S4"
+        ],
+        "how": "A narrow messaging need can expose its operating behavior without replacing the underlying mature infrastructure."
+      },
+      "transition_in": {
+        "relationship": "similarity",
+        "carries_over": "The frontend example selects enough platform for reliable and reviewable behavior, rather than choosing by size, fashion, or generation speed alone.",
+        "introduces": "The same scope-based decision for messaging, where recovery and duplicate handling must remain visible.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p071",
+          "form": "prose",
+          "controlling_idea": "Messaging frameworks address real edge cases in distributed operation.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the full existing list of retries, ordering, poison messages, idempotency, dead letters, schema evolution, observability, replay, backpressure, exactly-once illusions, and recovery.",
+              "shows": "The list explains the expertise a replacement must preserve; gloss poison messages and dead letters as repeatedly failing messages and their holding area, backpressure as slowing intake when processing falls behind, and exactly-once illusions as the danger of assuming an effect cannot repeat."
+            }
+          ]
+        },
+        {
+          "id": "p072",
+          "form": "prose",
+          "controlling_idea": "A mature framework may be justified by those operating concerns.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Messaging frameworks address real edge cases in distributed operation.",
+            "introduces": "A mature framework may be justified by those operating concerns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p073",
+          "form": "list",
+          "controlling_idea": "A particular system may need only a small subset of messaging patterns.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the six bullets about publishing after a database transaction, idempotent consumption, retrying, isolating poison messages, status, and metrics.",
+              "shows": "The system's actual behavior bounds which abstractions have to be exposed."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A mature framework may be justified by those operating concerns.",
+            "introduces": "A particular system may need only a small subset of messaging patterns.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p074",
+          "form": "prose",
+          "controlling_idea": "An overbroad messaging framework can hide an inconsistent or hard-to-debug generated solution.",
+          "function": "cause_effect",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A particular system may need only a small subset of messaging patterns.",
+            "introduces": "An overbroad messaging framework can hide an inconsistent or hard-to-debug generated solution.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p075",
+          "form": "list",
+          "controlling_idea": "A small explicit instruction set can make those required messaging behaviors visible.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the eight existing primitives: outbox_messages, message_id, explicit handlers, retry count/next-at, dead-letter table, structured logs, dashboard query, and contract test per message shape.",
+              "shows": "The local data and handlers expose what happens to messages, including failure and retry paths; the earlier glosses make the terms usable here."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "An overbroad messaging framework can hide an inconsistent or hard-to-debug generated solution.",
+            "introduces": "A small explicit instruction set can make those required messaging behaviors visible.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p076",
+          "form": "prose",
+          "controlling_idea": "The explicit alternative makes the operating behavior easier to inspect.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "A small explicit instruction set can make those required messaging behaviors visible.",
+            "introduces": "The explicit alternative makes the operating behavior easier to inspect.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p077",
+          "form": "prose",
+          "controlling_idea": "Reducing unnecessary domain wrappers does not mean rebuilding Kafka, SQS, RabbitMQ, or a workflow engine.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve all named infrastructure and the existing boundary between a simple domain need and an overbroad wrapper.",
+              "shows": "The example narrows the application surface while retaining mature infrastructure where it is needed; add no product comparisons."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "The explicit alternative makes the operating behavior easier to inspect.",
+            "introduces": "Reducing unnecessary domain wrappers does not mean rebuilding Kafka, SQS, RabbitMQ, or a workflow engine.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Acknowledge the distributed-systems hazards before narrowing the required patterns, then show explicit local handling and keep the mature-infrastructure boundary. Starting with the local tables would hide why the framework may still be needed."
+      }
+    },
+    {
+      "id": "abstraction-economics",
+      "heading": "AI Changes the Economics of Abstraction",
+      "controlling_idea": "The examples shift the abstraction decision from implementation savings to total confidence in the resulting system.",
+      "function": "synthesis",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S4"
+        ],
+        "how": "The examples shift the abstraction decision from implementation savings to total confidence in the resulting system."
+      },
+      "transition_in": {
+        "relationship": "conclusion_summary",
+        "carries_over": "Both examples compare required capability, inspection effort, and the expertise a smaller surface might lose.",
+        "introduces": "The common economic decision questions behind those comparisons.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p078",
+          "form": "prose",
+          "controlling_idea": "Frameworks and reuse became valuable by saving work and concentrating expertise.",
+          "function": "context",
+          "evidence": []
+        },
+        {
+          "id": "p079",
+          "form": "list",
+          "controlling_idea": "Those benefits carry learning, operational, dependency, and exit costs.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the eight existing abstraction-cost bullets from learning cost to removal difficulty.",
+              "shows": "The list explains costs that generation savings do not erase; gloss mechanical sympathy as understanding how code uses the underlying system at its first use."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Frameworks and reuse became valuable by saving work and concentrating expertise.",
+            "introduces": "Those benefits carry learning, operational, dependency, and exit costs.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p080",
+          "form": "prose",
+          "controlling_idea": "Cheaper fit-for-purpose implementation changes the balance between those costs and benefits.",
+          "function": "cause_effect",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Synthesize the frontend and messaging cases explicitly: compare hidden behavior with the expertise and guarantees a mature abstraction retains, using the previously established implementation-cost premise.",
+              "shows": "The paragraph applies the economic premise to the two just-completed cases instead of presenting it again as new background."
+            }
+          ],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Those benefits carry learning, operational, dependency, and exit costs.",
+            "introduces": "Cheaper fit-for-purpose implementation changes the balance between those costs and benefits.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p081",
+          "form": "prose",
+          "controlling_idea": "The useful comparison asks how a platform affects trust and maintenance rather than just implementation speed.",
+          "function": "comparison",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all five Traditional question / AI-era question rows.",
+              "shows": "The paired questions apply the same contextual tradeoff to framework time savings, packages, boilerplate, standardization, and demos; explain that each shifts attention to reviewable behavior."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Cheaper fit-for-purpose implementation changes the balance between those costs and benefits.",
+            "introduces": "The useful comparison asks how a platform affects trust and maintenance rather than just implementation speed.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p082",
+          "form": "prose",
+          "controlling_idea": "Either a framework or a reduced platform may win under the changed economics.",
+          "function": "analysis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The useful comparison asks how a platform affects trust and maintenance rather than just implementation speed.",
+            "introduces": "Either a framework or a reduced platform may win under the changed economics.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p083",
+          "form": "prose",
+          "controlling_idea": "AI therefore increases the importance of architectural judgment.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "cause_effect",
+            "carries_over": "Either a framework or a reduced platform may win under the changed economics.",
+            "introduces": "AI therefore increases the importance of architectural judgment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "After two concrete cases, name both the benefits and carrying costs of abstraction, then compare the old and new decision questions. Putting this generalization before the cases would repeat the earlier economic claim without showing its practical meaning."
+      }
+    },
+    {
+      "id": "evaluation",
+      "heading": "Reduced Platforms Need Stronger Evaluation",
+      "controlling_idea": "A reduced platform is valuable because it makes rigorous evaluation more tractable, not because small code is inherently safe.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S5"
+        ],
+        "how": "A reduced platform is valuable because it makes rigorous evaluation more tractable, not because small code is inherently safe."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Architectural judgment must compare confidence in the resulting behavior.",
+        "introduces": "The tests, runtime visibility, and review that supply evidence for that confidence.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p084",
+          "form": "prose",
+          "controlling_idea": "A reduced platform cannot replace evaluation.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p085",
+          "form": "prose",
+          "controlling_idea": "Small generated code can still contain serious errors or tests that prove little.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the existing examples of missed edge cases, hallucinated APIs, concurrency mistakes, missing security checks, and plausible weak tests.",
+              "shows": "The failures distinguish inspectability from correctness."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A reduced platform cannot replace evaluation.",
+            "introduces": "Small generated code can still contain serious errors or tests that prove little.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p086",
+          "form": "prose",
+          "controlling_idea": "Reduction helps by making evaluation easier to carry out.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Small generated code can still contain serious errors or tests that prove little.",
+            "introduces": "Reduction helps by making evaluation easier to carry out.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p087",
+          "form": "prose",
+          "controlling_idea": "Fewer hidden layers allow reviewers to test and inspect more of the actual behavior directly.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve golden tests, state-transition exercises, logs, failure paths, and asking AI to explain the mechanism.",
+              "shows": "Each example connects reduced surface to a concrete evaluation activity rather than an assumption of safety."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Reduction helps by making evaluation easier to carry out.",
+            "introduces": "Fewer hidden layers allow reviewers to test and inspect more of the actual behavior directly.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p088",
+          "form": "prose",
+          "controlling_idea": "The platform contract should include complementary automated and human evaluation layers.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all eight Evaluation layer / What it provides rows: unit, contract, golden, property, mutation/fault, observability, dependency checks, and review checklist.",
+              "shows": "The layers check different failure modes and ownership signals; clarify mutation/fault tests as deliberately breaking behavior or injecting failures to check that the checks respond."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Fewer hidden layers allow reviewers to test and inspect more of the actual behavior directly.",
+            "introduces": "The platform contract should include complementary automated and human evaluation layers.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p089",
+          "form": "prose",
+          "controlling_idea": "A spec, an inspectable implementation, and evaluation connect intended outcomes to evidence about delivered behavior.",
+          "function": "synthesis",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve [[spec-driven-authoring]] and [[leadership-ladder]] plus the existing in-paragraph explanation of a spec's intent, constraints, criteria, and review points.",
+              "shows": "The links offer depth while the paragraph itself explains how the three parts work together."
+            }
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The platform contract should include complementary automated and human evaluation layers.",
+            "introduces": "A spec, an inspectable implementation, and evaluation connect intended outcomes to evidence about delivered behavior.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p090",
+          "form": "prose",
+          "controlling_idea": "All three parts are necessary to the proposed approach.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "A spec, an inspectable implementation, and evaluation connect intended outcomes to evidence about delivered behavior.",
+            "introduces": "All three parts are necessary to the proposed approach.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Reject size as proof, state the remaining failure modes, then show how less hidden behavior helps direct testing and specify the evaluation layers. The matrix would otherwise look like an optional addition after the platform decision."
+      }
+    },
+    {
+      "id": "retain-complexity",
+      "heading": "Where Complexity Still Belongs",
+      "controlling_idea": "The smallest reliable choice is whichever option reduces the organization's total burden while preserving needed safeguards.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5"
+        ],
+        "how": "The smallest reliable choice is whichever option reduces the organization's total burden while preserving needed safeguards."
+      },
+      "transition_in": {
+        "relationship": "contrast",
+        "carries_over": "Evaluation makes the reliability obligation explicit.",
+        "introduces": "Conditions where shared expertise is the simpler reliable choice and conditions where local reduction is warranted.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p091",
+          "form": "prose",
+          "controlling_idea": "Reduction becomes dangerous when treated as an ideology.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p092",
+          "form": "prose",
+          "controlling_idea": "A well-owned mature framework can be the organization's simplest reliable choice.",
+          "function": "explanation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Reduction becomes dangerous when treated as an ideology.",
+            "introduces": "A well-owned mature framework can be the organization's simplest reliable choice.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p093",
+          "form": "list",
+          "controlling_idea": "Mature abstractions are warranted when risk, expertise, interoperability, or existing ownership favor them.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all seven reuse conditions, including security, standards, hidden edge cases, performance expertise, interoperability, platform ownership, and essential safeguards.",
+              "shows": "The conditions state when removing complexity would also remove expertise the organization relies on."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A well-owned mature framework can be the organization's simplest reliable choice.",
+            "introduces": "Mature abstractions are warranted when risk, expertise, interoperability, or existing ownership favor them.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p094",
+          "form": "list",
+          "controlling_idea": "Reduction is warranted when the local behavior is narrow, testable, recoverable, owned, and easier to review.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all seven reduce-or-generate conditions, including local scope, tiny usage, readable code, adequate testing, recoverable failure, dependency versus maintenance risk, and review difficulty.",
+              "shows": "These conditions bound the alternative rather than prescribing local code for every task."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "Mature abstractions are warranted when risk, expertise, interoperability, or existing ownership favor them.",
+            "introduces": "Reduction is warranted when the local behavior is narrow, testable, recoverable, owned, and easier to review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p095",
+          "form": "prose",
+          "controlling_idea": "The target is less unearned complexity rather than less code.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Reduction is warranted when the local behavior is narrow, testable, recoverable, owned, and easier to review.",
+            "introduces": "The target is less unearned complexity rather than less code.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "comparison",
+        "rationale": "Warn against turning reduction into ideology, establish the value of owned shared platforms, then place reuse and reduction criteria side by side. The conditions should follow evaluation so readers interpret small enough to test as an obligation rather than a visual impression."
+      }
+    },
+    {
+      "id": "platform-strategy",
+      "heading": "A RISC-Like Platform Strategy for AI Teams",
+      "controlling_idea": "An organization can deliberately make its preferred platform primitives and evaluation obligations legible to both agents and people.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S2",
+          "S5",
+          "S6"
+        ],
+        "how": "An organization can deliberately make its preferred platform primitives and evaluation obligations legible to both agents and people."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "The criteria distinguish earned complexity from unnecessary review burden.",
+        "introduces": "A shared platform policy that makes those criteria usable across everyday agent work.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p096",
+          "form": "prose",
+          "controlling_idea": "A trustworthy AI development platform can be designed deliberately rather than left to each generation session.",
+          "function": "recommendation",
+          "evidence": []
+        },
+        {
+          "id": "p097",
+          "form": "list",
+          "controlling_idea": "Shared primitives, visible sources, evaluation, and dependency review make that platform design actionable.",
+          "function": "process",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the nine numbered practices and their full descriptions: blessed primitives, text-first source, examples, dependency review, explicit adapters, nearby tests, observability, specs, and platform-drift review.",
+              "shows": "The practices turn a local preference into repeatable organizational guidance; gloss blessed primitives as the team's approved basic building blocks and retain all named technologies."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "A trustworthy AI development platform can be designed deliberately rather than left to each generation session.",
+            "introduces": "Shared primitives, visible sources, evaluation, and dependency review make that platform design actionable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p098",
+          "form": "prose",
+          "controlling_idea": "The policy should keep the platform legible as it evolves rather than freeze technology.",
+          "function": "explanation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Shared primitives, visible sources, evaluation, and dependency review make that platform design actionable.",
+            "introduces": "The policy should keep the platform legible as it evolves rather than freeze technology.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p099",
+          "form": "prose",
+          "controlling_idea": "The organization should explicitly state preferred primitives, justified exceptions, and required checks.",
+          "function": "example",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve the existing organization-level statement beginning When AI writes code here.",
+              "shows": "The statement makes the shared agreement concrete for an agent and reviewer."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The policy should keep the platform legible as it evolves rather than freeze technology.",
+            "introduces": "The organization should explicitly state preferred primitives, justified exceptions, and required checks.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p100",
+          "form": "prose",
+          "controlling_idea": "That explicit agreement is the software organization's reduced instruction set.",
+          "function": "synthesis",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The organization should explicitly state preferred primitives, justified exceptions, and required checks.",
+            "introduces": "That explicit agreement is the software organization's reduced instruction set.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "large_to_small",
+        "rationale": "Move from organizational intention to specific practices and then to the agreement a team should be able to state. The agreement is credible only after the practices make its terms concrete."
+      }
+    },
+    {
+      "id": "human-role",
+      "heading": "The Human Role",
+      "controlling_idea": "Engineers retain responsibility for the platform choices and review practices that determine how much generated complexity the organization can own.",
+      "function": "explanation",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Engineers retain responsibility for the platform choices and review practices that determine how much generated complexity the organization can own."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "A legible platform policy states preferred primitives and required checks.",
+        "introduces": "The people who choose, maintain, and judge that policy.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p101",
+          "form": "prose",
+          "controlling_idea": "RISC shifted where hardware specialists exercised judgment rather than removing their role.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "analogy",
+              "what": "Preserve the existing compiler-writer and computer-architect comparison.",
+              "shows": "This continues the limited analogy about the location of judgment without adding historical details."
+            }
+          ]
+        },
+        {
+          "id": "p102",
+          "form": "prose",
+          "controlling_idea": "Reduced AI platforms likewise change the focus of engineering judgment.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "similarity",
+            "carries_over": "RISC shifted where hardware specialists exercised judgment rather than removing their role.",
+            "introduces": "Reduced AI platforms likewise change the focus of engineering judgment.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p103",
+          "form": "list",
+          "controlling_idea": "Engineering work centers on maintaining the boundaries and evidence that make generated work understandable.",
+          "function": "description",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve all nine duties from choosing the platform surface through deciding when local code has become a framework needing a different owner.",
+              "shows": "The duties assign human ownership to the mechanisms proposed in earlier sections."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Reduced AI platforms likewise change the focus of engineering judgment.",
+            "introduces": "Engineering work centers on maintaining the boundaries and evidence that make generated work understandable.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p104",
+          "form": "prose",
+          "controlling_idea": "The organization's acceptable complexity remains a human decision even when AI generates the code.",
+          "function": "claim",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "Engineering work centers on maintaining the boundaries and evidence that make generated work understandable.",
+            "introduces": "The organization's acceptable complexity remains a human decision even when AI generates the code.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p105",
+          "form": "prose",
+          "controlling_idea": "That responsibility requires agency, judgment, and persuasion in the people setting platform direction.",
+          "function": "explanation",
+          "evidence": [
+            {
+              "kind": "source",
+              "what": "Preserve [[prepare-for-ai-future]] and the existing local explanations of agency, judgment, and persuasion.",
+              "shows": "The paragraph explains the needed capabilities without requiring the later essay as a prerequisite."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The organization's acceptable complexity remains a human decision even when AI generates the code.",
+            "introduces": "That responsibility requires agency, judgment, and persuasion in the people setting platform direction.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "assertion_evidence_reasoning",
+        "rationale": "Use the bounded RISC analogy to introduce a shift in human work, enumerate the work, then make the responsibility explicit. Listing duties before naming the shift would leave readers unsure why they follow from platform reduction."
+      }
+    },
+    {
+      "id": "risks",
+      "heading": "The Risks of RISC Thinking",
+      "controlling_idea": "Platform stewardship must check that apparent reduction has not removed safeguards or moved complexity into less visible places.",
+      "function": "analysis",
+      "advances_thesis": {
+        "supports": [
+          "S6"
+        ],
+        "how": "Platform stewardship must check that apparent reduction has not removed safeguards or moved complexity into less visible places."
+      },
+      "transition_in": {
+        "relationship": "elaboration",
+        "carries_over": "Humans remain responsible for choosing the complexity their organization can own.",
+        "introduces": "The concrete failure modes that this responsibility must detect and contain.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p106",
+          "form": "prose",
+          "controlling_idea": "The RISC analogy becomes unsafe if it replaces judgment.",
+          "function": "claim",
+          "evidence": []
+        },
+        {
+          "id": "p107",
+          "form": "prose",
+          "controlling_idea": "Treating smaller as automatically better creates new failure modes under the guise of reduced trust cost.",
+          "function": "explanation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The RISC analogy becomes unsafe if it replaces judgment.",
+            "introduces": "Treating smaller as automatically better creates new failure modes under the guise of reduced trust cost.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p108",
+          "form": "prose",
+          "controlling_idea": "Local reduction requires explicit controls for its predictable forms of new complexity.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "table",
+              "what": "Preserve all six risk rows and their controls: local-code sprawl, missed hard edge cases, false confidence, fragmentation, displaced complexity, and AI-generated frameworks in disguise.",
+              "shows": "The matrix pairs each mechanism of apparent simplicity with a concrete stewardship response."
+            },
+            {
+              "kind": "figure",
+              "what": "Figure 4, assets/images/risc-for-ai-software-development/risc-risks-and-controls.jpeg, with its existing caption.",
+              "shows": "The figure connects apparent simplicity to fragmented local complexity without stewardship; preserve image, alt text, and caption exactly."
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "Treating smaller as automatically better creates new failure modes under the guise of reduced trust cost.",
+            "introduces": "Local reduction requires explicit controls for its predictable forms of new complexity.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p109",
+          "form": "prose",
+          "controlling_idea": "Removing needed safeguards or recreating a dependency badly is reduction of the wrong thing.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve accessibility, validation, security, observability, operational maturity, and the badly recreated dependency as the existing examples.",
+              "shows": "These losses explain why the whole-system burden matters more than a smaller local codebase."
+            }
+          ],
+          "transition_in": {
+            "relationship": "emphasis",
+            "carries_over": "Local reduction requires explicit controls for its predictable forms of new complexity.",
+            "introduces": "Removing needed safeguards or recreating a dependency badly is reduction of the wrong thing.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p110",
+          "form": "prose",
+          "controlling_idea": "A generated replacement must justify the team's ability to evaluate, operate, evolve, and explain it.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "quotation",
+              "what": "Preserve the existing ownership blockquote beginning If we own this smaller implementation.",
+              "shows": "The question tests total responsibility instead of mere generation capability."
+            }
+          ],
+          "transition_in": {
+            "relationship": "problem_solution",
+            "carries_over": "Removing needed safeguards or recreating a dependency badly is reduction of the wrong thing.",
+            "introduces": "A generated replacement must justify the team's ability to evaluate, operate, evolve, and explain it.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p111",
+          "form": "prose",
+          "controlling_idea": "A mature framework, library, or SaaS platform can be the reduced choice when it lowers total organizational burden.",
+          "function": "analysis",
+          "evidence": [
+            {
+              "kind": "reasoning",
+              "what": "Preserve the existing expertise, testing, documentation, and operational-experience explanation.",
+              "shows": "Concentrated complexity can be simpler for the owning organization than a locally smaller replacement."
+            }
+          ],
+          "transition_in": {
+            "relationship": "contrast",
+            "carries_over": "A generated replacement must justify the team's ability to evaluate, operate, evolve, and explain it.",
+            "introduces": "A mature framework, library, or SaaS platform can be the reduced choice when it lowers total organizational burden.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
+          "id": "p112",
+          "form": "prose",
+          "controlling_idea": "A reduced instruction set requires deliberate design, documentation, testing, and periodic review.",
+          "function": "recommendation",
+          "evidence": [],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "A mature framework, library, or SaaS platform can be the reduced choice when it lowers total organizational burden.",
+            "introduces": "A reduced instruction set requires deliberate design, documentation, testing, and periodic review.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        }
+      ],
+      "flow": {
+        "pattern": "problem_solution",
+        "rationale": "Name the failure of treating the analogy as a rule, compare concrete risks and controls, then use the ownership question to decide whether mature shared complexity is preferable. Ending with stewardship follows from these risks rather than adding a new organizational theme."
+      }
+    },
+    {
+      "id": "reflection-questions",
+      "heading": "Questions to Consider",
+      "controlling_idea": "The reader can use the decision criteria to review the platform surface exposed to AI in their own team.",
+      "function": "recommendation",
+      "advances_thesis": {
+        "supports": [
+          "S3",
+          "S5",
+          "S6"
+        ],
+        "how": "The reader can use the decision criteria to review the platform surface exposed to AI in their own team."
+      },
+      "transition_in": {
+        "relationship": "problem_solution",
+        "carries_over": "Stewardship must deliberately revisit platform choices and hidden complexity.",
+        "introduces": "The preserved practical questions for beginning that review locally.",
+        "form": "paragraph",
+        "placement": "start_of_this"
+      },
+      "paragraphs": [
+        {
+          "id": "p113",
+          "form": "list",
+          "controlling_idea": "A team platform review should identify unused abstractions, candidate local code, preferred primitives, dependency approval, and the evidence required to merge.",
+          "function": "recommendation",
+          "evidence": [
+            {
+              "kind": "example",
+              "what": "Preserve the Questions to Consider lead-in and all seven questions verbatim, moving the section immediately before Final Thought.",
+              "shows": "The questions turn the article's distinctions into a review the reader can undertake without prescribing a particular stack."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conclusion": {
+    "heading": "Final Thought",
+    "synthesis": "The changed economics of generation make dependable behavior a joint achievement of explicit intent, stable seams, inspectable platform choices, evaluation, and people who retain ownership; reducing one visible layer is useful only when the combined system remains understandable as output grows.",
+    "so_what": "Teams can use cheaper generation on work they can understand and maintain, rather than accumulate an ever larger review burden or replace mature expertise with poorly owned local code.",
+    "callback": {
+      "to": "The opening contrast between How much code can we generate? and How much of the generated system can we trust?, together with the part's distinction between producing structure and achieving reliable behavior.",
+      "how": "The conclusion now identifies the specific platform, evaluation, and ownership conditions that make increased output trustworthy, and leaves the reader with a reviewable platform choice rather than a volume target."
+    },
+    "takeaway": {
+      "type": "course_of_action",
+      "content": "Choose the smallest reliable platform for the intended behavior, retain the abstractions that carry needed expertise, and verify what is generated."
+    },
+    "hand_off": {
+      "to": "fashion-driven-software-development",
+      "relationship": "contrast",
+      "carries_over": "The software part establishes inspectable platforms, intended behavior, and evaluation for AI-assisted building.",
+      "introduces": "When the model is in the customer product, the behavior and product assumptions themselves can change between model releases."
+    },
+    "transition_in": {
+      "relationship": "conclusion_summary",
+      "carries_over": "The reflection questions apply the platform criteria to the reader's own team.",
+      "introduces": "The synthesis identifies what makes those choices produce trustworthy behavior and why the next question changes when a model is part of the customer product.",
+      "form": "paragraph",
+      "placement": "start_of_this"
+    },
+    "paragraphs": [
+      {
+        "id": "p114",
+        "form": "prose",
+        "controlling_idea": "Complexity must be justified under current economics rather than ranked by size alone.",
+        "function": "synthesis",
+        "evidence": [],
+        "advances_thesis": {
+          "supports": [
+            "S3",
+            "S6"
+          ],
+          "how": "Complexity must be justified under current economics rather than ranked by size alone."
+        }
+      },
+      {
+        "id": "p115",
+        "form": "prose",
+        "controlling_idea": "As generation gets cheaper faster than trust does, platform choices must account for the remaining human work.",
+        "function": "synthesis",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Complexity must be justified under current economics rather than ranked by size alone.",
+          "introduces": "As generation gets cheaper faster than trust does, platform choices must account for the remaining human work.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S3"
+          ],
+          "how": "As generation gets cheaper faster than trust does, platform choices must account for the remaining human work."
+        }
+      },
+      {
+        "id": "p116",
+        "form": "prose",
+        "controlling_idea": "Explicit behavior, stable seams, inspectable changes, and evaluation work together only when people can understand and own the resulting system as output grows.",
+        "function": "synthesis",
+        "evidence": [
+          {
+            "kind": "reasoning",
+            "what": "The AI Software Development part's closing duty: explicit behavior and reviewable changes need evaluation and human ownership as output grows. State the ongoing human ability in concrete terms: people must still be able to test, review and maintain the growing system; this concerns manageable work, not permission.",
+            "shows": "The combined practices connect producing software structure to behavior users can rely on, completing the part without adding new factual examples.",
+            "source": "journal-spec.json / ai-software-development.closing"
+          }
+        ],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "As generation gets cheaper faster than trust does, platform choices must account for the remaining human work.",
+          "introduces": "Explicit behavior, stable seams, inspectable changes, and evaluation work together only when people can understand and own the resulting system as output grows.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S1",
+            "S2",
+            "S5",
+            "S6"
+          ],
+          "how": "Explicit behavior, stable seams, inspectable changes, and evaluation work together only when people can understand and own the resulting system as output grows."
+        }
+      },
+      {
+        "id": "p117",
+        "form": "prose",
+        "controlling_idea": "Teams may gain more from a platform they can reason about together than from the broadest instruction set.",
+        "function": "analysis",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "cause_effect",
+          "carries_over": "Explicit behavior, stable seams, inspectable changes, and evaluation work together only when people can understand and own the resulting system as output grows.",
+          "introduces": "Teams may gain more from a platform they can reason about together than from the broadest instruction set.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S6"
+          ],
+          "how": "Teams may gain more from a platform they can reason about together than from the broadest instruction set."
+        }
+      },
+      {
+        "id": "p118",
+        "form": "prose",
+        "controlling_idea": "RISC-inspired reduction lowers risk when it makes generated behavior more regular, inspectable, and evaluable.",
+        "function": "synthesis",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "elaboration",
+          "carries_over": "Teams may gain more from a platform they can reason about together than from the broadest instruction set.",
+          "introduces": "RISC-inspired reduction lowers risk when it makes generated behavior more regular, inspectable, and evaluable.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S5"
+          ],
+          "how": "RISC-inspired reduction lowers risk when it makes generated behavior more regular, inspectable, and evaluable."
+        }
+      },
+      {
+        "id": "p119",
+        "form": "prose",
+        "controlling_idea": "This conditional reduction does not require primitive tools, hostility to frameworks, or nostalgia.",
+        "function": "explanation",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "RISC-inspired reduction lowers risk when it makes generated behavior more regular, inspectable, and evaluable.",
+          "introduces": "This conditional reduction does not require primitive tools, hostility to frameworks, or nostalgia.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S3"
+          ],
+          "how": "This conditional reduction does not require primitive tools, hostility to frameworks, or nostalgia."
+        }
+      },
+      {
+        "id": "p120",
+        "form": "prose",
+        "controlling_idea": "Choose the smallest reliable platform for the intended behavior, retain needed expertise, and verify what is generated so that more output remains understandable and maintainable.",
+        "function": "recommendation",
+        "evidence": [],
+        "transition_in": {
+          "relationship": "conclusion_summary",
+          "carries_over": "This conditional reduction does not require primitive tools, hostility to frameworks, or nostalgia.",
+          "introduces": "Choose the smallest reliable platform for the intended behavior, retain needed expertise, and verify what is generated so that more output remains understandable and maintainable.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S2",
+            "S3",
+            "S5",
+            "S6"
+          ],
+          "how": "Choose the smallest reliable platform for the intended behavior, retain needed expertise, and verify what is generated so that more output remains understandable and maintainable."
+        }
+      },
+      {
+        "id": "p121",
+        "form": "prose",
+        "controlling_idea": "AI-assisted building needs inspectable implementations, while model-powered products also require reevaluating behavior and product assumptions as models change.",
+        "function": "transition",
+        "evidence": [
+          {
+            "kind": "source",
+            "what": "[[fashion-driven-software-development]] and the next part's incoming contrast.",
+            "shows": "The final paragraph hands off from the implementation platform to product behavior that can itself change with the model, without expanding the next essay's factual claims.",
+            "source": "journal-spec.json / ai-product-development.transition_in"
+          }
+        ],
+        "transition_in": {
+          "relationship": "contrast",
+          "carries_over": "Choose the smallest reliable platform for the intended behavior, retain needed expertise, and verify what is generated so that more output remains understandable and maintainable.",
+          "introduces": "AI-assisted building needs inspectable implementations, while model-powered products also require reevaluating behavior and product assumptions as models change.",
+          "form": "sentence",
+          "placement": "start_of_this"
+        },
+        "advances_thesis": {
+          "supports": [
+            "S5",
+            "S6"
+          ],
+          "how": "AI-assisted building needs inspectable implementations, while model-powered products also require reevaluating behavior and product assumptions as models change."
+        }
+      }
+    ]
+  },
+  "non_goals": [
+    {
+      "topic": "A detailed history of RISC or CPU architecture."
+    },
+    {
+      "topic": "A claim that all modern frameworks, SaaS platforms, or dependencies are bad."
+    },
+    {
+      "topic": "A technical recipe for one specific stack."
+    },
+    {
+      "topic": "A security policy for AI-generated dependencies."
+    },
+    {
+      "topic": "A claim that AI-generated code should be trusted because it is small."
+    },
+    {
+      "topic": "A claim that custom code is always cheaper than dependency reuse."
+    }
+  ],
+  "modalities": [
+    "summary",
+    "dialog",
+    "comics"
+  ],
+  "open_questions": [
+    "Final round 2 returned ESCALATE for one corroborated wording hesitation in Final Thought: “leaves evaluation and human ownership possible.” A closing edit now states the ability to test, review and maintain the growing system directly. This local repair was applied after the final permitted reader check; the report is stale for both draft and spec, and its readability has not been independently rechecked. Review the closing sentence before treating the article as checked; no third round was run."
+  ],
+  "decision_log": [
+    {
+      "date": "2026-11-12",
+      "decision": "Closed at the requested two-round limit. The final check found one ambiguous conclusion sentence and passed every other check and custom criterion. Specify and apply the plainly right local wording fix using test, review and maintain; keep all 121 units and their order, inherited contract, source claims and protected material. Record the remaining verification gap rather than claiming PASS or running a third check."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 1 found two corroborated pacing problems. Repair the introduction-to-body boundary in p012/p013 by acknowledging the setup and moving into reviewer tests; repair p080 by synthesizing the frontend and messaging cases. Retain all 121 units and their order. A roadmap move was suggested as an option, but the judge’s named local boundary repair keeps the existing order and distinguishes setup from application without relocating source material."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Realized the reviewed 121-unit contract in Phase B: added the incoming stable-boundary bridge, explicit bounded thesis and concrete roadmap, required first-use glosses and local transitions, moved the existing Questions to Consider intact, joined both approved paragraph groups without deleting words, and completed the part synthesis, practical takeaway, and cross-part hand-off. The original spec had no unresolved question, and all Phase A workflow gaps are now resolved; keep open_questions empty rather than retain milestones as questions. Front matter, protected artifacts, original tool/company claims, names, figures, dates, caveats, and source references remain unchanged. Companion summary, dialog, and comics are untouched and may need their framing aligned later.",
+      "rejected": [
+        "Using open_questions as a log of completed validation or drafting steps.",
+        "Updating companion modalities during the assigned article-only pass."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The fresh second flow reader judged the revised outline sound with no notes. Both authorized paragraph consolidations are accepted. Proceed to the specified prose revision with copied contract fields, original claims, protected material, and section headings unchanged; no further order change is made.",
+      "rejected": [
+        "Further pacing or section-order changes without a new flow review."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Adopt both pacing notes from the independent flow review (sound with notes), as explicitly directed by the parent after inspection of the source text. Consolidate former 7.1–7.2 into one hardware-to-software comparison about disciplined complexity management; consolidate former 8.8–8.10 into one qualification of the smallest-reliable-platform criterion. Preserve every word and claim of these paragraphs, remove only paragraph boundaries, update the next-unit and messaging-section transitions, and renumber units consistently. The contract now has 121 units; no section order, heading, copied field, criterion, source fact, or prose has changed. A fresh flow review is required before Phase B.",
+      "rejected": [
+        "Keeping separate paragraphs that repeat the same controlling idea or ending beat.",
+        "Deleting any wording or changing the qualified argument while consolidating units."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Reconstruct the paragraph contract from the entire published essay and legacy spec before changing prose. Preserve the original body sequence and every existing unit, heading, callout, image, caption, table, named example, number, date, caveat, and link; specify new bridge and roadmap units and a fuller closing before drafting. Keep status draft under the authorized unattended outcome-revision pass. No factual refresh is part of this pass.",
+      "rejected": [
+        "Rewriting the essay for style or shortening it without a contract-required reason.",
+        "Treating a retrospective spec as proof that the published essay already satisfies its new opening and closing duties."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Copy the final journal entry's intent, three acceptance criteria, five thesis fields, and role unchanged. Add six post supporting claims only. The ten legacy success criteria map to the journal outcomes: trust and shared moving instruction set to AC-1; changed abstraction economics, practical reuse choices, and anti-framework caveat to AC-2; evaluation and reduction risks to AC-3. The legacy Claude Code/Codex criterion remains an existing explanatory example under AC-1 rather than a new product claim. No acceptance criteria are added.",
+      "rejected": [
+        "Keeping Reader sees a concrete tool example as an inventory criterion.",
+        "Adding criteria that would broaden the approved journal outcome."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Retain the legacy audience as source context: experienced engineers evaluating generated code; principal and staff engineers choosing exposed framework/dependency complexity; engineering and technology leaders setting standards; readers of [[leadership-ladder]], [[spec-driven-authoring]], and [[fashion-driven-software-development]] seeking the software-platform complement. The journal intent remains exactly copied; the essay remains readable in isolation.",
+      "rejected": [
+        "Assuming readers have followed the cross-links before reading this post."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Add an introductory elaboration from [[breaking-vibe-monolith]]: stable domain and API boundaries need inspectable platform behavior inside them. Expand the existing final introductory claim to state the mature-expertise condition and add one concrete roadmap paragraph covering all sixteen body sections, including the preserved reflection questions. Name the RISC antecedent explicitly after the inserted bridge so This does not point ambiguously to a new paragraph.",
+      "rejected": [
+        "Relying only on the KEY POINTS callout as a roadmap.",
+        "Changing the fixed three-bullet KEY POINTS block."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Move Questions to Consider, with its existing lead-in and all seven questions unchanged, immediately before Final Thought. Leave To Probe Further and every reference intact after the conclusion. This gives the reflection unit a declared place in the argument and lets the prose end with synthesis and hand-off before the reference apparatus.",
+      "rejected": [
+        "Leaving substantive questions after the reference boundary, outside the checker's conclusion region.",
+        "Deleting or rewriting the questions."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Retain the six existing Final Thought units, specifying one new part-synthesis unit after its economic comparison and one final hand-off paragraph. Extend the existing last takeaway unit into a concrete action. The synthesis returns to generating structure versus achieving dependable behavior; the hand-off uses the next part's contrast between AI-assisted building and changing model-powered products.",
+      "rejected": [
+        "Ending on a repeated slogan alone.",
+        "Treating the To Probe Further link as the narrative hand-off."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Keep specialized vocabulary and briefly gloss unfamiliar concepts where they first carry the argument: RISC and the platform analogy; runtime visibility and failure scope; CPU opcodes; SaaS/API/ORM/CI; DRY; DOM; outbox/inbox and idempotency keys; property/regression/golden tests; mechanical sympathy; messaging failure terms; mutation/fault tests; blessed primitives. Add only explanatory glosses, no new statements about named companies or products.",
+      "rejected": [
+        "Adding a standalone glossary or removing the author's technical examples."
+      ]
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "The legacy spec has no numeric word limit. Keep no length cap and preserve the article's scale; timetoread is front matter and is not a word limit.",
+      "rejected": [
+        "Inventing a numeric cap or using reading time as one."
+      ]
+    },
+    {
+      "date": "2026-05-30",
+      "decision": "Retitled the post to `Can RISC-Inspired Platforms Make AI Less Risky?` to make clear that the argument is about RISC-like platform design, not RISC itself."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Chose the original RISC-centered title because it was short, memorable, and framed the analogy around trust rather than nostalgia."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Added a new AI Notes section, `AI Software Development`, because the post is about how AI changes development platforms rather than product strategy or leadership alone."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Used Patterson and Ditzel as broad inspiration: the article adapts their cost-effectiveness and complexity argument to AI-assisted software, not to CPU design."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Centered the article on \"smallest reliable platform\" to avoid a simplistic anti-framework argument."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Connected the post to spec-driven work and evaluation because reduced platforms only improve trust when paired with tests, review, and explicit human judgment."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Added Claude Code and Codex as concrete examples because their file-system and text-first operating model makes the RISC analogy more practical."
+    },
+    {
+      "date": "2026-05-28",
+      "decision": "Added a dedicated risks section before the closing thought so the article does not read as a simplistic argument for minimalism or local rewrites."
+    }
+  ],
+  "sources": [
+    {
+      "kind": "internal",
+      "ref": "[[leadership-ladder]]",
+      "contributed": "Intent, guardrails, and review boundaries for AI-assisted work; carried over from the legacy spec."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[spec-driven-authoring]]",
+      "contributed": "Specs as contracts for AI-mediated work; carried over from the legacy spec."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[fashion-driven-software-development]]",
+      "contributed": "Companion article on changing AI product materials and evaluation; carried over from the legacy spec and now the explicit next-part hand-off."
+    },
+    {
+      "kind": "external",
+      "ref": "David A. Patterson and David R. Ditzel, The Case for the Reduced Instruction Set Computer, https://people.eecs.berkeley.edu/~culler/courses/cs252-s05/papers/p25-patterson.pdf",
+      "contributed": "Source for the historical RISC analogy: complexity, cost-effectiveness, compiler usage, debugging, and simpler uniform instruction sets; carried over from the legacy spec without new research."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/risc-for-ai-software-development/index.md",
+      "contributed": "The complete published wording, examples, names, numbers, figures, captions, tables, callouts, and links from which all existing paragraph units were reconstructed. Exact baseline is stored under /private/tmp/ai-notes-outcome-revision-20261112/original/risc-for-ai-software-development/."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/posts/risc-for-ai-software-development/spec.md (legacy contract migrated into this file)",
+      "contributed": "Original intent, audience, ten success criteria, six non-goals, three modalities, no open questions, eight decisions, four source entries, and eight changelog entries; no numeric word limit."
+    },
+    {
+      "kind": "internal",
+      "ref": "_journals/ai-notes/journal-spec.json",
+      "contributed": "Exact post outcome, acceptance criteria, thesis fields and role; incoming stable-seams elaboration; AI Software Development part closing; outgoing contrast to AI Product Development."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[breaking-vibe-monolith]]",
+      "contributed": "Stable domain boundaries, API contracts, and data-model decisions as the previous post's basis for local reasoning and shared ownership."
+    },
+    {
+      "kind": "internal",
+      "ref": "[[prepare-for-ai-future]]",
+      "contributed": "Existing prose and To Probe Further link explaining agency, judgment, and persuasion; retained without making the later essay a prerequisite."
+    }
+  ],
+  "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Closed after round-2 ESCALATE (16 passes, one major flow finding). Specified the local conclusion wording repair before prose; the final report will remain stale after this closing edit."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Specified local round-1 pacing repairs before prose; no unit-order or inherited-contract change. Round 2 will be the final permitted reader check."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Completed Phase B prose against the reviewed 121-unit contract; structure passed before independent readers. Added the specified bridge, roadmap, glosses, transitions, part synthesis, takeaway, and next-part hand-off; performed the two exact-word consolidations and moved Questions to Consider intact. Removed resolved workflow notes from open_questions. Status draft; preparing the first of at most two draft-check rounds."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Recorded the second independent flow verdict: sound with no notes. Authorized Phase B to realize the reviewed 121-unit contract, including both word-preserving consolidations, before the first draft-check round. Status draft."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "After the first independent flow verdict of sound with notes, specified two authorized paragraph consolidations before prose: Simple Does Not Mean Primitive 7.1+7.2 and frontend example 8.8–8.10. Retained all existing wording as evidence, updated affected transitions, and renumbered the 121 units. Status draft; prose remains unchanged while a fresh flow recheck is pending."
+    },
+    {
+      "date": "2026-11-12",
+      "change": "Reconstructed a full paragraph-level spec.json from the published essay and complete legacy spec under the authorized outcome-revision pass. Copied the final journal contract, recorded conditional reduction and all preservation boundaries, specified the incoming bridge, concrete roadmap, reflection-question relocation, part synthesis, and cross-part hand-off before prose changes. Status draft; original prose remains unchanged at Phase A."
+    },
+    {
+      "date": "2026-06-12",
+      "change": "Added Modalities section; the spec now drives `summary.md`, `dialog.md`, and `comics.md` alongside the article. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-30",
+      "change": "Aligned the published post title and closing claim with the revised RISC-inspired platform framing. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Added the requirement and article section on risks of RISC-style reduction: local-code sprawl, missed edge cases, false confidence, fragmentation, and displaced complexity. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Reduced the opening key-points list from six to five by combining related RISC and platform-surface points. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Expanded the instruction-set argument: the platform surface must be understood by both AI agents and human reviewers, and it changes as the codebase and surrounding tools evolve. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Added Claude Code and Codex as RISC-like examples: agents working over filesystem, text files, source code, diffs, tests, and version control. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Spelled out RISC as Reduced Instruction Set Computer in the excerpt, key points, and opening. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    },
+    {
+      "date": "2026-05-28",
+      "change": "Initial spec and article draft. Status `accepted`. *(Zeljko, AI-mediated session)*"
+    }
+  ]
+}
