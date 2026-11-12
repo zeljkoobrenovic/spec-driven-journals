@@ -35,7 +35,7 @@ An **amplifier multiplies**. It does not contribute a quantity of its own; it ta
 
 That distinction sounds pedantic until you notice it changes what we expect about who wins and who loses with AI. The accelerator story predicts that everyone speeds up by roughly the same amount. The amplifier story predicts something very different: that AI's effect on you depends on **what you already have** — and that for some people, on some tasks, the effect runs the *wrong way*.
 
-The useful story is the one that helps us anticipate actual results. That is what the evidence must test.
+The useful story is the one that helps us anticipate actual results. Before turning to the evidence, we need to spell out the amplifier model and its limits.
 
 ## A Multiplier, Not an Adder
 
@@ -63,16 +63,16 @@ Those limits matter before we apply the image to real work. The strongest versio
 
 | Where it holds | Where it breaks |
 | --- | --- |
-| AI multiplies what you already have — skill, structure, standards, direction — and preserves the sign of that input. | **AI also adds genuinely new capability.** A pure amplifier only scales an existing signal; it cannot create one. AI can do things you could not do at all — a non-coder ships a working script, a novice drafts in a language they don't speak. That is closer to *new signal* than to gain on an old one. |
-| The same gain runs positive on a strong input and negative on a weak one — which is why outcomes scatter so widely. | **"Gain" is not one number.** A real amplifier has a roughly constant gain. AI's gain is *jagged* — large on one task, near zero or negative on an adjacent one that looks identical. There is no single multiplier you can write down for "AI," only a different one for each user, task, and context. |
+| The image directs attention to what you bring to the work — skill, structure, standards, and direction. | **AI also adds genuinely new capability.** A pure amplifier only scales an existing signal; it cannot create one. AI can do things you could not do at all — a non-coder ships a working script, a novice drafts in a language they don't speak. That is closer to *new signal* than to gain on an old one. |
+| It asks which inputs and working conditions are worth improving. | **"Gain" is not one number.** A real amplifier has a roughly constant gain. AI's effects vary by user, task, and context — large on one task, near zero or adverse on an adjacent one that looks identical. Calling an input strong or weak does not tell you whether adding AI will improve the task. |
 
-If you catch yourself saying "AI can't help you do anything new, it only scales what you've got," you have over-rotated. The useful, sturdy core of the metaphor is narrower: **for the work you already do, AI's effect is dominated by what you bring to it, and that effect is signed.** It can run the wrong way. The pedal can't.
+The useful question from the image is **what you are asking AI to amplify**. The answer directs attention to the inputs, but it does not establish whether adding AI improves a task. To find out, compare work with and without AI: the time it takes, the output completed, and the correctness of the result.
 
 ## It Amplifies Speed (in Both Directions)
 
-With those limits in view, start with the claim at the heart of the accelerator story: *AI makes you faster*. It is true. It is also, for a meaningful set of people and tasks, false — and the studies that measure it carefully keep finding the multiplier, not the pedal.
+With those limits in view, start with the claim at the heart of the accelerator story: *AI makes you faster*. It is true in some settings and false in others. The studies show why the answer needs to be measured for the work in front of you.
 
-The clearest result is also the most uncomfortable one. Here, **the sign of the effect** means improvement or worsening compared with work without AI; it does not label the developer or codebase as a positive or negative input. Positive gain was an assumption of the opening arithmetic, not a promise of benefit. In mid-2025, the research group **METR** ran a randomized controlled trial with sixteen experienced open-source developers, working on their *own* large, mature repositories — codebases they had contributed to for years and knew intimately. With state-of-the-art AI tools, they were **19% slower** than without them. The twist that makes the study unforgettable: afterward, the same developers estimated that the AI had sped them up by about **20%**. They were wrong about the *sign* of the effect. **The amplifier ran backwards, and they couldn't feel it.**
+The clearest result is also the most uncomfortable one. In mid-2025, the research group **METR** ran a randomized controlled trial with sixteen experienced open-source developers, working on their *own* large, mature repositories — codebases they had contributed to for years and knew intimately. With state-of-the-art AI tools, they were **19% slower** than without them. The twist that makes the study unforgettable: afterward, the same developers estimated that the AI had sped them up by about **20%**. **They took longer while feeling faster.**
 
 Now hold that next to the opposite result. Large field experiments with GitHub Copilot, run at Microsoft and Accenture, found real and substantial gains in completed tasks — but distributed in a revealing way. The biggest gains went to **junior developers and recent hires, who completed 27–39% more tasks**. The most senior developers gained far less — on the order of **8–13% more tasks**. Same tool, very different benefits. These are different studies and settings, not a controlled comparison between juniors and the METR developers. The fit between tool and task also matters.
 
@@ -100,9 +100,9 @@ Those different outcomes call for measurement of the work in front of you. The p
 
 The second cliché is *AI makes things cheaper*. Again: true, and dangerously incomplete. AI doesn't lower cost uniformly. It amplifies your **cost structure** — and most software has a cost structure where the cheap part and the expensive part are different parts.
 
-Generating code is the cheap part, and AI makes it radically cheaper. But **generating code was never where software cost lived**. The cost lives in *owning* it: reviewing it, testing it, debugging it, understanding it six months later, and changing it safely when everything around it has moved. AI pours its multiplier onto the cheap end — and **the volume it produces lands squarely on the expensive end**.
+AI makes generating code cheaper, but the saving has to cover the cost of *owning* the extra output: reviewing it, testing it, debugging it, understanding it six months later, and changing it safely when everything around it has moved. **Maintaining more code can cost more than generating it saved.** A team can therefore produce code faster, release no faster, and spend more overall.
 
-The early measurements point one way, and it is not the way the savings story predicts. Treat the specific figures that follow as **directional, not decimal** — several come from vendor analyses and the field is young — but the direction is consistent. Analyses of large code corpora have found that AI-assisted code carries **roughly 1.7× more issues per pull request** than human-written code, and that incidents per pull request rose by about **23.5%** as AI adoption climbed. A study of 211 million lines of code found **duplicated code blocks rising roughly eightfold** in 2024 while refactoring — the deliberate work of *removing* duplication — fell to historic lows. Some analyses project that unmanaged AI-generated code drives maintenance costs toward **4× their previous level by the second year**, and that the most debt-laden organizations ship features markedly slower and spend substantially more on upkeep than their peers.
+The early measurements point one way, and it is not the way the savings story predicts. Treat the specific figures that follow as **directional, not decimal** — several come from vendor analyses and the field is young — but the direction is consistent. Analyses of large code corpora have found that AI-assisted code carries **roughly 1.7× more issues per pull request** than human-written code, and that incidents per pull request rose by about **23.5%** as AI adoption climbed. A study of 211 million lines of code found **duplicated code blocks rising roughly eightfold** in 2024 while refactoring — the deliberate work of *removing* duplication — fell to historic lows. Some analyses project that unmanaged AI-generated code drives maintenance costs toward **4× their previous level by the second year**. They also project that the most debt-laden organizations ship features markedly slower and spend substantially more on upkeep than their peers.
 
 And the direction is exactly what the amplifier predicts: when you multiply the cheap step (writing) and leave the expensive steps (reviewing, owning) to humans, you don't remove cost. You **relocate and often inflate it** — and you move it downstream, where it is harder to see and more expensive to fix.
 
@@ -121,11 +121,11 @@ The lifecycle chart shows where work can move; it is not a measured cost curve. 
 
 ## It Amplifies the Bottleneck
 
-So far we have treated "the input" as a single thing. But a real system is not one number — it is a chain of stages in series: design, build, review, integrate, test, deploy, operate. And here is the part the accelerator story completely misses: **an amplifier acts on a part, not on the whole.** You do not turn up "the system." You turn up *one stage*. And turning up one stage of an unbalanced chain does not speed the chain up. It moves the strain to whatever stage you did not touch.
+The ownership work also has to fit through a delivery chain: design, build, review, integrate, test, deploy, operate. **An amplifier acts on a part, not on the whole.** Faster generation puts more code into that chain without by itself increasing the capacity to review, integrate, or maintain it. A growing review queue can therefore accompany both unchanged releases and higher ownership costs: the team has saved generation time but added work at the stage already limiting delivery.
 
 This is not a new or controversial idea. It is **the Theory of Constraints**, which Eliyahu Goldratt spent a career making unavoidable: the throughput of a system is set by its slowest stage — its bottleneck — and *"any improvement made anywhere besides the bottleneck is an illusion."* Speed up a non-bottleneck and you do not get more output. You get a **pile of work-in-progress stacking up in front of the constraint**, which was already the limiting stage and is now simply more overwhelmed.
 
-AI is the most powerful non-bottleneck accelerator the industry has ever deployed, and it is being pointed almost entirely at one stage: writing code. The examples below isolate faster generation while downstream capacity stays unchanged.
+Pointing AI at writing code can speed up a stage that is not limiting delivery. The examples below isolate faster generation while downstream capacity stays unchanged.
 
 * **Code review.** When generation gets multiplied and review does not, review becomes the constraint — and the queue in front of it grows. Teams that handled ten to fifteen pull requests a week describe facing fifty to a hundred. One 2026 dataset captured the shape precisely: **feature-branch throughput up roughly 59% year over year, while the median team's main-branch throughput actually fell.** Code is produced faster and reaches users *slower*. The amplifier worked perfectly — on the wrong stage.
 * **Integration and legacy.** You can generate a polished new UI in an afternoon, but faster generation alone does not connect it to the backend, the auth system, and the twelve-year-old billing service — that work still needs context and safe changes to the existing systems. AI-generated code, as practitioners keep noting, "looks right" but lacks the context that lives in the integration quirks and tribal knowledge of the old system.
@@ -155,7 +155,7 @@ Even in that favorable case, **a gain at a non-bottleneck stage is not yet a sys
 
 ## It Amplifies Quality — and Slop
 
-The shared review stage also decides what quality reaches the codebase. The third cliché is *AI raises quality*. By now the shape of the correction is familiar: AI amplifies the **standards and guardrails you already have**. Where those are strong — real evaluations, tests that mean something, review that catches things, a clear definition of "good" — AI can compound quality, because outputs pass through a filter intended to catch problems. Where those are weak or absent, AI can compound **slop**, because nothing stands between raw generation and the codebase.
+The shared review stage also decides what quality reaches the codebase. Another cliché is *AI raises quality*. By now the shape of the correction is familiar: AI amplifies the **standards and guardrails you already have**. Where those are strong — real evaluations, tests that mean something, review that catches things, a clear definition of "good" — AI can compound quality, because outputs pass through a filter intended to catch problems. Where those are weak or absent, AI can compound **slop**, because nothing stands between raw generation and the codebase.
 
 This is the dynamic, signed version of an argument made statically in [[ai-is-the-reactor-not-the-plant]]: a model is a reactor core, and the value comes from the "plant" of evaluation, guardrails, and review built around it. The amplifier framing adds the direction. Your standards are not a quality *bonus* that AI lets you skip. They help decide whether the multiplier points up or down. Remove them and you have not saved effort — you risk pointing a very powerful multiplier the wrong way at your own codebase. The same instinct runs through [[risc-for-ai-software-development]]: the bottleneck was never whether the model can *generate* something. It is whether you can *trust* what it generated — and trust is manufactured by the standards upstream of the AI, not by the AI.
 
@@ -177,7 +177,7 @@ Trust, meanwhile, stayed low: only around a third of developers reported trustin
 
 ## What to Do on Monday
 
-Those foundations give the model a practical use: it should change where you spend effort. Everything here points the same direction: **stop optimizing the multiplier and start fixing the input.** Budgeting for ownership includes the time people need to understand the work they will own.
+Those foundations give the model a practical use: it should change where you spend effort. Everything here points the same direction: **stop optimizing the multiplier and start fixing the input.**
 
 | Move | What it looks like | What it buys you |
 | --- | --- | --- |
