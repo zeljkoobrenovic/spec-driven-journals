@@ -363,7 +363,7 @@
       },
       "flow": {
         "pattern": "large_to_small",
-        "rationale": "The four concepts and their permanence first, because every later paragraph and section keys on them; then how many variants a platform allows, the identifiers and their rule, and the other shapes in which the rule holds; then the fields, categories, translations and states that hang on a product. Attributes before taxonomies because a channel's category decides which attributes are mandatory."
+        "rationale": "The four concepts and their permanence first, because every later paragraph and section keys on them; then the identifiers and their rule, the other shapes in which the rule holds, and how many variants a platform allows; then the fields, categories, translations and states that hang on a product. Attributes before taxonomies because a channel's category decides which attributes are mandatory. The variant limits follow the identifier rule (moved in round 2) so that the definitions of variant, SKU and GTIN are not interrupted."
       },
       "transition_in": {
         "relationship": "elaboration",
@@ -413,26 +413,6 @@
           }
         },
         {
-          "id": "p09a",
-          "controlling_idea": "A shop platform may cap how many variants one product can hold, the caps are recent and moving (Shopify from 100 to 2,048, commercetools 100 or 10,000 by catalog model), and a merchant that split products to fit a cap damaged its search, feeds and analytics for years after the cap was lifted.",
-          "function": "evidence",
-          "evidence": [
-            {
-              "kind": "fact",
-              "what": "Shopify: 100 variants historically; 2,048 from API version 2024-04, for all merchants from 15 October 2025. commercetools: Classic 100; Modular Catalog, generally available 29 September 2026, up to 10,000.",
-              "shows": "The cap is a fact of the platform that changes, while a split made to fit it stays in the catalog.",
-              "source": "Shopify changelog, 15 October 2025; commercetools release notes, 2026"
-            }
-          ],
-          "transition_in": {
-            "relationship": "additional_support",
-            "carries_over": "The variant as one point in the grid of options.",
-            "introduces": "How many points a platform lets one product hold, and the lasting cost of splitting a product to fit.",
-            "form": "sentence",
-            "placement": "start_of_this"
-          }
-        },
-        {
           "id": "p10",
           "controlling_idea": "The SKU is the merchant's private code and the GTIN the global identifier issued through GS1, in a 13-digit form on European retail barcodes and a 14-digit form for trade units, with a separate GTIN for every distinct item and packaging configuration.",
           "function": "definition",
@@ -452,7 +432,7 @@
           ],
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "Product and variant, whose shape a platform can constrain.",
+            "carries_over": "Product and variant, which the merchant names freely.",
             "introduces": "The two identifiers, which are where newcomers make costly mistakes.",
             "form": "sentence",
             "placement": "start_of_this"
@@ -491,7 +471,7 @@
         {
           "id": "p14",
           "form": "list",
-          "controlling_idea": "Products that are not a plain size-and-color grid (a bundle, a configurable product, a digital good, a gift card) keep the same rule: every item that can be sold keeps its own identity.",
+          "controlling_idea": "Other product shapes (a bundle, a digital good, a gift card) and other platforms' names for the grid (a configurable product) keep the same rule: every item that can be sold keeps its own identity.",
           "function": "explanation",
           "organization": "classification",
           "evidence": [
@@ -511,6 +491,26 @@
           }
         },
         {
+          "id": "p09a",
+          "controlling_idea": "Do not split a product to fit a platform's cap on variants, because a split damages search, feeds and analytics for years after the cap is lifted; the caps are recent and moving (Shopify from 100 to 2,048, commercetools 100 or 10,000 by catalog model).",
+          "function": "evidence",
+          "evidence": [
+            {
+              "kind": "fact",
+              "what": "Shopify: 100 variants historically, 2,048 for all merchants from 15 October 2025. commercetools: Classic 100; Modular Catalog, generally available 29 September 2026, up to 10,000.",
+              "shows": "The cap is a fact of the platform that changes, while a split made to fit it stays in the catalog.",
+              "source": "Shopify changelog, 15 October 2025; commercetools release notes, 2026"
+            }
+          ],
+          "transition_in": {
+            "relationship": "elaboration",
+            "carries_over": "The grid of variants under one product.",
+            "introduces": "How many variants a platform lets one product hold, and the lasting cost of splitting a product to fit.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
+        },
+        {
           "id": "p12",
           "controlling_idea": "An attribute is a typed field and an attribute set is the list of fields a kind of product must carry; a storefront filter, a search facet or a marketplace listing can use only an attribute that is filled consistently for every product of that kind.",
           "function": "definition",
@@ -523,7 +523,7 @@
           ],
           "transition_in": {
             "relationship": "contrast",
-            "carries_over": "Identity, which never changes whatever the product's shape.",
+            "carries_over": "The variant grid and its identifiers, which should neither change nor be split.",
             "introduces": "The fields around it, which do change: attributes and attribute sets.",
             "form": "phrase",
             "placement": "start_of_this"
@@ -587,10 +587,9 @@
               "source": "commercetools documentation, accessed November 2026"
             },
             {
-              "kind": "fact",
-              "what": "Google Merchant Center's availability takes in_stock, out_of_stock, preorder or backorder, and an out-of-stock item must still show its price.",
-              "shows": "A channel keeps its own lifecycle value for the same product.",
-              "source": "Google Merchant Center product data specification, accessed November 2026"
+              "kind": "reasoning",
+              "what": "A variant can be end-of-season on the storefront and still listed on a marketplace clearing the last units.",
+              "shows": "Each channel keeps its own lifecycle state for the same product."
             }
           ],
           "transition_in": {
@@ -894,9 +893,21 @@
       },
       "paragraphs": [
         {
+          "id": "p30",
+          "controlling_idea": "The arrangement with a PIM just described is one of four realistic ways to arrange product data; the other three do without one.",
+          "function": "transition"
+        },
+        {
           "id": "p31",
-          "controlling_idea": "The arrangement with a PIM is one of four realistic ways to arrange product data, and in the first of them the shop platform is the catalog: every merchant's starting point, and right for one channel and one language.",
-          "function": "description"
+          "controlling_idea": "In the first way the shop platform is the catalog: every merchant's starting point, and right for one channel and one language.",
+          "function": "description",
+          "transition_in": {
+            "relationship": "sequence",
+            "carries_over": "The four ways announced.",
+            "introduces": "The first way.",
+            "form": "phrase",
+            "placement": "start_of_this"
+          }
         },
         {
           "id": "p32",
@@ -976,22 +987,36 @@
       },
       "paragraphs": [
         {
-          "id": "p36",
-          "controlling_idea": "The author's recommendation: a PIM becomes necessary when product data has more than one producer and more than one consumer and the shop platform's product record can no longer hold the workflow between them; below that line it is the Giant's Boots, above it the drift costs more than the subscription.",
-          "function": "recommendation",
+          "id": "p35b",
+          "controlling_idea": "The fourth way is right only under conditions; set side by side, the four arrangements differ most on workflow, translations and channel validation, which is what several producers and several consumers need.",
+          "function": "comparison",
           "evidence": [
             {
               "kind": "table",
               "what": "The four arrangements by when each is right, cost, workflow, translations, channel validation and the warning sign of outgrowing it.",
               "shows": "The arrangements differ on exactly the points several producers and several consumers need: workflow, translations, validation."
-            },
+            }
+          ]
+        },
+        {
+          "id": "p36",
+          "controlling_idea": "The author's recommendation: a PIM becomes necessary when product data has more than one producer and more than one consumer and the shop platform's product record can no longer hold the workflow between them; below that line it is the Giant's Boots, above it the drift costs more than the subscription.",
+          "function": "recommendation",
+          "evidence": [
             {
               "kind": "case",
               "what": "Kestrel & Pine crossed the line around 2021-2022, with marketplaces (2021) and a third country (2022).",
               "shows": "The test dates the need in the running example years before the decision of 2027.",
               "source": "Kestrel & Pine scenario ledger"
             }
-          ]
+          ],
+          "transition_in": {
+            "relationship": "conclusion_summary",
+            "carries_over": "The table of the four arrangements and where they differ.",
+            "introduces": "The author's recommendation and its test.",
+            "form": "sentence",
+            "placement": "start_of_this"
+          }
         },
         {
           "id": "p37",
@@ -1079,15 +1104,15 @@
       },
       "transition_in": {
         "relationship": "additional_support",
-        "carries_over": "The stages and the recommendation, which are the author's judgement.",
-        "introduces": "What vendors and channels document, and what one company does.",
+        "carries_over": "Rule 3's expectation that a channel's 'no' arrives after the 'sent'.",
+        "introduces": "What channels document about the rules that produce the 'no', and what one company does.",
         "form": "sentence",
         "placement": "start_of_this"
       },
       "paragraphs": [
         {
           "id": "p42",
-          "controlling_idea": "Public documentation backs the chapter's point that channels validate and reject: a record that looks complete in the merchant's shop can still be rejected by a channel that checks its own required fields, identifiers and media rules.",
+          "controlling_idea": "Public documentation shows how many rules can produce the 'no' that Rule 3 expects: channels validate and reject, so a record that looks complete in the merchant's shop can still be rejected by a channel that checks its own required fields, identifiers and media rules.",
           "function": "claim"
         },
         {
@@ -1527,7 +1552,11 @@
     "Flow rubric, first run (2026-11-12, sound with notes). Taken: the vendors' definitions now follow the PIM definition directly (p23 before p22); the one-sentence opening of The Choices is merged into the first option; a sentence on variant limits is added where the variant is defined (p09); the W3 introduction (p44) no longer restates the scene. Not taken: (a) 'system of record', the Group stage, the failure-pattern names and W8 were called forward references; all are established in Part I, and W8 is glossed again in the text. (b) 'feeds' is used in the ownership section before the PIM section defines 'feed'; the ownership table would need a gloss in a table cell. (c) The 'depends on context' take-away on logistic attributes and the eighth question on AI agents rest on one table row and one clause each; they are the author's and were kept. (d) Trade-offs and Across Scale Stages declare no section flow of their own (two paragraphs each).",
     "Flow rubric, second run (2026-11-12, sound with notes). Taken: the paragraph on keeping page, structured data and feeds aligned (p22) now follows the flow requirements. Not taken: (a) move the vendors' definitions (p23) to the head of Trade-offs, where 'no vendor gives a threshold' meets the author's threshold; kept in the PIM section because Figure 3 hangs on that paragraph and it completes the definition. (b) Cut or move the list of four product shapes (p14), which no later item uses. (c) Swap p02 and p03 in the introduction. (d) The stages section does not visibly apply the producer-and-consumer test. (e) The conclusion's opening paragraph (p57) and the author's-synthesis list (p60) partly restate each other; the three-tier take-away is the book's house format.",
     "Flow rubric, third run after the move (2026-11-12, sound with notes; no change of order followed). Notes not taken: none of the three rules visibly meets the alignment requirement of p22; merge the announcement of the rules (p26) into Rule 1; the pulled rug is found by reading a channel's notices, so the shared remedy of p56 (a scheduled comparison) fits it only in part; 'outbox' and 'group id' need a gloss (the text glosses the outbox in Rule 3 and names item_group_id in In Practice).",
-    "GS1's own site blocked fetching; the GTIN format facts rest on a GS1 support article and an encyclopaedia page. A reviewer with access to the GTIN Management Standard could replace the secondary citation."
+    "GS1's own site blocked fetching; the GTIN format facts rest on a GS1 support article and an encyclopaedia page. A reviewer with access to the GTIN Management Standard could replace the secondary citation.",
+    "Draft check rounds 2 and 3 (2026-11-12), for the author: both flow readers in rounds 1, 2 and 3 found the PIM section (how it works) arriving before The Choices and Trade-offs (whether to have one). The spec keeps the order because three arrangements are defined by what they lack against the PIM; moving The Choices and Trade-offs before the PIM section is the alternative. Not changed without the author.",
+    "Draft check rounds 2 and 3, for the author: both flow readers want 'What the channels document' (p42-p43) moved up beside Rule 3 or Requirements per flow, which already cite bol's upload report and Google's GTIN disapproval; In Practice now carries over Rule 3's 'no', but the evidence still comes late and partly repeats. Moving it, or cutting the repetition in Requirements per flow, is the author's decision.",
+    "Round 3, one reader: the product-shapes list (p14) mixes three other shapes with one synonym for the grid (configurable product); a sentence before the list, or dropping Adobe's configurable product, would separate them.",
+    "Round 3, one reader: 'n.d.' (no date) in the in-text citations is never expanded; this is the book-wide citation convention and was left as is."
   ],
   "decision_log": [
     {
@@ -1609,6 +1638,14 @@
     {
       "date": "2026-11-07",
       "decision": "Dropped GS1 Digital Link and Sunrise 2027 from the article for length; they belong in stores-and-omnichannel (2D codes at the point of sale) if anywhere."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 2 (pass resumed after a usage-limit stop; the author asked for checker notes to be taken without review): the variant-limits paragraph (p09a) moved after the product shapes (p14), because both flow readers lost the definitions of variant, SKU and GTIN where it interrupted them; the lead-in of The Choices split from the first way (new p30), because both flow readers misread the start of the list. Transitions of p09a, p10, p12 and p31 rewritten."
+    },
+    {
+      "date": "2026-11-12",
+      "decision": "Round 3 preparation (author asked for checker notes to be taken without review): Trade-offs opens with a paragraph that reads the table (new p35b, the table moved to it from p36); Google's availability values dropped from the lifecycle paragraph (p16), which both round-2 flow readers read as stock, not lifecycle; In Practice now carries over Rule 3's expected 'no' instead of 'the judgement above'; the variant-limits paragraph (p09a) leads with its point and drops the API version and the warning to apps. Not taken (author's decision): moving The Choices and Trade-offs before the PIM section, and moving 'What the channels document' up beside Rule 3; both were raised by both readers in rounds 1 and 2."
     }
   ],
   "sources": [
@@ -1669,6 +1706,10 @@
     }
   ],
   "changelog": [
+    {
+      "date": "2026-11-12",
+      "change": "Pass resumed after a usage-limit stop. Round 2 (fresh readers): escalate, 14 passed, 19 failed (7 corroborated flow findings, 3 of them spec order). Spec: variant limits moved after the product shapes, The Choices lead-in split (p30), Trade-offs opened by a paragraph reading the table (p35b), Google availability dropped from lifecycle, In Practice carries over Rule 3. Draft: glosses (agency, Shopify, Zalando, staged data, data warehouse, product master), plainer variant-limits paragraph, callback and pulled-rug wording. Round 3: escalate, 14 passed, 15 failed (two corroborated spec-order findings left to the author). Cheap fixes applied after round 3 (transitions into ownership and the conclusion, W8 set up, PIM not redefined, glosses for attribute, asynchronous, Merchant Center); the round-3 report is therefore stale. (AI-mediated session)"
+    },
     {
       "date": "2026-11-12",
       "change": "Round 1 (escalate: 12 passed, 34 failed, of which 20 were single-reader term findings recorded as minor). Spec faults fixed in the spec (variant limits moved to the product model, product shapes reframed, alignment paragraph merged into Rule 2, Deprecated Endpoint shortened); draft faults fixed in the chapter (the fourth typing of the color shown, the Choices opened by naming the PIM as the fourth way, the 2021-2022 line set against the 2023 stage, the callback worded as a general case)."
